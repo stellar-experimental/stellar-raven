@@ -301,13 +301,14 @@ signatures in **compact mode**: the input type and callable line are always full
 output type block over `COMPACT_OUTPUT_THRESHOLD` (2,000 chars — originally measured to trim
 only the three Scout monsters, `searchProjects`/`searchRepos`/`explainRepo`, whose output
 types ran to ~12.7KB and made a limit-10 page ~26KB with the bloat usually attached to an
-off-target hit; upstream schema growth through Scout 1.8.28/1.8.30 has since carried 15 Scout
+off-target hit; upstream schema growth through Scout 1.9.1 has since carried 20 Scout
 operations over the same unchanged threshold, with the exact set pinned in `test/search.test.ts`)
 is replaced by a stub declaration keeping the type name and the output schema's
 top-level field names (so payload field selection like `r.data.projects` still works from
 the hit alone), pointing at `codemode.describe(id)` for the full shape. The compaction
-wraps *around* the vendored renderer — the vendor file is untouched — and applies to
-search hits only; `codemode.describe` always renders the full signature (§5).
+wraps *around* the vendored renderer, and the vendor file is untouched. Search hits use the
+stub in their signatures. The super-spec builder uses the same threshold for success-response
+schemas. Both compact forms point to `codemode.describe`, which always returns full detail (§5).
 
 ## 3. An `execute` call, end to end
 
@@ -481,7 +482,11 @@ The `codemode` provider (`buildCodemodeProvider`, `src/executor/providers.ts`) i
   (ADR-0003); design record and per-service
   mapping in [`research/services/stellar-docs-spec-design.md`](./research/services/stellar-docs-spec-design.md)
   for stellarDocs and [`research/super-spec-design.md`](./research/super-spec-design.md) for the
-  whole document), with `$refs` resolved inline
+  whole document). Oversized success-response schemas use the shared search-signature threshold.
+  Each compact schema keeps exact top-level field names. It points to the exact
+  `codemode.describe("<id>")` call for the full schema. Inputs and smaller responses stay full.
+  Full schemas remain in the manifest-backed `codemode.catalog()` and `codemode.describe()` views.
+  Retained `$refs` are resolved inline
   (`resolveSpecRefs` in `src/executor/spec-sandbox.ts` — the host-side twin of upstream's
   in-sandbox `__resolveRefs`, cached per spec object). Post-ADR-0001
   (`research/decisions/0001-search-tool-shape.md`) this is the super spec's role: the
@@ -830,6 +835,11 @@ scripts/build-catalog.mjs       → catalog/manifest.json        (deterministic;
 scripts/build-micro-map.mjs     → src/mcp/micro-map.ts          (offline, deterministic)
 scripts/build-super-spec.mjs    → specs/super-spec.json        (npm run spec:build)
 ```
+
+The super-spec builder compacts only oversized success-response schemas. It uses the shared
+`COMPACT_OUTPUT_THRESHOLD` rule from `src/catalog/output-compaction.ts`. The builder preserves
+top-level output field names and exact `codemode.describe` pointers. It prunes components that
+become unreachable after compaction. The manifest and `codemode.describe` keep every full schema.
 
 `scripts/build-catalog.mjs` has five snapshot/metadata roots: `inventory/lumenloop.json`,
 `inventory/stellar-light.json`, `specs/stellar-docs.json`,

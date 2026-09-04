@@ -5,20 +5,19 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer checks the live official awards state and Scout round metadata, then dates every volatile claim. As of 2026-08-18, no SCF round is in Submission. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
+    "answer": "A grounded answer checks the live official awards state and Scout round metadata. It dates every volatile claim. As of 2026-09-03, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Panel Review. SCF #44 is the last concluded round.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
     "keyFacts": [
-      "Presents specific source-supported content as current or dated, not unsupported memory.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Reports no Submission-phase round in the dated example.",
-      "Places SCF #45 in Initial Review in the dated example.",
-      "Treats 2026-08-16 as SCF #45's elapsed submission deadline, not its current close."
+      "Presents specific source-supported content as current or dated.",
+      "Makes the as-of date visible for each changeable status or deadline.",
+      "Reports SCF #46 in Submission in the dated example.",
+      "Reports 2026-11-08 as SCF #46's submission deadline.",
+      "Places #45 in Panel Review and #44 as the last concluded round."
     ],
     "avoid": [
-      "Do NOT claim that SCF #45 is still open for full-proposal submissions or that an open RFP brief proves an open round.",
-      "Do NOT assert any round or deadline as permanent, or fabricate a deadline time, timezone, notification date, or submission count.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
+      "Do NOT invent a deadline time, timezone, notification date, or submission count."
     ],
-    "notes": "Freshness item: identify the current round, phase, and deadline from dated official and live sources. As of 2026-08-18, no round is in Submission; #45 is in Initial Review, #44 is distributing, and #43 is the last concluded round. The two published Q3 RFP briefs do not reopen #45's full-proposal window. The Build cap is owned by separate cases."
+    "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-09-03, #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is the last concluded round. The fixed #43 result remains separate."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -32,55 +31,53 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-18",
-    "reverifyBy": "2026-09-03",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-11-09",
     "sources": [
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
-        "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
+        "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08, #45 was in Panel Review, and #44 was last concluded."
       },
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-        "note": "Official SCF #45 detail page observed 2026-08-18; the page showed Initial Review."
+        "note": "Official SCF #45 detail page observed 2026-09-03; it showed #45 in Panel Review."
       },
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/rfps?status=open",
-        "note": "Live Scout result observed 2026-08-18; currentRound=45, currentPhase=Initial Review, and no submission window."
+        "note": "Live Scout result observed 2026-09-03; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and submission deadline 2026-11-08."
       }
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-08-18, no SCF round is in Submission; SCF #45 is in Initial Review after its 2026-08-16 deadline, #44 is distributing, and #43 is last concluded.",
+        "claim": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is last concluded.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "observedAt": "2026-08-18T15:22:00Z",
-            "note": "Official index showed #45 Initial Review with an August 16, 2026 deadline, #44 in distribution, and #43 ended."
+            "observedAt": "2026-09-03T15:39:35.870Z",
+            "note": "Official index showed #46 in Submission through November 8, 2026, #45 in Panel Review, and #44 ended."
           },
           {
             "class": "A",
-            "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-            "observedAt": "2026-08-18T15:23:00Z",
-            "note": "Official #45 detail page showed Initial Review and did not supply a notification date or submission count."
-          },
-          {
             "class": "C",
-            "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
-            "observedAt": "2026-08-18T15:24:51Z",
-            "note": "Scout reported currentRound=45, currentPhase=Initial Review, no submission window, and no round in Submission."
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-09-03T15:39:35.870Z",
+            "note": "Scout reported currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and a 2026-11-08 submission deadline."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "A: https://communityfund.stellar.org/awards confirmed #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded on 2026-09-03.",
+        "C: https://stellarlight.xyz/api/rfps?status=open returned the same current-round state on 2026-09-03T15:39:35.870Z.",
+        "Sibling sweep 2026-09-03: q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and all SCF register clusters remain consistent.",
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
         "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",

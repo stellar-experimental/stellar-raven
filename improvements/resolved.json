@@ -2038,6 +2038,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729/improvements/stellar-light-scout/sls-072-rfp-round-source-openapi-schema.md"
     },
     {
+      "id": "sls-073",
+      "title": "The Stellar Light vet-idea endpoint returns an empty report.competitors.projects array for records that the directory does hold",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-21",
+      "resolved": "2026-09-03",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1025"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1025"
+      ],
+      "liveRecheck": "2026-09-03 live GET /api/vet-idea?q=perpetuals%20%2F%20derivatives%20trading%20protocol%20on%20Stellar returned vertical=null, matchMode=scored, and project competitors noether, stellars-finance, sushi, turbolong, vanna-finance, zenex, soroswap, and lobstr; the limit=6 directory result contained the same first six candidates.",
+      "reviewEvidence": "Independent Terra review read issue #1025, its maintainer resolution comment, merged PRs #1026-#1029, and repeated the original live trigger plus an adjacent wallet trigger.",
+      "sourceCommit": "884c0e38c57c9e03b36751e105048352b896978d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/884c0e38c57c9e03b36751e105048352b896978d/improvements/stellar-light-scout/sls-073-perps-vetidea-project-consistency.md"
+    },
+    {
       "id": "sls-074",
       "title": "Scout reports V-SOR-APP-VUL-003 as an exact miss. The Veridise V2.1 report contains that exact identifier in Appendix A.2.2 for Denial of…",
       "service": "stellar-light-scout",
@@ -2092,6 +2110,56 @@
       "reviewEvidence": "Lane C distinct read-only reviewer 2026-08-28 re-ran trigger/control and verified issue 1055 closed-completed and PR 1056 merged 2a85c1b resolution posted and read back 2026-08-28: https://github.com/Stellar-Light/stellarlight/issues/1055#issuecomment-5455031036",
       "sourceCommit": "e8dbf9972068b2affa65bdeef9fc195ab702a2b9",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e8dbf9972068b2affa65bdeef9fc195ab702a2b9/improvements/stellar-light-scout/sls-076-project-search-strict-spelling-neighbor.md"
+    },
+    {
+      "id": "sls-077",
+      "title": "Scout OpenAPI 1.9.1 omits issued from the 200 response claim.type enum. The same endpoint accepts issued in the type query parameter. The…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-27",
+      "resolved": "2026-09-03",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1086"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1086"
+      ],
+      "liveRecheck": "2026-09-03 live GET /api/verify?type=issued&subject=EURC&auditor=Circle returned claim.type=issued and verdict=supported; live OpenAPI 1.9.23 lists issued in both request and 200-response claim.type enums.",
+      "reviewEvidence": "Independent Terra review read issue #1086 and its maintainer resolution comment, then repeated the original issued EURC request and checked both live OpenAPI enums.",
+      "sourceCommit": "884c0e38c57c9e03b36751e105048352b896978d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/884c0e38c57c9e03b36751e105048352b896978d/improvements/stellar-light-scout/sls-077-verify-issued-response-enum.md"
+    },
+    {
+      "id": "sls-078",
+      "title": "Scout OpenAPI 1.9.1 gives getQualityReport broad x-routing keywords. The live list includes trust, confidence in the data, coverage,…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-27",
+      "resolved": "2026-09-03",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1087"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1087"
+      ],
+      "liveRecheck": "2026-09-03 live OpenAPI 1.9.23 GET /api/quality x-routing contains only eight Scout/Stellar Light source-calibration phrases; its notFor section excludes generic technical, protocol, SDK, and operational questions.",
+      "reviewEvidence": "Independent Terra review read issue #1087 and its maintainer resolution comment, checked the live OpenAPI route contract, and separated the remaining 90-capture Raven schema-keyword result from the upstream fix.",
+      "sourceCommit": "884c0e38c57c9e03b36751e105048352b896978d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/884c0e38c57c9e03b36751e105048352b896978d/improvements/stellar-light-scout/sls-078-quality-report-routing-capture.md"
+    },
+    {
+      "id": "sls-079",
+      "title": "The status field returned by scout.searchProjects carries one label for two different facts. Live can mean \"listed and active in the…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-28",
+      "resolved": "2026-09-03",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-09-03 live strict Stellars Finance search returned status=Pre-Release, statusBasis=human-verified, deployment.network=testnet, and the operator-bundle source URL; live OpenAPI states status is never deployment proof.",
+      "reviewEvidence": "Independent Terra review repeated the original named-project trigger and checked the live Project schema; the Live/mainnet conflation no longer reproduces.",
+      "sourceCommit": "884c0e38c57c9e03b36751e105048352b896978d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/884c0e38c57c9e03b36751e105048352b896978d/improvements/stellar-light-scout/sls-079-project-status-deployment-conflation.md"
     },
     {
       "id": "sls-080",

@@ -154,9 +154,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe eval/qa/probe-remote-identities.mjs --expect-remote-identity-probe-sha256 <probe-sha256> --expect-remote-identity-sha256 <vector-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe eval/qa/probe-remote-identities.mjs --expect-remote-identity-probe-sha256 <probe-sha256> --expect-remote-identity-sha256 <vector-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe eval/qa/probe-remote-identities.mjs --expect-remote-identity-probe-sha256 <probe-sha256> --expect-remote-identity-sha256 <vector-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -180,14 +180,87 @@ commit into the Worker's MCP `serverInfo`.
 
 Every `run-qa.mjs` mode requires `--expect-agent-binary-sha256 <wrapper-sha256>` and
 `--expect-agent-environment-sha256 <environment-sha256>`. Collection runs also require
-`--server-revision <commit>` and `--expect-sha256 <surface-sha256>`. These flags pin the source
-revision, the bound server, the capped Claude executable, and the inherited Claude environment
-before spending. The runner checks the listener, revision, clean state, compiled source revision,
-and surface again after collection. It rejects a comparison if these values change.
-It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
+`--server-revision <commit>` and `--expect-sha256 <surface-sha256>`. Collection also requires
+the committed probe, its byte pin, and its stable pre-arm vector pin. These flags pin all local
+inputs before spending. The runner checks the local inputs again after collection.
+
+Use this command before each new paid authorization:
+
+```sh
+REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
+REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d ' ' -f 1)
+REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256)
+```
+
+`--stable-sha256` captures three vectors. It waits five minutes between captures.
+The command fails unless all three vector hashes match.
+Pass both values with `--expect-remote-identity-probe-sha256` and
+`--expect-remote-identity-sha256`.
+
+The committed probe makes only free, read-only requests to these public sources:
+
+- Scout: `https://stellarlight.xyz/api/openapi.json`.
+- Lumenloop: `https://api.lumenloop.com/v1/openapi.json`, `/v1/tools`, and `/v1/skills`.
+- Stellar Docs: the public Algolia index settings and all paginated `type:lvl1` title records.
+
+The probe receives only `PATH`. It receives no repository or Claude secret.
+Each source request has a 20-second timeout and two bounded retries.
+The probe accepts integer-seconds and HTTP-date `Retry-After` values.
+It caps each server-requested delay at five seconds.
+Two complete Docs query phases have a 140-second network budget.
+The outer process timeout is 145 seconds.
+The probe prints one JSON object to stdout. The runner calls it around each answering call.
+The runner also calls it after the local postflight. It stores no raw stdout or stderr.
+
+The Docs probe first requests page zero to learn the current page count.
+It then requests exactly the remaining pages in one batch.
+The current 650-title index needs seven Algolia search operations per capture.
+The prior fixed batch used ten search operations per capture.
+
+The probe output has this exact contract:
+
+```json
+{
+  "schema": "qa-remote-identity-vector-v1",
+  "services": {
+    "scout": {
+      "openapiVersion": "1.9.30",
+      "canonicalOpenapiSha256": "<64 lowercase hex characters>"
+    },
+    "lumenloop": {
+      "advertisedContractIdentity": "openapi-1.0.0",
+      "canonicalInventorySha256": "<64 lowercase hex characters>"
+    },
+    "stellarDocs": {
+      "indexSettingsSha256": "<64 lowercase hex characters>",
+      "canonicalTitleSetSha256": "<64 lowercase hex characters>"
+    }
+  }
+}
+```
+
+The probe must canonicalize JSON by sorting object keys recursively. It must keep array order when
+the service defines that order. It must sort set-like arrays before hashing. It must omit request
+timestamps and other volatile telemetry.
+
+The Scout hash covers the complete live OpenAPI document. The Lumenloop hash covers its advertised
+tool, skill, and OpenAPI inventory. The Stellar Docs hashes cover index settings and sorted page
+title records. The identity fields must use only public, stable values.
+
+Any probe failure stops before the next paid call. Any vector change has the same effect. The
+artifact preserves completed rows and lists unattempted IDs. It sets `meta.comparable: false` and
+`meta.aggregatesSuppressed: true`. It records the changed service and both vectors. A stopped
+artifact cannot resume under the same authorization. A comparable artifact includes one matching
+final postflight capture. Listener stability alone does not prove remote service stability.
+The artifact names a pre-arm pin mismatch directly.
+A stopped guard skips postflight without adding a second comparability reason.
+A successful attempted postflight must record `skippedReason: null`.
+The paired gate rejects any successful postflight with another value.
+If no answering call established a baseline, the guard records `missing-baseline`.
+The comparability reason then states that the remote identity baseline is missing.
 
 Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
-Collection also requires the server revision and surface SHA-256 flags in that form.
+Collection also requires both server pins, the probe path, its byte pin, and the vector pin.
 The runner rejects an absent, duplicate, missing, malformed, or mismatched required
 flag before an answering-agent or judge call. Compute the environment value after all
 Claude-related environment variables have their final values. Use the same shell for this command
@@ -676,6 +749,34 @@ finalizes, and no resume spends a second paid call on it.
   `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
   across this boundary, or disclose the sample change.
 
+### Measurement shares
+
+Every complete, judged run stamps five measurement fields into `meta` and prints them on one
+console line after the raw first-attempt diagnostics. The stored-judge path stamps the same fields.
+Each share is a grade-count ratio over the active rows, so it lies in `[0, 1]` or is `null` when
+its denominator is empty. `aggregatesSuppressed: true` removes all five.
+
+| Field | Denominator | Meaning |
+| --- | --- | --- |
+| `halfCreditShare` | active rows | `(correct + partial / 2) / rows` |
+| `strictCorrectShare` | active rows | `correct / rows` |
+| `coreAnswerCorrectShare` | graded rows (`correct`, `partial`, `wrong`) | rows whose `coreAnswer` is `correct` |
+| `gradedCoreAnswerNullCount` | graded rows | graded rows with a `null` `coreAnswer` |
+| `coreAnswerVerdictCount` | — | the graded-row denominator |
+
+There is no key-fact coverage share. `verdict.missingFacts` is judge prose, not an index into
+`golden.keyFacts`: one judge may write several entries for one fact or one entry for several
+facts, and a panel unions every vote's paraphrases. The former `meanContinuousCoverage` divided
+that list length by the key-fact count. It went negative on 49 panel rows of the
+`2026-09-04T05-40-51-variantA` 500-case arm and reported an invalid `56.0%` mean, so it was
+retired (`.agents/rounds/2026-09-03-truth-maintenance/coverage-metric-fix-fable.md`). Artifacts
+and records produced before this repair still carry a `coverage` or `mean continuous coverage`
+value; that 2026-09-04 arm is one of them. Read those values as invalid; do not compare them.
+Such artifacts stay readable by every current reader, and the paired printer ignores both keys.
+A stored-judge write of such an artifact deletes `meanContinuousCoverage` and
+`continuousCoverageRowCount`, including the zero-call finalization and the suppressed-aggregate
+write. An artifact nobody rewrites keeps its original bytes.
+
 ### Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
 
 `qa-paired-ordinal-ni-v1` is an experimental, `INDETERMINATE`-first stored-run printer. It is not a
@@ -753,6 +854,7 @@ share the result schema, prompt append, agent binary, agent environment, QA impl
 judge-tier contract. The load-bearing tier fields are policy, threshold, `judgePanel`, pinned
 register source and hash, effective `maxPanelCases`, its source, and the scaled default policy.
 Both artifacts must be complete and stamp `meta.comparable: true`.
+Their `meta.remoteIdentityGuard.baselineVector` values must match exactly.
 
 Paired collection requires a frozen stability register. Generate it once, then pass the same file
 to every arm and repeat:
@@ -767,6 +869,158 @@ The runner skips regeneration for this option. It stamps
 `stabilityRegisterSource: "pinned"`, the absolute path, and the SHA-256. A pinned
 `--judge-stored` resume must reuse the same path. Unpinned resumes can refresh the register.
 Artifacts from those unpinned resumes cannot enter the paired comparison.
+
+Concurrent paired collection uses one manifest-driven supervisor:
+
+```sh
+npm run eval:qa:paired:plan-sha256 -- --plan /absolute/path/to/paired-collection-plan.json
+npm run eval:qa:paired:collect -- \
+  --plan /absolute/path/to/paired-collection-plan.json \
+  --authorized-plan-sha256 <owner-authorized-canonical-sha256>
+```
+
+The manifest uses `qa-paired-collection-plan-v2`. Version 1 plans are invalid. The first command
+prints SHA-256 over recursively key-sorted JSON. The launch command requires that exact SHA-256.
+The supervisor checks it before any child starts.
+
+Keep the owner authorization record outside the plan. This avoids a self-referential plan hash.
+The authorization must name the canonical plan SHA-256. It must state that the owner signature
+covers that hash and every command array in the plan. Any plan edit after authorization requires a
+new hash and a new owner signature.
+
+The plan records `selected.count: 200` and exactly 200 ordered `selected.ids`. It records
+`selected.activeCorpusCount: 500`. It also records `selected.activeCorpusIdsSha256`,
+`selected.idsSha256`, `selected.contentSha256`, and `selected.casesFileSha256`. Both runner
+worktrees recompute all four hashes. Both runners must contain exactly 500 unique active IDs.
+Every selected ID must be active. Every mismatch stops the launch.
+
+The plan records four distinct worktree roots: two runner worktrees and two server worktrees. All
+four must belong to one Git repository. Both runner worktrees must reproduce the same cases and
+runner bytes before either child starts a paid call.
+
+The manifest records `devVars.salt`, `devVars.names`, and `devVars.sha256`. Generate a new random
+64-character lowercase hexadecimal salt for each plan. The names use exact code-unit order. The
+salted hash covers the canonical sorted name-value pairs. The manifest never records a value. Both
+server worktrees must reproduce the names and salted hash before collection starts.
+
+Sort `[name, value]` pairs with JavaScript code-unit comparison on each name. Compute SHA-256 over
+the UTF-8 bytes of `JSON.stringify({ salt, entries })`. Use the same `entries` array to derive the
+stored name list.
+
+Keep the plan uncommitted. Delete it after the supervisor finishes. This rule applies after success
+and failure. A failed supervisor keeps its external cancellation marker directory.
+
+Run the free capacity command first. Then freeze its path and SHA-256 in the plan. Freeze every
+other field and command array next. Print the canonical plan SHA-256. The owner then signs the
+external authorization record. Run the exact P6 command from that signed plan. Finally, launch the
+supervisor before the capacity artifact reaches its 24-hour limit. Do not edit the plan between
+these steps.
+
+Each arm records exact `collectionCommand` and `judgeCommand` argument arrays. The executable must
+be the absolute `process.execPath`. The collection command must use explicit `--ids` and
+`--no-judge`; `--sample` is forbidden. The judge commands use `{baselineArtifact}` and
+`{candidateArtifact}` as their frozen result placeholders. Each collection command includes its
+supervisor-owned `--paired-control-arm` value.
+The supervisor runs only the collection commands. An operator runs each recorded
+judge command later, after replacing its placeholder with the successful receipt path.
+
+Each arm records these input hashes: answering binary, answering environment, judge binary, judge
+environment, adapter implementation, remote identity probe, remote identity vector, stability
+register, `run-qa.mjs`, `paired-verdict.mjs`, `paired-collection-supervisor.mjs`, and
+`paired-collection-control.mjs`. The collection and judge binary pins must match. Their environment
+pins must also match. Every listed hash must match across arms.
+
+The executing supervisor verifies its own bytes and its imported control module against these
+pins. Both runner copies must match the same pins. Each `--cases` path must resolve inside its own
+runner worktree.
+
+The validator requires different server revisions and surface hashes. Each server worktree must
+match its exact command revision. The baseline uses `add-missing`. The candidate uses
+`verify-native`. Both commands share the adapter revision and measurement tuple flags. The public
+and upstream ports form four pairwise-distinct ports.
+
+The `capacity` block binds the free gate before launch. It contains `command`,
+`instrumentSha256`, `artifactPath`, `artifactSha256`, and the fixed `contract`. The exact command
+is `[process.execPath, "eval/qa/check-paired-capacity.mjs", "--out", artifactPath]`. Run it without
+any paid model call or local server:
+
+```sh
+npm run eval:qa:paired:capacity -- --out /absolute/path/to/paired-capacity.json
+```
+
+The instrument emits `qa-paired-capacity-check-v2`. The schedule releases exactly two captures
+through one barrier. Each capture makes seven public identity requests. The gate requires exactly
+14 responses and 14 successful responses. It requires Scout 2, Lumenloop 6, and Stellar Docs 6.
+It requires zero HTTP errors, transport errors, retries, and `Retry-After` headers. Both vectors
+must match. The capture windows must overlap. `maximumActiveFetches` must be at least 2. The whole
+check and each capture must finish within 120,000 ms. The artifact is valid for 86,400,000 ms after
+`completedAt`. The exact boundary is valid. One millisecond beyond the boundary is invalid.
+A future timestamp is invalid. The remote identity `--stable-sha256` probe still controls
+immediate service drift. The supervisor verifies the artifact bytes and both runner copies of
+`eval/qa/check-paired-capacity.mjs`.
+
+The `p6` block binds `runnerArm`, `command`, `summaryArtifactPath`, `claudePath`,
+`wrapperSha256`, `judgeSha256`, `calls`, `perCallBudgetUsd`, and `maxAuthorizedCostUsd`. The exact
+command runs `eval/qa/run-p6-judge-self-test.mjs` through `process.execPath`. It carries the runner
+revision, Claude path, binary SHA-256, environment SHA-256, and a concrete `--out` path. The
+contract requires seven internal calls. Each call has a `$0.50` cap. The total cap is `$3.50`.
+The `--out` path and its `.tmp` path must not exist before P6 starts. The wrapper never
+overwrites an earlier method record. The supervisor validates the retained summary before it
+starts a child.
+
+The `flipRejudge` block binds the re-judge, judge, and evidence-pack implementation hashes. It also
+binds `judgeTuple`, `perArmBudgetUsd: 15`, and two exact command arrays. The tuple fixes the model,
+rubric, pack, and panel. The baseline command uses `{baselineArtifact}` as its source. It uses
+`{candidateArtifact}` after `--flips-vs`. The candidate command reverses that source order. Both
+commands use `eval/qa/re-judge.mjs`, the frozen judge tuple, and the runner revision in
+`--cases-ref`. Both use `--max-budget-usd 15`. Both require `--allow-empty`. A zero-flip result is
+valid only through that explicit flag. Neither command can use `--ids`, `--dry-run`,
+`--allow-non-identical`, or `--allow-golden-drift`.
+Each command also freezes `--claude-path`, `--expect-agent-binary-sha256`, and
+`--expect-agent-environment-sha256`. The re-judge checks these identities before the first paid
+call. It checks them again after judging. The result stamps both identities and the stability
+guard. A dry run does not inspect or start the Claude executable.
+
+The manifest also records the exact paired JSON comparison command. It uses
+`{baselineArtifact}` first and `{candidateArtifact}` second. These placeholders are explicit
+because the collection artifacts do not exist when the owner signs the plan.
+
+The proposed two-arm cap is cumulative within each artifact. Collection uses `$80` per arm.
+Stored judging raises that same ledger to `$120` per arm. It does not create a separate `$40`
+ledger. The manifest therefore records `collectionUsd: 80`, `cumulativeUsd: 120`, and
+`twoArmCumulativeUsd: 240`. The validator rejects a reset or a transferred cap.
+
+The supervisor enforces a four-hour deadline. It starts both arms only after both readiness
+records match the manifest. It releases row N+1 only after both arms complete row N. A shared
+cancellation file stops every later spend authorization. A guard failure, budget failure, child
+exit, ordering failure, readiness mismatch, or deadline cancels both arms. The supervisor prints a
+`qa-paired-collection-receipt-v1` JSON receipt only after both complete artifacts exit cleanly. It
+prints no aggregate or receipt on failure.
+
+Every cancellation starts a bounded drain. The supervisor then sends `SIGTERM` and later
+`SIGKILL` to a child that does not exit. It settles without waiting for a missing exit event. The
+receipt records the validated plan hash, collection start, each row completion, each postflight,
+each arm finish, and the final finish time. Wall-clock timestamps provide duration evidence only.
+Monotonic `releaseSequence` values record the exact IPC send order. Even rows release baseline
+first. Odd rows release candidate first. This order does not prove which child starts its provider
+call first.
+
+Every reported artifact must exist below that arm runner's `eval/qa/results` directory. Before the
+receipt, the supervisor reads each artifact. It requires `meta.comparable === true`, the exact
+selected-ID digest, and the exact ordered row IDs. It verifies recorded selected IDs when present.
+It requires `meta.inputSnapshot.casesSha256` as the exact content binding. It also requires the
+artifact server revision to match that arm's frozen `--server-revision`.
+
+The paired printer permits different port pairs across the two arms. Each artifact must still
+contain matching preflight and postflight listener and adapter attestations for its own ports.
+Repeats within one arm must reuse that arm's port pair.
+The baseline and candidate must use different exact server revisions.
+
+Stored judging requires `meta.comparable === true` before its first judge authorization. A missing,
+null, or malformed value stops judging. The final paired tuple includes the judge binary and judge
+environment hashes. Each artifact must carry valid expected hashes and `matches: true` stamps for
+collection and judging. The judge stamps must equal the collection stamps within each arm, and
+both arms must match.
 
 The repeat rule is fixed. Stop after an initial `PASS` or `FAIL`. After an initial statistical
 `INDETERMINATE`, run exactly one complete repeat of both arms with the same pins and IDs. Combine
@@ -1512,6 +1766,17 @@ Re-judges now persist as `meta.resultSchema: "qa-rejudge-v1"` artifacts. They do
 than QA method attempts. Use `eval/qa/re-judge.mjs <results> --ids a,b`
 or `--flips-vs <baseline-results>` re-judges identical saved input behind casesSha256 identity
 and judge-model/rubric/pack tuple guards, writing `results/<stamp>-rejudge.json`.
+Every paid re-judge also requires `--claude-path <path>`,
+`--expect-agent-binary-sha256 <sha256>`, and
+`--expect-agent-environment-sha256 <sha256>`. Use only spaced flag values.
+Every checkpoint records `meta.outcome`. Its status distinguishes `running`, `successful`,
+`budget-stopped`, `judging-failed`, `identity-drifted`, and `attestation-failed` runs. The
+postflight record stays separate from the judging record. A judging failure remains the process
+error when postflight attestation also fails.
+
+The final checkpoint records both identities in `meta.judgeIdentity` when postflight attestation
+succeeds. Identity drift records the after identity and a failed guard before exit. An attestation
+failure records a failed guard with `attestationCompleted: false` and keeps the after identity null.
 
 Pin the corpus revision when the battery has moved since collection — otherwise the identity
 guard compares saved rows against today's working tree and refuses.
@@ -1530,8 +1795,13 @@ node eval/qa/re-judge.mjs eval/qa/results/2026-08-14T03-56-23-variantA.json \
   --ids q-pc-sponsored-reserves,q-protocol-operation-types-list \
   --cases-ref 7072688 \
   --allow-non-identical \
-  --dry-run          # replace --dry-run with --max-budget-usd <usd> to spend
+  --dry-run
 ```
+
+For a paid run, replace `--dry-run` with the budget and all three identity flags.
+Use `--max-budget-usd <usd> --claude-path <path>` first.
+Then add `--expect-agent-binary-sha256 <sha256>` and
+`--expect-agent-environment-sha256 <sha256>`.
 
 Without `--allow-non-identical`, the dry run reports `"wouldRefuse": true` with the offending
 tuple (`packVersion: "p3"` vs `"p5"`), and a real run fails with
@@ -1562,6 +1832,9 @@ Every flag `re-judge.mjs` accepts:
 - `--allow-empty` — only meaningful with `--flips-vs`: write the artifact even when no score
   changed. Without it, an empty flip set is refused rather than persisted as a zero-row file.
 - `--max-budget-usd <usd>` — required exactly once for a paid run. Duplicate flags fail.
+- `--claude-path <path>` — required for a paid run. It selects the pinned Claude executable.
+- `--expect-agent-binary-sha256 <sha256>` — required for a paid run.
+- `--expect-agent-environment-sha256 <sha256>` — required for a paid run.
 - `--dry-run` — resolve, guard, and report without spending.
 - `--help` / `-h` — print usage and exit.
 

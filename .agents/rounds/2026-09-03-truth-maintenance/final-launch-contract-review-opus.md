@@ -1,0 +1,1109 @@
+# Final launch-contract and closeout review — Claude Opus 5
+
+Date: 2026-09-04.
+
+Reviewer: Claude Opus 5 at `high` effort. Mode: audit. The reviewer changed no product code and no
+existing document.
+
+Author of the reviewed work: Codex Sol (code, `1847ffd`) and Claude Fable 5.1 (documents,
+`52e34c6`). The reviewer is neither author and is not the orchestrator.
+
+Fixed point: `main` at `2ee801f80d626e68f010392a7d541aab7997349d`.
+
+Reviewed snapshot: `52e34c6cab71dc74cd4968f0b9e8e78a88d18147` on
+`codex/truth-maintenance-2026-09-03`.
+
+Worktree: `/private/tmp/stellar-raven-tm-final-launch-review`.
+
+## Verdicts
+
+`LAUNCH-OK`: **withheld**. One launch blocker stays open. It is L1.
+
+`CLOSEOUT-OK`: **withheld**. Three closeout findings stay open. They are C1, C2, and C3.
+
+Every Sol finding P1, P2, P3, S1, S2, and S3 is closed. The landed launch contract at `1847ffd`
+holds under executable test. The reviewer found no defect in the enforced contract itself.
+
+The single launch blocker sits in the canonical eval runbook, not in the code. The runbook still
+publishes the retired v1 launch command. The repair is small and local.
+
+The reviewer made no paid call, no live collection, no stored judging, no external write, no
+deployment, and no network mutation.
+
+## Scope
+
+The reviewer inspected these surfaces:
+
+- commit `1847ffd` and its complete diff;
+- commits `dc0761d` and `52e34c6`;
+- `eval/qa/paired-collection-supervisor.mjs`, `eval/qa/check-paired-capacity.mjs`,
+  `eval/qa/re-judge.mjs`, `eval/qa/run-p6-judge-self-test.mjs`, `eval/qa/run-qa.mjs`,
+  `eval/qa/judge.mjs`, `eval/qa/paired-verdict.mjs`, and `eval/qa/spend-budget.mjs`;
+- the four paired-contract test files and the five paired-lane test files;
+- `.agents/NEXT.md`, `.agents/TODO.md`, and `.agents/rounds/2026-09-03-truth-maintenance.md`;
+- `revised-impact-measurement-fable.md` revision 3, `final-synthesis-review-sol.md`,
+  `launch-contract-repair-sol.md`, and `paired-capacity-check-terra.md`;
+- the authoritative artifact `/private/tmp/paired-capacity-live-v2-2026-09-04.json`;
+- the complete branch diff from `2ee801f` (171 files, 63 commits);
+- `.agents/skills/run-evals/SKILL.md` and the other live instruction surfaces.
+
+## Launch blockers
+
+### L1 — High — The eval runbook publishes the retired v1 launch contract
+
+Location: `.agents/skills/run-evals/SKILL.md:517-523`.
+
+Evidence:
+
+- Line 518 gives the launch command as
+  `npm run eval:qa:paired:collect -- --plan <absolute-plan.json>`.
+- That command form has no `--authorized-plan-sha256` argument.
+- `eval/qa/paired-collection-supervisor.mjs:1076-1080` rejects that form.
+- Line 519 names the manifest schema `qa-paired-collection-plan-v1`.
+- `eval/qa/paired-collection-supervisor.mjs:31` sets the schema to `qa-paired-collection-plan-v2`.
+- `eval/qa/paired-collection-supervisor.mjs:500-502` rejects every other schema.
+- The skill never mentions the external authorized plan hash.
+- The skill never mentions the fixed capacity contract or its 24-hour freshness window.
+- The skill never mentions the 200 selected and 500 active corpus counts.
+- The skill never mentions the P6 exclusive output rule or the flip Claude identity pins.
+- Every earlier supervisor commit updated this skill. Those commits are `9bbcdbd`, `6934e1c`,
+  `e0df186`, and `a5ac32f`.
+- Commit `1847ffd` did not update it.
+- `AGENTS.md` names `run-evals` as the runbook that defines the exact eval gate.
+- `eval/qa/README.md` and `eval/EVALS.md` carry the correct v2 contract.
+
+Consequence:
+
+The repository states two different launch contracts. An operator who follows the runbook builds a
+v1 manifest. That operator then runs a command that the supervisor refuses. The refusal is
+fail-closed, so no spend occurs. The cost is a wasted launch window and a broken single truth
+owner. A weekend UTC launch window is scarce, and the capacity artifact expires within 24 hours.
+
+Smallest repair:
+
+Rewrite `.agents/skills/run-evals/SKILL.md:517-523` against the v2 contract. State the launch
+command with `--authorized-plan-sha256`. State the schema `qa-paired-collection-plan-v2`. State
+that the owner authorization record stays outside the plan. Keep the full contract in
+`eval/qa/README.md` and point the skill at it.
+
+## Reviewability findings
+
+### C1 — Medium — The repair report makes a false tree-identity claim
+
+Location: `.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md:67-68`.
+
+Evidence:
+
+- The report says that `e5c835e` has the same tree as `1847ffd`.
+- `git rev-parse e5c835e^{tree}` returns `e097497577ebef0cf998284e90fadc35f054abdc`.
+- `git rev-parse 1847ffd^{tree}` returns `03d93f5eaa31646f1e14e085c40f6bb4d914596a`.
+- The trees differ.
+- `git diff --stat e5c835e 1847ffd` reports one changed file.
+- That file is
+  `.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md` at 486 added lines.
+- The parent of `e5c835e` is `bd8d2d2`. The parent of `1847ffd` is `f766893`.
+- Commit `f766893` added that review report.
+- Every code path is byte-identical between the two commits.
+
+Consequence:
+
+The report uses the false claim to carry Sol's validation forward to `1847ffd`. A reader who
+checks the claim finds it wrong. That reader must then re-derive which files differ. The
+underlying conclusion still holds, because only one Markdown record differs.
+
+Smallest repair:
+
+Replace the sentence. State that the two trees differ only by
+`final-synthesis-review-sol.md`, and that every code file is byte-identical.
+
+### C2 — Low — The recorded full-suite test count does not reproduce
+
+Location: `.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md:71`.
+
+Evidence:
+
+- The report records 1,961 passing tests in the first complete run.
+- The reviewer ran the full suite at `52e34c6` and measured 108 files and 1,971 tests.
+- The ledger records 1,971 tests for the orchestrator run at `dc0761d`.
+- `.agents/NEXT.md:36` also records 1,971 tests.
+- The code trees of `e5c835e` and `1847ffd` are identical, per C1.
+- No test enumerates `.agents/rounds` files dynamically.
+- The report itself records sandbox `listen EPERM` and GPG restrictions in that lane.
+
+Consequence:
+
+The report presents an environment-limited count as a plain result. A reader cannot reconcile
+1,961 with the 1,971 recorded twice elsewhere. The risk is low, because two independent runs at
+`dc0761d` and `52e34c6` both give 1,971.
+
+Smallest repair:
+
+Label the 1,961 count as a restricted-sandbox measurement, or remove the exact number.
+
+### C3 — Low — The design names a stale branch tip
+
+Location: `.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md:690`.
+
+Evidence:
+
+- The blockers section says `codex/truth-maintenance-2026-09-03` at `dc0761d`.
+- `git show-ref` returns `52e34c6` for that branch.
+- Commit `52e34c6` is a documentation-only child of `dc0761d`.
+- Its diff touches six files, all under `.agents`.
+- The contract file hashes are identical at both commits.
+- `.agents/NEXT.md:16-17` uses the safer phrase "contains the work through `dc0761d`".
+
+Consequence:
+
+The launch requires one clean launch revision. A reader may take `dc0761d` as the branch tip and
+build the manifest there. The substance holds either way, because the code is identical.
+
+Smallest repair:
+
+Use the `.agents/NEXT.md` phrasing at line 690. Say that the branch contains the work through
+`dc0761d`.
+
+### R1 — Medium — A failed re-judge never persists the after-identity or the guard
+
+Location: `eval/qa/re-judge.mjs:920-950`.
+
+Evidence:
+
+- Line 943 attests the Claude identity after judging.
+- Line 944 stores that identity on `baseMeta`.
+- Lines 945 to 948 compute the stability guard.
+- `assertStableRejudgeIdentity` throws when the identity drifted.
+- The final `writeCheckpoint` call is at line 950, after that throw point.
+- Line 949 rethrows a judging error before line 950.
+- The last checkpoint on disk therefore keeps `judgeIdentity.after: null` and
+  `judgeIdentity.guard: null`.
+- `eval/qa/README.md:979-982` states that the result stamps both identities and the guard.
+- Line 943 can also throw and replace an earlier judging error.
+
+Consequence:
+
+A flip re-judge that drifts writes an artifact that looks only unfinished. The artifact holds no
+machine-readable evidence of the drift. A reviewer must read the process output instead. A second
+failure can also hide the first cause.
+
+This is not a launch blocker. The flip re-judge supplies stability evidence only. It runs after
+the paired comparison. The failure is loud on standard error, and `finishedAt` stays `null`.
+
+Smallest repair:
+
+Stamp `judgeIdentity.after` and a failed `judgeIdentity.guard`, write one checkpoint, then throw.
+Preserve the original judging error when the post-run attestation also fails.
+
+### R2 — Low — One catch-all message covers seven distinct flip-command defects
+
+Location: `eval/qa/paired-collection-supervisor.mjs:413-414`.
+
+Evidence:
+
+- One message names source order, identity, cases reference, judge tuple, cap, and zero-flip
+  behavior.
+- The command array holds 17 or 19 elements.
+- The check is a whole-array JSON equality test at line 413.
+- `test/qa-paired-collection-supervisor.test.mjs` asserts `/wrong source order/` for a changed
+  `--cases-ref`, a changed `--judge-model`, and a changed `--max-budget-usd`.
+- It asserts `/identity/` for three further mutations.
+- Both patterns match the same single message.
+
+Consequence:
+
+An operator who hits this error learns only that some element differs. That operator must diff the
+array by hand under launch pressure. The test labels also claim a discrimination that the
+assertions do not provide.
+
+Smallest repair:
+
+Report the first differing index with its expected and actual values.
+
+### R3 — Low — The capacity evidence shows a wrapper that the frozen array excludes
+
+Location: `.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md:86-90`.
+
+Evidence:
+
+- The record shows `/usr/bin/env -i PATH=... /usr/local/bin/node eval/qa/check-paired-capacity.mjs
+  --out <path>`.
+- `eval/qa/paired-collection-supervisor.mjs:250-257` freezes
+  `[process.execPath, "eval/qa/check-paired-capacity.mjs", "--out", artifactPath]`.
+- The frozen array carries no `env -i` wrapper.
+- The supervisor validates the artifact bytes, not the invoking shell.
+
+Consequence:
+
+A reviewer who compares the signed `capacity.command` with the evidence record sees two different
+command texts. The difference is harmless, because `env -i` only clears the environment.
+
+Smallest repair:
+
+State that `env -i` is the environment-hygiene wrapper, and that `capacity.command` records the
+unwrapped array.
+
+## Sol findings — verification
+
+### P1 — Closed
+
+The authorization now binds the exact paid commands.
+
+- `validateAuthorizedPairedCollectionPlan` requires `--authorized-plan-sha256`.
+- The hash covers the recursively key-sorted plan JSON.
+- The function rejects any plan that carries an `authorization` key.
+- The schema is `qa-paired-collection-plan-v2`. Version 1 plans fail.
+- The plan freezes the capacity, P6, two collection, two stored-judge, two flip, and comparison
+  arrays.
+- Each flip command pins the Claude path, the binary SHA-256, and the environment SHA-256.
+- Each flip command requires `--allow-empty`, which makes a zero-flip result valid.
+- The P6 contract freezes seven calls, a `$0.50` per-call cap, and a `$3.50` maximum.
+- The flip judge implementation must equal `p6.judgeSha256`.
+
+Command-line proof: the reviewer ran the CLI with a plan and no authorized hash. The process exited
+1 and named `--authorized-plan-sha256`. The reviewer then supplied a wrong hash. The process exited
+1 and reported a canonical-plan mismatch.
+
+### P2 — Closed
+
+The free capacity gate is deterministic.
+
+- `PAIRED_CAPACITY_CONTRACT` fixes the schedule, ten thresholds, and the freshness window.
+- The schedule is `simultaneous-barrier-v1` with two agents and one capture each.
+- It expects 14 responses, split as Scout 2, Lumenloop 6, and Stellar Docs 6.
+- The thresholds require zero HTTP errors, transport errors, retries, and `Retry-After` headers.
+- They require matching vectors, overlapping windows, and at least two active fetches.
+- They cap the whole check and each capture at 120,000 ms.
+- The plan binds the exact command, the instrument bytes, and the artifact bytes.
+- The supervisor checks the executing instrument and both runner copies.
+- The freshness window is 86,400,000 ms after `completedAt`.
+
+The reviewer executed `capacityRejectionReasons` against the authoritative artifact. The function
+returned an empty array. The artifact schema, contract, and `accepted` flag all matched.
+
+The freshness boundary behaves as documented. `nowMs - completedAtMs > freshnessMs` fails. The exact
+boundary passes. One millisecond beyond fails. A future `completedAt` fails.
+
+### P3 — Closed
+
+The supervisor enforces the denominator contract.
+
+- `SELECTED_CASE_COUNT` is 200 and `ACTIVE_CORPUS_COUNT` is 500.
+- The plan must carry `selected.count: 200` and exactly 200 unique ordered IDs.
+- The plan must carry `selected.activeCorpusCount: 500` and `selected.activeCorpusIdsSha256`.
+- Both runner worktrees recompute the cases-file hash, the selected content hash, the ordered
+  200-ID hash, and the ordered 500-ID hash.
+- Every selected ID must be active in that runner.
+- The cases path must resolve inside its runner worktree.
+
+## Independent corpus reproduction
+
+The reviewer rebuilt the sample from the rule in revision 3. The rule is proportional allocation by
+service with even-spaced picks over id-sorted strata. Every value reproduced exactly.
+
+| Item | Recomputed value | Matches |
+| --- | --- | --- |
+| Cases file SHA-256 | `1842a188437ea0ae265f6ab6c897de00220de23f4b34b9fe7b6d93f80f142396` | yes |
+| Ordered 500-ID SHA-256 | `b557bcb5cff8a434ad684b90a60343358360330ca1f91072089ceb57a38310d0` | yes |
+| Active corpus content SHA-256 | `c5d0c804ddd9ce241fae90398ee0d83808e5d847f049d118e4ad15903d07b43e` | yes |
+| Ordered 200-ID SHA-256 | `8ba8e687ace17711cabb3932ca6d5e2edebede2bfbfcfbfd79ce3fca3bbd20da` | yes |
+| Selected 200-content SHA-256 | `b8512352599ed9df760113cb86db8337ae3136a1cec4aea8461ef08d61e55ee1` | yes |
+
+The corpus holds 500 cases. All 500 are active and unique.
+
+The sample composition also reproduced. It has Docs 96, Scout 57, Lumenloop 25, skills 13, and none
+9. Its freshness split is stable 84, scheduled 60, and live 56. It holds 16 trap cases. These
+counts match revision 3.
+
+The reviewer did not reproduce the 150-ID fallback hash. The design does not state the 150-ID
+per-service allocation. The landed supervisor rejects a 150-ID plan, so this gap blocks nothing.
+
+## Contract file hashes at the reviewed snapshot
+
+The reviewer recomputed every hash in `launch-contract-repair-sol.md`. All eleven matched.
+
+| File | SHA-256 | Matches |
+| --- | --- | --- |
+| `eval/qa/paired-collection-supervisor.mjs` | `0afb9c4dbddd33cb9d979d47a1076f8df5e0e6ade931280b9a1a5764cad3222c` | yes |
+| `eval/qa/paired-collection-control.mjs` | `1f3e4ce3bdbb6679c4e6e8e59c433c3093ecab98eaa0bbdb74b3ad5a06a76bb7` | yes |
+| `eval/qa/check-paired-capacity.mjs` | `59a52b96e890f0de4babb911022ed863c4ad5a62a6473b146007544143e8f3a9` | yes |
+| `eval/qa/re-judge.mjs` | `d3dca551164f7b6fbb6587faedace1fe97cc59b287c36d7db451da4bf2dea9c9` | yes |
+| `eval/qa/run-p6-judge-self-test.mjs` | `d821bb7d9d15004e65544c5de5f80255a1de190b788fce2603de1168da4f7c24` | yes |
+| `eval/qa/judge.mjs` | `2d14376ac4b1c1f0b9c50b0067fc4287ba200eee46c6d5d4dd6425c5c8a07637` | yes |
+| `eval/qa/evidence-pack.mjs` | `ad6cd7e6a0502f9ce0fd36208e2c9872bde08862b039b8b419917f37130bf4bd` | yes |
+| `eval/qa/run-qa.mjs` | `60aa6f3b5cb46e509dadf54fba7a34777569f2e1ba437374a282b2fc5f65f61f` | yes |
+| `eval/qa/paired-verdict.mjs` | `5a473a57708ddb17791e264b7da68e96b5b49b0102141d3a687b15510e8bd960` | yes |
+| `eval/qa/probe-remote-identities.mjs` | `bde386a01ceb5bfdd325f3cd24369e00e2c111f7b4747ec7c0c9e77bc84485ef` | yes |
+| `eval/qa/exact-old-runtime-adapter.mjs` | `473690c7f10d5384be252bb97f9aa16ee88428d23589779289f5910c08e60303` | yes |
+
+The tuple values also matched. `JUDGE_RUBRIC` is `v2.10`. `PACK_VERSION` is `p6`.
+`JUDGE_SELF_TEST_CANDIDATE_COUNT` is 7.
+
+## Frozen command arrays against the real CLIs
+
+The reviewer executed each frozen array through the real parser. Every array parsed.
+
+| Frozen array | Parser | Result |
+| --- | --- | --- |
+| Capacity command | `check-paired-capacity.mjs` `parseArgs` | accepts `--out <path>` |
+| P6 command | `parseP6SelfTestCli` | accepts all four identity flags and `--out` |
+| Flip re-judge command, no panel | `re-judge.mjs` `parseArgs` | accepted |
+| Flip re-judge command, `--judge-panel 2` | `re-judge.mjs` `parseArgs` | accepted |
+| Flip re-judge command, `--judge-panel 3` | `re-judge.mjs` `parseArgs` | accepted |
+| Collection command | `assertRunQaCliSyntax` | accepted |
+| Stored-judge command | `assertRunQaCliSyntax` | accepted |
+| Comparison command | `paired-verdict.mjs` argument handling | two positionals plus `--json` |
+
+Every flag that the supervisor freezes exists in `RUN_QA_VALUE_FLAGS` or `RUN_QA_BOOLEAN_FLAGS`.
+The reviewer checked all 27 flags.
+
+The pinned Claude path reaches the paid call. `re-judge.mjs:928-934` passes
+`judgeIdentityBefore.binary.resolvedPath` as the `command` option. `judge.mjs:576-596` spawns that
+command. The closure sets `command` after the spread, so a caller cannot override the pin.
+
+## Authorization hash timing and paid spawn order
+
+The supervisor validates before it spawns. The order in `main` is fixed.
+
+1. Parse the four launch arguments.
+2. Read the plan file.
+3. Call `validateAuthorizedPairedCollectionPlan`.
+4. Call `validatePairedCollectionPlan`.
+5. Create the control directory.
+6. Spawn both collection children.
+
+No child starts before step 4 completes. A validation failure exits 1 and spawns nothing.
+
+The design places the owner signature before the P6 run. Step 8 of the sequence signs the plan.
+Step 9 runs the frozen P6 command. Step 10 launches the supervisor. The supervisor then verifies
+the retained P6 summary against the frozen command parameters. It checks the runner revision, the
+Claude path, both identity hashes, the call count, each per-call cap, each reported cost, and the
+wrapper implementation hash. The paid P6 spend therefore happens under the signed plan.
+
+The reviewer confirms one design property. The supervisor runs only the two collection commands.
+An operator runs the P6, judge, comparison, and flip commands. `eval/qa/README.md:924-925` states
+this honestly.
+
+## P6 exclusive output handling
+
+`main` calls `assertP6OutputAvailable(parsed.out)` before `runP6JudgeSelfTest`. The check refuses an
+existing `--out` path and an existing `.tmp` path. It runs before any paid call.
+
+`writeP6SummaryExclusive` writes the temporary file with the `wx` flag. It then links the temporary
+file to the output path. `linkSync` fails when the output path exists, so the wrapper never
+overwrites an earlier method record. The `temporaryCreated` flag turns true only after a successful
+exclusive write. The cleanup path therefore removes only a temporary file that this invocation
+created.
+
+Four tests cover this behavior. They prove refusal, single-write success, no leftover temporary
+file, and correct cleanup under a racing link failure.
+
+## Re-judge identity checks and partial-artifact honesty
+
+The paid path requires three spaced identity flags. `parseArgs` refuses an equals-joined value and
+refuses an uppercase SHA-256. It also refuses a partial pin set on a dry run.
+
+The dry run returns at `re-judge.mjs:837-851`, before `attestRejudgeIdentity`. A dry run therefore
+never inspects or starts Claude.
+
+`attestRejudgeIdentity` runs at line 869, before the spend ledger and before the first paid call.
+`assertStableRejudgeIdentity` runs after judging. A successful run stamps
+`meta.judgeIdentity.before`, `meta.judgeIdentity.after`, and `meta.judgeIdentity.guard`.
+
+Partial artifacts stay honest on the budget path. `rejudgeRows` catches a budget stop and returns.
+`main` then stamps both identities, computes the guard, and writes a final checkpoint. The artifact
+records `incompleteIds`, `unattemptedIds`, and `finishedAt`.
+
+Partial artifacts stay honest but incomplete on the error path. Finding R1 records that gap. The
+artifact never claims a stability that it did not verify, because both fields stay `null`.
+
+The cumulative cap claim also holds. `judgeStoredResults` calls `resumeSpendLedger(maxBudgetUsd,
+meta.budget)`. That function reloads the prior calls and recomputes the reported spend. The `$120`
+stored-judge cap therefore covers collection and judging on one ledger.
+
+## Blocked decisions
+
+Every paid, filing, golden, and owner action stays blocked. The reviewer checked each class.
+
+- Paid: `.agents/NEXT.md:112-123` blocks the paired subset, the stopped arms, the live-data method,
+  the digest method, and four named rejudges. Revision 3 states that the general round approval is
+  not the strict authorization.
+- Filing: `.agents/NEXT.md:106-110` blocks all ten verified findings. `improvements/INDEX.md` shows
+  57 `reported-upstream`, 10 `verified`, and 3 `declined-upstream`. That total is 70. No record has
+  a filed state.
+- Golden: `.agents/NEXT.md:125-132` blocks B1 to B11 and the row-review adjudication. The three
+  reviewed commits changed no file under `eval/qa/corpus`.
+- Owner: decisions A to J each carry a safe default of no spend, no filing, and no deployment.
+  Decision 5, the concurrent-load acceptance, stays open in revision 3 and in the handoff.
+- Deployment: the ledger keeps the production smoke item unchecked. No deployment happened.
+
+Revision 3 states that it authorizes nothing. The reviewer confirms that claim.
+
+## Branch diff review from `2ee801f`
+
+The branch adds 63 commits and touches 171 files. The change is 36,416 added lines and 6,269
+removed lines.
+
+The three reviewed commits are tightly scoped. They touch 18 files. They change no file under
+`src`, `catalog`, `inventory`, or `eval/qa/corpus`. The reviewer found no unrelated scope in them.
+
+The wider branch carries four product-code files. They are `src/catalog/output-compaction.ts`,
+`src/catalog/search.ts`, `src/executor/providers.ts`, and `src/policy/scout-exposure.ts`. Each
+change belongs to a named round lane with a recorded independent review. The envelope
+serialization repair is `795fa41`. The Scout exposure comments belong to the drift lane.
+
+The first branch commit `884c0e3` squashes many lanes into one change. It carries the super-spec
+compaction, the drift artifacts, and 26 round reports. That shape is a historical property of this
+round. It has its own recorded reviews, including `spec-review-terra.md` and
+`reviewability-audit-sol.md`. The reviewer raises no new finding against it.
+
+The reviewer scanned the changed eval code for reviewability debt. It found no `TODO`, no `FIXME`,
+no compatibility shim, no dead path, and no session narrative. The supervisor rejects v1 plans
+outright rather than translating them. The capacity instrument rejects the v1 schema. The
+forward-only rule holds.
+
+The new tests are behavior-level. They mutate a valid fixture and assert a refusal. They cover the
+200 and 500 boundaries, the freshness boundary, the P6 exclusive output, the flip identity pins,
+and each capacity threshold. The reviewer found no test that mirrors the implementation and no test
+that memorializes text. Finding R2 records the one weak assertion pattern.
+
+## Commands and results
+
+| Command | Result |
+| --- | --- |
+| `npx vitest run` (full suite) | Pass, 108 files and 1,971 tests |
+| `npm run test:smoke` | Pass, 4 files and 83 tests |
+| `npx vitest run <four paired-contract files>` | Pass, 153 tests |
+| `npx vitest run <five paired-lane files>` | Pass, 191 tests |
+| `npm run typegen` then `npm run typecheck` | Pass |
+| `npm run build` | Pass, dry run exited before upload |
+| `npm run secrets:scan -- --tree` | Pass, clean with gitleaks |
+| `git diff --check main...HEAD` | Pass |
+| `npm run eval:qa:paired:validate` | Pass |
+| `npm run eval:qa:lint -- --stale` | Pass, 0 errors and 62 warnings |
+| `npm run eval:qa:register -- --check` | Pass, up to date |
+| `npm run eval:selftest` | Pass |
+| `npm run eval:compile` | Pass |
+| `npm run eval:routing` | `GATE PASS` |
+| `npm run eval:protocol-history` | Both v2 contracts `source-expired`, no scored question |
+| `npm run improvements:lint` | Pass, 70 findings |
+| `shasum -a 256 <eleven contract files>` | All eleven matched the repair report |
+| `node -e` capacity artifact against `capacityRejectionReasons` | Empty rejection list |
+| `node -e` corpus recomputation | All four corpus hashes matched |
+| `node -e` sample reconstruction | Ordered 200-ID and content hashes matched |
+| `node -e` frozen arrays through each real parser | All eight accepted |
+| `node <supervisor> --plan <plan>` without the hash | Exit 1, names `--authorized-plan-sha256` |
+| `node <supervisor> --plan <plan> --authorized-plan-sha256 <wrong>` | Exit 1, canonical mismatch |
+| `git rev-parse e5c835e^{tree} 1847ffd^{tree}` | Trees differ, see C1 |
+| `git merge-base --is-ancestor` for four commits | All four on the round branch, none on `cbdfc5b` |
+
+The reviewer linked a prepared `node_modules` tree and a stub `.dev.vars` for these commands. The
+reviewer removed both afterwards. The worktree carries no change except this report.
+
+The full suite ran with 1,971 tests and zero skipped tests. The reviewer had `gitleaks` installed.
+
+## Confirmed claims in the handoff and ledger
+
+The reviewer verified these claims independently.
+
+- `main` is at `2ee801f`. The branch adds 63 commits.
+- The round branch contains `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`.
+- The branch `codex/tm-final-synthesis` stops at `cbdfc5b` and contains none of those four commits.
+- The capacity artifact SHA-256 is `f94663390187a52a89007ca22a23530c873cb8e00b4117bece045265a56c2423`.
+- It completed at `2026-09-04T10:25:17.815Z` and expires at `2026-09-05T10:25:17.815Z`.
+- Every latency figure, service count, and vector hash in `paired-capacity-check-terra.md` matches
+  the artifact bytes.
+- The full validation figures match: 1,971 unit tests, 83 smoke tests, 0 lint errors, 62 lint
+  warnings, 70 findings, and corpus content `c5d0c804…7b43e`.
+- Every report commit named in the ledger repair table resolves to a commit object.
+- The cap arithmetic is correct. Expected spend is about `$166`. The method maximum is `$273.50`.
+
+## Sol standards findings
+
+S1 is closed. Revision 3 names `1847ffd` as the final supervisor contract. The ledger repair table
+lists `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`. Finding C3 records one remaining stale branch
+label.
+
+S2 is closed. `.agents/NEXT.md` now titles the block "Completed repair work". The block states that
+the round stays open. The ledger keeps four checklist items unchecked.
+
+S3 is closed. `.agents/NEXT.md:12-15` labels production as the last recorded deployment state from
+2026-09-02. It states that nobody re-verified the live Worker.
+
+## Preserved historical verdicts
+
+The reviewer changed no earlier verdict. These records stay as written.
+
+- `final-synthesis-review-sol.md` keeps `CHANGES-REQUIRED` on revision 2.
+- `revised-impact-measurement-review-sol.md` keeps `CHANGES-REQUIRED` on revision 1.
+- `paired-collection-supervisor-review-opus.md` keeps its `CHANGES-REQUIRED` and `PASS` sequence.
+- The v1 capacity run keeps its provisional status. It cannot enter a v2 plan.
+- Sol measured 164 tests across five paired-lane files at `b5dca1c`. The reviewer measured 191 at
+  `52e34c6`. Commit `1847ffd` added the difference. Sol's figure was correct at its own snapshot.
+- The two `qa-paired-collection-plan-v1` references inside dated round reports are provenance. They
+  are not findings.
+
+## Risks
+
+- The capacity artifact expires at `2026-09-05T10:25:17.815Z`. A later launch needs a fresh
+  artifact, a new plan hash, and a new owner signature.
+- The design requires a weekend UTC start. The expiry and the window can conflict.
+- Scout ships often. The design accepts a 16% to 53% chance of a guard stop inside the window.
+- The capacity check covers 14 public reads. It does not prove sustained capacity across 200 paired
+  rows.
+- The plan holds the salt and the salted `.dev.vars` digest together. The handling rule protects the
+  secrets. The plan must stay uncommitted and must be deleted after the run.
+- The supervisor does not read the external authorization record. A human must check that the
+  record names the printed canonical hash.
+- Judge discordance may exceed 0.3 and force an `INDETERMINATE` result.
+
+## Exclusions
+
+The reviewer did not run any paid command. The reviewer did not run `eval:qa:compile`,
+`improvements:index`, or `eval:qa:paired:capacity`, because each writes a generated artifact or
+makes live requests. The reviewer verified their recorded outputs by direct recomputation instead.
+
+The reviewer did not verify the live production Worker. Network mutation and deployment were out of
+scope.
+
+## Blockers before `LAUNCH-OK`
+
+1. Repair L1 in `.agents/skills/run-evals/SKILL.md`.
+
+## Blockers before `CLOSEOUT-OK`
+
+1. Repair C1 in `launch-contract-repair-sol.md`.
+2. Repair C2 in `launch-contract-repair-sol.md`.
+3. Repair C3 in `revised-impact-measurement-fable.md`.
+4. Record the L1 skill repair as a machine-ready item in `.agents/NEXT.md`.
+
+Findings R1, R2, and R3 need no action before launch. Record them as follow-up items.
+
+## Standing
+
+The launch contract at `1847ffd` is sound. Its enforcement matches its documentation in
+`eval/qa/README.md`, `eval/EVALS.md`, `.agents/TODO.md`, and revision 3. All six Sol findings are
+closed. Every corpus hash, contract hash, and capacity figure reproduces exactly.
+
+The four repairs above are small and local. They change no code and no contract. After those
+repairs, this review supports `LAUNCH-OK` and `CLOSEOUT-OK`.
+
+The owner authorization stays unsigned. The concurrent-load acceptance stays open. No paid, filing,
+golden, or deployment action is authorized by this review.
+
+---
+
+# Confirmation review — 2026-09-04
+
+Reviewer: Claude Opus 5 at `high` effort. Mode: audit. This section confirms the repair of the
+findings above. Every sentence and verdict above stays as written. The withheld verdicts above
+remain the historical record of the review at `52e34c6`.
+
+Reviewed commit: `352e517ee8552de063b3963abb25321b801bdfa7`, "eval: repair final launch contract
+findings".
+
+Repair report: `.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-repair-sol.md`.
+
+Previous snapshot: `2cc8e3a`, which carries the review above.
+
+## Confirmation verdicts
+
+`LAUNCH-OK`: **granted**. Finding L1 is closed.
+
+`CLOSEOUT-OK`: **granted**. Findings C1, C2, and C3 are closed.
+
+All seven required repairs are complete. They are L1, C1, C2, C3, R1, R2, and R3. The reviewer
+verified each one separately with executable evidence.
+
+The reviewer records two new non-blocking items. They are N1 and N2. Neither one blocks a verdict.
+Neither one can unlock spend. Both make a closed gate look more closed than it is.
+
+The reviewer made no paid call, no live collection, no stored judging, no filing, no external
+write, no deployment, and no network mutation.
+
+## Scope of this confirmation
+
+The reviewer inspected the complete diff of `352e517`. It changes 12 files. It adds 498 lines and
+removes 98 lines.
+
+The diff touches no file under `src`, `catalog`, `inventory`, `specs`, `improvements`, or
+`eval/qa/corpus`. The reviewer confirmed that count as zero. The repair therefore adds no unrelated
+scope.
+
+Nine of the eleven paired contract files keep their exact `dc0761d` hashes. Only the two repaired
+files changed.
+
+| File | SHA-256 at `352e517` | State |
+| --- | --- | --- |
+| `eval/qa/paired-collection-supervisor.mjs` | `caecb039a502295cc257ec4efffb80db64d50098333a6afc56198a7d761ad1e5` | changed by R2 |
+| `eval/qa/re-judge.mjs` | `d17c2a55c5e522fe11fda4ebca4bcde781f0f68bb19ab2630ce44abf11ebc678` | changed by R1 |
+| `eval/qa/check-paired-capacity.mjs` | `59a52b96e890f0de4babb911022ed863c4ad5a62a6473b146007544143e8f3a9` | unchanged |
+| `eval/qa/run-p6-judge-self-test.mjs` | `d821bb7d9d15004e65544c5de5f80255a1de190b788fce2603de1168da4f7c24` | unchanged |
+| `eval/qa/judge.mjs` | `2d14376ac4b1c1f0b9c50b0067fc4287ba200eee46c6d5d4dd6425c5c8a07637` | unchanged |
+| `eval/qa/run-qa.mjs` | `60aa6f3b5cb46e509dadf54fba7a34777569f2e1ba437374a282b2fc5f65f61f` | unchanged |
+| `eval/qa/paired-verdict.mjs` | `5a473a57708ddb17791e264b7da68e96b5b49b0102141d3a687b15510e8bd960` | unchanged |
+| `eval/qa/paired-collection-control.mjs` | `1f3e4ce3bdbb6679c4e6e8e59c433c3093ecab98eaa0bbdb74b3ad5a06a76bb7` | unchanged |
+| `eval/qa/evidence-pack.mjs` | `ad6cd7e6a0502f9ce0fd36208e2c9872bde08862b039b8b419917f37130bf4bd` | unchanged |
+| `eval/qa/probe-remote-identities.mjs` | `bde386a01ceb5bfdd325f3cd24369e00e2c111f7b4747ec7c0c9e77bc84485ef` | unchanged |
+| `eval/qa/exact-old-runtime-adapter.mjs` | `473690c7f10d5384be252bb97f9aa16ee88428d23589779289f5910c08e60303` | unchanged |
+
+A launch plan must recompute the two changed hashes at its own launch revision.
+
+## L1 — Closed
+
+The `run-evals` runbook now publishes the v2 paired launch contract.
+
+The new text gives two commands. The first prints the canonical plan hash. The second launches the
+supervisor with `--authorized-plan-sha256`. The text names schema `qa-paired-collection-plan-v2`.
+It states that the owner authorization record stays outside the plan. It states that the external
+record covers every command array.
+
+The text also states the four contracts that the review above found missing. They are the fixed
+free capacity check with its 24-hour limit, the 200 selected and 500 active corpus IDs, the P6
+exclusive output rule, and the flip Claude identity pins. It states that the supervisor runs only
+the two collection commands.
+
+No live surface now names `qa-paired-collection-plan-v1`. The reviewer searched `eval`, `src`,
+`test`, `scripts`, and `.agents`. Only two dated round reports still name v1. Those two records are
+provenance and stay as written.
+
+### Runbook link and command
+
+The reviewer verified the link separately, as required.
+
+- The link target is `../../../eval/qa/README.md`.
+- The skill lives at `.agents/skills/run-evals/SKILL.md`. Three parent steps reach the repository
+  root. The path resolves.
+- The committed symlink `.claude/skills` gives the same depth. The path resolves through it too.
+- The anchor is `#paired-pass--fail--indeterminate-verdict`.
+- The target heading is the "Paired PASS / FAIL / INDETERMINATE verdict" heading at
+  `eval/qa/README.md:780`.
+- The reviewer computed the GitHub slug for that heading. The result is
+  `paired-pass--fail--indeterminate-verdict`. The anchor matches exactly.
+
+The reviewer also executed the launch command shape. The supervisor still refuses a missing hash
+and a wrong hash. The published command form is the accepted form.
+
+### No durable fact was lost
+
+The repair removed six paragraphs from the runbook. The reviewer traced every durable fact in them
+to its canonical owner.
+
+| Removed fact | Canonical owner |
+| --- | --- |
+| One supervisor, never two `run-qa.mjs` processes | `eval/qa/README.md:873` and `eval/EVALS.md:136` |
+| Different server revisions, `add-missing`, `verify-native`, distinct ports | `eval/qa/README.md:937-943` |
+| `devVars.salt`, sorted names, salted digest, uncommitted plan | `eval/qa/README.md:901-908` |
+| Barrier, alternating release, `SIGTERM` then `SIGKILL`, bounded drain | `eval/qa/README.md` supervisor section |
+| Artifact preconditions before the receipt | `eval/qa/README.md:1008-1012` |
+| Cross-arm ports and preflight and postflight attestations | `eval/qa/README.md:1014-1017` |
+| Stored judging requires `meta.comparable === true` | `eval/qa/README.md:1019` |
+| Cumulative caps `$80`, `$120`, and `$240` with no separate `$40` ledger | `eval/qa/README.md:988-990` |
+| Judge and collection stamps match within and across arms | `eval/qa/README.md:1019-1023` |
+
+Every owner sits inside the section that the new link targets. The repair consolidates duplicated
+prose into one truth owner. That is the correct repair shape.
+
+## C1 — Closed
+
+`launch-contract-repair-sol.md:67-69` now states the exact difference. It says that the trees at
+`e5c835e` and `1847ffd` differ only by `final-synthesis-review-sol.md`. It says that every code
+file is byte-identical.
+
+The reviewer confirmed both statements. `git diff --stat e5c835e 1847ffd` reports one changed file.
+That file is the review report. No code file differs.
+
+## C2 — Closed
+
+`launch-contract-repair-sol.md:71` now reads "1,961 passed in the restricted sandbox measurement".
+The count no longer presents itself as a plain result.
+
+The reviewer measured 1,974 passing tests at `352e517`. The suite grew by three tests since the
+1,971 recorded at `dc0761d`. The three new tests belong to this repair.
+
+## C3 — Closed
+
+The repair corrected two places, not one. The review above cited only the second.
+
+- `revised-impact-measurement-fable.md:35` now says "The whole-round branch contains the work
+  through `dc0761d`."
+- `revised-impact-measurement-fable.md:690-691` now says "The branch
+  `codex/truth-maintenance-2026-09-03` contains the work through `dc0761d`."
+
+No document now names a stale branch tip. The wider correction stays inside the same finding class.
+It is not scope creep.
+
+## R1 — Closed
+
+The repair adds the exported function `finalizeRejudgeRun` in `eval/qa/re-judge.mjs`. That function
+always writes a final checkpoint before it returns.
+
+### Every terminal state
+
+`meta.outcome.status` now takes one of six values. The reviewer executed each one against the
+shipped module.
+
+| Status | Reached by | `finishedAt` | `judgeIdentity.after` | Guard |
+| --- | --- | --- | --- | --- |
+| `running` | the first checkpoint, before judging | `null` | `null` | `null` |
+| `successful` | clean judging and clean postflight | `terminalAt` | recorded | `matches: true` |
+| `budget-stopped` | `runState.stopError` only | `terminalAt` | recorded | `matches: true` |
+| `judging-failed` | a thrown judging error | `null` | recorded when attestation passes | recorded |
+| `identity-drifted` | a stable-identity guard failure | `null` | recorded | `matches: false` |
+| `attestation-failed` | a postflight attestation throw | `null` | `null` | `attestationCompleted: false` |
+
+The `running` state reaches disk. `main` builds `baseMeta` with that outcome and then calls
+`writeCheckpoint([])` before judging starts. An interrupted run therefore leaves an honest
+`running` artifact.
+
+### The original judging failure survives
+
+`finalizeRejudgeRun` returns `judgingError ?? postflightError`. `main` throws that value. A
+postflight failure can no longer replace the judging failure.
+
+The reviewer executed the two combined cases directly.
+
+- Judging failure plus identity drift: the thrown error is the judging error. The status is
+  `judging-failed`. The postflight status is `identity-drifted`. The after identity and the failed
+  guard are both persisted.
+- Judging failure plus attestation failure: the thrown error is the judging error. The status is
+  `judging-failed`. The postflight status is `attestation-failed`. The guard records
+  `attestationCompleted: false`.
+
+Both failures survive. One reaches the process exit. The other reaches the artifact.
+
+### Postflight evidence on drift and on attestation failure
+
+The reviewer executed five failure combinations against the shipped module. Every combination wrote
+a checkpoint. Every combination recorded a postflight status and a postflight error record.
+
+An identity drift records the after identity and a guard with `matches: false` and
+`attestationCompleted: true`. The guard names the changed binary fields and the environment flag.
+
+An attestation failure keeps the after identity `null`, because no after identity exists. It records
+a guard with `attestationCompleted: false`. That distinction is the honest one.
+
+`finishedAt` stays `null` for every failure state. A failed artifact never looks finished.
+
+### Two further corrections inside R1
+
+The repair fixes a latent defect that the review above did not name. The old error path never wrote
+the partial rows, because `rows` was `undefined` after a throw. The repair tracks `checkpointRows`
+and passes `rows ?? checkpointRows`. Completed rows now survive a judging failure.
+
+The repair also fixes a wrong guard field. `assertStableRejudgeIdentity` previously returned
+`environmentChanged: false` as a literal. It now returns the measured value. The reviewer confirmed
+that an environment-only drift reports `environmentChanged: true`.
+
+### Documentation
+
+`eval/qa/README.md:1772-1782` now documents all six statuses and both postflight outcomes. The text
+matches the code.
+
+The manifest summary at `eval/qa/README.md:981-982` still says that the result stamps both
+identities and the guard. The reviewer accepts that sentence. It is true whenever an after identity
+can exist. The one exception is an attestation failure, where recording an after identity is
+impossible. The detailed owner section states that exception.
+
+## R2 — Closed
+
+`validateFlipRejudgeContract` now reports the first differing index. The message gives the index,
+the expected value, and the actual value.
+
+### The first-difference diagnostic
+
+`firstCommandDifference` compares element by element over the longer of the two arrays. It returns
+the first index where the values differ. It returns a difference at index 0 when the actual value
+is not an array.
+
+The check keeps its former strictness. An extra element, a missing element, a wrong type, and a
+wrong value all still stop the launch.
+
+The reviewer verified the reported indices against the frozen array layout. All eight are correct.
+
+| Mutation | Reported index | Frozen element at that index |
+| --- | ---: | --- |
+| Swapped source and peer artifacts | 2 | `{baselineArtifact}` |
+| Changed `--judge-model` value | 6 | the judge model |
+| Changed `--claude-path` value | 8 | the Claude path |
+| Changed expected binary SHA-256 | 10 | the judge binary hash |
+| Changed expected environment SHA-256 | 12 | the judge environment hash |
+| Changed `--cases-ref` value | 14 | the adapter revision |
+| Removed `--allow-empty` | 15 | `--allow-empty` |
+| Changed `--max-budget-usd` value | 17 | `15` |
+
+The tests now assert those exact indices. The former catch-all assertions are gone. The tests
+discriminate as their labels claim.
+
+### Bounded values
+
+`commandValueAt` JSON-quotes each value. It returns the quoted value when the encoded form is at
+most 200 characters. Otherwise it quotes the first 160 characters and appends `(truncated)`. It
+returns `<end>` when the index sits past the end of an array.
+
+A committed test proves the bound. It sets a 261-character value with a marked tail. The message
+contains the index and `(truncated)`. The message does not contain the tail.
+
+## R3 — Closed
+
+`paired-capacity-check-terra.md:85-88` now separates the wrapper from the frozen array. It states
+that `/usr/bin/env -i` is an environment-hygiene wrapper. It states that the signed
+`capacity.command` records the unwrapped array. It states that the supervisor validates the
+artifact bytes and the unwrapped array.
+
+A reader can now compare the signed command with the evidence record without confusion.
+
+## Blocked decisions after the repair
+
+Every paid, filing, golden, owner, merge, and deployment action stays blocked. The reviewer checked
+each class again at `352e517`.
+
+- `.agents/NEXT.md:113` keeps the filing block. `.agents/NEXT.md:119` keeps the paid block.
+  `.agents/NEXT.md:132` keeps the human-judgment block. `.agents/NEXT.md:141` keeps the merge and
+  deployment block.
+- `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
+  `declined-upstream`. That total is 70. No record moved to a filed state.
+- The repair changed no file under `improvements` and no file under `eval/qa/corpus`.
+- Revision 3 still says that it authorizes nothing. Its signature line still offers
+  `AUTHORIZED` or `NOT AUTHORIZED`.
+- The ledger checklist keeps five items open. They are the pane record, the production smoke
+  checks, both confirmation verdicts, and the Herdr cleanup.
+- Owner decisions A to J stay open. Decision 5, the concurrent-load acceptance, stays open.
+
+The repair grants no authority. The reviewer confirms the repair report on that point.
+
+## New non-blocking items
+
+### N1 — Low — Three records still say that nobody reviewed revision 3
+
+Locations:
+
+- `.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md:24`
+- `.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md:684`
+- `.agents/rounds/2026-09-03-truth-maintenance.md:483`
+
+Evidence:
+
+- Line 24 says "Nobody has reviewed revision 3."
+- Line 684 repeats that sentence in the blockers list.
+- Ledger line 483 says "none yet; revision 3 needs an independent review" and "revision 3
+  unreviewed and unapproved".
+- The review above lists revision 3 in its scope. It verified P1 to P3 and S1 to S3 against
+  revision 3. It raised C3 against revision 3.
+- `.agents/NEXT.md:28` and `.agents/NEXT.md:36-37` now say that the final Opus review inspected
+  and checked revision 3.
+- Ledger line 364 and ledger line 596 now say that the final Opus review inspected revision 3.
+- The repair updated the second pair of surfaces and not the first.
+
+Consequence:
+
+The repository now answers one question two ways. A reader who starts at revision 3 believes that
+no review exists. A reader who starts at the handoff learns that a review exists and withheld its
+verdict.
+
+The error is conservative. It makes a closed gate look more closed. It cannot unlock spend, filing,
+or deployment. The review gate for revision 3 does stay open, because no review returned
+`LAUNCH-OK` on revision 3 before this section.
+
+Smallest repair:
+
+Replace the three sentences. State that the final Opus review inspected revision 3 and withheld
+`LAUNCH-OK` on L1, and that this confirmation review grants it.
+
+### N2 — Low — The ledger checklist validation covers `dc0761d` only
+
+Location: `.agents/rounds/2026-09-03-truth-maintenance.md:346-356`.
+
+Evidence:
+
+- The checked item reads "Fresh full validation after `1847ffd`".
+- It records 108 files and 1,971 tests at `dc0761d`.
+- Commit `352e517` later changed `eval/qa/re-judge.mjs`, `eval/qa/paired-collection-supervisor.mjs`,
+  and two test files.
+- The repair report records the newer full run of 1,974 tests.
+- The ledger checklist does not record that newer run.
+
+Consequence:
+
+A reader who checks the ledger alone cannot tell that the head commit passed validation. That
+reader must open the repair report. The substantive risk is zero, because this reviewer re-ran the
+complete validation at `352e517`.
+
+Smallest repair:
+
+Add one line to the checklist item. State that the repair at `352e517` passed the same validation
+with 1,974 tests.
+
+## Commands and results
+
+| Command | Result |
+| --- | --- |
+| `npx vitest run test/re-judge.test.ts test/qa-paired-collection-supervisor.test.mjs` | Pass, 2 files and 118 tests |
+| `npx vitest run` (full suite) | Pass, 108 files and 1,974 tests |
+| `npm run test:smoke` | Pass, 4 files and 83 tests |
+| `npm run typegen` then `npm run typecheck` | Pass |
+| `npm run build` | Pass, dry run exited before upload |
+| `npm run eval:qa:paired:validate` | Pass |
+| `npm run secrets:scan -- --tree` | Pass, clean with gitleaks |
+| `git diff --check main...HEAD` | Pass |
+| `node -e` `finalizeRejudgeRun` over six terminal states | Every state matched its contract |
+| `node -e` `finalizeRejudgeRun` over five failure combinations | Checkpoint written every time |
+| `node -e` judging failure plus postflight failure | Judging error stayed primary in both cases |
+| `node -e` frozen flip array through `re-judge.mjs` `parseArgs` | Accepted |
+| `node -e` GitHub slug for the linked heading | Matched the anchor exactly |
+| `shasum -a 256 <eleven contract files>` | Two changed by the repair, nine unchanged |
+| `git diff --name-only 2cc8e3a 352e517` filtered to product paths | Zero files |
+| `git diff --stat 2cc8e3a 352e517 -- <this report>` | Empty, the historical review is unmodified |
+| `grep` for `qa-paired-collection-plan-v1` across live surfaces | Only two dated round reports |
+
+The reviewer linked a prepared `node_modules` tree and a stub `.dev.vars` for these commands. The
+reviewer removed both afterwards. The worktree carries no change except this appended section.
+
+The full suite reported zero skipped tests.
+
+## Preservation
+
+The repair did not modify this report. The reviewer confirmed that with a direct diff between
+`2cc8e3a` and `352e517`.
+
+Every historical verdict stays intact. The review above keeps its withheld `LAUNCH-OK` and its
+withheld `CLOSEOUT-OK`. Those verdicts describe the snapshot at `52e34c6`. This section grants both
+verdicts for the snapshot at `352e517`.
+
+The earlier verdicts of Sol, Terra, and the Opus supervisor reviews stay as written. The repair
+changed no verdict.
+
+## Standing after this confirmation
+
+The paired launch contract is complete and consistent. The code, the runbook, the manifest
+contract, the handoff, and the ledger now state one contract.
+
+The repair changed no launch semantics. It added a diagnostic, a set of terminal states, and a
+runbook correction.
+
+Items N1 and N2 stay open as documentation follow-ups. Neither one blocks the round closeout.
+
+The owner authorization stays unsigned. The concurrent-load acceptance stays open. The capacity
+artifact still expires at `2026-09-05T10:25:17.815Z`. No paid, filing, golden, merge, or deployment
+action is authorized by this confirmation.
+
+---
+
+# Documentation follow-up confirmation — 2026-09-04
+
+Reviewer: Claude Opus 5 at `high` effort. Mode: audit. Scope: commit `02a070c` only. Every section
+above stays as written.
+
+Reviewed commit: `02a070cc259f4a593958145499f26655a57f2ff5`, "docs: close final launch review
+follow-ups".
+
+## Verdict
+
+`PASS`. No actionable finding remains.
+
+Findings N1 and N2 are closed. The stale final-supervisor-byte claim is removed. The handoff, the
+ledger, and revision 3 agree. Both granted verdicts stay valid. Every paid and owner decision stays
+blocked.
+
+## Scope of the follow-up
+
+The commit changes four files. All four sit under `.agents`. It changes no code, no test, no
+generated artifact, and no product document. The reviewer measured zero changed files outside
+`.agents` and zero changed code files.
+
+The commit did not modify this report.
+
+## N1 — Closed
+
+The three reported locations now record both review stages.
+
+- `revised-impact-measurement-fable.md:26-27` states that the final Opus review inspected revision
+  3, first withheld `LAUNCH-OK` on L1, and granted it after repair.
+- `revised-impact-measurement-fable.md:686-687` replaces the old blocker with the same two-stage
+  statement.
+- `.agents/rounds/2026-09-03-truth-maintenance.md:484` now records the Opus review and its
+  appended confirmation.
+
+No live surface still says that nobody reviewed revision 3. The reviewer searched `.agents` and
+`eval`.
+
+## N2 — Closed
+
+The ledger checklist at `.agents/rounds/2026-09-03-truth-maintenance.md:355-356` now records the
+final repair run of 108 files and 1,974 tests. `.agents/NEXT.md:46-47` records the same result.
+
+The reviewer re-ran the full suite at `02a070c`. It passed 108 files and 1,974 tests with zero
+skipped tests. The recorded claim reproduces.
+
+## Stale final-supervisor-byte claim — Removed
+
+Commit `352e517` changed `eval/qa/paired-collection-supervisor.mjs` and `eval/qa/re-judge.mjs`.
+The earlier phrase "the final supervisor contract is the one at `1847ffd`" was therefore stale.
+
+The follow-up removes that phrase from both places in revision 3. It renames the ledger section to
+"Launch-enforcement base, as landed at `1847ffd`". Each document now calls `1847ffd` the
+launch-enforcement base and names the reviewed R1/R2 repair as the current diagnostic layer.
+
+The reviewer confirmed the two changed contract files keep the hashes recorded in the confirmation
+above. They are `caecb039…761ad1e5` and `d17c2a55…f11ebc678`. A launch plan must still recompute
+both at its own launch revision.
+
+Three matches remain inside `final-synthesis-review-sol.md`. All three sit in dated review text
+whose header names its author, branch, and `dc0761d` snapshot. They are historical evidence. The
+reviewer left them, as the preservation rule requires.
+
+## Agreement across the three documents
+
+The reviewer cross-checked six claims. The handoff, the ledger, and revision 3 agree on each one.
+
+| Claim | Agreement |
+| --- | --- |
+| Opus first withheld, then granted both verdicts | all three |
+| Final repair validation of 108 files and 1,974 tests | all three |
+| `1847ffd` is the launch-enforcement base, not the final bytes | ledger and revision 3; the handoff makes no byte claim |
+| Capacity artifact expires `2026-09-05T10:25:17.815Z` | all three |
+| Revision 3 authorizes nothing | handoff and revision 3 |
+| The review gate is closed; integration, deployment, and cleanup remain | all three |
+
+The ledger keeps three items open. They are the pane record, the production smoke checks, and the
+owned-resource cleanup. The handoff sequence lists the same remaining work.
+
+## Granted verdicts stay valid
+
+The confirmation above granted `LAUNCH-OK` and `CLOSEOUT-OK` for `352e517`. Commit `02a070c`
+changes no code. Both repaired contract files keep their verified hashes. The evidence behind both
+verdicts is unchanged.
+
+The follow-up records a review outcome that this section confirms. That order is unavoidable for a
+document that reports its own review state. This section closes it.
+
+## Blocked decisions
+
+Every paid, filing, golden, merge, deployment, and owner decision stays blocked.
+
+- `.agents/NEXT.md:114`, `:120`, `:133`, and `:142` keep the four blocked classes.
+- `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
+  `declined-upstream`. No record moved to a filed state. The commit changed no `improvements` file.
+- Revision 3 still says that it authorizes nothing. Its signature line at line 626 still offers
+  `AUTHORIZED` or `NOT AUTHORIZED`.
+- Owner decisions A to J stay open. Decision 5, the concurrent-load acceptance, stays open.
+- The handoff keeps the safe default of no spend at `.agents/NEXT.md:179`.
+
+## Commands and results
+
+| Command | Result |
+| --- | --- |
+| `git diff --check main...HEAD` | Pass |
+| `npm run secrets:scan -- --tree` | Pass, clean with gitleaks |
+| `npx vitest run` (full suite) | Pass, 108 files and 1,974 tests |
+| `git diff --name-only f8a6329 02a070c` outside `.agents` | Zero files |
+| `git diff --name-only f8a6329 02a070c` for code files | Zero files |
+| `git diff --stat f8a6329 02a070c -- <this report>` | Empty, this report is unmodified |
+| `shasum -a 256` on both repaired contract files | Unchanged since `352e517` |
+| `grep` for the three N1 sentences across live surfaces | None remain |
+| `grep` for the stale final-supervisor-byte phrase | Only dated review evidence remains |
+
+The reviewer linked a prepared `node_modules` tree for the test run and removed it afterwards. The
+worktree carries no change except this appended section.
+
+The reviewer made no paid call, no live collection, no stored judging, no filing, no external
+write, no deployment, and no network mutation.

@@ -12,13 +12,13 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   "POST /api/partners/submit-listing",
   "POST /api/partners/assistant",
   "POST /api/partners/onboard",
-  // OpenAPI 1.9.1 still gives this self-report broad confidence, coverage, and
-  // source vocabulary. It captures unrelated queries throughout the routing
-  // corpus. Expose it after the routing contract becomes selective.
+  // The accepted 1.9.1 surface keeps this excluded. Upstream 1.9.13 narrowed
+  // x-routing, but candidate response-schema keywords caused 90 unrelated
+  // captures. Expose it after a general scoring repair passes routing review.
   "GET /api/quality",
-  // OpenAPI 1.9.1 still accepts and returns claim.type "issued", but the 200
-  // response schema omits it from the claim.type enum. Expose the operation
-  // after one shared claim-type contract covers both request and response.
+  // The accepted 1.9.1 surface keeps this excluded by a separate routing
+  // decision. Upstream 1.9.13 completed the issued response enum. Expose it
+  // only with an accepted current-surface routing review.
   "GET /api/verify"
 ]);
 

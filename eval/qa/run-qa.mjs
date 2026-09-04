@@ -34,6 +34,15 @@
  *                      compile-qa.mjs for the committed sample.json)
  *   --ids a,b,c        run only these case ids (smoke tests)
  *   --port N           wrangler dev port (default 8788)
+ *   --upstream-port N  private Wrangler port when --port is the eval-only
+ *                      exact-old-runtime adapter listener
+ *   --adapter-mode add-missing|verify-native
+ *                      add the attested revision only for an old runtime, or
+ *                      require and preserve the candidate's native revision
+ *   --adapter-revision SHA
+ *                      clean runner revision that owns the adapter listener
+ *   --expect-adapter-sha256 HEX
+ *                      exact adapter implementation bytes
  *   --cases path       battery file (default eval/qa/cases.json). Named
  *                      hand-authored contracts include live-data-canonical-v3
  *                      (corpus/live/live-cases.json) and live-digest-supplement-v2
@@ -65,6 +74,13 @@
  *                      required SHA-256 pin for the inherited Claude
  *                      environment. It must match before any answering-agent
  *                      or judge call.
+ *   --remote-identity-probe path
+ *                      required executable that prints one exact
+ *                      qa-remote-identity-vector-v1 JSON object.
+ *   --expect-remote-identity-probe-sha256
+ *                      required SHA-256 of the remote identity probe bytes.
+ *   --expect-remote-identity-sha256
+ *                      required SHA-256 from the stable pre-arm probe vector.
  *   --no-judge         collect answers only (judge later)
  *   --judge-stored F   two-phase mode, phase 2: judge a saved --no-judge
  *                      results file IN PLACE (no server, no agent). Judges
@@ -149,9 +165,17 @@ import {
   executableIdentity
 } from "../lib/executable-identity.mjs";
 import {
+  assertStableDualBoundServerIdentity,
   assertStableBoundServerIdentity,
-  boundServerIdentity
+  boundServerIdentity,
+  dualBoundServerIdentity
 } from "../lib/bound-server-identity.mjs";
+import {
+  ADAPTER_MODES,
+  RUNTIME_ADAPTER_SCHEMA,
+  adapterImplementationSha256,
+  fetchAdapterAttestation
+} from "./exact-old-runtime-adapter.mjs";
 import {
   PLAIN_SERVER_INSTRUCTIONS,
   loadPlainOperationSurface,
@@ -179,6 +203,12 @@ import {
   resumeSpendLedger,
   spendLedgerRecord
 } from "./spend-budget.mjs";
+import {
+  createRemoteIdentityGuard,
+  remoteIdentityProbeIdentity,
+  runRemoteIdentityGuardedCall
+} from "./remote-identity-guard.mjs";
+import { createPairedCollectionChildControl } from "./paired-collection-control.mjs";
 
 // Variant→tool mapping post-ADR-0001: A (host-side ranked query) shipped as
 // `search` (the `search_ranked` A/B alias retired with the decision). B
@@ -194,8 +224,13 @@ const SURFACES = new Set(["search-execute", "per-operation"]);
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
 const RUN_QA_VALUE_FLAGS = [
   "--cases",
+  "--adapter-mode",
+  "--adapter-revision",
   "--expect-agent-binary-sha256",
+  "--expect-adapter-sha256",
   "--expect-agent-environment-sha256",
+  "--expect-remote-identity-probe-sha256",
+  "--expect-remote-identity-sha256",
   "--expect-sha256",
   "--ids",
   "--judge-model",
@@ -204,12 +239,15 @@ const RUN_QA_VALUE_FLAGS = [
   "--max-budget-usd",
   "--max-panel-cases",
   "--model",
+  "--paired-control-arm",
   "--port",
+  "--remote-identity-probe",
   "--sample",
   "--search-tool",
   "--server-revision",
   "--stability-register",
   "--surface",
+  "--upstream-port",
   "--variant"
 ];
 const RUN_QA_BOOLEAN_FLAGS = ["--no-judge"];
@@ -272,6 +310,52 @@ function parseRequiredFlagValue(args, flag) {
     throw new Error(`${flag} requires a value`);
   }
   return value;
+}
+
+export function parseRuntimeAdapterFlags(args, {
+  publicPort,
+  runnerRevision,
+  serverRevision,
+  localImplementationSha256 = adapterImplementationSha256()
+}) {
+  const flags = ["--adapter-mode", "--adapter-revision", "--expect-adapter-sha256", "--upstream-port"];
+  const present = flags.filter((flag) => args.includes(flag) || args.some((arg) => arg.startsWith(`${flag}=`)));
+  if (present.length === 0) return null;
+  if (present.length !== flags.length) {
+    throw new Error(`run-qa runtime adapter requires ${flags.join(", ")}`);
+  }
+  const mode = parseRequiredFlagValue(args, "--adapter-mode");
+  if (!ADAPTER_MODES.has(mode)) throw new Error(`--adapter-mode must be add-missing or verify-native, got ${mode}`);
+  const adapterRevision = parseRequiredFlagValue(args, "--adapter-revision").toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(adapterRevision)) {
+    throw new Error("--adapter-revision must be a 40-character lowercase commit");
+  }
+  if (adapterRevision !== String(runnerRevision).toLowerCase()) {
+    throw new Error("run-qa requires the runtime adapter from the clean runner revision");
+  }
+  const implementationSha256 = parseRequiredFlagValue(args, "--expect-adapter-sha256");
+  if (!/^[a-f0-9]{64}$/.test(implementationSha256)) {
+    throw new Error("--expect-adapter-sha256 must be a 64-character lowercase SHA-256");
+  }
+  if (implementationSha256 !== localImplementationSha256) {
+    throw new Error("run-qa runtime adapter file does not match --expect-adapter-sha256");
+  }
+  const upstreamPortText = parseRequiredFlagValue(args, "--upstream-port");
+  if (!/^\d+$/.test(upstreamPortText)) throw new Error("--upstream-port must contain decimal digits");
+  const upstreamPort = Number(upstreamPortText);
+  if (!Number.isInteger(upstreamPort) || upstreamPort < 1 || upstreamPort > 65_535) {
+    throw new Error(`--upstream-port is invalid: ${upstreamPortText}`);
+  }
+  if (upstreamPort === publicPort) throw new Error("--upstream-port must differ from --port");
+  return {
+    schema: RUNTIME_ADAPTER_SCHEMA,
+    mode,
+    adapterRevision,
+    implementationSha256,
+    publicPort,
+    upstreamPort,
+    sourceRevision: serverRevision
+  };
 }
 
 /** Reject ambiguous selectors before they can expand a paid run. */
@@ -500,31 +584,34 @@ export function judgeTieringMetadata({
   };
 }
 
-export function qaMeasurementMetrics(rows, compiledCases) {
-  const caseById = compiledCases instanceof Map
-    ? compiledCases
-    : new Map((compiledCases ?? []).map((kase) => [kase.id, kase]));
+/**
+ * Ordinal and core-answer shares over the active rows. Every share is a
+ * count ratio over grades, so each value lies in [0, 1] or is null.
+ *
+ * There is deliberately no key-fact coverage share. `verdict.missingFacts`
+ * is judge prose, not an index into `golden.keyFacts`: one judge may write
+ * several entries for one fact or one entry for several facts, and a panel
+ * unions every vote's paraphrases. A count ratio over that list has no valid
+ * meaning and went negative on 49 panel rows of the 2026-09-04 500-case arm.
+ */
+export const RETIRED_MEASUREMENT_METRIC_KEYS = Object.freeze([
+  "meanContinuousCoverage",
+  "continuousCoverageRowCount"
+]);
+
+export function qaMeasurementMetrics(rows) {
   const verdictRows = rows.filter((row) => typeof row.verdict?.score === "string");
   const gradedRows = verdictRows.filter((row) => ["correct", "partial", "wrong"].includes(row.verdict.score));
   const correctRows = rows.filter((row) => row.verdict?.score === "correct").length;
   const partialRows = rows.filter((row) => row.verdict?.score === "partial").length;
   const coreCorrectRows = gradedRows.filter((row) => row.verdict.coreAnswer === "correct").length;
   const gradedCoreAnswerNullCount = gradedRows.filter((row) => row.verdict.coreAnswer == null).length;
-  const coverage = gradedRows.flatMap((row) => {
-    const keyFacts = caseById.get(row.id)?.golden?.keyFacts;
-    if (!Array.isArray(keyFacts) || keyFacts.length === 0 || !Array.isArray(row.verdict.missingFacts)) return [];
-    return [1 - row.verdict.missingFacts.length / keyFacts.length];
-  });
   return {
     halfCreditShare: rows.length ? (correctRows + partialRows / 2) / rows.length : null,
     strictCorrectShare: rows.length ? correctRows / rows.length : null,
     coreAnswerCorrectShare: gradedRows.length ? coreCorrectRows / gradedRows.length : null,
     gradedCoreAnswerNullCount,
-    coreAnswerVerdictCount: gradedRows.length,
-    meanContinuousCoverage: coverage.length
-      ? coverage.reduce((sum, value) => sum + value, 0) / coverage.length
-      : null,
-    continuousCoverageRowCount: coverage.length
+    coreAnswerVerdictCount: gradedRows.length
   };
 }
 
@@ -533,8 +620,7 @@ export function formatMeasurementMetrics(metrics) {
   return [
     `half-credit ${share(metrics.halfCreditShare)}`,
     `strict-correct ${share(metrics.strictCorrectShare)}`,
-    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.gradedCoreAnswerNullCount} graded null)`,
-    `mean continuous coverage ${share(metrics.meanContinuousCoverage)} (${metrics.continuousCoverageRowCount} rows)`
+    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.gradedCoreAnswerNullCount} graded null)`
   ].join(" · ");
 }
 
@@ -643,7 +729,9 @@ export function sourceIdentity(serverRevision) {
     agentResultFileSha256: fileSha256("agent-result.mjs"),
     evidencePackFileSha256: fileSha256("evidence-pack.mjs"),
     judgeFileSha256: fileSha256("judge.mjs"),
-    plainHarnessFileSha256: fileSha256("plain-operation-harness.mjs")
+    plainHarnessFileSha256: fileSha256("plain-operation-harness.mjs"),
+    runtimeAdapterFileSha256: fileSha256("exact-old-runtime-adapter.mjs"),
+    p6SelfTestWrapperFileSha256: fileSha256("run-p6-judge-self-test.mjs")
   };
 }
 
@@ -1095,9 +1183,9 @@ export async function judgeStoredResults(
 ) {
   const sourceText = readFileSync(resultsPath, "utf8");
   const results = JSON.parse(sourceText);
-  if (results.meta?.comparable === false) {
+  if (results.meta?.comparable !== true) {
     throw new Error(
-      `--judge-stored: artifact is non-comparable: ${(results.meta.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`
+      `--judge-stored: artifact is non-comparable: ${(results.meta?.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`
     );
   }
   if (!Array.isArray(results?.rows) || results.rows.length === 0) {
@@ -1212,7 +1300,7 @@ export async function judgeStoredResults(
   );
   const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
   const collectionAggregatesAllowed =
-    meta.comparable !== false && meta.completeness?.aggregatesAllowed === true;
+    meta.comparable === true && meta.completeness?.aggregatesAllowed === true;
   const initiallyJudgedIds = results.rows
     .filter((row) => row.attempts.judge.length > 0)
     .map((row) => row.id);
@@ -1239,8 +1327,14 @@ export async function judgeStoredResults(
     meta.judgingCompleteness = completeness;
     const aggregatesAllowed = collectionAggregatesAllowed && completeness.aggregatesAllowed;
     meta.aggregatesSuppressed = !aggregatesAllowed;
-    const measurementMetrics = qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active);
-    for (const key of Object.keys(measurementMetrics)) delete meta[key];
+    // Every stored-judge write owns the measurement block: drop the current
+    // keys before re-stamping them, and drop the retired coverage keys that an
+    // artifact produced before the retirement still carries. This runs on the
+    // zero-call finalization and on the suppressed-aggregate write too.
+    const measurementMetrics = qaMeasurementMetrics(storedActiveRows());
+    for (const key of [...RETIRED_MEASUREMENT_METRIC_KEYS, ...Object.keys(measurementMetrics)]) {
+      delete meta[key];
+    }
     if (aggregatesAllowed) Object.assign(meta, measurementMetrics);
     if (judgeBinary) meta.judgeBinary = judgeBinary;
     if (judgeEnvironment) meta.judgeEnvironment = judgeEnvironment;
@@ -1309,7 +1403,7 @@ export async function judgeStoredResults(
       summary: results.summary,
       metrics: meta.aggregatesSuppressed
         ? null
-        : qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active),
+        : qaMeasurementMetrics(storedActiveRows()),
       judgeTiering: meta.judgeTiering,
       outPath: resultsPath
     };
@@ -1415,7 +1509,7 @@ export async function judgeStoredResults(
     summary: results.summary,
     metrics: meta.aggregatesSuppressed
       ? null
-      : qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active),
+      : qaMeasurementMetrics(storedActiveRows()),
     judgeTiering: meta.judgeTiering,
     outPath: resultsPath
   };
@@ -1444,8 +1538,69 @@ export function collectionAggregates(rows, cases, { judging }) {
   return {
     completeness,
     summary: judging ? summarize(activeRows) : null,
-    metrics: qaMeasurementMetrics(judging ? activeRows : [], partition.active)
+    metrics: qaMeasurementMetrics(judging ? activeRows : [])
   };
+}
+
+export function applyCollectionComparability(aggregates, comparabilityReasons) {
+  const comparable = comparabilityReasons.length === 0;
+  if (comparable) return { comparable, ...aggregates };
+  return {
+    comparable,
+    completeness: {
+      ...aggregates.completeness,
+      aggregatesAllowed: false,
+      reasons: [...aggregates.completeness.reasons, ...comparabilityReasons]
+    },
+    summary: null,
+    metrics: null
+  };
+}
+
+function failureMessage(error) {
+  return String(error?.message ?? error);
+}
+
+export function collectionComparabilityReasons({
+  collectionError,
+  postflightError,
+  remoteIdentityPostflightError,
+  collectionSourceIdentityGuard,
+  remoteIdentityGuardRecord
+}) {
+  const reasons = [];
+  if (collectionError && collectionError.code !== "remote-identity-guard") {
+    reasons.push(`collection failed: ${failureMessage(collectionError)}`);
+  }
+  if (postflightError) reasons.push(`postflight failed: ${failureMessage(postflightError)}`);
+  if (
+    remoteIdentityPostflightError &&
+    remoteIdentityPostflightError.code !== "remote-identity-guard"
+  ) {
+    reasons.push(
+      `remote identity postflight failed: ${failureMessage(remoteIdentityPostflightError)}`
+    );
+  }
+  if (!collectionSourceIdentityGuard.matches) {
+    reasons.push(
+      `source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`
+    );
+  }
+  if (!remoteIdentityGuardRecord.matches) {
+    const failure = remoteIdentityGuardRecord.failure;
+    if (failure?.reason === "identity-changed") {
+      reasons.push(`remote service identity changed: ${failure.changedServices.join(", ")}`);
+    } else if (failure?.reason === "pre-arm-vector-mismatch") {
+      reasons.push("remote identity pre-arm vector SHA-256 mismatch");
+    } else if (failure?.reason === "missing-baseline") {
+      reasons.push("remote identity baseline is missing");
+    } else if (failure?.reason === "probe-unavailable") {
+      reasons.push("remote identity probe unavailable");
+    } else {
+      reasons.push(`remote identity guard failed: ${failure?.reason ?? "unknown"}`);
+    }
+  }
+  return [...new Set(reasons)];
 }
 
 async function main() {
@@ -1456,6 +1611,15 @@ async function main() {
     const i = args.indexOf(flag);
     return i !== -1 ? args[i + 1] : undefined;
   };
+  const noJudge = args.includes("--no-judge");
+  const pairedControlArm = argVal("--paired-control-arm");
+  if (args.includes("--paired-control-arm") &&
+      !["baseline", "candidate"].includes(pairedControlArm)) {
+    throw new Error("--paired-control-arm must be baseline or candidate");
+  }
+  if (pairedControlArm && (args.includes("--judge-stored") || !noJudge)) {
+    throw new Error("--paired-control-arm is valid only for --no-judge collection");
+  }
   const agentBinary = assertExpectedExecutable(
     executableIdentity("claude"),
     parseRequiredFlagValue(args, "--expect-agent-binary-sha256"),
@@ -1526,12 +1690,31 @@ async function main() {
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
   const stabilityRegister = prepareStabilityRegister();
-  const noJudge = args.includes("--no-judge");
+  const pairedControl = pairedControlArm
+    ? createPairedCollectionChildControl({
+        arm: pairedControlArm,
+        cancellationFile: process.env.QA_PAIRED_CANCELLATION_FILE
+      })
+    : null;
   const spendLedger = createSpendLedger(maxBudgetUsd);
   const serverRevisionArgument = parseRequiredFlagValue(args, "--server-revision");
   const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
+  const remoteIdentityProbe = remoteIdentityProbeIdentity(
+    parseRequiredFlagValue(args, "--remote-identity-probe"),
+    parseRequiredFlagValue(args, "--expect-remote-identity-probe-sha256"),
+    { repoRoot: REPO_ROOT }
+  );
+  const remoteIdentityGuard = createRemoteIdentityGuard({
+    probeIdentity: remoteIdentityProbe,
+    expectedVectorSha256: parseRequiredFlagValue(args, "--expect-remote-identity-sha256")
+  });
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
+  const runtimeAdapter = parseRuntimeAdapterFlags(args, {
+    publicPort: port,
+    runnerRevision: collectionSourceIdentity.runnerRevision,
+    serverRevision
+  });
   const casesPath = argVal("--cases") ?? path.join(QA_DIR, "cases.json");
   const plainSurface = loadPlainOperationSurface();
 
@@ -1565,6 +1748,29 @@ async function main() {
     }), "before"));
   }
 
+  let listenerPair = null;
+  let adapterAttestation = null;
+  let serverProcess;
+  let upstreamServerProcess = null;
+  if (runtimeAdapter) {
+    listenerPair = dualBoundServerIdentity({
+      adapterPort: port,
+      adapterRevision: runtimeAdapter.adapterRevision,
+      upstreamPort: runtimeAdapter.upstreamPort,
+      upstreamRevision: serverRevision
+    });
+    serverProcess = listenerPair.adapter;
+    upstreamServerProcess = listenerPair.upstream;
+    adapterAttestation = await fetchAdapterAttestation(port, {
+      mode: runtimeAdapter.mode,
+      sourceRevision: serverRevision,
+      implementationSha256: runtimeAdapter.implementationSha256,
+      upstreamPort: runtimeAdapter.upstreamPort,
+      upstreamIdentity: listenerPair.upstream
+    });
+  } else {
+    serverProcess = boundServerIdentity(port, serverRevision);
+  }
   const preflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
   const surfacePin = assertExpectedSurface(preflightResult.metrics, expectedSurfaceSha256, {
     label: "run-qa live MCP surface"
@@ -1572,10 +1778,18 @@ async function main() {
   const sourceRevisionPin = assertExpectedSourceRevision(preflightResult.serverInfo, serverRevision, {
     label: "run-qa live Worker"
   });
-  const serverProcess = boundServerIdentity(port, serverRevision);
   console.log(
     `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}active ${lifecyclePartition.active.length} of ${cases.length} selected cases · excluded quarantined IDs: ${lifecyclePartition.quarantinedIds.join(", ") || "none"} · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
   );
+  if (pairedControl) {
+    const selectedIds = cases.map((c) => c.id);
+    await pairedControl.ready({
+      runnerWorktree: process.cwd(),
+      serverWorktree: runtimeAdapter ? listenerPair.upstream.cwd : serverProcess.cwd,
+      selectedIdsSha256: sha256(JSON.stringify(selectedIds)),
+      selectedContentSha256: sha256(JSON.stringify(cases))
+    });
+  }
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
   // Precondition P2: the answering agent runs here, not in the repository.
@@ -1610,7 +1824,12 @@ async function main() {
   let sourceRevisionPinAfter;
   let serverProcessAfter;
   let serverProcessGuard;
+  let upstreamServerProcessAfter;
+  let listenerPairAfter;
+  let listenerPairGuard;
+  let adapterAttestationAfter;
   let postflightError = null;
+  let remoteIdentityPostflightError = null;
   try {
     for (const [i, c] of cases.entries()) {
       const t0 = Date.now();
@@ -1619,32 +1838,42 @@ async function main() {
       const rowJudgeAttempts = [];
       let stopError = null;
       for (let attemptNumber = 1; attemptNumber <= 2; attemptNumber++) {
-        let authorization;
-        try {
-          authorization = authorizeSpend(spendLedger, {
-            method: "agent",
-            id: c.id,
-            attempt: attemptNumber
-          });
-        } catch (error) {
-          stopError = error;
-          break;
-        }
+        let run;
         const attemptStartedAt = Date.now();
-        const run = runAgent(c.question, {
-          surface,
-          searchTool,
-          allowedTools,
-          mcpConfigPath,
-          model,
-          agentCwd,
-          agentCommand: agentBinary.resolvedPath,
-          maxBudgetUsd: authorization.maxBudgetUsd
-        });
-        const attempt = agentAttemptRecord(run, attemptNumber, Date.now() - attemptStartedAt);
-        answerAttempts.push(attempt);
         try {
-          recordSpend(spendLedger, authorization, run.costUsd);
+          run = runRemoteIdentityGuardedCall({
+            guard: remoteIdentityGuard,
+            context: { id: c.id, attempt: attemptNumber },
+            authorize: () => {
+              pairedControl?.assertActive();
+              return authorizeSpend(spendLedger, {
+                method: "agent",
+                id: c.id,
+                attempt: attemptNumber
+              });
+            },
+            call: (authorization) => runAgent(c.question, {
+              surface,
+              searchTool,
+              allowedTools,
+              mcpConfigPath,
+              model,
+              agentCwd,
+              agentCommand: agentBinary.resolvedPath,
+              maxBudgetUsd: authorization.maxBudgetUsd
+            }),
+            onCompleted: (completedRun) => {
+              const attempt = agentAttemptRecord(
+                completedRun,
+                attemptNumber,
+                Date.now() - attemptStartedAt
+              );
+              answerAttempts.push(attempt);
+            },
+            recordSpend: (authorization, completedRun) => {
+              recordSpend(spendLedger, authorization, completedRun.costUsd);
+            }
+          });
         } catch (error) {
           stopError = error;
           break;
@@ -1757,15 +1986,39 @@ async function main() {
         throw new Error(`answering harness failed: ${firstAttempt.agent.failure.reason}`);
       }
       if (stopError) throw stopError;
+      if (pairedControl) await pairedControl.rowComplete({ index: i, id: c.id });
     }
   } catch (error) {
     collectionError = error;
+    pairedControl?.failed(error);
   } finally {
     rmSync(tmpDir, { recursive: true, force: true });
     rmSync(agentCwd, { recursive: true, force: true });
   }
 
   try {
+    if (runtimeAdapter) {
+      listenerPairAfter = dualBoundServerIdentity({
+        adapterPort: port,
+        adapterRevision: runtimeAdapter.adapterRevision,
+        upstreamPort: runtimeAdapter.upstreamPort,
+        upstreamRevision: serverRevision
+      });
+      listenerPairGuard = assertStableDualBoundServerIdentity(listenerPair, listenerPairAfter);
+      serverProcessAfter = listenerPairAfter.adapter;
+      serverProcessGuard = listenerPairGuard.adapter;
+      upstreamServerProcessAfter = listenerPairAfter.upstream;
+      adapterAttestationAfter = await fetchAdapterAttestation(port, {
+        mode: runtimeAdapter.mode,
+        sourceRevision: serverRevision,
+        implementationSha256: runtimeAdapter.implementationSha256,
+        upstreamPort: runtimeAdapter.upstreamPort,
+        upstreamIdentity: listenerPairAfter.upstream
+      });
+    } else {
+      serverProcessAfter = boundServerIdentity(port, serverRevision);
+      serverProcessGuard = assertStableBoundServerIdentity(serverProcess, serverProcessAfter);
+    }
     postflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
     surfacePinAfter = assertExpectedSurface(postflightResult.metrics, expectedSurfaceSha256, {
       label: "run-qa final live MCP surface"
@@ -1773,32 +2026,49 @@ async function main() {
     sourceRevisionPinAfter = assertExpectedSourceRevision(postflightResult.serverInfo, serverRevision, {
       label: "run-qa final live Worker"
     });
-    serverProcessAfter = boundServerIdentity(port, serverRevision);
-    serverProcessGuard = assertStableBoundServerIdentity(serverProcess, serverProcessAfter);
   } catch (error) {
     postflightError = error;
   }
 
+  try {
+    remoteIdentityGuard.postflight();
+  } catch (error) {
+    remoteIdentityPostflightError = error;
+  }
+
   const finalSourceIdentity = sourceIdentity(serverRevision);
   const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
-  const comparabilityReasons = [
-    ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
-    ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
-    ...(!collectionSourceIdentityGuard.matches
-      ? [`source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`]
-      : [])
-  ];
-  const comparable = comparabilityReasons.length === 0;
+  const remoteIdentityGuardRecord = remoteIdentityGuard.record();
+  let comparabilityReasons = collectionComparabilityReasons({
+    collectionError,
+    postflightError,
+    remoteIdentityPostflightError,
+    collectionSourceIdentityGuard,
+    remoteIdentityGuardRecord
+  });
+  if (pairedControl && comparabilityReasons.length === 0) {
+    try {
+      await pairedControl.postflightComplete();
+    } catch (error) {
+      collectionError = error;
+      comparabilityReasons = collectionComparabilityReasons({
+        collectionError,
+        postflightError,
+        remoteIdentityPostflightError,
+        collectionSourceIdentityGuard,
+        remoteIdentityGuardRecord
+      });
+    }
+  } else if (pairedControl && comparabilityReasons.length > 0 && !collectionError) {
+    pairedControl.failed(new Error(comparabilityReasons.join("; ")));
+  }
   const aggregates = collectionAggregates(rows, cases, { judging: !noJudge });
-  const completeness = comparable
-    ? aggregates.completeness
-    : {
-        ...aggregates.completeness,
-        aggregatesAllowed: false,
-        reasons: [...aggregates.completeness.reasons, ...comparabilityReasons]
-      };
-  const summary = comparable ? aggregates.summary : null;
-  const metrics = comparable ? aggregates.metrics : null;
+  const {
+    comparable,
+    completeness,
+    summary,
+    metrics
+  } = applyCollectionComparability(aggregates, comparabilityReasons);
   const selectedIds = cases.map((c) => c.id);
   const unattemptedIds = selectedIds.filter((id) => !rows.some((row) => row.id === id));
   const totals = costTotals(rows);
@@ -1872,11 +2142,24 @@ async function main() {
           },
           sourceIdentity: collectionSourceIdentity,
           sourceIdentityGuard: collectionSourceIdentityGuard,
+          remoteIdentityGuard: remoteIdentityGuardRecord,
           comparable,
           comparabilityReasons,
+          runtimeAdapter: runtimeAdapter
+            ? {
+                ...runtimeAdapter,
+                attestation: adapterAttestation,
+                attestationAfter: adapterAttestationAfter ?? null
+              }
+            : null,
+          listenerPair,
+          listenerPairAfter: listenerPairAfter ?? null,
+          listenerPairGuard: listenerPairGuard ?? null,
           serverProcess,
           serverProcessAfter,
           serverProcessGuard,
+          upstreamServerProcess,
+          upstreamServerProcessAfter: upstreamServerProcessAfter ?? null,
           toolSurface: preflightResult.metrics,
           toolSurfaceAfter: postflightResult?.metrics ?? null,
           surfacePin,
@@ -1887,6 +2170,9 @@ async function main() {
           sourceRevisionPinAfter: sourceRevisionPinAfter ?? null,
           postflightError: postflightError
             ? { message: String(postflightError.message ?? postflightError) }
+            : null,
+          remoteIdentityPostflightError: remoteIdentityPostflightError
+            ? { message: String(remoteIdentityPostflightError.message ?? remoteIdentityPostflightError) }
             : null,
           agentBinary,
           // Denominator facts, always present. `aggregatesSuppressed` is the
@@ -1912,6 +2198,9 @@ async function main() {
       2
     ) + "\n"
   );
+  if (pairedControl && comparable) {
+    await pairedControl.complete({ resultsPath: outPath });
+  }
   console.log(`\nwrote ${outPath}`);
   console.log("\n" + formatFiveTrackSummary(tracks));
   if (!completeness.aggregatesAllowed) {
@@ -1929,6 +2218,7 @@ async function main() {
     }), "after"));
   }
   if (!comparable) {
+    pairedControl?.close();
     throw new Error(
       `QA collection is non-comparable; saved evidence at ${outPath}: ${comparabilityReasons.join("; ")}`
     );

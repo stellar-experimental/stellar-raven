@@ -21,6 +21,10 @@ recurrences:
     evidence: Production API 1.8.41 returns DTCC as Development with operator-announcement provenance, but products, deployments, assets, and productKind remain null and supportedNetworks is empty; the product-level deployment gap still reproduces
   - date: 2026-08-28
     evidence: Production API 1.9.1 returns DTCC as Development with a dated announced mainnet product record and H1 2027 note, but `GET /api/projects/search?q=real%20world%20asset&limit=100` returns 61 rows with only 1 nonempty products value and zero deployments or assets values. Issue #494 closed as completed without a full product-model fix, so the finding still reproduces.
+  - date: 2026-09-03
+    evidence: the round ledger `.agents/rounds/2026-09-03-truth-maintenance/improvements-terra.md` records 61 RWA rows. DTCC has one product, but its generic deployment remains unknown and assets remain absent. The partial model still reproduces the finding.
+  - date: 2026-09-04
+    evidence: `GET /api/projects/search?q=real%20world%20asset&limit=100` returned 61 rows at 2026-09-04T06:54:40.644Z, Scout API 1.9.30, response SHA-256 f6c976a7b9c82f61e4f2ab5c5cbfd0b9cb907ff09b89289fa45fd47905d32e0d. Deployment exists on 61 rows, but 47 have network unknown, basis null, and sourceUrl null. Only one row has products, no row has productKind, and assets are absent from all rows. DTCC remains Development with one announced mainnet product and an H1 2027 note. Fourteen rows gained onchain-activity deployment data, but the exact partial product and deployment model defect remains.
 ---
 
 ## Finding

@@ -306,9 +306,9 @@ describe("build-catalog.mjs", () => {
     // feedback submission (its upstream description names the non-exposed
     // scout.submitFeedback). The read-only hackathonBrief and matchPartners
     // operations stay exposed. Their OpenAPI contracts describe no persistence.
-    // resolveProject is read-only and fully typed. getQualityReport stays
-    // hidden until its routing contract is selective. verifyClaim stays hidden
-    // until its issued response enum is complete.
+    // resolveProject is read-only and fully typed. The accepted 1.9.1 surface
+    // keeps getQualityReport hidden until a general scoring repair passes. It
+    // keeps verifyClaim hidden under a separate current-surface routing decision.
     expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(30);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);

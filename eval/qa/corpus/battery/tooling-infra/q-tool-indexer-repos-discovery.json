@@ -33,8 +33,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-03",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-10",
     "sources": [
       {
         "class": "C",
@@ -129,9 +129,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "C returned current indexer results. B confirmed the current official repository roles and activity.",
+        "Sibling sweep 2026-09-03: q-tool-sdk-repos-discovery preserves the same role-separation boundary; no contradiction found.",
         "C: live https://stellarlight.xyz/api/repos/search probes at 2026-08-05T20:45-20:46Z returned current stellar/stellar-ledger-data-indexer, stellar/stellar-galexie, stellar/go-stellar-sdk, stellar/stellar-etl, and subquery/stellar-subql-starter rows with answer-time activity metadata.",
         "A/B: https://developers.stellar.org/docs/data/indexers, https://developers.stellar.org/docs/build/guides/events/ingest, and the four direct stellar/* repositories independently confirmed distinct indexer, exporter/data-lake, ingest-library, and ETL roles plus the seven-day getEvents retention ceiling.",
         "Uncertainty remains source-bounded: Scout rows and timestamps do not prove global repository coverage, deployment, security, or quality.",

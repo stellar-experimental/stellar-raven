@@ -14,6 +14,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  RETIRED_MEASUREMENT_METRIC_KEYS,
   assertCollectionSourceIdentity,
   assertPinnedServerRevision,
   collectionGitStatus,
@@ -218,6 +219,24 @@ function stubJudge(calls = []) {
     calls.push({ id: input.id, model: opts?.model, hasEvidence: typeof input.transcriptEvidence === "string" });
     return { ...stubVerdict };
   };
+}
+
+/** The two keys every artifact produced before the coverage-share retirement carries. */
+const RETIRED_COVERAGE_META = Object.freeze({
+  meanContinuousCoverage: 0.5601952380952382,
+  continuousCoverageRowCount: 500
+});
+const CURRENT_MEASUREMENT_KEYS = [
+  "halfCreditShare",
+  "strictCorrectShare",
+  "coreAnswerCorrectShare",
+  "gradedCoreAnswerNullCount",
+  "coreAnswerVerdictCount"
+];
+
+function expectNoRetiredMeasurementKeys(meta) {
+  expect(RETIRED_MEASUREMENT_METRIC_KEYS).toEqual(Object.keys(RETIRED_COVERAGE_META));
+  for (const key of RETIRED_MEASUREMENT_METRIC_KEYS) expect(meta).not.toHaveProperty(key);
 }
 
 describe("run-qa --judge-stored", () => {
@@ -513,6 +532,46 @@ describe("run-qa --judge-stored", () => {
     }
   });
 
+  it.each([
+    ["missing", undefined],
+    ["null", null],
+    ["string", "true"],
+    ["number", 1]
+  ])("refuses a %s comparable stamp before judge spend", async (_label, comparable) => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-comparable-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      if (comparable === undefined) delete results.meta.comparable;
+      else results.meta.comparable = comparable;
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+      const calls = [];
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(calls), log: () => {} })
+      ).rejects.toThrow(/artifact is non-comparable/);
+      expect(calls).toEqual([]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("refuses an artifact without meta before judge spend", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-no-meta-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      delete results.meta;
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+      const calls = [];
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(calls), log: () => {} })
+      ).rejects.toThrow(/artifact is non-comparable/);
+      expect(calls).toEqual([]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("does not restore aggregates for an incomplete original collection", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {
@@ -651,9 +710,11 @@ describe("run-qa --judge-stored", () => {
         halfCreditShare: 0.5,
         coreAnswerCorrectShare: 1,
         gradedCoreAnswerNullCount: 0,
-        meanContinuousCoverage: 1,
-        continuousCoverageRowCount: 1
+        coreAnswerVerdictCount: 1
       });
+      // The retired key-fact coverage share is never stamped again.
+      expect(written.meta).not.toHaveProperty("meanContinuousCoverage");
+      expect(written.meta).not.toHaveProperty("continuousCoverageRowCount");
       // judgedIds is spend provenance: only rows that actually reached a paid
       // judge belong in it. The empty-answer row is stamped without a call.
       expect(written.meta.judgeStored).toMatchObject({
@@ -1089,6 +1150,7 @@ describe("run-qa --judge-stored", () => {
       const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
       seeded.rows[1].answer = "SEP-10 is the web authentication SEP.";
       seeded.rows[1].agent.failure = null;
+      Object.assign(seeded.meta, RETIRED_COVERAGE_META);
       writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
 
       let calls = 0;
@@ -1110,7 +1172,9 @@ describe("run-qa --judge-stored", () => {
       expect(afterCrash.meta.judgingCompleteness.aggregatesAllowed).toBe(false);
       expect(afterCrash.meta).not.toHaveProperty("halfCreditShare");
       expect(afterCrash.meta).not.toHaveProperty("strictCorrectShare");
-      expect(afterCrash.meta).not.toHaveProperty("meanContinuousCoverage");
+      expect(afterCrash.meta).not.toHaveProperty("coreAnswerCorrectShare");
+      // The mid-run suppressed write also drops the retired coverage keys.
+      expectNoRetiredMeasurementKeys(afterCrash.meta);
       // Only the row that actually reached a paid judge is recorded.
       expect(afterCrash.meta.judgeStored.judgedIds).toEqual(["q-fixture-answered"]);
       const originalHash = afterCrash.meta.judgeStored.sourceResultsSha256;
@@ -1190,6 +1254,84 @@ describe("run-qa --judge-stored", () => {
       await expect(
         judgeStoredResults(resultsPath, { judgeModel: "stub-judge", judge: stubJudge(), log: () => {} })
       ).rejects.toThrow(/nothing to judge/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("drops both retired coverage keys on a zero-call finalization of a pre-repair artifact", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      // Same shape as the 2026-09-04T05-40-51-variantA arm: an inline run that
+      // judged every row and stamped a summary plus the retired coverage keys,
+      // but never carried a judgeStored block.
+      const inline = JSON.parse(readFileSync(resultsPath, "utf8"));
+      inline.meta.judgeModel = "stub-judge";
+      inline.meta.judgeRubric = JUDGE_RUBRIC;
+      Object.assign(inline.meta, RETIRED_COVERAGE_META);
+      inline.rows[0].verdict = { ...stubVerdict };
+      inline.rows[1].verdict = { ...stubVerdict, costUsd: 0 };
+      inline.summary = { overall: { correct: 2, partial: 0, wrong: 0, error: 0, total: 2 } };
+      writeFileSync(resultsPath, JSON.stringify(inline, null, 2));
+
+      let judgeCalls = 0;
+      const out = await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: async () => {
+          judgeCalls += 1;
+          throw new Error("unexpected paid judge path");
+        },
+        log: () => {}
+      });
+      expect(out.judgedCount).toBe(0);
+      expect(judgeCalls).toBe(0);
+
+      const final = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(final.meta.judgeStored.toolVersion).toBe("run-qa/judge-stored-v3");
+      expect(final.meta.aggregatesSuppressed).toBe(false);
+      expectNoRetiredMeasurementKeys(final.meta);
+      for (const key of CURRENT_MEASUREMENT_KEYS) expect(final.meta).toHaveProperty(key);
+      expect(out.metrics).toEqual({
+        halfCreditShare: 1,
+        strictCorrectShare: 1,
+        coreAnswerCorrectShare: 1,
+        gradedCoreAnswerNullCount: 0,
+        coreAnswerVerdictCount: 2
+      });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("drops both retired coverage keys when aggregates stay suppressed", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      results.meta.completeness = {
+        expectedRows: 3,
+        collectedRows: 2,
+        judgedRows: 0,
+        complete: false,
+        aggregatesAllowed: false,
+        reasons: ["missing one collected row"]
+      };
+      results.meta.aggregatesSuppressed = true;
+      Object.assign(results.meta, RETIRED_COVERAGE_META);
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+
+      const output = await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: stubJudge(),
+        log: () => {}
+      });
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(output.metrics).toBeNull();
+      expect(written.summary).toBeNull();
+      expect(written.meta.aggregatesSuppressed).toBe(true);
+      expectNoRetiredMeasurementKeys(written.meta);
+      for (const key of CURRENT_MEASUREMENT_KEYS) expect(written.meta).not.toHaveProperty(key);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

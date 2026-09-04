@@ -18,7 +18,7 @@ the headline wins.
 | — skills lane (23, hand-authored) | skills routing | free, same run | **GATE**: must not fall below the current top-1 floor in `eval/gates.json`; top-3/top-5/card@5 remain visible diagnostics. |
 | — extended lane (122, real-user phrasing) | `search` on jitsu-mined questions | free, same run | Diagnostic; **target metric for retrieval work**. Read the latest local result for the current tree. Local results are not committed and do not define the gate baseline. |
 | — protocol-history v1 lane (8 positives, 4 controls) | `search` routing to a cited research corpus | free, same run | Historical frozen diagnostic inside `run-routing.mjs`. Positives require `scout.searchResearch` in the top five. Controls forbid any top-five capture. |
-| `npm run eval:protocol-history` — v2 original plus blind sets (19 required, 9 forbidden, 4 neutral) | protocol-history routing and symmetric false captures | free, seconds — every candidate for this work | Versioned frozen diagnostic. Every required case needs `scout.searchResearch` in the top five. Forbidden cases exclude it. Neutral ranks remain diagnostic only. |
+| `npm run eval:protocol-history` — v2 original plus blind sets (19 required, 9 forbidden, 4 neutral) | protocol-history routing and symmetric false captures | free, seconds — every candidate for this work | Source-epoch-bound frozen diagnostic. The runner checks source hashes before scoring. It writes `source-expired` without scored sets after any mismatch. Eligible results stamp the actual manifest and contract digests. |
 | — accept-either views (corpus `acceptable_cards` ∪ overlay) | label-tolerance context | free, same run | Diagnostic only; never the headline |
 | `eval/discovery/` | one-search, agent-allowed-≤3-search, and mined-query replay source-family / usable-route discovery | one-shot/replay free; agent arm paid; after discovery guidance or retrieval-shape work | Diagnostic: 43 adjudicated cases; `familyHit@3` + `usableOp@5`; paired miss classification; 91-query LumenLoop replay lane |
 | `eval/agentic/` | agent-driven `search`, live server | ~$, minutes — after major search-behavior changes | Diagnostic (label-ambiguity analysis) |
@@ -106,7 +106,7 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
    contract-version bump, provenance note, and digest update. Generated files
    (`routing-cases.json`, `qa/cases.json`, `qa/sample.json`, `qa/lifecycle-registry.json`) are never hand-edited — CI
    byte-pins them.
-7. **Results are local-only evidence** (`eval/**/results/`, gitignored). `eval/gates.json`
+7. **Results are local-only evidence** (`eval/**/results/`, gitignored). Routing results stamp the actual manifest SHA-256. `eval/gates.json`
    carries the routing gate's committed fingerprints and accepted totals. READMEs carry historical
    records and can cite exact local result stamps. A routing gate can add `evidence.localTrace` as
    optional context, but the trace is never required to resolve the baseline. The results dirs are
@@ -125,6 +125,44 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
     otherwise-correct answers that omitted dates for volatile claims. Inventory the pattern across
     service shards before changing prompts or rubrics. A single case remains diagnostic and does
     not justify per-question tuning.
+11. **Remote service identity is part of QA comparability.** A stable listener only proves the
+    local process identity. It does not prove the Scout, Lumenloop, or Stellar Docs identity.
+    A comparable live collection requires one pinned public probe and one pinned pre-arm vector.
+    It also requires matching captures around every answering call and one matching postflight.
+    A successful attempted postflight must record `skippedReason: null`.
+    A missing baseline is a separate guard failure, not a probe failure.
+    Any missing capture, probe failure, or changed vector makes the artifact non-comparable.
+    The runner suppresses all aggregates after such a failure.
+12. **Concurrent paired collection has one supervisor.** Use
+    `npm run eval:qa:paired:collect -- --plan <plan.json> --authorized-plan-sha256 <sha256>`.
+    The plan uses `qa-paired-collection-plan-v2`. The supplied hash must equal the canonical plan
+    hash. Keep the owner authorization outside the plan. The owner signature covers the canonical
+    hash and every command array in the plan. The plan freezes exactly 200 selected IDs and exactly
+    500 unique active corpus IDs. It binds both ordered ID hashes, selected content, cases bytes,
+    commands, four worktrees, and input hashes. Each cases path stays inside its runner. Both runners
+    must reproduce every corpus field. The executing supervisor and control module must match their pins.
+    Baseline and candidate use different revisions and surface hashes. Baseline uses `add-missing`;
+    candidate uses `verify-native`. Their public and upstream ports are pairwise distinct.
+    Shared measurement flags match. Both servers reproduce one salted `.dev.vars` identity without
+    recording values. Keep this salted plan uncommitted, then delete it after the run.
+    The plan binds the free capacity command, instrument, artifact, schedule, thresholds, and
+    24-hour freshness window. The exact 86,400,000 ms boundary is valid. The artifact must prove
+    two overlapping captures and 14 successful
+    responses. It must show no errors, retries, or `Retry-After`. Vectors must match, and real request
+    concurrency must occur. The `--stable-sha256` remote probe still controls immediate service drift.
+    The plan also binds the exact P6 wrapper command and its seven `$0.50` calls.
+    P6 refuses an existing output or temporary output. It never overwrites a method record.
+    The plan binds both directed flip re-judge commands and requires `--allow-empty`.
+    Each flip command pins the Claude path, binary SHA-256, and environment SHA-256.
+    The re-judge checks these identities before and after judging. It stamps them in the artifact.
+    The supervisor enforces row barriers, alternating monotonic release order, shared cancellation,
+    child exits, a bounded termination drain, and a four-hour deadline. Wall-clock times provide
+    duration evidence only. Before the receipt, each artifact must exist in its arm results
+    directory. It must be comparable and match the selected IDs and exact content identity.
+    Its server revision must match that arm's frozen `--server-revision`.
+    Collection uses `$80` per arm. Stored judging raises the same ledger to `$120` per arm.
+    A failed collection produces no paired aggregate or receipt. See `qa/README.md` for the full
+    plan and receipt contract.
 
 ## Primary artifact: service-improvement recommendations
 

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "0ee234861142cb65415cff98492568a1138f8971d6b9bee6d928dfafc2120292",
+  "corpusContentSha256": "c5d0c804ddd9ce241fae90398ee0d83808e5d847f049d118e4ad15903d07b43e",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -15678,7 +15678,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "The draft contains two false-or-unsupported claims:\n\n- **'Soroswap is Stellar's first AMM' — false in the broad Stellar sense.** The classic SDEX is an older order-book venue, and the direct AMM counterexample is Stellar's protocol-native constant-product liquidity pools, activated with **CAP-0038 / Protocol 18 on 2021-11-03**. Soroswap's 'first DEX/aggregator' or 'first AMM on Soroban' wording remains attributed operator marketing unless independent chronology supports it.\n- **'just passed $1B in TVL' — false within the identified live Soroswap-AMM series and unsupported more broadly.** At a **2026-08-05** DefiLlama probe, that series was about **$1.20M current** and its recorded maximum was below **$10M**. Those examples are volatile and non-gating; other routed-volume or private metrics must be named separately and cumulative trading volume is not TVL.\n\nA safe correction is: Soroswap is a Soroban AMM and aggregation/API stack, not Stellar's first AMM, and no dated source checked supports $1B TVL.",
+        "answer": "The draft contains two false-or-unsupported claims:\n\n- **'Soroswap is Stellar's first AMM' — false in the broad Stellar sense.** The classic SDEX is an older order-book venue, and the direct AMM counterexample is Stellar's protocol-native constant-product liquidity pools, activated with **CAP-0038 / Protocol 18 on 2021-11-03**. Soroswap's 'first DEX/aggregator' or 'first AMM on Soroban' wording remains attributed operator marketing unless independent chronology supports it.\n- **'just passed $1B in TVL' — false within the identified live Soroswap-AMM series and unsupported more broadly.** At a **2026-09-03** DefiLlama probe, that series was about **$1.19M current** and its recorded maximum was below **$10M**. Those examples are volatile and non-gating; other routed-volume or private metrics must be named separately and cumulative trading volume is not TVL.\n\nA safe correction is: Soroswap is a Soroban AMM and aggregation/API stack, not Stellar's first AMM, and no dated source checked supports $1B TVL.",
         "keyFacts": [
           "Corrects the first-AMM claim using SDEX and CAP-0038/Protocol-18 chronology.",
           "Attributes Soroswap's first-aggregator wording.",
@@ -15703,8 +15703,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-17",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-17",
         "sources": [
           {
             "class": "A",
@@ -15776,18 +15776,18 @@
               {
                 "class": "F",
                 "ref": "https://api.llama.fi/protocol/soroswap",
-                "observedAt": "2026-07-11",
-                "note": "Direct current protocol-series fetch provides independent TVL observations far below $1B; it does not establish the claimed figure."
+                "observedAt": "2026-09-03",
+                "note": "Direct protocol-series fetch returned current Stellar TVL about $1.19M and a historical maximum below $10M; it does not establish $1B."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
             "A/B: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md and https://stellar.org/blog/developers/protocol-18-upgrade-guide confirm Protocol 18/CAP-0038 AMM chronology before Soroswap.",
-            "D/F: https://api.llama.fi/protocol/soroswap on 2026-08-05 returned current Stellar TVL $1,196,894 and maximum $9,799,848; neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
+            "D/F: https://api.llama.fi/protocol/soroswap on 2026-09-03 returned current Stellar TVL about $1.19M; the historical maximum remains below $10M. Neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
             "A/D: current Soroswap operator docs call it the first DEX and exchange aggregator built on Stellar; that firstness remains attributed operator marketing rather than independent chronology.",
             "Sibling sweep: q-protocol-amm-cap-0038 and q-defi-soroswap-what-is agree on native Protocol-18 AMM versus Soroswap's Soroban product layer.",
             "Structural re-form (compound-predicate): split first-aggregator attribution and the $1B TVL rejection into atomic facts; the truth is unchanged.",
@@ -15796,8 +15796,7 @@
             "Sibling sweep 2026-08-27: grep Soroswap|first AMM|CAP-0038|Protocol 18|TVL → q-protocol-amm-cap-0038, q-asset-sdex-vs-amm, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx, q-edge-fresh-latest-blend-tvl; no contradiction"
           ],
           "rootCause": [
-            "scheduled freshness re-verification found no semantic drift; refreshed the dated TVL observation and operator wording",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-edge-factcheck-soroswap-first-amm"
@@ -16043,21 +16042,19 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "As of 2026-08-18, no SCF round is open in the Submission phase. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round. A grounded answer checks and dates the live official awards state and Scout round metadata.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
+        "answer": "As of 2026-09-03, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Panel Review. SCF #44 is the last concluded round. A grounded answer checks official awards state and Scout metadata.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
         "keyFacts": [
-          "Specific content uses a source-supported current or dated observation.",
-          "Every changeable roster, status, version, or measurement shows an as-of date.",
-          "Dated map gives current #45 and phase, distributing #44, and last-concluded #43.",
-          "The dated example reports no SCF round in Submission.",
-          "The dated example treats SCF #45's 2026-08-16 deadline as elapsed."
+          "Presents specific source-supported content as current or dated.",
+          "Makes the as-of date visible for each changeable status or deadline.",
+          "Reports SCF #46 in Submission in the dated example.",
+          "Reports 2026-11-08 as SCF #46's submission deadline.",
+          "Places #45 in Panel Review and #44 as the last concluded round."
         ],
         "avoid": [
-          "Do NOT call SCF #45 open for full-proposal submissions, substitute #44 or #43 as current, or give only a dashboard pointer.",
-          "Do NOT invent a deadline time, timezone, notification date, or submission count.",
-          "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical.",
-          "Do NOT use unsupported memory for specific current or dated content."
+          "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
+          "Do NOT invent a deadline time, timezone, notification date, or submission count."
         ],
-        "notes": "GT-23 refreshed 2026-08-18: require an actual dated round, phase, and deadline answer plus official and live-source pointers. No round is in Submission; #45 is in Initial Review after its deadline, #44 is distributing, and #43 is concluded. The two published Q3 RFP briefs do not prove that #45 still accepts full proposals."
+        "notes": "GT-23 refreshed 2026-09-03. Require a dated round, phase, and deadline. #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is concluded."
       },
       "tags": {
         "category": "edge-behavior",
@@ -16071,56 +16068,53 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-18",
-        "reverifyBy": "2026-09-10",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-11-10",
         "sources": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
+            "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08, #45 was in Panel Review, and #44 was last concluded."
           },
           {
             "class": "A",
-            "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-            "note": "Official SCF #45 detail page observed 2026-08-18; the page showed Initial Review."
+            "ref": "https://communityfund.stellar.org/awards",
+            "note": "Official awards state observed 2026-09-03; it showed the current #46/#45/#44 phase sequence."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live Scout result observed 2026-08-18; currentRound=45, currentPhase=Initial Review, and no submission window."
+            "note": "Live Scout result observed 2026-09-03; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and submission deadline 2026-11-08."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-08-18, no SCF round is in Submission; SCF #45 is in Initial Review after its 2026-08-16 deadline, #44 is distributing, and #43 is last concluded.",
+            "claim": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is last concluded.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-08-18T15:22:00Z",
-                "note": "Official index showed #45 Initial Review with an August 16, 2026 deadline, #44 in distribution, and #43 ended."
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Official index showed #46 in Submission through November 8, 2026, #45 in Panel Review, and #44 ended."
               },
               {
                 "class": "C",
-                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
-                "observedAt": "2026-08-18T15:24:51Z",
-                "note": "Scout reported currentRound=45, currentPhase=Initial Review, no submission window, and no round in Submission."
-              },
-              {
-                "class": "A",
-                "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-                "observedAt": "2026-08-18T15:25:19Z",
-                "note": "The older RFP notice still called two Q3 briefs open for #45; it did not override the newer awards phase."
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Scout reported currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and a 2026-11-08 submission deadline."
               }
             ],
             "note": "Legacy verdict: confirmed-time-slice."
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "A: https://communityfund.stellar.org/awards confirmed #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded on 2026-09-03.",
+            "C: https://stellarlight.xyz/api/rfps?status=open returned the same current-round state on 2026-09-03T15:39:35.870Z.",
+            "Sibling sweep 2026-09-03: q-scf-current-round and the SCF phase invariant remain consistent.",
             "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
             "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",
@@ -28064,7 +28058,7 @@
         "domain": "real-world",
         "status": "mixed",
         "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-01",
+        "reverifyBy": "2027-01-07",
         "sources": [
           {
             "class": "B",
@@ -28122,9 +28116,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "B confirmed SLP-0004 Final and SLP-0006 Draft. The question keeps its fixed historical date.",
+            "Sibling sweep 2026-09-03: YieldBlox and protocol cases retain the same status boundary; no contradiction found.",
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
             "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
@@ -32091,7 +32087,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-08-31; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are encrypted with user-password participation and stored locally/on-device, while accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
+        "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-08-31; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are generated and encrypted on-device with user-password participation, are stored locally on-device for decryption and signing, and also exist as an encrypted copy on LOBSTR servers that LOBSTR says it cannot decrypt; accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
         "keyFacts": [
           "Identifies LOBSTR as an active Ultra Stellar third-party wallet.",
           "Dates the LOBSTR activity assessment to an observation date.",
@@ -32138,6 +32134,10 @@
           {
             "class": "D",
             "ref": "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892"
+          },
+          {
+            "class": "A",
+            "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr"
           }
         ],
         "corroboration": [
@@ -32207,6 +32207,12 @@
                 "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001273",
                 "observedAt": "2026-08-31",
                 "note": "Migration overview: pre-September 1, 2020 wallets kept keys on the platform in encrypted form; stated migration deadline July 10, 2026 has passed, and the documented exception remains for unmigrated wallets."
+              },
+              {
+                "class": "A",
+                "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+                "observedAt": "2026-09-04",
+                "note": "Re-observed (post-drift current truth): 'securely stored on your device and uploaded to our server in encrypted form'; 'We store the encrypted version of the Recovery phrase/Secret key on our server'; on another device the app 'downloads the encrypted version of the key from the server and stores it locally'; 'The keys themselves can only be decrypted and accessed by users on-device'; 'The transaction signing also happens locally on-device'."
               }
             ]
           },
@@ -32236,8 +32242,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class; lane A research report matrices-lane-a-retail.md reconciled with blind re-derivation review-blind-lobstr-grok.md; orchestrator applied)",
+          "date": "2026-09-04",
+          "by": "golden follow-up review 2026-09-04 (Fable 5.1 xhigh; .agents/rounds/2026-09-03-truth-maintenance/golden-followup-fable.md)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
@@ -32262,14 +32268,21 @@
             "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; article 151000001273 keeps the exception after the July 10, 2026 deadline.",
             "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — do not share; LOBSTR team has no access; class A recovery.lobstr.co needs the user's phrase or code; 'trusted services' is generic wording.",
             "Lane reconciliation 2026-08-31: lane A marked keyFact 5 disputed on the restore article's 'trusted services' sentence; the blind lane resolved that phrase as ordinary English (no named product, no docs-index hit) and confirmed every source-relative keyFact; the blind lane's extra metadata-control claim is not a keyFact and was not added.",
-            "Sibling sweep 2026-08-31: grep LOBSTR|Ultra Stellar|Recovery code|September 1, 2020 → 15 other cases; read q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-tool-wallets-comparison, q-raph-restore-wallet, q-raph-withdraw-exchange-self-custody; no contradiction"
+            "Sibling sweep 2026-08-31: grep LOBSTR|Ultra Stellar|Recovery code|September 1, 2020 → 15 other cases; read q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-tool-wallets-comparison, q-raph-restore-wallet, q-raph-withdraw-exchange-self-custody; no contradiction",
+            "Gospel change 2026-09-04: the answer's storage sentence now states both halves of LOBSTR's own security article — on-device generation, encryption, storage, decryption, and signing with password participation, plus an encrypted server copy that LOBSTR says it cannot decrypt. The 2026-08-31 corroboration row already verified the server copy, but the answer omitted it. The parent answer was era-bounded and did not say `only`. keyFacts, avoid, notes, and the dated activity observation are unchanged.",
+            "Live re-check 2026-09-04 (post-drift current truth): https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — 'We store the encrypted version of the Recovery phrase/Secret key on our server'; 'The keys themselves can only be decrypted and accessed by users on-device'; 'The transaction signing also happens locally on-device'.",
+            "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — pre-September 1, 2020 keys 'stored inside our platform in encrypted form', migration deadline July 10, 2026, unmigrated wallets stop working until migrated.",
+            "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — 'We (the LOBSTR team) do not have access to users' Recovery phrases, Secret keys, Recovery codes, or Account passwords'; 'Do not share your Recovery Phrase and Secret key with anyone'.",
+            "Sibling sweep 2026-09-04: grep LOBSTR|on-device|server-side|Recovery Phrase over eval/qa/corpus/battery → only q-raph-lobstr-legitimacy states a LOBSTR key-storage location; q-eco-lobstr-wallet says non-custodial only; no contradiction.",
+            "Re-judge 2026-09-04: not run (this lane makes no paid calls). The 2026-09-04T05-40-51-variantA row failed on an era-independent local-only claim and the missing pre-2020 exception; the corrected answer contradicts that claim more directly, so the expected direction is unchanged."
           ],
           "rootCause": [
             "eval-authoring",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
             "freshness-drift",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata",
+            "eval-authoring — the 2026-08-31 answer omitted the encrypted server copy that its own corroboration row verified; corrected 2026-09-04 (.agents/rounds/2026-09-03-truth-maintenance/golden-followup-fable.md)"
           ]
         },
         "origin": "raph wallet-lobstr-legitimacy-recovery-storage"
@@ -35615,20 +35628,19 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer checks the live official awards state and Scout round metadata, then dates every volatile claim. As of 2026-08-18, no SCF round is in Submission. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
+        "answer": "A grounded answer checks the live official awards state and Scout round metadata. It dates every volatile claim. As of 2026-09-03, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Panel Review. SCF #44 is the last concluded round.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
         "keyFacts": [
-          "Presents specific source-supported content as current or dated, not unsupported memory.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Reports no Submission-phase round in the dated example.",
-          "Places SCF #45 in Initial Review in the dated example.",
-          "Treats 2026-08-16 as SCF #45's elapsed submission deadline, not its current close."
+          "Presents specific source-supported content as current or dated.",
+          "Makes the as-of date visible for each changeable status or deadline.",
+          "Reports SCF #46 in Submission in the dated example.",
+          "Reports 2026-11-08 as SCF #46's submission deadline.",
+          "Places #45 in Panel Review and #44 as the last concluded round."
         ],
         "avoid": [
-          "Do NOT claim that SCF #45 is still open for full-proposal submissions or that an open RFP brief proves an open round.",
-          "Do NOT assert any round or deadline as permanent, or fabricate a deadline time, timezone, notification date, or submission count.",
-          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+          "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
+          "Do NOT invent a deadline time, timezone, notification date, or submission count."
         ],
-        "notes": "Freshness item: identify the current round, phase, and deadline from dated official and live sources. As of 2026-08-18, no round is in Submission; #45 is in Initial Review, #44 is distributing, and #43 is the last concluded round. The two published Q3 RFP briefs do not reopen #45's full-proposal window. The Build cap is owned by separate cases."
+        "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-09-03, #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is the last concluded round. The fixed #43 result remains separate."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -35642,55 +35654,52 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-18",
-        "reverifyBy": "2026-09-03",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-11-09",
         "sources": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
+            "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08, #45 was in Panel Review, and #44 was last concluded."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-            "note": "Official SCF #45 detail page observed 2026-08-18; the page showed Initial Review."
+            "note": "Official SCF #45 detail page observed 2026-09-03; it showed #45 in Panel Review."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live Scout result observed 2026-08-18; currentRound=45, currentPhase=Initial Review, and no submission window."
+            "note": "Live Scout result observed 2026-09-03; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and submission deadline 2026-11-08."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-08-18, no SCF round is in Submission; SCF #45 is in Initial Review after its 2026-08-16 deadline, #44 is distributing, and #43 is last concluded.",
+            "claim": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is last concluded.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-08-18T15:22:00Z",
-                "note": "Official index showed #45 Initial Review with an August 16, 2026 deadline, #44 in distribution, and #43 ended."
-              },
-              {
-                "class": "A",
-                "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-                "observedAt": "2026-08-18T15:23:00Z",
-                "note": "Official #45 detail page showed Initial Review and did not supply a notification date or submission count."
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Official index showed #46 in Submission through November 8, 2026, #45 in Panel Review, and #44 ended."
               },
               {
                 "class": "C",
-                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
-                "observedAt": "2026-08-18T15:24:51Z",
-                "note": "Scout reported currentRound=45, currentPhase=Initial Review, no submission window, and no round in Submission."
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Scout reported currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and a 2026-11-08 submission deadline."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "A: https://communityfund.stellar.org/awards confirmed #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded on 2026-09-03.",
+            "C: https://stellarlight.xyz/api/rfps?status=open returned the same current-round state on 2026-09-03T15:39:35.870Z.",
+            "Sibling sweep 2026-09-03: q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and all SCF register clusters remain consistent.",
             "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
             "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",
@@ -36882,21 +36891,21 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Scout response and official SCF pages. As of 2026-08-18, the Q3 roster contains two published open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. SCF #45 is in Initial Review, so the open briefs do not establish that #45 still accepts full proposals.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
+        "answer": "A grounded answer derives names and status from the live Scout response and official SCF pages. As of 2026-09-03, two Q3 RFP briefs remain open: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. That row represents #46's Submission window through 2026-11-08. It is not a third RFP brief.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Reports the currently-open RFP briefs.",
-          "States that the live response has no synthetic round row.",
-          "Distinguishes an open RFP brief from an open SCF full-proposal window."
+          "Makes the as-of date visible for each changeable roster or status.",
+          "Reports the two currently open RFP briefs.",
+          "Reports one synthetic SCF #46 round row.",
+          "Distinguishes an RFP brief from a synthetic round row."
         ],
         "avoid": [
-          "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
-          "Do NOT claim that SCF #45 still accepts full proposals solely because the Q3 briefs remain published as open.",
-          "Do NOT claim the roster is permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
-          "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT claim syntheticRounds=0 or omit the current synthetic #46 row.",
+          "Do NOT count the synthetic round row as a third RFP brief.",
+          "Do NOT claim an open brief guarantees eligibility or an invitation.",
+          "Do NOT claim the observed roster is permanent or complete."
         ],
-        "notes": "Freshness item: the open set rotates, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support two published Q3 briefs. The newer awards state and Scout round metadata show #45 in Initial Review with no open submission window. Do not penalize an answer that calls the briefs active while saying the #45 full-proposal window has closed. RFP Track review is panel-led, and the separate Build-cap cases own the $150,000 limit."
+        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two briefs remain open. Scout returns one separate #46 synthetic round row. #46 accepts submissions through 2026-11-08."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -36910,67 +36919,70 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-18",
-        "reverifyBy": "2026-09-17",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-11-12",
         "sources": [
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live open-RFP response observed 2026-08-18; two briefs and syntheticRounds=0."
+            "note": "Live open-RFP response observed 2026-09-03; two briefs and one synthetic scf-round-46 row."
           },
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-            "note": "Official RFP page observed 2026-08-18; it names the two Q3 briefs."
+            "note": "Official RFP page rechecked 2026-09-03; it names the two Q3 briefs."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
+            "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-08-18, the published Q3 roster contains two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=0.",
+            "claim": "As of 2026-09-03, the published Q3 roster contains two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=1.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-08-18T15:24:51Z",
-                "note": "Returned two open RFP rows and syntheticRounds=0."
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Returned two open RFP rows and one synthetic scf-round-46 row."
               },
               {
                 "class": "A",
                 "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-                "observedAt": "2026-08-18T15:25:19Z",
+                "observedAt": "2026-09-03T15:39:35.870Z",
                 "note": "Official Q3 page names the same two briefs."
               }
             ]
           },
           {
-            "claim": "As of 2026-08-18, SCF #45 is in Initial Review with no confirmed open submission window; an open brief does not prove that a full proposal can still enter #45.",
+            "claim": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08; the synthetic round row is separate from the two open briefs.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-08-18T15:22:00Z",
-                "note": "Official awards index showed #45 in Initial Review after its August 16 deadline."
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Official awards index showed #46 in Submission through November 8, 2026."
               },
               {
                 "class": "C",
-                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
-                "observedAt": "2026-08-18T15:24:51Z",
-                "note": "Scout reported #45 Initial Review, no submission window, and no round in Submission."
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Scout reported currentRound=46, currentPhase=Submission, and one separate synthetic round row."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
+            "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the two named briefs and the invitation path.",
+            "Sibling sweep 2026-09-03: q-scf-rfp-tooling and SCF roster clusters remain consistent.",
             "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
             "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
@@ -37592,20 +37604,21 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "Yes. As of 2026-08-18, the published Q3 roster contains two open infrastructure and tooling briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. RFP applicants start with the rolling interest form and submit a full proposal only if invited. SCF #45 is already in Initial Review, so an invitation or open brief does not establish that a new full proposal can still enter #45.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
+        "answer": "Yes. As of 2026-09-03, two open infrastructure briefs remain published: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. Applicants start with the rolling interest form. They submit a full proposal only if invited. #46 accepts submissions through 2026-11-08. An open brief does not guarantee eligibility or an invitation.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
         "keyFacts": [
-          "Presents specific source-supported content as current or dated, not unsupported memory.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Uses current official/live sources with no synthetic round row present.",
+          "Makes the as-of date visible for each changeable roster or status.",
+          "Reports two open infrastructure briefs.",
+          "Reports one synthetic SCF #46 round row.",
           "Explains the rolling interest-form-to-invitation path.",
-          "Distinguishes an open brief from an open SCF full-proposal window."
+          "Does not treat an open brief as guaranteed eligibility."
         ],
         "avoid": [
-          "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
-          "Do NOT claim an invited full proposal can still enter #45, that RFP awards use community vote, or that each brief has a published bounty.",
-          "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT claim syntheticRounds=0 or count the round row as a brief.",
+          "Do NOT claim every interest form receives an invitation.",
+          "Do NOT claim each brief has a published bounty or community vote.",
+          "Do NOT claim the observed roster is permanent or complete."
         ],
-        "notes": "Freshness item: the matching RFP set changes, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support the two Q3 briefs. The newer awards state and Scout metadata show #45 in Initial Review with no open submission window. The rolling interest form remains the entry path, but it does not prove that #45 accepts a new full proposal."
+        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -37619,67 +37632,70 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-18",
-        "reverifyBy": "2026-09-24",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-11-13",
         "sources": [
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-            "note": "Official RFP page observed 2026-08-18; it names the two Q3 briefs and the interest-form path."
+            "note": "Official RFP page rechecked 2026-09-03; it names the two Q3 briefs and the interest-form path."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live open-RFP response observed 2026-08-18; two briefs and syntheticRounds=0."
+            "note": "Live open-RFP response observed 2026-09-03; two briefs and one synthetic scf-round-46 row."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
+            "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-08-18, the published Q3 roster contains two open infrastructure/tooling briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=0.",
+            "claim": "As of 2026-09-03, the published Q3 roster contains two open infrastructure briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=1.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-                "observedAt": "2026-08-18T15:25:19Z",
+                "observedAt": "2026-09-03T15:39:35.870Z",
                 "note": "Official Q3 page names the two briefs and documents the interest-to-invitation flow."
               },
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-08-18T15:24:51Z",
-                "note": "Returned the same two briefs and syntheticRounds=0."
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Returned the same two briefs and one synthetic scf-round-46 row."
               }
             ]
           },
           {
-            "claim": "As of 2026-08-18, SCF #45 is in Initial Review with no confirmed open submission window; the rolling interest and invitation path does not prove a full proposal can still enter #45.",
+            "claim": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08; the rolling interest path remains invitation-gated.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-08-18T15:22:00Z",
-                "note": "Official awards index showed #45 in Initial Review after its August 16 deadline."
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Official awards index showed #46 in Submission through November 8, 2026."
               },
               {
                 "class": "C",
-                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
-                "observedAt": "2026-08-18T15:24:51Z",
-                "note": "Scout reported #45 Initial Review, no submission window, and no round in Submission."
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-09-03T15:39:35.870Z",
+                "note": "Scout reported currentRound=46, currentPhase=Submission, and one separate synthetic round row."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
+            "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the rolling interest-to-invitation path.",
+            "Sibling sweep 2026-09-03: q-scf-open-rfps and Build entry-flow cases remain consistent.",
             "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
             "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
@@ -47226,7 +47242,7 @@
         "scout.searchRepos"
       ],
       "golden": {
-        "answer": "As of **2026-08-05**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
+        "answer": "As of **2026-09-03**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
         "keyFacts": [
           "Names all three dated CVE/GHSA/package mappings and patched branch releases.",
           "Requires live re-checking and upgrade/recompile review."
@@ -47249,8 +47265,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-10",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-10",
         "sources": [
           {
             "class": "B",
@@ -47283,52 +47299,52 @@
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-07-28, the rs-soroban-sdk repository publishes exactly three advisories: CVE-2026-24889/GHSA-96xm for soroban-sdk, CVE-2026-26267/GHSA-4chv for soroban-sdk-macros, and CVE-2026-32322/GHSA-x2hw for soroban-sdk, with the stated patched 22/23/25 branch releases.",
+            "claim": "As of 2026-09-03, the rs-soroban-sdk repository publishes exactly three advisories: CVE-2026-24889/GHSA-96xm for soroban-sdk, CVE-2026-26267/GHSA-4chv for soroban-sdk-macros, and CVE-2026-32322/GHSA-x2hw for soroban-sdk, with the stated patched 22/23/25 branch releases.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/rs-soroban-sdk/security/advisories/GHSA-96xm-fv9w-pf3f",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-09-03"
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/rs-soroban-sdk/security/advisories/GHSA-4chv-4c6w-w254",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-09-03"
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/rs-soroban-sdk/security/advisories/GHSA-x2hw-px52-wp4m",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-09-03"
               },
               {
                 "class": "D",
-                "ref": "https://nvd.nist.gov/vuln/detail/CVE-2026-24889",
-                "observedAt": "2026-07-28"
+                "ref": "https://api.osv.dev/v1/vulns/CVE-2026-24889",
+                "observedAt": "2026-09-03"
               },
               {
                 "class": "D",
-                "ref": "https://nvd.nist.gov/vuln/detail/CVE-2026-26267",
-                "observedAt": "2026-07-28"
+                "ref": "https://api.osv.dev/v1/vulns/CVE-2026-26267",
+                "observedAt": "2026-09-03"
               },
               {
                 "class": "D",
-                "ref": "https://nvd.nist.gov/vuln/detail/CVE-2026-32322",
-                "observedAt": "2026-07-28"
+                "ref": "https://api.osv.dev/v1/vulns/CVE-2026-32322",
+                "observedAt": "2026-09-03"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-05",
-          "by": "Solo Todo 1390 independent early scheduled security-advisory re-verification.",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
-            "GitHub's canonical repository-advisory API returned exactly GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m with the package and patched-version mappings stated above on 2026-08-05.",
-            "NVD independently listed all three CVEs as Analyzed with the same GHSA references; its prose for CVE-2026-24889 contains a garbled version range, so the structured repository advisory remains authoritative for patched versions.",
-            "The repository release API returned v27.0.5 (published 2026-08-03T20:52:03Z); the answer deliberately does not pin a current SDK version."
+            "GitHub's repository-advisory API returned GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254, and GHSA-x2hw-px52-wp4m with the stated package and patched-version mappings on 2026-09-03.",
+            "OSV independently returned the same three CVEs on 2026-09-03. No listed advisory was withdrawn.",
+            "Sibling sweep 2026-09-03: q-soroban-sdk-cve remains the only current repository-advisory mapping case; no contradiction found."
           ],
           "rootCause": [
-            "Scheduled security-advisory freshness re-verification found no new repository advisory and refreshed the current release observation without pinning it in the answer."
+            "freshness-recheck"
           ]
         },
         "origin": "raven-next q-soroban-sdk-cve"
@@ -51345,7 +51361,7 @@
         "scout.explainRepo"
       ],
       "golden": {
-        "answer": "For the first `getTransactions` page, send an inclusive `startLedger` and an optional `limit`. For continuation, omit `startLedger` and send the prior response's opaque `pagination.cursor`; the cursor resumes after the last returned position. `startLedger` and `cursor` are mutually exclusive. Process idempotently and persist the new cursor only after downstream writes succeed.\n\nAs of **2026-07-11**, stock Stellar RPC configuration defaults `getTransactions` to 50 records and a maximum of 200, but source exposes operator-configurable default/max options; treat provider behavior as configurable rather than a protocol constant. Horizon is separately 1–200/default 10; stock `getEvents` is 100/10000 and `getLedgers` is 50/200. Check the current provider and `getHealth` retention bounds. RPC returns failed as well as successful transactions, diagnostic events may be absent, and a cursor cannot recover history outside retention; use a suitable indexer/data-lake path when falling behind.\n\nIn default base64 mode, decode `envelopeXdr` as `TransactionEnvelope`, `resultXdr` as `TransactionResult`, `resultMetaXdr` as `TransactionMeta`, `diagnosticEventsXdr` entries as `DiagnosticEvent`, and `transactionEventsXdr` entries as `TransactionEvent`; contract-event payloads use `ContractEvent`. The public JS SDK may already parse these fields. With `xdrFormat=json`, the response uses corresponding `*Json` names, so do not expect base64-field names or double-decode SDK values.",
+        "answer": "For the first `getTransactions` page, send an inclusive `startLedger` and an optional `limit`. For continuation, omit `startLedger` and send the prior response's opaque `pagination.cursor`; the cursor resumes after the last returned position. `startLedger` and `cursor` are mutually exclusive. Process idempotently and persist the new cursor only after downstream writes succeed.\n\nAs of **2026-09-03**, stock Stellar RPC configuration defaults `getTransactions` to 50 records and a maximum of 200, but source exposes operator-configurable default/max options; treat provider behavior as configurable rather than a protocol constant. Horizon is separately 1–200/default 10; stock `getEvents` is 100/10000 and `getLedgers` is 50/200. Check the current provider and `getHealth` retention bounds. RPC returns failed as well as successful transactions, diagnostic events may be absent, and a cursor cannot recover history outside retention; use a suitable indexer/data-lake path when falling behind.\n\nIn default base64 mode, decode `envelopeXdr` as `TransactionEnvelope`, `resultXdr` as `TransactionResult`, `resultMetaXdr` as `TransactionMeta`, `diagnosticEventsXdr` entries as `DiagnosticEvent`, and `transactionEventsXdr` entries as `TransactionEvent`; contract-event payloads use `ContractEvent`. The public JS SDK may already parse these fields. With `xdrFormat=json`, the response uses corresponding `*Json` names, so do not expect base64-field names or double-decode SDK values.",
         "keyFacts": [
           "Uses inclusive startLedger first, then the returned opaque cursor without startLedger.",
           "Lists getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, Horizon 10/200.",
@@ -51374,8 +51390,8 @@
         },
         "domain": "real-world",
         "status": "disputed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-01",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2027-01-14",
         "sources": [
           {
             "class": "A",
@@ -51417,8 +51433,8 @@
               {
                 "class": "B",
                 "ref": "B: stellar/stellar-rpc cmd/stellar-rpc/internal/config/options.go — max-transactions-limit DefaultValue uint(200), default-transactions-limit uint(50)",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "observedAt": "2026-09-03",
+                "note": "The source exposes configurable max-transactions-limit and default-transactions-limit defaults of 200 and 50."
               }
             ]
           },
@@ -51429,13 +51445,13 @@
               {
                 "class": "A",
                 "ref": "A: the docs literally say 'hardcoded in Stellar-RPC for performance reasons'",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "observedAt": "2026-09-03",
+                "note": "The official page calls the 200 maximum hardcoded and gives default 50."
               },
               {
                 "class": "B",
                 "ref": "B: the source shows operator-configurable options (--max-transactions-limit, CLI/TOML/env settable; only validation is default<=max) — 200/50 are shipped defaults, not constants. Golden phrases it as 'docs describe as hardcoded; source shows configurable defaults'. Filed upstream: improvements/stellar-docs/sd-004",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-09-03",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
@@ -51496,8 +51512,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
             "eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)",
             "Live 2026-07-03: developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — limit 'can range from 1 to 200 — an upper limit that is hardcoded in Stellar-RPC for performance reasons', default 50",
@@ -51518,9 +51534,9 @@
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/data-format — base64 *Xdr fields, JSON *Json fields, and SDK parsing remained distinct response forms.",
             "Sibling sweep 2026-08-27: grep getTransactions|resultMetaXdr|xdrFormat → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr; no contradiction",
             "Owner fix after independent review 2026-08-27: program-log.md § Session 2 › Batch 5 › Part 3 review (gt2-grok-rev) restored the fall-behind behavior claim; truth unchanged versus HEAD.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — the official page calls 200 a hardcoded upper limit and gives default 50.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/config/options.go — source exposes max-transactions-limit and default-transactions-limit with stock defaults 200 and 50.",
-            "Sibling sweep 2026-08-29: grep getTransactions|hardcoded|max-transactions-limit → q-ti-rpc-gettransactions-pagination-xdr and q-ti-parse-raw-ledger-data; no contradiction.",
+            "Live re-check 2026-09-03: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — the official page calls 200 a hardcoded upper limit and gives default 50.",
+            "Live re-check 2026-09-03: https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/config/options.go — source exposes max-transactions-limit and default-transactions-limit with stock defaults 200 and 50.",
+            "Sibling sweep 2026-09-03: q-ti-rpc-gettransactions-pagination-xdr and q-ti-parse-raw-ledger-data retain the same configurable-default caution; no contradiction.",
             "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/source conflict and rejected universal immutability."
           ],
           "rootCause": [
@@ -52449,23 +52465,23 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**. Current guidance says saved secrets are obfuscated, not encrypted; entries saved before September 2025 may remain plaintext until re-saved. Do not treat Saved as secure custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
+        "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include wallet-kit, hardware, external, and raw-secret paths. Prefer a wallet, hardware, or a separately trusted external signer. Lab performs raw-secret signing in browser JavaScript. Saved Keypairs is limited to Testnet and Futurenet. The live UI and current source store secret keys unencrypted in browser `localStorage`. The official page still says they are obfuscated. Treat this as a canonical-page conflict. Never use Saved Keypairs for Mainnet custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
         "keyFacts": [
           "Covers current transaction, XDR, contract, RPC, Horizon, and sharing capabilities.",
           "Prefers non-secret browser flow across wallet-kit/hardware/external/raw-secret signers.",
-          "Calls Saved Keypairs obfuscated, with pre-September-2025 plaintext until re-saved.",
+          "Records the current Saved Keypairs documentation and implementation conflict.",
           "Treats self-hosted/local and deliberately isolated offline/air-gapped signing as distinct.",
           "Distinguishes stellar contract asset deploy from contract id asset deterministic lookup.",
           "Keeps Friendbot/trustlines asset-specific and Saved Keypairs Testnet/Futurenet-only."
         ],
         "avoid": [
-          "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed; do not claim every current entry is plaintext either.",
+          "Do NOT call Saved Keypairs encrypted, protected, offline, air-gapped, or suitable for a Mainnet seed. Attribute any obfuscation claim to the official page.",
           "Do NOT assert hosted/self-hosted Lab universally never transmits secrets or require Freighter as the only signer.",
           "Do NOT paste/save production secrets, sign/submit during read-only verification, or treat Quickstart as production infrastructure.",
           "Do NOT claim contract id asset deploys a SAC or invent a dedicated current Lab SAC button without rechecking.",
           "Do NOT freeze old Laboratory URLs/screenshots/coordinates, use Mainnet Friendbot, or say a trustline credits tokens."
         ],
-        "notes": "GT-54 refreshed 2026-08-04: grade current capability and signer categories, test-only Saved Keypairs that are obfuscated rather than encrypted (with pre-September-2025 plaintext migration caveat), the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise remains false; source inspection cannot prove universal non-egress.\nAccurately quoting the canonical Stellar documentation on pre-fix Saved Keypairs guidance without the obfuscated-not-encrypted warning is not a wrong claim while a cached or older copy still shows the guidance fixed on 2026-07-27 by sd-030; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-54 refreshed 2026-09-03. Grade current capabilities, signer categories, offline boundaries, and SAC deployment correctly. The official Saved Keypairs page says secrets are obfuscated. Current source writes `SavedKeypair.secretKey` through direct JSON serialization. The live page says storage is unencrypted and unprotected. Treat the storage representation as disputed. An attributed official documentation claim is not a wrong claim; grade it at partial. An unqualified current-obfuscation claim conflicts with implementation. This caution expires after source, UI, and documentation agree."
       },
       "tags": {
         "category": "tooling-infra",
@@ -52478,8 +52494,8 @@
           "reviewState": "none"
         },
         "domain": "mixed",
-        "status": "mixed",
-        "asOf": "2026-08-04",
+        "status": "disputed",
+        "asOf": "2026-09-03",
         "reverifyBy": "2026-10-01",
         "sources": [
           {
@@ -52545,26 +52561,26 @@
             "note": "Legacy verdict: confirmed-as-of-2026-07-11."
           },
           {
-            "claim": "Saved Keypairs are obfuscated rather than encrypted; entries saved before September 2025 may remain plaintext until re-saved. Self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified.",
-            "verdict": "confirmed",
+            "claim": "Current documentation says Saved Keypairs are obfuscated, while current source and live UI show unencrypted JSON storage.",
+            "verdict": "disputed",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
-                "observedAt": "2026-08-04",
-                "note": "Current guidance limits use to Testnet/Futurenet, says never Mainnet, and describes obfuscation plus the pre-September-2025 plaintext migration caveat."
+                "observedAt": "2026-09-03",
+                "note": "The page says saved keys are obfuscated but not encrypted."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/laboratory",
-                "observedAt": "2026-08-04",
-                "note": "Current source preserves the browser-local signing and storage boundary; it does not turn Saved Keypairs into encrypted custody."
+                "ref": "https://github.com/stellar/laboratory/blob/master/src/helpers/localStorageSavedKeypairs.ts",
+                "observedAt": "2026-09-03",
+                "note": "The helper serializes SavedKeypair objects directly with JSON.stringify."
               },
               {
                 "class": "F",
-                "ref": "F: browser storage/network inspection using throwaway public data only",
-                "observedAt": "2026-07-11",
-                "note": "Historical browser inspection; the 2026-08-04 storage correction was documentation- and source-based, with no new empirical browser execution claimed."
+                "ref": "https://lab.stellar.org/account/saved",
+                "observedAt": "2026-09-03",
+                "note": "The live UI says localStorage is unencrypted and has no protection."
               }
             ],
             "note": "The storage format is confirmed; the universal non-egress negative remains intentionally unclaimed."
@@ -52595,26 +52611,26 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently rejected the offline/SAC wording; blind helper 3388 was fully harvested before matrix seal.",
             "Current official Saved Keypairs guidance: obfuscated rather than encrypted; pre-September-2025 entries may remain plaintext until re-saved.",
             "Sibling sweep checked q-tool-lab-what-is, Quickstart/local network, native XLM SAC, SAC/custom-token, secret recovery and faucet cases; no sibling may equate local browser state with an air gap or ID derivation with deployment.",
             "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Saved Keypairs warning; golden truth unchanged.",
-            "Improvement finding read 2026-08-27: improvements/resolved.json entry sd-030; disputed claim: pre-fix Saved Keypairs guidance omitted the obfuscated-not-encrypted security boundary.",
+            ".agents/rounds/2026-09-03-truth-maintenance/golden-sol.md — source classes A, B, and F rechecked the Saved Keypairs conflict on 2026-09-03.",
             "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
             "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction",
             "Structural re-form (negative-predicate): tightened five facts in place while keeping the six-item migration exception; existing avoid items retain UI-freezing, encrypted/secure-custody, and universal non-egress traps, so truth is unchanged",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab — current transaction, XDR, contract, RPC, Horizon, and sharing capabilities remain available",
             "Live re-check 2026-08-27: https://github.com/stellar/laboratory — wallet-kit, hardware, external, and raw-secret signer paths remain present with non-secret browser flows preferred",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab/saved/keypairs — Saved Keypairs remain obfuscated, with pre-September-2025 plaintext possible until re-saved",
+            "Live re-check 2026-09-03: https://developers.stellar.org/docs/tools/lab/saved/keypairs, https://github.com/stellar/laboratory/blob/master/src/helpers/localStorageSavedKeypairs.ts, and https://lab.stellar.org/account/saved — documentation says obfuscated, while source and UI show unencrypted storage.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart — self-hosted/local Lab and deliberately isolated offline/air-gapped signing remain distinct",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks and https://developers.stellar.org/docs/tools/lab/saved/keypairs — Friendbot/trustlines remain asset-specific and Saved Keypairs remain Testnet/Futurenet-only",
-            "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|Stellar Lab|contract asset deploy → q-tool-lab-what-is, q-asset-deploy-sac-cli, q-ti-secret-key-vs-mnemonic-derivation; contradiction found: q-ti-secret-key-vs-mnemonic-derivation still calls Saved Keypairs plaintext browser storage"
+            "Sibling sweep 2026-09-03: q-ti-secret-key-vs-mnemonic-derivation and q-ti-stellar-lab-usage-and-new-ui both treat Saved Keypairs as Testnet/Futurenet browser storage and reject custody use."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-030-lab-saved-keypairs-offline-boundary.md",
+            "improvements/stellar-docs/sd-049-lab-saved-keypairs-obfuscation-conflict.md",
             "Eval-side product/security drift: a browser-local convenience was promoted into a safe offline workflow and SAC identity was promoted into deployment.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
@@ -53771,8 +53787,8 @@
         },
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-03",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-03",
         "sources": [
           {
             "class": "C",
@@ -53866,9 +53882,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C returned 43 rows and unchanged enums. A/B confirmed the official skill catalog and source links.",
+            "Sibling sweep 2026-09-03: q-tool-skill-detail-install remains the exact-detail lane; no contradiction found.",
             "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
             "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
             "Dated uncertainty: Scout /api/status reported nine upstream SDF skills while /api/skills?source=sdf returned seven rows; no reconciliation or frozen count is inferred from those source-relative values.",
@@ -54703,8 +54721,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-03",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-10",
         "sources": [
           {
             "class": "C",
@@ -54799,9 +54817,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C returned current indexer results. B confirmed the current official repository roles and activity.",
+            "Sibling sweep 2026-09-03: q-tool-sdk-repos-discovery preserves the same role-separation boundary; no contradiction found.",
             "C: live https://stellarlight.xyz/api/repos/search probes at 2026-08-05T20:45-20:46Z returned current stellar/stellar-ledger-data-indexer, stellar/stellar-galexie, stellar/go-stellar-sdk, stellar/stellar-etl, and subquery/stellar-subql-starter rows with answer-time activity metadata.",
             "A/B: https://developers.stellar.org/docs/data/indexers, https://developers.stellar.org/docs/build/guides/events/ingest, and the four direct stellar/* repositories independently confirmed distinct indexer, exporter/data-lake, ingest-library, and ETL roles plus the seven-day getEvents retention ceiling.",
             "Uncertainty remains source-bounded: Scout rows and timestamps do not prove global repository coverage, deployment, security, or quality.",
@@ -55069,8 +55089,8 @@
         },
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-03",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-17",
         "sources": [
           {
             "class": "C",
@@ -55145,9 +55165,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C defined issue-only totals and backlog semantics. D confirmed GitHub issue and pull-request distinctions.",
+            "Sibling sweep 2026-09-03: q-tool-developer-leaderboard-live keeps backlog separate from activity; no contradiction found.",
             "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 at 2026-08-05T20:45:09.140Z returned 880 project rows in scope, dataAsOf 2026-08-05T19:33:42.232Z, and rank/openIssuesTotal/repoCount/lastActivityAt fields with explicit metric definitions.",
             "A/F: GitHub issue-search semantics and a live keybase/client sample independently separated 4,046 open issues from 210 open pull requests while REST open_issues_count reported 4,257, confirming that the REST field is not issue-only.",
             "Uncertainty remains scope-bound: Scout confirms its cached included-repository rollup, not every project aggregate or a live GitHub census.",
@@ -55895,8 +55917,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-03",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-24",
         "sources": [
           {
             "class": "C",
@@ -55964,9 +55986,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C returned current SDK rows. A/B confirmed current ownership and repository identity.",
+            "Sibling sweep 2026-09-03: q-tool-indexer-repos-discovery keeps the same source-bound discovery rule; no contradiction found.",
             "C: https://stellarlight.xyz/api/repos/search?q=sdk&limit=10 at 2026-08-05T20:47:26.563Z returned 10 of 334 current rows, including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, and stellar/go-stellar-sdk with answer-time rank/activity metadata; an XDR probe separately returned stellar/stellar-xdr and stellar/rs-stellar-xdr.",
             "A/B: https://developers.stellar.org/docs/tools/sdks/client-sdks, https://developers.stellar.org/docs/tools/sdks/contract-sdks, the direct repository APIs, and the @stellar/stellar-sdk package independently confirmed role, owner, language, archive state, activity, and package identity.",
             "Uncertainty remains source-bounded: Scout rank, score, stars, and current rows do not establish global coverage, security, correctness, ownership, or production readiness.",
@@ -56147,8 +56171,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-24",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-24",
         "sources": [
           {
             "class": "C",
@@ -56215,9 +56239,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C returned a `soroban` soft-empty and current `smart-contracts` detail. A/B confirmed the slug and files.",
+            "Sibling sweep 2026-09-03: q-tool-cli-skills-discovery remains the broad catalog lane; no contradiction found.",
             "C: https://stellarlight.xyz/api/skills/soroban returned a 404 soft-empty on 2026-08-05, while the source=sdf list and /api/skills/smart-contracts returned the current Smart Contracts detail whose text explicitly covers anything called Soroban and names development.md, testing.md, and security.md.",
             "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-08-05; its source agrees with Scout.",
             "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery.",
@@ -56274,8 +56300,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-05",
-        "reverifyBy": "2026-09-29",
+        "asOf": "2026-09-03",
+        "reverifyBy": "2026-12-31",
         "sources": [
           {
             "class": "C",
@@ -56342,9 +56368,11 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-03",
+          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
           "evidence": [
+            "C returned current passkey and smart-account rows. B confirmed active official repositories.",
+            "Sibling sweep 2026-09-03: q-tool-passkeykit-smart-wallet keeps the authorization boundary; no contradiction found.",
             "C: Scout exact searches on 2026-08-05 returned the active stellar/smart-account-kit and stellar/passkey-kit rows alongside archived kalepail move pointers; results remain dated source-scoped retrieval evidence, not proof of quality or completeness.",
             "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework. Direct repository metadata confirmed the stellar repositories active and the kalepail pointers archived.",
             "A: the current developers.stellar.org smart-wallet guide still links the archived kalepail/passkey-kit pointer; that residual is already owned by active finding sd-034 rather than a new finding.",

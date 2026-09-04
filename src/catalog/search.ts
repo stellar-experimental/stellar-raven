@@ -46,6 +46,11 @@ import {
   toPascalCase,
   type JsonSchema
 } from "./vendor/json-schema-types.ts";
+import {
+  isOversizedOutputBlock
+} from "./output-compaction.ts";
+
+export { COMPACT_OUTPUT_THRESHOLD } from "./output-compaction.ts";
 
 export type { Catalog, CatalogEntry } from "./types.ts";
 
@@ -356,30 +361,6 @@ function outputItemKeysOf(entry: CatalogEntry): Record<string, string[]> {
 }
 
 /**
- * Search-hit output-type compaction threshold. In a search hit, an
- * operation whose rendered OUTPUT type block exceeds this many chars is
- * replaced by a stub declaration (see renderSignature). Why 2000: measured
- * over the whole manifest (2026-07-06), every operation's output block was
- * ≤1,350 chars except three Scout monsters — scout.searchProjects (12,681),
- * scout.searchRepos (4,122), scout.explainRepo (2,099) — so 2000 sat in the
- * dead zone between the ordinary population and the outliers. Coverage has
- * since grown with upstream schemas, not with any threshold change: Scout
- * 1.8.28 pushed several shared response schemas over the line and 1.8.30
- * added ~622 chars of shared `meta` prose (nullable `total` + `totalBasis`),
- * carrying getHackathon and searchResearch over too. 15 Scout operations
- * compact today; the exact set is pinned in test/search.test.ts so a later
- * schema refresh cannot silently widen it. The intent is unchanged — trim
- * only the outliers (a limit-10 page carrying searchProjects was ~26KB, ~6.5k
- * tokens, with the bloat usually attached to an OFF-TARGET hit, making the
- * wrong call the easiest one to copy) while leaving every other operation's
- * search signature byte-identical. Applies to output blocks only — the input
- * type and the callable envelope line are what the model needs to MAKE the
- * call and are never compacted anywhere; the full output type stays one
- * `codemode.describe(id)` away inside `execute`.
- */
-export const COMPACT_OUTPUT_THRESHOLD = 2000;
-
-/**
  * Stub declaration standing in for an oversized output type block in a
  * search hit. Keeps (a) the type NAME the callable line references, so the
  * signature still reads as one coherent declaration set, and (b) the output
@@ -449,7 +430,7 @@ export function renderSignature(
   if (entry.outputSchema) {
     const outputBlock = jsonSchemaToType(entry.outputSchema as JsonSchema, `${typeBase}Output`);
     parts.push(
-      opts?.compactOversizedOutput && outputBlock.length > COMPACT_OUTPUT_THRESHOLD
+      opts?.compactOversizedOutput && isOversizedOutputBlock(outputBlock)
         ? compactOutputStub(entry, `${typeBase}Output`)
         : outputBlock
     );

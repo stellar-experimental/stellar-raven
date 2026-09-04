@@ -34,8 +34,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-24",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-24",
     "sources": [
       {
         "class": "C",
@@ -102,9 +102,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "C returned a `soroban` soft-empty and current `smart-contracts` detail. A/B confirmed the slug and files.",
+        "Sibling sweep 2026-09-03: q-tool-cli-skills-discovery remains the broad catalog lane; no contradiction found.",
         "C: https://stellarlight.xyz/api/skills/soroban returned a 404 soft-empty on 2026-08-05, while the source=sdf list and /api/skills/smart-contracts returned the current Smart Contracts detail whose text explicitly covers anything called Soroban and names development.md, testing.md, and security.md.",
         "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-08-05; its source agrees with Scout.",
         "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery.",

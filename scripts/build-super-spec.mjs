@@ -5,10 +5,9 @@
  *
  * Emits specs/super-spec.json: ONE OpenAPI-3.1-STYLE document covering every
  * service this MCP fronts — lumenloop, scout, stellarDocs — plus a synthetic
- * `skills` core service. This is the document the code-shaped `search` tool
- * injects into its Dynamic Worker sandbox as `codemode.spec()` (mirroring
- * @cloudflare/codemode's openApiMcpServer), and that `execute` exposes via
- * the same `codemode.spec()` call.
+ * `skills` core service. `execute` exposes this document in its Dynamic
+ * Worker sandbox as `codemode.spec()`. The retired code-shaped search runner
+ * keeps the same document available for controlled A/B work.
  *
  * Dialect (see design doc §1):
  *  - paths keyed by namespaced callable name: `/{service}/{operation}`
@@ -47,6 +46,7 @@ import {
 } from "./description-notes.mjs";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts } from "./lib/skill-mirror.mjs";
+import { compactResponseSchema } from "./lib/super-spec-compaction.ts";
 import { RETIRED_ONBOARDING_SKILLS, scrubNonExposedRefs } from "./exposure.mjs";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
@@ -56,6 +56,12 @@ import { applyModelContractCorrection } from "./catalog-data/model-contract-corr
 // build-catalog.mjs's src/ imports).
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
+import { isOversizedOutputBlock } from "../src/catalog/output-compaction.ts";
+import {
+  jsonSchemaToType,
+  sanitizeToolName,
+  toPascalCase
+} from "../src/catalog/vendor/json-schema-types.ts";
 import { parseFrontmatter, plainText, slugify } from "./lib/skill-markdown.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -93,6 +99,45 @@ function firstSentence(text, max = 120) {
 
 function exposedIds(manifest) {
   return new Set(manifest.entries.map((e) => e.id));
+}
+
+/**
+ * Replace only oversized success-response schemas in codemode.spec().
+ *
+ * The decision uses the same rendered-output threshold as compact search
+ * signatures. The compact schema keeps the exact top-level property names
+ * and required list. The catalog remains the full-schema source used by
+ * codemode.describe(id).
+ */
+function compactOversizedResponseSchemas(paths, manifest) {
+  const entries = new Map(
+    manifest.entries.filter((entry) => entry.kind === "operation").map((entry) => [entry.id, entry])
+  );
+  const compacted = [];
+
+  for (const item of Object.values(paths)) {
+    for (const op of Object.values(item)) {
+      const entry = entries.get(op.operationId);
+      if (!entry?.outputSchema) continue;
+
+      const operationName = entry.id.slice(entry.id.lastIndexOf(".") + 1);
+      const typeName = `${toPascalCase(sanitizeToolName(operationName))}Output`;
+      const outputBlock = jsonSchemaToType(entry.outputSchema, typeName);
+      if (!isOversizedOutputBlock(outputBlock)) continue;
+
+      const media = op.responses?.["200"]?.content?.["application/json"];
+      if (!media?.schema) {
+        throw new Error(
+          `super-spec: oversized output schema for ${entry.id} has no application/json 200 response`
+        );
+      }
+
+      media.schema = compactResponseSchema(entry);
+      compacted.push(entry.id);
+    }
+  }
+
+  return compacted.sort();
 }
 
 // ---------------------------------------------------------------------------
@@ -713,6 +758,8 @@ async function main() {
     }
   }
 
+  const compactedResponseSchemas = compactOversizedResponseSchemas(paths, catalogManifest);
+
   const serviceTags = [
     {
       name: "lumenloop",
@@ -820,7 +867,7 @@ async function main() {
   writeFileAtomic(OUT_PATH, pretty);
 
   // Size report (design doc §4): the compact form is what ships into the
-  // sandbox per search — that's the number that matters.
+  // sandbox, so that is the number that matters.
   const compactBytes = Buffer.byteLength(JSON.stringify(sorted), "utf8");
   const prettyBytes = Buffer.byteLength(pretty, "utf8");
   const counts = {};
@@ -833,6 +880,11 @@ async function main() {
   console.log(`specs/super-spec.json — ${Object.keys(sorted.paths).length} paths (all callable)`);
   if (droppedComponents.length) {
     console.log(`  pruned ${droppedComponents.length} unreachable component(s): ${droppedComponents.join(", ")}`);
+  }
+  if (compactedResponseSchemas.length) {
+    console.log(
+      `  compacted ${compactedResponseSchemas.length} oversized response schema(s): ${compactedResponseSchemas.join(", ")}`
+    );
   }
   for (const [svc, c] of Object.entries(counts).sort()) {
     console.log(`  ${svc}: ${c} operations`);

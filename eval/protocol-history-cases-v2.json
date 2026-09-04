@@ -5,6 +5,13 @@
   "version": 2,
   "authoredAt": "2026-09-03",
   "targetOperation": "scout.searchResearch",
+  "sourceEpoch": {
+    "frozenAt": "2026-09-02T17:27:40.000Z",
+    "manifestSha256": "4cd28f4bdfe8c73950e0a6d4dfa1a09dd2f82674859e93990fdd62daef24fe8b",
+    "targetScoringSha256": "c3956d225eba75f0543a9aa0d7cf42dc3f6169189e1e3f995f028a6252a42752",
+    "targetRoutingSha256": "468a9d9834e8cb50cb905f80ccc42f9d3daa7a3d0ff2d8c5194d566812ba716b",
+    "caseAuthoringReceipt": ".agents/rounds/2026-09-02-protocol-history-free-evidence/label-review-grok.md"
+  },
   "contractProvenance": {
     "predecessor": "eval/protocol-history-cases.json (protocol-history-routing-v1)",
     "labelReview": ".agents/rounds/2026-09-02-protocol-history-free-evidence/label-review-grok.md",

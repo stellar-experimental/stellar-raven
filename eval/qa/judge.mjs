@@ -23,7 +23,7 @@
  * credential-free failure evidence.
  *
  * Self-test (no server needed; seven paid judge calls against hand-written cases):
- *   node eval/qa/judge.mjs --self-test
+ *   npm run eval:qa:selftest
  * exits non-zero when a candidate result violates its expected grade.
  */
 import { spawnSync } from "node:child_process";
@@ -44,8 +44,19 @@ import {
   PACK_VERSION
 } from "./evidence-pack.mjs";
 import { JUDGE_STABILITY_THRESHOLD } from "./judge-stability.mjs";
+import {
+  agentEnvironmentIdentity,
+  assertExpectedAgentEnvironment,
+  assertExpectedExecutable,
+  executableIdentity
+} from "../lib/executable-identity.mjs";
+import {
+  assertStableGitWorktreeIdentity,
+  gitWorktreeIdentity
+} from "../lib/bound-server-identity.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
+export const P6_SELF_TEST_CALL_SCHEMA = "p6-judge-self-test-call-v1";
 export const DEFAULT_PANEL_CASE_DIVISOR = 3;
 export const DEFAULT_PANEL_CASE_FLOOR = 10;
 export const DEFAULT_PANEL_CASE_CEILING = 34;
@@ -879,6 +890,133 @@ const SELF_TEST_CANDIDATES = [
   }
 ];
 
+export const JUDGE_SELF_TEST_CANDIDATE_COUNT = SELF_TEST_CANDIDATES.length;
+
+function selfTestCandidateInput(candidate) {
+  const baseCase = candidate.caseOverride ?? SELF_TEST_CASE;
+  const kase = candidate.avoidExtra
+    ? {
+        ...baseCase,
+        golden: { ...baseCase.golden, avoid: [...baseCase.golden.avoid, ...candidate.avoidExtra] }
+      }
+    : baseCase;
+  return { ...kase, candidateAnswer: candidate.answer, transcript: candidate.transcript };
+}
+
+export async function runJudgeSelfTestCandidate(
+  index,
+  { judge = judgeCase, maxBudgetUsd = 0.5, log = console.log } = {}
+) {
+  if (!Number.isInteger(index) || index < 0 || index >= SELF_TEST_CANDIDATES.length) {
+    throw new Error(`judge self-test candidate index must be 0-${SELF_TEST_CANDIDATES.length - 1}`);
+  }
+  if (maxBudgetUsd !== 0.5) {
+    throw new Error("judge self-test candidate requires --max-budget-usd 0.50");
+  }
+  const candidate = SELF_TEST_CANDIDATES[index];
+  const verdict = await judge(selfTestCandidateInput(candidate), { maxBudgetUsd });
+  const gradeMatches = candidate.expectNot
+    ? verdict.score !== candidate.expectNot
+    : verdict.score === candidate.expect;
+  const costReported = Number.isFinite(verdict.costUsd);
+  const costWithinCap = costReported && verdict.costUsd >= 0 && verdict.costUsd <= maxBudgetUsd;
+  const ok = gradeMatches && costWithinCap;
+  log(
+    `[${ok ? "PASS" : "FAIL"}] candidate=${candidate.label} ` +
+      `expected=${candidate.expect ?? `not ${candidate.expectNot}`} got=${verdict.score} ` +
+      `costUsd=${costReported ? verdict.costUsd : "missing"}`
+  );
+  return {
+    index,
+    label: candidate.label,
+    expected: candidate.expect ?? `not ${candidate.expectNot}`,
+    actual: verdict.score,
+    costUsd: costReported ? verdict.costUsd : null,
+    maxBudgetUsd,
+    gradeMatches,
+    costReported,
+    costWithinCap,
+    ok
+  };
+}
+
+const SELF_TEST_REPO_ROOT = fileURLToPath(new URL("../../", import.meta.url));
+
+function attestJudgeSelfTestIdentity(
+  { runnerRevision, claudePath, claudeBinarySha256, claudeEnvironmentSha256 },
+  {
+    repoRoot = SELF_TEST_REPO_ROOT,
+    env = process.env,
+    gitIdentity = gitWorktreeIdentity,
+    executableIdentityImpl = executableIdentity,
+    environmentIdentityImpl = agentEnvironmentIdentity
+  } = {}
+) {
+  const runner = gitIdentity(repoRoot);
+  if (runner.dirty) throw new Error("judge self-test candidate requires a clean runner worktree");
+  if (runner.revision !== runnerRevision) throw new Error("judge self-test candidate runner revision mismatch");
+  const binary = assertExpectedExecutable(
+    executableIdentityImpl(claudePath, { env }),
+    claudeBinarySha256,
+    { label: "judge self-test Claude CLI" }
+  );
+  const environment = assertExpectedAgentEnvironment(
+    environmentIdentityImpl(env),
+    claudeEnvironmentSha256,
+    { label: "judge self-test Claude environment" }
+  );
+  return { runner, binary, environment };
+}
+
+function assertStableJudgeSelfTestIdentity(before, after) {
+  assertStableGitWorktreeIdentity(before.runner, after.runner, { label: "judge self-test runner" });
+  for (const field of ["resolvedPath", "realPath", "sha256", "version"]) {
+    if (before.binary[field] !== after.binary[field]) {
+      throw new Error(`judge self-test Claude binary changed during the call (${field})`);
+    }
+  }
+  if (before.environment.sha256 !== after.environment.sha256) {
+    throw new Error("judge self-test Claude environment changed during the call");
+  }
+}
+
+export async function runPinnedJudgeSelfTestCandidate(
+  index,
+  pins,
+  {
+    judge = judgeCase,
+    attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected)
+  } = {}
+) {
+  const before = attestIdentity(pins);
+  const result = await runJudgeSelfTestCandidate(index, {
+    judge: (input, options) => judge(input, { ...options, command: before.binary.resolvedPath }),
+    maxBudgetUsd: 0.5,
+    log() {}
+  });
+  assertStableJudgeSelfTestIdentity(before, attestIdentity(pins));
+  return {
+    schema: P6_SELF_TEST_CALL_SCHEMA,
+    index: result.index,
+    callNumber: result.index + 1,
+    label: result.label,
+    expected: result.expected,
+    actual: result.actual,
+    costUsd: result.costUsd,
+    maxBudgetUsd: result.maxBudgetUsd,
+    gradeMatches: result.gradeMatches,
+    costReported: result.costReported,
+    costWithinCap: result.costWithinCap,
+    ok: result.ok,
+    runnerRevision: before.runner.revision,
+    runnerDirty: before.runner.dirty,
+    claudePath: before.binary.resolvedPath,
+    claudeRealPath: before.binary.realPath,
+    claudeBinarySha256: before.binary.sha256,
+    claudeEnvironmentSha256: before.environment.sha256
+  };
+}
+
 const PROMPT_SHA256_FIXTURES = new Map([
   ["q-aas-burn-clawback-redemption-mechanics", "6f478c2d55d0e005bd8f0dd0a7921889225e950b20653feb70887db32ba80729"],
   ["q-aas-list-token-on-exchanges-aggregators", "bc81cea735e230e55fedd4b3741a91746cf5dc170380ef8706347a30da2a1897"],
@@ -886,7 +1024,7 @@ const PROMPT_SHA256_FIXTURES = new Map([
   ["q-comp-sep8-number-lookup-no-deepresearch", "675edf34d0561b9c28cfc72a020f71f4525623a833ad4537f357a4b8c55f0722"],
   ["q-edge-1xlm-activation-fee", "67334911f145c3a3a445d7dda8df7d8240d5e64a0476298295ef734b051998b0"],
   ["q-edge-ambig-best-wallet", "e2555b8b40a2c8dd845e777d8579fcec8a31e67a59aa808528dae5d4e8baf223"],
-  ["q-edge-factcheck-soroswap-first-amm", "7ae0a8e4575fe3cdd7dd973c395beb5f7184a1039dd1b1f23bcbac5980bcd8f8"],
+  ["q-edge-factcheck-soroswap-first-amm", "9cbc76ff1bb5e6d46edc0df684a9cdd048d8d2469630fa94aceeeab9385a6254"],
   ["q-edge-inject-ignore-instructions", "0ddec216ce2ecab76c04b6dd55d9dac10949f26ac33d81e2c05f1599fea972b2"],
   ["q-edge-noinfo-sep-9999", "93bbb01a84eb4d9610d0e999d0978a84554aae6eb6fc44a03da0222e9abd2618"],
   ["q-edge-oos-bitcoin-price-prediction", "aab4f5e2d0f270db047b4b4d27c4fc2be532404abfd9fdab34e276472722f779"],
@@ -909,15 +1047,15 @@ function loadPromptFixtureCases() {
   return cases;
 }
 
-async function selfTest() {
+export async function runJudgeSelfTestStatic({ log = console.log } = {}) {
   console.log(
-    `judge self-test — model ${JUDGE_MODEL}, rubric ${JUDGE_RUBRIC}, ` +
-      `${SELF_TEST_CANDIDATES.length} candidates: ${SELF_TEST_CANDIDATES.map((candidate) => candidate.label).join(", ")}\n`
+    `judge self-test static preflight — model ${JUDGE_MODEL}, rubric ${JUDGE_RUBRIC}, ` +
+      `${SELF_TEST_CANDIDATES.length} paid candidates registered\n`
   );
   let failures = 0;
-  const paidVerdicts = [];
   const promptCases = loadPromptFixtureCases();
   let promptMatches = 0;
+  const promptMismatches = [];
   for (const [id, expected] of PROMPT_SHA256_FIXTURES) {
     const kase = promptCases.get(id);
     const transcriptEvidence = kase?.tags.freshness !== "stable"
@@ -931,9 +1069,18 @@ async function selfTest() {
         }))
       : "missing";
     if (actual === expected) promptMatches++;
-    else failures++;
+    else {
+      failures++;
+      promptMismatches.push({ id, expected, actual });
+    }
   }
   console.log(`[${promptMatches === 15 ? "PASS" : "FAIL"}] promptSha256 fixtures ${promptMatches}/15 identical under tri-state renderer\n`);
+  for (const mismatch of promptMismatches) {
+    console.log(
+      `  ${mismatch.id}: expected ${mismatch.expected}, actual ${mismatch.actual}`
+    );
+  }
+  if (promptMismatches.length > 0) console.log("");
   const untaggedEvidence = buildTranscriptEvidence({
     ...SELF_TEST_CASE,
     tags: { ...SELF_TEST_CASE.tags, freshness: "stable" },
@@ -1069,35 +1216,51 @@ async function selfTest() {
     console.log("[PASS] execute-only claim snippet guard ignored search result text\n");
   }
 
-  for (const cand of SELF_TEST_CANDIDATES) {
-    const baseCase = cand.caseOverride ?? SELF_TEST_CASE;
-    const kase = cand.avoidExtra
-      ? {
-          ...baseCase,
-          golden: { ...baseCase.golden, avoid: [...baseCase.golden.avoid, ...cand.avoidExtra] }
-        }
-      : baseCase;
-    const verdict = await judgeCase({ ...kase, candidateAnswer: cand.answer, transcript: cand.transcript });
-    paidVerdicts.push(verdict);
-    const ok = cand.expectNot ? verdict.score !== cand.expectNot : verdict.score === cand.expect;
-    if (!ok) failures++;
-    console.log(
-      `[${ok ? "PASS" : "FAIL"}] candidate=${cand.label} expected=${cand.expect ?? `not ${cand.expectNot}`} got=${verdict.score}` +
-        `\n  rationale: ${verdict.rationale}\n  missing: ${JSON.stringify(verdict.missingFacts)}\n  wrong: ${JSON.stringify(verdict.wrongClaims)}\n`
-    );
-  }
-  const paidSummary = summarizePaidJudgeCosts(paidVerdicts);
-  console.log(
-    `paid judge calls: expected=${SELF_TEST_CANDIDATES.length} actual=${paidSummary.callCount}` +
-      ` reportedCosts=${paidSummary.reportedCostCount}` +
-      ` missingCosts=${paidSummary.missingCostCount}` +
-      ` totalCostUsd=${paidSummary.totalCostUsd}\n`
-  );
-  console.log(failures === 0 ? "self-test GREEN" : `self-test RED (${failures} mismatches)`);
-  process.exit(failures === 0 ? 0 : 1);
+  log(failures === 0 ? "judge self-test static GREEN" : `judge self-test static RED (${failures} mismatches)`);
+  return { failures, ok: failures === 0 };
 }
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
-if (isMain && process.argv.includes("--self-test")) {
-  await selfTest();
+if (isMain) {
+  const args = process.argv.slice(2);
+  if (args.length === 1 && args[0] === "--self-test-static") {
+    const result = await runJudgeSelfTestStatic();
+    process.exitCode = result.ok ? 0 : 1;
+  } else if (args.includes("--self-test-candidate")) {
+    const flags = new Set([
+      "--self-test-candidate",
+      "--max-budget-usd",
+      "--runner-revision",
+      "--claude-path",
+      "--expect-claude-binary-sha256",
+      "--expect-claude-environment-sha256"
+    ]);
+    const values = {};
+    if (args.length !== flags.size * 2) {
+      throw new Error(
+        "judge self-test candidate requires the exact candidate, budget, runner, binary, and environment flags"
+      );
+    }
+    for (let index = 0; index < args.length; index += 2) {
+      const flag = args[index];
+      const value = args[index + 1];
+      if (!flags.has(flag) || !value || value.startsWith("--") || Object.hasOwn(values, flag)) {
+        throw new Error("judge self-test candidate requires unique spaced identity flags");
+      }
+      values[flag] = value;
+    }
+    if (values["--max-budget-usd"] !== "0.50") {
+      throw new Error("judge self-test candidate requires --max-budget-usd 0.50");
+    }
+    const result = await runPinnedJudgeSelfTestCandidate(Number(values["--self-test-candidate"]), {
+      runnerRevision: values["--runner-revision"],
+      claudePath: values["--claude-path"],
+      claudeBinarySha256: values["--expect-claude-binary-sha256"],
+      claudeEnvironmentSha256: values["--expect-claude-environment-sha256"]
+    });
+    console.log(JSON.stringify(result));
+    process.exitCode = result.ok ? 0 : 1;
+  } else if (args.includes("--self-test")) {
+    throw new Error("uncapped judge self-test is disabled; run npm run eval:qa:selftest");
+  }
 }

@@ -509,7 +509,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(() => (r as Record<string, unknown>).count).toThrow(/use r\.data\.count/);
   });
 
-  it("object payload: array-only reads list keys and point at the obvious array", async () => {
+  it("object payload: direct object and nested array access stay unchanged", async () => {
     const docsFetch: FetchLike = async () =>
       Response.json({
         hits: [
@@ -528,17 +528,10 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
       data: Record<string, unknown> & { hits: Array<{ url: string }> };
     };
 
-    // The common path reads the own `hits` property directly. The diagnostic
-    // proxy sits only on the payload prototype and does not wrap this array.
     expect(r.data.hits.map((hit) => hit.url)).toEqual([
       "https://developers.stellar.org/docs/learn/fundamentals/fees"
     ]);
-    for (const key of ["map", "filter", "length"] as const) {
-      expect(() => r.data[key]).toThrow(/result payload is an object, not an array/);
-      expect(() => r.data[key]).toThrow(/Top-level payload keys: hits, nbHits, nbPages, page/);
-      expect(() => r.data[key]).toThrow(/Use r\.data\.hits for the array/);
-    }
-    expect(() => [...(r.data as unknown as Iterable<unknown>)]).toThrow(/iteration is array-only/);
+    expect(r.data.nbHits).toBe(1);
   });
 
   it("array payload: map, filter, length, and iteration stay unchanged", async () => {
@@ -631,8 +624,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data).toBeInstanceOf(Payload);
     expect(r.data).toBeInstanceOf(Object);
     expect(r.data.describe()).toBe("class-payload");
-    expect(Object.getPrototypeOf(Object.getPrototypeOf(r.data))).toBe(Payload.prototype);
-    expect(() => (r.data as unknown as { map: unknown }).map).toThrow(/Use r\.data\.hits/);
+    expect(Object.getPrototypeOf(r.data)).toBe(Payload.prototype);
   });
 
   it("keeps a null-prototype payload outside the Object prototype chain", async () => {
@@ -644,8 +636,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data).toBe(payload);
     expect(r.data instanceof Object).toBe(false);
     expect(r.data.toString).toBeUndefined();
-    expect(Object.getPrototypeOf(Object.getPrototypeOf(r.data))).toBeNull();
-    expect(() => r.data.map).toThrow(/Use r\.data\.hits/);
+    expect(Object.getPrototypeOf(r.data)).toBeNull();
   });
 
   it("keeps Map and Set internal-slot operations available", async () => {
@@ -664,25 +655,6 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(setResult.data.size).toBe(2);
     expect(() => structuredClone(mapResult)).not.toThrow();
     expect(() => structuredClone(setResult)).not.toThrow();
-  });
-
-  it("does not invoke own getters while it searches for an array field", async () => {
-    let getterReads = 0;
-    const payload = { hits: [{ id: 1 }] } as Record<string, unknown>;
-    Object.defineProperty(payload, "danger", {
-      enumerable: true,
-      get() {
-        getterReads += 1;
-        throw new Error("danger getter ran");
-      }
-    });
-    const r = await guardSyntheticPayload(payload);
-
-    expect(getterReads).toBe(0);
-    expect(() => r.data.map).toThrow(/Use r\.data\.hits/);
-    expect(getterReads).toBe(0);
-    expect(() => r.data.danger).toThrow("danger getter ran");
-    expect(getterReads).toBe(1);
   });
 
   it("passes through frozen payloads and keeps them structured-clone safe", async () => {
@@ -1188,10 +1160,25 @@ describe("codemode fns", () => {
     expect(miss.error.message).toContain("exact-match");
   });
 
-  it("describe on an operation: FULL signature + raw schemas + usage", async () => {
+  it("describe preserves the full output after the super spec compacts it", async () => {
     // scout.searchProjects is the motivating monster: its search hit stubs
     // the ~12.7KB output type; describe must carry the whole thing.
     const entry = catalog.entries.find((e) => e.id === "scout.searchProjects")!;
+    const superSpec = JSON.parse(readFileSync(join(ROOT, "specs", "super-spec.json"), "utf8")) as {
+      paths: Record<
+        string,
+        Record<
+          string,
+          { responses?: Record<string, { content?: Record<string, { schema?: Record<string, unknown> }> }> }
+        >
+      >;
+    };
+    const compactSchema = superSpec.paths["/scout/searchProjects"]!.get!.responses?.["200"]
+      ?.content?.["application/json"]?.schema;
+    expect(compactSchema?.["x-codemode-describe"]).toBe(
+      'codemode.describe("scout.searchProjects")'
+    );
+    expect(compactSchema?.properties).toEqual({ codeReferences: {}, meta: {}, projects: {} });
     const r = (await codemode.describe!("scout.searchProjects")) as {
       ok: boolean;
       signature: string;
@@ -1212,6 +1199,9 @@ describe("codemode fns", () => {
     // Raw schemas as plain data — the same projection codemode.catalog() uses.
     expect(r.inputSchema).toEqual(entry.inputSchema);
     expect(r.outputSchema).toEqual(entry.outputSchema);
+    expect(JSON.stringify(r.outputSchema).length).toBeGreaterThan(
+      JSON.stringify(compactSchema).length
+    );
     // One-line envelope reminder.
     expect(r.usage).toContain("callable line");
     expect(r.usage).toContain("r.data");

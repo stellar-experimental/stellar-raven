@@ -1,0 +1,15 @@
+{
+  "id": "fixture.requiredWithoutProperty",
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "present": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "present",
+      "missing"
+    ]
+  }
+}

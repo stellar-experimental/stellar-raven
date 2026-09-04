@@ -1097,6 +1097,35 @@ No scorer, corpus, floor, band, or runner operation changed. The holdout was not
 The decision record is `.agents/rounds/2026-09-02-av-created-at-semantics.md`.
 The final passing trace is `routing-2026-09-02T17-26-17-593Z.json`.
 
+## Decision (2026-09-03): Reject Scout 1.9.23 drift
+
+The committed Scout inventory remains 1.9.1.
+The 1.9.23 candidate changed Scout routing and the claim-verification response enum.
+The candidate regressed legacy strict routing from 213/279/312 to 211/277/312.
+It regressed extended strict routing from 90/110/116 to 90/109/114.
+It regressed skills routing from 16/23/23 to 16/22/23.
+
+Raven keeps `scout.getQualityReport` and `scout.verifyClaim` excluded.
+Upstream 1.9.13 narrowed quality routing and completed the issued response enum.
+The quality candidate captured 90 unrelated queries through Raven response-schema
+keyword projection across the 544-case corpus.
+The rejection does not rebaseline `eval/gates.json`.
+See `.agents/rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md`.
+
+## Decision (2026-09-04): Reject Scout 1.9.30 drift
+
+The committed Scout inventory remains 1.9.1.
+The 1.9.30 candidate keeps the same 36 paths and 37 operations.
+It changes 27 operation objects, 15 `x-routing` blocks, 22 direct schemas, and six shared schemas.
+The generated candidate meets the numeric routing floors.
+However, the current gates have no accepted fingerprint for its changed routing intent.
+Both protocol-history v2 contracts also stop as `source-expired` on the current manifest.
+
+Raven therefore rejects the generated 1.9.30 surface.
+It keeps `scout.getQualityReport` and `scout.verifyClaim` excluded.
+No policy, golden answer, finding state, or routing baseline changes with this decision.
+See `.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`.
+
 ## Protocol-history frozen measurement (2026-08-30)
 
 This round adds a frozen diagnostic with eight positive cases and four direct controls.
@@ -1145,6 +1174,11 @@ never affect pass or fail. A v2 pass requires all 19 required cases in the top f
 among the nine forbidden cases. The owner decision and review reconciliation are in
 `.agents/rounds/2026-09-03-owner-decisions.md`.
 
-The current manifest starts v2 at 4/8 required and 1/2 forbidden captures for the original set.
-The blind set starts at 3/11 required and 4/7 forbidden captures. Neutral capture counts are 1/2
-and 2/2. Both contracts remain diagnostic `FAIL`.
+The v2 contracts now pin a source epoch before scoring. Each contract pins the manifest and target
+source hashes. The target hashes cover all scored fields and the complete Scout `x-routing` block.
+
+The runner checks both contracts before the first search. Any mismatch writes a `source-expired`
+audit result without scored sets. Each audit result stamps the actual manifest and contract digests.
+
+The earlier 4/8 and 3/11 readings remain historical diagnostics. Later Scout source changes cannot
+turn those readings into product evidence. A new blind contract needs a new accepted source freeze.

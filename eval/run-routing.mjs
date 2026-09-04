@@ -48,7 +48,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { dirname, resolve, join } from "node:path";
+import { dirname, resolve, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.mjs";
 import { overlayExpectedAnyById, unionExpectedAny } from "./lib/labels.mjs";
@@ -205,7 +205,9 @@ async function main() {
   if (!existsSync(MANIFEST)) throw new Error(`missing ${MANIFEST} — run: node scripts/build-catalog.mjs`);
   if (!existsSync(CASES)) throw new Error(`missing ${CASES} — run: node eval/compile-routing.mjs`);
 
-  const manifestJson = JSON.parse(readFileSync(MANIFEST, "utf8"));
+  const manifestBytes = readFileSync(MANIFEST);
+  const manifestSha256 = createHash("sha256").update(manifestBytes).digest("hex");
+  const manifestJson = JSON.parse(manifestBytes.toString("utf8"));
   const catalog = loadManifest(manifestJson);
   const compiled = JSON.parse(readFileSync(CASES, "utf8"));
 
@@ -468,6 +470,7 @@ async function main() {
       {
         ranAt: new Date().toISOString(),
         gradingRule: "v3-manifest-exposed",
+        manifest: { path: relative(REPO, MANIFEST), sha256: manifestSha256 },
         ...(MANIFEST_FLAG >= 0 ? { manifestOverride: MANIFEST } : {}),
         ...(gate ? { gate } : {}),
         casesFile: { generatedAt: compiled.generatedAt, source: compiled.source, counts: compiled.counts },

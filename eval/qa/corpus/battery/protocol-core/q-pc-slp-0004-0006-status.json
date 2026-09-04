@@ -33,7 +33,7 @@
     "domain": "real-world",
     "status": "mixed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-10-01",
+    "reverifyBy": "2027-01-07",
     "sources": [
       {
         "class": "B",
@@ -91,9 +91,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "B confirmed SLP-0004 Final and SLP-0006 Draft. The question keeps its fixed historical date.",
+        "Sibling sweep 2026-09-03: YieldBlox and protocol cases retain the same status boundary; no contradiction found.",
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
         "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",

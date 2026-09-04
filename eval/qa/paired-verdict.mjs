@@ -8,6 +8,13 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
+import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
+import {
+  REMOTE_IDENTITY_GUARD_SCHEMA,
+  compareRemoteIdentityVectors,
+  parseRemoteIdentityVector,
+  remoteIdentityVectorSha256
+} from "./remote-identity-guard.mjs";
 
 export const PAIRED_VERDICT_METHOD = "qa-paired-ordinal-ni-v1";
 export const CASE_INPUT_IDENTITY = "qa-judge-case-v2";
@@ -145,6 +152,7 @@ function tieringTuple(result) {
 }
 
 function collectionTuple(result) {
+  const remoteGuard = result.meta?.remoteIdentityGuard;
   return {
     variant: result.meta?.variant ?? null,
     surface: result.meta?.surface ?? null,
@@ -155,8 +163,25 @@ function collectionTuple(result) {
     promptAppend: result.meta?.promptAppend ?? null,
     agentBinarySha256: result.meta?.agentBinary?.sha256 ?? null,
     agentEnvironmentSha256: result.meta?.agentEnvironment?.inherited?.sha256 ?? null,
+    judgeBinary: {
+      sha256: result.meta?.judgeBinary?.sha256 ?? null,
+      expectedSha256: result.meta?.judgeBinary?.expectedSha256 ?? null,
+      matches: result.meta?.judgeBinary?.matches ?? null
+    },
+    judgeEnvironment: {
+      sha256: result.meta?.judgeEnvironment?.sha256 ?? null,
+      expectedSha256: result.meta?.judgeEnvironment?.expectedSha256 ?? null,
+      matches: result.meta?.judgeEnvironment?.matches ?? null
+    },
     qaImplementationSha256: result.meta?.sourceIdentity?.qaImplementationSha256 ?? null,
-    caseIdentitySchema: result.meta?.caseIdentitySchema ?? null
+    caseIdentitySchema: result.meta?.caseIdentitySchema ?? null,
+    remoteIdentity: remoteGuard
+      ? {
+          schema: remoteGuard.schema ?? null,
+          probeSha256: remoteGuard.probe?.sha256 ?? null,
+          baselineVector: remoteGuard.baselineVector ?? null
+        }
+      : null
   };
 }
 
@@ -209,6 +234,192 @@ function artifactProblems(result, label) {
   ) {
     problems.push(reason("artifact-incomplete", `${label} does not have complete, allowed aggregates`));
   }
+  const agentBinary = result.meta?.agentBinary;
+  const agentEnvironment = result.meta?.agentEnvironment?.inherited;
+  const judgeBinary = result.meta?.judgeBinary;
+  const judgeEnvironment = result.meta?.judgeEnvironment;
+  const validIdentity = (identity) =>
+    /^[a-f0-9]{64}$/.test(identity?.sha256 ?? "") &&
+    identity.expectedSha256 === identity.sha256 &&
+    identity.matches === true;
+  if (
+    !validIdentity(agentBinary) ||
+    !validIdentity(agentEnvironment) ||
+    !validIdentity(judgeBinary) ||
+    !validIdentity(judgeEnvironment) ||
+    judgeBinary.sha256 !== agentBinary.sha256 ||
+    judgeEnvironment.sha256 !== agentEnvironment.sha256
+  ) {
+    problems.push(reason(
+      "binary-environment-pairing",
+      `${label} does not contain matching expected collection and stored-judge binary and environment stamps`
+    ));
+  }
+  const remoteGuard = result.meta?.remoteIdentityGuard;
+  try {
+    if (
+      remoteGuard?.schema !== REMOTE_IDENTITY_GUARD_SCHEMA ||
+      remoteGuard.matches !== true ||
+      remoteGuard.failure !== null ||
+      remoteGuard.sameAuthorizationResumeAllowed !== false ||
+      remoteGuard.requiresNewAuthorization !== false ||
+      remoteGuard.probe?.matches !== true ||
+      !/^[a-f0-9]{64}$/.test(remoteGuard.probe?.sha256 ?? "") ||
+      remoteGuard.probe.sha256 !== remoteGuard.probe.expectedSha256 ||
+      !Number.isInteger(remoteGuard.completedAnsweringCalls) ||
+      remoteGuard.completedAnsweringCalls < result.rows.length ||
+      remoteGuard.successfulCaptureCount !== remoteGuard.completedAnsweringCalls * 2 + 1 ||
+      !Array.isArray(remoteGuard.captures) ||
+      remoteGuard.captures.length !== remoteGuard.successfulCaptureCount ||
+      remoteGuard.postflight?.attempted !== true ||
+      remoteGuard.postflight.matches !== true ||
+      remoteGuard.postflight.skippedReason !== null
+    ) {
+      throw new Error("incomplete guard record");
+    }
+    const baseline = parseRemoteIdentityVector(remoteGuard.baselineVector);
+    const final = parseRemoteIdentityVector(remoteGuard.finalVector);
+    const baselineSha256 = remoteIdentityVectorSha256(baseline);
+    const finalSha256 = remoteIdentityVectorSha256(final);
+    if (
+      remoteGuard.expectedBaselineVectorSha256 !== baselineSha256 ||
+      remoteGuard.baselineVectorSha256 !== baselineSha256 ||
+      remoteGuard.postflight.vectorSha256 !== finalSha256
+    ) {
+      throw new Error("guard vector pins differ");
+    }
+    if (!compareRemoteIdentityVectors(remoteGuard.baselineVector, remoteGuard.finalVector).matches) {
+      throw new Error("guard vectors differ");
+    }
+    const callCaptures = remoteGuard.captures.slice(0, -1);
+    if (
+      remoteGuard.captures.at(-1)?.phase !== "postflight" ||
+      remoteGuard.captures.at(-1)?.sequence !== remoteGuard.successfulCaptureCount ||
+      remoteGuard.captures.some((capture) => capture.vectorSha256 !== baselineSha256) ||
+      callCaptures.some((capture, index) => (
+        capture.sequence !== index + 1 || capture.phase !== (index % 2 === 0 ? "before" : "after")
+      ))
+    ) {
+      throw new Error("guard capture sequence is incomplete");
+    }
+  } catch {
+    problems.push(
+      reason("remote-identity-guard", `${label} does not contain a complete remote identity guard`)
+    );
+  }
+  return problems;
+}
+
+function adapterArtifactProblems(result, label, expectedMode) {
+  const problems = [];
+  const adapter = result.meta?.runtimeAdapter;
+  const fail = (message) => problems.push(reason("runtime-adapter-pairing", `${label} ${message}`));
+  if (!adapter || typeof adapter !== "object") {
+    fail("does not contain the required runtime adapter record");
+    return problems;
+  }
+  if (adapter.schema !== RUNTIME_ADAPTER_SCHEMA) fail(`uses runtime adapter schema ${adapter.schema ?? "none"}`);
+  if (adapter.mode !== expectedMode) fail(`uses runtime adapter mode ${adapter.mode ?? "none"}; expected ${expectedMode}`);
+  if (!/^[a-f0-9]{40}$/.test(adapter.adapterRevision ?? "")) fail("has an invalid adapter revision");
+  if (!/^[a-f0-9]{64}$/.test(adapter.implementationSha256 ?? "")) fail("has an invalid adapter SHA-256");
+  if (!Number.isInteger(adapter.publicPort) || !Number.isInteger(adapter.upstreamPort)) {
+    fail("has invalid public or private ports");
+  } else if (adapter.publicPort === adapter.upstreamPort) {
+    fail("uses one port for both listeners");
+  }
+  if (adapter.publicPort !== result.meta?.port) fail("does not match the artifact public port");
+
+  const serverRevision = result.meta?.sourceIdentity?.serverRevision;
+  if (!/^[a-f0-9]{40}$/.test(serverRevision ?? "") || adapter.sourceRevision !== serverRevision) {
+    fail("does not match the pinned server revision");
+  }
+
+  const listenerPair = result.meta?.listenerPair;
+  const listenerPairAfter = result.meta?.listenerPairAfter;
+  if (!listenerPair || !listenerPairAfter || !same(listenerPair, listenerPairAfter)) {
+    fail("does not contain matching preflight and postflight listener attestations");
+  } else if (
+    listenerPair.adapter?.port !== adapter.publicPort ||
+    listenerPair.adapter?.revision !== adapter.adapterRevision ||
+    listenerPair.upstream?.port !== adapter.upstreamPort ||
+    listenerPair.upstream?.revision !== serverRevision
+  ) {
+    fail("listener attestations do not match the registered adapter topology");
+  }
+  const listenerGuard = result.meta?.listenerPairGuard;
+  if (
+    listenerGuard?.matches !== true ||
+    listenerGuard.adapter?.matches !== true ||
+    listenerGuard.upstream?.matches !== true
+  ) {
+    fail("does not contain a successful dual-listener stability guard");
+  }
+
+  const attestation = adapter.attestation;
+  const attestationAfter = adapter.attestationAfter;
+  if (!attestation || !attestationAfter || !same(attestation, attestationAfter)) {
+    fail("does not contain matching preflight and postflight adapter attestations");
+  } else if (
+    attestation.matches !== true ||
+    attestation.schema !== RUNTIME_ADAPTER_SCHEMA ||
+    attestation.mode !== expectedMode ||
+    attestation.sourceRevision !== serverRevision ||
+    attestation.implementationSha256 !== adapter.implementationSha256 ||
+    attestation.upstream?.port !== adapter.upstreamPort ||
+    attestation.upstream?.revision !== serverRevision ||
+    attestation.upstream?.dirty !== false
+  ) {
+    fail("adapter attestation does not match the registered adapter topology");
+  }
+  return problems;
+}
+
+function adapterPairingProblems(baselineRuns, candidateRuns) {
+  const artifacts = baselineRuns.flatMap((baseline, index) => [
+    { result: baseline, label: `baseline run ${index + 1}`, mode: "add-missing" },
+    { result: candidateRuns[index], label: `candidate run ${index + 1}`, mode: "verify-native" }
+  ]);
+  const problems = artifacts.flatMap(({ result, label, mode }) =>
+    adapterArtifactProblems(result, label, mode)
+  );
+  const adapters = artifacts.map(({ result }) => result.meta?.runtimeAdapter).filter(Boolean);
+  if (adapters.length === artifacts.length) {
+    const expected = {
+      adapterRevision: adapters[0].adapterRevision,
+      implementationSha256: adapters[0].implementationSha256
+    };
+    for (const { result, label } of artifacts) {
+      const adapter = result.meta.runtimeAdapter;
+      const actual = {
+        adapterRevision: adapter.adapterRevision,
+        implementationSha256: adapter.implementationSha256
+      };
+      if (!same(actual, expected)) {
+        problems.push(reason(
+          "runtime-adapter-pairing",
+          `${label} does not use the shared adapter revision and hash`
+        ));
+      }
+    }
+    for (const arm of ["baseline", "candidate"]) {
+      const armAdapters = artifacts
+        .filter((artifact) => artifact.label.startsWith(arm))
+        .map(({ result }) => result.meta.runtimeAdapter);
+      const ports = {
+        publicPort: armAdapters[0].publicPort,
+        upstreamPort: armAdapters[0].upstreamPort
+      };
+      if (armAdapters.some((adapter) => !same({
+        publicPort: adapter.publicPort,
+        upstreamPort: adapter.upstreamPort
+      }, ports))) {
+        problems.push(reason(
+          "runtime-adapter-pairing",
+          `${arm} runs do not keep one internally attested port pair`
+        ));
+      }
+    }
+  }
   return problems;
 }
 
@@ -229,6 +440,17 @@ function comparisonProblems(baselineRuns, candidateRuns) {
   ]);
   for (const artifact of artifacts) {
     problems.push(...artifactProblems(artifact.result, artifact.label));
+  }
+  if (problems.length) return problems;
+  problems.push(...adapterPairingProblems(baselineRuns, candidateRuns));
+  if (problems.length) return problems;
+
+  const baselineRevisions = baselineRuns.map((run) => run.meta.sourceIdentity.serverRevision);
+  const candidateRevisions = candidateRuns.map((run) => run.meta.sourceIdentity.serverRevision);
+  if (new Set(baselineRevisions).size !== 1 || new Set(candidateRevisions).size !== 1) {
+    problems.push(reason("server-revision-pairing", "each arm must keep one exact server revision"));
+  } else if (baselineRevisions[0] === candidateRevisions[0]) {
+    problems.push(reason("server-revision-pairing", "baseline and candidate server revisions must differ"));
   }
   if (problems.length) return problems;
 
@@ -260,7 +482,12 @@ function comparisonProblems(baselineRuns, candidateRuns) {
     !expectedTuple.resultsSchema ||
     !expectedTuple.agentBinarySha256 ||
     !expectedTuple.agentEnvironmentSha256 ||
-    !expectedTuple.qaImplementationSha256
+    !expectedTuple.judgeBinary.sha256 ||
+    !expectedTuple.judgeEnvironment.sha256 ||
+    !expectedTuple.qaImplementationSha256 ||
+    expectedTuple.remoteIdentity?.schema !== REMOTE_IDENTITY_GUARD_SCHEMA ||
+    !expectedTuple.remoteIdentity?.probeSha256 ||
+    !expectedTuple.remoteIdentity?.baselineVector
   ) {
     problems.push(reason("measurement-tuple", "the load-bearing collection tuple is incomplete"));
   }

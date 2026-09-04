@@ -312,3 +312,22 @@ Artifact `d9de7007…002b`, clause set `bed60846…1ff2`, and vectors `c6acd8b8�
 attempt-era artifact `e5f86644…71f4` by hash. It is no longer the committed artifact.
 No referee was rerun. The decision record is
 `.agents/rounds/2026-09-02-av-created-at-semantics.md`.
+
+The protocol-history clause, reranker, and support artifacts are now banked evidence.
+Normal catalog drift does not require an artifact rebuild.
+
+`loadBankedRerankClauseArtifact()` validates the pinned file, metadata, clause identities, and
+vector payload. It does not reconstruct text from the current catalog.
+
+An intentional referee run still requires the current source to match the artifact.
+The loader reports `surface-expired` before scoring when any source hash changes.
+
+The clause artifact builder applies the same source-epoch check before embedding or writing.
+It cannot replace the banked artifact after source drift.
+
+The leakage test reads `frozen/protocol-history-leakage-source-v1.json`.
+That projection contains only the accepted 2026-09-02 target clauses.
+Its file SHA-256 is `61f1bf7c20ae6491bcc9a5cecb6d7ddb772e44e511624b7e1028063d310ab259`.
+The test links all 27 clause hashes to the banked artifact.
+It checks every frozen v2 question with normalized punctuation and letter case.
+It never reads current production text for the leakage assertion.

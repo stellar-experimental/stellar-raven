@@ -43,6 +43,11 @@ Built by `scripts/build-super-spec.mjs` (`npm run spec:build`); asserted by
     operations via a single `requestBody` JSON schema (lumenloop tools, stellarDocs, skills) —
     matching how each source natively declares them.
 
+Oversized success-response schemas use one general compaction rule. The rule uses the same
+`COMPACT_OUTPUT_THRESHOLD` as search signatures. A compact schema keeps exact top-level field
+names and required names. Its description and `x-codemode-describe` value name the exact
+`codemode.describe("<id>")` call. Inputs and non-oversized response schemas stay unchanged.
+
 ### Vendor extensions (per operation)
 
 | Extension | Content |
@@ -69,14 +74,15 @@ stellarDocs `backend` block **and measured corpus taxonomy**, skills mirror prov
   Lumenloop's embedded OpenAPI (account/billing: `/me*`, `/billing/topup`; discovery:
   `/changelog`, `/tools`, `/skills*`) are **not in the spec at all** (ADR-0003 dropped the
   "included for honesty but always denied" model — the spec describes only what code can call).
-- **scout (24 exposed of 28 upstream ops** — the write/side-effecting endpoints and the
-  feedback-schema dead end are excluded at build time**).** The embedded upstream OpenAPI carried
-  near-verbatim:
-  summary/description/tags/parameters/requestBody/responses unchanged, pathItem-level parameters
-  merged into each op (they'd be orphaned by re-keying), components copied under namespaced names
-  (`#/components/schemas/scout.Project`) with all `$ref`s rewritten accordingly — every `$ref`
-  stays resolvable inside the merged doc (test-asserted), and the sandbox's `__resolveRefs`
-  inlines them on `codemode.spec()`.
+- **scout (30 exposed of 37 upstream ops** — the write/side-effecting endpoints and the
+  feedback-schema dead end are excluded at build time**).** The embedded upstream OpenAPI is
+  carried near-verbatim before general response compaction. Summary, description, tags, parameters,
+  and request bodies remain unchanged. PathItem-level parameters are merged into each operation.
+  Components are copied under namespaced names
+  (`#/components/schemas/scout.Project`) with all `$ref`s rewritten accordingly. Every retained
+  `$ref` stays resolvable inside the merged document. The sandbox's `__resolveRefs` inlines them
+  on `codemode.spec()`. Oversized response schemas use the compact form from §1. Components that
+  only supported compacted responses become unreachable and are pruned.
 - **stellarDocs (12 ops, all allowed).** From the authored `specs/stellar-docs.json`: `params` →
   `requestBody`, `returns` → `responses.200.description`, the per-op `algolia` mapping preserved
   as `x-algolia`, and the shared backend block + measured taxonomy under
@@ -123,21 +129,25 @@ not mirrored.
 
 ## 4. Size — measured, not guessed
 
-From `npm run spec:build` (current — 2026-07-08, after runnable skills shipped; sizes drift with
-each daily refresh, so treat exact bytes as as-of values, not invariants):
+From `npm run spec:build` (current — 2026-09-03, committed Scout 1.9.1 after the rejected
+1.9.23 routing candidate; sizes drift with each daily refresh, so treat exact bytes as as-of
+values, not invariants):
 
 | Measure | Value |
 |---|---|
-| Paths / operations | 54 paths / 54 operations, all callable (18 lumenloop, 20 scout, 12 stellarDocs, 4 skills) |
-| Pretty (checked-in) | drift-checked by `test/super-spec.test.ts` |
-| Compact — the serialized in-sandbox form | must stay under the test-enforced 300 KB budget |
+| Paths / operations | 64 paths / 64 operations, all callable (18 lumenloop, 30 scout, 12 stellarDocs, 4 skills) |
+| Pretty (checked-in) | 287,782 bytes; drift-checked by `test/super-spec.test.ts` |
+| Compact — the serialized in-sandbox form | 174,786 bytes; must stay below the test-enforced 300 KiB limit |
 | Largest single op | `skills.list_skills` (~20 KB — the embedded index) |
 
-Decision: **the full spec ships — no trimmed search view.** The brief's threshold was ~300 KB;
-compact is ~150 KB, well under. Note these tokens never enter the model's context: the spec is
-injected into the *sandbox source* (one-shot isolate); the model sees only the ≤6k-token result.
-The per-call cost is isolate CPU/memory, and the serialized spec string is cached per isolate
-(`getSerializedSpec()` in src/executor/run.ts) so it is escaped/stringified once, not per call.
+Decision: **the full operation surface ships, with oversized response schemas compacted.** The
+hard compact limit remains below 300 KiB. The shared 2,000-character rendered-output rule selects
+schemas for compaction. The builder does not use operation names or service-specific size rules.
+Full output schemas remain in `catalog/manifest.json` and `codemode.describe("<id>")`.
+
+These tokens never enter the model's context unless sandbox code returns them. The per-call cost
+is isolate CPU and memory. The serialized spec string is cached per isolate
+(`getSerializedSpec()` in `src/executor/run.ts`). It is escaped and stringified once per isolate.
 
 Determinism: keys sorted recursively, `generatedAt` inherited from catalog/manifest.json (itself
 derived from input snapshot timestamps, never wall clock). Two consecutive builds are
@@ -179,8 +189,8 @@ Deliberate deltas (each with rationale):
 4. **Two tools ship — the code-shaped search retired (ADR-0001).** The A/B settled 2026-07-02 in
    favor of the host-side ranked query as the top-level `search`; the code-shaped variant moved
    into `execute`'s sandbox. Inside execute, `codemode.spec()`, `codemode.search`, and
-   `codemode.catalog()` all remain (the catalog view and the spec answer different grains: flat
-   scored entries vs full OpenAPI shapes).
+   `codemode.catalog()` all remain. The catalog view and the spec answer different grains: flat
+   scored entries with full schemas versus an OpenAPI operation map with compact oversized outputs.
 5. **~~Denied ops visible with `x-policy.allow=false`~~ — retired by ADR-0003.** The original
    delta made denied ops see-but-not-call; build-time exposure filtering removed the policy
    concept entirely, so this delta no longer exists (the spec now matches upstream in having no
@@ -208,7 +218,10 @@ Deliberate deltas (each with rationale):
   per-service counts (exposed ops only, ADR-0003), path/operationId invariants, x-execute on
   every op, spec = manifest consistency both directions, skills index ↔ catalog section 1:1
   (all 204 exposed), read_skill enum = 18 exposed ids, run_skill enum/index = runnable manifest
-  entries, stellarDocs x-algolia, scout $ref resolvability, <300 KB compact budget.
+  entries, stellarDocs x-algolia, scout $ref resolvability, response-schema compaction, unchanged
+  small schemas, exact top-level fields and pointers, and the <300 KiB compact budget.
+- `test/executor-providers.test.ts` — `codemode.describe` preserves the full schema when the super
+  spec carries a compact response schema.
 - `test/spec-sandbox.test.ts` — generated-source shape, `</` escaping, fence normalization, and
   the wrapper EVALUATED under Node: $ref inlining, `$circular`, external-ref pass-through, lazy
   spec caching, in-sandbox truncation format, host-side helpers, host/sandbox resolver parity,

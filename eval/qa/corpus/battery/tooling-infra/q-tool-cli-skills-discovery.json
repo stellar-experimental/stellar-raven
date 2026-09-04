@@ -34,8 +34,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-03",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-03",
     "sources": [
       {
         "class": "C",
@@ -129,9 +129,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "C returned 43 rows and unchanged enums. A/B confirmed the official skill catalog and source links.",
+        "Sibling sweep 2026-09-03: q-tool-skill-detail-install remains the exact-detail lane; no contradiction found.",
         "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
         "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
         "Dated uncertainty: Scout /api/status reported nine upstream SDF skills while /api/skills?source=sdf returned seven rows; no reconciliation or frozen count is inferred from those source-relative values.",

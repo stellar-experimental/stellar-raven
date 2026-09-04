@@ -32,8 +32,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-03",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-24",
     "sources": [
       {
         "class": "C",
@@ -101,9 +101,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "C returned current SDK rows. A/B confirmed current ownership and repository identity.",
+        "Sibling sweep 2026-09-03: q-tool-indexer-repos-discovery keeps the same source-bound discovery rule; no contradiction found.",
         "C: https://stellarlight.xyz/api/repos/search?q=sdk&limit=10 at 2026-08-05T20:47:26.563Z returned 10 of 334 current rows, including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, and stellar/go-stellar-sdk with answer-time rank/activity metadata; an XDR probe separately returned stellar/stellar-xdr and stellar/rs-stellar-xdr.",
         "A/B: https://developers.stellar.org/docs/tools/sdks/client-sdks, https://developers.stellar.org/docs/tools/sdks/contract-sdks, the direct repository APIs, and the @stellar/stellar-sdk package independently confirmed role, owner, language, archive state, activity, and package identity.",
         "Uncertainty remains source-bounded: Scout rank, score, stars, and current rows do not establish global coverage, security, correctness, ownership, or production readiness.",

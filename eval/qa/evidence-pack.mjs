@@ -1017,6 +1017,110 @@ function verbatimClaimTerms(text) {
   return orderedUnique(terms);
 }
 
+const PROSE_SUPPORT_STOP_WORDS = new Set([
+  "a", "an", "and", "are", "as", "at", "be", "been", "being", "but", "by", "for",
+  "from", "has", "have", "in", "is", "it", "its", "of", "on", "or", "that", "the",
+  "their", "this", "through", "to", "was", "were", "with"
+]);
+
+function proseSupportTokens(value, { contentOnly = false } = {}) {
+  const tokens = String(value ?? "").toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
+  return contentOnly ? tokens.filter((token) => !PROSE_SUPPORT_STOP_WORDS.has(token)) : tokens;
+}
+
+function proseSupportProbes(claims) {
+  const probes = [];
+  const seen = new Set();
+  const add = (label, tokens) => {
+    const cleaned = cleanText(label).replace(/[.,;:!?]+$/g, "");
+    const key = tokens.join(" ");
+    if (
+      tokens.length < 3 ||
+      tokens.length > 24 ||
+      !tokens.some((token) => /\d/.test(token) || token.length >= 5) ||
+      seen.has(key)
+    ) return;
+    seen.add(key);
+    probes.push({ label: cleaned, tokens });
+  };
+
+  for (const claim of claims) {
+    const quoted = [];
+    for (const regex of [
+      /(?<![\p{L}\p{N}])['‘]([^'’\n]{3,180})['’](?![\p{L}\p{N}])/gu,
+      /["“]([^"”\n]{3,180})["”]/g
+    ]) {
+      for (const match of String(claim ?? "").matchAll(regex)) quoted.push(match[1]);
+    }
+    const qualifiedQuoted = quoted.filter((value) => proseSupportTokens(value).length >= 3);
+    if (qualifiedQuoted.length) {
+      for (const value of qualifiedQuoted) add(value, proseSupportTokens(value));
+      continue;
+    }
+
+    const supportClause = cleanText(String(claim ?? "").split(
+      /\b(?:without|unsupported|unverified|fabricated|not\s+supported|not\s+(?:shown|present|found|appearing))\b/i
+    )[0])
+      .replace(/[,;:]?\s*(?:but\s+)?this\s+(?:statement|claim|detail|fact)\s+is\s*$/i, "")
+      .replace(/[.,;:!?]+$/g, "");
+    const tokens = proseSupportTokens(supportClause, { contentOnly: true });
+    if (tokens.length >= 5) add(supportClause, tokens);
+  }
+  return probes;
+}
+
+function proseSupportUnits(value) {
+  const units = [];
+  const seen = new Set();
+  const add = (raw) => {
+    for (const part of String(raw ?? "").split(/(?:\r?\n)+|(?<=[.!?])\s+/)) {
+      const cleaned = cleanText(part);
+      const key = cleaned.toLowerCase();
+      if (cleaned.length < 8 || cleaned.length > 2000 || seen.has(key)) continue;
+      seen.add(key);
+      units.push(cleaned);
+    }
+  };
+  const text = stripAnsi(value);
+  for (const match of text.matchAll(/"(?:\\.|[^"\\])*"/g)) {
+    try {
+      const decoded = JSON.parse(match[0]);
+      if (typeof decoded === "string") add(decoded);
+    } catch {
+      // Ignore incomplete strings in clipped JSON.
+    }
+  }
+  for (const line of text.split(/\r?\n/)) {
+    if (/^\s*(?:[\[\]{}]|"(?:\\.|[^"\\])*"\s*:)/.test(line)) continue;
+    add(line);
+  }
+  return units;
+}
+
+function unitContainsProseProbe(unit, probeTokens) {
+  const tokens = proseSupportTokens(unit);
+  const maxExtraTokens = Math.max(3, Math.ceil(probeTokens.length / 2));
+  for (let start = 0; start < tokens.length; start += 1) {
+    if (tokens[start] !== probeTokens[0]) continue;
+    let at = start;
+    let matched = true;
+    for (const probeToken of probeTokens.slice(1)) {
+      const next = tokens.indexOf(probeToken, at + 1);
+      if (next < 0 || next - at > 4) {
+        matched = false;
+        break;
+      }
+      at = next;
+    }
+    if (matched && at - start + 1 <= probeTokens.length + maxExtraTokens) return true;
+  }
+  return false;
+}
+
+function textUnitsContainProseProbe(units, probe) {
+  return units.some((unit) => unitContainsProseProbe(unit, probe.tokens));
+}
+
 function exactSupportTerms(text) {
   const input = String(text ?? "");
   const terms = [];
@@ -1099,13 +1203,27 @@ export function findTranscriptEvidencePackOmissions({
   const omittedTerms = supportedTerms
     .filter((term) => !containsExactSupport(transcriptEvidence, term))
     .slice(0, 24);
+  const proseProbes = proseSupportProbes(claims);
+  const fullTranscriptUnits = fullTranscriptResults.flatMap(proseSupportUnits);
+  const transcriptEvidenceUnits = proseSupportUnits(transcriptEvidence);
+  const supportedProse = proseProbes.filter((probe) =>
+    textUnitsContainProseProbe(fullTranscriptUnits, probe)
+  );
+  const omittedProse = supportedProse
+    .filter((probe) => !textUnitsContainProseProbe(transcriptEvidenceUnits, probe))
+    .slice(0, Math.max(0, 24 - omittedTerms.length))
+    .map((probe) => probe.label);
+  const hasOmission = omittedTerms.length > 0 || omittedProse.length > 0;
   return {
-    status: omittedTerms.length ? "pack-omission" : "no-pack-omission",
-    requiresReview: omittedTerms.length > 0,
+    status: hasOmission ? "pack-omission" : "no-pack-omission",
+    requiresReview: hasOmission,
     checkedClaims: claims.length,
     checkedTerms: exactTerms.length,
     transcriptSupportedTerms: supportedTerms.length,
-    omittedTerms
+    omittedTerms,
+    checkedProse: proseProbes.length,
+    transcriptSupportedProse: supportedProse.length,
+    omittedProse
   };
 }
 
