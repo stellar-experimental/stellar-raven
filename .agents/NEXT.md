@@ -17,7 +17,8 @@ golden action stays owner-blocked. Repository and Herdr cleanup are complete.
   `ab5388e` and resolved. Final CI passed Analyze in 49 seconds, CodeQL in 3 seconds, secrets in
   23 seconds, and tests in 1 minute 33 seconds.
 - PR #126 merged at `2026-09-04T13:05:49Z` as
-  `dd80c0c8d1849a7e1d9daa5c6d60a714765ab538`. Local and remote `main` now point to that commit.
+  `dd80c0c8d1849a7e1d9daa5c6d60a714765ab538`. It was the deployment-closeout base before the
+  final cleanup record.
 - Deployment preflight proved that clean `HEAD` equals `origin/main`. `npm audit --omit=dev` found
   zero vulnerabilities. Wrangler deployed at `2026-09-04T12:29:24.371Z`. Worker Version
   `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent. The rollback version is
