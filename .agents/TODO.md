@@ -175,6 +175,10 @@ Keep phrase and field boundaries from `x-routing` during scoring. Replace first-
 with deterministic fair allocation. Retain specific older intent when a source adds long sections.
 Stop generic response-property names and unrelated substrings inside schema words from satisfying
 the coverage gate. Let strong ungated cross-service evidence compete with five weak gated rows.
+The 2026-09-04 category check is another instance. A controlled-vocabulary operation did not reach
+the top five for two general directory-taxonomy queries. The existing compiled category case also
+missed its expected operation. Do not add query wording or an operation exception. Include this
+family in the next reviewed general scoring design.
 This item also owns the `sls-078` residual. Scout fixed its quality `x-routing`
 contract in 1.9.13. The reviewed 1.9.23 candidate still caused 90 unrelated
 `scout.getQualityReport` captures through Raven response-schema keywords. Keep
@@ -192,8 +196,9 @@ Acceptance checks:
 7. All eight regression rows meet their clean grades.
 8. The leaderboard and RFP improvements remain.
 9. The full legacy, extended, skills, and holdout gates do not regress.
+10. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
 
-Done when: all nine acceptance checks pass in a reviewed general scoring change. The existing
+Done when: all ten acceptance checks pass in a reviewed general scoring change. The existing
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
 ## Eval instruments
