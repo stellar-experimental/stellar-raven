@@ -328,3 +328,21 @@ Two non-blocking notes:
 Filing itself still needs owner authority. Nothing was filed or commented upstream in this
 review.
 
+
+## Final confirmation of 1d08120
+
+Date: 2026-09-04, revision 3. Commit `1d08120` changes only `verified-intake-readiness-terra.md`.
+It closes the first non-blocking note above.
+
+| check | result |
+|---|---|
+| readiness report lists `ll-030` and `sd-046` as the two findings that `bd7330b` verified | true |
+| filing table rows | 10: `sk-021`, `sk-022`, `sk-023`, `sk-024`, `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052` |
+| `verified` findings on this branch | 10, the same set |
+| `verified` findings at root `898063e` | 8, as the report states |
+| `ll-030` owner | `lumenloop/lumenloop-backend` through the `lumenloop` service rule; no override; the report says the same |
+| `ll-030` dry run at `1d08120` | resolves that owner and renders the immutable snapshot at `bd7330b` |
+| `npm run improvements:lint` | ok, 70 findings; working tree clean |
+
+`PASS`. The second non-blocking note, re-running the `sk-023` and `sk-024` dry runs on root after
+the merge, is unchanged and still applies.
