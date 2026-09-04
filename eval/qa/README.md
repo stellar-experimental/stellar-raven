@@ -676,6 +676,31 @@ finalizes, and no resume spends a second paid call on it.
   `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
   across this boundary, or disclose the sample change.
 
+### Measurement shares
+
+Every complete, judged run stamps five measurement fields into `meta` and prints them on one
+console line after the raw first-attempt diagnostics. The stored-judge path stamps the same fields.
+Each share is a grade-count ratio over the active rows, so it lies in `[0, 1]` or is `null` when
+its denominator is empty. `aggregatesSuppressed: true` removes all five.
+
+| Field | Denominator | Meaning |
+| --- | --- | --- |
+| `halfCreditShare` | active rows | `(correct + partial / 2) / rows` |
+| `strictCorrectShare` | active rows | `correct / rows` |
+| `coreAnswerCorrectShare` | graded rows (`correct`, `partial`, `wrong`) | rows whose `coreAnswer` is `correct` |
+| `gradedCoreAnswerNullCount` | graded rows | graded rows with a `null` `coreAnswer` |
+| `coreAnswerVerdictCount` | — | the graded-row denominator |
+
+There is no key-fact coverage share. `verdict.missingFacts` is judge prose, not an index into
+`golden.keyFacts`: one judge may write several entries for one fact or one entry for several
+facts, and a panel unions every vote's paraphrases. The former `meanContinuousCoverage` divided
+that list length by the key-fact count. It went negative on 49 panel rows of the 2026-09-04
+500-case arm and reported an invalid `56.0%` mean, so it was retired on 2026-09-04
+(`.agents/rounds/2026-09-03-truth-maintenance/coverage-metric-fix-fable.md`). Records dated before
+2026-09-04 still show a `coverage` or `mean continuous coverage` value. Read those values as
+invalid; do not compare them. Stored artifacts that carry the two retired keys stay readable by
+every current reader, and the paired printer ignores them.
+
 ### Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
 
 `qa-paired-ordinal-ni-v1` is an experimental, `INDETERMINATE`-first stored-run printer. It is not a

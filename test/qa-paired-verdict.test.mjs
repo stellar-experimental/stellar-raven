@@ -222,6 +222,21 @@ describe("paired QA verdict", () => {
     expect(formatPairedVerdict(compared)).toMatch(/^PASS \(experimental margin 0\.08/);
   });
 
+  it("reads stored artifacts that still carry the retired coverage keys", () => {
+    // Artifacts finalized before 2026-09-04 stamp `meanContinuousCoverage` and
+    // `continuousCoverageRowCount`. Neither key is part of the measurement
+    // tuple, so an asymmetric pair still compares and the values are ignored.
+    const retired = { meanContinuousCoverage: 0.5601952380952382, continuousCoverageRowCount: 500 };
+    const compared = compare(
+      result(Array(100).fill("partial")),
+      result(Array(100).fill("partial"), { tuple: retired })
+    );
+
+    expect(compared.verdict).toBe("PASS");
+    expect(compared.denominator).toBe(100);
+    expect(compared.reasons.some((item) => item.code === "measurement-tuple")).toBe(false);
+  });
+
   it("fails when an upper bound demonstrates a loss", () => {
     const deltas = [
       ...Array(8).fill([-1, -1]),

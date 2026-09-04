@@ -651,9 +651,11 @@ describe("run-qa --judge-stored", () => {
         halfCreditShare: 0.5,
         coreAnswerCorrectShare: 1,
         gradedCoreAnswerNullCount: 0,
-        meanContinuousCoverage: 1,
-        continuousCoverageRowCount: 1
+        coreAnswerVerdictCount: 1
       });
+      // The retired key-fact coverage share is never stamped again.
+      expect(written.meta).not.toHaveProperty("meanContinuousCoverage");
+      expect(written.meta).not.toHaveProperty("continuousCoverageRowCount");
       // judgedIds is spend provenance: only rows that actually reached a paid
       // judge belong in it. The empty-answer row is stamped without a call.
       expect(written.meta.judgeStored).toMatchObject({
@@ -1110,7 +1112,7 @@ describe("run-qa --judge-stored", () => {
       expect(afterCrash.meta.judgingCompleteness.aggregatesAllowed).toBe(false);
       expect(afterCrash.meta).not.toHaveProperty("halfCreditShare");
       expect(afterCrash.meta).not.toHaveProperty("strictCorrectShare");
-      expect(afterCrash.meta).not.toHaveProperty("meanContinuousCoverage");
+      expect(afterCrash.meta).not.toHaveProperty("coreAnswerCorrectShare");
       // Only the row that actually reached a paid judge is recorded.
       expect(afterCrash.meta.judgeStored.judgedIds).toEqual(["q-fixture-answered"]);
       const originalHash = afterCrash.meta.judgeStored.sourceResultsSha256;

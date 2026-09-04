@@ -567,31 +567,29 @@ export function judgeTieringMetadata({
   };
 }
 
-export function qaMeasurementMetrics(rows, compiledCases) {
-  const caseById = compiledCases instanceof Map
-    ? compiledCases
-    : new Map((compiledCases ?? []).map((kase) => [kase.id, kase]));
+/**
+ * Ordinal and core-answer shares over the active rows. Every share is a
+ * count ratio over grades, so each value lies in [0, 1] or is null.
+ *
+ * There is deliberately no key-fact coverage share. `verdict.missingFacts`
+ * is judge prose, not an index into `golden.keyFacts`: one judge may write
+ * several entries for one fact or one entry for several facts, and a panel
+ * unions every vote's paraphrases. A count ratio over that list has no valid
+ * meaning and went negative on 49 panel rows of the 2026-09-04 500-case arm.
+ */
+export function qaMeasurementMetrics(rows) {
   const verdictRows = rows.filter((row) => typeof row.verdict?.score === "string");
   const gradedRows = verdictRows.filter((row) => ["correct", "partial", "wrong"].includes(row.verdict.score));
   const correctRows = rows.filter((row) => row.verdict?.score === "correct").length;
   const partialRows = rows.filter((row) => row.verdict?.score === "partial").length;
   const coreCorrectRows = gradedRows.filter((row) => row.verdict.coreAnswer === "correct").length;
   const gradedCoreAnswerNullCount = gradedRows.filter((row) => row.verdict.coreAnswer == null).length;
-  const coverage = gradedRows.flatMap((row) => {
-    const keyFacts = caseById.get(row.id)?.golden?.keyFacts;
-    if (!Array.isArray(keyFacts) || keyFacts.length === 0 || !Array.isArray(row.verdict.missingFacts)) return [];
-    return [1 - row.verdict.missingFacts.length / keyFacts.length];
-  });
   return {
     halfCreditShare: rows.length ? (correctRows + partialRows / 2) / rows.length : null,
     strictCorrectShare: rows.length ? correctRows / rows.length : null,
     coreAnswerCorrectShare: gradedRows.length ? coreCorrectRows / gradedRows.length : null,
     gradedCoreAnswerNullCount,
-    coreAnswerVerdictCount: gradedRows.length,
-    meanContinuousCoverage: coverage.length
-      ? coverage.reduce((sum, value) => sum + value, 0) / coverage.length
-      : null,
-    continuousCoverageRowCount: coverage.length
+    coreAnswerVerdictCount: gradedRows.length
   };
 }
 
@@ -600,8 +598,7 @@ export function formatMeasurementMetrics(metrics) {
   return [
     `half-credit ${share(metrics.halfCreditShare)}`,
     `strict-correct ${share(metrics.strictCorrectShare)}`,
-    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.gradedCoreAnswerNullCount} graded null)`,
-    `mean continuous coverage ${share(metrics.meanContinuousCoverage)} (${metrics.continuousCoverageRowCount} rows)`
+    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.gradedCoreAnswerNullCount} graded null)`
   ].join(" · ");
 }
 
@@ -1308,7 +1305,7 @@ export async function judgeStoredResults(
     meta.judgingCompleteness = completeness;
     const aggregatesAllowed = collectionAggregatesAllowed && completeness.aggregatesAllowed;
     meta.aggregatesSuppressed = !aggregatesAllowed;
-    const measurementMetrics = qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active);
+    const measurementMetrics = qaMeasurementMetrics(storedActiveRows());
     for (const key of Object.keys(measurementMetrics)) delete meta[key];
     if (aggregatesAllowed) Object.assign(meta, measurementMetrics);
     if (judgeBinary) meta.judgeBinary = judgeBinary;
@@ -1378,7 +1375,7 @@ export async function judgeStoredResults(
       summary: results.summary,
       metrics: meta.aggregatesSuppressed
         ? null
-        : qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active),
+        : qaMeasurementMetrics(storedActiveRows()),
       judgeTiering: meta.judgeTiering,
       outPath: resultsPath
     };
@@ -1484,7 +1481,7 @@ export async function judgeStoredResults(
     summary: results.summary,
     metrics: meta.aggregatesSuppressed
       ? null
-      : qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active),
+      : qaMeasurementMetrics(storedActiveRows()),
     judgeTiering: meta.judgeTiering,
     outPath: resultsPath
   };
@@ -1513,7 +1510,7 @@ export function collectionAggregates(rows, cases, { judging }) {
   return {
     completeness,
     summary: judging ? summarize(activeRows) : null,
-    metrics: qaMeasurementMetrics(judging ? activeRows : [], partition.active)
+    metrics: qaMeasurementMetrics(judging ? activeRows : [])
   };
 }
 

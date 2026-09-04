@@ -101,40 +101,157 @@ describe("QA judge panel", () => {
   });
 });
 
+const MEASUREMENT_METRIC_KEYS = [
+  "coreAnswerCorrectShare",
+  "coreAnswerVerdictCount",
+  "gradedCoreAnswerNullCount",
+  "halfCreditShare",
+  "strictCorrectShare"
+];
+
+/** Every share is a grade-count ratio: in [0, 1] or null. Nothing else is emitted. */
+function expectValidMeasurementMetrics(metrics) {
+  expect(Object.keys(metrics).sort()).toEqual(MEASUREMENT_METRIC_KEYS);
+  for (const key of ["halfCreditShare", "strictCorrectShare", "coreAnswerCorrectShare"]) {
+    if (metrics[key] === null) continue;
+    expect(metrics[key]).toBeGreaterThanOrEqual(0);
+    expect(metrics[key]).toBeLessThanOrEqual(1);
+  }
+  expect(Number.isInteger(metrics.gradedCoreAnswerNullCount)).toBe(true);
+  expect(Number.isInteger(metrics.coreAnswerVerdictCount)).toBe(true);
+  expect(formatMeasurementMetrics(metrics)).not.toMatch(/coverage/i);
+}
+
 describe("QA measurement metrics", () => {
-  it("computes ordinal, core-answer, null, and continuous coverage metrics", () => {
+  it("computes ordinal and core-answer shares over graded rows", () => {
     const rows = [
       { id: "a", verdict: { score: "correct", coreAnswer: "correct", missingFacts: [] } },
       { id: "b", verdict: { score: "partial", coreAnswer: "correct", missingFacts: ["one"] } },
       { id: "c", verdict: { score: "error", coreAnswer: null, missingFacts: [] } }
     ];
-    const cases = [
-      { id: "a", golden: { keyFacts: ["one", "two"] } },
-      { id: "b", golden: { keyFacts: ["one", "two"] } },
-      { id: "c", golden: { keyFacts: [] } }
-    ];
 
-    const metrics = qaMeasurementMetrics(rows, cases);
+    const metrics = qaMeasurementMetrics(rows);
     expect(metrics).toEqual({
       halfCreditShare: 0.5,
       strictCorrectShare: 1 / 3,
       coreAnswerCorrectShare: 1,
       gradedCoreAnswerNullCount: 0,
-      coreAnswerVerdictCount: 2,
-      meanContinuousCoverage: 0.75,
-      continuousCoverageRowCount: 2
+      coreAnswerVerdictCount: 2
     });
-    expect(formatMeasurementMetrics(metrics)).toContain("0 graded null");
+    expectValidMeasurementMetrics(metrics);
+    expect(formatMeasurementMetrics(metrics)).toBe(
+      "half-credit 50.0% · strict-correct 33.3% · core-answer-correct 100.0% (0 graded null)"
+    );
   });
 
-  it("guards empty denominators and rejects invalid panel sizes", () => {
-    expect(qaMeasurementMetrics([], [])).toMatchObject({
+  it("derives no coverage share from a panel union that exceeds the key facts", async () => {
+    // Three votes, three paraphrases of one missing fact, two key facts. The
+    // retired formula 1 - missingFacts / keyFacts produced -0.5 on this shape
+    // (`q-jutsu-what-is-a-memo`, 2026-09-04 500-case arm).
+    const panel = await judgeCasePanel(
+      { golden: { keyFacts: ["Defines a memo.", "Explains the crediting use."] } },
+      {
+        panelSize: 3,
+        judge: queuedJudge([
+          verdict("partial", ["Does not instruct the user to use the supplied memo value"]),
+          verdict("partial", ["Does not state the instruction to use the exact memo type and value"]),
+          verdict("partial", ["Omits the exact memo type/value instruction"])
+        ])
+      }
+    );
+    expect(panel.missingFacts).toHaveLength(3);
+    expect(panel.meta.panelSize).toBe(3);
+
+    const metrics = qaMeasurementMetrics([{ id: "q-memo", verdict: panel }]);
+    expect(metrics).toEqual({
+      halfCreditShare: 0.5,
+      strictCorrectShare: 0,
+      coreAnswerCorrectShare: 1,
+      gradedCoreAnswerNullCount: 0,
+      coreAnswerVerdictCount: 1
+    });
+    expectValidMeasurementMetrics(metrics);
+  });
+
+  it("keeps duplicated paraphrases as diagnostic text and never counts them", async () => {
+    const panel = await judgeCasePanel(
+      {},
+      {
+        panelSize: 3,
+        judge: queuedJudge([
+          verdict("partial", ["fact one", "fact one restated"]),
+          verdict("wrong", ["fact one", "fact one again"]),
+          verdict("partial", ["fact one restated"])
+        ])
+      }
+    );
+    // The union dedupes byte-identical strings only; semantic duplicates stay.
+    expect(panel.missingFacts).toEqual(["fact one", "fact one restated", "fact one again"]);
+    expect(panel.score).toBe("partial");
+
+    const metrics = qaMeasurementMetrics([{ id: "q-dup", verdict: panel }]);
+    expect(metrics).toMatchObject({ halfCreditShare: 0.5, strictCorrectShare: 0, coreAnswerCorrectShare: 1 });
+    expectValidMeasurementMetrics(metrics);
+  });
+
+  it("stays in range when one judge lists more missing facts than the case has", () => {
+    const rows = [
+      { id: "over", verdict: { score: "partial", coreAnswer: "correct", missingFacts: ["a", "b", "c", "d", "e"] } },
+      { id: "wrong", verdict: { score: "wrong", coreAnswer: "incorrect", missingFacts: ["a", "b", "c"] } },
+      { id: "ok", verdict: { score: "correct", coreAnswer: "correct", missingFacts: [] } }
+    ];
+
+    const metrics = qaMeasurementMetrics(rows);
+    expect(metrics).toEqual({
+      halfCreditShare: 0.5,
+      strictCorrectShare: 1 / 3,
+      coreAnswerCorrectShare: 2 / 3,
+      gradedCoreAnswerNullCount: 0,
+      coreAnswerVerdictCount: 3
+    });
+    expectValidMeasurementMetrics(metrics);
+  });
+
+  it("guards empty denominators", () => {
+    const empty = qaMeasurementMetrics([]);
+    expect(empty).toEqual({
       halfCreditShare: null,
       strictCorrectShare: null,
       coreAnswerCorrectShare: null,
-      meanContinuousCoverage: null,
-      continuousCoverageRowCount: 0
+      gradedCoreAnswerNullCount: 0,
+      coreAnswerVerdictCount: 0
     });
+    expectValidMeasurementMetrics(empty);
+    expect(formatMeasurementMetrics(empty)).toBe(
+      "half-credit n/a · strict-correct n/a · core-answer-correct n/a (0 graded null)"
+    );
+
+    // Error-only rows keep an ordinal denominator but have no graded denominator.
+    const errorOnly = qaMeasurementMetrics([
+      { id: "e", verdict: { score: "error", coreAnswer: null, missingFacts: [] } }
+    ]);
+    expect(errorOnly).toEqual({
+      halfCreditShare: 0,
+      strictCorrectShare: 0,
+      coreAnswerCorrectShare: null,
+      gradedCoreAnswerNullCount: 0,
+      coreAnswerVerdictCount: 0
+    });
+    expectValidMeasurementMetrics(errorOnly);
+
+    // A graded row with a null core answer stays in the denominator and is counted.
+    const nullCore = qaMeasurementMetrics([
+      { id: "n", verdict: { score: "partial", coreAnswer: null, missingFacts: [] } }
+    ]);
+    expect(nullCore).toMatchObject({
+      coreAnswerCorrectShare: 0,
+      gradedCoreAnswerNullCount: 1,
+      coreAnswerVerdictCount: 1
+    });
+    expectValidMeasurementMetrics(nullCore);
+  });
+
+  it("rejects invalid panel sizes and cap values", () => {
     expect(parseJudgePanel(undefined)).toBe(1);
     expect(() => parseJudgePanel("1")).toThrow(/2 or 3/);
     expect(() => parseJudgePanel("4")).toThrow(/2 or 3/);
