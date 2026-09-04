@@ -649,6 +649,142 @@ describe("QA transcript evidence pack", () => {
     expect(check.omittedTerms).toContain("repoScore");
   });
 
+  it.each([
+    {
+      claim: "States SCF 7.0 'launched January 2026' without this specific date appearing in the cited source-basis evidence.",
+      source: "SCF 7.0 officially launched in January 2026.",
+      omitted: "launched January 2026"
+    },
+    {
+      claim: "Network selector is stated to be in the 'top-right corner' of the page, a specific screen-coordinate claim not supported by the provided transcript evidence",
+      source: "Navigate to Stellar Lab and in the top right corner, use the dropdown to select the Custom network.",
+      omitted: "top-right corner"
+    }
+  ])("flags dropped quoted prose support: $omitted", ({ claim, source, omitted }) => {
+    const check = findTranscriptEvidencePackOmissions({
+      transcript: [{
+        tool: "mcp__raven__execute",
+        result: JSON.stringify({ summary: source })
+      }],
+      transcriptEvidence: "--- TRANSCRIPT SOURCE BASIS ---\nsourceItems:\n- none extracted",
+      claims: [claim]
+    });
+
+    expect(check).toMatchObject({
+      status: "pack-omission",
+      requiresReview: true,
+      transcriptSupportedProse: 1,
+      omittedProse: [omitted]
+    });
+  });
+
+  it("flags dropped unquoted sentence support", () => {
+    const check = findTranscriptEvidencePackOmissions({
+      transcript: [{
+        tool: "mcp__raven__execute",
+        result: JSON.stringify({
+          summary: "Validators choose the final ledger through federated agreement."
+        })
+      }],
+      transcriptEvidence: "sourceItems:\n- none extracted",
+      claims: [
+        "Validators choose the final ledger through federated agreement, but this statement is unsupported."
+      ]
+    });
+
+    expect(check).toMatchObject({
+      status: "pack-omission",
+      transcriptSupportedProse: 1,
+      omittedProse: ["Validators choose the final ledger through federated agreement"]
+    });
+  });
+
+  it("flags prose support omitted from a truncated pack", () => {
+    const result = JSON.stringify({
+      summary: "The deployment guide requires a separate signing service for production."
+    });
+    const check = findTranscriptEvidencePackOmissions({
+      transcript: [{
+        tool: "mcp__raven__execute",
+        result: `${result}\n--- SOURCE BASIS ---\nshape: object; 40000 chars; truncated result`
+      }],
+      transcriptEvidence: "truncation: execute#1 clipped before the supporting sentence",
+      claims: [
+        "The claim that the guide 'requires a separate signing service' is unsupported."
+      ]
+    });
+
+    expect(check).toMatchObject({
+      status: "pack-omission",
+      transcriptSupportedProse: 1,
+      omittedProse: ["requires a separate signing service"]
+    });
+  });
+
+  it("does not combine topical words across separate source text units", () => {
+    const check = findTranscriptEvidencePackOmissions({
+      transcript: [{
+        tool: "mcp__raven__execute",
+        result: JSON.stringify({
+          first: "Validators publish finality reports for each ledger.",
+          second: "Federated agreement protects network safety."
+        })
+      }],
+      transcriptEvidence: "sourceItems:\n- none extracted",
+      claims: [
+        "Validators choose the final ledger through federated agreement, but this statement is unsupported."
+      ]
+    });
+
+    expect(check).toMatchObject({
+      status: "no-pack-omission",
+      transcriptSupportedProse: 0,
+      omittedProse: []
+    });
+  });
+
+  it("does not join a quoted phrase across adjacent JSON fields", () => {
+    const check = findTranscriptEvidencePackOmissions({
+      transcript: [{
+        tool: "mcp__raven__execute",
+        result: JSON.stringify({
+          a: "Validators choose the final ledger",
+          b: "through federated agreement."
+        })
+      }],
+      transcriptEvidence: "sourceItems:\n- none extracted",
+      claims: [
+        "The phrase 'validators choose the final ledger through federated agreement' is unsupported."
+      ]
+    });
+
+    expect(check).toMatchObject({
+      status: "no-pack-omission",
+      transcriptSupportedProse: 0,
+      omittedProse: []
+    });
+  });
+
+  it("does not flag prose support retained by the pack", () => {
+    const source = "Validators choose the final ledger through federated agreement.";
+    const check = findTranscriptEvidencePackOmissions({
+      transcript: [{
+        tool: "mcp__raven__execute",
+        result: JSON.stringify({ summary: source })
+      }],
+      transcriptEvidence: `claimSnippets:\n1. ${source}`,
+      claims: [
+        "Validators choose the final ledger through federated agreement, but this statement is unsupported."
+      ]
+    });
+
+    expect(check).toMatchObject({
+      status: "no-pack-omission",
+      transcriptSupportedProse: 1,
+      omittedProse: []
+    });
+  });
+
   it("attaches a review diagnostic without changing the judge verdict", () => {
     const verdict = {
       rationale: "The repository details appear unsupported.",
