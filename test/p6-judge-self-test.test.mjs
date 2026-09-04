@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
@@ -7,10 +9,13 @@ import {
   P6_SELF_TEST_CALLS,
   P6_SELF_TEST_PER_CALL_BUDGET,
   P6_SELF_TEST_SUMMARY_SCHEMA,
+  assertP6OutputAvailable,
   assertStableP6SelfTestIdentity,
   attestP6SelfTestIdentity,
+  parseP6SelfTestCli,
   p6SelfTestWrapperSha256,
-  runP6JudgeSelfTest
+  runP6JudgeSelfTest,
+  writeP6SummaryExclusive
 } from "../eval/qa/run-p6-judge-self-test.mjs";
 import {
   runJudgeSelfTestCandidate,
@@ -73,6 +78,80 @@ function successfulSpawner(spawns, recordOverrides = () => ({})) {
 }
 
 describe("reviewed p6 judge self-test wrapper", () => {
+  it("accepts one concrete summary output path with all identity flags", () => {
+    expect(parseP6SelfTestCli([
+      "--runner-revision", pins.runnerRevision,
+      "--claude-path", pins.claudePath,
+      "--expect-claude-binary-sha256", pins.claudeBinarySha256,
+      "--expect-claude-environment-sha256", pins.claudeEnvironmentSha256,
+      "--out", "/tmp/p6-summary.json"
+    ])).toEqual({ ...pins, out: "/tmp/p6-summary.json" });
+  });
+
+  it("refuses an existing output or temporary output", () => {
+    const directory = mkdtempSync(path.join(tmpdir(), "p6-exclusive-"));
+    const outputPath = path.join(directory, "summary.json");
+    const temporaryPath = `${outputPath}.tmp`;
+    try {
+      writeFileSync(outputPath, "prior output\n");
+      expect(() => assertP6OutputAvailable(outputPath)).toThrow(/output already exists/);
+      expect(readFileSync(outputPath, "utf8")).toBe("prior output\n");
+
+      rmSync(outputPath);
+      writeFileSync(temporaryPath, "prior temporary output\n");
+      expect(() => writeP6SummaryExclusive(outputPath, { ok: true })).toThrow(
+        /temporary output already exists/
+      );
+      expect(readFileSync(temporaryPath, "utf8")).toBe("prior temporary output\n");
+      expect(existsSync(outputPath)).toBe(false);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("writes a new method record without leaving its temporary output", () => {
+    const directory = mkdtempSync(path.join(tmpdir(), "p6-exclusive-"));
+    const outputPath = path.join(directory, "summary.json");
+    try {
+      writeP6SummaryExclusive(outputPath, { ok: true });
+      expect(JSON.parse(readFileSync(outputPath, "utf8"))).toEqual({ ok: true });
+      expect(existsSync(`${outputPath}.tmp`)).toBe(false);
+      expect(() => writeP6SummaryExclusive(outputPath, { ok: false })).toThrow(
+        /output already exists/
+      );
+      expect(JSON.parse(readFileSync(outputPath, "utf8"))).toEqual({ ok: true });
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("cleans only the temporary output that this invocation created", () => {
+    const directory = mkdtempSync(path.join(tmpdir(), "p6-exclusive-"));
+    const outputPath = path.join(directory, "summary.json");
+    const temporaryPath = `${outputPath}.tmp`;
+    try {
+      expect(() => writeP6SummaryExclusive(outputPath, { ok: true }, {
+        link() {
+          writeFileSync(outputPath, "racing output\n", { flag: "wx" });
+          const error = new Error("target exists");
+          error.code = "EEXIST";
+          throw error;
+        }
+      })).toThrow(/target exists/);
+      expect(existsSync(temporaryPath)).toBe(false);
+      expect(readFileSync(outputPath, "utf8")).toBe("racing output\n");
+
+      rmSync(outputPath);
+      writeFileSync(temporaryPath, "not ours\n");
+      expect(() => writeP6SummaryExclusive(outputPath, { ok: true })).toThrow(
+        /temporary output already exists/
+      );
+      expect(readFileSync(temporaryPath, "utf8")).toBe("not ours\n");
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
   it("runs exactly seven calls with one path and exact identity pins", () => {
     const spawns = [];
     const summary = runP6JudgeSelfTest({

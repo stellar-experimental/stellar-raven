@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { EventEmitter } from "node:events";
 import {
   existsSync,
@@ -19,9 +20,20 @@ import {
   devVarsIdentity,
   pairedCollectionPlanSha256,
   supervisePairedChildren,
+  validateAuthorizedPairedCollectionPlan,
   validatePairedCollectionPlan
 } from "../eval/qa/paired-collection-supervisor.mjs";
 import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "../eval/qa/paired-collection-control.mjs";
+import {
+  PAIRED_CAPACITY_CONTRACT,
+  PAIRED_CAPACITY_SCHEMA
+} from "../eval/qa/check-paired-capacity.mjs";
+import {
+  P6_SELF_TEST_CALL_SCHEMA,
+  P6_SELF_TEST_SUMMARY_SCHEMA
+} from "../eval/qa/run-p6-judge-self-test.mjs";
+import { JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
+import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const devVarsPairs = [["ALPHA", "one"], ["ZETA", "two"]];
@@ -113,6 +125,14 @@ function removeFlag(command, flag) {
   command.splice(index, 2);
 }
 
+function rewriteJsonArtifact(filePath, mutate) {
+  const value = JSON.parse(readFileSync(filePath, "utf8"));
+  mutate(value);
+  const bytes = `${JSON.stringify(value, null, 2)}\n`;
+  writeFileSync(filePath, bytes);
+  return bytes;
+}
+
 function sendReadiness(plan, children, arm) {
   children[arm].emit("message", message(arm, "ready", {
     runnerWorktree: plan.worktrees[`${arm}Runner`],
@@ -139,10 +159,12 @@ function reachFinalBarrier(plan, children) {
 
 function planFixture() {
   const base = fixture();
-  const cases = [
-    { id: "case-a", question: "A?" },
-    { id: "case-b", question: "B?" }
-  ];
+  const cases = Array.from({ length: 500 }, (_, index) => ({
+    id: `case-${String(index).padStart(3, "0")}`,
+    question: `${index}?`,
+    truth: { lifecycle: { state: "active", reviewState: "none" } }
+  }));
+  const ids = cases.slice(0, 200).map((item) => item.id);
   const casesBytes = JSON.stringify({ cases });
   const supervisorBytes = readFileSync(path.resolve("eval/qa/paired-collection-supervisor.mjs"));
   const controlBytes = readFileSync(path.resolve("eval/qa/paired-collection-control.mjs"));
@@ -153,8 +175,13 @@ function planFixture() {
     remoteIdentityProbeSha256: sha256("probe"),
     stabilityRegisterSha256: sha256("register"),
     pairedCollectionSupervisorSha256: sha256(supervisorBytes),
-    pairedCollectionControlSha256: sha256(controlBytes)
+    pairedCollectionControlSha256: sha256(controlBytes),
+    p6WrapperSha256: sha256("p6-wrapper"),
+    p6JudgeSha256: sha256("p6-judge"),
+    evidencePackSha256: sha256("evidence-pack"),
+    rejudgeSha256: sha256("rejudge")
   };
+  const capacityBytes = readFileSync(path.resolve("eval/qa/check-paired-capacity.mjs"));
   for (const arm of ["baseline", "candidate"]) {
     const runner = base.plan.worktrees[`${arm}Runner`];
     mkdirSync(path.join(runner, "eval", "qa"), { recursive: true });
@@ -165,6 +192,11 @@ function planFixture() {
     writeFileSync(path.join(runner, "eval", "qa", "paired-collection-control.mjs"), controlBytes);
     writeFileSync(path.join(runner, "eval", "qa", "exact-old-runtime-adapter.mjs"), "adapter");
     writeFileSync(path.join(runner, "eval", "qa", "probe-remote-identities.mjs"), "probe");
+    writeFileSync(path.join(runner, "eval", "qa", "check-paired-capacity.mjs"), capacityBytes);
+    writeFileSync(path.join(runner, "eval", "qa", "run-p6-judge-self-test.mjs"), "p6-wrapper");
+    writeFileSync(path.join(runner, "eval", "qa", "judge.mjs"), "p6-judge");
+    writeFileSync(path.join(runner, "eval", "qa", "evidence-pack.mjs"), "evidence-pack");
+    writeFileSync(path.join(runner, "eval", "qa", "re-judge.mjs"), "rejudge");
     writeFileSync(path.join(runner, "stability.json"), "register");
     writeFileSync(path.join(base.plan.worktrees[`${arm}Server`], ".dev.vars"), "ZETA=two\nALPHA=one\n");
   }
@@ -179,7 +211,7 @@ function planFixture() {
   const collectionCommand = (arm) => [
     process.execPath,
     "eval/qa/run-qa.mjs",
-    "--ids", base.plan.selected.ids.join(","),
+    "--ids", ids.join(","),
     "--no-judge",
     "--paired-control-arm", arm,
     "--max-budget-usd", "80",
@@ -214,13 +246,117 @@ function planFixture() {
     "--expect-agent-environment-sha256", inputHashes.judgeEnvironmentSha256,
     "--stability-register", "stability.json"
   ];
+  const completedAt = new Date().toISOString();
+  const capacityService = (responses) => ({
+    requests: responses,
+    responses,
+    successfulResponses: responses,
+    httpErrors: 0,
+    transportErrors: 0,
+    retryEvents: 0,
+    retryAfterObserved: 0,
+    latency: { count: responses, minMs: 1, p50Ms: 2, p95Ms: 3, maxMs: 3, meanMs: 2 }
+  });
+  const capacityArtifact = {
+    schema: PAIRED_CAPACITY_SCHEMA,
+    contract: PAIRED_CAPACITY_CONTRACT,
+    startedAt: completedAt,
+    completedAt,
+    durationMs: 10,
+    method: {
+      schedule: PAIRED_CAPACITY_CONTRACT.schedule.kind,
+      agentsReleasedTogether: 2,
+      capturesPerAgent: 1,
+      publicRequestPattern: "one committed seven-response remote-identity capture per agent",
+      expectedRequestsPerSuccessfulAgent: 7,
+      paidModelCalls: 0,
+      localServerUsed: false
+    },
+    observed: {
+      maximumActiveFetches: 2,
+      requests: 14,
+      responses: 14,
+      successfulResponses: 14,
+      httpErrors: 0,
+      transportErrors: 0,
+      retries: 0,
+      retryAfterObserved: 0,
+      responsesByService: { scout: 2, lumenloop: 6, stellarDocs: 6 },
+      services: {
+        scout: capacityService(2),
+        lumenloop: capacityService(6),
+        stellarDocs: capacityService(6)
+      },
+      captureLatency: { count: 2, minMs: 5, p50Ms: 5, p95Ms: 6, maxMs: 6, meanMs: 6 },
+      vectorsMatch: true,
+      captureWindowsOverlap: true
+    },
+    agents: [
+      {
+        agent: "agent-a",
+        status: "success",
+        captureStartedMonotonicMs: 1,
+        captureCompletedMonotonicMs: 10,
+        vectorSha256: "f".repeat(64)
+      },
+      {
+        agent: "agent-b",
+        status: "success",
+        captureStartedMonotonicMs: 2,
+        captureCompletedMonotonicMs: 11,
+        vectorSha256: "f".repeat(64)
+      }
+    ],
+    accepted: true,
+    rejectionReasons: []
+  };
+  const capacityArtifactPath = path.join(base.root, "capacity.json");
+  const capacityArtifactBytes = `${JSON.stringify(capacityArtifact, null, 2)}\n`;
+  writeFileSync(capacityArtifactPath, capacityArtifactBytes);
+  const p6SummaryArtifactPath = path.join(base.root, "p6-summary.json");
+  const p6CallRecords = Array.from({ length: 7 }, (_, index) => ({
+    schema: P6_SELF_TEST_CALL_SCHEMA,
+    index,
+    callNumber: index + 1,
+    maxBudgetUsd: 0.5,
+    costWithinCap: true,
+    costReported: true,
+    costUsd: 0.1,
+    ok: true,
+    gradeMatches: true,
+    runnerDirty: false,
+    runnerRevision: "a".repeat(40),
+    claudePath: "/usr/bin/claude",
+    claudeBinarySha256: inputHashes.agentBinarySha256,
+    claudeEnvironmentSha256: inputHashes.agentEnvironmentSha256
+  }));
+  const p6Summary = {
+    schema: P6_SELF_TEST_SUMMARY_SCHEMA,
+    implementationSha256: files.p6WrapperSha256,
+    calls: 7,
+    perCallBudgetUsd: 0.5,
+    maxAuthorizedCostUsd: 3.5,
+    runnerRevision: "a".repeat(40),
+    claudePath: "/usr/bin/claude",
+    claudeBinarySha256: inputHashes.agentBinarySha256,
+    claudeEnvironmentSha256: inputHashes.agentEnvironmentSha256,
+    reportedCosts: p6CallRecords.map((record) => record.costUsd),
+    missingCosts: [],
+    totalCostUsd: 0.7,
+    callRecords: p6CallRecords
+  };
+  writeFileSync(p6SummaryArtifactPath, `${JSON.stringify(p6Summary, null, 2)}\n`);
   base.plan = {
     schema: PAIRED_COLLECTION_PLAN_SCHEMA,
     deadlineMs: PAIRED_COLLECTION_DEADLINE_MS,
     selected: {
-      ...base.plan.selected,
+      count: 200,
+      ids,
+      idsSha256: sha256(JSON.stringify(ids)),
       casesFileSha256: sha256(casesBytes),
-      contentSha256: sha256(JSON.stringify(cases))
+      contentSha256: sha256(JSON.stringify(cases.slice(0, 200))),
+      activeCorpusCount: 500,
+      activeCorpusIdsSha256: sha256(JSON.stringify(cases.map((item) => item.id)))
     },
     worktrees: base.plan.worktrees,
     caps: {
@@ -228,10 +364,12 @@ function planFixture() {
       candidate: { collectionUsd: 80, cumulativeUsd: 120 },
       twoArmCumulativeUsd: 240
     },
-    concurrentLoad: {
-      accepted: true,
-      answeringAgents: 2,
-      evidence: "free capacity check record"
+    capacity: {
+      command: [process.execPath, "eval/qa/check-paired-capacity.mjs", "--out", capacityArtifactPath],
+      instrumentSha256: sha256(capacityBytes),
+      artifactPath: capacityArtifactPath,
+      artifactSha256: sha256(capacityArtifactBytes),
+      contract: PAIRED_CAPACITY_CONTRACT
     },
     devVars: {
       salt: DEV_VARS_SALT,
@@ -247,9 +385,63 @@ function planFixture() {
     ],
     arms: Object.fromEntries(["baseline", "candidate"].map((arm) => [arm, {
       collectionCommand: collectionCommand(arm),
-      judgeCommand: judgeCommand(),
+      judgeCommand: judgeCommand().map((value) => value === "{artifact}" ? `{${arm}Artifact}` : value),
       inputHashes: { ...inputHashes }
-    }]))
+    }])),
+    p6: {
+      runnerArm: "baseline",
+      command: [
+        process.execPath,
+        "eval/qa/run-p6-judge-self-test.mjs",
+        "--runner-revision", "a".repeat(40),
+        "--claude-path", "/usr/bin/claude",
+        "--expect-claude-binary-sha256", inputHashes.agentBinarySha256,
+        "--expect-claude-environment-sha256", inputHashes.agentEnvironmentSha256,
+        "--out", p6SummaryArtifactPath
+      ],
+      summaryArtifactPath: p6SummaryArtifactPath,
+      claudePath: "/usr/bin/claude",
+      wrapperSha256: files.p6WrapperSha256,
+      judgeSha256: files.p6JudgeSha256,
+      calls: 7,
+      perCallBudgetUsd: 0.5,
+      maxAuthorizedCostUsd: 3.5
+    },
+    flipRejudge: {
+      implementationSha256: files.rejudgeSha256,
+      judgeImplementationSha256: files.p6JudgeSha256,
+      evidencePackImplementationSha256: files.evidencePackSha256,
+      perArmBudgetUsd: 15,
+      judgeTuple: {
+        model: "judge-model",
+        rubric: JUDGE_RUBRIC,
+        packVersion: PACK_VERSION,
+        judgePanel: 1
+      },
+      commands: Object.fromEntries(["baseline", "candidate"].map((arm) => {
+        const peer = arm === "baseline" ? "candidate" : "baseline";
+        return [arm, [
+          process.execPath,
+          "eval/qa/re-judge.mjs",
+          `{${arm}Artifact}`,
+          "--flips-vs",
+          `{${peer}Artifact}`,
+          "--judge-model",
+          "judge-model",
+          "--claude-path",
+          "/usr/bin/claude",
+          "--expect-agent-binary-sha256",
+          inputHashes.judgeBinarySha256,
+          "--expect-agent-environment-sha256",
+          inputHashes.judgeEnvironmentSha256,
+          "--cases-ref",
+          "a".repeat(40),
+          "--allow-empty",
+          "--max-budget-usd",
+          "15"
+        ]];
+      }))
+    }
   };
   base.inspectWorktree = (worktree) => ({
     root: worktree,
@@ -885,6 +1077,190 @@ describe("paired QA collection supervisor", () => {
     try {
       delete plan.devVars.salt;
       expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(/devVars\.salt/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("requires one external authorization for the canonical plan hash", () => {
+    const { root, plan } = planFixture();
+    try {
+      const expected = pairedCollectionPlanSha256(plan);
+      expect(validateAuthorizedPairedCollectionPlan(plan, expected)).toBe(expected);
+      const reordered = Object.fromEntries(Object.entries(plan).reverse());
+      expect(pairedCollectionPlanSha256(reordered)).toBe(expected);
+      expect(() => validateAuthorizedPairedCollectionPlan(plan, "0".repeat(64))).toThrow(
+        /does not match the canonical plan/
+      );
+      plan.authorization = { signature: "not allowed inside the plan" };
+      expect(() => validateAuthorizedPairedCollectionPlan(
+        plan,
+        pairedCollectionPlanSha256(plan)
+      )).toThrow(/authorization record must stay external/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("requires the authorized hash on the launch command line", () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "qa-paired-auth-cli-"));
+    try {
+      const planPath = path.join(root, "plan.json");
+      writeFileSync(planPath, "{}\n");
+      const script = path.resolve("eval/qa/paired-collection-supervisor.mjs");
+      const printed = spawnSync(process.execPath, [script, "--print-plan-sha256", "--plan", planPath], {
+        encoding: "utf8"
+      });
+      expect(printed.status).toBe(0);
+      expect(printed.stdout.trim()).toBe(pairedCollectionPlanSha256({}));
+
+      const missing = spawnSync(process.execPath, [script, "--plan", planPath], { encoding: "utf8" });
+      expect(missing.status).toBe(1);
+      expect(missing.stderr).toMatch(/--authorized-plan-sha256/);
+
+      const wrong = spawnSync(process.execPath, [
+        script,
+        "--plan",
+        planPath,
+        "--authorized-plan-sha256",
+        "0".repeat(64)
+      ], { encoding: "utf8" });
+      expect(wrong.status).toBe(1);
+      expect(wrong.stderr).toMatch(/does not match the canonical plan/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["selected count", (plan) => { plan.selected.count = 199; }, /exactly 200 selected IDs/],
+    ["selected list length", (plan) => { plan.selected.ids.pop(); }, /exactly 200 selected IDs/],
+    ["selected ID digest", (plan) => { plan.selected.idsSha256 = "0".repeat(64); }, /does not match selected.ids/],
+    ["selected content digest", (plan) => { plan.selected.contentSha256 = "0".repeat(64); }, /frozen case hashes/],
+    ["cases file digest", (plan) => { plan.selected.casesFileSha256 = "0".repeat(64); }, /frozen case hashes/],
+    ["active corpus count", (plan) => { plan.selected.activeCorpusCount = 499; }, /exactly 500 active corpus IDs/],
+    ["active corpus digest", (plan) => { plan.selected.activeCorpusIdsSha256 = "0".repeat(64); }, /frozen case hashes/]
+  ])("rejects a mismatched corpus field: %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      mutate(plan);
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["duplicate corpus ID", (cases) => { cases[499].id = cases[498].id; }, /duplicate corpus IDs/],
+    ["inactive corpus row", (cases) => { cases[499].truth.lifecycle.state = "quarantined"; }, /frozen case hashes/],
+    ["changed selected content", (cases) => { cases[0].question = "changed"; }, /frozen case hashes/]
+  ])("recomputes and rejects %s in a runner worktree", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const casesPath = path.join(plan.worktrees.baselineRunner, "eval", "qa", "cases.json");
+      const parsed = JSON.parse(readFileSync(casesPath, "utf8"));
+      mutate(parsed.cases);
+      writeFileSync(casesPath, JSON.stringify(parsed));
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["P6 call count", (plan) => { plan.p6.calls = 6; }, /seven calls/],
+    ["P6 identity flag", (plan) => setFlag(plan.p6.command, "--runner-revision", "b".repeat(40)), /exact wrapper command/],
+    ["P6 wrapper hash", (plan) => { plan.p6.wrapperSha256 = "0".repeat(64); }, /p6 wrapper does not match/],
+    ["P6 judge hash", (plan) => { plan.p6.judgeSha256 = "0".repeat(64); }, /p6 judge implementation does not match/],
+    ["flip source order", (plan) => {
+      [plan.flipRejudge.commands.baseline[2], plan.flipRejudge.commands.baseline[4]] =
+        [plan.flipRejudge.commands.baseline[4], plan.flipRejudge.commands.baseline[2]];
+    }, /wrong source order/],
+    ["flip cases reference", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--cases-ref", "b".repeat(40)), /wrong source order/],
+    ["flip judge tuple", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--judge-model", "other"), /wrong source order/],
+    ["flip Claude path", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--claude-path", "/other/claude"), /identity/],
+    ["flip binary identity", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--expect-agent-binary-sha256", "0".repeat(64)), /identity/],
+    ["flip environment identity", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--expect-agent-environment-sha256", "0".repeat(64)), /identity/],
+    ["flip rubric tuple", (plan) => { plan.flipRejudge.judgeTuple.rubric = "other"; }, /judgeTuple/],
+    ["flip cap", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--max-budget-usd", "16"), /wrong source order/],
+    ["flip zero-flip flag", (plan) => {
+      plan.flipRejudge.commands.baseline.splice(plan.flipRejudge.commands.baseline.indexOf("--allow-empty"), 1);
+    }, /zero-flip behavior/],
+    ["re-judge implementation hash", (plan) => { plan.flipRejudge.implementationSha256 = "0".repeat(64); }, /re-judge implementation does not match/]
+  ])("rejects an invalid paid-command contract: %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      mutate(plan);
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a P6 summary with an internal call above $0.50", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      rewriteJsonArtifact(plan.p6.summaryArtifactPath, (summary) => {
+        summary.callRecords[3].costUsd = 0.51;
+      });
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
+        /does not satisfy the frozen wrapper contract/
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["command", (plan) => { plan.capacity.command[1] = "wrong.mjs"; }, /exact free capacity check command/],
+    ["instrument hash", (plan) => { plan.capacity.instrumentSha256 = "0".repeat(64); }, /executing bytes/],
+    ["artifact hash", (plan) => { plan.capacity.artifactSha256 = "0".repeat(64); }, /artifactSha256/],
+    ["schedule", (plan) => { plan.capacity.contract.schedule.answeringAgents = 1; }, /fixed paired capacity contract/],
+    ["threshold", (plan) => { plan.capacity.contract.thresholds.responses = 13; }, /fixed paired capacity contract/]
+  ])("rejects a mismatched capacity binding: %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      plan.capacity.contract = structuredClone(plan.capacity.contract);
+      mutate(plan);
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["13 responses", (artifact) => { artifact.observed.responses = 13; }, /responses must equal 14/],
+    ["one HTTP error", (artifact) => { artifact.observed.httpErrors = 1; }, /httpErrors must equal 0/],
+    ["one transport error", (artifact) => { artifact.observed.transportErrors = 1; }, /transportErrors must equal 0/],
+    ["one retry", (artifact) => { artifact.observed.retries = 1; }, /retries must equal 0/],
+    ["one Retry-After", (artifact) => { artifact.observed.retryAfterObserved = 1; }, /retryAfterObserved must equal 0/],
+    ["different vectors", (artifact) => { artifact.observed.vectorsMatch = false; }, /capture vectors differ/],
+    ["sequential fetches", (artifact) => { artifact.observed.maximumActiveFetches = 1; }, /real request concurrency/],
+    ["non-overlapping captures", (artifact) => { artifact.observed.captureWindowsOverlap = false; }, /capture windows did not overlap/]
+  ])("rejects a capacity artifact with %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const bytes = rewriteJsonArtifact(plan.capacity.artifactPath, mutate);
+      plan.capacity.artifactSha256 = sha256(bytes);
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("accepts the exact 24-hour freshness boundary and rejects one millisecond more", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const completedAtMs = Date.parse(JSON.parse(readFileSync(plan.capacity.artifactPath)).completedAt);
+      expect(PAIRED_CAPACITY_CONTRACT.freshnessMs).toBe(86_400_000);
+      expect(validatePairedCollectionPlan(plan, {
+        inspectWorktree,
+        nowMs: completedAtMs + PAIRED_CAPACITY_CONTRACT.freshnessMs
+      })).toBe(plan);
+      expect(() => validatePairedCollectionPlan(plan, {
+        inspectWorktree,
+        nowMs: completedAtMs + PAIRED_CAPACITY_CONTRACT.freshnessMs + 1
+      })).toThrow(/must be at most 86400000 ms old/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

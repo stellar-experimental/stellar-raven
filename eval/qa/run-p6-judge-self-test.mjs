@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, linkSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   agentEnvironmentIdentity,
@@ -244,7 +244,7 @@ export function runP6JudgeSelfTest({
   return summary;
 }
 
-function parseCli(args) {
+export function parseP6SelfTestCli(args) {
   if (args.length === 1 && args[0] === "--print-sha256") return { printSha256: true };
   const flags = new Set([
     "--runner-revision",
@@ -252,17 +252,25 @@ function parseCli(args) {
     "--expect-claude-binary-sha256",
     "--expect-claude-environment-sha256"
   ]);
-  if (args.length !== flags.size * 2) {
-    throw new Error(`p6 judge self-test requires ${[...flags].join(", ")}`);
-  }
+  let out;
   const values = {};
   for (let index = 0; index < args.length; index += 2) {
     const flag = args[index];
     const value = args[index + 1];
+    if (flag === "--out") {
+      if (!value || value.startsWith("--") || out !== undefined) {
+        throw new Error("p6 judge self-test requires one spaced --out path");
+      }
+      out = value;
+      continue;
+    }
     if (!flags.has(flag) || !value || value.startsWith("--") || Object.hasOwn(values, flag)) {
       throw new Error("p6 judge self-test requires unique spaced identity flags");
     }
     values[flag] = value;
+  }
+  if (Object.keys(values).length !== flags.size) {
+    throw new Error(`p6 judge self-test requires ${[...flags].join(", ")}`);
   }
   return {
     runnerRevision: requirePin(values["--runner-revision"], REVISION_PATTERN, "--runner-revision"),
@@ -276,17 +284,66 @@ function parseCli(args) {
       values["--expect-claude-environment-sha256"],
       SHA256_PATTERN,
       "--expect-claude-environment-sha256"
-    )
+    ),
+    out
   };
 }
 
+export function assertP6OutputAvailable(
+  outputPath,
+  { exists = existsSync } = {}
+) {
+  const temporaryPath = `${outputPath}.tmp`;
+  if (exists(outputPath)) {
+    throw new Error(`p6 judge self-test output already exists: ${outputPath}`);
+  }
+  if (exists(temporaryPath)) {
+    throw new Error(`p6 judge self-test temporary output already exists: ${temporaryPath}`);
+  }
+  return temporaryPath;
+}
+
+export function writeP6SummaryExclusive(
+  outputPath,
+  summary,
+  {
+    write = writeFileSync,
+    link = linkSync,
+    unlink = unlinkSync,
+    exists = existsSync
+  } = {}
+) {
+  const temporaryPath = assertP6OutputAvailable(outputPath, { exists });
+  let temporaryCreated = false;
+  try {
+    write(temporaryPath, `${JSON.stringify(summary, null, 2)}\n`, {
+      encoding: "utf8",
+      flag: "wx"
+    });
+    temporaryCreated = true;
+    link(temporaryPath, outputPath);
+    unlink(temporaryPath);
+    temporaryCreated = false;
+  } finally {
+    if (temporaryCreated) {
+      try {
+        unlink(temporaryPath);
+      } catch {
+        // Preserve the original write or link failure.
+      }
+    }
+  }
+}
+
 function main(args) {
-  const parsed = parseCli(args);
+  const parsed = parseP6SelfTestCli(args);
   if (parsed.printSha256) {
     console.log(p6SelfTestWrapperSha256());
     return;
   }
-  runP6JudgeSelfTest({ pins: parsed });
+  if (parsed.out) assertP6OutputAvailable(parsed.out);
+  const summary = runP6JudgeSelfTest({ pins: parsed });
+  if (parsed.out) writeP6SummaryExclusive(parsed.out, summary);
 }
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;

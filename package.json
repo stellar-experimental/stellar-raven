@@ -47,6 +47,7 @@
     "eval:qa:register": "node eval/qa/register-helper.mjs",
     "eval:qa:paired": "node eval/qa/paired-verdict.mjs",
     "eval:qa:paired:capacity": "node eval/qa/check-paired-capacity.mjs",
+    "eval:qa:paired:plan-sha256": "node eval/qa/paired-collection-supervisor.mjs --print-plan-sha256",
     "eval:qa:paired:collect": "node eval/qa/paired-collection-supervisor.mjs",
     "eval:qa:paired:validate": "node eval/qa/validate-paired-verdict.mjs",
     "eval:qa": "node eval/qa/run-qa.mjs",

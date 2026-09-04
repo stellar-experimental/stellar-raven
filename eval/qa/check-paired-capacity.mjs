@@ -6,6 +6,32 @@ import { remoteIdentityVectorSha256 } from "./remote-identity-guard.mjs";
 
 const SERVICES = ["scout", "lumenloop", "stellarDocs"];
 
+export const PAIRED_CAPACITY_SCHEMA = "qa-paired-capacity-check-v2";
+export const PAIRED_CAPACITY_FRESHNESS_MS = 24 * 60 * 60 * 1_000;
+export const PAIRED_CAPACITY_CONTRACT = Object.freeze({
+  schedule: Object.freeze({
+    kind: "simultaneous-barrier-v1",
+    answeringAgents: 2,
+    capturesPerAgent: 1,
+    expectedResponses: 14,
+    expectedResponsesByService: Object.freeze({ scout: 2, lumenloop: 6, stellarDocs: 6 })
+  }),
+  thresholds: Object.freeze({
+    responses: 14,
+    successfulResponses: 14,
+    httpErrors: 0,
+    transportErrors: 0,
+    retries: 0,
+    retryAfterObserved: 0,
+    minimumMaximumActiveFetches: 2,
+    vectorsMatch: true,
+    captureWindowsOverlap: true,
+    maximumDurationMs: 120_000,
+    maximumCaptureLatencyMs: 120_000
+  }),
+  freshnessMs: PAIRED_CAPACITY_FRESHNESS_MS
+});
+
 export function classifyService(url) {
   const hostname = new URL(url).hostname;
   if (hostname === "stellarlight.xyz") return "scout";
@@ -68,6 +94,96 @@ export function summarizeTelemetry(records, retries) {
   return services;
 }
 
+function countResponsesByService(records) {
+  return Object.fromEntries(SERVICES.map((service) => [
+    service,
+    records.filter((record) => record.service === service && record.kind === "response").length
+  ]));
+}
+
+function capturesOverlap(agentResults) {
+  if (agentResults.length !== 2 || agentResults.some((result) => result.status !== "success")) return false;
+  const latestStart = Math.max(...agentResults.map((result) => result.captureStartedMonotonicMs));
+  const earliestEnd = Math.min(...agentResults.map((result) => result.captureCompletedMonotonicMs));
+  return latestStart < earliestEnd;
+}
+
+export function capacityRejectionReasons(report, contract = PAIRED_CAPACITY_CONTRACT) {
+  const reasons = [];
+  const observed = report?.observed ?? {};
+  const schedule = contract.schedule;
+  const thresholds = contract.thresholds;
+  if (report?.schema !== PAIRED_CAPACITY_SCHEMA) reasons.push("schema mismatch");
+  if (JSON.stringify(report?.contract) !== JSON.stringify(contract)) reasons.push("contract mismatch");
+  if (report?.method?.schedule !== schedule.kind) reasons.push("schedule mismatch");
+  if (report?.method?.agentsReleasedTogether !== schedule.answeringAgents) reasons.push("capture count mismatch");
+  if (report?.method?.capturesPerAgent !== schedule.capturesPerAgent) reasons.push("per-agent capture count mismatch");
+  if (report?.method?.expectedRequestsPerSuccessfulAgent !== schedule.expectedResponses / schedule.answeringAgents ||
+      report?.method?.paidModelCalls !== 0 || report?.method?.localServerUsed !== false) {
+    reasons.push("capacity method identity mismatch");
+  }
+  if (!Array.isArray(report?.agents) || report.agents.length !== schedule.answeringAgents) {
+    reasons.push("agent result count mismatch");
+  } else {
+    if (new Set(report.agents.map((agent) => agent.agent)).size !== schedule.answeringAgents) {
+      reasons.push("agent identities are not unique");
+    }
+    if (report.agents.some((agent) => agent.status !== "success")) reasons.push("a capture failed");
+    const validWindows = report.agents.every((agent) =>
+      Number.isFinite(agent.captureStartedMonotonicMs) &&
+      Number.isFinite(agent.captureCompletedMonotonicMs) &&
+      agent.captureStartedMonotonicMs < agent.captureCompletedMonotonicMs);
+    if (!validWindows || !capturesOverlap(report.agents)) reasons.push("capture windows did not overlap");
+    const vectorHashes = report.agents.map((agent) => agent.vectorSha256);
+    if (vectorHashes.some((value) => !/^[a-f0-9]{64}$/.test(value ?? "")) ||
+        new Set(vectorHashes).size !== 1) {
+      reasons.push("capture vectors differ");
+    }
+  }
+  for (const [field, expected] of [
+    ["responses", thresholds.responses],
+    ["successfulResponses", thresholds.successfulResponses],
+    ["httpErrors", thresholds.httpErrors],
+    ["transportErrors", thresholds.transportErrors],
+    ["retries", thresholds.retries],
+    ["retryAfterObserved", thresholds.retryAfterObserved]
+  ]) {
+    if (observed[field] !== expected) reasons.push(`${field} must equal ${expected}`);
+  }
+  if (observed.requests !== schedule.expectedResponses) {
+    reasons.push(`requests must equal ${schedule.expectedResponses}`);
+  }
+  if (JSON.stringify(observed.responsesByService) !== JSON.stringify(schedule.expectedResponsesByService)) {
+    reasons.push("service response counts mismatch");
+  }
+  for (const service of SERVICES) {
+    const summary = observed.services?.[service];
+    const expectedResponses = schedule.expectedResponsesByService[service];
+    if (!summary || summary.requests !== expectedResponses || summary.responses !== expectedResponses ||
+        summary.successfulResponses !== expectedResponses || summary.httpErrors !== 0 ||
+        summary.transportErrors !== 0 || summary.retryEvents !== 0 ||
+        summary.retryAfterObserved !== 0 || summary.latency?.count !== expectedResponses) {
+      reasons.push(`${service} service telemetry mismatch`);
+    }
+  }
+  if (!(observed.maximumActiveFetches >= thresholds.minimumMaximumActiveFetches)) {
+    reasons.push("real request concurrency was not observed");
+  }
+  if (observed.vectorsMatch !== thresholds.vectorsMatch) reasons.push("capture vectors differ");
+  if (observed.captureWindowsOverlap !== thresholds.captureWindowsOverlap) {
+    reasons.push("capture windows did not overlap");
+  }
+  if (!Number.isFinite(report?.durationMs) || report.durationMs < 0 ||
+      report.durationMs > thresholds.maximumDurationMs) {
+    reasons.push(`duration exceeds ${thresholds.maximumDurationMs} ms`);
+  }
+  if (!observed.captureLatency || observed.captureLatency.count !== schedule.answeringAgents ||
+      observed.captureLatency.maxMs > thresholds.maximumCaptureLatencyMs) {
+    reasons.push(`capture latency exceeds ${thresholds.maximumCaptureLatencyMs} ms`);
+  }
+  return reasons;
+}
+
 function createInstrumentedFetch(agent, records, state) {
   return async (url, init) => {
     const service = classifyService(url);
@@ -116,6 +232,7 @@ export async function runPairedCapacityCheck({ probe = probeRemoteIdentities } =
   const agents = ["agent-a", "agent-b"].map(async (agent) => {
     await barrier;
     const captureStarted = performance.now();
+    const captureStartedAt = new Date().toISOString();
     const vector = await probe({
       fetchImpl: createInstrumentedFetch(agent, records, state),
       onRetry: ({ label, ...retry }) => retries.push({
@@ -124,10 +241,15 @@ export async function runPairedCapacityCheck({ probe = probeRemoteIdentities } =
         ...retry
       })
     });
+    const captureCompletedMonotonicMs = performance.now();
     return {
       agent,
       status: "success",
-      captureLatencyMs: Math.round(performance.now() - captureStarted),
+      captureStartedAt,
+      captureCompletedAt: new Date().toISOString(),
+      captureStartedMonotonicMs: captureStarted,
+      captureCompletedMonotonicMs,
+      captureLatencyMs: Math.round(captureCompletedMonotonicMs - captureStarted),
       vectorSha256: remoteIdentityVectorSha256(vector)
     };
   });
@@ -139,33 +261,46 @@ export async function runPairedCapacityCheck({ probe = probeRemoteIdentities } =
   const successfulVectors = agentResults
     .filter((result) => result.status === "success")
     .map((result) => result.vectorSha256);
-  return {
-    schema: "qa-paired-capacity-check-v1",
+  const observed = {
+    maximumActiveFetches: state.maximumActive,
+    requests: records.length,
+    responses: records.filter((record) => record.kind === "response").length,
+    successfulResponses: records.filter((record) =>
+      record.kind === "response" && record.status >= 200 && record.status < 300).length,
+    httpErrors: records.filter((record) =>
+      record.kind === "response" && (record.status < 200 || record.status >= 300)).length,
+    transportErrors: records.filter((record) => record.kind === "transport-error").length,
+    retries: retries.length,
+    retryAfterObserved: records.filter((record) =>
+      record.kind === "response" && record.retryAfterPresent).length,
+    responsesByService: countResponsesByService(records),
+    services: summarizeTelemetry(records, retries),
+    captureLatency: summarizeLatency(agentResults
+      .filter((result) => result.status === "success")
+      .map((result) => result.captureLatencyMs)),
+    vectorsMatch: successfulVectors.length === 2 && successfulVectors[0] === successfulVectors[1],
+    captureWindowsOverlap: capturesOverlap(agentResults)
+  };
+  const report = {
+    schema: PAIRED_CAPACITY_SCHEMA,
+    contract: PAIRED_CAPACITY_CONTRACT,
     startedAt,
     completedAt: new Date().toISOString(),
     durationMs: Math.round(performance.now() - started),
     method: {
+      schedule: PAIRED_CAPACITY_CONTRACT.schedule.kind,
       agentsReleasedTogether: 2,
       capturesPerAgent: 1,
-      publicRequestPattern: "one committed remote-identity capture per agent",
+      publicRequestPattern: "one committed seven-response remote-identity capture per agent",
       expectedRequestsPerSuccessfulAgent: 7,
       paidModelCalls: 0,
       localServerUsed: false
     },
-    observed: {
-      maximumActiveFetches: state.maximumActive,
-      requests: records.length,
-      responses: records.filter((record) => record.kind === "response").length,
-      transportErrors: records.filter((record) => record.kind === "transport-error").length,
-      retries: retries.length,
-      services: summarizeTelemetry(records, retries),
-      captureLatency: summarizeLatency(agentResults
-        .filter((result) => result.status === "success")
-        .map((result) => result.captureLatencyMs)),
-      vectorsMatch: successfulVectors.length === 2 && successfulVectors[0] === successfulVectors[1]
-    },
+    observed,
     agents: agentResults
   };
+  const rejectionReasons = capacityRejectionReasons(report);
+  return { ...report, accepted: rejectionReasons.length === 0, rejectionReasons };
 }
 
 function assert(condition, message) {
@@ -207,7 +342,7 @@ async function main() {
   const output = `${JSON.stringify(report, null, 2)}\n`;
   if (options.out) await writeFile(options.out, output, "utf8");
   process.stdout.write(output);
-  if (report.agents.some((agent) => agent.status !== "success")) process.exitCode = 1;
+  if (!report.accepted) process.exitCode = 1;
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

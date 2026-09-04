@@ -35,6 +35,10 @@ type EffectiveVerdictScore = (verdict: { score?: string; judgeScore?: string } |
 type StoredVerdict = { score?: string; judgeScore?: string } | null | undefined;
 type VerdictAgreement = (original: StoredVerdict, next: StoredVerdict) => boolean | null;
 type ResolveCasesRef = (results: object, explicit?: string) => string | undefined;
+type RejudgeIdentity = {
+  binary: { resolvedPath: string; realPath: string; sha256: string; version: string };
+  environment: { sha256: string };
+};
 
 async function loadVerifySourceCases(): Promise<VerifySourceCases> {
   const modulePath = "../eval/qa/re-judge.mjs";
@@ -75,6 +79,22 @@ async function loadVerdictAgreement(): Promise<VerdictAgreement> {
 async function loadResolveCasesRef(): Promise<ResolveCasesRef> {
   const modulePath = "../eval/qa/re-judge.mjs";
   return (await import(modulePath) as { resolveCasesRef: ResolveCasesRef }).resolveCasesRef;
+}
+
+async function loadRejudgeIdentityHelpers() {
+  const modulePath = "../eval/qa/re-judge.mjs";
+  const module = await import(modulePath);
+  return {
+    parseArgs: module.parseArgs as (args: string[]) => Record<string, unknown>,
+    attestRejudgeIdentity: module.attestRejudgeIdentity as (
+      pins: Record<string, string>,
+      dependencies: Record<string, unknown>
+    ) => RejudgeIdentity,
+    assertStableRejudgeIdentity: module.assertStableRejudgeIdentity as (
+      before: RejudgeIdentity,
+      after: RejudgeIdentity
+    ) => Record<string, unknown>
+  };
 }
 
 function sha256(value: string): string {
@@ -262,6 +282,98 @@ afterEach(() => {
 });
 
 describe("re-judge saved-answer selection", () => {
+  it("requires all three spaced Claude identity flags for paid runs", async () => {
+    const { parseArgs } = await loadRejudgeIdentityHelpers();
+    const base = ["source.json", "--ids", "one", "--max-budget-usd", "1"];
+    const flags = [
+      ["--claude-path", "/opt/claude"],
+      ["--expect-agent-binary-sha256", "a".repeat(64)],
+      ["--expect-agent-environment-sha256", "b".repeat(64)]
+    ];
+    expect(parseArgs([...base, ...flags.flat()])).toMatchObject({
+      claudePath: "/opt/claude",
+      expectedAgentBinarySha256: "a".repeat(64),
+      expectedAgentEnvironmentSha256: "b".repeat(64)
+    });
+    for (const omittedIndex of flags.keys()) {
+      const supplied = flags.filter((_flag, index) => index !== omittedIndex).flat();
+      expect(() => parseArgs([...base, ...supplied])).toThrow(/requires --claude-path/);
+    }
+    expect(() => parseArgs([...base, "--claude-path=/opt/claude"])).toThrow(/unknown flag/);
+    expect(() => parseArgs([
+      ...base,
+      "--claude-path", "/opt/claude",
+      "--expect-agent-binary-sha256", "A".repeat(64),
+      "--expect-agent-environment-sha256", "b".repeat(64)
+    ])).toThrow(/64-character lowercase SHA-256/);
+  });
+
+  it("keeps dry runs free and rejects partial identity pins", async () => {
+    const { parseArgs } = await loadRejudgeIdentityHelpers();
+    expect(parseArgs(["source.json", "--ids", "one", "--dry-run"])).toMatchObject({
+      dryRun: true,
+      claudePath: undefined
+    });
+    expect(() => parseArgs([
+      "source.json", "--ids", "one", "--dry-run", "--claude-path", "/opt/claude"
+    ])).toThrow(/requires --claude-path/);
+  });
+
+  it("attests the paid Claude binary and environment and rejects each mismatch", async () => {
+    const { attestRejudgeIdentity } = await loadRejudgeIdentityHelpers();
+    const binary = {
+      resolvedPath: "/opt/claude",
+      realPath: "/opt/claude-real",
+      sha256: "a".repeat(64),
+      version: "1.2.3"
+    };
+    const environment = { sha256: "b".repeat(64) };
+    const pins = {
+      claudePath: "/opt/claude",
+      expectedAgentBinarySha256: binary.sha256,
+      expectedAgentEnvironmentSha256: environment.sha256
+    };
+    const dependencies = {
+      executableIdentityImpl: () => structuredClone(binary),
+      environmentIdentityImpl: () => structuredClone(environment)
+    };
+    expect(attestRejudgeIdentity(pins, dependencies)).toMatchObject({ binary, environment });
+    expect(() => attestRejudgeIdentity({
+      ...pins,
+      expectedAgentBinarySha256: "c".repeat(64)
+    }, dependencies)).toThrow(/refusing paid calls/);
+    expect(() => attestRejudgeIdentity({
+      ...pins,
+      expectedAgentEnvironmentSha256: "c".repeat(64)
+    }, dependencies)).toThrow(/refusing paid calls/);
+  });
+
+  it("rejects binary or environment identity drift after judging", async () => {
+    const { assertStableRejudgeIdentity } = await loadRejudgeIdentityHelpers();
+    const before: RejudgeIdentity = {
+      binary: {
+        resolvedPath: "/opt/claude",
+        realPath: "/opt/claude-real",
+        sha256: "a".repeat(64),
+        version: "1.2.3"
+      },
+      environment: { sha256: "b".repeat(64) }
+    };
+    expect(assertStableRejudgeIdentity(before, structuredClone(before))).toMatchObject({
+      matches: true
+    });
+    for (const field of ["resolvedPath", "realPath", "sha256", "version"] as const) {
+      const after = structuredClone(before);
+      after.binary[field] = `${after.binary[field]}-changed`;
+      expect(() => assertStableRejudgeIdentity(before, after)).toThrow(/binary identity changed/);
+    }
+    const changedEnvironment = structuredClone(before);
+    changedEnvironment.environment.sha256 = "c".repeat(64);
+    expect(() => assertStableRejudgeIdentity(before, changedEnvironment)).toThrow(
+      /environment identity changed/
+    );
+  });
+
   it("defaults the cases revision to the recorded runner revision", async () => {
     const resolveCasesRef = await loadResolveCasesRef();
     const recorded = "a".repeat(40);
@@ -824,7 +936,12 @@ describe("re-judge saved-answer selection", () => {
 
       // PATH holds only a stub `claude`, so a guard that fails to fire cannot
       // reach the paid judge.
-      for (const extra of [["--dry-run"], ["--max-budget-usd", "1"]]) {
+      for (const extra of [["--dry-run"], [
+        "--max-budget-usd", "1",
+        "--claude-path", "claude",
+        "--expect-agent-binary-sha256", "a".repeat(64),
+        "--expect-agent-environment-sha256", "b".repeat(64)
+      ]]) {
         const result = spawnSync(
           process.execPath,
           [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, ...extra],

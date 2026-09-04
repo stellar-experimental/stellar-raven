@@ -873,14 +873,30 @@ Artifacts from those unpinned resumes cannot enter the paired comparison.
 Concurrent paired collection uses one manifest-driven supervisor:
 
 ```sh
-npm run eval:qa:paired:collect -- --plan /absolute/path/to/paired-collection-plan.json
+npm run eval:qa:paired:plan-sha256 -- --plan /absolute/path/to/paired-collection-plan.json
+npm run eval:qa:paired:collect -- \
+  --plan /absolute/path/to/paired-collection-plan.json \
+  --authorized-plan-sha256 <owner-authorized-canonical-sha256>
 ```
 
-The manifest uses `qa-paired-collection-plan-v1`. It records the exact ordered `selected.ids`
-array. It also records the hashes of that array, the selected case content, and the cases file.
-It records four distinct worktree roots: two runner worktrees and two server worktrees. All four
-must belong to one Git repository. Both runner worktrees must reproduce the same cases and runner
-bytes before either child starts a paid call.
+The manifest uses `qa-paired-collection-plan-v2`. Version 1 plans are invalid. The first command
+prints SHA-256 over recursively key-sorted JSON. The launch command requires that exact SHA-256.
+The supervisor checks it before any child starts.
+
+Keep the owner authorization record outside the plan. This avoids a self-referential plan hash.
+The authorization must name the canonical plan SHA-256. It must state that the owner signature
+covers that hash and every command array in the plan. Any plan edit after authorization requires a
+new hash and a new owner signature.
+
+The plan records `selected.count: 200` and exactly 200 ordered `selected.ids`. It records
+`selected.activeCorpusCount: 500`. It also records `selected.activeCorpusIdsSha256`,
+`selected.idsSha256`, `selected.contentSha256`, and `selected.casesFileSha256`. Both runner
+worktrees recompute all four hashes. Both runners must contain exactly 500 unique active IDs.
+Every selected ID must be active. Every mismatch stops the launch.
+
+The plan records four distinct worktree roots: two runner worktrees and two server worktrees. All
+four must belong to one Git repository. Both runner worktrees must reproduce the same cases and
+runner bytes before either child starts a paid call.
 
 The manifest records `devVars.salt`, `devVars.names`, and `devVars.sha256`. Generate a new random
 64-character lowercase hexadecimal salt for each plan. The names use exact code-unit order. The
@@ -894,12 +910,19 @@ stored name list.
 Keep the plan uncommitted. Delete it after the supervisor finishes. This rule applies after success
 and failure. A failed supervisor keeps its external cancellation marker directory.
 
+Run the free capacity command first. Then freeze its path and SHA-256 in the plan. Freeze every
+other field and command array next. Print the canonical plan SHA-256. The owner then signs the
+external authorization record. Run the exact P6 command from that signed plan. Finally, launch the
+supervisor before the capacity artifact reaches its 24-hour limit. Do not edit the plan between
+these steps.
+
 Each arm records exact `collectionCommand` and `judgeCommand` argument arrays. The executable must
 be the absolute `process.execPath`. The collection command must use explicit `--ids` and
-`--no-judge`; `--sample` is forbidden. The judge command uses `{artifact}` as its frozen result
-placeholder. Each collection command includes its supervisor-owned `--paired-control-arm` value.
+`--no-judge`; `--sample` is forbidden. The judge commands use `{baselineArtifact}` and
+`{candidateArtifact}` as their frozen result placeholders. Each collection command includes its
+supervisor-owned `--paired-control-arm` value.
 The supervisor runs only the collection commands. An operator runs each recorded
-judge command later, after replacing `{artifact}` with the successful receipt path.
+judge command later, after replacing its placeholder with the successful receipt path.
 
 Each arm records these input hashes: answering binary, answering environment, judge binary, judge
 environment, adapter implementation, remote identity probe, remote identity vector, stability
@@ -916,9 +939,51 @@ match its exact command revision. The baseline uses `add-missing`. The candidate
 `verify-native`. Both commands share the adapter revision and measurement tuple flags. The public
 and upstream ports form four pairwise-distinct ports.
 
-The manifest also records the exact paired JSON comparison command. It records an accepted
-two-answering-agent capacity decision and its free evidence. A missing capacity record blocks the
-launch. The resulting estimate describes behavior under that accepted concurrent load.
+The `capacity` block binds the free gate before launch. It contains `command`,
+`instrumentSha256`, `artifactPath`, `artifactSha256`, and the fixed `contract`. The exact command
+is `[process.execPath, "eval/qa/check-paired-capacity.mjs", "--out", artifactPath]`. Run it without
+any paid model call or local server:
+
+```sh
+npm run eval:qa:paired:capacity -- --out /absolute/path/to/paired-capacity.json
+```
+
+The instrument emits `qa-paired-capacity-check-v2`. The schedule releases exactly two captures
+through one barrier. Each capture makes seven public identity requests. The gate requires exactly
+14 responses and 14 successful responses. It requires Scout 2, Lumenloop 6, and Stellar Docs 6.
+It requires zero HTTP errors, transport errors, retries, and `Retry-After` headers. Both vectors
+must match. The capture windows must overlap. `maximumActiveFetches` must be at least 2. The whole
+check and each capture must finish within 120,000 ms. The artifact is valid for 86,400,000 ms after
+`completedAt`. The exact boundary is valid. One millisecond beyond the boundary is invalid.
+A future timestamp is invalid. The remote identity `--stable-sha256` probe still controls
+immediate service drift. The supervisor verifies the artifact bytes and both runner copies of
+`eval/qa/check-paired-capacity.mjs`.
+
+The `p6` block binds `runnerArm`, `command`, `summaryArtifactPath`, `claudePath`,
+`wrapperSha256`, `judgeSha256`, `calls`, `perCallBudgetUsd`, and `maxAuthorizedCostUsd`. The exact
+command runs `eval/qa/run-p6-judge-self-test.mjs` through `process.execPath`. It carries the runner
+revision, Claude path, binary SHA-256, environment SHA-256, and a concrete `--out` path. The
+contract requires seven internal calls. Each call has a `$0.50` cap. The total cap is `$3.50`.
+The `--out` path and its `.tmp` path must not exist before P6 starts. The wrapper never
+overwrites an earlier method record. The supervisor validates the retained summary before it
+starts a child.
+
+The `flipRejudge` block binds the re-judge, judge, and evidence-pack implementation hashes. It also
+binds `judgeTuple`, `perArmBudgetUsd: 15`, and two exact command arrays. The tuple fixes the model,
+rubric, pack, and panel. The baseline command uses `{baselineArtifact}` as its source. It uses
+`{candidateArtifact}` after `--flips-vs`. The candidate command reverses that source order. Both
+commands use `eval/qa/re-judge.mjs`, the frozen judge tuple, and the runner revision in
+`--cases-ref`. Both use `--max-budget-usd 15`. Both require `--allow-empty`. A zero-flip result is
+valid only through that explicit flag. Neither command can use `--ids`, `--dry-run`,
+`--allow-non-identical`, or `--allow-golden-drift`.
+Each command also freezes `--claude-path`, `--expect-agent-binary-sha256`, and
+`--expect-agent-environment-sha256`. The re-judge checks these identities before the first paid
+call. It checks them again after judging. The result stamps both identities and the stability
+guard. A dry run does not inspect or start the Claude executable.
+
+The manifest also records the exact paired JSON comparison command. It uses
+`{baselineArtifact}` first and `{candidateArtifact}` second. These placeholders are explicit
+because the collection artifacts do not exist when the owner signs the plan.
 
 The proposed two-arm cap is cumulative within each artifact. Collection uses `$80` per arm.
 Stored judging raises that same ledger to `$120` per arm. It does not create a separate `$40`
@@ -1701,6 +1766,10 @@ Re-judges now persist as `meta.resultSchema: "qa-rejudge-v1"` artifacts. They do
 than QA method attempts. Use `eval/qa/re-judge.mjs <results> --ids a,b`
 or `--flips-vs <baseline-results>` re-judges identical saved input behind casesSha256 identity
 and judge-model/rubric/pack tuple guards, writing `results/<stamp>-rejudge.json`.
+Every paid re-judge also requires `--claude-path <path>`,
+`--expect-agent-binary-sha256 <sha256>`, and
+`--expect-agent-environment-sha256 <sha256>`. Use only spaced flag values.
+The final artifact records both identities in `meta.judgeIdentity`.
 
 Pin the corpus revision when the battery has moved since collection — otherwise the identity
 guard compares saved rows against today's working tree and refuses.
@@ -1719,8 +1788,13 @@ node eval/qa/re-judge.mjs eval/qa/results/2026-08-14T03-56-23-variantA.json \
   --ids q-pc-sponsored-reserves,q-protocol-operation-types-list \
   --cases-ref 7072688 \
   --allow-non-identical \
-  --dry-run          # replace --dry-run with --max-budget-usd <usd> to spend
+  --dry-run
 ```
+
+For a paid run, replace `--dry-run` with the budget and all three identity flags.
+Use `--max-budget-usd <usd> --claude-path <path>` first.
+Then add `--expect-agent-binary-sha256 <sha256>` and
+`--expect-agent-environment-sha256 <sha256>`.
 
 Without `--allow-non-identical`, the dry run reports `"wouldRefuse": true` with the offending
 tuple (`packVersion: "p3"` vs `"p5"`), and a real run fails with
@@ -1751,6 +1825,9 @@ Every flag `re-judge.mjs` accepts:
 - `--allow-empty` — only meaningful with `--flips-vs`: write the artifact even when no score
   changed. Without it, an empty flip set is refused rather than persisted as a zero-row file.
 - `--max-budget-usd <usd>` — required exactly once for a paid run. Duplicate flags fail.
+- `--claude-path <path>` — required for a paid run. It selects the pinned Claude executable.
+- `--expect-agent-binary-sha256 <sha256>` — required for a paid run.
+- `--expect-agent-environment-sha256 <sha256>` — required for a paid run.
 - `--dry-run` — resolve, guard, and report without spending.
 - `--help` / `-h` — print usage and exit.
 

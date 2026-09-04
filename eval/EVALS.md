@@ -134,13 +134,27 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
     Any missing capture, probe failure, or changed vector makes the artifact non-comparable.
     The runner suppresses all aggregates after such a failure.
 12. **Concurrent paired collection has one supervisor.** Use
-    `npm run eval:qa:paired:collect -- --plan <plan.json>`. The plan freezes the exact ordered IDs,
-    selected content, cases bytes, commands, four worktrees, and input hashes. Each cases path stays
-    inside its runner. The executing supervisor and control module must match their pins.
+    `npm run eval:qa:paired:collect -- --plan <plan.json> --authorized-plan-sha256 <sha256>`.
+    The plan uses `qa-paired-collection-plan-v2`. The supplied hash must equal the canonical plan
+    hash. Keep the owner authorization outside the plan. The owner signature covers the canonical
+    hash and every command array in the plan. The plan freezes exactly 200 selected IDs and exactly
+    500 unique active corpus IDs. It binds both ordered ID hashes, selected content, cases bytes,
+    commands, four worktrees, and input hashes. Each cases path stays inside its runner. Both runners
+    must reproduce every corpus field. The executing supervisor and control module must match their pins.
     Baseline and candidate use different revisions and surface hashes. Baseline uses `add-missing`;
     candidate uses `verify-native`. Their public and upstream ports are pairwise distinct.
     Shared measurement flags match. Both servers reproduce one salted `.dev.vars` identity without
     recording values. Keep this salted plan uncommitted, then delete it after the run.
+    The plan binds the free capacity command, instrument, artifact, schedule, thresholds, and
+    24-hour freshness window. The exact 86,400,000 ms boundary is valid. The artifact must prove
+    two overlapping captures and 14 successful
+    responses. It must show no errors, retries, or `Retry-After`. Vectors must match, and real request
+    concurrency must occur. The `--stable-sha256` remote probe still controls immediate service drift.
+    The plan also binds the exact P6 wrapper command and its seven `$0.50` calls.
+    P6 refuses an existing output or temporary output. It never overwrites a method record.
+    The plan binds both directed flip re-judge commands and requires `--allow-empty`.
+    Each flip command pins the Claude path, binary SHA-256, and environment SHA-256.
+    The re-judge checks these identities before and after judging. It stamps them in the artifact.
     The supervisor enforces row barriers, alternating monotonic release order, shared cancellation,
     child exits, a bounded termination drain, and a four-hour deadline. Wall-clock times provide
     duration evidence only. Before the receipt, each artifact must exist in its arm results

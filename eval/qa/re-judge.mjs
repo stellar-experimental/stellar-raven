@@ -50,12 +50,19 @@ import {
   recordSpend,
   spendLedgerRecord
 } from "./spend-budget.mjs";
+import {
+  agentEnvironmentIdentity,
+  assertExpectedAgentEnvironment,
+  assertExpectedExecutable,
+  executableIdentity
+} from "../lib/executable-identity.mjs";
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
-const TOOL_VERSION = "re-judge/v5";
+const TOOL_VERSION = "re-judge/v6";
 export const REJUDGE_RESULT_SCHEMA = "qa-rejudge-v1";
 const GIT_MAX_BUFFER = 32 * 1024 * 1024;
+const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -130,6 +137,10 @@ export function parseArgs(argv) {
   let dryRun = false;
   let maxBudgetUsd = null;
   let maxBudgetFlags = 0;
+  let claudePath;
+  let expectedAgentBinarySha256;
+  let expectedAgentEnvironmentSha256;
+  const identityFlagCounts = new Map();
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -168,8 +179,21 @@ export function parseArgs(argv) {
       const value = argv[++i];
       if (value === undefined || value.startsWith("--")) fail("--max-budget-usd requires a value");
       maxBudgetUsd = parseMaxBudgetUsd(value);
+    } else if ([
+      "--claude-path",
+      "--expect-agent-binary-sha256",
+      "--expect-agent-environment-sha256"
+    ].includes(arg)) {
+      const count = (identityFlagCounts.get(arg) ?? 0) + 1;
+      identityFlagCounts.set(arg, count);
+      if (count > 1) fail(`${arg} may be supplied only once`);
+      const value = argv[++i];
+      if (!value || value.startsWith("--")) fail(`${arg} requires a spaced value`);
+      if (arg === "--claude-path") claudePath = value;
+      if (arg === "--expect-agent-binary-sha256") expectedAgentBinarySha256 = value;
+      if (arg === "--expect-agent-environment-sha256") expectedAgentEnvironmentSha256 = value;
     } else if (arg === "--help" || arg === "-h") {
-      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
+      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--claude-path <path> --expect-agent-binary-sha256 <sha256> --expect-agent-environment-sha256 <sha256>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
       process.exit(0);
     } else if (arg.startsWith("--")) {
       fail(`unknown flag ${arg}`);
@@ -185,6 +209,22 @@ export function parseArgs(argv) {
   if (!dryRun && maxBudgetFlags === 0) {
     fail("re-judge requires --max-budget-usd for every paid run");
   }
+  const identityFlagCount = [claudePath, expectedAgentBinarySha256, expectedAgentEnvironmentSha256]
+    .filter((value) => value !== undefined).length;
+  if ((!dryRun && identityFlagCount !== 3) || (dryRun && identityFlagCount !== 0 && identityFlagCount !== 3)) {
+    fail(
+      "paid re-judge requires --claude-path, --expect-agent-binary-sha256, and " +
+      "--expect-agent-environment-sha256 as spaced flags"
+    );
+  }
+  for (const [flag, value] of [
+    ["--expect-agent-binary-sha256", expectedAgentBinarySha256],
+    ["--expect-agent-environment-sha256", expectedAgentEnvironmentSha256]
+  ]) {
+    if (value !== undefined && !SHA256_PATTERN.test(value)) {
+      fail(`${flag} must be a 64-character lowercase SHA-256`);
+    }
+  }
   return {
     resultsPath: positional[0],
     ids,
@@ -196,8 +236,49 @@ export function parseArgs(argv) {
     allowGoldenDrift,
     allowEmpty,
     dryRun,
-    maxBudgetUsd
+    maxBudgetUsd,
+    claudePath,
+    expectedAgentBinarySha256,
+    expectedAgentEnvironmentSha256
   };
+}
+
+export function attestRejudgeIdentity(
+  { claudePath, expectedAgentBinarySha256, expectedAgentEnvironmentSha256 },
+  {
+    env = process.env,
+    executableIdentityImpl = executableIdentity,
+    environmentIdentityImpl = agentEnvironmentIdentity
+  } = {}
+) {
+  if (typeof claudePath !== "string" || !claudePath) {
+    throw new Error("re-judge Claude identity: --claude-path is required");
+  }
+  const binary = assertExpectedExecutable(
+    executableIdentityImpl(claudePath, { env }),
+    expectedAgentBinarySha256,
+    { label: "re-judge Claude CLI" }
+  );
+  const environment = assertExpectedAgentEnvironment(
+    environmentIdentityImpl(env),
+    expectedAgentEnvironmentSha256,
+    { label: "re-judge Claude environment" }
+  );
+  return { binary, environment };
+}
+
+export function assertStableRejudgeIdentity(before, after) {
+  const binaryFields = ["resolvedPath", "realPath", "sha256", "version"];
+  const binaryChanged = binaryFields.filter(
+    (field) => before?.binary?.[field] !== after?.binary?.[field]
+  );
+  if (binaryChanged.length) {
+    throw new Error(`re-judge Claude binary identity changed during judging (${binaryChanged.join(", ")})`);
+  }
+  if (before?.environment?.sha256 !== after?.environment?.sha256) {
+    throw new Error("re-judge Claude environment identity changed during judging");
+  }
+  return { matches: true, binaryChanged, environmentChanged: false };
 }
 
 function mappedRepositoryRelativePath(casesPath, repoRoot) {
@@ -785,6 +866,7 @@ async function main() {
     fail(`refusing non-identical re-judge: ${reasons.join("; ")}. Pass --allow-non-identical to create a loudly labeled artifact.`);
   }
 
+  const judgeIdentityBefore = attestRejudgeIdentity(options);
   const startedAt = new Date().toISOString();
   const spendLedger = createSpendLedger(options.maxBudgetUsd);
   const runState = { stopError: null, incompleteIds: [], unattemptedIds: [] };
@@ -821,6 +903,11 @@ async function main() {
       ...(options.judgePanel > 1 ? { judgePanel: options.judgePanel } : {}),
       judgeRubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
+      judgeIdentity: {
+        before: judgeIdentityBefore,
+        after: null,
+        guard: null
+      },
       startedAt,
       toolVersion: TOOL_VERSION
   };
@@ -832,16 +919,34 @@ async function main() {
     renameSync(tmpPath, outPath);
   };
   writeCheckpoint([]);
-  const rows = await rejudgeRows({
-    selectedRows: selection.rows,
-    caseById: identity.caseById,
-    judgeModel: options.judgeModel,
-    judgePanel: options.judgePanel,
-    checkpoint: (completedRows) => writeCheckpoint(completedRows),
-    log: (message) => console.log(message),
-    spendLedger,
-    runState
-  });
+  let rows;
+  let judgingError;
+  try {
+    rows = await rejudgeRows({
+      selectedRows: selection.rows,
+      caseById: identity.caseById,
+      judgeModel: options.judgeModel,
+      judgePanel: options.judgePanel,
+      judge: (input, judgeOptions) => judgeCase(input, {
+        ...judgeOptions,
+        command: judgeIdentityBefore.binary.resolvedPath,
+        safeMode: true
+      }),
+      checkpoint: (completedRows) => writeCheckpoint(completedRows),
+      log: (message) => console.log(message),
+      spendLedger,
+      runState
+    });
+  } catch (error) {
+    judgingError = error;
+  }
+  const judgeIdentityAfter = attestRejudgeIdentity(options);
+  baseMeta.judgeIdentity.after = judgeIdentityAfter;
+  baseMeta.judgeIdentity.guard = assertStableRejudgeIdentity(
+    judgeIdentityBefore,
+    judgeIdentityAfter
+  );
+  if (judgingError) throw judgingError;
   writeCheckpoint(rows, new Date().toISOString());
   console.log(`wrote ${outPath}`);
 }

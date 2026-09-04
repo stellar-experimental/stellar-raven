@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { REMOTE_IDENTITY_VECTOR_SCHEMA } from "../eval/qa/remote-identity-guard.mjs";
 import {
+  PAIRED_CAPACITY_CONTRACT,
+  PAIRED_CAPACITY_SCHEMA,
+  capacityRejectionReasons,
   classifyService,
   runPairedCapacityCheck,
   summarizeLatency,
@@ -82,21 +85,59 @@ describe("paired capacity check", () => {
     const probe = async ({ fetchImpl }) => {
       await Promise.all([
         fetchImpl("https://stellarlight.xyz/api/openapi.json"),
+        fetchImpl("https://api.lumenloop.com/v1/openapi.json"),
         fetchImpl("https://api.lumenloop.com/v1/tools"),
-        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x")
+        fetchImpl("https://api.lumenloop.com/v1/skills"),
+        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x/settings"),
+        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x/queries"),
+        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x/queries")
       ]);
       return vector();
     };
 
     const report = await runPairedCapacityCheck({ probe });
 
-    expect(report.schema).toBe("qa-paired-capacity-check-v1");
+    expect(report.schema).toBe(PAIRED_CAPACITY_SCHEMA);
+    expect(report.contract).toEqual(PAIRED_CAPACITY_CONTRACT);
+    expect(report.accepted).toBe(true);
+    expect(report.rejectionReasons).toEqual([]);
     expect(report.method.paidModelCalls).toBe(0);
-    expect(report.observed.requests).toBe(6);
-    expect(report.observed.responses).toBe(6);
+    expect(report.observed.requests).toBe(14);
+    expect(report.observed.responses).toBe(14);
+    expect(report.observed.responsesByService).toEqual({ scout: 2, lumenloop: 6, stellarDocs: 6 });
     expect(report.observed.transportErrors).toBe(0);
     expect(report.observed.maximumActiveFetches).toBeGreaterThan(1);
     expect(report.observed.vectorsMatch).toBe(true);
     expect(report.agents.map((agent) => agent.status)).toEqual(["success", "success"]);
+  });
+
+  it.each([
+    ["request count", (report) => { report.observed.requests = 13; }, /requests must equal 14/],
+    ["response count", (report) => { report.observed.responses = 13; }, /responses must equal 14/],
+    ["successful response count", (report) => { report.observed.successfulResponses = 13; }, /successfulResponses must equal 14/],
+    ["service response count", (report) => { report.observed.responsesByService.scout = 1; }, /service response counts mismatch/],
+    ["agent result count", (report) => { report.agents.pop(); }, /agent result count mismatch/],
+    ["HTTP errors", (report) => { report.observed.httpErrors = 1; }, /httpErrors must equal 0/],
+    ["transport errors", (report) => { report.observed.transportErrors = 1; }, /transportErrors must equal 0/],
+    ["retries", (report) => { report.observed.retries = 1; }, /retries must equal 0/],
+    ["Retry-After", (report) => { report.observed.retryAfterObserved = 1; }, /retryAfterObserved must equal 0/],
+    ["vector mismatch", (report) => { report.observed.vectorsMatch = false; }, /capture vectors differ/],
+    ["no request concurrency", (report) => { report.observed.maximumActiveFetches = 1; }, /real request concurrency/],
+    ["no capture overlap", (report) => { report.observed.captureWindowsOverlap = false; }, /capture windows did not overlap/],
+    ["slow duration", (report) => { report.durationMs = 120_001; }, /duration exceeds/],
+    ["slow capture", (report) => { report.observed.captureLatency.maxMs = 120_001; }, /capture latency exceeds/]
+  ])("rejects a capacity report with %s", async (_label, mutate, expected) => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("{}", { status: 200 })));
+    const probe = async ({ fetchImpl }) => {
+      await Promise.all([
+        fetchImpl("https://stellarlight.xyz/api/openapi.json"),
+        ...Array.from({ length: 3 }, () => fetchImpl("https://api.lumenloop.com/v1/tools")),
+        ...Array.from({ length: 3 }, () => fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x"))
+      ]);
+      return vector();
+    };
+    const report = await runPairedCapacityCheck({ probe });
+    mutate(report);
+    expect(capacityRejectionReasons(report)).toEqual(expect.arrayContaining([expect.stringMatching(expected)]));
   });
 });
