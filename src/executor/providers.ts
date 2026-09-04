@@ -332,12 +332,12 @@ const ARTIFACT_PRELUDE = [
  *     the real error. `r.error` on ok:true stays a plain undefined, so the
  *     `if (r.error)` guard pattern keeps working.
  *
- * Non-enumerable accessors — deliberately NOT a Proxy around the envelope
- * (Proxies DataCloneError under Workers RPC v8 serialization) — keep every
- * legitimate pattern untouched: Object.keys / spread / JSON / structured
- * clone all read enumerable-only (so a script returning the raw envelope
- * still serializes across the Workers RPC boundary), and `await` never trips
- * over a `then` trap. Only direct wrong-level property access trips a trap.
+ * Non-enumerable accessors keep every legitimate pattern untouched:
+ * Object.keys / spread / JSON / structured clone all read enumerable-only.
+ * A payload-prototype Proxy cannot cross the Workers RPC boundary, so this
+ * guard intentionally does not diagnose object-payload array reads. A script
+ * returning the raw envelope or its payload must serialize successfully.
+ * Only direct wrong-level property access trips a trap.
  * The write-through SET is NOT try/caught: on a frozen envelope it must
  * throw loudly at the write, not silently no-op and then throw on read.
  * Applies to service namespaces only — codemode.* discovery fns return
@@ -348,42 +348,17 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
     ([svc, ops]) =>
       `    for (const __op of ${JSON.stringify(ops)}) {\n` +
       `      const __orig = ${svc}[__op];\n` +
-      `      ${svc}[__op] = async (...__a) => __guardEnvelope(await __orig(...__a), "${svc}." + __op, true);\n` +
+      `      ${svc}[__op] = async (...__a) => __guardEnvelope(await __orig(...__a), "${svc}." + __op);\n` +
       `    }`
   );
   return [
     "    const __warned = new Set();",
-    "    const __guardEnvelope = (r, call, guardPayloadShape = false) => {",
+    "    const __guardEnvelope = (r, call) => {",
     '      if (r === null || typeof r !== "object" || typeof r.ok !== "boolean") return r;',
     "      const __trap = (key, desc) => {",
     "        try { Object.defineProperty(r, key, { ...desc, enumerable: false, configurable: true }); } catch {}",
     "      };",
     '      if (r.ok && r.data && typeof r.data === "object" && !Array.isArray(r.data)) {',
-    "        if (guardPayloadShape) {",
-    "          try {",
-    "            const data = r.data;",
-    "            const base = Object.getPrototypeOf(data);",
-    "            const bridge = Object.create(base);",
-    "            const arrayReads = new Set(['map', 'filter', 'length']);",
-    "            const diagnosticPrototype = new Proxy(bridge, {",
-    "              get(target, key, receiver) {",
-    "                if (key === Symbol.iterator || arrayReads.has(key)) {",
-    "                  const keys = Object.keys(data);",
-    "                  const arrays = keys.filter((candidate) => {",
-    "                    const descriptor = Object.getOwnPropertyDescriptor(data, candidate);",
-    "                    return descriptor && Object.prototype.hasOwnProperty.call(descriptor, 'value') && Array.isArray(descriptor.value);",
-    "                  });",
-    "                  const accessor = arrays.includes('hits') ? 'hits' : arrays.length === 1 ? arrays[0] : null;",
-    "                  const read = key === Symbol.iterator ? 'iteration' : '.' + String(key);",
-    "                  const suggestion = accessor ? ' Use r.data.' + accessor + ' for the array.' : '';",
-    "                  throw new Error(call + ' result payload is an object, not an array: ' + read + ' is array-only. Top-level payload keys: ' + (keys.length ? keys.join(', ') : '(none)') + '.' + suggestion);",
-    "                }",
-    "                return Reflect.get(target, key, receiver);",
-    "              }",
-    "            });",
-    "            Object.setPrototypeOf(data, diagnosticPrototype);",
-    "          } catch {}",
-    "        }",
     "        for (const key of Object.keys(r.data)) {",
     '          if (key === "ok" || key === "data" || key === "error" || key === "then" || key === "toJSON") continue;',
     '          const msg = call + \' result: ".\' + key + \'" is on the data payload, not the envelope — use r.data.\' + key + " (every call resolves to { ok: true, data } | { ok: false, error })";',

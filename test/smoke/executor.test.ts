@@ -1035,6 +1035,34 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }
   });
 
+  it("serializes guarded object payloads across the real Dynamic Worker RPC boundary", async () => {
+    vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+      const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
+      expect(url.href).toBe("https://api.lumenloop.com/v1/tools/search_directory");
+      return Response.json({
+        success: true,
+        data: { count: 1, projects: [{ slug: "smoke-project" }] },
+        meta: { tool: "search_directory", format: "json" }
+      });
+    });
+
+    const outcome = await run(`async () => {
+      const r = await lumenloop.search_directory({ query: "smoke" });
+      return { raw: r, payload: r.data, slugs: r.data.projects.map((project) => project.slug) };
+    }`);
+
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) throw new Error(outcome.error);
+    const parsed = parseResultJsonWithMetadata(outcome.result) as {
+      raw: { ok: boolean; data: { count: number; projects: { slug: string }[] } };
+      payload: { count: number; projects: { slug: string }[] };
+      slugs: string[];
+    };
+    expect(parsed.raw).toEqual({ ok: true, data: { count: 1, projects: [{ slug: "smoke-project" }] } });
+    expect(parsed.payload).toEqual({ count: 1, projects: [{ slug: "smoke-project" }] });
+    expect(parsed.slugs).toEqual(["smoke-project"]);
+  });
+
   it("guards a skill.read result: reading .data throws a pointer to top-level content", async () => {
     const outcome = await run(`async () => {
       const skill = await codemode.skill.read("skills.lumenloop.stellar-project-dossier");
