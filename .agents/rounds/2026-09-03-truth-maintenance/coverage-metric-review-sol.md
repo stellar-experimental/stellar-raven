@@ -1,6 +1,95 @@
 # Coverage metric independent review
 
-## Verdict
+## Final re-review verdict
+
+**PASS**
+
+Reviewed repair commit: `a21fd5b11815357a6ae435a8418ccbbba2fe7203`.
+
+Reviewer: Sol high.
+
+The repair resolves R1 and R2. I found no remaining required finding.
+
+### R1 verification
+
+`writeState` now deletes both keys from `RETIRED_MEASUREMENT_METRIC_KEYS` before every write.
+The deletion shares the same path as current metric cleanup.
+It covers normal judging, zero-call finalization, interrupted judging, and suppressed aggregates.
+
+I repeated the zero-call reproduction with the named 500-row artifact.
+The path made zero judge calls and stamped `meta.judgeStored`.
+Neither retired key remained. All five current fields remained.
+
+The stored tests seed both retired keys in three write states.
+They assert removal after zero-call finalization, a suppressed write, and an interrupted write.
+The suppressed test also asserts that all five current fields remain absent.
+
+### R2 verification
+
+The README now names `2026-09-04T05-40-51-variantA` as an affected artifact.
+It now describes artifacts produced before the repair instead of using the incorrect date cutoff.
+It also explains stored rewrites and unchanged historical bytes.
+
+The paired test comment uses the same repair boundary and names the affected artifact.
+
+### Re-review commands
+
+```text
+cp /private/tmp/stellar-raven-tm-runner/eval/qa/results/2026-09-04T05-40-51-variantA.json .review-stored-artifact.json
+node --input-type=module -e 'import { readFileSync } from "node:fs"; import { judgeStoredResults, prepareJudgeStabilityRegister } from "./eval/qa/run-qa.mjs"; const file = ".review-stored-artifact.json"; const stabilityRegister = prepareJudgeStabilityRegister({ pinnedPath: "/private/tmp/stellar-raven-tm-paired-stability.json", log: () => {} }); let judgeCalls = 0; const result = await judgeStoredResults(file, { judgeModel: "claude-sonnet-5", judgePanel: 1, stabilityRegister, judge: async () => { judgeCalls += 1; throw new Error("unexpected paid judge path"); }, log: () => {} }); const written = JSON.parse(readFileSync(file, "utf8")); console.log(JSON.stringify({ judgedCount: result.judgedCount, judgeCalls, judgeStoredStamped: Boolean(written.meta.judgeStored), retiredPresent: ["meanContinuousCoverage","continuousCoverageRowCount"].filter((key) => Object.hasOwn(written.meta,key)), currentMetricKeys: ["halfCreditShare","strictCorrectShare","coreAnswerCorrectShare","gradedCoreAnswerNullCount","coreAnswerVerdictCount"].filter((key) => Object.hasOwn(written.meta,key)) }, null, 2));'
+rm .review-stored-artifact.json
+```
+
+Result: `judgedCount: 0`, `judgeCalls: 0`, and `retiredPresent: []`.
+All five current metric keys remained.
+
+```text
+npx vitest run test/qa-measure-harness.test.mjs test/qa-judge-stored.test.mjs test/qa-paired-verdict.test.mjs test/qa-harness-preconditions.test.mjs
+```
+
+Result: 4 files passed. All 193 tests passed.
+
+```text
+npm run typecheck
+```
+
+Result: exit 0.
+
+```text
+npm run eval:qa:paired:validate
+```
+
+Result: exit 0 with `"pass": true`.
+
+```text
+git diff --check
+git diff a21fd5b^ a21fd5b --check
+```
+
+Result: both commands returned exit 0.
+
+```text
+npm run secrets:scan -- --tree
+```
+
+Result: exit 0. The repository secret scan and `gitleaks` found no leak.
+
+### Remaining risks
+
+- Untouched historical artifacts keep the invalid fields. Current readers ignore them.
+- A stored rewrite changes metadata bytes. `sourceResultsSha256` preserves the original collection identity.
+- Both paid arms must use one final runner revision and one QA implementation hash.
+
+Blockers: none.
+
+No paid call ran. I changed only this review report.
+
+## Initial review record
+
+The record below covers `d1fddb9f32ce77532d719a1ab9c6254378ad023f`.
+Its `CHANGES-REQUIRED` verdict does not apply to `a21fd5b11815357a6ae435a8418ccbbba2fe7203`.
+
+## Initial verdict
 
 **CHANGES-REQUIRED**
 
@@ -14,7 +103,7 @@ Branch: `codex/tm-coverage-metric`.
 
 I reviewed the implementation diff before I read the author report. I made no paid calls.
 
-## Required findings
+## Initial required findings
 
 ### R1. The stored-judge rewrite keeps both retired fields
 
@@ -86,7 +175,7 @@ The implementation removes the calculation and its `compiledCases` dependency. T
 It keeps the five valid grade-count metrics unchanged.
 It also removes the retired metric from both console paths.
 
-The stored-judge cleanup in R1 remains necessary. No wider metric redesign is necessary.
+The stored-judge cleanup in R1 was necessary at `d1fddb9`. No wider metric redesign was necessary.
 
 ## Caller and compatibility review
 
