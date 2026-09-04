@@ -80,4 +80,4 @@ Its `skill_run` and `lumenloop.find_content_by_entity` events were `ok` at 160 m
 ## Closeout state
 
 The production deployment is complete. Open work is trigger-only or owner-blocked.
-It is not deployment work. Herdr cleanup remains open.
+It is not deployment work. Repository and Herdr cleanup are complete.

@@ -8,7 +8,7 @@ The round has no review gate. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 Open work is trigger-only or owner-blocked. It is not deployment work. Every paid, filing, and
-golden action stays owner-blocked. Herdr cleanup remains open.
+golden action stays owner-blocked. Repository and Herdr cleanup are complete.
 
 ## State at handoff
 
@@ -16,6 +16,8 @@ golden action stays owner-blocked. Herdr cleanup remains open.
   `50bf5518860584ec1e5d352acbe11033515a0b7f`. The Copilot comment `3933695212` was fixed in
   `ab5388e` and resolved. Final CI passed Analyze in 49 seconds, CodeQL in 3 seconds, secrets in
   23 seconds, and tests in 1 minute 33 seconds.
+- PR #126 merged at `2026-09-04T13:05:49Z` as
+  `dd80c0c8d1849a7e1d9daa5c6d60a714765ab538`. Local and remote `main` now point to that commit.
 - Deployment preflight proved that clean `HEAD` equals `origin/main`. `npm audit --omit=dev` found
   zero vulnerabilities. Wrangler deployed at `2026-09-04T12:29:24.371Z`. Worker Version
   `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent. The rollback version is
@@ -76,14 +78,19 @@ golden action stays owner-blocked. Herdr cleanup remains open.
 - The compiled corpus has 500 active cases. Content SHA-256 `c5d0c804…7b43e`. Cases file SHA-256
   `1842a188…2396`. Corpus lint: 0 errors and 62 warnings. Do not chase these counts to zero.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
+- Repository cleanup is complete. Only the root worktree and local `main` remain. Only remote
+  `main` remains. The repository has no stash or open pull request.
+- Herdr cleanup is complete. Workspace `w16` contains only the current root pane `w16:pG` and tab
+  `w16:t6`. The authorized task panes and workspaces `w2R`, `w2S`, and `w2T` are closed.
 
 ## Next actions by class
 
 ### Deployment closeout complete
 
 - PR #125 merged. Final CI passed. Production verification passed.
+- PR #126 merged. It records the reviewed production closeout.
 - Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent.
-- Deployment work is complete. Herdr cleanup is still open.
+- Deployment and Herdr cleanup are complete.
 
 Complete since the previous handoff:
 
@@ -147,9 +154,10 @@ Complete since the previous handoff:
 - Selection of harness follow-ups from the candidate audit. See owner decision H.
 - Paired promotion design: denominator, candidate-only T4 rule, and margin. See owner decision J.
 
-### Remaining cleanup
+### Repository and Herdr cleanup complete
 
-- Owned Herdr cleanup remains open. Do not treat it as deployment work.
+- All related worktrees, local branches, remote branches, stashes, pull requests, panes, agents,
+  tabs, and task workspaces are reconciled. Unrelated Herdr workspaces were not changed.
 - Paid, filing, golden, and human-decision work stays in the blocks below.
 
 ## Owner decisions

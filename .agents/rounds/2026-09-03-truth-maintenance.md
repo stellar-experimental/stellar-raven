@@ -326,10 +326,10 @@ Replacement Codex panes `w16:p1R` and `w16:p1S` now hold the pre-spend and golde
 Updated 2026-09-04.
 
 - [x] Final pre-spend delta review returns `LAUNCH-OK` after the real-runtime proof.
-- [ ] Spawned pane IDs and final agent states are recorded. Known panes: `w16:p1N`, `w16:p1P`,
+- [x] Spawned pane IDs and final agent states are recorded. Known panes: `w16:p1N`, `w16:p1P`,
       `w16:p1Q`, `w16:p1R`, `w16:p1S`, the runner pane `w2R:p2`, and Terra author pane
-      `w16:p2J`. The later repair lanes ran in separate worktrees and did not record pane IDs in
-      this ledger. This item stays open.
+      `w16:p2J`. The final audit reconciled all related descendants. Workspace `w16` now contains
+      only the current root pane `w16:pG` and tab `w16:t6`.
 - [x] Drift artifacts are generated and classified. Scout 1.9.23 and 1.9.30 are rejected.
 - [x] Routing and protocol-history results are recorded.
 - [x] The paired full battery, live-data, and digest contracts are honestly blocked. The candidate
@@ -372,7 +372,8 @@ Updated 2026-09-04.
 - [x] PR #125 vectorize timeout repair passes local stress and CI-like validation. The two-file
       run fell from 13.72–13.83 seconds to 1.41 seconds. The full suite passed 108 files and 1,974
       tests. See `ci-vectorize-timeout-repair-sol.md`.
-- [ ] Owned Herdr panes and agents are closed without touching unrelated resources.
+- [x] Owned Herdr panes and agents are closed without touching unrelated resources. The owner
+      authorized the remaining task panes. Related workspaces `w2R`, `w2S`, and `w2T` are closed.
 
 ## Candidate arm result and stop (2026-09-04)
 
@@ -625,7 +626,7 @@ launch revision, a current capacity artifact, and a weekend window.
 - The owner granted merge and deployment authority. PR #125 merged as `50bf551`. Wrangler deployed
   Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` at `2026-09-04T12:29:24.371Z`.
 - Production verification proved that the repaired envelope path works. Owned-resource cleanup
-  remains.
+  is complete.
 - Monitor-only programs stay monitor-only. The PH2 and Raven capability-boundary decisions from
   `.agents/rounds/2026-09-03-owner-decisions.md` are unchanged.
 
@@ -653,6 +654,6 @@ Deployment closeout: PR #125 merged as
 `8022e211-c731-49cc-aef1-a20f1da798b9` at 100 percent. The rollback version remains
 `f62b64fa-1fb7-4c25-970d-7f98c83ab302`.
 
-Open work is trigger-only or owner-blocked. It is not deployment work. Owned Herdr cleanup
-remains open. The handoff and owner decisions are in `.agents/NEXT.md`. The queue is in
+Open work is trigger-only or owner-blocked. It is not deployment work. Repository and Herdr
+cleanup are complete. The handoff and owner decisions are in `.agents/NEXT.md`. The queue is in
 `.agents/TODO.md`.
