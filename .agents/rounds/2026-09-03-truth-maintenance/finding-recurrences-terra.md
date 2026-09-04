@@ -12,8 +12,8 @@ It read Cluster 7 as historical candidate evidence. It did not treat a candidate
 | `sd-046` | `proposed` | `q-asset-amm-fee-reserve`; `q-protocol-base-reserve-min-balance` | Exact omission reproduces on both general Docs pages. | Move to `verified`. Add a dated recurrence. |
 | `sd-044` | `reported-upstream` | `q-quickstart-manual-ledger-close` | Exact flag-documentation omission reproduces. | Add a dated recurrence only. |
 | `sd-037` | `reported-upstream` | `q-pc-slp-0004-0006-status` | The root omits SLPs. The limits page lacks the proposal index. | Add a dated recurrence only. |
-| `ll-030` | `proposed` | `q-defi-wisdomtree-crdt` | Authorization blocked the exact record check. | No status or recurrence change. |
-| `sls-023` | `reported-upstream` | `q-defi-wisdomtree-crdt` | The product and deployment data now exist. | No status or recurrence change. |
+| `ll-030` | `proposed` | `q-defi-wisdomtree-crdt` | An authenticated production read reproduces the exact record gap. | Move to `verified`. Add a dated recurrence. |
+| `sls-023` | `reported-upstream` | `q-defi-wisdomtree-crdt` | Fourteen rows improved. Forty-seven still lack deployment facts. | Add dated recurrences only. |
 
 The active collection contains one file for each checked ID. `improvements/resolved.json` contains no checked ID.
 
@@ -40,9 +40,10 @@ All SHA-256 values are response-body hashes. All requests ran on 2026-09-04.
 | `GET https://developers.stellar.org/docs/learn/fundamentals/lumens` | 200 | `4cc085d05768d143ddc6a406846f934cc6cbd70212300bd4d221678c02cf3029` | The trustline list includes pool shares. It omits the two-reserve exception. |
 | `GET https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts` | 200 | `c2307eb97e1cb9f20f42eb1027339e11e7a03d53e26492df756c02f35cf4b481` | The trustline list includes pool shares. It omits the two-reserve exception. |
 | `GET https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools` | 200 | `2a6906e9171e1f8d1b11a31f6d6590a7c337003fdb3639e08b30fbcc4e8b0a11` | The page states that a pool-share trustline requires two base reserves. |
-| `GET https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0038.md` | 200 | `febebc612e1dd14006ea677161c626a27575be32b7c937d8aacb30677789c1aa` | CAP-0038 states the two-subentry and two-reserve rule. |
+| `GET https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0038.md` | 200 | `febebc612e1dd14006ea677161c626a27575be32b7c937d8aacb30677789c1aa` | The CAP-0038 raw file states the two-subentry and two-reserve rule. |
 
-The current request reproduces the exact cross-page contradiction. It meets the proposed-to-verified lifecycle rule.
+The general Docs pages were updated on 2026-09-02. They still reproduce the exact cross-page contradiction.
+It meets the proposed-to-verified lifecycle rule.
 
 ### `sd-044`
 
@@ -51,22 +52,15 @@ Its commit date is `2026-09-02T00:35:19Z`.
 
 | Request | HTTP status | SHA-256 | Result |
 | --- | --- | --- | --- |
-| `GET https://raw.githubusercontent.com/stellar/quickstart/master/start` | 200 | `94bf0b0f67c80a7e0a35a1d3d9d2ee949922eac0713be151702a1b950070e909` | The script sets, parses, and writes `--enable-core-manual-close`. |
+| `GET https://raw.githubusercontent.com/stellar/quickstart/c43c77eb2c2540410fc09b34e207b4edcf943085/start` | 200 | `200eba3f488563d9a6474fb217c937b5a4a9e5fdb2923b8f7323904f885a9f73` | The main-branch script sets, parses, and writes `--enable-core-manual-close`. |
 | `GET https://api.github.com/repos/stellar/stellar-docs/git/trees/main?recursive=1` | 200 | `d5539baad75bc6a12657555669d065b291924d9ffe938b6810450469d0d4c83a` | The tree identifies the current Quickstart file set. |
 
 The current `stellar/stellar-docs` commit is `3fcd663668fe3ee28f884d883c4062a29d384419`.
 Its commit date is `2026-09-02T19:45:20Z`.
 
-| Current Quickstart file | SHA-256 |
-| --- | --- |
-| `docs/tools/quickstart/README.mdx` | `66c27c72faa693c25be4f44035651d5709cffb4617e1fe344171025ab5472d5` |
-| `docs/tools/quickstart/advanced-usage/README.mdx` | `daa04cf6ada15fa80402b4e147b62f31c387b5b3f0a98886df525161a5bef91a` |
-| `docs/tools/quickstart/advanced-usage/container.mdx` | `e6a426eb0f447de2a1275eda8695755d2c39331b8f9ca68aaf0aedfbc96f5aca` |
-| `docs/tools/quickstart/advanced-usage/operation-modes.mdx` | `ae4c8def01f73323c8e63c59a1cda7f9fe057fb7a2429160b272ddaf1c396db1` |
-| `docs/tools/quickstart/advanced-usage/run-command-examples.mdx` | `5c52837bdf49f4b1f359aab74a20b112edcc9b2c341032c16e32a5a8649c9e9f` |
-| `docs/tools/quickstart/service-options.mdx` | `e5d7b99aad3fad01041d76b315c3e3da7e0befdf8511a21eb86407aada4d7b11` |
-
-The six files contain neither `--enable-core-manual-close` nor manual-close wording. The exact defect reproduces.
+The tree contains 19 `.mdx` pages under `docs/tools/quickstart/`.
+All 19 pages contain neither `--enable-core-manual-close` nor manual-close wording.
+The exact defect reproduces.
 
 ### `sd-037`
 
@@ -75,43 +69,51 @@ Its commit date is `2026-08-31T23:57:00Z`.
 
 | Request | HTTP status | SHA-256 | Result |
 | --- | --- | --- | --- |
-| `GET https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md` | 200 | `ecb809f47f17a42046265c3df7de0f05c2357bc0e909167b0e73697b0da33a0d` | The overview names CAPs and SEPs only. |
+| `GET https://raw.githubusercontent.com/stellar/stellar-protocol/master/README.md` | 200 | `ecb809f47f17a42046265c3df7de0f05c2357bc0e909167b0e73697b0da33a0d` | The README prose names CAPs and SEPs only. |
 | `GET https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/README.md` | 200 | `4bfd8ffeff53ec0697d77fbee8234152af869574e50c73c0832a7eeeba39d2a3` | The page names SLPs but lacks an identifier, title, and status index. |
 | `GET https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md` | 200 | `657c2d3344611d10f366a9c19a9d7b3b2428761d25810d8d49312f934e55ffe0` | The canonical SLP-0004 file still exists. |
 
 The limits overview has a partial naming change. It does not resolve the recorded discoverability defect.
+Issue #1981 is open. Its only comment is the 2026-08-14 stale-bot notice.
 
 ### `ll-030`
 
-The public OpenAPI document reports LumenLoop API version `1.0.0`.
-Its body SHA-256 is `023bea7bfc99ddab7aefce739049cec2197ca52260afd1d6e64e3e85d5269cc0`.
+The production Raven server completed this authenticated read-only re-execution at `2026-09-04T07:00:31.027Z`.
+The host kept the LumenLoop credential outside the sandbox.
 
-| Request | HTTP status | SHA-256 | Result |
-| --- | --- | --- | --- |
-| `POST https://api.lumenloop.com/v1/tools/get_project` with `{"slug":"wisdomtree"}` | 401 | `311d5c564899acfc500ede1001564d8d72c9258a9386ac904165ee7660f2af1c` | The API requires a Bearer credential. |
-| `POST https://api.lumenloop.com/v1/tools/search_directory` with `{"query":"CRDT"}` | 401 | `311d5c564899acfc500ede1001564d8d72c9258a9386ac904165ee7660f2af1c` | The API requires a Bearer credential. |
+| Call | Result |
+| --- | --- |
+| `lumenloop.get_project({slug:"wisdomtree"})` | The record names 13 digital funds and a Gold token. It has no `CRDT` or `CRDYX` substring. |
+| `lumenloop.search_directory({query:"CRDT",limit:10})` | `match_mode` is `semantic`. Ten adjacent rows have no `CRDT` substring. |
+| `lumenloop.search_content_semantic({query:"WisdomTree CRDT CRDYX private credit alternative income digital fund Stellar",limit:15})` | The response has 24 rows across six collections. It has no `CRDT` or `CRDYX` substring. |
 
-The anonymous public calls cannot read the WisdomTree record. They cannot reproduce its missing named sub-products.
+The authenticated read reproduces the exact record-content gap. It meets the proposed-to-verified lifecycle rule.
 
 ### `sls-023`
 
 | Request | HTTP status | SHA-256 | Result |
 | --- | --- | --- | --- |
-| `GET https://stellarlight.xyz/api/status` | 200 | `a9b8e92f2761e0d11195254f92382ed1328fea907803ad36b4a32008da6144f1` | The service reports `apiVersion` `1.9.30` and `version` `scout-1.0.0`. |
-| `GET https://stellarlight.xyz/api/projects/search?q=real%20world%20asset&limit=100` | 200 | `bd8d4dae2246abf2ac17dfb4a9e8fe6424b37bba6bd9e8fc9f7149feb1a2176b` | All 61 returned records have `deployment`. DTCC has a named announced mainnet product. |
+| `GET https://stellarlight.xyz/api/status` | 200 | `59b15559c1cbd9916536741483754801013480d40d0acbc30325b327db29a5c0` | The service reports `apiVersion` `1.9.30` and `version` `scout-1.0.0`. |
+| `GET https://stellarlight.xyz/api/projects/search?q=real%20world%20asset&limit=100` | 200 | `f6c976a7b9c82f61e4f2ab5c5cbfd0b9cb907ff09b89289fa45fd47905d32e0d` | The 61-row response has partial deployment data. |
 
-The search response generated at `2026-09-04T06:40:09.298Z` has 61 deployment records.
-It has one nonempty `products` value.
-DTCC has a separate announced mainnet product record and an H1 2027 note.
-The exact missing product and deployment model does not reproduce.
+The search response generated at `2026-09-04T06:54:40.644Z` has 61 deployment objects.
+Fourteen rows have `mainnet` and `onchain-activity` deployment facts.
+Forty-seven rows have `network: "unknown"`, null `basis`, and null `sourceUrl`.
+Only DTCC has a nonempty `products` value. No row has `productKind`.
+No row has an `assets` key.
+DTCC is `Development` and has an announced mainnet product with an H1 2027 note.
+This is a partial improvement. The exact partial product and deployment model defect still reproduces.
 
 ## Changes
 
 - `sd-046` now has status `verified` and one dated recurrence.
 - `sd-044` has one dated recurrence.
 - `sd-037` has one dated recurrence.
+- `ll-030` now has status `verified` and one dated recurrence.
+- `sls-023` has dated recurrences for 2026-09-03 and 2026-09-04.
+- `.agents/TODO.md` now schedules the `sd-037` stale-issue state check.
 - `improvements/INDEX.md` was regenerated by `npm run improvements:index`.
-- `improvements/intake.json` did not need a change. The repository has no intake generator script.
+- This repair does not change `improvements/intake.json`. The repository has no intake generator script.
 
 No reported-upstream finding changed except for recurrence evidence.
 
@@ -123,19 +125,22 @@ No reported-upstream finding changed except for recurrence evidence.
 | `npm run improvements:lint` | Passed. The lint checked 70 findings. |
 | `npm run improvements:lint -- --live` | Passed with current GitHub reads. |
 | `npm run improvements:probes` | Passed. Six probes recur. Two LumenLoop probes are inconclusive without `LUMENLOOP_API_KEY`. |
-| `./node_modules/.bin/vitest run test/improvements-lint.test.ts test/improvements-writes.test.mjs test/improvements-run-probes.test.ts` | Passed. 26 tests passed in three files. |
+| `./node_modules/.bin/vitest run test/improvements-*.test.ts test/improvements-writes.test.mjs` | Passed. 41 tests passed in five files. |
 | `npm run secrets:scan -- --tree` | Passed. The scan found no secrets. |
 | `git diff --check` | Passed. |
 
-## Rejected recurrence claims
+## Lifecycle decisions
 
-- `ll-030` is inconclusive. The current public API returned 401 for both exact requests.
-- `sls-023` does not reproduce. The current response has the previously absent model fields.
+`ll-030` moves from `proposed` to `verified`.
+The authenticated live re-execution reproduces all three original checks.
+
+`sls-023` remains `reported-upstream`.
+The current response has partial improvements but still reproduces the recorded defect.
 
 ## Risks and blockers
 
-An authorized LumenLoop read is required to recheck `ll-030` exactly.
-This task did not use credentials.
+`sd-037` issue #1981 may close through stale automation after 2026-09-13.
+The TODO requires a state read without a reminder comment.
 
-The `sls-023` record remains `reported-upstream` because this task does not close reported findings.
-The current evidence suggests that its original defect is fixed.
+The LumenLoop probe command remains inconclusive without `LUMENLOOP_API_KEY`.
+That result does not affect the authenticated `ll-030` verification.

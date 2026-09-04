@@ -16,7 +16,7 @@ recurrences:
   - date: 2026-08-30
     evidence: same-100 row q-quickstart-manual-ledger-close and its independent live review confirmed that stellar/quickstart/start still parses --enable-core-manual-close and that current Quickstart Docs do not teach the flag or manualclose operation
   - date: 2026-09-04
-    evidence: current source re-execution reproduced the exact omission. stellar/quickstart commit c43c77eb2c2540410fc09b34e207b4edcf943085 start SHA-256 94bf0b0f67c80a7e0a35a1d3d9d2ee949922eac0713be151702a1b950070e909 still sets, parses, and writes --enable-core-manual-close. The six current Quickstart files at stellar/stellar-docs commit 3fcd663668fe3ee28f884d883c4062a29d384419 contain neither the flag nor manual-close wording.
+    evidence: current source re-execution reproduced the exact omission. stellar/quickstart main commit c43c77eb2c2540410fc09b34e207b4edcf943085 start SHA-256 200eba3f488563d9a6474fb217c937b5a4a9e5fdb2923b8f7323904f885a9f73 still sets, parses, and writes --enable-core-manual-close. All 19 .mdx pages under docs/tools/quickstart/ at stellar/stellar-docs commit 3fcd663668fe3ee28f884d883c4062a29d384419 contain neither the flag nor manual-close wording.
 ---
 
 ## Finding

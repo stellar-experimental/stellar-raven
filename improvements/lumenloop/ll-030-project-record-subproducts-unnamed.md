@@ -1,7 +1,7 @@
 ---
 id: ll-030
 service: lumenloop
-status: proposed
+status: verified
 discovered: 2026-08-28
 upstreamTitle: Lumenloop project records count sub-products without naming them
 evidence:
@@ -9,6 +9,10 @@ evidence:
   - live re-execution 2026-08-28 lumenloop.get_project({slug:"wisdomtree"}) returns a 624-character WisdomTree Prime record stating "13 digital funds and a Gold token" with no CRDT or CRDYX substring
   - live re-execution 2026-08-28 lumenloop.search_directory({query:"CRDT"}) degrades to match_mode semantic and returns DTCC, Stellar Router SDK, Decentrio, OrbitCDP, and DeFarm
   - live re-execution 2026-08-28 lumenloop.search_content_semantic over CRDT/CRDYX returns about thirty rows and none names either ticker
+  - live re-execution 2026-09-04T07:00:31.027Z through production Raven used the host-side LumenLoop credential without exposing it; all three original calls returned ok and reproduced the record-content gap
+recurrences:
+  - date: 2026-09-04
+    evidence: authenticated production Raven re-execution reproduced the exact defect. lumenloop.get_project({slug:"wisdomtree"}) returned the 13-digital-funds description with no CRDT or CRDYX substring. lumenloop.search_directory({query:"CRDT",limit:10}) returned match_mode semantic and ten adjacent rows, with no CRDT. lumenloop.search_content_semantic({query:"WisdomTree CRDT CRDYX private credit alternative income digital fund Stellar",limit:15}) returned 24 rows across six collections, with no CRDT or CRDYX substring.
 ---
 
 ## Finding

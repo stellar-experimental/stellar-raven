@@ -24,6 +24,19 @@ Use `.agents/rounds/2026-09-01-free-improvements-maintenance.md` as the prior ev
 Done when: both current sentences agree, or the queue records the remaining contradiction.
 Move `sd-047` only after the normal live verification and lifecycle gates pass.
 
+### Re-check `sd-037` issue #1981 after 2026-09-13
+
+Issue https://github.com/stellar/stellar-protocol/issues/1981 was open on 2026-09-04.
+Its only comment was the 2026-08-14 stale-bot notice.
+Do not post a keep-alive comment.
+
+On the next improvements round after 2026-09-13, read the issue state.
+If the stale bot closed it, record `closed-unfixed` evidence and keep `sd-037` reported upstream.
+If it remains open, record the state only.
+Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` for the current evidence.
+
+Done when: the next state read is recorded without an upstream reminder comment.
+
 ## Recovery
 
 ### Monitor the rejected repository-tooling recovery experiment

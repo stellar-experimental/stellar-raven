@@ -23,7 +23,7 @@ Total findings: 70
 
 | id      | title                                                                                                                                       | status            | discovered | recurrences |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sls-023 | Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…  | reported-upstream | 2026-07-10 | 4           |
+| sls-023 | Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…  | reported-upstream | 2026-07-10 | 6           |
 | sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 6           |
 | sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 4           |
 | sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 6           |
@@ -91,7 +91,7 @@ Total findings: 70
 | ll-027 | Lumenloop's RedStone summary gives an unqualified nine-asset count that cannot be reconciled with Scout's ten-feed wording. Without labels… | reported-upstream | 2026-07-11 | 1           |
 | ll-028 | list_documents accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning               | reported-upstream | 2026-08-14 | 0           |
 | ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 0           |
-| ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | proposed          | 2026-08-28 | 0           |
+| ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | verified          | 2026-08-28 | 1           |
 
 ## workers-ai-provider
 
