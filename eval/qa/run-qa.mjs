@@ -1590,6 +1590,8 @@ export function collectionComparabilityReasons({
       reasons.push(`remote service identity changed: ${failure.changedServices.join(", ")}`);
     } else if (failure?.reason === "pre-arm-vector-mismatch") {
       reasons.push("remote identity pre-arm vector SHA-256 mismatch");
+    } else if (failure?.reason === "missing-baseline") {
+      reasons.push("remote identity baseline is missing");
     } else if (failure?.reason === "probe-unavailable") {
       reasons.push("remote identity probe unavailable");
     } else {

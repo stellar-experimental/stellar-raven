@@ -254,6 +254,10 @@ artifact cannot resume under the same authorization. A comparable artifact inclu
 final postflight capture. Listener stability alone does not prove remote service stability.
 The artifact names a pre-arm pin mismatch directly.
 A stopped guard skips postflight without adding a second comparability reason.
+A successful attempted postflight must record `skippedReason: null`.
+The paired gate rejects any successful postflight with another value.
+If no answering call established a baseline, the guard records `missing-baseline`.
+The comparability reason then states that the remote identity baseline is missing.
 
 Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
 Collection also requires both server pins, the probe path, its byte pin, and the vector pin.

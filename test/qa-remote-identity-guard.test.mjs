@@ -302,6 +302,60 @@ describe("QA remote identity call guard", () => {
     })).toEqual(["remote identity pre-arm vector SHA-256 mismatch"]);
   });
 
+  it("records a missing baseline as its own fail-closed reason", () => {
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: queuedCapture([])
+    });
+
+    let postflightError;
+    try {
+      guard.postflight();
+    } catch (error) {
+      postflightError = error;
+    }
+
+    expect(postflightError).toMatchObject({
+      code: "remote-identity-guard",
+      message: "remote identity baseline is missing"
+    });
+    const remoteIdentityGuardRecord = guard.record();
+    expect(remoteIdentityGuardRecord).toMatchObject({
+      matches: false,
+      failure: {
+        reason: "missing-baseline",
+        phase: "postflight",
+        diagnostics: { kind: "missing-baseline" }
+      },
+      sameAuthorizationResumeAllowed: false,
+      requiresNewAuthorization: true
+    });
+    expect(collectionComparabilityReasons({
+      collectionError: null,
+      postflightError: null,
+      remoteIdentityPostflightError: postflightError,
+      collectionSourceIdentityGuard: { matches: true, changedKeys: [] },
+      remoteIdentityGuardRecord
+    })).toEqual(["remote identity baseline is missing"]);
+  });
+
+  it.each([
+    ["missing-baseline", "remote identity baseline is missing"],
+    ["probe-unavailable", "remote identity probe unavailable"]
+  ])("maps %s to an accurate comparability reason", (reason, expected) => {
+    expect(collectionComparabilityReasons({
+      collectionError: null,
+      postflightError: null,
+      remoteIdentityPostflightError: null,
+      collectionSourceIdentityGuard: { matches: true, changedKeys: [] },
+      remoteIdentityGuardRecord: {
+        matches: false,
+        failure: { reason, changedServices: [] }
+      }
+    })).toEqual([expected]);
+  });
+
   it("stops before a judge call when the after-call probe is unavailable", () => {
     const baseline = vector();
     const guard = createRemoteIdentityGuard({

@@ -120,7 +120,8 @@ function result(grades, {
         postflight: {
           attempted: true,
           matches: true,
-          vectorSha256: remoteIdentitySha256
+          vectorSha256: remoteIdentitySha256,
+          skippedReason: null
         },
         successfulCaptureCount: ids.length * 2 + 1,
         completedAnsweringCalls: ids.length,
@@ -563,6 +564,26 @@ describe("paired QA verdict", () => {
     const baseline = result(Array(100).fill("partial"));
     const candidate = result(Array(100).fill("partial"));
     mutate(candidate.meta.remoteIdentityGuard, candidate);
+
+    const compared = compare(baseline, candidate);
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "remote-identity-guard" })
+    );
+  });
+
+  it.each([
+    ["guard stop", "guard-already-stopped"],
+    ["unexpected text", "unexpected"],
+    ["empty text", ""],
+    ["false", false],
+    ["zero", 0],
+    ["missing field", undefined]
+  ])("rejects a successful postflight with %s as skippedReason", (_label, skippedReason) => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    candidate.meta.remoteIdentityGuard.postflight.skippedReason = skippedReason;
 
     const compared = compare(baseline, candidate);
 

@@ -241,7 +241,8 @@ function artifactProblems(result, label) {
       !Array.isArray(remoteGuard.captures) ||
       remoteGuard.captures.length !== remoteGuard.successfulCaptureCount ||
       remoteGuard.postflight?.attempted !== true ||
-      remoteGuard.postflight.matches !== true
+      remoteGuard.postflight.matches !== true ||
+      remoteGuard.postflight.skippedReason !== null
     ) {
       throw new Error("incomplete guard record");
     }

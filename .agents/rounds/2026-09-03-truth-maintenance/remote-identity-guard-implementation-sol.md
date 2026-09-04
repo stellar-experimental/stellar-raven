@@ -10,6 +10,8 @@ Reviewed commit: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`
 
 Required-repair base: `8cd724de76858a0c9d6fa0908964f3c119ed52aa`
 
+Bounds-closure base: `e7c2ad8b61cbc73d27ab72fa5f7cbbb07e6dbb6c`
+
 Review: `remote-identity-guard-review-opus.md`
 
 ## Outcome
@@ -54,6 +56,20 @@ Stored judging now requires `meta.comparable === true`.
 | R2 | Reconciled | The Docs probe discovers the page count, then requests exactly the remaining pages. |
 | R3 | Reconciled | The 145-second process timeout covers the 140-second maximum network budget. |
 | R5 | Reconciled | Pre-arm mismatches use an accurate reason. A stopped postflight adds no duplicate reason. |
+
+## Bounds re-review reconciliation
+
+| Finding | Status | Reconciliation |
+|---|---|---|
+| N1 | Accepted residual | Algolia HTTP requests rise while billed search operations fall. The report records both measures. |
+| N2 | Accepted residual | The two Docs batches create a small torn-read window. A mixed vector still stops the arm. |
+| N3 | Reconciled | The paired gate requires `skippedReason: null` for an attempted successful postflight. |
+| N4 | Reconciled | A missing baseline has its own failure and comparability reason. |
+| N5 | Accepted residual | The 145-second ceiling permits the complete bounded retry sequence. Normal captures remain much faster. |
+| N6 | Accepted residual | The phase count remains explicit. The request-count and timeout tests guard the coupling. |
+
+N1, N2, N5, and N6 are accepted residual notes.
+They do not weaken the guard or change the six-field vector.
 
 R2 changes the current Algolia search load from ten operations to seven operations per capture.
 One discovery search returns page zero.
@@ -137,9 +153,11 @@ The final observed service fields were:
 
 ## Tests
 
-- Focused guard, probe, pairing, and harness tests passed: 4 files and 182 tests.
+- Focused guard, probe, pairing, and harness tests passed: 4 files and 191 tests.
 - `npm run typecheck` passed.
-- `npm test` passed: 105 files and 1,819 tests.
+- `npm test` passed: 105 files and 1,828 tests.
+- One parallel gate run timed out in `test/eval-vectorize-clause-fit.test.mjs` at five seconds.
+- The standalone full-suite rerun passed all 1,828 tests.
 - `npm run build` passed.
 - `npm run eval:qa:paired:validate` passed every deterministic gate.
 - The minimal-environment live probe passed.
@@ -150,6 +168,8 @@ The tests cover matching vectors and each service change.
 They cover the pre-arm pin and final postflight.
 They cover metadata, aggregate suppression, and stop timing.
 They prove that detection prevents the next paid call.
+They reject every tested successful postflight with a non-null or absent skip reason.
+They distinguish a missing baseline from an unavailable probe.
 
 No test started a QA collection.
 No command made a paid model call.

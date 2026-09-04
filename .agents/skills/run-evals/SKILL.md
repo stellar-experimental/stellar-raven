@@ -284,6 +284,9 @@ Stop after any probe failure or identity change. The runner preserves completed 
 unattempted IDs. It records the changed service and both vectors. It marks the artifact
 non-comparable and suppresses aggregates. Never resume that artifact under the same authorization.
 Use the single guard reason for closeout. A stopped postflight adds no duplicate reason.
+A successful attempted postflight must have `skippedReason: null`.
+The paired gate rejects another value as an incomplete remote identity guard.
+Treat `missing-baseline` as its own guard failure, not as a probe failure.
 
 ```sh
 SERVER_REVISION=<clean 40-character server commit>

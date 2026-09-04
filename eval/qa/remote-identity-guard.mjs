@@ -268,7 +268,9 @@ export function createRemoteIdentityGuard({
       ? `remote service identity changed: ${changedServices.join(", ")}`
       : reason === "pre-arm-vector-mismatch"
         ? "remote identity vector does not match the pre-arm SHA-256"
-        : "remote identity probe is unavailable";
+        : reason === "missing-baseline"
+          ? "remote identity baseline is missing"
+          : "remote identity probe is unavailable";
     throw new RemoteIdentityGuardError(message);
   };
 
@@ -375,7 +377,7 @@ export function createRemoteIdentityGuard({
       if (pendingCall) throw new Error("remote identity guard has an unfinished answering call");
       if (baselineVector === null) {
         fail({
-          reason: "probe-unavailable",
+          reason: "missing-baseline",
           phase: "postflight",
           context: { id: null, attempt: null },
           diagnostics: {
