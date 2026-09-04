@@ -56,7 +56,7 @@ Total findings: 70
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
 | sd-049 | The Saved Keypairs page says saved keys are obfuscated but not encrypted. The current storage helper serializes each SavedKeypair directly… | verified          | 2026-09-03 | 0           |
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | verified          | 2026-09-04 | 0           |
-| sd-051 | The software-versions page labels a February 5 entry as Mainnet Edition. The page does not say that February 5 is a software-release date   | verified          | 2026-09-04 | 0           |
+| sd-051 | The software-versions page labels a February 5 entry as Mainnet Edition. Sibling headings on the same page use the Mainnet token for a…     | verified          | 2026-09-04 | 0           |
 | sd-052 | The generated CLI manual lists five placeholder languages as binding generators. Each command exits before generating bindings in Stellar…  | verified          | 2026-09-04 | 0           |
 
 ## lumenloop

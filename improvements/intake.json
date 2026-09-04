@@ -188,6 +188,14 @@
       "repo": "stellar/stellar-protocol",
       "reason": "CAP-0075 owns the Poseidon2 S-box-degree contradiction; the shipped ABI and host accept only degree 5."
     },
+    "sd-050": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Client & XDR SDKs page prose is developers.stellar.org content owned by the docs repository."
+    },
+    "sd-051": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The software-versions history headings are developers.stellar.org content owned by the docs repository."
+    },
     "sd-052": {
       "repo": "stellar/stellar-cli",
       "reason": "The published manual is generated from Stellar CLI command descriptions. The placeholder-language correction belongs in the CLI source."
