@@ -45,11 +45,15 @@ The diagnostic now adds conservative prose probes beside the existing exact-term
 
 Quoted probes require 3 through 24 normalized tokens. Each probe also requires a long token or a numeric token.
 
-Unquoted probes require at least five content tokens. Generic support verdict text does not enter the probe.
+Unquoted probes require at least five content tokens. The listed verdict suffixes do not enter the probe.
+
+The unquoted path does not remove leading judge verbs. Therefore, verbs such as `States` can prevent a support match.
 
 The matcher preserves token order. It permits small intervening words within a tight total window.
 
-Each match must occur inside one text unit. The matcher never joins separate JSON fields.
+Each match must occur inside one text unit.
+
+The matcher does not join adjacent fields in line-leading JSON. Prefixed or nested JSON text can still join fields.
 
 The diagnostic reports prose counts and bounded `omittedProse` values. It keeps all existing exact-term fields.
 
@@ -63,7 +67,7 @@ The new tests cover both exact false negatives.
 
 The tests also cover unquoted prose, truncated packs, retained prose, and topical false positives.
 
-Another test prevents phrase assembly across adjacent JSON fields.
+Another test prevents phrase assembly across adjacent fields in line-leading JSON.
 
 Existing tests continue to cover exact values, numeric boundaries, dates, identifiers, and structured fields.
 
@@ -101,10 +105,32 @@ The build used `WRANGLER_LOG_PATH` under `/tmp` and completed without that warni
 
 The detector remains conservative. It can miss paraphrases, reordered claims, synonyms, and very short prose.
 
+Leading judge verbs can make the unquoted path inert. The candidate artifact produced no supported unquoted probes.
+
+The support test is lexical, not semantic. Query echoes, negated sentences, and quoted golden text can satisfy it.
+
+A possessive apostrophe can end a single-quoted probe early. The fallback can then miss the support.
+
+The label strip removes trailing punctuation. It also removes a trailing ellipsis from the reported label.
+
+Line-leading JSON keeps adjacent fields separate. Prefixed JSON and JSON nested inside a string can join them.
+
 The detector only examines saved execute results. An upstream transcript cap can remove support before this check.
 
 Textual support triggers review. It does not prove the candidate claim is semantically correct.
 
 The matcher caps each text unit at 2,000 characters. This bound limits accidental cross-context matches.
+
+## Independent review reconciliation
+
+The independent Fable review passed the implementation with five non-blocking findings.
+
+- F1 narrows the JSON-field guarantee to line-leading JSON.
+- F2 records the leading judge-verb limit on unquoted probes.
+- F3 records query-echo, negation, and golden-quote lexical false positives.
+- F4 records the possessive apostrophe limit for single-quoted probes.
+- F5 records the trailing ellipsis loss in reported labels.
+
+These findings do not change the diagnostic-only decision. They do not require an implementation change for this task.
 
 No blockers remain.
