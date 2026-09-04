@@ -42,8 +42,9 @@ not candidate-window evidence. The candidate artifact is
 
 Why this is deterministic. The case's own corroboration row (verdict confirmed-as-of, 2026-08-31) records
 that LOBSTR stores an encrypted copy of the key material on its server. The answer said only "stored
-locally/on-device". That wording reads as the era-independent local-only claim that avoid item 4
-forbids. The answer now states both halves of the owner documentation. No new fact entered the case;
+locally/on-device". The 2026-08-31 corroboration row already verified the server copy, but the answer
+omitted it. The parent answer was era-bounded and did not say `only`. The answer now states both
+halves of the owner documentation. No new fact entered the case;
 the metadata already carried it.
 
 Before:
@@ -140,6 +141,16 @@ more directly. The expected verdict direction is unchanged, so this edit does no
 | Unit tests | `npm test` | 103 files, 1771 tests, all pass |
 | Build | `npm run build` | pass (dry-run) |
 | Secrets | `npm run secrets:scan -- --tree` | clean, gitleaks no leaks |
+
+## Review reconciliation
+
+Review `golden-followup-review-sol.md` (commit `30ab2b6`, Codex Sol high) returned CHANGES-REQUIRED
+with one blocking finding, F1. The verification evidence and this report had said the parent answer
+read as the era-independent local-only claim that avoid item 4 forbids. That was wrong. The parent
+answer was era-bounded and did not say `only`. The defect was only the omitted server copy. The
+gospel-change evidence line in `truth.verified.evidence` and the Edit section above now carry the
+reviewer's exact sentence. The `eval-authoring` root cause is unchanged. The generated corpus files
+were rebuilt by script after the repair. No other golden decision changed.
 
 ## Side effects and risks
 

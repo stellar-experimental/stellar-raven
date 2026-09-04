@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "3d736cd1c44bf1c9c0c34706b9a24152844b8c648d9f622959989c4a922d6571",
+  "corpusContentSha256": "c5d0c804ddd9ce241fae90398ee0d83808e5d847f049d118e4ad15903d07b43e",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -32269,7 +32269,7 @@
             "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — do not share; LOBSTR team has no access; class A recovery.lobstr.co needs the user's phrase or code; 'trusted services' is generic wording.",
             "Lane reconciliation 2026-08-31: lane A marked keyFact 5 disputed on the restore article's 'trusted services' sentence; the blind lane resolved that phrase as ordinary English (no named product, no docs-index hit) and confirmed every source-relative keyFact; the blind lane's extra metadata-control claim is not a keyFact and was not added.",
             "Sibling sweep 2026-08-31: grep LOBSTR|Ultra Stellar|Recovery code|September 1, 2020 → 15 other cases; read q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-tool-wallets-comparison, q-raph-restore-wallet, q-raph-withdraw-exchange-self-custody; no contradiction",
-            "Gospel change 2026-09-04: the answer's storage sentence now states both halves of LOBSTR's own security article — on-device generation, encryption, storage, decryption, and signing with password participation, plus an encrypted server copy that LOBSTR says it cannot decrypt. The 2026-08-31 corroboration row already verified the server copy while the answer read as local-only, the era-independent claim that avoid item 4 forbids. keyFacts, avoid, notes, and the dated activity observation are unchanged.",
+            "Gospel change 2026-09-04: the answer's storage sentence now states both halves of LOBSTR's own security article — on-device generation, encryption, storage, decryption, and signing with password participation, plus an encrypted server copy that LOBSTR says it cannot decrypt. The 2026-08-31 corroboration row already verified the server copy, but the answer omitted it. The parent answer was era-bounded and did not say `only`. keyFacts, avoid, notes, and the dated activity observation are unchanged.",
             "Live re-check 2026-09-04 (post-drift current truth): https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — 'We store the encrypted version of the Recovery phrase/Secret key on our server'; 'The keys themselves can only be decrypted and accessed by users on-device'; 'The transaction signing also happens locally on-device'.",
             "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — pre-September 1, 2020 keys 'stored inside our platform in encrypted form', migration deadline July 10, 2026, unmigrated wallets stop working until migrated.",
             "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — 'We (the LOBSTR team) do not have access to users' Recovery phrases, Secret keys, Recovery codes, or Account passwords'; 'Do not share your Recovery Phrase and Secret key with anyone'.",
