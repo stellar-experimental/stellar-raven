@@ -385,3 +385,160 @@ F2, F3, and F4 land, and F5 with them, this review supports `PASS`.
 
 Owned Herdr cleanup remains the only open round work. No paid, filing, golden, or human-decision
 gate is opened by this review.
+
+---
+
+# Closure re-review — 2026-09-04
+
+Reviewer: Claude Opus 5 at `high` effort. Mode: audit. Every section above stays as written. The
+`CHANGES-REQUIRED` verdict above remains the historical record of the review at `bbc606b`.
+
+Reviewed commit: `87cfd3965441dbde023099b7c621f06eb34f623a`, "docs: reconcile deployment closeout
+review".
+
+## Verdict
+
+`PASS`. Every finding is closed.
+
+F1, F2, F3, F4, and F5 are repaired. Observation O1 is also repaired. No actionable finding remains.
+
+The repair changes four files, all under `.agents`. It changes no product code, no test, and no
+golden file. It did not modify this report.
+
+## Finding closure
+
+### F1 — Closed
+
+`.agents/NEXT.md:356` now reads "PR #125 merged, final CI passed, and production verification
+passed." The section keeps only the task-owned cleanup, routes decisions A to D and F to J to the
+owner, and marks decision E complete. The instruction to push a commit to PR #125 is gone.
+
+The handoff no longer contradicts its own state section.
+
+### F2 — Closed
+
+`.agents/NEXT.md:248` now reads "### E. Merge and deployment authority — exercised". The body
+records that the owner granted the authority, names the merge commit
+`50bf5518860584ec1e5d352acbe11033515a0b7f`, the deployed version
+`8022e211-c731-49cc-aef1-a20f1da798b9`, and the deploy time `2026-09-04T12:29:24.371Z`.
+
+The retired claim that the deployed runtime carries the envelope fault is gone.
+
+### F3 — Closed
+
+`.agents/rounds/2026-09-03-truth-maintenance.md:625-628` replaces both stale bullets. The ledger now
+records that the owner granted merge and deployment authority, that PR #125 merged, that Wrangler
+deployed the named version at the named time, and that only owned-resource cleanup remains.
+
+The ledger no longer contradicts its own checklist.
+
+### F4 — Closed
+
+All four instances are repaired in `production-deployment-terra.md`.
+
+- Line 35 now names `/health/skills` as the endpoint that returned `ok: true` and `checked: 41`.
+- Line 37 now names the `/playground` CSP.
+- Line 61 now states the digest input
+  `{ "subject": "Blend", "subjectType": "entity", "days": 90, "perTypeLimit": 10 }`.
+- Line 69 now states the telemetry dataset, window, service filter, and Ray filter.
+
+Each result is now reproducible from the record alone. The reviewer confirmed the health endpoint,
+the CSP page, and the digest parameters in the review above. The telemetry query is verified below.
+
+### F5 — Closed
+
+`revised-impact-measurement-fable.md:693-695` now reads "PR #125 merged that work as
+`50bf5518860584ec1e5d352acbe11033515a0b7f`. A future paid launch must create its final manifest at
+one current clean revision." The stale "is not merged" sentence is gone, and the real launch
+requirement survives.
+
+### O1 — Closed
+
+`.agents/NEXT.md:150` now reads "### Remaining cleanup". The heading matches its content.
+
+## Telemetry statement verified
+
+The reviewer ran the query exactly as the record now states it.
+
+- Dataset: `cloudflare-workers`.
+- Window: `2026-09-04T12:00:00Z` through `2026-09-04T13:00:00Z`.
+- Filter: `$metadata.service` equals `stellar-raven-codemode`.
+- Filter: `$metadata.rayId` equals each of the four stripped Ray IDs.
+
+The query returned **14 events**, matching the record exactly.
+
+| Probe | Stripped Ray | Events | Event kinds |
+| --- | --- | ---: | --- |
+| search | `a35d03a369b1dcbf` | 3 | `cf-worker-event`, `mcp_request`, `search` |
+| raw execute | `a35d03a40fccaa0c` | 4 | `cf-worker-event`, `mcp_request`, `execute`, `op` |
+| authenticated initialize | `a35d048bf9700eef` | 2 | `cf-worker-event`, `mcp_request` |
+| digest | `a35d05e68906291e` | 5 | `cf-worker-event`, `mcp_request`, `execute`, `skill_run`, `op` |
+| **Total** | | **14** | |
+
+Every one of the 14 events names Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9`. The query
+returned exactly one version, with no mixing.
+
+The per-event detail also reproduces exactly.
+
+| Record claim | Observed | State |
+| --- | --- | --- |
+| Search was 200 | `mcp_request` `status: 200` | Confirmed |
+| Raw-envelope execute was `ok: true`, 149 ms | `execute` `ok: true`, `ms: 149` | Confirmed |
+| Raw-envelope execute was untruncated | `resultTruncated: false`, `logsTruncated: false` | Confirmed |
+| `lumenloop.search_directory` was `ok` at 143 ms | `op` `{ id: "lumenloop.search_directory", outcome: "ok", ms: 143 }` | Confirmed |
+| Digest execute was `ok` at 166 ms | `execute` `ok: true`, `ms: 166` | Confirmed |
+| `skill_run` and its constituent were `ok` at 160 ms | `skill_run` `ms: 160`; `op` `ms: 160` | Confirmed |
+
+### Correction to the review above
+
+The review above stated that the reviewer joined 8 events and could not reproduce the count of 14.
+That was a reviewer error, not a record error. The reviewer had filtered the top-level `rayId`
+field, which carries only the request-level events. The correct field is `$metadata.rayId`, which
+also carries the tool-level `search`, `execute`, `op`, and `skill_run` events.
+
+Terra's original count of 14 was correct. The reviewer withdraws the doubt expressed in the
+telemetry paragraph above. The predicted arithmetic in that paragraph — 8 request-level events plus
+6 tool-level events — matches the verified breakdown exactly.
+
+This correction strengthens F4 rather than weakening it. The record could not be reproduced until
+it named its query. It now names it, and the query reproduces.
+
+## Gates that remain blocked
+
+- `.agents/NEXT.md:122`, `:128`, and `:141` keep the filing, paid, and human-judgment blocks.
+- `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
+  `declined-upstream`. That total is 70. No record moved to a filed state.
+- Revision 3 still says that it authorizes nothing. Its signature line at line 626 still offers
+  `AUTHORIZED` or `NOT AUTHORIZED`.
+- Owner decisions A to D and F to J stay open. Decision 5, the concurrent-load acceptance, stays
+  open. Decision E is closed because the owner exercised it.
+- The commit changed no file under `eval/qa/corpus`, so no golden answer moved.
+- The ledger keeps two checklist items open: the pane record and the owned Herdr cleanup.
+
+The repair grants no paid, filing, golden, or human-decision authority.
+
+## Commands and results
+
+| Command | Result |
+| --- | --- |
+| Reproduced telemetry query, four stripped Rays | 14 events; one Worker Version `8022e211…` |
+| Per-event field read for the execute, op, and skill_run events | 149 ms, 143 ms, 166 ms, 160 ms, `resultTruncated: false` |
+| `grep` for every stale merge or deployment claim | None remain in the handoff, ledger, revision 3, the closeout record, or `TODO.md` |
+| `git diff --name-only 3a7278b 87cfd39` outside `.agents` | Zero files |
+| `git diff --stat 3a7278b 87cfd39 -- <this report>` | Empty; this report is unmodified |
+| `git diff --check 50bf551 HEAD` | Pass |
+| `npm run secrets:scan -- --tree` | Pass; clean with gitleaks |
+
+The reviewer linked a prepared `node_modules` tree for the secret scan and removed it. The worktree
+carries no change except this appended section. The reviewer printed no credential and no
+IP-bearing field.
+
+## Standing
+
+The production deployment closeout is complete and accurate. Production runs Worker Version
+`8022e211-c731-49cc-aef1-a20f1da798b9` at 100 percent with the envelope serialization repair. The
+handoff, the ledger, revision 3, and the closeout record now agree with each other and with the
+live system.
+
+Owned Herdr and pane cleanup remain the only open round work. Merge and deployment authority is
+exercised and closed. Every paid, filing, golden, and human-decision gate stays blocked.
