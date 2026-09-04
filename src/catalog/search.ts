@@ -47,7 +47,6 @@ import {
   type JsonSchema
 } from "./vendor/json-schema-types.ts";
 import {
-  COMPACT_OUTPUT_THRESHOLD,
   isOversizedOutputBlock
 } from "./output-compaction.ts";
 
