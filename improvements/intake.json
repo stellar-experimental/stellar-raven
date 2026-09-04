@@ -221,6 +221,14 @@
       "repo": "OpenZeppelin/openzeppelin-skills",
       "reason": "The stale upgrade-stellar-contracts API guidance is owned by the OpenZeppelin skills repository."
     },
+    "sk-023": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The agentic-payments mpp.md guide is owned by the official Stellar skill repository."
+    },
+    "sk-024": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The agentic-payments SKILL.md and x402.md guides are owned by the official Stellar skill repository."
+    },
     "sls-023": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Broad RWA discovery exposes entity-level status without product-level Stellar deployment state, allowing planned DTCC work and unverified/tooling rows to be presented as live tokenized products."
