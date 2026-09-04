@@ -223,3 +223,34 @@ Keep the accepted Scout 1.9.1 surface.
 Correct the Terra report before using it as the final drift record.
 
 **CORRECTIONS REQUIRED**
+
+## Re-review of commit `cf29cc9`
+
+Date: 2026-09-04
+
+**PASS**
+
+Commit `cf29cc9ed0ea3296fbc2d805246f882a737fee35` satisfies all eight corrections.
+
+1. The findings introduction states the partial fix and distinguishes `deployment` from `deployments`.
+2. The `sls-023` statement includes the 61-row deployment counts and the DTCC product state.
+3. The `sls-024` statement includes each singular unknown deployment and the remaining scope gaps.
+4. The `sls-029` statement includes each singular deployment and the remaining product-level evidence gap.
+5. The `sls-033` statement includes the exact counts, null `canonicalSlug` values, and MXlet state.
+6. The direct parameter or response-schema count is 22.
+7. The report includes every required routing lane and explains the fingerprint failure correctly.
+8. The report keeps the reject decision and uses mixed contract drift as its basis.
+
+The commit changes only `scout-1.9.30-drift-terra.md`.
+The accepted generated artifacts remain byte-identical to commit `898063e`.
+
+| Accepted artifact | SHA-256 |
+| --- | --- |
+| `inventory/stellar-light.json` | `1a261c4a2e2172683e91a52ddc33b02ff41e74760c861dfacb29c60a8d8671b0` |
+| `catalog/manifest.json` | `b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729` |
+| `src/mcp/micro-map.ts` | `eda38f9d752dc28a300c4450dd6033349e7de21a17f620a7637f9e72d9f4a77f` |
+| `specs/super-spec.json` | `93799e8c9e5c9045b1f2352d2611c1741d2d2458e12712de81da878a33147538` |
+| `eval/plan/op-classes.json` | `4cda9783f098c9e55cfb399ad3d1c77ced8acf3f81f37d6170b1d82048b196bb` |
+
+The standards review found no repository-rule violation.
+The specification review found no missing correction or scope expansion.
