@@ -622,11 +622,10 @@ launch revision, a current capacity artifact, and a weekend window.
   external record that names the canonical plan SHA-256 and covers every command array is.
 - The owner acceptance of the concurrent-load estimand stays open. The free v2 capacity artifact
   proves the technical gate only.
-- Production deployment waits for round closeout and explicit deployment authority. The last
-  recorded deployment state, from 2026-09-02, carries the envelope serialization fault that
-  `795fa41` repairs.
-- The review gate is closed. PR integration, deployment verification, and owned-resource cleanup
-  remain. Merge and deployment still need explicit owner authority.
+- The owner granted merge and deployment authority. PR #125 merged as `50bf551`. Wrangler deployed
+  Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` at `2026-09-04T12:29:24.371Z`.
+- Production verification proved that the repaired envelope path works. Owned-resource cleanup
+  remains.
 - Monitor-only programs stay monitor-only. The PH2 and Raven capability-boundary decisions from
   `.agents/rounds/2026-09-03-owner-decisions.md` are unchanged.
 

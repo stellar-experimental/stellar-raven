@@ -32,9 +32,9 @@ Rollback Version `f62b64fa-1fb7-4c25-970d-7f98c83ab302` remains available.
 | well-known | 200 | `a35d048a4a72b23a-ATL` |
 | aliases | 200 | `a35d048acecdc1d4-ATL`, `a35d048b3d5d5627-ATL` |
 
-Health returned `ok: true` and `checked: 41`.
-Health reported `checkedAt: 2026-09-04T12:07:53.530Z`.
-The CSP remains `sha256-ZB8MB5SKhRnJx0CaegzHU7J/JhdbqAhUdhGgxaO8z+o=`.
+`/health/skills` returned `ok: true` and `checked: 41`.
+It reported `checkedAt: 2026-09-04T12:07:53.530Z`.
+The `/playground` CSP remains `sha256-ZB8MB5SKhRnJx0CaegzHU7J/JhdbqAhUdhGgxaO8z+o=`.
 
 ## Authentication and MCP verification
 
@@ -58,13 +58,19 @@ Execute returned a raw Lumenloop envelope and payload through the Dynamic Worker
 It returned HTTP 200 with raw `ok: true` and `count: 1`.
 Its Ray ID was `a35d03a40fccaa0c-ATL`.
 
-The Blend 90-day digest returned 10 articles, 7 A/V, and 17 total.
+The digest input was `{ "subject": "Blend", "subjectType": "entity", "days": 90,
+"perTypeLimit": 10 }`.
+It returned 10 articles, 7 A/V, and 17 total.
 It made one successful constituent call. All A/V dates were null.
 Its Ray ID was `a35d05e68906291e-ATL`.
 
 ## Telemetry
 
-Cloudflare telemetry matched 14 events for the four key Rays.
+Cloudflare telemetry used the `cloudflare-workers` dataset from `2026-09-04T12:00:00Z` through
+`2026-09-04T13:00:00Z`. The query filtered `$metadata.service` to
+`stellar-raven-codemode`. It selected events whose `$metadata.rayId` matched the four stripped Ray
+IDs. The query matched 14 events for the search, raw execute, authenticated initialize, and digest
+probes.
 Every platform event named Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9`.
 Search was 200. Raw-envelope execute was `ok: true`, 149 ms, and untruncated.
 `lumenloop.search_directory` was `ok` at 143 ms.

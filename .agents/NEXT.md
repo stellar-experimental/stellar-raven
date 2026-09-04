@@ -147,7 +147,7 @@ Complete since the previous handoff:
 - Selection of harness follow-ups from the candidate audit. See owner decision H.
 - Paired promotion design: denominator, candidate-only T4 rule, and margin. See owner decision J.
 
-### Owner-blocked cleanup
+### Remaining cleanup
 
 - Owned Herdr cleanup remains open. Do not treat it as deployment work.
 - Paid, filing, golden, and human-decision work stays in the blocks below.
@@ -245,12 +245,12 @@ No artifact is rewritten. No grade change affects any claim, because the artifac
 
 Safe default: no rejudge spend; grades stand as diagnostic values.
 
-### E. Merge and deployment authority
+### E. Merge and deployment authority — exercised
 
-Question: merge `codex/truth-maintenance-2026-09-03` and deploy the repaired runtime? Evidence:
-the completed full validation, the closeout review, and the fact that the last recorded
-deployment state carries the envelope fault. Deployment needs its own explicit authority and
-post-deployment verification.
+The owner granted this authority. PR #125 merged as
+`50bf5518860584ec1e5d352acbe11033515a0b7f`. Wrangler deployed Worker Version
+`8022e211-c731-49cc-aef1-a20f1da798b9` at `2026-09-04T12:29:24.371Z`. Production verification
+proved that the repaired raw-envelope path works. See `production-deployment-terra.md`.
 
 ### F. Authorize the general Raven scoring repair
 
@@ -353,8 +353,8 @@ and cleanup remain. The items below are complete.
 
 ## Suggested sequence
 
-Add the timeout repair commit to PR #125 after the owner grants external-write authority.
-Confirm CI, then prepare PR integration, deployment verification, and cleanup. Merge and deploy
-only after the owner grants each required authority. Bring decisions A to J to the owner together.
-Keep each paid, filing, and production action behind its authorization.
+PR #125 merged, final CI passed, and production verification passed. Finish the exact task-owned
+Herdr, worktree, branch, and remote-reference cleanup. Bring open decisions A to D and F to J to
+the owner together. Decision E is complete. Keep each paid and filing action behind its
+authorization.
 No current item has authorization for evaluation ladder stages 3 or 4.
