@@ -985,3 +985,125 @@ Items N1 and N2 stay open as documentation follow-ups. Neither one blocks the ro
 The owner authorization stays unsigned. The concurrent-load acceptance stays open. The capacity
 artifact still expires at `2026-09-05T10:25:17.815Z`. No paid, filing, golden, merge, or deployment
 action is authorized by this confirmation.
+
+---
+
+# Documentation follow-up confirmation — 2026-09-04
+
+Reviewer: Claude Opus 5 at `high` effort. Mode: audit. Scope: commit `02a070c` only. Every section
+above stays as written.
+
+Reviewed commit: `02a070cc259f4a593958145499f26655a57f2ff5`, "docs: close final launch review
+follow-ups".
+
+## Verdict
+
+`PASS`. No actionable finding remains.
+
+Findings N1 and N2 are closed. The stale final-supervisor-byte claim is removed. The handoff, the
+ledger, and revision 3 agree. Both granted verdicts stay valid. Every paid and owner decision stays
+blocked.
+
+## Scope of the follow-up
+
+The commit changes four files. All four sit under `.agents`. It changes no code, no test, no
+generated artifact, and no product document. The reviewer measured zero changed files outside
+`.agents` and zero changed code files.
+
+The commit did not modify this report.
+
+## N1 — Closed
+
+The three reported locations now record both review stages.
+
+- `revised-impact-measurement-fable.md:26-27` states that the final Opus review inspected revision
+  3, first withheld `LAUNCH-OK` on L1, and granted it after repair.
+- `revised-impact-measurement-fable.md:686-687` replaces the old blocker with the same two-stage
+  statement.
+- `.agents/rounds/2026-09-03-truth-maintenance.md:484` now records the Opus review and its
+  appended confirmation.
+
+No live surface still says that nobody reviewed revision 3. The reviewer searched `.agents` and
+`eval`.
+
+## N2 — Closed
+
+The ledger checklist at `.agents/rounds/2026-09-03-truth-maintenance.md:355-356` now records the
+final repair run of 108 files and 1,974 tests. `.agents/NEXT.md:46-47` records the same result.
+
+The reviewer re-ran the full suite at `02a070c`. It passed 108 files and 1,974 tests with zero
+skipped tests. The recorded claim reproduces.
+
+## Stale final-supervisor-byte claim — Removed
+
+Commit `352e517` changed `eval/qa/paired-collection-supervisor.mjs` and `eval/qa/re-judge.mjs`.
+The earlier phrase "the final supervisor contract is the one at `1847ffd`" was therefore stale.
+
+The follow-up removes that phrase from both places in revision 3. It renames the ledger section to
+"Launch-enforcement base, as landed at `1847ffd`". Each document now calls `1847ffd` the
+launch-enforcement base and names the reviewed R1/R2 repair as the current diagnostic layer.
+
+The reviewer confirmed the two changed contract files keep the hashes recorded in the confirmation
+above. They are `caecb039…761ad1e5` and `d17c2a55…f11ebc678`. A launch plan must still recompute
+both at its own launch revision.
+
+Three matches remain inside `final-synthesis-review-sol.md`. All three sit in dated review text
+whose header names its author, branch, and `dc0761d` snapshot. They are historical evidence. The
+reviewer left them, as the preservation rule requires.
+
+## Agreement across the three documents
+
+The reviewer cross-checked six claims. The handoff, the ledger, and revision 3 agree on each one.
+
+| Claim | Agreement |
+| --- | --- |
+| Opus first withheld, then granted both verdicts | all three |
+| Final repair validation of 108 files and 1,974 tests | all three |
+| `1847ffd` is the launch-enforcement base, not the final bytes | ledger and revision 3; the handoff makes no byte claim |
+| Capacity artifact expires `2026-09-05T10:25:17.815Z` | all three |
+| Revision 3 authorizes nothing | handoff and revision 3 |
+| The review gate is closed; integration, deployment, and cleanup remain | all three |
+
+The ledger keeps three items open. They are the pane record, the production smoke checks, and the
+owned-resource cleanup. The handoff sequence lists the same remaining work.
+
+## Granted verdicts stay valid
+
+The confirmation above granted `LAUNCH-OK` and `CLOSEOUT-OK` for `352e517`. Commit `02a070c`
+changes no code. Both repaired contract files keep their verified hashes. The evidence behind both
+verdicts is unchanged.
+
+The follow-up records a review outcome that this section confirms. That order is unavoidable for a
+document that reports its own review state. This section closes it.
+
+## Blocked decisions
+
+Every paid, filing, golden, merge, deployment, and owner decision stays blocked.
+
+- `.agents/NEXT.md:114`, `:120`, `:133`, and `:142` keep the four blocked classes.
+- `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
+  `declined-upstream`. No record moved to a filed state. The commit changed no `improvements` file.
+- Revision 3 still says that it authorizes nothing. Its signature line at line 626 still offers
+  `AUTHORIZED` or `NOT AUTHORIZED`.
+- Owner decisions A to J stay open. Decision 5, the concurrent-load acceptance, stays open.
+- The handoff keeps the safe default of no spend at `.agents/NEXT.md:179`.
+
+## Commands and results
+
+| Command | Result |
+| --- | --- |
+| `git diff --check main...HEAD` | Pass |
+| `npm run secrets:scan -- --tree` | Pass, clean with gitleaks |
+| `npx vitest run` (full suite) | Pass, 108 files and 1,974 tests |
+| `git diff --name-only f8a6329 02a070c` outside `.agents` | Zero files |
+| `git diff --name-only f8a6329 02a070c` for code files | Zero files |
+| `git diff --stat f8a6329 02a070c -- <this report>` | Empty, this report is unmodified |
+| `shasum -a 256` on both repaired contract files | Unchanged since `352e517` |
+| `grep` for the three N1 sentences across live surfaces | None remain |
+| `grep` for the stale final-supervisor-byte phrase | Only dated review evidence remains |
+
+The reviewer linked a prepared `node_modules` tree for the test run and removed it afterwards. The
+worktree carries no change except this appended section.
+
+The reviewer made no paid call, no live collection, no stored judging, no filing, no external
+write, no deployment, and no network mutation.
