@@ -14,7 +14,7 @@ Total findings: 64
 | sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…    | reported-upstream | 2026-08-11 | 1           |
 | sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                          | reported-upstream | 2026-08-11 | 1           |
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 0           |
-| sk-021 | The Smart Contracts skill example uses a Protocol 27 release candidate. Its next comment says Mainnet runs Protocol 26. Mainnet reports…    | proposed          | 2026-09-03 | 0           |
+| sk-021 | The Smart Contracts skill example uses a Protocol 27 release candidate. Its next comment says Mainnet runs Protocol 26. Mainnet reports…    | verified          | 2026-09-03 | 0           |
 
 ## stellar-light-scout
 
@@ -51,7 +51,7 @@ Total findings: 64
 | sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | proposed          | 2026-08-30 | 0           |
 | sd-047 | Two canonical developer-docs pages state different ledger cadences with the same sentence frame. The Validators introduction…               | reported-upstream | 2026-08-31 | 1           |
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
-| sd-049 | The Saved Keypairs page says saved keys are obfuscated but not encrypted. The current storage helper serializes each SavedKeypair directly… | proposed          | 2026-09-03 | 0           |
+| sd-049 | The Saved Keypairs page says saved keys are obfuscated but not encrypted. The current storage helper serializes each SavedKeypair directly… | verified          | 2026-09-03 | 0           |
 
 ## lumenloop
 

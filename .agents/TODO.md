@@ -11,17 +11,6 @@ Updated 2026-09-03 after the owner resolved the Raven monitor and protocol-histo
 
 ## Improvements follow-up
 
-### Independently verify `sd-049` and `sk-021` before upstream filing
-
-Re-run the Saved Keypairs page, Laboratory storage-helper, and Saved Keypairs UI checks for
-`sd-049`. Re-run the Smart Contracts skill source and Horizon protocol-version checks for `sk-021`.
-Use `.agents/rounds/2026-09-03-truth-maintenance/golden-implementation-terra.md` as the evidence ledger.
-
-Move either finding from `proposed` only after an independent live re-derivation confirms its trigger.
-File only through `npm run improvements:file` after the normal intake and lint checks pass.
-
-Done when: the findings are verified with current evidence, or a recheck shows that either source changed.
-
 ### Re-check `sd-047` only after PR #2806 merges
 
 Trigger only when https://github.com/stellar/stellar-docs/pull/2806 merges.

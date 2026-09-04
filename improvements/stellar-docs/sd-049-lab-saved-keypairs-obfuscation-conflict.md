@@ -1,7 +1,7 @@
 ---
 id: sd-049
 service: stellar-docs
-status: proposed
+status: verified
 discovered: 2026-09-03
 upstreamTitle: Saved Keypairs documentation calls unencrypted JSON storage obfuscated
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-09-03 read-only live inspection of https://lab.stellar.org/account/saved says browser localStorage is unencrypted and unprotected
   - eval/qa/corpus/battery/tooling-infra/q-ti-stellar-lab-usage-and-new-ui.json truth.verified dated 2026-09-03 records the same A/B/F conflict
   - .agents/rounds/2026-09-03-truth-maintenance/golden-sol.md records the independent source classes and observations
+  - .agents/rounds/2026-09-03-truth-maintenance/golden-final-review-sol.md independently re-derived the live trigger
 ---
 
 ## Finding
