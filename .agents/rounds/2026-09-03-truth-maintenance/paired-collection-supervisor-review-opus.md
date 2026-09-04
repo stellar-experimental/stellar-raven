@@ -1066,3 +1066,155 @@ at xhigh effort. The later H4 effort correction was mistaken.
 | H2 missing or unreadable cases path | CLOSED. The launch gate returns one concise error without an absolute path. Tests cover both conditions. |
 | H3 dead artifact field check | CLOSED. The dead `artifact.meta.selectedContentSha256` check is removed. `inputSnapshot.casesSha256` remains the content binding. |
 | H4 effort attribution | CORRECTED. Objective Herdr argv records Opus 5 at xhigh for the one live reviewer agent. Historical verdicts remain unchanged. |
+
+---
+
+# Bounded closing review — commit `5da204a`
+
+Date: 2026-09-04
+
+Reviewer lane: Claude Opus 5 at `xhigh` effort. Reviewer differs from the author and the design author.
+
+Reviewed commit: `5da204a65c804cc89c47cb283b0b0897283babfc` ("eval: close paired collection final
+residuals"), on top of `1292b60` and this report's `361abbd`.
+
+This section is additive. It changes no historical verdict.
+
+I made no paid call, no network call, and no product-code change.
+
+## Verdict
+
+PASS.
+
+All three code residuals are closed and verified against running code. No new defect appeared, and
+the earlier F1 and F3 repairs still hold with the new revision check in place.
+
+One correction is mine to make: my H4 finding in the previous section was wrong, and my restoration
+of the "high effort" line re-introduced the error. Objective evidence, gathered independently below,
+shows all three reviews ran at `xhigh`. The document now reads correctly and needs no further edit.
+
+One optional tightening remains (I1). It is pre-existing, not a regression, and not a blocker.
+
+## Verification
+
+### Artifact bound to the correct arm server revision — CLOSED
+
+`artifactPathFromArm` now reads the arm's frozen `--server-revision` out of
+`plan.arms[arm].collectionCommand` and requires
+`artifact.meta?.sourceIdentity?.serverRevision` to equal it
+(`eval/qa/paired-collection-supervisor.mjs:507`). This is precisely the check H1 asked for, and it
+also makes a cross-arm artifact mix-up impossible on two independent axes, since the results
+directory containment check already blocks the peer's path.
+
+- **P1** A swapped pair — each arm reporting the other's revision — is rejected with
+  `baseline artifact does not match its frozen server revision`.
+- **P2** An artifact with no `sourceIdentity` at all is rejected; the comparison is strict, not
+  optional-guarded.
+- **P3** The correct pair still produces a normal receipt, so the check adds no false positive.
+
+The committed `it.each(["baseline", "candidate"])` case proves both arms, and both its variants
+assert a hard cancellation with no receipt.
+
+### Concise launch-gate error for a missing `--cases` file — CLOSED
+
+`pathInside` wraps both `realpathSync` calls and `selectedCasesFromWorktree` wraps its
+`readFileSync`, each throwing `--cases is missing or unreadable inside its runner worktree`. The
+validator prefixes it with `${arm} runner launch gate: `. The two neighbouring messages also lost
+their interpolated absolute paths (`--cases has no cases[]`,
+`--cases does not reproduce the ordered selected IDs`), which is a bonus the finding did not ask for.
+
+- **P7** A missing file, a directory, and a `..` escape each produce the intended message, and none
+  of the three contains the temporary root or any absolute path.
+
+The committed test asserts the exact message string and additionally asserts it does not contain the
+fixture root — the right way to pin a no-leak guarantee. Its "unreadable" variant uses a directory
+path, so it exercises the `readFileSync` wrapper rather than only the `realpathSync` one.
+
+### Dead `selectedContentSha256` check removed without weakening `casesSha256` — CLOSED
+
+The two-element loop became a single `if` on `artifact.meta.inputSnapshot.casesSha256`
+(`eval/qa/paired-collection-supervisor.mjs:503`). The surviving comparison is byte-for-byte the same
+condition it was inside the loop, so the real binding is unchanged.
+
+- **P4** A wrong `casesSha256` is still rejected with `does not match the frozen selected content`.
+  The binding is not weakened.
+- **P6** A bogus `meta.selectedContentSha256` is now correctly ignored, confirming the removed branch
+  was the dead one.
+
+`run-qa.mjs:2135` writes `inputSnapshot.casesSha256` unconditionally and derives it exactly as the
+supervisor derives `plan.selected.contentSha256`, so the retained check is the live one.
+
+### New tests prove both arms and the failure paths — CONFIRMED
+
+The suite grew from 1,900 to 1,904 tests, all passing. The four additions are the two revision-drift
+arms and the two `--cases` conditions. The bare `fixture()` gained a minimal `arms` block carrying
+each arm's `--server-revision`, so the receipt-path tests exercise the real
+`artifactPathFromArm` rather than an injected stub. Every added case asserts a rejection.
+
+### Opus effort history — CORRECTED, and my earlier finding was wrong
+
+I verified this independently rather than accepting either account. Walking the process tree from
+this shell reaches my own agent process, PID 55268:
+
+```
+claude --model opus --effort xhigh --permission-mode bypassPermissions
+```
+
+Its parent is the Herdr server, and `herdr pane current --current` and `herdr agent get w16:p29`
+place it in pane `w16:p29`, agent `tm2_opus_supervisor_review`, session
+`ad2dcf77-e181-45d1-aba0-8fbe7c0b0975` — the same session id as this review's scratchpad — under the
+terminal title "Commit 79080bd launch-blocker review". One live agent, one launch, all three reviews.
+
+So the first review ran at `xhigh`. My H4 finding treated my own prose as the authority over the
+launch argv; the argv is the authority, and the author's original edit was a correction. My
+restoration in `361abbd` re-introduced the error, and `5da204a` has already put the header back to
+`xhigh`. The line is correct as it now stands and I am leaving it alone.
+
+The H4 entry in the previous section stays in place as the historical record of the exchange. Read it
+with this paragraph: its factual claim is withdrawn.
+
+## Residual finding
+
+### I1 — the content binding is still optional-guarded
+
+`artifact.meta.inputSnapshot.casesSha256 !== undefined && … !== plan.selected.contentSha256`.
+
+Probe **P5**: an artifact that omits `casesSha256` entirely, but keeps a valid `inputSnapshot`
+with the right `caseIdsSha256`, is accepted and a receipt is issued.
+
+This guard predates `5da204a` and the commit did not change it, so it is not a regression — the
+finding it answered was about the dead second element, which is gone. But `run-qa` always writes the
+field, so the guard protects nothing and leaves the one content check skippable. Dropping
+`!== undefined` makes it strictly stronger and matches how `caseIdsSha256` is already treated.
+`eval/qa/README.md` is honest about the current behaviour ("when present"), so this is a tightening,
+not a documentation fix.
+
+## Regression check
+
+- **P8** A soft cancellation with no child exits still settles through `SIGTERM` then `SIGKILL` and
+  preserves the exclusive marker. F1 holds with the new revision check in the receipt path.
+- **P3** The production `complete → disconnect → exit` order still resolves. F3 holds.
+
+## Checks run
+
+| Command | Result |
+|---|---|
+| `npm test` | PASS, 107 files, 1,904 tests |
+| `npm run typecheck` | PASS |
+| `npm run build` | PASS |
+| `npm run eval:qa:paired:validate` | PASS, all gates true |
+| `npm run secrets:scan -- --tree` | PASS |
+| `git diff --check` | PASS |
+| Probes P1–P8 (8 cases, one temporary file) | As reported; file deleted, tree clean |
+| Herdr read-only argv verification (`pane current`, `agent get`, process tree) | Recorded above; no control command issued |
+
+I did not run `npm run test:smoke`. The commit touches no path under `src/executor` or `src/demo`.
+
+## Standing
+
+The launch gate is ready for an owner authorization decision. I1 is optional. The remaining work is
+unchanged: produce the manifest instance at the final merged runner revision with a fresh random
+`devVars.salt`, keep it uncommitted, delete it after the run, and obtain the owner authorization
+naming every command, cumulative cap, final hash, stop rule, and the independent result reviewer.
+
+This review authorizes no spend, no deployment, and no merge.
