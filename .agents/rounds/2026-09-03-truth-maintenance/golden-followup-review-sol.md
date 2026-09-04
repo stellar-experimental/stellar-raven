@@ -2,9 +2,10 @@
 
 ## Verdict
 
-**CHANGES-REQUIRED**
+**PASS**
 
-Commit `4308f6c293a0996f4d170b41b6bed5d9a9846c8b` has one blocking provenance error.
+The initial review of `4308f6c293a0996f4d170b41b6bed5d9a9846c8b` found one blocking provenance error.
+Repair commit `cdbbf57dafa8a5b9aebf0374ce1a26a800c971b6` closes that finding.
 The LOBSTR answer correction itself matches the live owner documentation.
 
 ## Review record
@@ -21,7 +22,7 @@ The LOBSTR answer correction itself matches the live owner documentation.
 
 ### F1: The verification record misstates the parent answer
 
-Severity: blocking.
+Status: closed by `cdbbf57dafa8a5b9aebf0374ce1a26a800c971b6`.
 
 The new `truth.verified.evidence` says the parent answer read as an era-independent local-only claim.
 The author report makes the same claim.
@@ -35,15 +36,15 @@ The real defect was narrower.
 The answer omitted the encrypted server copy already present in its corroboration record.
 That omission still supports the answer correction.
 
-Replace the affected evidence sentence with this text:
+The initial review required this replacement:
 
 > The 2026-08-31 corroboration row already verified the server copy, but the answer omitted it. The parent answer was era-bounded and did not say `only`.
 
-Make the same correction in `golden-followup-fable.md`.
-Keep the existing `eval-authoring` root cause.
-It accurately identifies the omitted server copy.
+It also required the same correction in `golden-followup-fable.md`.
+The existing `eval-authoring` root cause stayed unchanged.
+That root cause accurately identifies the omitted server copy.
 
-Regenerate `cases.json`, `sample.json`, and `lifecycle-registry.json` after that metadata repair.
+The repair regenerated `cases.json`, `sample.json`, and `lifecycle-registry.json`.
 
 ## LOBSTR corroboration matrix
 
@@ -171,11 +172,43 @@ No implementation or golden diff remains from the review.
 
 ## Risks and blockers
 
-- Blocker: F1 must be corrected before integration.
+- Blockers after repair: none.
 - Risk: The storage implementation has no independent class B or F verification.
 - Risk: Key fact 3 names only local storage, although the full trap answer names both locations.
 - Risk: The exact 500-case saved result is absent from this worktree.
 - Paid calls: none.
 - Deployment: none.
 
-CHANGES-REQUIRED
+## Final repair review
+
+I reviewed only commit `cdbbf57dafa8a5b9aebf0374ce1a26a800c971b6` against F1.
+The repair uses the exact required correction in the golden evidence record.
+It makes the same correction in `golden-followup-fable.md`.
+It keeps the accurate `eval-authoring` root cause.
+It does not change the golden answer, key facts, avoids, status, or dates.
+
+The compiler reproduced all generated files without a working-tree difference.
+The corpus still contains 500 cases.
+Its content digest is `c5d0c804ddd9ce241fae90398ee0d83808e5d847f049d118e4ad15903d07b43e`.
+The 30-case sample carries the same digest.
+
+The lifecycle registry still reserves 500 IDs.
+The reviewed case remains active with review state `none`.
+Its content digest is `b75ab199e2abf94dc521ca8c24821be2aa6d1b42c00fc803134d6051f4c4b15a`.
+
+Focused verification passed:
+
+- `npm run eval:qa:compile`
+- `npm run eval:qa:register`
+- `npm run eval:qa:lint -- --since cdbbf57^ --stale`
+- `npm run eval:selftest`
+- Seven focused Vitest files, with 221 passing tests
+- `npm run secrets:scan -- --tree`
+- `git diff --check cdbbf57^ cdbbf57`
+
+The lint reported 0 errors and the existing 62 warnings.
+The register reported 0 reopened entries.
+The secret scan found no leaks.
+The repair leaves no remaining F1 finding.
+
+PASS
