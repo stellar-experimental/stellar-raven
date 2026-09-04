@@ -24,6 +24,10 @@ The owner authorized paid eval and golden-QA work for this round.
 Each method still uses an enforceable local cap.
 One method authorization permits one run only.
 
+Superseded on 2026-09-04: the fresh 500-case candidate arm ran and then stopped as a diagnostic.
+It is not a current-quality measurement. The paired comparison did not happen.
+See `## Candidate arm result and stop (2026-09-04)` and `## Measurement state (2026-09-04)`.
+
 ## Lane plan
 
 | lane | owner route | evidence and completion check | report destination |
@@ -206,6 +210,11 @@ The candidate arm did not start a paid call.
 The external approval service requires explicit permission to send repository QA cases and service
 transcripts to Anthropic Claude Sonnet 5 for answering and judging.
 
+Superseded on 2026-09-04: the permission was later granted. The candidate arm ran from
+`2026-09-03T18:29:30.879Z` to `2026-09-04T05:40:51.010Z` and completed all 500 rows.
+The independent stop audit then stopped the baseline arm and every later paid method.
+See `## Candidate arm result and stop (2026-09-04)`.
+
 ## Golden verdict
 
 Corpus lint reports no overdue cases under its strict stale rule.
@@ -294,6 +303,12 @@ The owner approved this spend for measured product quality.
 Unused money authorizes no additional method or rerun.
 Every method still requires the exact caps, pins, and stop rules in its independent review.
 
+Consumption record, 2026-09-04: the P6 self-test spent `$0.2536528`. The candidate arm spent
+`$190.1686672`. Both methods are spent. The baseline arm, both flip rejudges, the canonical
+live-data method, and the digest method are stopped by `post-candidate-stop-audit-sol.md`.
+The unspent remainder does not transfer to any new method. A new paired method needs its own
+authorization. See `## Measurement state (2026-09-04)`.
+
 Herdr note: the first read-only pane listing failed in the external approval service with HTTP 404.
 The restricted retry failed with `Operation not permitted`.
 A later approved retry succeeded. This round created panes `w16:p1N`, `w16:p1P`, and `w16:p1Q`.
@@ -303,15 +318,241 @@ Replacement Codex panes `w16:p1R` and `w16:p1S` now hold the pre-spend and golde
 
 ## Final checklist
 
+Updated 2026-09-04.
+
 - [x] Final pre-spend delta review returns `LAUNCH-OK` after the real-runtime proof.
-- [ ] Spawned pane IDs and final agent states are recorded.
-- [x] Drift artifacts are generated and classified.
+- [ ] Spawned pane IDs and final agent states are recorded. Known panes: `w16:p1N`, `w16:p1P`,
+      `w16:p1Q`, `w16:p1R`, `w16:p1S`, and the runner pane `w2R:p2`. The later repair lanes ran in
+      separate worktrees and did not record pane IDs in this ledger. This item stays open.
+- [x] Drift artifacts are generated and classified. Scout 1.9.23 and 1.9.30 are rejected.
 - [x] Routing and protocol-history results are recorded.
-- [ ] The paired full battery, live-data, and digest contracts are complete or honestly blocked.
-- [ ] Every non-correct result and surprising pass is reviewed.
+- [x] The paired full battery, live-data, and digest contracts are honestly blocked. The candidate
+      arm completed as a non-comparable diagnostic. The baseline, flip, live-data, and digest
+      methods are stopped. See `## Measurement state (2026-09-04)`.
+- [x] Every candidate row is reviewed once by an independent shard. Disagreements are recorded
+      and left for adjudication. See `## Candidate row review (2026-09-04)`.
 - [x] Golden changes carry independent source classes and root-cause records.
-- [ ] Proposed and reported improvements have live state and deterministic next actions.
-- [ ] Production smoke checks pass.
-- [x] Baseline repository validation and secrets scanning pass.
-- [ ] Independent closeout review passes.
+- [x] Proposed and reported improvements have live state and deterministic next actions. See
+      `## Improvements state (2026-09-04)`.
+- [ ] Production smoke checks pass. No deployment happened. Production still runs `0c71b99`.
+- [x] Baseline repository validation and secrets scanning passed on each repair branch. This
+      synthesis ran the improvements lint, the QA corpus lint, and the diff check only.
+- [ ] Independent closeout review passes. This synthesis has not been reviewed.
 - [ ] Owned Herdr panes and agents are closed without touching unrelated resources.
+
+## Candidate arm result and stop (2026-09-04)
+
+The candidate arm completed all 500 rows and then stopped as a diagnostic.
+It is non-comparable. It is not a current-quality headline. It cannot enter the paired printer.
+
+| Item | Value |
+|---|---|
+| Artifact | `/private/tmp/stellar-raven-tm-runner/eval/qa/results/2026-09-04T05-40-51-variantA.json` |
+| Artifact SHA-256 | `e629666bf476244d350840069094a8a579757724c101830d6d6727685b5904f7` |
+| Runner and candidate revision | `65d2f98dd80305e9a2b9000c46e9a91ba0557cbc`, adapter `verify-native` |
+| Baseline arm | never started |
+| Window | `2026-09-03T18:29:30.879Z` to `2026-09-04T05:40:51.010Z`, about 11 h 11 min |
+| Raw verdicts | 199 correct, 230 partial, 71 wrong, 0 error |
+| Raw shares | strict 39.8%, half-credit 62.8%, core-answer-correct 92.6% |
+| Cost | `$190.1686672` of the `$400` cap; `$130.17` agent and `$60.00` judge; 500 agent calls and 790 judge calls |
+| Traps (T3) | 41 answered, 33 pass, 8 fail; every failure is a safe answer with a missing required behavior |
+| T2, T4, T5 | zero |
+| Judge tuple | `claude-sonnet-5`, rubric `v2.10`, pack `p6`, `stability-boundary-v1`, panel cap 34 |
+| Local pins | every runner, server, adapter, surface, corpus, binary, environment, and register pin matched |
+
+The arm is diagnostic and non-comparable for two independent reasons.
+
+1. Scout changed identity inside the arm. Row `q-gap-scout-status-envelope` recorded
+   `apiVersion 1.9.23` at `2026-09-03T22:35:38.445Z`. Row `q-ti-scout-changelog-contract-check`
+   recorded `apiVersion 1.9.30` at `2026-09-04T04:34:02.708Z`. The post-run refresh confirmed
+   `1.9.30` at `2026-09-04T05:42:52.877Z`. The registered launch assertion 6 required a stop after
+   any advertised upstream identity change. The runner had no machine guard for remote identity,
+   so collection continued. The switch time is unknown inside a 5 h 41 min window. Row order is
+   alphabetical, so the Scout regime correlates with category. No per-regime read is valid.
+2. The executor rejected raw service envelope returns. `Could not serialize object of type
+   "Object"` appeared on 380 of 500 rows with 493 occurrences. It hit 220 of 239 Docs rows. Every
+   row recovered at the cost of at least one paid turn. The cause was a Proxy prototype set by the
+   envelope guard in `src/executor/providers.ts`, present since `0f2a700` and absent at the
+   baseline revision `90d0ba75`. The deployed runtime `0c71b99` carries this fault.
+
+The raw counts describe this artifact only. They do not describe the service under one upstream
+state. They support no improvement or regression claim against 2026-08-19 or against the exact
+baseline revision.
+
+The artifact `meta` carries `meanContinuousCoverage: 0.5601952380952382`. That metric was
+invalid. `verdict.missingFacts` is judge prose, not an index into `golden.keyFacts`. Panel rows
+union three judges' paraphrases, so 49 panel rows went negative. The metric is retired in
+`74a3c70` and `728182f`. Do not quote the stored value as a valid metric.
+
+The independent stop audit `post-candidate-stop-audit-sol.md` returned `STOP`. The independent
+measurement audit `post-candidate-measurement-fable.md` (revision 2) concurs. The Scout drift
+classification `post-candidate-scout-drift-terra.md` classifies `1.9.23` to `1.9.30` as mixed
+routing-text and schema drift with no operation-surface change.
+
+## Candidate row review (2026-09-04)
+
+All 500 rows received one independent sharded review. The three selectors partition the selected
+IDs with no overlap and no gap.
+
+| Shard | Reviewer | Rows | Correct / partial / wrong | Report |
+|---|---|---:|---|---|
+| `stellarDocs` | Codex Terra | 239 | 91 / 112 / 36 | `candidate-row-review-stellar-docs-terra.md` |
+| `scout` and `lumenloop` | Codex Sol | 206 | 82 / 97 / 27 | `candidate-row-review-scout-lumenloop-sol.md` |
+| `skills` and `none` | Claude Fable 5.1 | 55 | 26 / 21 / 8 | `candidate-row-review-skills-none-fable.md` |
+| all rows, audit | Claude Fable 5.1 `xhigh` | 500 | programmatic recompute of every aggregate, hash, cost, and rule | `post-candidate-measurement-fable.md` |
+
+The reviews changed no grade and rewrote no artifact. They recorded these disagreements for
+adjudication. Each is a human judgment or a paid rejudge. None is resolved here.
+
+- Four verdict sentences that the raw transcript refutes: `q-comp-finclusive-caas`,
+  `q-edge-scf-v7-centralization-myths`, `q-ti-stellar-lab-usage-and-new-ui`, and
+  `q-ti-scout-refresh-cached-rows`. The first three could move to partial on adjudication.
+- Nine `correct` grades disputed by the Scout and Lumenloop shard: `q-anchor-list-builders-discovery`,
+  `q-asset-rwa-tokenized-freshness`, `q-defi-cross-blend-rivool-sac`, `q-defi-lending-landscape-live`,
+  `q-hist-quantum-preparedness-plan`, `q-scf-academic-research-grant`, `q-scf-blend-winners-live`,
+  `q-tool-leaderboard-open-issues`, and `q-tool-zk-repo-live`.
+- Two disputed avoid matches from the skills shard: `q-edge-send-me-free-xlm` (avoid 1 fired on an
+  omission) and `q-soroban-x402-auth-entry-signing` (avoid 2; the grade holds on avoid 3).
+- Two three-way panel ties resolved to wrong by the tie rule: `q-eco-dex-saturation` and
+  `q-eco-stablecoins-on-stellar`.
+
+Own-repo observations from the reviews: the executor fault above; the `search` miss for
+`lumenloop.get_categories` on general category queries; the shared envelope `ok` versus
+`data.ok` miss on four rows. The category miss now lives in the general scoring item in
+`.agents/TODO.md`. The envelope guidance check `envelope-guidance-routing-terra.md` found the
+current catalog text already covers the `data.ok` distinction, so no code change followed.
+
+Recurrence evidence for existing findings: `sd-046` (two rows), `sd-044`, `sd-037`, `ll-030`, and
+`sls-023`. Each recurrence was re-derived live and recorded in `improvements/` on 2026-09-04.
+
+## Repairs after the stop (2026-09-04)
+
+Each repair landed on its own branch and was carried onto `codex/tm-final-synthesis`. The table
+names the commit on this branch and the reviewed commit in the report.
+
+| Repair | This branch | Report commit | Independent review | Verdict |
+|---|---|---|---|---|
+| Dynamic Worker envelope serialization | `795fa41` | `99583d1` | Sol high, `envelope-serialization-review-sol.md` | `PASS`; real-RPC smoke test added; `npm run test:smoke` 83 tests |
+| Envelope guidance and category routing check | `e926c9b` | same | none needed; no code change | category defect recorded in the general scoring item |
+| Retire the invalid coverage share | `74a3c70`, `728182f` | `d1fddb9`, `a21fd5b` | Sol high, `coverage-metric-review-sol.md` | `PASS` after R1 and R2 |
+| Evidence-support diagnostic prose probes | `0e95b10` | `37264f9` | Fable 5.1 `xhigh`, `evidence-support-review-fable.md` | `PASS`, five non-blocking notes |
+| Golden follow-up, `q-raph-lobstr-legitimacy` | `6806fa7`, `280fd9f` | `4308f6c`, `cdbbf57` | Sol high, `golden-followup-review-sol.md` | `PASS` after F1; corpus content `c5d0c804…7b43e` |
+| Verified Docs findings `sd-050`, `sd-051`, `sd-052`, `sk-022` | `c9a4afa`, `ef4e618`, `0eb3a28`, `f1c6f77` | `8012adb` | Opus 5 `xhigh`, `upstream-docs-findings-review-opus.md` | corrected and `PASS`; not filed |
+| Verified skill findings `sk-023`, `sk-024` | `8d1b50a`, `f19bf6a` | same | Fable 5.1 `xhigh`, `upstream-skill-findings-review-fable.md` | corrected and ready; not filed |
+| Finding recurrences and intake readiness | `887ea4d` to `a967721` | `88f08ec`, `bd7330b`, `bf198b0`, `1d08120` | Fable 5.1 `xhigh`, `finding-recurrences-review-fable.md` | `PASS`; ten filing dry runs pass |
+| Scout 1.9.30 free drift audit | `cf4aa8d`, `148b9ed` | `3fed7cf`, `cf29cc9` | Sol high, `scout-1.9.30-drift-review-sol.md` | corrections applied; re-review `PASS`; drift rejected |
+| Remote identity guard | `de9af0a`, `14a6f66`, `c781866`, `e3fe47a` | `2ca5880`, `8cd724d`, `5d47ab6`, `f2e2d10` | Opus 5 `xhigh`, `remote-identity-guard-review-opus.md` | final `PASS`; R1 and R4 stay as operational items |
+| Revised impact measurement, revision 1 | `74e756d` | `f101cee` | Sol high, `revised-impact-measurement-review-sol.md` | `CHANGES-REQUIRED`, S1 to S6 and P1 to P7 |
+| Paired collection supervisor and launch gate | `9bbcdbd`, `d36aa05`, `6934e1c`, `e0df186` | `79080bd`, `9cf49a4`, `1292b60` | Opus 5 `xhigh`, `paired-collection-supervisor-review-opus.md` | `CHANGES-REQUIRED` then `PASS` twice; H1 to H3 closed |
+| Remaining-work audit | `2e4f028` | same | none needed | one documentation reconciliation remained; this synthesis performs it |
+
+Remote identity guard contract, as landed: the committed probe `eval/qa/probe-remote-identities.mjs`
+hashes the Scout OpenAPI document, the Lumenloop tool, skill, and OpenAPI inventory, and the Stellar
+Docs index settings and full `lvl1` title set. It makes seven public HTTP requests per capture in
+about 0.47 s with a 145 s process timeout. The runner captures before and after every answering
+call and once at postflight. Any change stops before the next paid call, keeps completed rows,
+sets `meta.comparable: false`, suppresses aggregates, and forbids resume. The `--stable-sha256`
+command takes three captures five minutes apart for the pre-arm pin. The last development capture
+returned vector `afd993854a981d4a5a3026ad047347c7a62a1b731b887ec08d48d5b9e07bbc7f` for Scout
+`1.9.30`. Two operational items remain: R1, Scout release cadence can prevent a valid long pair;
+R4, the Docs enumeration fails closed above 1,000 records while the live set has 650.
+
+Paired supervisor contract, as landed: `npm run eval:qa:paired:collect -- --plan <plan.json>`
+validates a `qa-paired-collection-plan-v1` manifest, spawns both `--no-judge` children, enforces
+a row barrier with alternating release order, shares one cancellation marker, applies a four-hour
+deadline with a bounded drain, and prints a `qa-paired-collection-receipt-v1` receipt only after
+both comparable artifacts exit cleanly. The manifest freezes explicit `--ids`, four distinct
+worktrees, twelve input hashes, a salted value-free `.dev.vars` identity, an accepted two-agent
+capacity record, and cumulative caps of `$80` collection and `$120` stored judging per arm. The
+review record names Opus 5 at `xhigh` for all three reviews, per the Herdr start record.
+
+## Scout 1.9.30 decision (2026-09-04)
+
+The round rejected the Scout 1.9.30 generated surface. The committed inventory remains Scout
+OpenAPI 1.9.1 with SHA-256 `1a261c4a2e2172683e91a52ddc33b02ff41e74760c861dfacb29c60a8d8671b0`.
+The accepted manifest remains `b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729`.
+
+| Surface | Version | Inventory SHA-256 | Sorted OpenAPI SHA-256 |
+|---|---|---|---|
+| Accepted commit | 1.9.1 | `1a261c4a…d8671b0` | `cce10918…fd753d4` |
+| Rejected 2026-09-03 candidate | 1.9.23 | `1bfe9d6a…c0fc4f` | `662a54f1…8d2320` |
+| Rejected 2026-09-04 live refresh | 1.9.30 | `0cbc081a…144d45` | `2acc43c4…311571` |
+
+The 1.9.1 to 1.9.30 comparison has 36 paths and 37 operations, no added or removed operation, 27
+changed operation objects, 15 changed `x-routing` blocks, 22 changed direct schemas, and six
+changed shared schemas. The generated 1.9.30 manifest met the numeric routing floors but lacked an
+accepted fingerprint. Both protocol-history v2 contracts stop as `source-expired` on the accepted
+manifest, so no protocol-history score can support a 1.9.30 decision. The rejection rests on
+mixed routing and response-contract drift without an accepted intent decision. No policy, golden,
+finding, or baseline changed. `GET /api/quality` and `GET /api/verify` remain excluded.
+
+## Improvements state (2026-09-04)
+
+`improvements/` contains 70 active findings: 57 `reported-upstream`, 10 `verified`, and 3
+`declined-upstream`. `npm run improvements:lint` passes with 70 findings.
+
+The ten verified findings are `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`,
+`sk-021`, `sk-022`, `sk-023`, and `sk-024`. Each passed `npm run improvements:file -- --dry-run`
+with a resolved owner. Filing writes to external trackers and needs separate owner authority. No
+finding was filed this round. Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged
+revision so the immutable snapshot points at the corrected text.
+
+External states at the last recorded reads:
+
+| Reference | State | Last read | Next action |
+|---|---|---|---|
+| `stellar/stellar-docs` PR #2806 (`sd-047`) | open, checks pass, review required | 2026-09-04 live lint | re-check `sd-047` only after merge |
+| `stellar/stellar-docs` issue #2805 (`sd-047`) | open | 2026-09-04 live lint | none until PR merge |
+| `lumenloop/lumenloop-backend` issue #35 (`ll-019`, `ll-029`) | open, no maintainer activity since 2026-08-19 | 2026-09-04 live lint | silent until substantive owner activity |
+| `stellar/stellar-docs` issue #2772 (`sd-044`) | open, zero comments since 2026-08-19 | 2026-09-04 | silent |
+| `stellar/stellar-protocol` issue #1981 (`sd-037`) | open, stale-bot notice on 2026-08-14 | 2026-09-04 | state read after 2026-09-13 |
+
+The four Scout resolutions of 2026-09-03 (`sls-073`, `sls-077`, `sls-078`, `sls-079`) stand with
+their receipts and comment URLs above.
+
+## Measurement state (2026-09-04)
+
+No valid two-week causal measurement exists. No baseline artifact exists. The candidate artifact is
+non-comparable. The `$882.50` plan is spent for P6 and the candidate and stopped for every other
+method. Its remainder does not transfer.
+
+The revised design is `revised-impact-measurement-fable.md`, revision 2. It proposes a supervised
+200-case paired subset under a `$273.50` maximum with cumulative per-arm caps. It corrects the stale
+request counts, timings, caps, hashes, and topology claims from revision 1 against the final
+supervisor contract. Nobody has reviewed revision 2. The method is not approved for paid execution.
+It needs an independent re-review, the owner decisions, a signed authorization block, a final
+manifest at one clean launch revision, and a weekend window.
+
+## Decisions (2026-09-04)
+
+- The 2026-09-04 candidate artifact is a stopped mixed-upstream diagnostic. Its raw counts never
+  become a headline or a paired input.
+- `meanContinuousCoverage` was invalid and is retired. No record quotes it as a valid metric.
+- No golden changes from judge verdicts alone. Every golden question below stays with the owner.
+- Upstream filing waits for explicit owner authority. Reported findings stay silent.
+- Scout 1.9.30 is rejected. Scout 1.9.1 stays committed.
+- The remote identity guard is a launch requirement for every future paid live run.
+- The paired supervisor is the only permitted way to collect two arms at once.
+- The revised paired method is unapproved. The old plan does not transfer.
+- Production deployment waits for round closeout and explicit deployment authority. The deployed
+  runtime carries the envelope serialization fault that `795fa41` repairs.
+- Monitor-only programs stay monitor-only. The PH2 and Raven capability-boundary decisions from
+  `.agents/rounds/2026-09-03-owner-decisions.md` are unchanged.
+
+## Outcome
+
+| Lane | Verdict | Evidence |
+|---|---|---|
+| Pre-spend plan review | `LAUNCH-OK` for the sequential 500x2 method on 2026-09-03; that method is now spent and stopped | `final-prespend-launch-sol.md` |
+| Drift and routing | Docs-only title refresh accepted with a mechanical fingerprint rebaseline; Scout 1.9.23 and 1.9.30 rejected | `drift-terra.md`, `docs-drift-review-sol.md`, `scout-1.9.30-drift-terra.md` |
+| Improvements and upstream state | four Scout findings resolved with receipts; recurrences recorded; ten findings verified and owner-mapped; none filed | `improvements-terra.md`, `finding-recurrences-terra.md`, `verified-intake-readiness-terra.md` |
+| Golden health | 15 cases reverified on 2026-09-03; one LOBSTR correction on 2026-09-04; 14 cases hold with named human blockers | `golden-sol.md`, `golden-followup-fable.md` |
+| Paid eval execution | P6 passed; candidate arm completed and stopped as a diagnostic; baseline never started | artifact `2026-09-04T05-40-51-variantA.json`, `post-candidate-stop-audit-sol.md` |
+| Eval result review | all 500 rows reviewed once; disagreements recorded for adjudication | the three shard reviews and `post-candidate-measurement-fable.md` |
+| Repairs | envelope, coverage metric, evidence support, remote guard, and supervisor landed with independent `PASS` reviews on the branch | `## Repairs after the stop (2026-09-04)` |
+| Measurement design | revision 2 written; unreviewed; unapproved | `revised-impact-measurement-fable.md` |
+| Final independent closeout review | not done | this synthesis is unreviewed |
+
+Remaining risk: the branch is unmerged and undeployed. Production still runs `0c71b99` with the
+envelope fault. The handoff and owner decisions are in `.agents/NEXT.md`. The queue is in
+`.agents/TODO.md`.

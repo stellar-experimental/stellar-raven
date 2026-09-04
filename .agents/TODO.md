@@ -7,7 +7,9 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-03 after the owner resolved the Raven monitor and protocol-history PH2 decisions.
+Updated 2026-09-04 after the truth-maintenance round stopped its paid pair and landed its repairs.
+The round ledger is `.agents/rounds/2026-09-03-truth-maintenance.md`. The ranked handoff is
+`NEXT.md`.
 
 ## Improvements follow-up
 
@@ -37,6 +39,23 @@ Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` f
 
 Done when: the next state read is recorded without an upstream reminder comment.
 
+### File the ten verified findings only after explicit owner authority
+
+Trigger only when the owner records filing authority in a round ledger.
+The verified findings are `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
+`sk-022`, `sk-023`, and `sk-024`. Each passed `npm run improvements:file -- --dry-run` on
+2026-09-04 with a resolved owner. `ll-030` resolves through the Lumenloop service rule and has no
+override. The evidence is
+`.agents/rounds/2026-09-03-truth-maintenance/verified-intake-readiness-terra.md`.
+
+Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision. Their record
+bodies were corrected on a separate branch, and the immutable snapshot must point at the corrected
+text. Pace the filing wave for owner-readable, deduplicated issues. Cross-link the open
+`OpenZeppelin/openzeppelin-skills` issue from `sk-015` when `sk-022` is filed.
+
+Done when: each authorized finding is `reported-upstream` with a read-back issue URL, or the owner
+records an explicit deferral for it.
+
 ## Recovery
 
 ### Monitor the rejected repository-tooling recovery experiment
@@ -50,6 +69,9 @@ It had 18 of 20 correct answers and 20 of 20 grounded answers.
 `sls-080` is retired in `improvements/resolved.json`.
 The deployed API `1.9.16` reading returned `28` at `2026-09-01T20:08:07.092Z`.
 Its scanned ref was `82660510ecda7fd365a14d08badb9d85fa22bc32`, whose source value is also `28`.
+The 2026-09-03 reading returned `28` at `2026-09-03T18:20:47.059Z` with the same scanned ref and
+`answerSource: knowledge-note`. It passed. The record is
+`.agents/rounds/2026-09-03-truth-maintenance/sls-080-monitor-terra.md`.
 
 During each improvements or drift-maintenance round, run one free `scout.explainRepo` reading
 against the existing local Raven server. Ask: “Which Horizon ingestion constant pins the highest
@@ -142,6 +164,15 @@ The decision record is `.agents/rounds/2026-09-03-owner-decisions.md`.
 The current v2 baseline reaches 7 of 19 required cases. It captures five of nine forbidden cases.
 Three of four neutral cases also surface the target. Both v2 contracts remain diagnostic `FAIL`.
 
+Since the accepted 2026-09-03 Docs-only title refresh, the committed manifest is
+`b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729`. Both v2 contracts pin the
+earlier epoch `4cd28f4b…fe8b`, so `npm run eval:protocol-history` now stops as `source-expired`
+before scoring and returns no counts. That stop is correct. Do not repin the v2 epoch to the
+current manifest. A new epoch needs a new independently authored contract after an accepted
+source freeze. That is an owner evidence box under PH3. The rejected Scout 1.9.23 candidate fired
+PH1 on 2026-09-03 and its counts are in the round ledger. The committed inventory did not change,
+so PH1 has not fired on the accepted surface.
+
 This queue calls the dated brief's T1 to T4 triggers `PH1` to `PH4`. This avoids collision with
 the five-track T1 to T5 contract.
 
@@ -164,7 +195,8 @@ the five-track T1 to T5 contract.
 
 Run `npm run eval:protocol-history` as a free diagnostic after changes to `src/catalog/**`,
 `catalog/manifest.json`, `scripts/build-catalog.mjs`, or
-`src/catalog/vendor/search-scoring.ts`. Record the counts. Keep this lane diagnostic-only.
+`src/catalog/vendor/search-scoring.ts`. Record the counts when the contracts are eligible. Record
+`source-expired` when they are not. Keep this lane diagnostic-only.
 
 Done when: a later reviewed mechanism passes both v2 contracts and all routing gates. That requires
 19 of 19 required top-five hits and zero captures among nine forbidden cases. Neutral cases remain
@@ -192,6 +224,10 @@ The 2026-09-04 category check is another instance. A controlled-vocabulary opera
 the top five for two general directory-taxonomy queries. The existing compiled category case also
 missed its expected operation. Do not add query wording or an operation exception. Include this
 family in the next reviewed general scoring design.
+The rejected Scout 1.9.30 surface changed 15 `x-routing` blocks and 22 direct schemas. Its routing
+diagnostic met the numeric floors without an accepted intent decision. The record is
+`.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`. It adds no new
+acceptance check.
 This item also owns the `sls-078` residual. Scout fixed its quality `x-routing`
 contract in 1.9.13. The reviewed 1.9.23 candidate still caused 90 unrelated
 `scout.getQualityReport` captures through Raven response-schema keywords. Keep
@@ -263,6 +299,15 @@ Reopen a free cause audit after any production occurrence, any transcript showin
 account-scoped operation, or any direct model-facing prose that advertises the capability. A third
 distinct QA case can also reopen the free audit. It does not authorize a product change.
 
+Candidate third case, recorded 2026-09-04 and not yet confirmed: in the stopped candidate artifact
+`2026-09-04T05-40-51-variantA.json`, row `q-n3-wallet-hacked-support-redirect` offered to trace
+funds through Horizon or Stellar Expert queries. Raven exposes no such operation. The row made no
+tool call. The evidence is
+`.agents/rounds/2026-09-03-truth-maintenance/candidate-row-review-skills-none-fable.md`. The same
+artifact repeats the known trap case and shows capability self-descriptions such as "network state"
+in five correct refusals. The owner decides whether this row is the third distinct case. A
+confirmed trigger allows a free cause audit only.
+
 Any later plan must name the surface owner and an observable product hypothesis. It must use a
 mechanism that reaches no-tool answers. Another QA-prompt wording layer is spent. Do not copy case
 facts, identifiers, or redirect lists into a prompt. Include the trap, the control, the environment
@@ -280,30 +325,74 @@ Done when: the owner retires the monitor, or a fired trigger leads to a reviewed
 ### Resolve paired-QA design before promotion
 
 `qa-paired-ordinal-ni-v1` is implemented, experimental, and not a ship gate. No same-tuple pinned
-pair exists. The 2026-08-30 artifact used rubric `v2.9`; the target rubric is `v2.10`.
+pair exists. The 2026-08-30 artifact used rubric `v2.9`; the target rubric is `v2.10`. The
+2026-09-04 candidate arm is non-comparable and cannot serve as one side of a pair.
 
-The method selects 100 IDs and requires 100 eligible IDs after five-track T4 and T5 exclusions.
-The validator reports a 99.356% terminal `INDETERMINATE` rate under its selected-100 missingness
-assumptions. The real run lost one ID and returned `INDETERMINATE` at 99 eligible IDs. A
-candidate-only T4 also forces `INDETERMINATE`; the validator reports 64.079% blocking under its 1%
-assumption.
+The method requires 100 eligible IDs after five-track T4 and T5 exclusions. The validator reports a
+99.356% terminal `INDETERMINATE` rate under its selected-100 missingness assumptions. The real run
+lost one ID and returned `INDETERMINATE` at 99 eligible IDs. A candidate-only T4 also forces
+`INDETERMINATE`; the validator reports 64.079% blocking under its 1% assumption.
 
-Permitted now: extend the free validator to evaluate a pre-registered selected denominator above
-100. Review denominator and candidate-only rules before the first new look. Never change either
-rule after reading a paid look.
+Landed on 2026-09-04 with independent `PASS` reviews: the remote identity guard, the paired
+collection supervisor `npm run eval:qa:paired:collect`, distinct cross-arm port pairs, stored-judge
+identity stamps, and cumulative per-arm caps. The printer now requires one shared remote identity
+vector, one probe hash, and different exact server revisions across arms. The full contract is in
+`eval/qa/README.md` and `eval/EVALS.md` item 12.
 
-The spend trigger is a merged product candidate that needs a paired look, plus a recorded owner
-margin. Do not collect a pair for calibration alone. Two new same-tuple collections cost about
-`$82`; the stored range is `$64` to `$92`. Each collection needs a reviewed brief and its own cap.
+Permitted now: free validator work on a pre-registered selected denominator above 100, the free
+two-agent capacity check, and independent review of the revised design. Review denominator and
+candidate-only rules before the first new look. Never change either rule after reading a paid look.
+
+The spend trigger is a signed authorization for the revised method in
+`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md`, plus the
+recorded owner margin decision. Do not collect a pair for calibration alone under any other plan.
+The revised method caps a 200-ID supervised pair at `$273.50`. The earlier `$82` same-tuple
+estimate covered a 100-ID sequential pair and is superseded for planning.
 
 Before the next collection, decide whether the optional one-row rubric `v2.10` rejudge of
 `q-eco-stellar-wallets-list` is still useful. It is judge-contract evidence only and needs its own
 small authorization.
 
 Done when: two complete arms share the answering model, judge model, rubric, pack, pinned register,
-environment hash, agent binary, and implementation hash. At least 100 IDs remain eligible. Then
+environment hash, agent binary, implementation hash, probe hash, and remote identity vector. At
+least 100 IDs remain eligible. Then
 `npm run eval:qa:paired:validate -- --recalibrate <baseline> <candidate>` passes, and a round ledger
 records the promotion decision.
+
+### Execute the supervised paired subset only after a signed authorization
+
+Trigger only when the round ledger carries the complete signed authorization block from
+`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md` revision 2,
+an independent `LAUNCH-OK` re-review of that revision, the ten owner decisions, and one clean
+launch revision. Revision 2 is unreviewed on 2026-09-04. Revision 1 received `CHANGES-REQUIRED`.
+
+The method is one supervised 200-ID answer-only pair, stored judging one arm after the other, one
+paired comparison, and two flip rejudge batches. Caps: P6 `$3.50`; collection `$80` per arm;
+stored judging cumulative `$120` per arm; two-arm cumulative `$240`; flip rejudges `$15` each;
+maximum `$273.50`. The manifest stays uncommitted and is deleted after the run.
+
+Done when: the paired JSON, both flip batches, the recalibrated simulator output, and the all-row
+review are recorded in the round ledger and `eval/qa/README.md` as a labeled paired diagnostic, or
+the owner records `NOT AUTHORIZED`.
+
+### Select harness follow-ups from the 2026-09-04 candidate audit
+
+Owner judgment. These candidates are recorded, not scheduled. The owner selects or declines each.
+The evidence is `.agents/rounds/2026-09-03-truth-maintenance/post-candidate-measurement-fable.md`
+and `candidate-row-review-skills-none-fable.md`.
+
+- Store per-row start and end timestamps and a per-row identity vector in the result schema.
+- Record per-turn cost in `agent.usage.perTurn`.
+- Add a serialization hint to the sandbox error path.
+- Randomize row order or interleave categories in long live runs.
+- Give the judge source-basis evidence on stable rows, or state that stable-row specifics are
+  unverifiable.
+- Remove the stable-row gate that hides wrong-claim rows from `evidenceSupportCheck`.
+- Treat boundary rows skipped by the panel cap as low confidence in flip analysis.
+- Add a harness metric for planning text that leaks into final answers.
+- Record capability self-description drift in zero-tool refusals.
+
+Done when: each candidate has an owner decision, and each selected candidate has its own item.
 
 ### Monitor Friendbot network-context synthesis
 
@@ -311,10 +400,28 @@ Case `q-edge-send-me-free-xlm` called Friendbot Testnet-only. The transcript mad
 Stellar Docs expose Testnet, Futurenet, and local Quickstart distinctions. This is one answering
 failure, not an upstream finding or a prompt-repair decision.
 
+The same case was wrong again in the 2026-09-04 candidate artifact. The answer omitted Futurenet
+and local Quickstart. The skills shard disputes the avoid-1 match because the answer did not say
+"Testnet-only". A repeat of the same case does not fire this monitor.
+
 Done when: the same wording defect appears in a second unrelated case, a contract mismatch appears,
 or trace evidence shows the prompt requests the wrong behavior. An unrelated case uses a different
 question family and primary service. A paraphrase of the first case does not count. Record every
 recurrence with its case ID, result stamp, and transcript.
+
+### Monitor the Stellar Docs title-set size against the remote identity probe ceiling
+
+The remote identity probe `eval/qa/probe-remote-identities.mjs` enumerates the public Docs
+`lvl1` title set through Algolia. The public key clamps pages to 100 records and the index limits
+pagination to 1,000 records. The probe fails closed above ten pages. The live set held 650 records
+on 2026-09-04. The record is the R4 item in
+`.agents/rounds/2026-09-03-truth-maintenance/remote-identity-guard-review-opus.md`.
+
+During each drift round, record the current title count from `inventory/stellar-docs-titles.json`.
+Open a design item for a different enumeration strategy before the count reaches 1,000. A larger
+page count cannot help because the index limit is the same.
+
+Done when: a reviewed enumeration change removes the ceiling, or the owner retires the guard.
 
 ## Deferred programs
 
@@ -327,6 +434,12 @@ this work.
 Before an exposure candidate, rebuild the catalog and generated surfaces. Run the focused exposure
 tests and `npm run eval:routing -- --gate` without changing `eval/gates.json`. Compare the candidate
 against the committed 1.9.1 surface. Record the manifest hash and all routing lane totals.
+
+Two candidates were rejected with records. Scout 1.9.23 on 2026-09-03:
+`.agents/rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md`. Scout 1.9.30 on
+2026-09-04: `.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`. The 1.9.23
+review found `scout.verifyClaim` causes no routing regression on its own, but it may ship only
+after the general Scout routing regressions receive an independent resolution.
 
 Done when: a changed routing contract passes the existing gate and an independent review accepts the
 exposure decision. Otherwise, keep both operations in `EXCLUDED_SCOUT_OPS`.
