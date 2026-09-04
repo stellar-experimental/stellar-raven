@@ -154,9 +154,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe <executable> --expect-remote-identity-probe-sha256 <probe-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe <executable> --expect-remote-identity-probe-sha256 <probe-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe <executable> --expect-remote-identity-probe-sha256 <probe-sha256>
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe eval/qa/probe-remote-identities.mjs --expect-remote-identity-probe-sha256 <probe-sha256> --expect-remote-identity-sha256 <vector-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe eval/qa/probe-remote-identities.mjs --expect-remote-identity-probe-sha256 <probe-sha256> --expect-remote-identity-sha256 <vector-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe eval/qa/probe-remote-identities.mjs --expect-remote-identity-probe-sha256 <probe-sha256> --expect-remote-identity-sha256 <vector-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -181,12 +181,32 @@ commit into the Worker's MCP `serverInfo`.
 Every `run-qa.mjs` mode requires `--expect-agent-binary-sha256 <wrapper-sha256>` and
 `--expect-agent-environment-sha256 <environment-sha256>`. Collection runs also require
 `--server-revision <commit>` and `--expect-sha256 <surface-sha256>`. Collection also requires
-`--remote-identity-probe <executable>` and its SHA-256 pin. These flags pin all local inputs before
-spending. The runner checks the local inputs again after collection.
+the committed probe, its byte pin, and its stable pre-arm vector pin. These flags pin all local
+inputs before spending. The runner checks the local inputs again after collection.
 
-The remote probe must make only free, read-only requests. It must print one JSON object to stdout.
-The runner calls it before and after each answering call. The runner stores only validated fields
-and vector hashes. It never stores raw stdout or stderr.
+Use this command before each new paid authorization:
+
+```sh
+REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
+REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d ' ' -f 1)
+REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256)
+```
+
+`--stable-sha256` captures three vectors. It waits five minutes between captures.
+The command fails unless all three vector hashes match.
+Pass both values with `--expect-remote-identity-probe-sha256` and
+`--expect-remote-identity-sha256`.
+
+The committed probe makes only free, read-only requests to these public sources:
+
+- Scout: `https://stellarlight.xyz/api/openapi.json`.
+- Lumenloop: `https://api.lumenloop.com/v1/openapi.json`, `/v1/tools`, and `/v1/skills`.
+- Stellar Docs: the public Algolia index settings and all paginated `type:lvl1` title records.
+
+The probe receives only `PATH`. It receives no repository or Claude secret.
+Each source request has a 20-second timeout and two bounded retries.
+The probe prints one JSON object to stdout. The runner calls it around each answering call.
+The runner also calls it after the local postflight. It stores no raw stdout or stderr.
 
 The probe output has this exact contract:
 
@@ -221,10 +241,11 @@ title records. The identity fields must use only public, stable values.
 Any probe failure stops before the next paid call. Any vector change has the same effect. The
 artifact preserves completed rows and lists unattempted IDs. It sets `meta.comparable: false` and
 `meta.aggregatesSuppressed: true`. It records the changed service and both vectors. A stopped
-artifact cannot resume under the same authorization.
+artifact cannot resume under the same authorization. A comparable artifact includes one matching
+final postflight capture. Listener stability alone does not prove remote service stability.
 
 Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
-Collection also requires both server pins and both remote probe pins in that form.
+Collection also requires both server pins, the probe path, its byte pin, and the vector pin.
 The runner rejects an absent, duplicate, missing, malformed, or mismatched required
 flag before an answering-agent or judge call. Compute the environment value after all
 Claude-related environment variables have their final values. Use the same shell for this command

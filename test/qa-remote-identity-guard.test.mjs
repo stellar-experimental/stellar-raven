@@ -10,6 +10,7 @@ import {
   createRemoteIdentityGuard,
   parseRemoteIdentityVector,
   remoteIdentityProbeIdentity,
+  remoteIdentityVectorSha256,
   runRemoteIdentityGuardedCall
 } from "../eval/qa/remote-identity-guard.mjs";
 import {
@@ -65,6 +66,16 @@ function queuedCapture(values) {
   };
 }
 
+function fakeProbeIdentity() {
+  return {
+    contract: REMOTE_IDENTITY_VECTOR_SCHEMA,
+    artifactPath: "eval/qa/test-probe",
+    sha256: "a".repeat(64),
+    expectedSha256: "a".repeat(64),
+    matches: true
+  };
+}
+
 describe("QA remote identity vector contract", () => {
   it("accepts matching vectors for all three services", () => {
     expect(compareRemoteIdentityVectors(vector(), structuredClone(vector()))).toEqual({
@@ -104,7 +115,7 @@ describe("QA remote identity probe", () => {
       const digest = createHash("sha256").update(readFileSync(command)).digest("hex");
       const identity = remoteIdentityProbeIdentity(command, digest);
 
-      expect(() => captureRemoteIdentity(identity)).toThrow(/invalid JSON/);
+      expect(() => captureRemoteIdentity(identity)).toThrow(/kind=invalid-json/);
       try {
         captureRemoteIdentity(identity);
       } catch (error) {
@@ -121,8 +132,9 @@ describe("QA remote identity call guard", () => {
   it("captures a matching pair around every answering call", () => {
     const baseline = vector();
     const guard = createRemoteIdentityGuard({
-      probeIdentity: { contract: REMOTE_IDENTITY_VECTOR_SCHEMA },
-      capture: queuedCapture([baseline, baseline, baseline, baseline])
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: queuedCapture([baseline, baseline, baseline, baseline, baseline])
     });
     const paidCalls = [];
 
@@ -138,11 +150,12 @@ describe("QA remote identity call guard", () => {
         recordSpend: () => {}
       });
     }
+    guard.postflight();
 
     expect(paidCalls).toEqual(["a", "b"]);
     expect(guard.record()).toMatchObject({
       matches: true,
-      successfulCaptureCount: 4,
+      successfulCaptureCount: 5,
       completedAnsweringCalls: 2,
       failure: null,
       sameAuthorizationResumeAllowed: false,
@@ -152,7 +165,8 @@ describe("QA remote identity call guard", () => {
       "before",
       "after",
       "before",
-      "after"
+      "after",
+      "postflight"
     ]);
   });
 
@@ -162,7 +176,8 @@ describe("QA remote identity call guard", () => {
       const baseline = vector();
       const changed = changedVector(service);
       const guard = createRemoteIdentityGuard({
-        probeIdentity: { contract: REMOTE_IDENTITY_VECTOR_SCHEMA },
+        probeIdentity: fakeProbeIdentity(),
+        expectedVectorSha256: remoteIdentityVectorSha256(baseline),
         capture: queuedCapture([baseline, changed])
       });
       const rows = [];
@@ -197,7 +212,8 @@ describe("QA remote identity call guard", () => {
 
   it("fails before the paid call when the probe is unavailable", () => {
     const guard = createRemoteIdentityGuard({
-      probeIdentity: { contract: REMOTE_IDENTITY_VECTOR_SCHEMA },
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
       capture: queuedCapture([new Error("secret probe failure")])
     });
     let paidCalls = 0;
@@ -223,10 +239,38 @@ describe("QA remote identity call guard", () => {
     });
   });
 
+  it("fails before the first paid call when the pre-arm vector pin differs", () => {
+    const baseline = vector();
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: "f".repeat(64),
+      capture: queuedCapture([baseline])
+    });
+    let paidCalls = 0;
+
+    expect(() => runRemoteIdentityGuardedCall({
+      guard,
+      context: { id: "a", attempt: 1 },
+      authorize: () => ({}),
+      call: () => {
+        paidCalls += 1;
+      },
+      recordSpend: () => {}
+    })).toThrow(/pre-arm SHA-256/);
+
+    expect(paidCalls).toBe(0);
+    expect(guard.record()).toMatchObject({
+      matches: false,
+      completedAnsweringCalls: 0,
+      failure: { reason: "pre-arm-vector-mismatch", phase: "before" }
+    });
+  });
+
   it("stops before a judge call when the after-call probe is unavailable", () => {
     const baseline = vector();
     const guard = createRemoteIdentityGuard({
-      probeIdentity: { contract: REMOTE_IDENTITY_VECTOR_SCHEMA },
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
       capture: queuedCapture([baseline, new Error("secret after failure")])
     });
     let answeringCalls = 0;
@@ -259,10 +303,42 @@ describe("QA remote identity call guard", () => {
     });
   });
 
+  it("preserves a paid-call error when the after-call probe also fails", () => {
+    const baseline = vector();
+    const primary = new Error("primary paid-call error");
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: queuedCapture([baseline, new Error("secret after failure")])
+    });
+
+    let caught;
+    try {
+      runRemoteIdentityGuardedCall({
+        guard,
+        context: { id: "a", attempt: 1 },
+        authorize: () => ({}),
+        call: () => { throw primary; },
+        recordSpend: () => {}
+      });
+    } catch (error) {
+      caught = error;
+    }
+
+    expect(caught).toBe(primary);
+    expect(caught.cause).toMatchObject({ code: "remote-identity-guard" });
+    expect(guard.record()).toMatchObject({
+      matches: false,
+      completedAnsweringCalls: 0,
+      failure: { reason: "probe-unavailable", phase: "after" }
+    });
+  });
+
   it("preserves completed rows and leaves later IDs unattempted", () => {
     const baseline = vector();
     const guard = createRemoteIdentityGuard({
-      probeIdentity: { contract: REMOTE_IDENTITY_VECTOR_SCHEMA },
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
       capture: queuedCapture([baseline, changedVector("scout")])
     });
     const selectedIds = ["a", "b", "c"];
@@ -296,7 +372,8 @@ describe("QA remote identity call guard", () => {
   it("provides metadata that forces comparability and aggregate suppression", () => {
     const baseline = vector();
     const guard = createRemoteIdentityGuard({
-      probeIdentity: { contract: REMOTE_IDENTITY_VECTOR_SCHEMA },
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
       capture: queuedCapture([baseline, changedVector("lumenloop")])
     });
     try {

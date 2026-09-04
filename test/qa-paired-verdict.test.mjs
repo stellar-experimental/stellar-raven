@@ -20,7 +20,8 @@ import {
 import { runPairedVerdictValidation } from "../eval/qa/validate-paired-verdict.mjs";
 import {
   REMOTE_IDENTITY_GUARD_SCHEMA,
-  REMOTE_IDENTITY_VECTOR_SCHEMA
+  REMOTE_IDENTITY_VECTOR_SCHEMA,
+  remoteIdentityVectorSha256
 } from "../eval/qa/remote-identity-guard.mjs";
 
 const REGISTER_HASH = "c".repeat(64);
@@ -80,6 +81,7 @@ function result(grades, {
 } = {}) {
   const ids = grades.map((_, index) => `case-${String(index).padStart(3, "0")}`);
   const remoteIdentity = remoteVector();
+  const remoteIdentitySha256 = remoteIdentityVectorSha256(remoteIdentity);
   return {
     meta: {
       variant: "A",
@@ -105,16 +107,35 @@ function result(grades, {
         schema: REMOTE_IDENTITY_GUARD_SCHEMA,
         probe: {
           contract: REMOTE_IDENTITY_VECTOR_SCHEMA,
+          path: "eval/qa/probe-remote-identities.mjs",
           sha256: REMOTE_PROBE_SHA256,
           expectedSha256: REMOTE_PROBE_SHA256,
           matches: true
         },
         matches: true,
+        expectedBaselineVectorSha256: remoteIdentitySha256,
+        baselineVectorSha256: remoteIdentitySha256,
         baselineVector: remoteIdentity,
         finalVector: structuredClone(remoteIdentity),
-        successfulCaptureCount: ids.length * 2,
+        postflight: {
+          attempted: true,
+          matches: true,
+          vectorSha256: remoteIdentitySha256
+        },
+        successfulCaptureCount: ids.length * 2 + 1,
         completedAnsweringCalls: ids.length,
-        captures: Array.from({ length: ids.length * 2 }, (_, index) => ({ sequence: index + 1 })),
+        captures: [
+          ...Array.from({ length: ids.length * 2 }, (_, index) => ({
+            sequence: index + 1,
+            phase: index % 2 === 0 ? "before" : "after",
+            vectorSha256: remoteIdentitySha256
+          })),
+          {
+            sequence: ids.length * 2 + 1,
+            phase: "postflight",
+            vectorSha256: remoteIdentitySha256
+          }
+        ],
         failure: null,
         sameAuthorizationResumeAllowed: false,
         requiresNewAuthorization: false
@@ -522,7 +543,32 @@ describe("paired QA verdict", () => {
 
     expect(compared.verdict).toBe("INDETERMINATE");
     expect(compared.reasons).toContainEqual(
-      expect.objectContaining({ code: "measurement-tuple" })
+      expect.objectContaining({ code: "remote-identity-guard" })
+    );
+  });
+
+  it.each([
+    ["missing record", (guard, candidate) => { delete candidate.meta.remoteIdentityGuard; }],
+    ["matches false", (guard) => { guard.matches = false; }],
+    ["failure present", (guard) => { guard.failure = { reason: "probe-unavailable" }; }],
+    ["probe hash mismatch", (guard) => { guard.probe.expectedSha256 = "0".repeat(64); }],
+    ["resume allowed", (guard) => { guard.sameAuthorizationResumeAllowed = true; }],
+    ["short capture count", (guard) => { guard.successfulCaptureCount -= 1; guard.captures.pop(); }],
+    ["low call count", (guard) => { guard.completedAnsweringCalls -= 1; }],
+    ["drifted final vector", (guard) => {
+      guard.finalVector.services.scout.openapiVersion = "1.9.31";
+      guard.postflight.vectorSha256 = remoteIdentityVectorSha256(guard.finalVector);
+    }]
+  ])("rejects remote guard mutation: %s", (_label, mutate) => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    mutate(candidate.meta.remoteIdentityGuard, candidate);
+
+    const compared = compare(baseline, candidate);
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "remote-identity-guard" })
     );
   });
 

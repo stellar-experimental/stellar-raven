@@ -699,6 +699,7 @@ describe("run-qa residual optional flag guards", () => {
       "--expect-agent-binary-sha256", "binary",
       "--expect-agent-environment-sha256", "environment",
       "--expect-remote-identity-probe-sha256", "probe-sha256",
+      "--expect-remote-identity-sha256", "identity-sha256",
       "--expect-sha256", "surface",
       "--ids", "q-example",
       "--judge-model", "fixture-judge",

@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFileSync, realpathSync } from "node:fs";
+import { accessSync, constants, readFileSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
 
 export const REMOTE_IDENTITY_VECTOR_SCHEMA = "qa-remote-identity-vector-v1";
@@ -36,10 +36,7 @@ function exactKeys(value, expected, label) {
   }
 }
 
-/**
- * Validate and normalize one probe result. Exact keys exclude timestamps and
- * other volatile fields from the comparison contract.
- */
+/** Exact keys exclude timestamps and other volatile fields. */
 export function parseRemoteIdentityVector(value) {
   exactKeys(value, ["schema", "services"], "remote identity vector");
   if (value.schema !== REMOTE_IDENTITY_VECTOR_SCHEMA) {
@@ -79,13 +76,31 @@ export function compareRemoteIdentityVectors(before, after) {
   const changedServices = REMOTE_IDENTITY_SERVICES.filter(
     (service) => JSON.stringify(left.services[service]) !== JSON.stringify(right.services[service])
   );
-  return {
-    matches: changedServices.length === 0,
-    changedServices
-  };
+  return { matches: changedServices.length === 0, changedServices };
 }
 
-export function remoteIdentityProbeIdentity(command, expectedSha256) {
+function artifactPathFor(resolvedPath, repoRoot) {
+  const relative = path.relative(repoRoot, resolvedPath);
+  if (relative && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)) {
+    return relative.split(path.sep).join("/");
+  }
+  return path.basename(resolvedPath);
+}
+
+export class RemoteIdentityProbeError extends Error {
+  constructor(kind, probePath, { status = null, signal = null, timedOut = false } = {}) {
+    const statusText = status === null ? "none" : String(status);
+    const signalText = signal ?? "none";
+    super(
+      `remote identity probe failed: kind=${kind} path=${probePath} status=${statusText} signal=${signalText} timedOut=${timedOut}`
+    );
+    this.name = "RemoteIdentityProbeError";
+    this.code = "remote-identity-probe";
+    this.diagnostics = { kind, path: probePath, status, signal, timedOut };
+  }
+}
+
+export function remoteIdentityProbeIdentity(command, expectedSha256, { repoRoot = process.cwd() } = {}) {
   if (typeof command !== "string" || command.trim() === "") {
     throw new Error("--remote-identity-probe is required before collection");
   }
@@ -94,19 +109,30 @@ export function remoteIdentityProbeIdentity(command, expectedSha256) {
       "--expect-remote-identity-probe-sha256 must be a 64-character lowercase SHA-256"
     );
   }
+  const requestedPath = path.resolve(command);
   let resolvedPath;
-  let actualSha256;
   try {
-    resolvedPath = realpathSync(path.resolve(command));
-    actualSha256 = sha256(readFileSync(resolvedPath));
+    resolvedPath = realpathSync(requestedPath);
   } catch {
-    throw new Error("remote identity probe executable is unavailable");
+    throw new RemoteIdentityProbeError("missing", path.basename(requestedPath));
   }
+  const artifactPath = artifactPathFor(resolvedPath, path.resolve(repoRoot));
+  try {
+    if (!statSync(resolvedPath).isFile()) {
+      throw new RemoteIdentityProbeError("not-file", artifactPath);
+    }
+    accessSync(resolvedPath, constants.X_OK);
+  } catch (error) {
+    if (error instanceof RemoteIdentityProbeError) throw error;
+    throw new RemoteIdentityProbeError("not-executable", artifactPath);
+  }
+  const actualSha256 = sha256(readFileSync(resolvedPath));
   if (actualSha256 !== expectedSha256) {
-    throw new Error("remote identity probe bytes do not match the expected SHA-256");
+    throw new RemoteIdentityProbeError("hash-mismatch", artifactPath);
   }
   return {
     contract: REMOTE_IDENTITY_VECTOR_SCHEMA,
+    artifactPath,
     resolvedPath,
     sha256: actualSha256,
     expectedSha256,
@@ -114,10 +140,22 @@ export function remoteIdentityProbeIdentity(command, expectedSha256) {
   };
 }
 
-/** Run the pinned probe without retaining its raw stdout or stderr. */
+function publicProbeRecord(probeIdentity) {
+  return {
+    contract: probeIdentity.contract,
+    path: probeIdentity.artifactPath,
+    sha256: probeIdentity.sha256,
+    expectedSha256: probeIdentity.expectedSha256,
+    matches: probeIdentity.matches
+  };
+}
+
+/** Run the pinned probe with a minimal environment and retain no raw output. */
 export function captureRemoteIdentity(probeIdentity, {
   spawnSyncImpl = spawnSync,
-  timeoutMs = 60_000
+  timeoutMs = 60_000,
+  maxBufferBytes = 1024 * 1024,
+  environment = { PATH: process.env.PATH ?? "" }
 } = {}) {
   const current = remoteIdentityProbeIdentity(
     probeIdentity?.resolvedPath,
@@ -126,22 +164,38 @@ export function captureRemoteIdentity(probeIdentity, {
   const result = spawnSyncImpl(current.resolvedPath, [], {
     encoding: "utf8",
     timeout: timeoutMs,
-    maxBuffer: 1024 * 1024,
+    maxBuffer: maxBufferBytes,
+    env: environment,
     stdio: ["ignore", "pipe", "pipe"]
   });
+  const probePath = current.artifactPath;
   if (result.error || result.status !== 0 || result.signal) {
-    throw new Error("remote identity probe did not complete successfully");
+    const timedOut = result.error?.code === "ETIMEDOUT";
+    const kind = timedOut
+      ? "timeout"
+      : result.error?.code === "ENOBUFS"
+        ? "output-overflow"
+        : result.signal
+          ? "signal"
+          : result.error
+            ? "spawn-error"
+            : "nonzero-exit";
+    throw new RemoteIdentityProbeError(kind, probePath, {
+      status: result.status ?? null,
+      signal: result.signal ?? null,
+      timedOut
+    });
   }
   let parsed;
   try {
     parsed = JSON.parse(String(result.stdout ?? ""));
   } catch {
-    throw new Error("remote identity probe returned invalid JSON");
+    throw new RemoteIdentityProbeError("invalid-json", probePath);
   }
   try {
     return parseRemoteIdentityVector(parsed);
   } catch {
-    throw new Error("remote identity probe returned an invalid identity vector");
+    throw new RemoteIdentityProbeError("invalid-vector", probePath);
   }
 }
 
@@ -153,19 +207,34 @@ export class RemoteIdentityGuardError extends Error {
   }
 }
 
-/**
- * Track the before/after pair for each answering call. A failure permanently
- * closes this instance, which prevents a same-process resume.
- */
-export function createRemoteIdentityGuard({ probeIdentity, capture = captureRemoteIdentity }) {
+/** A failure permanently closes this instance and forbids resume. */
+export function createRemoteIdentityGuard({
+  probeIdentity,
+  expectedVectorSha256,
+  capture = captureRemoteIdentity
+}) {
+  if (typeof expectedVectorSha256 !== "string" || !SHA256.test(expectedVectorSha256)) {
+    throw new Error(
+      "--expect-remote-identity-sha256 must be a 64-character lowercase SHA-256"
+    );
+  }
   let baselineVector = null;
   let finalVector = null;
   let pendingCall = null;
   let failure = null;
   let completedAnsweringCalls = 0;
+  let postflight = { attempted: false, matches: false, vectorSha256: null };
   const captures = [];
 
-  const fail = ({ reason, phase, context, beforeVector = null, afterVector = null, changedServices = [] }) => {
+  const fail = ({
+    reason,
+    phase,
+    context,
+    beforeVector = null,
+    afterVector = null,
+    changedServices = [],
+    diagnostics = null
+  }) => {
     failure ??= {
       reason,
       phase,
@@ -173,38 +242,45 @@ export function createRemoteIdentityGuard({ probeIdentity, capture = captureRemo
       attempt: context.attempt,
       changedServices,
       beforeVector,
-      afterVector
+      afterVector,
+      diagnostics
     };
-    throw new RemoteIdentityGuardError(
-      reason === "identity-changed"
-        ? `remote service identity changed: ${changedServices.join(", ")}`
-        : "remote identity probe is unavailable"
-    );
+    const message = reason === "identity-changed"
+      ? `remote service identity changed: ${changedServices.join(", ")}`
+      : reason === "pre-arm-vector-mismatch"
+        ? "remote identity vector does not match the pre-arm SHA-256"
+        : "remote identity probe is unavailable";
+    throw new RemoteIdentityGuardError(message);
   };
 
   const captureVector = (phase, context) => {
     let vector;
     try {
       vector = parseRemoteIdentityVector(capture(probeIdentity));
-    } catch {
+    } catch (error) {
       fail({
         reason: "probe-unavailable",
         phase,
         context,
         beforeVector: phase === "after" ? pendingCall?.vector ?? null : baselineVector,
-        afterVector: null
+        diagnostics: error?.diagnostics ?? {
+          kind: "capture-error",
+          path: probeIdentity?.artifactPath ?? probeIdentity?.path ?? "unknown",
+          status: null,
+          signal: null,
+          timedOut: false
+        }
       });
     }
-    const normalized = vector;
     captures.push({
       sequence: captures.length + 1,
       phase,
       id: context.id,
       attempt: context.attempt,
-      vectorSha256: remoteIdentityVectorSha256(normalized)
+      vectorSha256: remoteIdentityVectorSha256(vector)
     });
-    finalVector = normalized;
-    return normalized;
+    finalVector = vector;
+    return vector;
   };
 
   const assertActive = () => {
@@ -220,7 +296,12 @@ export function createRemoteIdentityGuard({ probeIdentity, capture = captureRemo
       assertActive();
       if (pendingCall) throw new Error("remote identity guard has an unfinished answering call");
       const vector = captureVector("before", context);
-      if (baselineVector === null) baselineVector = vector;
+      if (baselineVector === null) {
+        baselineVector = vector;
+        if (remoteIdentityVectorSha256(vector) !== expectedVectorSha256) {
+          fail({ reason: "pre-arm-vector-mismatch", phase: "before", context, afterVector: vector });
+        }
+      }
       const comparison = compareRemoteIdentityVectors(baselineVector, vector);
       if (!comparison.matches) {
         fail({
@@ -236,17 +317,17 @@ export function createRemoteIdentityGuard({ probeIdentity, capture = captureRemo
       return vector;
     },
 
-    afterCall(context) {
+    afterCall(context, { completed = true } = {}) {
       if (!pendingCall || pendingCall.id !== context.id || pendingCall.attempt !== context.attempt) {
         throw new Error("remote identity guard answering-call context does not match");
       }
-      completedAnsweringCalls += 1;
       const beforeVector = pendingCall.vector;
       let afterVector;
       try {
         afterVector = captureVector("after", context);
       } finally {
         pendingCall = null;
+        if (completed) completedAnsweringCalls += 1;
       }
       const comparison = compareRemoteIdentityVectors(beforeVector, afterVector);
       if (!comparison.matches) {
@@ -262,13 +343,53 @@ export function createRemoteIdentityGuard({ probeIdentity, capture = captureRemo
       return afterVector;
     },
 
+    postflight() {
+      assertActive();
+      if (pendingCall) throw new Error("remote identity guard has an unfinished answering call");
+      if (baselineVector === null) {
+        fail({
+          reason: "probe-unavailable",
+          phase: "postflight",
+          context: { id: null, attempt: null },
+          diagnostics: {
+            kind: "missing-baseline",
+            path: probeIdentity?.artifactPath ?? "unknown",
+            status: null,
+            signal: null,
+            timedOut: false
+          }
+        });
+      }
+      const vector = captureVector("postflight", { id: null, attempt: null });
+      const comparison = compareRemoteIdentityVectors(baselineVector, vector);
+      postflight = {
+        attempted: true,
+        matches: comparison.matches,
+        vectorSha256: remoteIdentityVectorSha256(vector)
+      };
+      if (!comparison.matches) {
+        fail({
+          reason: "identity-changed",
+          phase: "postflight",
+          context: { id: null, attempt: null },
+          beforeVector: baselineVector,
+          afterVector: vector,
+          changedServices: comparison.changedServices
+        });
+      }
+      return vector;
+    },
+
     record() {
       return {
         schema: REMOTE_IDENTITY_GUARD_SCHEMA,
-        probe: probeIdentity,
+        probe: publicProbeRecord(probeIdentity),
+        expectedBaselineVectorSha256: expectedVectorSha256,
+        baselineVectorSha256: baselineVector ? remoteIdentityVectorSha256(baselineVector) : null,
         matches: failure === null,
         baselineVector,
         finalVector,
+        postflight,
         successfulCaptureCount: captures.length,
         completedAnsweringCalls,
         captures: [...captures],
@@ -292,12 +413,29 @@ export function runRemoteIdentityGuardedCall({
   const authorization = authorize();
   guard.beforeCall(context);
   let result;
+  let callReturned = false;
+  let primaryError = null;
   try {
     result = call(authorization);
+    callReturned = true;
     onCompleted(result);
     persistSpend(authorization, result);
-    return result;
-  } finally {
-    guard.afterCall(context);
+  } catch (error) {
+    primaryError = error;
   }
+
+  let afterProbeError = null;
+  try {
+    guard.afterCall(context, { completed: callReturned });
+  } catch (error) {
+    afterProbeError = error;
+  }
+  if (primaryError) {
+    if (afterProbeError && primaryError.cause === undefined && Object.isExtensible(primaryError)) {
+      primaryError.cause = afterProbeError;
+    }
+    throw primaryError;
+  }
+  if (afterProbeError) throw afterProbeError;
+  return result;
 }

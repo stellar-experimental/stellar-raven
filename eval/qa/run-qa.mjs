@@ -79,6 +79,8 @@
  *                      qa-remote-identity-vector-v1 JSON object.
  *   --expect-remote-identity-probe-sha256
  *                      required SHA-256 of the remote identity probe bytes.
+ *   --expect-remote-identity-sha256
+ *                      required SHA-256 from the stable pre-arm probe vector.
  *   --no-judge         collect answers only (judge later)
  *   --judge-stored F   two-phase mode, phase 2: judge a saved --no-judge
  *                      results file IN PLACE (no server, no agent). Judges
@@ -227,6 +229,7 @@ const RUN_QA_VALUE_FLAGS = [
   "--expect-adapter-sha256",
   "--expect-agent-environment-sha256",
   "--expect-remote-identity-probe-sha256",
+  "--expect-remote-identity-sha256",
   "--expect-sha256",
   "--ids",
   "--judge-model",
@@ -1295,7 +1298,7 @@ export async function judgeStoredResults(
   );
   const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
   const collectionAggregatesAllowed =
-    meta.comparable !== false && meta.completeness?.aggregatesAllowed === true;
+    meta.comparable === true && meta.completeness?.aggregatesAllowed === true;
   const initiallyJudgedIds = results.rows
     .filter((row) => row.attempts.judge.length > 0)
     .map((row) => row.id);
@@ -1636,9 +1639,13 @@ async function main() {
   const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
   const remoteIdentityProbe = remoteIdentityProbeIdentity(
     parseRequiredFlagValue(args, "--remote-identity-probe"),
-    parseRequiredFlagValue(args, "--expect-remote-identity-probe-sha256")
+    parseRequiredFlagValue(args, "--expect-remote-identity-probe-sha256"),
+    { repoRoot: REPO_ROOT }
   );
-  const remoteIdentityGuard = createRemoteIdentityGuard({ probeIdentity: remoteIdentityProbe });
+  const remoteIdentityGuard = createRemoteIdentityGuard({
+    probeIdentity: remoteIdentityProbe,
+    expectedVectorSha256: parseRequiredFlagValue(args, "--expect-remote-identity-sha256")
+  });
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
   const runtimeAdapter = parseRuntimeAdapterFlags(args, {
@@ -1751,6 +1758,7 @@ async function main() {
   let listenerPairGuard;
   let adapterAttestationAfter;
   let postflightError = null;
+  let remoteIdentityPostflightError = null;
   try {
     for (const [i, c] of cases.entries()) {
       const t0 = Date.now();
@@ -1946,12 +1954,21 @@ async function main() {
     postflightError = error;
   }
 
+  try {
+    remoteIdentityGuard.postflight();
+  } catch (error) {
+    remoteIdentityPostflightError = error;
+  }
+
   const finalSourceIdentity = sourceIdentity(serverRevision);
   const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
   const remoteIdentityGuardRecord = remoteIdentityGuard.record();
   const comparabilityReasons = [
     ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
     ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
+    ...(remoteIdentityPostflightError
+      ? [`remote identity postflight failed: ${String(remoteIdentityPostflightError.message ?? remoteIdentityPostflightError)}`]
+      : []),
     ...(!collectionSourceIdentityGuard.matches
       ? [`source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`]
       : []),
@@ -2071,6 +2088,9 @@ async function main() {
           sourceRevisionPinAfter: sourceRevisionPinAfter ?? null,
           postflightError: postflightError
             ? { message: String(postflightError.message ?? postflightError) }
+            : null,
+          remoteIdentityPostflightError: remoteIdentityPostflightError
+            ? { message: String(remoteIdentityPostflightError.message ?? remoteIdentityPostflightError) }
             : null,
           agentBinary,
           // Denominator facts, always present. `aggregatesSuppressed` is the

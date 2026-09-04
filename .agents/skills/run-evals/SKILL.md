@@ -273,7 +273,9 @@ suppresses all aggregates.
 Collection also requires a pinned remote identity probe. The probe must use only free, read-only
 requests. It must emit the exact `qa-remote-identity-vector-v1` contract from `eval/qa/README.md`.
 The vector covers Scout, Lumenloop, and Stellar Docs. It excludes timestamps and volatile telemetry.
-The runner calls the probe before and after every answering call.
+Use the committed `eval/qa/probe-remote-identities.mjs` probe. It receives only `PATH`.
+It uses public Scout, Lumenloop, and Stellar Docs sources. It owns bounded request retries.
+The runner calls the probe around every answering call. It also calls it after postflight.
 
 Stop after any probe failure or identity change. The runner preserves completed rows and lists
 unattempted IDs. It records the changed service and both vectors. It marks the artifact
@@ -285,9 +287,13 @@ node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERV
 SURFACE_SHA256=<surfaceSha256 from the report>
 AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
 AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
-REMOTE_IDENTITY_PROBE=<absolute path to the reviewed probe executable>
-REMOTE_IDENTITY_PROBE_SHA256=<SHA-256 of that executable>
+REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
+REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d ' ' -f 1)
+REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256)
 ```
+
+The stable command captures three vectors at five-minute intervals.
+It fails unless all three vectors match. Run it for each new paid authorization.
 
 Compute `AGENT_ENVIRONMENT_SHA256` after every Claude-related environment variable has its final
 value. Use the same shell for the identity command and the paid run. The command emits only the
@@ -295,7 +301,7 @@ SHA-256. It does not emit environment values.
 
 Every `run-qa.mjs` mode requires exactly one budget, binary, and environment pair.
 This includes `--judge-stored`. Collection also requires one server-revision pair and one
-surface-SHA-256 pair. Collection also requires one probe path and probe SHA-256 pair.
+surface-SHA-256 pair. Collection also requires one probe SHA-256 and one pre-arm vector SHA-256.
 Do not use the `--flag=value` form for any required pair.
 
 The QA runner starts each answering agent in a temporary directory outside the repository.
@@ -315,14 +321,14 @@ Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in
 npm run eval:routing -- --gate            # exit 1 on gate breach or changed denominator
 
 # QA headline (sample) — variant A = the shipped `search` tool
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256"
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256" --expect-remote-identity-sha256 "$REMOTE_IDENTITY_SHA256"
 # targeted smoke: --ids a,b,c ; collect-only: --no-judge ; overrides: --model/--judge-model
 
 # QA live-data lane (grounding behavior; graded behaviorally, never on snapshot values)
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256" --expect-remote-identity-sha256 "$REMOTE_IDENTITY_SHA256"
 
 # Opt-in digest supplement — run and report separately from the canonical lane
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256" --expect-remote-identity-sha256 "$REMOTE_IDENTITY_SHA256"
 
 # Plan regrade (offline, reads stored transcripts)
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json

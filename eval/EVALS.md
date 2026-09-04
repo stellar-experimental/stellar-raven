@@ -125,6 +125,12 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
     otherwise-correct answers that omitted dates for volatile claims. Inventory the pattern across
     service shards before changing prompts or rubrics. A single case remains diagnostic and does
     not justify per-question tuning.
+11. **Remote service identity is part of QA comparability.** A stable listener only proves the
+    local process identity. It does not prove the Scout, Lumenloop, or Stellar Docs identity.
+    A comparable live collection requires one pinned public probe and one pinned pre-arm vector.
+    It also requires matching captures around every answering call and one matching postflight.
+    Any missing capture, probe failure, or changed vector makes the artifact non-comparable.
+    The runner suppresses all aggregates after such a failure.
 
 ## Primary artifact: service-improvement recommendations
 

@@ -12,7 +12,8 @@ import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
 import {
   REMOTE_IDENTITY_GUARD_SCHEMA,
   compareRemoteIdentityVectors,
-  parseRemoteIdentityVector
+  parseRemoteIdentityVector,
+  remoteIdentityVectorSha256
 } from "./remote-identity-guard.mjs";
 
 export const PAIRED_VERDICT_METHOD = "qa-paired-ordinal-ni-v1";
@@ -236,16 +237,38 @@ function artifactProblems(result, label) {
       remoteGuard.probe.sha256 !== remoteGuard.probe.expectedSha256 ||
       !Number.isInteger(remoteGuard.completedAnsweringCalls) ||
       remoteGuard.completedAnsweringCalls < result.rows.length ||
-      remoteGuard.successfulCaptureCount !== remoteGuard.completedAnsweringCalls * 2 ||
+      remoteGuard.successfulCaptureCount !== remoteGuard.completedAnsweringCalls * 2 + 1 ||
       !Array.isArray(remoteGuard.captures) ||
-      remoteGuard.captures.length !== remoteGuard.successfulCaptureCount
+      remoteGuard.captures.length !== remoteGuard.successfulCaptureCount ||
+      remoteGuard.postflight?.attempted !== true ||
+      remoteGuard.postflight.matches !== true
     ) {
       throw new Error("incomplete guard record");
     }
-    parseRemoteIdentityVector(remoteGuard.baselineVector);
-    parseRemoteIdentityVector(remoteGuard.finalVector);
+    const baseline = parseRemoteIdentityVector(remoteGuard.baselineVector);
+    const final = parseRemoteIdentityVector(remoteGuard.finalVector);
+    const baselineSha256 = remoteIdentityVectorSha256(baseline);
+    const finalSha256 = remoteIdentityVectorSha256(final);
+    if (
+      remoteGuard.expectedBaselineVectorSha256 !== baselineSha256 ||
+      remoteGuard.baselineVectorSha256 !== baselineSha256 ||
+      remoteGuard.postflight.vectorSha256 !== finalSha256
+    ) {
+      throw new Error("guard vector pins differ");
+    }
     if (!compareRemoteIdentityVectors(remoteGuard.baselineVector, remoteGuard.finalVector).matches) {
       throw new Error("guard vectors differ");
+    }
+    const callCaptures = remoteGuard.captures.slice(0, -1);
+    if (
+      remoteGuard.captures.at(-1)?.phase !== "postflight" ||
+      remoteGuard.captures.at(-1)?.sequence !== remoteGuard.successfulCaptureCount ||
+      remoteGuard.captures.some((capture) => capture.vectorSha256 !== baselineSha256) ||
+      callCaptures.some((capture, index) => (
+        capture.sequence !== index + 1 || capture.phase !== (index % 2 === 0 ? "before" : "after")
+      ))
+    ) {
+      throw new Error("guard capture sequence is incomplete");
     }
   } catch {
     problems.push(
