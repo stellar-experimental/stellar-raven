@@ -2,7 +2,7 @@
 
 Date: 2026-09-04
 
-Reviewer lane: Claude Opus 5 at high effort.
+Reviewer lane: Claude Opus 5 at xhigh effort.
 
 Reviewed commit: `79080bd70f0a603daf422432cf4708bef522e389` ("eval: supervise paired QA collection").
 
@@ -1050,3 +1050,19 @@ I did not run `npm run test:smoke`. The commit touches no path under `src/execut
    and the independent result reviewer.
 
 This final review authorizes no spend, no deployment, and no merge.
+
+## Author H1-H4 reconciliation
+
+This section adds the author reconciliation. It does not change a historical verdict.
+
+Herdr recorded one reviewer start before the first review. Its argv was
+`["claude","--model","opus","--effort","xhigh","--permission-mode","bypassPermissions"]`.
+The same live reviewer agent produced all three reviews. Therefore, all three reviews used Opus 5
+at xhigh effort. The later H4 effort correction was mistaken.
+
+| Finding | Author disposition |
+|---|---|
+| H1 artifact server revision | CLOSED. Each artifact revision must equal its arm's frozen `--server-revision`. Baseline and candidate tests cover the gate. |
+| H2 missing or unreadable cases path | CLOSED. The launch gate returns one concise error without an absolute path. Tests cover both conditions. |
+| H3 dead artifact field check | CLOSED. The dead `artifact.meta.selectedContentSha256` check is removed. `inputSnapshot.casesSha256` remains the content binding. |
+| H4 effort attribution | CORRECTED. Objective Herdr argv records Opus 5 at xhigh for the one live reviewer agent. Historical verdicts remain unchanged. |

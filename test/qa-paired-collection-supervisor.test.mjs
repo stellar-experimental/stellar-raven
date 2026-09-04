@@ -26,6 +26,10 @@ import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "../eval/qa/paired-collection-c
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const devVarsPairs = [["ALPHA", "one"], ["ZETA", "two"]];
 const DEV_VARS_SALT = "9".repeat(64);
+const SERVER_REVISIONS = {
+  baseline: "b".repeat(40),
+  candidate: "d".repeat(40)
+};
 const devVarsSha256 = (pairs = devVarsPairs) => sha256(JSON.stringify({
   salt: DEV_VARS_SALT,
   entries: pairs
@@ -63,7 +67,10 @@ function fixture() {
         idsSha256: sha256(JSON.stringify(ids)),
         contentSha256: "c".repeat(64)
       },
-      worktrees
+      worktrees,
+      arms: Object.fromEntries(["baseline", "candidate"].map((arm) => [arm, {
+        collectionCommand: [process.execPath, "eval/qa/run-qa.mjs", "--server-revision", SERVER_REVISIONS[arm]]
+      }]))
     },
     children: { baseline: new FakeChild(), candidate: new FakeChild() }
   };
@@ -73,7 +80,12 @@ function message(arm, type, extra = {}) {
   return { schema: PAIRED_COLLECTION_CONTROL_SCHEMA, arm, type, ...extra };
 }
 
-function artifactForPlan(plan, overrides = {}) {
+function serverRevision(plan, arm) {
+  const command = plan.arms[arm].collectionCommand;
+  return command[command.indexOf("--server-revision") + 1];
+}
+
+function artifactForPlan(plan, arm, overrides = {}) {
   return {
     ...overrides,
     meta: {
@@ -82,6 +94,9 @@ function artifactForPlan(plan, overrides = {}) {
       inputSnapshot: {
         caseIdsSha256: plan.selected.idsSha256,
         casesSha256: plan.selected.contentSha256
+      },
+      sourceIdentity: {
+        serverRevision: serverRevision(plan, arm)
       },
       ...overrides.meta
     },
@@ -174,7 +189,7 @@ function planFixture() {
     "--model", "answer-model",
     "--judge-model", "judge-model",
     "--max-panel-cases", "34",
-    "--server-revision", arm === "baseline" ? "b".repeat(40) : "d".repeat(40),
+    "--server-revision", SERVER_REVISIONS[arm],
     "--expect-sha256", arm === "baseline" ? "1".repeat(64) : "2".repeat(64),
     "--adapter-mode", arm === "baseline" ? "add-missing" : "verify-native",
     "--adapter-revision", "a".repeat(40),
@@ -240,9 +255,9 @@ function planFixture() {
     root: worktree,
     commonDir: base.root,
     revision: worktree === base.plan.worktrees.baselineServer
-      ? "b".repeat(40)
+      ? SERVER_REVISIONS.baseline
       : worktree === base.plan.worktrees.candidateServer
-        ? "d".repeat(40)
+        ? SERVER_REVISIONS.candidate
         : "a".repeat(40)
   });
   return base;
@@ -279,7 +294,7 @@ describe("paired QA collection supervisor", () => {
         const resultsDir = path.join(plan.worktrees[`${arm}Runner`], "eval", "qa", "results");
         mkdirSync(resultsDir, { recursive: true });
         artifactPaths[arm] = path.join(resultsDir, `${arm}.json`);
-        writeFileSync(artifactPaths[arm], JSON.stringify(artifactForPlan(plan)));
+        writeFileSync(artifactPaths[arm], JSON.stringify(artifactForPlan(plan, arm)));
       }
       const run = supervisePairedChildren({
         children,
@@ -678,7 +693,7 @@ describe("paired QA collection supervisor", () => {
         const resultsDir = path.join(plan.worktrees[`${arm}Runner`], "eval", "qa", "results");
         mkdirSync(resultsDir, { recursive: true });
         artifactPaths[arm] = path.join(resultsDir, `${arm}.json`);
-        const artifact = artifactForPlan(plan);
+        const artifact = artifactForPlan(plan, arm);
         if (arm === "baseline") mutate(artifact);
         writeFileSync(artifactPaths[arm], JSON.stringify(artifact));
       }
@@ -694,6 +709,35 @@ describe("paired QA collection supervisor", () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it.each(["baseline", "candidate"])(
+    "hard-cancels when the %s artifact reports another server revision",
+    async (driftedArm) => {
+      const { root, plan, children } = fixture();
+      try {
+        const artifactPaths = {};
+        for (const arm of ["baseline", "candidate"]) {
+          const resultsDir = path.join(plan.worktrees[`${arm}Runner`], "eval", "qa", "results");
+          mkdirSync(resultsDir, { recursive: true });
+          artifactPaths[arm] = path.join(resultsDir, `${arm}.json`);
+          const artifact = artifactForPlan(plan, arm);
+          if (arm === driftedArm) artifact.meta.sourceIdentity.serverRevision = "e".repeat(40);
+          writeFileSync(artifactPaths[arm], JSON.stringify(artifact));
+        }
+        const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+        reachFinalBarrier(plan, children);
+        for (const arm of ["baseline", "candidate"]) {
+          children[arm].emit("message", message(arm, "complete", { resultsPath: artifactPaths[arm] }));
+          if (arm === driftedArm) break;
+        }
+        children.baseline.emit("exit", 1, null);
+        children.candidate.emit("exit", 1, null);
+        await expect(run).rejects.toThrow(new RegExp(`${driftedArm} artifact.*frozen server revision`));
+      } finally {
+        rmSync(root, { recursive: true, force: true });
+      }
+    }
+  );
 
   it("rejects frozen command mismatches before collection", () => {
     const cases = [
@@ -807,6 +851,29 @@ describe("paired QA collection supervisor", () => {
       expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
         /--cases must resolve inside its runner worktree/
       );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["missing", "missing-cases.json"],
+    ["unreadable", "eval/qa"]
+  ])("reports a clear launch-gate error for a %s cases path", (_label, casesPath) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      plan.arms.baseline.collectionCommand.push("--cases", casesPath);
+      let error;
+      try {
+        validatePairedCollectionPlan(plan, { inspectWorktree });
+      } catch (caught) {
+        error = caught;
+      }
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toBe(
+        "baseline runner launch gate: --cases is missing or unreadable inside its runner worktree"
+      );
+      expect(error.message).not.toContain(root);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

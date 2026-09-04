@@ -541,7 +541,8 @@ failures produce no receipt.
 
 Before a receipt, the supervisor reads each reported artifact below its arm results directory. It
 requires `meta.comparable === true`, the exact ID digest, exact ordered row IDs, and matching
-available content identity. The receipt includes the validated plan digest, monotonic releases, and
+available content identity. Each artifact server revision must match its arm's frozen
+`--server-revision`. The receipt includes the validated plan digest, monotonic releases, and
 collection, row, postflight, arm-finish, and final wall-clock times. Do not launch two independent
 `run-qa.mjs` processes as a substitute.
 

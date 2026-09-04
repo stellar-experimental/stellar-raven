@@ -145,6 +145,7 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
     child exits, a bounded termination drain, and a four-hour deadline. Wall-clock times provide
     duration evidence only. Before the receipt, each artifact must exist in its arm results
     directory. It must be comparable and match the selected IDs and available content identity.
+    Its server revision must match that arm's frozen `--server-revision`.
     Collection uses `$80` per arm. Stored judging raises the same ledger to `$120` per arm.
     A failed collection produces no paired aggregate or receipt. See `qa/README.md` for the full
     plan and receipt contract.

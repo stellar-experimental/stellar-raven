@@ -126,8 +126,14 @@ function executingControlHashes() {
 }
 
 function pathInside(root, candidate, label) {
-  const realRoot = realpathSync(root);
-  const realCandidate = realpathSync(candidate);
+  let realRoot;
+  let realCandidate;
+  try {
+    realRoot = realpathSync(root);
+    realCandidate = realpathSync(candidate);
+  } catch {
+    throw new Error(`${label} is missing or unreadable inside its runner worktree`);
+  }
   const relative = path.relative(realRoot, realCandidate);
   if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
     throw new Error(`${label} must resolve inside its runner worktree`);
@@ -145,12 +151,17 @@ function selectedCasesFromWorktree(worktree, casesPath, selectedIds) {
     path.resolve(worktree, casesPath),
     "--cases"
   );
-  const bytes = readFileSync(absolutePath);
+  let bytes;
+  try {
+    bytes = readFileSync(absolutePath);
+  } catch {
+    throw new Error("--cases is missing or unreadable inside its runner worktree");
+  }
   const parsed = JSON.parse(bytes);
-  if (!Array.isArray(parsed.cases)) throw new Error(`${absolutePath} has no cases[]`);
+  if (!Array.isArray(parsed.cases)) throw new Error("--cases has no cases[]");
   const selected = parsed.cases.filter((item) => selectedIds.includes(item.id));
   if (selected.length !== selectedIds.length || selected.some((item, index) => item.id !== selectedIds[index])) {
-    throw new Error(`${worktree} does not reproduce the ordered selected IDs`);
+    throw new Error("--cases does not reproduce the ordered selected IDs");
   }
   return { bytes, selected };
 }
@@ -341,7 +352,12 @@ export function validatePairedCollectionPlan(plan, {
     }
     const runner = plan.worktrees[`${arm}Runner`];
     const casesPath = collection.includes("--cases") ? flagValue(collection, "--cases") : "eval/qa/cases.json";
-    const snapshot = readSelectedCases(runner, casesPath, plan.selected.ids);
+    let snapshot;
+    try {
+      snapshot = readSelectedCases(runner, casesPath, plan.selected.ids);
+    } catch (error) {
+      throw new Error(`${arm} runner launch gate: ${error instanceof Error ? error.message : String(error)}`);
+    }
     if (sha256(snapshot.bytes) !== plan.selected.casesFileSha256 ||
         sha256(JSON.stringify(snapshot.selected)) !== plan.selected.contentSha256) {
       throw new Error(`${arm} runner does not reproduce the frozen case hashes`);
@@ -484,13 +500,13 @@ function artifactPathFromArm(plan, arm, reportedPath) {
       JSON.stringify(artifact.meta.selectedIds) !== JSON.stringify(plan.selected.ids)) {
     throw new Error(`${arm} artifact selectedIds does not match the frozen selected IDs`);
   }
-  for (const contentSha256 of [
-    artifact.meta.inputSnapshot.casesSha256,
-    artifact.meta.selectedContentSha256
-  ]) {
-    if (contentSha256 !== undefined && contentSha256 !== plan.selected.contentSha256) {
-      throw new Error(`${arm} artifact does not match the frozen selected content`);
-    }
+  if (artifact.meta.inputSnapshot.casesSha256 !== undefined &&
+      artifact.meta.inputSnapshot.casesSha256 !== plan.selected.contentSha256) {
+    throw new Error(`${arm} artifact does not match the frozen selected content`);
+  }
+  const frozenServerRevision = flagValue(plan.arms[arm].collectionCommand, "--server-revision");
+  if (artifact.meta?.sourceIdentity?.serverRevision !== frozenServerRevision) {
+    throw new Error(`${arm} artifact does not match its frozen server revision`);
   }
   return artifactPath;
 }

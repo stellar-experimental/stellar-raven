@@ -21,6 +21,7 @@ It emits a receipt only after both collection artifacts finish and both child pr
 - `AGENTS.md`
 - `.agents/skills/run-evals/SKILL.md`
 - `.agents/skills/audit-reviewability/SKILL.md` and its audit rubric
+- `.agents/skills/writing-for-agents/SKILL.md` and its skill mechanics
 - `eval/EVALS.md`
 - `eval/qa/README.md`
 - `eval/qa/run-qa.mjs`
@@ -103,6 +104,22 @@ must resolve inside its runner worktree. New tests cover intra-arm revision drif
 the production event order, and a closed peer before release. `eval/EVALS.md` and the `run-evals`
 skill now contain the complete operator contract.
 
+### Final residual repair
+
+The repair closes H1 through H3 from the final Opus review. Before receipt, each artifact now
+records the exact server revision frozen for its arm. Both the baseline and candidate gates have
+focused tests.
+
+A missing or unreadable `--cases` path now produces one concise launch-gate error. The error does
+not contain an absolute path. The dead `artifact.meta.selectedContentSha256` check is removed.
+`meta.inputSnapshot.casesSha256` remains the selected-content binding.
+
+Herdr recorded one reviewer start before the first review. Its argv was
+`["claude","--model","opus","--effort","xhigh","--permission-mode","bypassPermissions"]`.
+The same live reviewer agent produced all three reviews. Therefore, the reviewer was Opus 5 at
+xhigh effort for all three reviews. The later H4 correction was mistaken. The review report keeps
+all historical verdicts and adds an author H1-H4 reconciliation.
+
 ### Stored judging
 
 `judgeStoredResults` now requires `meta.comparable === true`. Missing, null, string, numeric, and
@@ -151,14 +168,16 @@ probe, vector, capture chain, postflight, and no-resume record. Guard and probe 
 - Command, revision, mode, port, `.dev.vars`, and control-byte mismatches fail before collection.
 - Missing, malformed, and mismatched judge identity stamps fail comparison.
 - Non-comparable, wrong-ID, wrong-digest, and wrong-content artifacts fail before receipt.
+- Baseline and candidate artifacts fail when their server revision differs from the frozen arm.
+- Missing and unreadable `--cases` paths fail without an absolute path in the error.
 - Intra-arm revision drift, IPC drain, production IPC order, and a closed peer are tested.
 
 ## Validation
 
 | Command | Result |
 |---|---|
-| `./node_modules/.bin/vitest run test/qa-paired-collection-control.test.mjs test/qa-paired-collection-supervisor.test.mjs test/qa-paired-verdict.test.mjs test/qa-judge-stored.test.mjs test/qa-harness-preconditions.test.mjs` | PASS, 5 files and 243 tests |
-| `npm test` | PASS, 107 files and 1,900 tests |
+| `./node_modules/.bin/vitest run test/qa-paired-collection-control.test.mjs test/qa-paired-collection-supervisor.test.mjs test/qa-paired-verdict.test.mjs test/qa-judge-stored.test.mjs test/qa-harness-preconditions.test.mjs` | PASS, 5 files and 247 tests |
+| `npm test` | PASS, 107 files and 1,904 tests |
 | `npm run eval:qa:paired:validate` | PASS, all deterministic gates true |
 | `npm run typecheck` | PASS |
 | `npm run build` | PASS |
@@ -204,7 +223,7 @@ The failure path now keeps that marker. No reviewability finding remains open.
 
 ## Blockers
 
-No implementation blocker remains after the F1 through F8 repairs.
+No implementation blocker remains after the H1 through H3 repairs.
 
 A paid launch remains blocked until an owner supplies a valid final manifest. The manifest needs
 the final worktree paths, selected IDs, content hashes, exact commands, input hashes, capacity
