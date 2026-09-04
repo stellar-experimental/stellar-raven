@@ -9,9 +9,9 @@ Scope: free, read-only Scout evidence. No paid model call ran. No issue was file
 Do not ship Scout 1.9.30.
 
 The upstream operation count is unchanged. The upstream routing and response
-contracts changed. The generated 1.9.30 manifest fails the frozen routing
-fingerprint check. The protocol-history diagnostic also has expired source
-evidence. These facts do not permit a routing baseline move.
+contracts changed. The generated 1.9.30 manifest lacks an accepted routing
+fingerprint. The protocol-history diagnostic also has expired source evidence.
+These facts do not permit a routing baseline move.
 
 I restored the accepted 1.9.1 generated files. This commit contains this report only.
 
@@ -19,6 +19,11 @@ The earlier same-live-interval paired measurement is invalid. Scout changed from
 1.9.23 to 1.9.30 during that interval. The present audit confirms that 1.9.30
 has a different canonical OpenAPI identity. Do not use that pair as a Scout
 release measurement.
+
+The reject decision rests on mixed routing and response-contract drift. The
+full routing movement lacks an accepted intent decision. The protocol-history
+diagnostic cannot score. The live deployment response needs reconciliation. The
+absent plural `deployments` field does not support the rejection.
 
 ## Identity evidence
 
@@ -61,7 +66,7 @@ exposed Scout operations. The accepted surface has the same path and operation
 counts. `GET /api/quality` and `GET /api/verify` remain excluded.
 
 The accepted 1.9.1 to live 1.9.30 comparison has no added or removed operation.
-It has 27 changed operation objects, 15 changed `x-routing` blocks, 21 changed
+It has 27 changed operation objects, 15 changed `x-routing` blocks, 22 changed
 direct parameter or response schemas, and six changed shared schemas:
 `HackathonDetailResponse`, `Meta`, `Partner`, `Project`, `Repo`, and
 `Stablecoin`.
@@ -123,9 +128,9 @@ patch is safe without accepted contract evidence.
 No Scout operation belongs to a bundled runnable skill. The only bundled runner
 uses Lumenloop operations. No runner schema change or runner smoke test applies.
 
-`src/policy/scout-exposure.ts` still excludes quality and verification operations.
-The drift does not justify an operation-specific exception. It does not justify
-an exposure change.
+`src/policy/scout-exposure.ts` keeps all seven Scout exclusions unchanged.
+They include quality and verification operations. The drift does not justify an
+operation-specific exception. It does not justify an exposure change.
 
 `PLAN.md`, `research/services/stellar-light.md`, and `eval/README.md` correctly
 state that committed Scout remains 1.9.1 and 1.9.23 was rejected. I did not
@@ -148,40 +153,70 @@ The generated 1.9.30 manifest SHA-256 was
 the accepted 1.9.1 manifest SHA-256:
 `b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729`.
 
-The free 1.9.30 routing run reported legacy Scout top-1/top-3/top-5 values of
-53.7/87.4/95.8 percent. It reported overall values of 62.7/82.5/92.3 percent.
-The gate failed only because its manifest fingerprint was not committed. These
-values are diagnostic only. They do not permit a baseline move.
+The candidate met the configured numeric routing floors. The gate failed because
+the candidate manifest lacks an accepted fingerprint. A fingerprint mismatch
+proves a source change. It does not independently prove a numeric routing
+regression.
 
-After restoration, the accepted routing gate passed. It reported legacy Scout
-top-1/top-3/top-5 values of 52.6/84.2/94.7 percent. It reported overall values
-of 63.0/82.5/92.3 percent.
+| Lane | Accepted 1.9.1 | Candidate 1.9.30 |
+| --- | --- | --- |
+| Legacy Scout top-1/top-3/top-5 | 52.6/84.2/94.7 | 53.7/87.4/95.8 |
+| Legacy overall top-1/top-3/top-5 | 63.0/82.5/92.3 | 62.7/82.5/92.3 |
+| Extended overall top-1/top-3/top-5 | 73.8/90.2/95.1 | 73.8/89.3/93.4 |
+| Skills top-1/top-3/top-5 | 69.6/100.0/100.0 | 69.6/95.7/100.0 |
+| Holdout overall top-1/top-3/top-5 | 20.4/44.9/53.1 | 22.4/46.9/55.1 |
+
+Holdout forbidden captures changed from 11 to 10. These values are diagnostic
+only. The full routing movement lacks an accepted intent decision.
+
+After restoration, the accepted routing gate passed. It used the accepted
+manifest fingerprint.
 
 Both protocol-history v2 contracts are source-expired, even after restoration.
 They expect manifest SHA-256
 `4cd28f4bdfe8c73950e0a6d4dfa1a09dd2f82674859e93990fdd62daef24fe8b`.
 The current accepted manifest SHA-256 is `b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729`.
-The evaluator wrote `source-expired` and scored no question. I did not change
-the frozen membership, source epoch, target scoring, or target routing fields.
+The evaluator wrote `source-expired` and scored no question. Only
+`manifest-sha256` caused expiry. Target scoring and target routing hashes still
+match their frozen values. I did not change the frozen membership, source epoch,
+target scoring, or target routing fields.
 
 This expiry is a separate limitation. It prevents a protocol-history score from
 supporting a 1.9.30 decision. It does not justify a source-epoch refresh here.
 
 ## Active findings
 
-I checked active Scout findings without changing their lifecycle state. The
-new schemas do not resolve their recorded population defects.
+I checked active Scout findings without changing their lifecycle state. The live
+schema partially improves deployment qualifiers. It does not resolve the
+recorded product-level and per-network evidence gaps. The singular `deployment`
+object differs from the absent plural `deployments` field.
 
 - `sls-023`: `https://stellarlight.xyz/api/projects/search?q=real%20world%20asset&limit=100`
-  returned 61 rows. One row had `products`; no row had `deployments` or `assets`.
-  DTCC remained Development with an operator-announcement source and no deployment.
-- `sls-024`: Slender, Laina, and OrbitCDP each retained a status basis and source.
-  They had zero products and deployments. K2 Lend also had zero products and deployments.
-- `sls-029`: Band, DIA, Redstone Finance, and Lightecho retained zero
-  `oracleDeployments` and zero `deployments`. Lightecho had one product.
+  returned 61 rows. All rows had a singular `deployment` object. Fourteen
+  objects reported `mainnet` with `onchain-activity`. Forty-seven objects
+  reported `unknown` with a null basis. No row had plural `deployments`.
+  One row had a nonempty `products` array. DTCC supplied that announced H1 2027
+  product record. DTCC remained Development with an operator-announcement
+  source. Its singular deployment was `unknown`. Scout has no verified DTCC
+  deployment. This is a partial upstream fix. Product identity, source coverage,
+  and deployment verification remain unresolved.
+- `sls-024`: Slender, Laina, K2 Lend, and OrbitCDP each returned a singular
+  deployment object. Each object reported `network: "unknown"` with a null
+  basis. Each project had null `products`. K2 Lend also had null
+  `supportedNetworks`. The deployment-scope residual still reproduces.
+- `sls-029`: The four oracle rows omitted `oracleDeployments` and plural
+  `deployments`. Their singular deployment values were Band: `mainnet` and
+  `onchain-activity`; DIA: `testnet` and `human-verified`; Redstone Finance:
+  `mainnet` and `human-verified`; Lightecho: `mainnet` and `onchain-activity`.
+  Lightecho retained one product record. The other three rows had null products.
+  This is a partial project-level improvement. Per-product oracle contract and
+  feed evidence remains absent.
 - `sls-033`: `https://stellarlight.xyz/api/projects/search?type=Wallet&limit=100`
-  returned 71 rows. Sixty-two rows had `productKind`; 33 had `availability`.
-  MXlet still had neither field. No row had `canonicalSlug`.
+  returned 71 rows. Sixty-two rows had non-null `productKind`. Thirty-three rows
+  had nonempty `availability`. All 71 rows included `canonicalSlug`, but all
+  values were null. MXlet retained null `productKind`, `availability`, and
+  `canonicalSlug`. Its singular deployment reported `unknown`. The residual
+  still reproduces.
 - `sls-039` remains declined upstream. The drift did not affect its provider-hosted
   TVL-history boundary.
 
@@ -217,6 +252,7 @@ Before a new paired measurement, run the Scout-only refresh before and after
 the interval. Record both inventory file SHA-256 values and sorted OpenAPI
 SHA-256 values. Continue only when both identities match.
 
-Then run an independent, free 1.9.30 routing and source-epoch review. Keep the
+Then run an independent, free 1.9.30 routing and source-epoch review. Reconcile
+the live singular deployment response against affected findings. Keep the
 existing routing baseline frozen. Accept, reject, or revise the surface only
 after that review has evidence. Do not add operation-specific scoring exceptions.
