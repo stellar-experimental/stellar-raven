@@ -352,8 +352,8 @@ Updated 2026-09-04.
       warnings; `eval:qa:register -- --check` passed; `eval:routing` passed its gate;
       `eval:qa:paired:validate` passed; `eval:protocol-history` stopped correctly as
       `source-expired` with no scored question; `improvements:index` produced 70 findings;
-      `improvements:lint` passed. The documentation-only correction after this validation still
-      needs final diff and secret checks.
+      `improvements:lint` passed. The final repair full run also passed with 108 files and 1,974
+      tests. Its repair report records the remaining checks.
 - [x] The Scout 1.9.30 rejection is recorded in `eval/README.md` beside the 1.9.23 decision
       (commit `bd8d2d2`).
 - [x] The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact is
@@ -361,10 +361,11 @@ Updated 2026-09-04.
 - [x] Independent review of measurement design revision 2: `final-synthesis-review-sol.md`
       returned `CHANGES-REQUIRED` (commit `f766893`). P1 to P3 are repaired in `1847ffd`. S1 to
       S3 are repaired in this documentation pass.
-- [ ] Independent confirmation review returns `LAUNCH-OK`. The final Opus review inspected
-      revision 3 and withheld the verdict on L1. The current repair resolves L1.
-- [ ] Independent confirmation review returns `CLOSEOUT-OK`. The final Opus review withheld the
-      verdict on C1 to C3. The current repair resolves C1 to C3 and R1 to R3.
+- [x] Independent confirmation review returns `LAUNCH-OK`. The final Opus review inspected
+      revision 3 and first withheld the verdict on L1. Its appended confirmation grants the verdict
+      after repair.
+- [x] Independent confirmation review returns `CLOSEOUT-OK`. The final Opus review first withheld
+      the verdict on C1 to C3. Its appended confirmation grants the verdict after repair.
 - [ ] Owned Herdr panes and agents are closed without touching unrelated resources.
 
 ## Candidate arm result and stop (2026-09-04)
@@ -480,8 +481,8 @@ in the report.
 | Independent review of measurement revision 2 | `f766893` | same | Sol high, `final-synthesis-review-sol.md` | `CHANGES-REQUIRED`, P1 to P3 and S1 to S3 |
 | Launch contract enforcement, P1 to P3 | `1847ffd` | `e5c835e` | none recorded; `launch-contract-repair-sol.md` is the implementation report | plan schema `qa-paired-collection-plan-v2`; external authorized plan hash; fixed capacity contract; corpus counts; flip identity pins |
 | Authoritative v2 capacity evidence | `dc0761d` | same | orchestrator verification, `paired-capacity-check-terra.md` | `accepted: true`; artifact `f9466339…56c2423`; expires `2026-09-05T10:25:17.815Z` |
-| Measurement design revision 3 and documentation repair | this pass | same | none yet; revision 3 needs an independent review | S1 to S3 repaired; revision 3 unreviewed and unapproved |
-| Final Opus review findings repair | this repair | same | Opus 5 `high`, supplied final review | historical verdicts stay withheld; L1, C1 to C3, and R1 to R3 repaired; confirmation review remains open |
+| Measurement design revision 3 and documentation repair | this pass | same | Opus 5 `high`, final review and appended confirmation | `LAUNCH-OK` was first withheld on L1, then granted after repair. Paid execution stays unauthorized. |
+| Final Opus review findings repair | this repair | same | Opus 5 `high`, final review and appended confirmation | Historical verdicts stay unchanged. The confirmation grants `LAUNCH-OK` and `CLOSEOUT-OK` after repair. |
 
 Remote identity guard contract, as landed: the committed probe `eval/qa/probe-remote-identities.mjs`
 hashes the Scout OpenAPI document, the Lumenloop tool, skill, and OpenAPI inventory, and the Stellar
@@ -494,7 +495,7 @@ returned vector `afd993854a981d4a5a3026ad047347c7a62a1b731b887ec08d48d5b9e07bbc7
 `1.9.30`. Two operational items remain: R1, Scout release cadence can prevent a valid long pair;
 R4, the Docs enumeration fails closed above 1,000 records while the live set has 650.
 
-Paired supervisor contract, as landed at `1847ffd`. The launch command is
+Launch-enforcement base, as landed at `1847ffd`. The launch command is
 `npm run eval:qa:paired:collect -- --plan <plan.json> --authorized-plan-sha256 <sha256>`. The
 supervisor validates a `qa-paired-collection-plan-v2` manifest against the supplied canonical
 SHA-256. It spawns both `--no-judge` children and enforces a row barrier with alternating release
@@ -510,14 +511,14 @@ exact comparison command. It freezes both exact flip re-judge commands with Clau
 and environment pins. It sets cumulative caps of `$80` collection and `$120` stored judging per
 arm. The owner authorization record stays outside the plan. The owner signature covers the
 canonical hash and every command array. The Opus review record names Opus 5 at `xhigh` for all
-three supervisor reviews and the I1 closure. The later final Opus review inspected `1847ffd` and
-withheld `LAUNCH-OK` only because the canonical runbook still published v1. The current repair
-updates that runbook to the v2 command and concise pointer contract.
+three supervisor reviews and the I1 closure. The final Opus review inspected this base and revision
+3. It first withheld `LAUNCH-OK` because the canonical runbook still published v1. The confirmed
+repair updates that runbook. Its R1/R2 changes form the current diagnostic layer.
 
 ## Final Opus finding repairs (2026-09-04)
 
 The final Opus review keeps its original withheld verdicts. This repair changes no historical
-verdict. A confirmation review remains open.
+verdict. Its appended confirmation grants `LAUNCH-OK` and `CLOSEOUT-OK` after repair.
 
 - L1: `run-evals` now publishes the v2 paired launch command. It points to the full contract in
   `eval/qa/README.md`.
@@ -593,13 +594,12 @@ canonical plan SHA-256. The plan freezes every paid command array and the flip C
 binds the fixed capacity contract with 24-hour freshness. It requires exactly 200 selected and
 500 active corpus IDs. Both runners recompute all four corpus hashes.
 
-The final Opus review inspected revision 3 and withheld `LAUNCH-OK` on L1. The current repair
-resolves L1. The method is not approved for paid execution. The owner's general approval of paid
-work for this round is not the strict paid authorization. The owner has not accepted the
-concurrent-load estimand. The method still needs an independent confirmation review and the ten
-owner decisions. It also needs the signed external authorization that
-names the plan hash. It needs a final manifest at one clean launch revision, a capacity artifact
-at most 24 hours old, and a weekend window.
+The final Opus review inspected revision 3 and first withheld `LAUNCH-OK` on L1. Its appended
+confirmation grants `LAUNCH-OK` after repair. The method is not approved for paid execution. The
+owner's general approval does not supply the strict paid authorization. The owner has not accepted
+the concurrent-load estimand. The method still needs the ten owner decisions. It also needs the
+signed external authorization that names the plan hash. It needs a final manifest at one clean
+launch revision, a current capacity artifact, and a weekend window.
 
 ## Decisions (2026-09-04)
 
@@ -619,8 +619,8 @@ at most 24 hours old, and a weekend window.
 - Production deployment waits for round closeout and explicit deployment authority. The last
   recorded deployment state, from 2026-09-02, carries the envelope serialization fault that
   `795fa41` repairs.
-- The round stays open until the confirmation review returns both final verdicts. The full
-  validation after `1847ffd` is complete.
+- The review gate is closed. PR integration, deployment verification, and owned-resource cleanup
+  remain. Merge and deployment still need explicit owner authority.
 - Monitor-only programs stay monitor-only. The PH2 and Raven capability-boundary decisions from
   `.agents/rounds/2026-09-03-owner-decisions.md` are unchanged.
 
@@ -635,13 +635,12 @@ at most 24 hours old, and a weekend window.
 | Paid eval execution | P6 passed; candidate arm completed and stopped as a diagnostic; baseline never started | artifact `2026-09-04T05-40-51-variantA.json`, `post-candidate-stop-audit-sol.md` |
 | Eval result review | all 500 rows reviewed once; disagreements recorded for adjudication | the three shard reviews and `post-candidate-measurement-fable.md` |
 | Repairs | envelope, coverage metric, evidence support, remote guard, and supervisor landed with independent `PASS` reviews on the branch | `## Repairs after the stop (2026-09-04)` |
-| Measurement design | revision 2 received `CHANGES-REQUIRED`; final Opus review checked revision 3; L1 repair awaits confirmation; unapproved | `revised-impact-measurement-fable.md`, `final-synthesis-review-sol.md`, `final-launch-contract-repair-sol.md` |
-| Launch contract repair | P1 to P3 enforced at `1847ffd`; final Opus review found L1 in the runbook; current repair resolves it | `launch-contract-repair-sol.md`, `final-launch-contract-repair-sol.md` |
+| Measurement design | Opus checked revision 3 and first withheld `LAUNCH-OK` on L1. The confirmation granted it after repair. Paid execution stays unauthorized. | `revised-impact-measurement-fable.md`, `final-synthesis-review-sol.md`, `final-launch-contract-repair-sol.md` |
+| Launch contract repair | P1 to P3 use the `1847ffd` launch-enforcement base. The reviewed R1/R2 repair is the current diagnostic layer. | `launch-contract-repair-sol.md`, `final-launch-contract-repair-sol.md` |
 | Free capacity check | complete; authoritative v2 `PASS` artifact recorded at `dc0761d`; owner acceptance open | `paired-capacity-check-terra.md` |
-| Final independent closeout review | Opus withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3; repairs await confirmation | `final-launch-contract-repair-sol.md` |
+| Final independent closeout review | Opus first withheld both verdicts. Its appended confirmation grants both after repair. | `final-launch-contract-review-opus.md` |
 
 Remaining risk: the branch `codex/truth-maintenance-2026-09-03` is unmerged and undeployed. The
-last recorded deployment state, from 2026-09-02, is `0c71b99` with the envelope fault. The full
-validation after `1847ffd` is complete. The documentation-only correction after it still needs
-final diff and secret checks. The handoff and owner decisions are in `.agents/NEXT.md`. The queue
-is in `.agents/TODO.md`.
+last recorded deployment state, from 2026-09-02, is `0c71b99` with the envelope fault. The final
+repair validation passed with 108 files and 1,974 tests. The handoff and owner decisions are in
+`.agents/NEXT.md`. The queue is in `.agents/TODO.md`.

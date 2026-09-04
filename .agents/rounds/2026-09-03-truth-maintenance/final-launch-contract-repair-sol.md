@@ -12,7 +12,7 @@ Source review: the supplied final Opus review dated 2026-09-04.
 
 The repair resolves L1, C1, C2, C3, R1, R2, and R3.
 The repair changes no historical verdict.
-An independent confirmation review remains open.
+The appended Opus confirmation grants `LAUNCH-OK` and `CLOSEOUT-OK` after repair.
 
 No paid call, live collection, external write, filing, or deployment occurred.
 Every owner decision and paid action remains blocked.
@@ -73,6 +73,22 @@ The code keeps failed artifacts honest and preserves the first judging failure.
 ## Blockers
 
 The implementation has no known blocker.
-The independent confirmation review remains a round closeout gate.
+The independent confirmation review gate is closed.
 All owner decisions remain open.
 No repair grants paid, filing, golden, merge, or deployment authority.
+
+## Documentation follow-up
+
+The appended Opus confirmation inspected revision 3. It first withheld `LAUNCH-OK` on L1.
+It granted `LAUNCH-OK` after repair. It also granted `CLOSEOUT-OK` after repair.
+
+N1 is closed in all three reported locations. Each location now records the two review stages.
+N2 is closed in the ledger checklist. The final repair full run passed 108 files and 1,974 tests.
+
+Commit `1847ffd` is the launch-enforcement base. It is not the final supervisor byte state.
+The reviewed R1/R2 repair is the current diagnostic layer. It changes the re-judge evidence and
+the supervisor mismatch diagnostic.
+
+This follow-up changes documentation only. It does not change the Opus report or code.
+`git diff --check` and `npm run secrets:scan -- --tree` passed for this follow-up.
+Every paid, filing, golden, merge, deployment, and owner decision boundary stays closed.

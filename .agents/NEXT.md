@@ -1,13 +1,13 @@
 # NEXT — current handoff
 
 Updated 2026-09-04. The truth-maintenance round stopped its paid pair and landed its repairs.
-The final Opus review withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
-The current repair resolves L1, C1 to C3, and R1 to R3. The historical verdict stays unchanged.
-The round is open. Read this first.
+The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
+Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
+The round has no review gate. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 No unconditional paid or external block remains. Every paid, filing, deployment, and golden action
-is owner-blocked. A short list of free documentation and review actions is machine-ready.
+is owner-blocked. The integration sequence is machine-ready and keeps these authority gates.
 
 ## State at handoff
 
@@ -26,16 +26,16 @@ is owner-blocked. A short list of free documentation and review actions is machi
   fixed capacity contract with 24-hour freshness. It requires exactly 200 selected and 500 active
   corpus IDs with all four corpus hashes. Report: `launch-contract-repair-sol.md`.
   The supplied final Opus review inspected revision 3 and the launch contract.
-  That review withheld `LAUNCH-OK` because the `run-evals` skill still published v1.
-  The current repair updates the skill to the v2 command and points to `eval/qa/README.md`.
+  That review first withheld `LAUNCH-OK` because the `run-evals` skill still published v1.
+  The repair updates the skill to v2. The appended confirmation grants `LAUNCH-OK` after repair.
 - The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact has SHA-256
   `f94663390187a52a89007ca22a23530c873cb8e00b4117bece045265a56c2423` and completed at
   `2026-09-04T10:25:17.815Z`. It expires at `2026-09-05T10:25:17.815Z`. It proves the technical
   gate only. The owner has not accepted the concurrent-load estimand.
 - Measurement design revision 2 received `CHANGES-REQUIRED` from Sol (`final-synthesis-review-sol.md`,
   P1 to P3 and S1 to S3). Revision 3 repairs all six against `1847ffd`. The final Opus review
-  checked revision 3 and withheld its verdict only for the recorded findings. It authorizes
-  nothing.
+  checked revision 3 and first withheld its verdict on L1. Its appended confirmation grants the
+  verdict after repair. It authorizes nothing.
 - The full validation after `1847ffd` is complete. The orchestrator ran it on the root branch
   with the work through `dc0761d`. `npm run typecheck`, `npm test` (108 files, 1,971 tests),
   `npm run test:smoke` (4 files, 83 tests), and `npm run build` passed. `eval:selftest`,
@@ -43,8 +43,8 @@ is owner-blocked. A short list of free documentation and review actions is machi
   `eval:routing` (gate), `eval:qa:paired:validate`, and `improvements:lint` passed.
   `eval:qa:compile` produced 500 cases with content SHA-256 `c5d0c804…7b43e`.
   `eval:protocol-history` stopped correctly as `source-expired` with no scored question.
-  `improvements:index` produced 70 findings. The documentation-only correction after this
-  validation still needs final diff and secret checks.
+  `improvements:index` produced 70 findings. The final repair full run passed 108 files and 1,974
+  tests. The documentation follow-up passed its final diff and secret checks.
 - The 2026-09-04 candidate arm completed 500 rows and stopped as a diagnostic. Raw counts: 199
   correct, 230 partial, 71 wrong. Raw shares: strict 39.8%, half-credit 62.8%, core-answer-correct
   92.6%. Cost `$190.1686672`. Scout changed from `1.9.23` to `1.9.30` inside the arm. The executor
@@ -72,16 +72,17 @@ is owner-blocked. A short list of free documentation and review actions is machi
 
 ## Next actions by class
 
-### Machine-ready (free, no authority needed)
+### Machine-ready sequence
 
-1. Obtain an independent confirmation review of the L1, C1 to C3, and R1 to R3 repairs.
-   The historical Opus review withheld `LAUNCH-OK` and `CLOSEOUT-OK` before these repairs.
-2. Confirm the round ledger and this handoff during that closeout review.
+1. Run the final local checks at the integration revision.
+2. Integrate the PR after the owner grants merge authority.
+3. Deploy and verify production after the owner grants deployment authority.
+4. Clean up only the owned worktree, panes, and agents after the handoff is complete.
 
 Complete since the previous handoff:
 
 - The full validation after `1847ffd` is complete on the root branch. See "State at handoff".
-  The documentation-only correction after it still needs final diff and secret checks.
+  The final repair full run passed 108 files and 1,974 tests.
 - The dated Scout 1.9.30 rejection is recorded in `eval/README.md` beside the 1.9.23 decision
   (commit `bd8d2d2`).
 - The free two-agent capacity check ran twice. The authoritative v2 `PASS` artifact is recorded
@@ -173,10 +174,9 @@ general round approval of 2026-09-03 is not this authorization. It needs these t
 9. Keep the candidate-only T4 or T5 rule terminal.
 10. Run the P6 judge self-test once at `$3.50` through the exact frozen wrapper command.
 
-Evidence needed before signing: the independent `LAUNCH-OK` review of revision 3. Also needed: a
-capacity artifact at most 24 hours old at launch, one clean launch revision, and the printed
-canonical plan SHA-256. The full validation after `1847ffd` is complete. Maximum spend:
-`$273.50`. Safe default: no spend.
+Evidence needed before signing: a capacity artifact at most 24 hours old at launch. The launch also
+needs one clean launch revision and the printed canonical plan SHA-256. The final Opus confirmation
+granted `LAUNCH-OK`. Maximum spend: `$273.50`. Safe default: no spend.
 
 ### B. Authorize upstream filing for the ten verified findings
 
@@ -295,9 +295,8 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 
 - Paired QA: the supervisor, the remote identity guard, and the v2 launch contract are landed. No
   collection occurs without the signed external authorization in decision A. That record names
-  the canonical plan SHA-256. Collection also needs the independent `LAUNCH-OK` review of
-  revision 3 and the owner acceptance of the concurrent load. It needs a capacity artifact at
-  most 24 hours old and the final manifest.
+  the canonical plan SHA-256. Collection needs the owner acceptance of the concurrent load. It
+  also needs a current capacity artifact and the final manifest.
 - Repository recovery: keep the exact free monitor in `TODO.md`. The durable record is the
   `sls-080` receipt. Source parity authorizes no paid collection. Use `sls-082` for a distinct
   defect.
@@ -313,8 +312,8 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 
 ## Completed repair work
 
-The truth-maintenance round 2026-09-03 stays open. Its closeout gate is the confirmation review
-above. The items below are complete.
+The truth-maintenance round 2026-09-03 has no review gate. Integration, deployment verification,
+and cleanup remain. The items below are complete.
 
 - Repair work inside the open round: `.agents/rounds/2026-09-03-truth-maintenance.md`, section
   "Repairs after the stop (2026-09-04)", and its report directory. Key reports:
@@ -347,7 +346,7 @@ above. The items below are complete.
 
 ## Suggested sequence
 
-Run the independent confirmation review first. Then bring decisions A to J
-to the owner in one sitting. Keep each paid action, filing action, and production action behind
-its separate authorization. No current item has authorization for evaluation ladder stages 3 or 4.
-The general round approval does not move any item to stage 3.
+Run the final local checks. Then prepare PR integration, deployment verification, and cleanup.
+Merge and deploy only after the owner grants each required authority. Bring decisions A to J to
+the owner in one sitting. Keep each paid, filing, and production action behind its authorization.
+No current item has authorization for evaluation ladder stages 3 or 4.

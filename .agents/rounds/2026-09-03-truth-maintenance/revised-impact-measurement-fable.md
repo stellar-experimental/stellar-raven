@@ -13,17 +13,20 @@ Revision history:
   `codex/tm-final-synthesis` at `e0df186`. It was committed as `b5dca1c`.
 - The independent review `final-synthesis-review-sol.md` (Codex Sol high, commit `f766893`)
   returned `CHANGES-REQUIRED` on revision 2 with findings P1 to P3 and S1 to S3.
-- Sol repaired P1 to P3 in the launch contract. The repair is commit `1847ffd`. The report is
-  `launch-contract-repair-sol.md`. The authoritative v2 capacity evidence is commit `dc0761d`.
+- Sol repaired P1 to P3 in the launch contract. Commit `1847ffd` is the launch-enforcement base.
+  The report is `launch-contract-repair-sol.md`. The authoritative v2 capacity evidence is commit
+  `dc0761d`.
 - Revision 3 is this file. It was written in worktree `/private/tmp/stellar-raven-tm-final-docs-repair`
   on branch `codex/tm-final-docs-repair` at `dc0761d`. The actual whole-round branch
-  `codex/truth-maintenance-2026-09-03` contains the work through `dc0761d`. The final supervisor contract is the
-  one at `1847ffd`. It includes the mandatory content identity from `a5ac32f`, whose I1 closure
-  review is `5603d6d`.
+  `codex/truth-maintenance-2026-09-03` contains the work through `dc0761d`. The reviewed R1/R2
+  repair is the current diagnostic layer. It changes the re-judge evidence and supervisor mismatch
+  diagnostic. The mandatory content identity comes from `a5ac32f`. Its I1 closure review is
+  `5603d6d`.
 
-This revision awaits an independent review. Nobody has reviewed revision 3. It authorizes
-nothing. I made no paid call, started no server, used no network, and changed no code. The only
-live read behind this file is the public Scout changelog read for revision 1 on 2026-09-04.
+The final Opus review inspected revision 3. It first withheld `LAUNCH-OK` on L1. Its appended
+confirmation granted `LAUNCH-OK` after repair. Revision 3 authorizes nothing. I made no paid call,
+started no server, used no network, and changed no code. The only live read behind this file is the
+public Scout changelog read for revision 1 on 2026-09-04.
 
 ## What changed from revision 2
 
@@ -32,7 +35,7 @@ live read behind this file is the public Scout changelog read for revision 1 on 
 | P1 authorization | The plan uses `qa-paired-collection-plan-v2`. The owner signs an external record that names the canonical plan SHA-256. The signature covers that hash and every command array in the plan. The plan freezes the exact P6, capacity, collection, stored-judge, flip, and comparison commands. Each flip command pins the Claude path, binary SHA-256, and environment SHA-256. A valid zero-flip result requires `--allow-empty`. |
 | P2 capacity | The plan binds the exact free capacity command, the instrument bytes, the artifact bytes, a fixed schedule, fixed thresholds, and a 24-hour freshness window. The authoritative v2 `PASS` artifact is recorded below. |
 | P3 denominator | The plan records `selected.count: 200` and `selected.activeCorpusCount: 500`. It records all four corpus hashes. Both runner worktrees recompute every one. Any mismatch stops the launch. |
-| S1 stale claims | The final supervisor contract is `1847ffd`, not `e0df186`. Commits `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d` are in the round record. The whole-round branch contains the work through `dc0761d`. Every provisional hash below is recomputed at `dc0761d`. |
+| S1 stale claims | Commit `1847ffd` is the launch-enforcement base, not the final supervisor bytes. The reviewed R1/R2 repair is the current diagnostic layer. Commits `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d` are in the round record. Every provisional hash below is recomputed at `dc0761d`. |
 | S2 round state | The round stays open. `NEXT.md` lists completed repair work, not a completed round. |
 | S3 production label | Production is described as the last recorded deployment state from 2026-09-02. Nobody verified the live Worker during this documentation pass. |
 
@@ -680,8 +683,9 @@ The full 500 candidate arm stays a separate future authorization.
 
 ## Blockers
 
-- An independent review of this revision must return `LAUNCH-OK`. Revision 1 and revision 2
-  received `CHANGES-REQUIRED`. Nobody has reviewed revision 3.
+The final Opus review inspected revision 3 and first withheld `LAUNCH-OK` on L1. Its appended
+confirmation granted `LAUNCH-OK` after repair. The remaining blockers follow.
+
 - The owner must record decisions 1 to 10 and sign the external authorization block with the
   canonical plan SHA-256. The general round approval does not substitute for it.
 - The owner must accept the concurrent-load estimand (decision 5). It is still open.
@@ -689,9 +693,8 @@ The full 500 candidate arm stays a separate future authorization.
   coverage-metric retirement, the supervisor, and the launch-contract enforcement. The branch
   `codex/truth-maintenance-2026-09-03` contains the work through `dc0761d`. It contains all five
   but is not merged.
-- The full validation after `1847ffd` is complete on the round branch through `dc0761d`. See
-  the ledger `## Final checklist`. The documentation-only correction after it still needs final
-  diff and secret checks.
+- The final repair validation is complete. It passed 108 files and 1,974 tests. See the ledger
+  `## Final checklist`.
 - The manifest instance must be produced at that revision with a fresh salt and recomputed hashes.
 - The capacity artifact must be at most 24 hours old at launch. The 2026-09-04 artifact expires at
   `2026-09-05T10:25:17.815Z`.
