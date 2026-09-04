@@ -6,8 +6,9 @@ Reviewer lane: Claude Opus 5 at xhigh effort
 
 Author lane: Codex GPT-5.6 Sol, high effort
 
-Commits reviewed: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`, then the repair
-`8cd724de76858a0c9d6fa0908964f3c119ed52aa`
+Commits reviewed: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`, then the repairs
+`8cd724de76858a0c9d6fa0908964f3c119ed52aa` and
+`5d47ab6900af6aa14d65d271879c9340f5b6bf3c`
 
 Branch: `codex/tm-remote-identity-guard`
 
@@ -15,12 +16,17 @@ Worktree: `/private/tmp/stellar-raven-tm-remote-guard`
 
 ## Current verdict
 
-`PASS` for the repair commit `8cd724d`.
+`PASS` for the bounds commit `5d47ab6`.
 
-Every blocker and every finding below is reconciled.
-I re-derived each one rather than accepting the author's table.
-The re-review starts at "Repair re-review" and adds four new operational findings.
-None of the four is a code defect. Three are planning risks for a paid arm.
+`8cd724d` reconciled every blocker and finding from the first pass.
+`5d47ab6` closes R2, R3, and R5 from the first re-review.
+I re-derived each result rather than accepting the author's table.
+
+R1 and R4 remain open. Neither is a code defect.
+R1 is the Scout release cadence, which the owner must still decide about.
+R4 is the 1,000-record Stellar Docs enumeration ceiling.
+
+The three sections below run in commit order.
 
 ## First-pass verdict (commit `2ca5880`)
 
@@ -607,3 +613,233 @@ R1 adds a planning decision.
 | Secrets scanning | PASS |
 | Independent review completed | this document |
 | Documentation describes current behavior | PASS, F12 closed |
+
+---
+
+# Bounds re-review
+
+Date: 2026-09-04
+
+Reviewer lane: Claude Opus 5 at xhigh effort
+
+Commit re-reviewed: `5d47ab6900af6aa14d65d271879c9340f5b6bf3c`
+
+Scope: R2, R3, and R5 only.
+
+Verdict: `PASS`
+
+I made no implementation edit. I only re-read, re-ran, and measured.
+
+## Commands
+
+| Command | Result |
+|---|---|
+| `npx vitest run` on the four touched test files | PASS, 182 tests |
+| `npm run typecheck` | PASS |
+| `npm test` | PASS, 105 files, 1,819 tests |
+| `npm run build` | PASS |
+| `npm run eval:qa:paired:validate` | PASS, all gates true |
+| Probe run three times, minimal environment | one identical hash each time |
+| Independent full Docs enumeration | matched the probe hash exactly |
+| Instrumented `fetchImpl` capture | 7 requests, 7 Algolia search operations |
+| 25-case `parseRetryAfterMs` table | every case bounded, no throw |
+| Simulated 429 storm | sleeps capped, fails closed |
+| 9-case `collectionComparabilityReasons` table | one accurate reason per stop |
+| 4 extra paired-gate postflight mutations | see N3 below |
+| `npm run secrets:scan -- --tree` | clean |
+
+I started no QA collection and made no paid model call.
+
+## R2 — Algolia billed load: RECONCILED
+
+The probe now discovers the page count first. It requests page zero alone.
+It then requests exactly the remaining pages in one batch.
+
+I instrumented the probe's `fetchImpl` and counted the real traffic:
+
+| Measure | `8cd724d` | `5d47ab6` | Change |
+|---|---|---|---|
+| Algolia search operations per capture | 10 | 7 | −30% |
+| Algolia search operations per 500-case arm | 10,010 | 7,007 | −3,003 |
+| HTTP requests per capture | 6 | 7 | +1 |
+| HTTP requests per arm | 6,006 | 7,007 | +1,001 |
+| Algolia HTTP requests per arm | 2,002 | 3,003 | +50% |
+| Measured wall time per capture | 0.36 s | 0.47 s | +0.11 s |
+| Added wall time per arm | about 6 min | about 8 min | +2 min |
+
+The sub-query count now equals the live page count exactly, so no operation is wasted.
+The billed metric that Algolia rate-limits and bills fell by 30 percent.
+The HTTP connection count rose by one per capture, which is the cost of the split.
+That trade is favourable, because Algolia counts each sub-query as one search operation.
+See N1 for the honest statement of the one metric that got worse.
+
+Per-host load for a 500-case arm is now `stellarlight.xyz` 1,001,
+`api.lumenloop.com` 3,003, and the Algolia DSN host 3,003.
+
+### Enumeration completeness
+
+I verified completeness independently rather than trusting the split.
+
+I fetched all seven pages in one batch, applied the probe's own
+`normalizeStellarDocsTitles` and `canonicalRemoteSourceSha256`, and compared.
+
+- Live index: `nbHits` 650, `nbPages` 7, `hitsPerPage` 100, `exhaustiveNbHits` true.
+- Seven pages flattened to 650 hits and 650 unique records, with no dropped duplicates.
+- My independent hash `aecaf9a5…beb9b209` equals the probe's `canonicalTitleSetSha256`.
+- Page seven, one past the end, returns zero hits.
+- The whole vector hash is still `afd993854a…e07bbc7f`, unchanged across the refactor.
+
+The refactor is therefore hash-neutral and loses no record.
+
+## R3 — timeout math: RECONCILED
+
+The constants now live in `remote-identity-guard.mjs`, and the outer process
+timeout is derived from them instead of being a separate literal.
+
+I recomputed the arithmetic from the exported constants:
+
+- Request timeout 20,000 ms, retry delays `[250, 1000]`, `Retry-After` cap 5,000 ms.
+- Worst case per phase: `3 × 20,000 + 2 × 5,000` = 70,000 ms.
+- Two serialized Docs query phases: `REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS` = 140,000 ms.
+- `REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS` = 145,000 ms, which leaves 5,000 ms of slack.
+
+The old pair was 60,000 ms against a 61,250 ms budget, so the retry could not finish.
+The new pair satisfies `process timeout >= network budget`. The mismatch is gone.
+
+### `Retry-After` parsing and caps
+
+I ran 25 adversarial header values. Every one stayed bounded and none threw.
+
+- Integer seconds parse and clamp: `0` to 0, `1` to 1,000, `5` and `120` to 5,000.
+- A 400-digit value becomes `Infinity` and is caught, returning the 5,000 ms cap.
+- `1.5`, `-1`, `+3`, `0x10`, `3, 4`, and free text all return null and fall back to 250 ms.
+- IMF-fixdate parses; a future date clamps to the cap and a past date floors at zero.
+- RFC 850, asctime, a non-GMT zone, and a bad month name all return null.
+- A header carrying a newline returns null, so nothing is injected into a log line.
+
+The effective delay is `max(fixed delay, Retry-After)`, so a server can lengthen a
+wait but never shorten it below the built-in backoff.
+
+A simulated 429 storm slept 5,000 ms twice, for 10,000 ms total, then failed closed.
+The header value never appeared in the error message.
+
+`retryAfterMs` is only set on the `http` branch, so timeout and network errors keep
+the fixed delays. That is correct.
+
+## R5 — stop reason deduplication: RECONCILED
+
+`collectionComparabilityReasons` is now an exported pure function with tests.
+I exercised it across nine scenarios.
+
+- A pre-arm mismatch produces exactly one line:
+  `remote identity pre-arm vector SHA-256 mismatch`.
+  The first re-review saw three lines here, none of which named the real cause.
+- `identity-changed` names the changed services.
+- `probe-unavailable` keeps its own wording.
+- An unrecognised future reason yields `remote identity guard failed: <reason>`,
+  so no new failure kind can be silently misattributed.
+- A non-guard collection failure and a non-guard remote postflight failure both survive.
+- `[...new Set(reasons)]` collapses identical strings.
+
+Two mechanisms remove the duplicates. Errors carrying
+`code === "remote-identity-guard"` no longer add a collection or postflight line,
+because the guard record already supplies the specific reason.
+`postflight()` no longer throws on an already-stopped guard; it returns null and
+records `skippedReason: "guard-already-stopped"`.
+
+I checked the safety of the code-based suppression. Every `RemoteIdentityGuardError`
+comes from `fail()`, which sets `failure` first, or from `assertActive()`, which only
+fires once `failure` is set. A guard-coded error therefore always implies
+`record().matches === false`, so suppressing its generic line loses nothing.
+
+The paired printer still rejects a skipped postflight, because it requires
+`postflight.attempted === true` and `postflight.matches === true`.
+I confirmed that a removed, null, or `attempted: false` postflight all give
+`INDETERMINATE` with the `remote-identity-guard` code.
+
+## New observations
+
+None of these blocks the commit. I record them so the next lane inherits them.
+
+### N1 — one load metric moved the wrong way
+
+Algolia HTTP requests per arm rose from 2,002 to 3,003, a 50 percent increase,
+because the settings read now sits beside two title POSTs instead of one.
+
+This is the honest counterweight to the 30 percent search-operation saving.
+The saving is on the metric Algolia bills and rate-limits, so the trade is right.
+The report should not claim the change reduced load on every axis.
+
+### N2 — the split adds a small torn-read window
+
+The two title batches are no longer one request, so the index can move between them.
+
+I measured the window over three runs: 313 ms, 148 ms, and 150 ms.
+The gap between the two POSTs was 5 ms, 1 ms, and 2 ms.
+
+The per-page check compares `page`, `nbPages`, and `nbHits` against the first
+response, so an added or removed page is caught. A pure retitle that preserves both
+counts would not be caught, and the capture would hash a mixed snapshot.
+
+That mixed hash matches neither the old nor the new state, so the guard stops the arm.
+The failure is closed, not silent. Given a roughly daily docs deploy and a window
+under a third of a second, the probability is negligible. I accept it.
+
+### N3 — the paired gate does not cross-check `skippedReason`
+
+I mutated a candidate artifact to carry `postflight.attempted: true` together with
+`skippedReason: "guard-already-stopped"`. The paired printer returned `PASS`.
+
+The runner cannot emit that pair. The skip branch always sets `attempted: false`,
+and the success branch always sets `skippedReason: null`.
+So this is forgery hardening, not a real-run hole.
+
+Every other guard field is cross-checked, so the new field is the one exception.
+Requiring `skippedReason === null` whenever `attempted === true` would close it.
+
+### N4 — `missing-baseline` still reads as a probe failure
+
+A postflight with no answering call at all fails with `reason: "probe-unavailable"`
+and `diagnostics.kind: "missing-baseline"`.
+The comparability line therefore says the probe was unavailable when it was fine.
+
+This only happens on an artifact that already failed before its first row, and the
+diagnostics carry the truth. It is a residual nit from the same family as R5.
+
+### N5 — the worst-case capture ceiling grew
+
+Fixing R3 raised the per-capture ceiling from 60 s to 145 s.
+A systematically slow but eventually successful upstream would therefore extend an
+arm further than before.
+
+This is the correct trade, because the old ceiling truncated a legitimate retry.
+The measured normal case is 0.47 s, so the ceiling stays theoretical.
+Any single probe failure stops the arm, so the ceiling cannot accumulate in practice.
+
+### N6 — the phase count is a hand-maintained constant
+
+`REMOTE_IDENTITY_DOCS_QUERY_PHASES = 2` lives in the guard module, while the phases
+themselves live in the probe. A third phase added later would silently under-count
+the budget and reproduce R3.
+
+The new test that pins seven requests per capture would fail on such a change, so a
+guard exists. I record the coupling rather than treat it as a defect.
+
+## Still open from earlier passes
+
+R1 and R4 are unchanged, because this commit did not address them.
+
+- **R1.** Scout shipped about seven releases inside the last eleven-hour arm.
+  A pair needs more than twenty-two hours of Scout stability.
+  The owner must decide how a valid pair can complete before the next authorization.
+- **R4.** The Docs title enumeration has a hard 1,000-record ceiling.
+  The live index holds 650 records, which is 65 percent of that limit.
+  I re-measured both numbers on this commit and they are unchanged.
+
+## Blockers for the next paid authorization
+
+The guard work blocks nothing. The round-level blockers are unchanged.
+
+1. The Scout `1.9.30` drift decision is still open.
+2. The candidate row review and closeout decision are still incomplete.
+3. R1 still needs an owner decision on pair feasibility at Scout's cadence.
