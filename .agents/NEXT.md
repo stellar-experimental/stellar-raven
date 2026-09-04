@@ -1,25 +1,28 @@
 # NEXT — current handoff
 
-Updated 2026-09-04. The truth-maintenance round stopped its paid pair and landed its repairs.
+Updated 2026-09-04. The truth-maintenance round stopped its paid pair, landed its repairs, and
+completed its production deployment.
 The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
 Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
 The round has no review gate. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
-No unconditional paid or external block remains. Every paid, filing, deployment, and golden action
-is owner-blocked. The integration sequence is machine-ready and keeps these authority gates.
+Open work is trigger-only or owner-blocked. It is not deployment work. Every paid, filing, and
+golden action stays owner-blocked. Herdr cleanup remains open.
 
 ## State at handoff
 
-- `main` is at `2ee801f` (PR #122). The last recorded deployment state, from 2026-09-02, is
-  Worker Version `f62b64fa-1fb7-4c25-970d-7f98c83ab302` from source commit `0c71b99`. The record
-  is `.agents/rounds/2026-09-02-agent-queue-deployment.md`. Nobody re-verified the live Worker
-  after that record. That recorded state carries the envelope serialization fault that `795fa41`
-  repairs.
-- Branch `codex/truth-maintenance-2026-09-03` carries the whole round on top of `main`. It
-  contains the work through `dc0761d`. It is unmerged and undeployed. Its ledger is
-  `.agents/rounds/2026-09-03-truth-maintenance.md`. The older branch `codex/tm-final-synthesis`
-  stopped at `cbdfc5b` and lacks `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`.
+- PR #125 merged at `2026-09-04T12:27:17Z` as
+  `50bf5518860584ec1e5d352acbe11033515a0b7f`. The Copilot comment `3933695212` was fixed in
+  `ab5388e` and resolved. Final CI passed Analyze in 49 seconds, CodeQL in 3 seconds, secrets in
+  23 seconds, and tests in 1 minute 33 seconds.
+- Deployment preflight proved that clean `HEAD` equals `origin/main`. `npm audit --omit=dev` found
+  zero vulnerabilities. Wrangler deployed at `2026-09-04T12:29:24.371Z`. Worker Version
+  `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent. The rollback version is
+  `f62b64fa-1fb7-4c25-970d-7f98c83ab302`.
+- Production verification passed. The closeout record is
+  `.agents/rounds/2026-09-03-truth-maintenance/production-deployment-terra.md`. Terra author
+  pane `w16:p2J` is recorded there and in the round ledger.
 - The paired launch contract is enforced at `1847ffd`. The plan schema is
   `qa-paired-collection-plan-v2`. Launch requires `--authorized-plan-sha256` equal to the canonical
   plan SHA-256. The plan freezes every paid command array and the flip Claude pins. It binds the
@@ -76,13 +79,11 @@ is owner-blocked. The integration sequence is machine-ready and keeps these auth
 
 ## Next actions by class
 
-### Machine-ready sequence
+### Deployment closeout complete
 
-1. Add the local timeout repair commit to PR #125 after the owner grants external-write authority.
-2. Confirm that PR #125 CI passes all checks.
-3. Integrate the PR after the owner grants merge authority.
-4. Deploy and verify production after the owner grants deployment authority.
-5. Clean up only the owned worktree, panes, and agents after the handoff is complete.
+- PR #125 merged. Final CI passed. Production verification passed.
+- Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent.
+- Deployment work is complete. Herdr cleanup is still open.
 
 Complete since the previous handoff:
 
@@ -98,7 +99,7 @@ Complete since the previous handoff:
   difference. R3 explains the capacity environment wrapper. C1 to C3 correct the dated records.
   Report: `final-launch-contract-repair-sol.md`.
 - The PR #125 timeout repair passed five narrow runs, the 32-worker stress loop, and the full suite.
-  Typecheck, build, and all 83 smoke tests also passed. No timeout changed.
+  Typecheck, build, all 83 smoke tests, and final CI passed. No timeout changed.
 
 ### Trigger-only and monitor-only
 
@@ -146,11 +147,10 @@ Complete since the previous handoff:
 - Selection of harness follow-ups from the candidate audit. See owner decision H.
 - Paired promotion design: denominator, candidate-only T4 rule, and margin. See owner decision J.
 
-### Owner authority for merge and deployment
+### Owner-blocked cleanup
 
-- Merge the round branch after the machine-ready checks and the closeout review pass.
-- Deploy only with explicit deployment authority. Verify production afterwards. See owner
-  decision E.
+- Owned Herdr cleanup remains open. Do not treat it as deployment work.
+- Paid, filing, golden, and human-decision work stays in the blocks below.
 
 ## Owner decisions
 

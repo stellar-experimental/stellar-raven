@@ -7,11 +7,12 @@ It covers live drift, routing, end-to-end QA, live-data execution, golden health
 production smoke checks, and issue or pull-request follow-up.
 
 The final measured candidate revision is `65d2f98dd80305e9a2b9000c46e9a91ba0557cbc`.
-The last recorded deployment state, from 2026-09-02, is `0c71b99c02425307be5ef5c5c4ff1ef05935663d`.
-It stays the deployed runtime until this round merges and deploys.
-Nobody re-verified the live Worker after that record.
-The whole round lives on branch `codex/truth-maintenance-2026-09-03`. It contains the work
-through `dc0761d`.
+PR #125 merged at `2026-09-04T12:27:17Z` as
+`50bf5518860584ec1e5d352acbe11033515a0b7f`.
+Wrangler deployed Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` at 100 percent on
+2026-09-04. The rollback version is `f62b64fa-1fb7-4c25-970d-7f98c83ab302`.
+The factual deployment closeout is
+`2026-09-03-truth-maintenance/production-deployment-terra.md`.
 
 The primary current-quality measurement is a fresh full 500-case QA collection.
 The designed sample-30 headline remains separate.
@@ -326,8 +327,9 @@ Updated 2026-09-04.
 
 - [x] Final pre-spend delta review returns `LAUNCH-OK` after the real-runtime proof.
 - [ ] Spawned pane IDs and final agent states are recorded. Known panes: `w16:p1N`, `w16:p1P`,
-      `w16:p1Q`, `w16:p1R`, `w16:p1S`, and the runner pane `w2R:p2`. The later repair lanes ran in
-      separate worktrees and did not record pane IDs in this ledger. This item stays open.
+      `w16:p1Q`, `w16:p1R`, `w16:p1S`, the runner pane `w2R:p2`, and Terra author pane
+      `w16:p2J`. The later repair lanes ran in separate worktrees and did not record pane IDs in
+      this ledger. This item stays open.
 - [x] Drift artifacts are generated and classified. Scout 1.9.23 and 1.9.30 are rejected.
 - [x] Routing and protocol-history results are recorded.
 - [x] The paired full battery, live-data, and digest contracts are honestly blocked. The candidate
@@ -338,8 +340,9 @@ Updated 2026-09-04.
 - [x] Golden changes carry independent source classes and root-cause records.
 - [x] Proposed and reported improvements have live state and deterministic next actions. See
       `## Improvements state (2026-09-04)`.
-- [ ] Production smoke checks pass. No deployment happened. The last recorded deployment state,
-      from 2026-09-02, is `0c71b99`. Nobody re-verified the live Worker after that record.
+- [x] Production smoke checks pass. Version `8022e211-c731-49cc-aef1-a20f1da798b9` is at
+      100 percent. Public, authentication, MCP, search, execute, digest, and telemetry checks
+      passed. See `2026-09-03-truth-maintenance/production-deployment-terra.md`.
 - [x] Baseline repository validation and secrets scanning passed on each repair branch. The
       launch-contract repair lane ran the full baseline validation at `e5c835e` before `1847ffd`
       landed here. See `launch-contract-repair-sol.md`.
@@ -644,8 +647,13 @@ launch revision, a current capacity artifact, and a weekend window.
 | Free capacity check | complete; authoritative v2 `PASS` artifact recorded at `dc0761d`; owner acceptance open | `paired-capacity-check-terra.md` |
 | Final independent closeout review | Opus first withheld both verdicts. Its appended confirmation grants both after repair. | `final-launch-contract-review-opus.md` |
 
-Remaining risk: the branch `codex/truth-maintenance-2026-09-03` is unmerged and undeployed. The
-last recorded deployment state, from 2026-09-02, is `0c71b99` with the envelope fault. The final
-repair validation passed with 108 files and 1,974 tests. The PR #125 timeout repair passed the same
-full count. Its CI rerun needs an external write. The handoff and owner decisions are in
-`.agents/NEXT.md`. The queue is in `.agents/TODO.md`.
+Deployment closeout: PR #125 merged as
+`50bf5518860584ec1e5d352acbe11033515a0b7f`. Final CI passed Analyze in 49 seconds, CodeQL in
+3 seconds, secrets in 23 seconds, and tests in 1 minute 33 seconds. The Copilot comment
+`3933695212` was fixed in `ab5388e` and resolved. Production now runs Worker Version
+`8022e211-c731-49cc-aef1-a20f1da798b9` at 100 percent. The rollback version remains
+`f62b64fa-1fb7-4c25-970d-7f98c83ab302`.
+
+Open work is trigger-only or owner-blocked. It is not deployment work. Owned Herdr cleanup
+remains open. The handoff and owner decisions are in `.agents/NEXT.md`. The queue is in
+`.agents/TODO.md`.
