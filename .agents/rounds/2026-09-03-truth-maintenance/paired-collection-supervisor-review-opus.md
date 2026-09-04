@@ -2,7 +2,7 @@
 
 Date: 2026-09-04
 
-Reviewer lane: Claude Opus 5 at xhigh effort.
+Reviewer lane: Claude Opus 5 at high effort.
 
 Reviewed commit: `79080bd70f0a603daf422432cf4708bef522e389` ("eval: supervise paired QA collection").
 
@@ -833,3 +833,220 @@ This section records the later G1 through G9 repair. It does not change either h
 
 The changes preserve the prior F1 through F8 repairs and the additive review record. No repair made
 a network call or a paid call. This author reconciliation grants no launch authorization.
+
+---
+
+# Final independent review — commit `1292b60`
+
+Date: 2026-09-04
+
+Reviewer lane: Claude Opus 5 at `xhigh` effort. Reviewer differs from the author and the design author.
+
+Reviewed commit: `1292b60fcfeddbd1f020921cc35daca5186bf34b` ("eval: close paired collection review
+residuals"), on top of `9cf49a4` and this report's `77a0f6b`.
+
+This section is additive. It changes neither historical verdict.
+
+I made no paid call, no network call, and no product-code change.
+
+## Verdict
+
+PASS.
+
+Every G1 through G9 residual is closed. I verified each against running code with fourteen fresh
+adversarial probes, and I re-ran the F1 and F3 repairs to confirm the new
+`releaseAfterBarrier` pre-check did not regress them. No new launch blocker appeared.
+
+Three low residuals remain (H1 through H3). None can cause unbounded spend, a wrong verdict, or a
+hang. One provenance correction was needed (H4) and I applied it.
+
+The launch gate is, in my assessment, ready for an owner authorization decision. This review still
+grants none.
+
+## G1 through G9 — disposition
+
+| Residual | Disposition | Evidence |
+|---|---|---|
+| G1 artifact-content binding before receipt | CLOSED, with H1 | Probes J1, J2, J4 |
+| G2 `releaseSequence` and honest timing claims | CLOSED | Probe N3, docs read |
+| G3 one `.dev.vars` comparator | CLOSED | Committed test, source read |
+| G4 `.dev.vars` operator error | CLOSED | Probe K2 |
+| G5 executing supervisor and control pins | CLOSED | Source read, committed test |
+| G6 `--cases` containment | CLOSED, with H2 | Probe M1 |
+| G7 added tests | CLOSED | Suite read, full run |
+| G8 `eval/EVALS.md` and `run-evals` guidance | CLOSED | Docs read |
+| G9 salt, secrecy, operator guidance | CLOSED | Probe K1, docs read |
+
+### G1 — artifact-content binding
+
+`artifactPathFromArm` now parses the reported artifact and requires `meta.comparable === true`, the
+ordered `rows[].id` list to deep-equal `plan.selected.ids`, and
+`meta.inputSnapshot.caseIdsSha256 === plan.selected.idsSha256`, then checks `meta.selectedIds` and
+`meta.inputSnapshot.casesSha256` when present.
+
+I traced each field to the writer rather than trusting the names.
+`run-qa.mjs:2135` writes `inputSnapshot.casesSha256 = sha256(JSON.stringify(cases))`, which is
+byte-identical to how the supervisor derives `plan.selected.contentSha256`, and
+`run-qa.mjs:2136` writes `caseIdsSha256`. `run-qa.mjs:2116` writes `meta.selectedIds`. So the
+content binding is real, not nominal. The stale-artifact hole my probe H1 opened in the previous
+round is closed: that same artifact is now rejected.
+
+- **J1** A reordered row list is rejected — the comparison is order-sensitive.
+- **J2** Non-JSON content is rejected with `artifact must contain readable JSON`.
+- **J4** An arm reporting its peer's artifact is rejected by the results-directory containment
+  check before any content is read.
+
+The five committed cases (non-comparable, wrong ID digest, wrong row IDs, wrong `selectedIds`,
+wrong content identity) all assert a hard cancellation with no receipt.
+
+### G2 — `releaseSequence` and honest timing
+
+The receipt now carries a monotonic `releaseSequence` counter per arm per row plus a flat ordered
+`releaseSequence` array, and the committed test asserts the exact sequence instead of comparing
+wall-clock strings. The `now()` stub was removed from that test, so it exercises the real clock.
+
+Probe **N3** confirms the shipped ordering end to end with the production clock:
+`0:baseline:1, 0:candidate:2, 1:candidate:3, 1:baseline:4`, with `firstReleasedArm` agreeing.
+
+The prose is now accurate in all three documents. `eval/qa/README.md` states plainly: "Wall-clock
+timestamps provide duration evidence only… This order does not prove which child starts its
+provider call first." That is exactly the honest claim I asked for, and it removes the overstatement
+risk I flagged.
+
+### G3, G4 and G9 — `.dev.vars`
+
+`compareText` is now used both when sorting entries and when validating `devVars.names`, so the
+producer and the checker agree. The mixed-case case that failed my previous probe now validates,
+and a committed test pins `["BETA", "alpha"]` as the expected code-unit order.
+
+`devVarsIdentity` wraps the read and throws `.dev.vars is missing or unreadable`, which the
+validator prefixes with the arm. Probe **K2** confirms the missing-file message contains no path
+separator at all, and that a value mismatch reports only "does not match the frozen identity" —
+the secret value `hunter2` never appears.
+
+Probe **K1** confirms the salt is load-bearing: two salts over the same file produce different
+digests and identical name lists, a short salt is rejected, and a plan whose salt is changed without
+recomputing the digest fails.
+
+One point worth stating precisely, because the documentation is careful and should stay that way:
+the salt and the digest live in the same file, so the salt does **not** protect a manifest that
+someone commits. What it does buy is real — no precomputation, and no correlation of the same
+secret set across plans. The protection against disclosure remains the handling rule, and
+`eval/qa/README.md` and the skill now both carry it: keep the plan uncommitted, delete it after
+success or failure. That is the right division, stated the right way.
+
+### G5 — executing byte pins
+
+`executingControlHashes()` hashes `fileURLToPath(import.meta.url)` and the sibling control module,
+and the validator requires both manifest pins to equal them, in addition to the two runner copies.
+The test fixture now writes the real supervisor and control bytes into the fake worktrees, so the
+test would fail if the check were removed. This closes the gap my previous probe E7 demonstrated.
+
+### G6 — `--cases` containment
+
+`pathInside` realpaths both sides and rejects an escape. Probe **M1** confirms the interesting case
+the plain-prefix version would have missed: a symlink *inside* the runner worktree that resolves to
+a file outside it is rejected.
+
+### G7 and G8
+
+The suite grew from 1,886 to 1,900 tests, all passing. It now covers intra-arm server-revision
+drift, the IPC drain cancellation, the production `complete → disconnect → exit` order, a closed
+peer channel at release, five artifact-binding shapes, mixed-case `.dev.vars`, the missing
+`.dev.vars` message, executing-pin mismatch, `--cases` escape, and the required salt. Four of those
+are direct commits of probes I ran last round.
+
+`eval/EVALS.md` item 12 and the `run-evals` skill now carry the full repaired contract: containment,
+executing pins, distinct revisions and surface hashes, adapter modes, distinct ports, the salted
+`.dev.vars` identity with its handling rule, the bounded drain, the release-order semantics, and the
+pre-receipt artifact checks.
+
+## F1 through F8 — still holding
+
+I re-ran the earlier repairs because `releaseAfterBarrier` gained a pre-send channel check that
+could have changed the cancellation paths.
+
+- **N1** A soft cancellation where neither child exits still settles through `SIGTERM` then
+  `SIGKILL`, and the exclusive marker survives. F1 holds.
+- **N2** The deadline with no exits still settles. No timer-free hang.
+- **N3** The production `complete → disconnect → exit` order resolves. F3 holds.
+- **N4** An exit whose IPC never closes still hard-cancels with the arm-specific message.
+- **N5** A peer channel that closes mid-run now cancels at the next release with
+  `closed before row release`, before either arm is released — an improvement on the previous
+  behavior, which failed at send time.
+- **N6** One arm completing while the other exits non-zero produces no receipt.
+
+The full suite covers the rest of F2, F4 through F8 unchanged.
+
+## Residual findings
+
+### H1 — the receipt does not bind the artifact to the arm's frozen server revision
+
+Probe **J3**: two artifacts that are comparable and carry the exact frozen ID set, but whose
+`meta.sourceIdentity.serverRevision` is a revision the plan never names, are accepted and a normal
+receipt is issued.
+
+The binding added in G1 is by corpus, not by service revision. The plan already holds each arm's
+exact `--server-revision`, so the check is one comparison. It would also catch an artifact collected
+against the wrong worktree.
+
+Not reachable through the real child, which reports its own `outPath` from a run whose revision the
+runner already pinned, and the printer rejects an equal-revision pair afterwards. Recommended as the
+last cheap tightening of the receipt gate, not as a blocker.
+
+### H2 — a missing `--cases` file still surfaces a raw `ENOENT`
+
+Probe **M2**: adding `--cases nope.json` produces
+`ENOENT: no such file or directory, lstat '/private/var/folders/…/baselineRunner/nope.json'`.
+
+This is the same class of message the G4 repair fixed for `.dev.vars`, left unfixed one function
+away. `pathInside` calls `realpathSync` on a path that may not exist. Wrap it the same way, so every
+launch-gate failure reads as a launch-gate failure and no absolute path leaks into an operator log.
+
+### H3 — one dead check in the artifact binding
+
+`artifactPathFromArm` guards `artifact.meta.selectedContentSha256`. No writer produces that field.
+`selectedContentSha256` exists only in the readiness IPC message (`run-qa.mjs:1790`), never in
+artifact metadata, so the loop's second element is always `undefined` and the comparison never runs.
+
+Harmless, and the sibling `inputSnapshot.casesSha256` in the same loop does carry the content
+binding. But it reads like a second content check when there is only one. Drop it, or add the field
+to the artifact if a second independent stamp is wanted.
+
+### H4 — a historical attribution was rewritten; I corrected it
+
+Commit `1292b60` changed the first review's header from "Reviewer: Claude Code, Opus 5, high
+effort." to "Reviewer lane: Claude Opus 5 at xhigh effort." The first review was conducted at high
+effort; only the two re-reviews ran at `xhigh`. The edit made the record overstate the effort behind
+the `79080bd` verdict.
+
+I restored that line to "Reviewer lane: Claude Opus 5 at high effort." and record the change here so
+it is not a silent revert. Both historical verdicts and every finding remain untouched. Normalizing
+route labels across a review record is reasonable; changing the recorded effort of a completed
+review is not, because the effort is part of what the verdict is worth.
+
+## Checks run
+
+| Command | Result |
+|---|---|
+| `npm test` | PASS, 107 files, 1,900 tests |
+| `npm run typecheck` | PASS |
+| `npm run build` | PASS |
+| `npm run eval:qa:paired:validate` | PASS, all gates true |
+| `npm run secrets:scan -- --tree` | PASS |
+| `git diff --check` | PASS |
+| Probes J1–J4, K1–K2, M1–M2, N1–N6 (14 cases, two temporary files) | As reported; files deleted, tree clean |
+
+I did not run `npm run test:smoke`. The commit touches no path under `src/executor` or `src/demo`.
+
+## Before a paid launch
+
+1. Optionally close H1, H2, and H3. None blocks authorization; H1 is the only one with any money
+   attached, and only under a child that misreports its own artifact.
+2. Produce the manifest instance at the final merged runner revision, with a fresh random
+   `devVars.salt`. Keep it uncommitted and delete it after the run, as `eval/qa/README.md` now
+   requires.
+3. Obtain the new owner authorization, naming every command, cumulative cap, final hash, stop rule,
+   and the independent result reviewer.
+
+This final review authorizes no spend, no deployment, and no merge.
