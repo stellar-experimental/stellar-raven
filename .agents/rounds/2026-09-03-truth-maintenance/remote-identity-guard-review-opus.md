@@ -7,8 +7,9 @@ Reviewer lane: Claude Opus 5 at xhigh effort
 Author lane: Codex GPT-5.6 Sol, high effort
 
 Commits reviewed: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`, then the repairs
-`8cd724de76858a0c9d6fa0908964f3c119ed52aa` and
-`5d47ab6900af6aa14d65d271879c9340f5b6bf3c`
+`8cd724de76858a0c9d6fa0908964f3c119ed52aa`,
+`5d47ab6900af6aa14d65d271879c9340f5b6bf3c`, and
+`f2e2d10770385315358378748d65de2c20fac6b9`
 
 Branch: `codex/tm-remote-identity-guard`
 
@@ -16,17 +17,20 @@ Worktree: `/private/tmp/stellar-raven-tm-remote-guard`
 
 ## Current verdict
 
-`PASS` for the bounds commit `5d47ab6`.
+`PASS` for the postflight commit `f2e2d10`.
 
 `8cd724d` reconciled every blocker and finding from the first pass.
-`5d47ab6` closes R2, R3, and R5 from the first re-review.
-I re-derived each result rather than accepting the author's table.
+`5d47ab6` closed R2, R3, and R5 from the first re-review.
+`f2e2d10` closes N3 and N4 from the second re-review.
+I re-derived each result rather than accepting the author's tables.
 
-R1 and R4 remain open. Neither is a code defect.
+The guard implementation is complete. No code finding remains open.
+
+Two operational items stay open, and neither is a code defect.
 R1 is the Scout release cadence, which the owner must still decide about.
 R4 is the 1,000-record Stellar Docs enumeration ceiling.
 
-The three sections below run in commit order.
+The four sections below run in commit order.
 
 ## First-pass verdict (commit `2ca5880`)
 
@@ -843,3 +847,146 @@ The guard work blocks nothing. The round-level blockers are unchanged.
 1. The Scout `1.9.30` drift decision is still open.
 2. The candidate row review and closeout decision are still incomplete.
 3. R1 still needs an owner decision on pair feasibility at Scout's cadence.
+
+---
+
+# Postflight re-review and final verdict
+
+Date: 2026-09-04
+
+Reviewer lane: Claude Opus 5 at xhigh effort
+
+Commit re-reviewed: `f2e2d10770385315358378748d65de2c20fac6b9`
+
+Scope: N3 and N4 only.
+
+Verdict: `PASS`
+
+I made no implementation edit. I only re-read, re-ran, and measured.
+
+## Commands
+
+| Command | Result |
+|---|---|
+| `npx vitest run` on the four touched test files | PASS, 191 tests |
+| `npm run typecheck` | PASS |
+| `npm test` | PASS, 105 files, 1,828 tests |
+| `npm run build` | PASS |
+| `npm run eval:qa:paired:validate` | PASS, all gates true |
+| Eight scratch paired-gate mutations on `skippedReason` | all rejected |
+| Four end-to-end guard classification scenarios | all accurate |
+| Repository sweep for every consumer of the changed fields | complete, see below |
+| `npm run secrets:scan -- --tree` | clean |
+
+I started no QA collection and made no paid model call.
+
+## N3 — paired artifact validation: RECONCILED
+
+`paired-verdict.mjs:245` now requires `postflight.skippedReason !== null` to fail
+the record. A successful postflight must therefore carry an explicit null.
+
+I re-ran my exact original mutation. In the second re-review, a candidate with
+`attempted: true` beside `skippedReason: "guard-already-stopped"` returned `PASS`.
+It now returns `INDETERMINATE` with the `remote-identity-guard` code.
+
+I then swept eight variants. Every one is rejected:
+
+| Mutation | Result |
+|---|---|
+| `attempted: true` with `"guard-already-stopped"` | rejected |
+| field absent, which is the pre-`5d47ab6` shape | rejected |
+| explicit `undefined` | rejected |
+| the string `"null"` | rejected |
+| `NaN` | rejected |
+| `{}` | rejected |
+| `[]` | rejected |
+| a single space | rejected |
+
+A clean pair still passes, so the check is not over-tight.
+The check also applies to the baseline arm, not only the candidate. I mutated the
+baseline alone and the comparison still returned `INDETERMINATE`.
+
+The author's own table adds `false`, `0`, and a missing field, so the committed
+suite covers falsy values that a loose `!skippedReason` test would have missed.
+The strict inequality is the right shape here.
+
+## N4 — missing-baseline classification: RECONCILED
+
+`missing-baseline` is now its own failure reason with its own message.
+`failure.reason` and `failure.diagnostics.kind` agree, which was the defect.
+
+I exercised four end-to-end scenarios against the real guard and the real
+`collectionComparabilityReasons`:
+
+| Scenario | Reason recorded | Comparability line |
+|---|---|---|
+| postflight with zero answering calls | `missing-baseline` | `remote identity baseline is missing` |
+| capture throws before the first paid call | `probe-unavailable` | `remote identity probe unavailable` |
+| identity change, then postflight | `identity-changed` preserved | `remote service identity changed: scout` |
+| early collection failure plus missing baseline | both | two distinct accurate lines |
+
+The third row matters most. After a real stop, `postflight()` still takes the skip
+path, returns null, and records `skippedReason: "guard-already-stopped"`.
+The original `identity-changed` reason survives, so the new reason cannot shadow a
+genuine stop, and no duplicate line appears.
+
+The fourth row shows the two causes staying separate rather than collapsing.
+
+## Schema compatibility
+
+The strict null check changes what older artifacts mean, so I checked the blast radius.
+
+An artifact collected before `5d47ab6` has no `skippedReason` field at all.
+`undefined !== null`, so the paired gate now rejects it. I confirmed that by mutation.
+
+That is the correct forward-only outcome. Those artifacts came from a guard whose
+retry budget was wrong and which had no postflight skip semantics, so they were
+never safe pair inputs.
+
+The practical impact is zero, and I verified it rather than assuming it:
+
+- `eval/qa/results/` does not exist in this worktree.
+- The one real 500-case artifact, the stopped candidate, carries no
+  `remoteIdentityGuard` key at all. The gate already rejected it before this commit.
+- No paid arm has ever run under any version of this guard.
+
+I also swept every consumer of the changed fields across `eval`, `src`, `scripts`,
+and `test`. Three reason strings are mapped in `run-qa.mjs`, three messages in
+`remote-identity-guard.mjs`, and `skippedReason` is read in exactly one place,
+`paired-verdict.mjs`. Nothing else reads either field, so no other module can
+break silently. The vector and guard schema identifiers are unchanged.
+
+## Residual note
+
+A missing-baseline postflight leaves `postflight` as
+`{ attempted: false, matches: false, vectorSha256: null, skippedReason: null }`,
+which is the initial state. It is therefore not distinguishable from a postflight
+that was never called, by that object alone.
+
+The `failure` record carries the true cause, and the paired gate rejects both cases
+on `attempted !== true`. Nothing depends on telling them apart. I record this for
+completeness and propose no change.
+
+## Final verdict for the remote identity guard
+
+`PASS`.
+
+Every item from all three review passes is now closed:
+
+| Pass | Items | State |
+|---|---|---|
+| First review of `2ca5880` | B1, B2, B3, F4 to F12 | closed by `8cd724d` |
+| First re-review of `8cd724d` | R2, R3, R5 | closed by `5d47ab6` |
+| Second re-review of `5d47ab6` | N3, N4 | closed by `f2e2d10` |
+| Second re-review, accepted | N1, N2, N5, N6 | recorded, no change needed |
+
+No code finding remains open. The guard is complete and independently verified.
+
+## Blockers for the next paid authorization
+
+The guard work blocks nothing. Three round-level items remain.
+
+1. The Scout `1.9.30` drift decision is still open.
+2. The candidate row review and closeout decision are still incomplete.
+3. R1 still needs an owner decision on pair feasibility at Scout's release cadence.
+   R4, the 1,000-record Docs enumeration ceiling, needs a scheduled re-check.
