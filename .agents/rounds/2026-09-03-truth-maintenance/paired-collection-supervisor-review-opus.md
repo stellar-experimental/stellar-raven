@@ -1218,3 +1218,64 @@ unchanged: produce the manifest instance at the final merged runner revision wit
 naming every command, cumulative cap, final hash, stop rule, and the independent result reviewer.
 
 This review authorizes no spend, no deployment, and no merge.
+
+---
+
+# I1 closure — commit `a5ac32f`
+
+Date: 2026-09-04
+
+Reviewer lane: Claude Opus 5 at `xhigh` effort.
+
+Reviewed commit: `a5ac32f9d89f63346e5b8148f4585e612e55c73f` ("eval: require paired artifact content
+identity"). It is not a root commit: its parent is `b648b481` and it sits on
+`codex/truth-maintenance-2026-09-03`, not on `codex/tm-paired-supervisor`. For both files it
+touches, that parent is byte-identical to this branch's `ef98283`, so I verified it in place and
+restored the tree afterwards.
+
+I made no paid call and no network call.
+
+## Verdict
+
+PASS. I1 is closed. This is the last finding I raised across four reviews, and nothing is open.
+
+## Verification
+
+**`meta.inputSnapshot.casesSha256` is mandatory.** The `!== undefined` guard is gone; the check is
+now a plain `artifact.meta.inputSnapshot.casesSha256 !== plan.selected.contentSha256`
+(`eval/qa/paired-collection-supervisor.mjs:503`). Probes against the tightened code:
+
+- **I1-a** An artifact omitting the field is rejected with
+  `baseline artifact does not match the frozen selected content`. My previous-round probe P5 showed
+  this exact artifact being accepted, so the hole is closed.
+- **I1-b** `null`, `""`, and `0` are rejected too.
+- **I1-c** A correct artifact still yields a receipt, so the tightening adds no false positive.
+
+**The new test is load-bearing.** I ran it in two stages rather than trusting that it exercises the
+change. With the new test file and the *unchanged* supervisor, exactly one case fails —
+`hard-cancels for a missing content identity artifact before receipt` — while the other five in the
+same table pass. Adding the supervisor change turns the file green at 41 of 41. A test that passes
+either way would prove nothing; this one does not.
+
+**The documentation no longer calls the content identity optional.** `eval/qa/README.md:946` now
+reads "It requires `meta.inputSnapshot.casesSha256` as the exact content binding"; `eval/EVALS.md`
+and the `run-evals` skill both say "exact content identity" where they said "available". The one
+remaining "when present" on `eval/qa/README.md:945` refers to `meta.selectedIds`, which the code
+still guards. That is accurate, and leaving it optional is defensible: the ordered `rows[].id` list
+is already compared exactly against the frozen IDs, so `selectedIds` is a redundant restatement
+rather than an independent binding.
+
+## Checks run
+
+| Command | Result |
+|---|---|
+| `npx vitest run test/qa-paired-collection-supervisor.test.mjs` — new test, unchanged code | 1 failed (the new case only), 5 passed in that table — as intended |
+| `npx vitest run test/qa-paired-collection-supervisor.test.mjs` — new test, tightened code | PASS, 41 tests |
+| `npm test` with the tightening applied | PASS, 107 files, 1,905 tests |
+| Probes I1-a, I1-b, I1-c (one temporary file) | As reported; file deleted |
+| `git status` after restoring both files | clean |
+
+I did not run `test:smoke`; the commit touches no path under `src/executor` or `src/demo`.
+
+The launch gate carries no open review finding. Authorization remains the owner's decision, and this
+review grants none.
