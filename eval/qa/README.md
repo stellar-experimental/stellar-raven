@@ -943,7 +943,7 @@ call first.
 Every reported artifact must exist below that arm runner's `eval/qa/results` directory. Before the
 receipt, the supervisor reads each artifact. It requires `meta.comparable === true`, the exact
 selected-ID digest, and the exact ordered row IDs. It verifies recorded selected IDs when present.
-It uses `meta.inputSnapshot.casesSha256` as the content binding when present. It also requires the
+It requires `meta.inputSnapshot.casesSha256` as the exact content binding. It also requires the
 artifact server revision to match that arm's frozen `--server-revision`.
 
 The paired printer permits different port pairs across the two arms. Each artifact must still

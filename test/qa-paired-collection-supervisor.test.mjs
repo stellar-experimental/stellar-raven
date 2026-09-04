@@ -684,6 +684,7 @@ describe("paired QA collection supervisor", () => {
     ["wrong selected digest", (artifact) => { artifact.meta.inputSnapshot.caseIdsSha256 = "0".repeat(64); }],
     ["wrong row IDs", (artifact) => { artifact.rows[0].id = "wrong"; }],
     ["wrong selectedIds", (artifact) => { artifact.meta.selectedIds[0] = "wrong"; }],
+    ["missing content identity", (artifact) => { delete artifact.meta.inputSnapshot.casesSha256; }],
     ["wrong content identity", (artifact) => { artifact.meta.inputSnapshot.casesSha256 = "0".repeat(64); }]
   ])("hard-cancels for a %s artifact before receipt", async (_label, mutate) => {
     const { root, plan, children } = fixture();

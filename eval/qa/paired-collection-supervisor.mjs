@@ -500,8 +500,7 @@ function artifactPathFromArm(plan, arm, reportedPath) {
       JSON.stringify(artifact.meta.selectedIds) !== JSON.stringify(plan.selected.ids)) {
     throw new Error(`${arm} artifact selectedIds does not match the frozen selected IDs`);
   }
-  if (artifact.meta.inputSnapshot.casesSha256 !== undefined &&
-      artifact.meta.inputSnapshot.casesSha256 !== plan.selected.contentSha256) {
+  if (artifact.meta.inputSnapshot.casesSha256 !== plan.selected.contentSha256) {
     throw new Error(`${arm} artifact does not match the frozen selected content`);
   }
   const frozenServerRevision = flagValue(plan.arms[arm].collectionCommand, "--server-revision");
