@@ -1,7 +1,7 @@
 ---
 id: sd-046
 service: stellar-docs
-status: proposed
+status: verified
 discovered: 2026-08-30
 upstreamTitle: Lumens and Accounts pages obscure the two-reserve cost of pool-share trustlines
 evidence:
@@ -10,6 +10,10 @@ evidence:
   - 2026-08-30 live read of https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools stated that a pool-share trustline requires two base reserves instead of one
   - 2026-08-30 live read of https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md stated that a pool-share trustline counts as two subentries and requires two base reserves
   - source case eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json; its truth.verified entry dated 2026-08-31 names this finding in rootCause (mutual link recorded 2026-08-31)
+  - live re-execution 2026-09-04: the Lumens and Accounts pages still group traditional-asset and pool-share trustlines without the two-reserve exception; the Liquidity Pools page and CAP-0038 still state that a pool-share trustline requires two base reserves
+recurrences:
+  - date: 2026-09-04
+    evidence: current public reads reproduced the exact omission. Lumens SHA-256 4cc085d05768d143ddc6a406846f934cc6cbd70212300bd4d221678c02cf3029 and Accounts SHA-256 c2307eb97e1cb9f20f42eb1027339e11e7a03d53e26492df756c02f35cf4b481 omit the exception. Liquidity Pools SHA-256 2a6906e9171e1f8d1b11a31f6d6590a7c337003fdb3639e08b30fbcc4e8b0a11 and CAP-0038 SHA-256 febebc612e1dd14006ea677161c626a27575be32b7c937d8aacb30677789c1aa state the two-reserve rule.
 ---
 
 ## Finding

@@ -43,15 +43,15 @@ Total findings: 70
 | sd-032 | The current Flutter Wallet SDK tutorial pins this pair:                                                                                     | reported-upstream | 2026-07-11 | 1           |
 | sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 4           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |
-| sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 2           |
+| sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 3           |
 | sd-039 | The current Tools documentation presents "OpenZeppelin Relayer" and the managed Stellar Channels service as the same product. Both…         | reported-upstream | 2026-07-27 | 4           |
 | sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()                              | reported-upstream | 2026-08-11 | 0           |
 | sd-041 | The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos      | reported-upstream | 2026-08-14 | 0           |
 | sd-042 | Stellar Docs publish two incompatible lifecycle labels for Horizon                                                                          | reported-upstream | 2026-08-14 | 0           |
 | sd-043 | The sponsored-reserves guide states this minimum-balance formula under "Effect on minimum balance":                                         | reported-upstream | 2026-08-14 | 0           |
-| sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | reported-upstream | 2026-08-14 | 1           |
+| sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | reported-upstream | 2026-08-14 | 2           |
 | sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | reported-upstream | 2026-08-14 | 1           |
-| sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | proposed          | 2026-08-30 | 0           |
+| sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | verified          | 2026-08-30 | 1           |
 | sd-047 | Two canonical developer-docs pages state different ledger cadences with the same sentence frame. The Validators introduction…               | reported-upstream | 2026-08-31 | 1           |
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
 | sd-049 | The Saved Keypairs page says saved keys are obfuscated but not encrypted. The current storage helper serializes each SavedKeypair directly… | verified          | 2026-09-03 | 0           |
