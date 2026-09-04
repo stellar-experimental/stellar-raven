@@ -2,6 +2,9 @@
 import { createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import {
+  REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
+  REMOTE_IDENTITY_REQUEST_TIMEOUT_MS,
+  REMOTE_IDENTITY_RETRY_DELAYS_MS,
   REMOTE_IDENTITY_VECTOR_SCHEMA,
   parseRemoteIdentityVector,
   remoteIdentityVectorSha256
@@ -11,8 +14,6 @@ const DOCS_APPLICATION_ID = "VNSJF5AWIZ";
 const DOCS_INDEX_NAME = "crawler_Stellar Docs - Docusaurus";
 // Algolia documents this search-only key for the public Stellar Docs index.
 const DOCS_SEARCH_KEY = "c932e7670879e29070e269d202fb6740";
-const DEFAULT_TIMEOUT_MS = 20_000;
-const DEFAULT_RETRY_DELAYS_MS = [250, 1_000];
 
 export const REMOTE_IDENTITY_SOURCES = Object.freeze({
   scoutOpenapi: "https://stellarlight.xyz/api/openapi.json",
@@ -68,12 +69,39 @@ function shouldRetry(error) {
   );
 }
 
+const HTTP_DATE = new RegExp(
+  "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), " +
+  "\\d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) " +
+  "\\d{4} \\d{2}:\\d{2}:\\d{2} GMT$"
+);
+
+export function parseRetryAfterMs(value, {
+  nowMs = Date.now(),
+  maximumMs = REMOTE_IDENTITY_MAX_RETRY_AFTER_MS
+} = {}) {
+  if (typeof value !== "string" || value.trim() === "") return null;
+  const trimmed = value.trim();
+  let requestedMs;
+  if (/^\d+$/.test(trimmed)) {
+    requestedMs = Number(trimmed) * 1_000;
+  } else {
+    if (!HTTP_DATE.test(trimmed)) return null;
+    const retryAtMs = Date.parse(trimmed);
+    if (!Number.isFinite(retryAtMs)) return null;
+    requestedMs = Math.max(0, retryAtMs - nowMs);
+  }
+  if (!Number.isFinite(requestedMs)) return maximumMs;
+  return Math.min(maximumMs, requestedMs);
+}
+
 export async function fetchJsonWithRetry(
   { label, url, init },
   {
     fetchImpl = globalThis.fetch,
-    timeoutMs = DEFAULT_TIMEOUT_MS,
-    retryDelaysMs = DEFAULT_RETRY_DELAYS_MS,
+    timeoutMs = REMOTE_IDENTITY_REQUEST_TIMEOUT_MS,
+    retryDelaysMs = REMOTE_IDENTITY_RETRY_DELAYS_MS,
+    maximumRetryAfterMs = REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
+    nowImpl = Date.now,
     sleepImpl = (delayMs) => new Promise((resolve) => setTimeout(resolve, delayMs)),
     onRetry = () => {}
   } = {}
@@ -87,7 +115,11 @@ export async function fetchJsonWithRetry(
       const response = await fetchImpl(url, { ...init, signal: controller.signal });
       if (!response.ok) {
         throw sourceError("http", `${label} returned HTTP ${response.status}`, {
-          status: response.status
+          status: response.status,
+          retryAfterMs: parseRetryAfterMs(response.headers?.get?.("retry-after"), {
+            nowMs: nowImpl(),
+            maximumMs: maximumRetryAfterMs
+          })
         });
       }
       const text = await response.text();
@@ -107,13 +139,18 @@ export async function fetchJsonWithRetry(
     }
 
     if (!shouldRetry(error) || attempt === maximumAttempts) throw error;
+    const delayMs = Math.max(
+      retryDelaysMs[attempt - 1],
+      error.retryAfterMs ?? 0
+    );
     onRetry({
       label,
       attempt,
       maximumAttempts,
-      reason: safeRetryReason(error)
+      reason: safeRetryReason(error),
+      delayMs
     });
-    await sleepImpl(retryDelaysMs[attempt - 1]);
+    await sleepImpl(delayMs);
   }
   throw new Error(`${label} exhausted its retry limit`);
 }
@@ -242,27 +279,27 @@ export async function probeRemoteIdentities(options = {}) {
     attributesToHighlight: "[]",
     attributesToSnippet: "[]"
   }).toString();
-  const docsTitleRequest = {
-    label: "Stellar Docs title batch",
+  const docsTitleRequest = (pages, label) => ({
+    label,
     url: REMOTE_IDENTITY_SOURCES.stellarDocsTitles,
     init: {
       method: "POST",
       headers: { ...docsHeaders, "content-type": "application/json" },
       body: JSON.stringify({
-        requests: Array.from({ length: 10 }, (_, page) => ({
+        requests: pages.map((page) => ({
           indexName: DOCS_INDEX_NAME,
           params: docsQueryParams(page)
         }))
       })
     }
-  };
+  });
   const [
     scoutOpenapi,
     lumenloopOpenapi,
     lumenloopTools,
     lumenloopSkills,
     stellarDocsSettings,
-    stellarDocsTitleBatch
+    stellarDocsFirstTitleBatch
   ] = await Promise.all([
     request({ label: "Scout OpenAPI", url: REMOTE_IDENTITY_SOURCES.scoutOpenapi }),
     request({ label: "Lumenloop OpenAPI", url: REMOTE_IDENTITY_SOURCES.lumenloopOpenapi }),
@@ -273,31 +310,44 @@ export async function probeRemoteIdentities(options = {}) {
       url: REMOTE_IDENTITY_SOURCES.stellarDocsSettings,
       init: { headers: docsHeaders }
     }),
-    request(docsTitleRequest)
+    request(docsTitleRequest([0], "Stellar Docs title page count"))
   ]);
-  const titleResults = stellarDocsTitleBatch?.results;
+  const firstTitleResults = stellarDocsFirstTitleBatch?.results;
   if (
-    !Array.isArray(titleResults) ||
-    titleResults.length !== 10 ||
-    !Number.isInteger(titleResults[0]?.nbPages) ||
-    titleResults[0].nbPages < 1 ||
-    titleResults[0].nbPages > titleResults.length
+    !Array.isArray(firstTitleResults) ||
+    firstTitleResults.length !== 1 ||
+    !Number.isInteger(firstTitleResults[0]?.nbPages) ||
+    firstTitleResults[0].nbPages < 1 ||
+    firstTitleResults[0].nbPages > 10
   ) {
     throw new Error("Stellar Docs title page count is invalid");
   }
-  const titlePages = titleResults.slice(0, titleResults[0].nbPages);
+  const remainingPageNumbers = Array.from(
+    { length: firstTitleResults[0].nbPages - 1 },
+    (_, index) => index + 1
+  );
+  const remainingTitleResults = remainingPageNumbers.length === 0
+    ? []
+    : (await request(docsTitleRequest(
+        remainingPageNumbers,
+        "Stellar Docs remaining title pages"
+      )))?.results;
+  if (!Array.isArray(remainingTitleResults) || remainingTitleResults.length !== remainingPageNumbers.length) {
+    throw new Error("Stellar Docs remaining title pages are incomplete");
+  }
+  const titlePages = [firstTitleResults[0], ...remainingTitleResults];
   for (const [page, response] of titlePages.entries()) {
     if (
       response.page !== page ||
-      response.nbPages !== titleResults[0].nbPages ||
-      response.nbHits !== titleResults[0].nbHits ||
+      response.nbPages !== firstTitleResults[0].nbPages ||
+      response.nbHits !== firstTitleResults[0].nbHits ||
       !Array.isArray(response.hits)
     ) {
       throw new Error("Stellar Docs title pagination changed during capture");
     }
   }
   const stellarDocsTitles = {
-    nbHits: titleResults[0].nbHits,
+    nbHits: firstTitleResults[0].nbHits,
     hits: titlePages.flatMap((page) => page.hits)
   };
   return buildRemoteIdentityVector({
@@ -340,9 +390,9 @@ async function main() {
     throw new Error("usage: probe-remote-identities.mjs [--sha256|--stable-sha256]");
   }
   const probe = () => probeRemoteIdentities({
-    onRetry: ({ label, attempt, maximumAttempts, reason }) => {
+    onRetry: ({ label, attempt, maximumAttempts, reason, delayMs }) => {
       console.error(
-        `remote-identity-probe: ${label} attempt ${attempt}/${maximumAttempts} failed (${reason}); retrying`
+        `remote-identity-probe: ${label} attempt ${attempt}/${maximumAttempts} failed (${reason}); retrying in ${delayMs} ms`
       );
     }
   });

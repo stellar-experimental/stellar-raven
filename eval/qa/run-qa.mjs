@@ -1555,6 +1555,50 @@ export function applyCollectionComparability(aggregates, comparabilityReasons) {
   };
 }
 
+function failureMessage(error) {
+  return String(error?.message ?? error);
+}
+
+export function collectionComparabilityReasons({
+  collectionError,
+  postflightError,
+  remoteIdentityPostflightError,
+  collectionSourceIdentityGuard,
+  remoteIdentityGuardRecord
+}) {
+  const reasons = [];
+  if (collectionError && collectionError.code !== "remote-identity-guard") {
+    reasons.push(`collection failed: ${failureMessage(collectionError)}`);
+  }
+  if (postflightError) reasons.push(`postflight failed: ${failureMessage(postflightError)}`);
+  if (
+    remoteIdentityPostflightError &&
+    remoteIdentityPostflightError.code !== "remote-identity-guard"
+  ) {
+    reasons.push(
+      `remote identity postflight failed: ${failureMessage(remoteIdentityPostflightError)}`
+    );
+  }
+  if (!collectionSourceIdentityGuard.matches) {
+    reasons.push(
+      `source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`
+    );
+  }
+  if (!remoteIdentityGuardRecord.matches) {
+    const failure = remoteIdentityGuardRecord.failure;
+    if (failure?.reason === "identity-changed") {
+      reasons.push(`remote service identity changed: ${failure.changedServices.join(", ")}`);
+    } else if (failure?.reason === "pre-arm-vector-mismatch") {
+      reasons.push("remote identity pre-arm vector SHA-256 mismatch");
+    } else if (failure?.reason === "probe-unavailable") {
+      reasons.push("remote identity probe unavailable");
+    } else {
+      reasons.push(`remote identity guard failed: ${failure?.reason ?? "unknown"}`);
+    }
+  }
+  return [...new Set(reasons)];
+}
+
 async function main() {
   const args = process.argv.slice(2);
   assertRunQaCliSyntax(args);
@@ -1963,23 +2007,13 @@ async function main() {
   const finalSourceIdentity = sourceIdentity(serverRevision);
   const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
   const remoteIdentityGuardRecord = remoteIdentityGuard.record();
-  const comparabilityReasons = [
-    ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
-    ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
-    ...(remoteIdentityPostflightError
-      ? [`remote identity postflight failed: ${String(remoteIdentityPostflightError.message ?? remoteIdentityPostflightError)}`]
-      : []),
-    ...(!collectionSourceIdentityGuard.matches
-      ? [`source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`]
-      : []),
-    ...(!remoteIdentityGuardRecord.matches
-      ? [
-          remoteIdentityGuardRecord.failure?.reason === "identity-changed"
-            ? `remote service identity changed: ${remoteIdentityGuardRecord.failure.changedServices.join(", ")}`
-            : "remote identity probe unavailable"
-        ]
-      : [])
-  ];
+  const comparabilityReasons = collectionComparabilityReasons({
+    collectionError,
+    postflightError,
+    remoteIdentityPostflightError,
+    collectionSourceIdentityGuard,
+    remoteIdentityGuardRecord
+  });
   const aggregates = collectionAggregates(rows, cases, { judging: !noJudge });
   const {
     comparable,

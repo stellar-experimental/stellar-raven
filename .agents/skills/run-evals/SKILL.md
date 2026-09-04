@@ -275,11 +275,15 @@ requests. It must emit the exact `qa-remote-identity-vector-v1` contract from `e
 The vector covers Scout, Lumenloop, and Stellar Docs. It excludes timestamps and volatile telemetry.
 Use the committed `eval/qa/probe-remote-identities.mjs` probe. It receives only `PATH`.
 It uses public Scout, Lumenloop, and Stellar Docs sources. It owns bounded request retries.
+It caps a valid `Retry-After` delay at five seconds.
+Its 145-second process timeout covers the 140-second maximum network budget.
+The Docs probe discovers the page count before requesting exactly the remaining pages.
 The runner calls the probe around every answering call. It also calls it after postflight.
 
 Stop after any probe failure or identity change. The runner preserves completed rows and lists
 unattempted IDs. It records the changed service and both vectors. It marks the artifact
 non-comparable and suppresses aggregates. Never resume that artifact under the same authorization.
+Use the single guard reason for closeout. A stopped postflight adds no duplicate reason.
 
 ```sh
 SERVER_REVISION=<clean 40-character server commit>

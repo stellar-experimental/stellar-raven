@@ -11,6 +11,9 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS,
+  REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
+  REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS,
   REMOTE_IDENTITY_VECTOR_SCHEMA,
   captureRemoteIdentity,
   remoteIdentityProbeIdentity
@@ -22,6 +25,7 @@ import {
   fetchJsonWithRetry,
   normalizeLumenloopInventory,
   normalizeStellarDocsTitles,
+  parseRetryAfterMs,
   probeRemoteIdentities
 } from "../eval/qa/probe-remote-identities.mjs";
 
@@ -145,8 +149,9 @@ describe("production remote identity canonicalization", () => {
     expect(JSON.stringify(built)).not.toMatch(/captured|timestamp|generatedAt/);
   });
 
-  it("uses six public requests and one bounded Docs batch", async () => {
+  it("uses seven public requests and exactly seven current Docs searches", async () => {
     const requests = [];
+    const titleBatches = [];
     const response = (value) => ({ ok: true, status: 200, text: async () => JSON.stringify(value) });
     const result = await probeRemoteIdentities({
       fetchImpl: async (url, init = {}) => {
@@ -177,27 +182,77 @@ describe("production remote identity canonicalization", () => {
         }
         if (url.endsWith("/settings")) return response({ searchableAttributes: ["title"] });
         const body = JSON.parse(init.body);
-        expect(body.requests).toHaveLength(10);
+        const pages = body.requests.map((request) => Number(
+          new URLSearchParams(request.params).get("page")
+        ));
+        titleBatches.push(pages);
         return response({
-          results: body.requests.map((_, page) => ({
+          results: pages.map((page) => ({
             page,
-            nbPages: 1,
-            nbHits: 1,
-            hits: page === 0
-              ? [{ hierarchy: { lvl1: "A" }, url_without_anchor: "https://developers.stellar.org/a" }]
-              : []
+            nbPages: 7,
+            nbHits: 650,
+            hits: Array.from({ length: page === 6 ? 50 : 100 }, (_, index) => ({
+              hierarchy: { lvl1: `Title ${page}-${index}` },
+              url_without_anchor: `https://developers.stellar.org/page-${page}-${index}`
+            }))
           }))
         });
       },
       retryDelaysMs: []
     });
 
-    expect(requests).toHaveLength(6);
+    expect(requests).toHaveLength(7);
+    expect(titleBatches).toEqual([[0], [1, 2, 3, 4, 5, 6]]);
     expect(result.schema).toBe(REMOTE_IDENTITY_VECTOR_SCHEMA);
   });
 });
 
 describe("production remote identity retries", () => {
+  it("aligns the process timeout with two complete retry phases", () => {
+    expect(REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS).toBe(140_000);
+    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(145_000);
+  });
+
+  it.each([
+    ["capped delta", "120", 0, REMOTE_IDENTITY_MAX_RETRY_AFTER_MS],
+    ["HTTP date", new Date(4_000).toUTCString(), 1_000, 3_000],
+    ["past HTTP date", new Date(1_000).toUTCString(), 4_000, 0],
+    ["negative value", "-1", 0, null],
+    ["invalid value", "not-a-delay", 0, null]
+  ])("parses a %s Retry-After value safely", (_label, value, nowMs, expected) => {
+    expect(parseRetryAfterMs(value, { nowMs })).toBe(expected);
+  });
+
+  it("uses a capped Retry-After delay without exposing the header", async () => {
+    const delays = [];
+    const retries = [];
+    let attempt = 0;
+    await fetchJsonWithRetry(
+      { label: "test source", url: "https://example.invalid" },
+      {
+        fetchImpl: async () => {
+          attempt += 1;
+          return attempt === 1
+            ? {
+                ok: false,
+                status: 429,
+                headers: { get: () => "120" },
+                text: async () => ""
+              }
+            : { ok: true, status: 200, text: async () => "{\"ok\":true}" };
+        },
+        retryDelaysMs: [250],
+        sleepImpl: async (delay) => delays.push(delay),
+        onRetry: (entry) => retries.push(entry)
+      }
+    );
+    expect(delays).toEqual([REMOTE_IDENTITY_MAX_RETRY_AFTER_MS]);
+    expect(retries).toEqual([
+      expect.objectContaining({ reason: "HTTP 429", delayMs: REMOTE_IDENTITY_MAX_RETRY_AFTER_MS })
+    ]);
+    expect(JSON.stringify(retries)).not.toContain("120");
+  });
+
   it("uses bounded deterministic retries for transient failures", async () => {
     const statuses = [503, 429, 200];
     const delays = [];
@@ -258,6 +313,23 @@ describe("production remote identity retries", () => {
 });
 
 describe("remote identity probe process boundary", () => {
+  it("uses the complete retry budget as its default outer timeout", () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "qa-remote-probe-"));
+    try {
+      const identity = identityFor(root, "#!/bin/sh\nexit 0\n");
+      let spawnOptions;
+      expect(captureRemoteIdentity(identity, {
+        spawnSyncImpl: (_command, _args, options) => {
+          spawnOptions = options;
+          return { status: 0, signal: null, stdout: JSON.stringify(vector()), stderr: "" };
+        }
+      })).toEqual(vector());
+      expect(spawnOptions.timeout).toBe(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("captures a valid vector and passes only the minimal environment", () => {
     const root = mkdtempSync(path.join(os.tmpdir(), "qa-remote-probe-"));
     const previous = process.env.QA_REMOTE_PROBE_PARENT_SECRET;

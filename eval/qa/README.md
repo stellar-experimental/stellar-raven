@@ -205,8 +205,17 @@ The committed probe makes only free, read-only requests to these public sources:
 
 The probe receives only `PATH`. It receives no repository or Claude secret.
 Each source request has a 20-second timeout and two bounded retries.
+The probe accepts integer-seconds and HTTP-date `Retry-After` values.
+It caps each server-requested delay at five seconds.
+Two complete Docs query phases have a 140-second network budget.
+The outer process timeout is 145 seconds.
 The probe prints one JSON object to stdout. The runner calls it around each answering call.
 The runner also calls it after the local postflight. It stores no raw stdout or stderr.
+
+The Docs probe first requests page zero to learn the current page count.
+It then requests exactly the remaining pages in one batch.
+The current 650-title index needs seven Algolia search operations per capture.
+The prior fixed batch used ten search operations per capture.
 
 The probe output has this exact contract:
 
@@ -243,6 +252,8 @@ artifact preserves completed rows and lists unattempted IDs. It sets `meta.compa
 `meta.aggregatesSuppressed: true`. It records the changed service and both vectors. A stopped
 artifact cannot resume under the same authorization. A comparable artifact includes one matching
 final postflight capture. Listener stability alone does not prove remote service stability.
+The artifact names a pre-arm pin mismatch directly.
+A stopped guard skips postflight without adding a second comparability reason.
 
 Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
 Collection also requires both server pins, the probe path, its byte pin, and the vector pin.

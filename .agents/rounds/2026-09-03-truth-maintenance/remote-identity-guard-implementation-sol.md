@@ -8,6 +8,8 @@ Author lane: Codex GPT-5.6 Sol, high effort
 
 Reviewed commit: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`
 
+Required-repair base: `8cd724de76858a0c9d6fa0908964f3c119ed52aa`
+
 Review: `remote-identity-guard-review-opus.md`
 
 ## Outcome
@@ -38,12 +40,44 @@ It never permits resume with the same authorization.
 | F7 | Reconciled | Added table-driven paired-gate tests for all eight requested guard mutations. |
 | F8 | Reconciled | Added real spawn tests for tampering, exit, timeout, overflow, missing, directory, and success paths. |
 | F9 | Reconciled | Probe failures record a safe kind, path, status, signal, and timeout flag. They omit raw output. |
-| F10 | Reconciled | Each public source request has a 20-second timeout and two deterministic bounded retries. |
+| F10 | Reconciled | Each request has a 20-second timeout, two retries, and a capped `Retry-After` delay. |
 | F11 | Reconciled | Artifacts store `eval/qa/probe-remote-identities.mjs`. They never store the absolute path. |
 | F12 | Reconciled | Updated `eval/EVALS.md` with remote comparability and listener-insufficiency rules. |
 
 The repair also closes the review's pre-existing comparability observation.
 Stored judging now requires `meta.comparable === true`.
+
+## Required repair reconciliation
+
+| Finding | Status | Reconciliation |
+|---|---|---|
+| R2 | Reconciled | The Docs probe discovers the page count, then requests exactly the remaining pages. |
+| R3 | Reconciled | The 145-second process timeout covers the 140-second maximum network budget. |
+| R5 | Reconciled | Pre-arm mismatches use an accurate reason. A stopped postflight adds no duplicate reason. |
+
+R2 changes the current Algolia search load from ten operations to seven operations per capture.
+One discovery search returns page zero.
+One batch returns the six remaining current pages.
+The combined result still contains all 650 current title records.
+
+The total HTTP load changes from six requests to seven requests per capture.
+Algolia HTTP requests change from two to three per capture.
+The extra HTTP request avoids three billed search operations.
+
+For 1,001 captures, HTTP requests change from 6,006 to 7,007.
+Algolia search operations change from 10,010 to 7,007.
+Algolia settings reads remain 1,001.
+
+Each request still permits three 20-second attempts.
+Each of the two retry delays can reach the five-second `Retry-After` cap.
+One complete request phase therefore has a 70-second limit.
+The two sequential Docs phases have a 140-second limit.
+The outer process timeout changes from 60 seconds to 145 seconds.
+
+The probe accepts integer-seconds and IMF-fixdate `Retry-After` values.
+It rejects malformed and negative values.
+It caps valid values at five seconds.
+It never records or prints the header value.
 
 ## Probe command
 
@@ -76,12 +110,13 @@ Pass both hashes to `run-qa.mjs`:
 - Stellar Docs uses the public Algolia settings and multiple-query endpoints.
 - Stellar Docs records the settings hash and the complete normalized `type:lvl1` title-set hash.
 
-The Docs multiple-query request batches ten bounded pages.
+The Docs probe requests page zero before its remaining-page batch.
+It requests exactly seven pages for the current index.
 The probe fails when the result exceeds that complete 1,000-record window.
 The complete current title set contains 650 records.
 
-The probe uses six public HTTP requests per capture.
-It starts those requests in parallel.
+The probe uses seven public HTTP requests for the current index.
+It starts six requests in parallel, then sends the remaining-page batch.
 The runner sends no Claude variable or repository secret to the probe.
 
 ## Development capture
@@ -102,9 +137,9 @@ The final observed service fields were:
 
 ## Tests
 
-- Focused guard, probe, pairing, and harness tests passed: 173 tests.
+- Focused guard, probe, pairing, and harness tests passed: 4 files and 182 tests.
 - `npm run typecheck` passed.
-- `npm test` passed: 105 files and 1,810 tests.
+- `npm test` passed: 105 files and 1,819 tests.
 - `npm run build` passed.
 - `npm run eval:qa:paired:validate` passed every deterministic gate.
 - The minimal-environment live probe passed.
@@ -125,11 +160,22 @@ Public source rate limits or outages can still stop an arm.
 Bounded retries reduce transient failures but keep the guard fail-closed.
 
 Each 500-call arm uses 1,001 probe captures plus one formal pre-arm sequence.
-Each normal capture makes six public requests.
+Each current normal capture makes seven public requests.
 This cost is wall time and public request load, not model spend.
 
 The guard hashes full public contracts and explicit public catalogs.
 A real upstream contract change will stop the arm by design.
+
+## Planning risks
+
+R1 remains a planning risk only.
+Scout release cadence can prevent two long arms from sharing one identity window.
+This repair does not weaken the Scout fields or change the paired-run contract.
+
+R4 remains a planning risk only.
+The public Docs index has a 1,000-record pagination ceiling.
+The probe fails closed if the page count exceeds ten.
+The current title set uses 650 records.
 
 ## Remaining blockers
 
@@ -140,6 +186,8 @@ The truth-maintenance baseline must remain stopped for two separate reasons:
 
 - The Scout `1.9.30` drift decision remains open.
 - The candidate artifact still needs a complete row review and closeout decision.
+
+The owner must also resolve the R1 paired-run scheduling risk before new spend.
 
 A future authorization must run the formal stable pre-arm command.
 Both paired arms must use its same vector hash and the same committed probe bytes.

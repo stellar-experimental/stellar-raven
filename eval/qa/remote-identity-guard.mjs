@@ -6,6 +6,20 @@ import path from "node:path";
 export const REMOTE_IDENTITY_VECTOR_SCHEMA = "qa-remote-identity-vector-v1";
 export const REMOTE_IDENTITY_GUARD_SCHEMA = "qa-remote-identity-guard-v1";
 export const REMOTE_IDENTITY_SERVICES = ["scout", "lumenloop", "stellarDocs"];
+export const REMOTE_IDENTITY_REQUEST_TIMEOUT_MS = 20_000;
+export const REMOTE_IDENTITY_RETRY_DELAYS_MS = Object.freeze([250, 1_000]);
+export const REMOTE_IDENTITY_MAX_RETRY_AFTER_MS = 5_000;
+const REMOTE_IDENTITY_DOCS_QUERY_PHASES = 2;
+const REMOTE_IDENTITY_MAX_RETRY_DELAY_MS = Math.max(
+  REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
+  ...REMOTE_IDENTITY_RETRY_DELAYS_MS
+);
+export const REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS = REMOTE_IDENTITY_DOCS_QUERY_PHASES * (
+  (REMOTE_IDENTITY_RETRY_DELAYS_MS.length + 1) * REMOTE_IDENTITY_REQUEST_TIMEOUT_MS +
+  REMOTE_IDENTITY_RETRY_DELAYS_MS.length * REMOTE_IDENTITY_MAX_RETRY_DELAY_MS
+);
+export const REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS =
+  REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS + 5_000;
 
 const SERVICE_FIELDS = {
   scout: ["openapiVersion", "canonicalOpenapiSha256"],
@@ -153,7 +167,7 @@ function publicProbeRecord(probeIdentity) {
 /** Run the pinned probe with a minimal environment and retain no raw output. */
 export function captureRemoteIdentity(probeIdentity, {
   spawnSyncImpl = spawnSync,
-  timeoutMs = 60_000,
+  timeoutMs = REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS,
   maxBufferBytes = 1024 * 1024,
   environment = { PATH: process.env.PATH ?? "" }
 } = {}) {
@@ -223,7 +237,12 @@ export function createRemoteIdentityGuard({
   let pendingCall = null;
   let failure = null;
   let completedAnsweringCalls = 0;
-  let postflight = { attempted: false, matches: false, vectorSha256: null };
+  let postflight = {
+    attempted: false,
+    matches: false,
+    vectorSha256: null,
+    skippedReason: null
+  };
   const captures = [];
 
   const fail = ({
@@ -344,7 +363,15 @@ export function createRemoteIdentityGuard({
     },
 
     postflight() {
-      assertActive();
+      if (failure) {
+        postflight = {
+          attempted: false,
+          matches: false,
+          vectorSha256: null,
+          skippedReason: "guard-already-stopped"
+        };
+        return null;
+      }
       if (pendingCall) throw new Error("remote identity guard has an unfinished answering call");
       if (baselineVector === null) {
         fail({
@@ -365,7 +392,8 @@ export function createRemoteIdentityGuard({
       postflight = {
         attempted: true,
         matches: comparison.matches,
-        vectorSha256: remoteIdentityVectorSha256(vector)
+        vectorSha256: remoteIdentityVectorSha256(vector),
+        skippedReason: null
       };
       if (!comparison.matches) {
         fail({

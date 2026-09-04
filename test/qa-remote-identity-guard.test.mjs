@@ -15,6 +15,7 @@ import {
 } from "../eval/qa/remote-identity-guard.mjs";
 import {
   applyCollectionComparability,
+  collectionComparabilityReasons,
   collectionAggregates
 } from "../eval/qa/run-qa.mjs";
 
@@ -264,6 +265,41 @@ describe("QA remote identity call guard", () => {
       completedAnsweringCalls: 0,
       failure: { reason: "pre-arm-vector-mismatch", phase: "before" }
     });
+  });
+
+  it("reports one accurate reason after a pre-arm vector mismatch", () => {
+    const baseline = vector();
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: "f".repeat(64),
+      capture: queuedCapture([baseline])
+    });
+    let collectionError;
+    try {
+      runRemoteIdentityGuardedCall({
+        guard,
+        context: { id: "a", attempt: 1 },
+        authorize: () => ({}),
+        call: () => ({ costUsd: 0.1 }),
+        recordSpend: () => {}
+      });
+    } catch (error) {
+      collectionError = error;
+    }
+
+    expect(guard.postflight()).toBeNull();
+    const remoteIdentityGuardRecord = guard.record();
+    expect(remoteIdentityGuardRecord.postflight).toMatchObject({
+      attempted: false,
+      skippedReason: "guard-already-stopped"
+    });
+    expect(collectionComparabilityReasons({
+      collectionError,
+      postflightError: null,
+      remoteIdentityPostflightError: null,
+      collectionSourceIdentityGuard: { matches: true, changedKeys: [] },
+      remoteIdentityGuardRecord
+    })).toEqual(["remote identity pre-arm vector SHA-256 mismatch"]);
   });
 
   it("stops before a judge call when the after-call probe is unavailable", () => {
