@@ -22,6 +22,7 @@ import {
   REFRESH_TOKEN_TTL_SECONDS,
   allowDevUnauthenticated,
   isAuthServerMetadataAlias,
+  isInsecureRedirectUri,
   oauthProviderOptions,
   rewritePath,
   timingSafeEqualBytes
@@ -647,6 +648,46 @@ describe("WorkOSAuthHandler", () => {
     expect(page).toContain(`name="csrf_token" value="${csrf}"`);
     // Explicit Terms/Privacy acknowledgement checkbox gates the grant.
     expect(page).toContain(`type="checkbox" name="tos_agree"`);
+    // H1 #3972929: the consent page names the validated redirect destination
+    // and marks the app-supplied client name as unverified.
+    expect(page).toContain("Authorization code goes to");
+    expect(page).toContain("https://client.example/cb");
+    expect(page).toContain("not verified by Stellar Raven");
+  });
+
+  it("GET /authorize refuses a plain-http redirect_uri to a non-loopback host", async () => {
+    const insecure = { ...AUTH_REQ, redirectUri: "http://attacker.example/cb" };
+    const env = testEnv({
+      OAUTH_PROVIDER: stubHelpers({
+        parseAuthRequest: vi.fn(async () => insecure as AuthRequest)
+      })
+    });
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc"),
+      env
+    );
+    // RFC 6749 §4.1.2.1: never redirect to an invalid redirect URI — local
+    // 400, no Location, no consent page, no fresh CSRF cookie.
+    expect(response.status).toBe(400);
+    expect(response.headers.get("location")).toBeNull();
+    expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
+  });
+
+  it("GET /authorize still allows http loopback and custom-scheme redirects", async () => {
+    for (const redirectUri of ["http://127.0.0.1:8912/cb", "myapp://oauth/cb"]) {
+      const allowed = { ...AUTH_REQ, redirectUri };
+      const env = testEnv({
+        OAUTH_PROVIDER: stubHelpers({
+          parseAuthRequest: vi.fn(async () => allowed as AuthRequest)
+        })
+      });
+      const response = await WorkOSAuthHandler.fetch(
+        new Request("https://mcp.test/authorize?client_id=client-abc"),
+        env
+      );
+      expect(response.status).toBe(200);
+      expect(await response.text()).toContain("Authorization code goes to");
+    }
   });
 
   // `allowPlainPKCE: false` only rejects the plain METHOD. The provider leaves an
@@ -1025,6 +1066,38 @@ describe("login-state union on /callback", () => {
     expect(response.status).toBe(400);
     expect(kv.store.has("login:stY")).toBe(false);
     expect(workosFetch).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["https redirect to a public host", "https://client.example/cb", false],
+    ["http loopback with a port (RFC 8252)", "http://127.0.0.1:8912/cb", false],
+    ["http localhost", "http://localhost:3000/cb", false],
+    ["custom scheme (native app)", "myapp://oauth/cb", false],
+    ["http to a public host", "http://attacker.example/cb", true],
+    ["http to an IP literal", "http://203.0.113.7/cb", true],
+    ["uppercase HTTP scheme", "HTTP://attacker.example/cb", true]
+  ])("redirect posture: %s → insecure=%s", (_label, uri, insecure) => {
+    expect(isInsecureRedirectUri(uri as string)).toBe(insecure);
+  });
+
+  it("DCR callback rejects a registration carrying a plain-http redirect_uri", async () => {
+    const wiring = oauthProviderOptions({ fetch: async () => new Response("mcp-ok") });
+    const result = await wiring.clientRegistrationCallback?.({
+      clientMetadata: { redirect_uris: ["http://attacker.example/cb"] },
+      request: new Request("https://mcp.test/register", { method: "POST" })
+    } as never);
+    expect(result).toMatchObject({ code: "invalid_client_metadata" });
+  });
+
+  it("DCR callback allows https, loopback http, and custom-scheme redirect_uris", async () => {
+    const wiring = oauthProviderOptions({ fetch: async () => new Response("mcp-ok") });
+    for (const uri of ["https://client.example/cb", "http://127.0.0.1:8912/cb", "myapp://oauth/cb"]) {
+      const result = await wiring.clientRegistrationCallback?.({
+        clientMetadata: { redirect_uris: [uri] },
+        request: new Request("https://mcp.test/register", { method: "POST" })
+      } as never);
+      expect(result).toBeUndefined();
+    }
   });
 });
 
