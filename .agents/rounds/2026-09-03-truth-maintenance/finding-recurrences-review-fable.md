@@ -12,7 +12,15 @@ own verification. I re-fetched every source the commit cites and recomputed ever
 I made no implementation change. I filed nothing and commented nowhere upstream.
 This report is the only file I added.
 
-## Verdict
+## Final verdict, revision 2
+
+`PASS`
+
+Commits `bd7330b` and `bf198b0` resolve every required item from revision 1. The re-review and
+the intake review are at the end of this file. Two non-blocking notes remain; neither changes a
+record or blocks filing. The revision 1 text below is kept as the audit trail.
+
+## Revision 1 verdict, before bd7330b and bf198b0
 
 `CHANGES-REQUIRED`
 
@@ -228,3 +236,95 @@ git diff --check 8d1b50a 88f08ec
 - The Lumenloop probes `ll-003` and `ll-007` stay inconclusive without `LUMENLOOP_API_KEY`. The
   production server can run those reads without exposing the key, as done here for `ll-030`.
 - No blocker prevents the corrections. They are record edits plus one TODO entry.
+
+## Re-review of bd7330b and bf198b0
+
+Date: 2026-09-04, revision 2. I re-read both diffs, re-ran every gate, and checked each required
+item from revision 1 against the committed text. I changed no record. I filed and commented
+nowhere.
+
+| required item | commit | result |
+|---|---|---|
+| 1. `sd-044` hash for commit `c43c77eb` | `bd7330b` | PASS; now `200eba3f…9f73`, labeled `main`; matches my fetch |
+| 1. `sd-044` file count | `bd7330b` | PASS; now "All 19 `.mdx` pages under `docs/tools/quickstart/`" |
+| 2. `sls-023` 2026-09-04 recurrence | `bd7330b` | PASS; 61 rows, 47 unknown, 14 onchain-activity, 1 products, 0 productKind, no assets, hash `f6c976a7…2e0d`; every number matches my tabulation |
+| 2. `sls-023` 2026-09-03 ledger re-check | `bd7330b` | PASS; cites `improvements-terra.md`, whose row reads "Still reproduces. Keep active." |
+| 2. `sls-023` status | `bd7330b` | PASS; stays `reported-upstream`; index shows 6 recurrences |
+| 3. `ll-030` 2026-09-04 recurrence | `bd7330b` | PASS; three authenticated calls recorded; results match my 06:55:51Z run; author re-ran at 07:00:31Z |
+| 3. `ll-030` status | `bd7330b` | PASS; `verified`; the live re-execution meets the bar |
+| 4. TODO entry for issue #1981 | `bd7330b` | PASS; scheduled after 2026-09-13, forbids a keep-alive comment, classifies `closed-unfixed` |
+| 5. `sd-046` raw-file note and 2026-09-02 page dates | `bd7330b` | PASS |
+| 5. `sd-037` "README prose" and stale-bot state | `bd7330b` | PASS; recorded in an evidence line and in the recurrence |
+| 6. index regenerated and lint rerun | `bd7330b` | PASS; `npm run improvements:index` reproduces the committed bytes |
+| author report corrections | `bd7330b` | PASS; commit URL replaces the `master` URL, 19 pages, wrong path and truncated hash removed, `sls-023` and `ll-030` conclusions corrected |
+
+Gates after `bf198b0`:
+
+| gate | result |
+|---|---|
+| `npm run improvements:index` | 70 findings; working tree stays clean |
+| `npm run improvements:lint` | ok, 70 findings |
+| `npm run improvements:lint -- --live` | ok, live intake checked |
+| `npm run improvements:probes -- --service lumenloop` | 2 inconclusive without `LUMENLOOP_API_KEY`, 0 errors |
+| focused vitest, five files | 41 passed |
+| `npm run secrets:scan -- --tree` | clean |
+| `git diff --check 109f16f bf198b0` | clean |
+| nine filing dry runs | all resolve an owner and render an immutable snapshot |
+
+## Intake review
+
+`bf198b0` adds six overrides to `improvements/intake.json` and the report
+`verified-intake-readiness-terra.md`.
+
+Owner mappings that the commit introduces on this branch:
+
+| finding | owner | my check | verdict |
+|---|---|---|---|
+| `sd-049` | `stellar/stellar-docs` | the page source is `docs/tools/lab/saved/keypairs.mdx` in `stellar/stellar-docs` at `main`; the finding is a docs-content conflict and its recommendation targets the page wording, not the Laboratory code | correct |
+| `sk-021` | `stellar/stellar-dev-skill` | `skills/smart-contracts/SKILL.md` exists in that repository at `main`; `intake.json` maps the `stellar-dev` source to the same repository | correct |
+
+Mappings that must retain the reviewed root wording. Root is
+`/Users/kalepail/Desktop/stellar-raven-codemode` at `898063e2fd417b83388e5b179ac72d722bc14de1`.
+
+| finding | root entry | this branch | byte-identical |
+|---|---|---|---|
+| `sd-050` | present | present | yes |
+| `sd-051` | present | present | yes |
+| `sk-023` | present | present | yes |
+| `sk-024` | present | present | yes |
+| `sd-052`, `sk-022`, `sd-046` | present | present | yes |
+
+`sd-049` and `sk-021` have no root entry yet. This branch introduces them. Root already has eight
+`verified` findings; this branch has ten, because `bd7330b` also verified `sd-046` and `ll-030`.
+
+Readiness report claims, checked:
+
+| claim | result |
+|---|---|
+| eight `verified` findings at root `898063e` | true |
+| `sd-046` included from `bd7330b` | true |
+| nine dry runs pass without posting | true; I re-ran all nine |
+| `sd-050`, `sd-051`, `sk-023`, `sk-024` preserved with root reasons | true, byte for byte |
+| no intake blocker remains | true for the nine listed findings |
+
+Two non-blocking notes:
+
+1. The readiness report omits `ll-030`. `bd7330b` moved it to `verified`, so this branch has ten
+   verified findings, not nine. `ll-030` has no override. The `lumenloop` service rule resolves it
+   to `lumenloop/lumenloop-backend`, and its dry run passes with an immutable snapshot at
+   `bd7330b`. That owner is correct: the recommendation asks for a `products[]` or `assets[]`
+   array on the API record, or new content-pipeline rows, which is API and pipeline work rather
+   than a committed directory-record correction. No change is required. Every other
+   backend-routed `ll-` finding carries an explicit override, so one may be added for consistency
+   when this branch merges.
+2. The `sk-023` and `sk-024` record bodies on this branch predate the corrections that root
+   already carries. Root's titles read "The agentic-payments MPP guide omits MPP's
+   payment-method-agnostic scope" and "The x402 guide presents OpenZeppelin Channels and its API
+   key as the only facilitator path". This branch still renders the older titles in its dry runs.
+   The intake reasons are identical on both sides, and this branch does not touch either record
+   file, so the merge carries root's corrected bodies forward without conflict. Re-run those two
+   dry runs on root after the merge, before any filing.
+
+Filing itself still needs owner authority. Nothing was filed or commented upstream in this
+review.
+
