@@ -2,17 +2,27 @@
 
 Date: 2026-09-04
 
-Reviewer lane: Claude Opus 5, high effort
+Reviewer lane: Claude Opus 5 at xhigh effort
 
 Author lane: Codex GPT-5.6 Sol, high effort
 
-Commit under review: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`
+Commits reviewed: `2ca588080c4ae9097aff66f79ff1a2dcc20126b5`, then the repair
+`8cd724de76858a0c9d6fa0908964f3c119ed52aa`
 
 Branch: `codex/tm-remote-identity-guard`
 
 Worktree: `/private/tmp/stellar-raven-tm-remote-guard`
 
-## Verdict
+## Current verdict
+
+`PASS` for the repair commit `8cd724d`.
+
+Every blocker and every finding below is reconciled.
+I re-derived each one rather than accepting the author's table.
+The re-review starts at "Repair re-review" and adds four new operational findings.
+None of the four is a code defect. Three are planning risks for a paid arm.
+
+## First-pass verdict (commit `2ca5880`)
 
 `CHANGES-REQUIRED`
 
@@ -306,3 +316,294 @@ This review does not lift either block.
 | Secrets scanning | PASS |
 | Independent review completed | This document |
 | Documentation matches behavior | FAIL, see F12 |
+
+---
+
+# Repair re-review
+
+Date: 2026-09-04
+
+Reviewer lane: Claude Opus 5 at xhigh effort
+
+Commit re-reviewed: `8cd724de76858a0c9d6fa0908964f3c119ed52aa`
+
+Verdict: `PASS`
+
+I made no implementation edit. I only re-read, re-ran, and measured.
+
+## Commands
+
+| Command | Result |
+|---|---|
+| `npx vitest run` on the four touched test files | PASS, 173 tests |
+| `npm run typecheck` | PASS |
+| `npm test` | PASS, 105 files, 1,810 tests |
+| `npm run build` | PASS |
+| `npm run eval:qa:paired:validate` | PASS, all gates true |
+| `env -i PATH="$PATH" ./eval/qa/probe-remote-identities.mjs` | PASS, valid vector |
+| The same probe seven times over about 30 minutes | one identical hash every time |
+| Ten extra paired-gate mutations in a scratch test | all rejected |
+| Direct Algolia settings and multi-query reads | measured, see below |
+| `git ls-files -s` on the probe | mode `100755` |
+
+I started no QA collection. I made no paid model call. I wrote to no upstream service.
+
+## Blocker reconciliation
+
+### B1 — committed production-ready probe: RECONCILED
+
+`eval/qa/probe-remote-identities.mjs` is committed with mode `100755` and a
+`#!/usr/bin/env node` line, so `spawnSync` can execute it directly.
+
+I ran it. It returned the exact vector the implementation report records:
+
+- Scout `1.9.30`, OpenAPI hash `2acc43c4…0311571`
+- Lumenloop `openapi-1.0.0`, inventory hash `a588bf48…796a404c`
+- Docs settings hash `ca09d2a9…d43de623c`, title hash `aecaf9a5…beb9b209`
+- vector hash `afd993854a981d4a5a3026ad047347c7a62a1b731b887ec08d48d5b9e07bbc7f`
+
+The canonicalization now lives in code, not prose.
+`canonicalizeRemoteSource` sorts object keys recursively and keeps array order.
+Set-like arrays are sorted explicitly: Docs titles by path then title, and
+Lumenloop tools, workflows, and skills by name.
+Seven runs across about 30 minutes produced one identical hash, so nothing flaps.
+
+`captureStablePreArmIdentity` implements the stop audit's pre-arm criteria 5 to 7.
+It takes three captures at five-minute intervals and fails on any difference.
+`--stable-sha256` exposes it, and the skill documents it.
+
+### B2 — probe environment isolation: RECONCILED
+
+`captureRemoteIdentity` now passes `env: { PATH: process.env.PATH ?? "" }`.
+
+I set `FAKE_SECRET` and `ANTHROPIC_API_KEY` in the parent and dumped the child
+environment. The child received only `PATH`. Neither secret appeared.
+
+The committed probe uses public sources only. I verified the one credential it
+carries. `VNSJF5AWIZ` and `c932e7670879e29070e269d202fb6740` both ship inside the
+public docs bundle `https://developers.stellar.org/assets/js/main.6326a0cd.js`.
+That is the public search-only DocSearch key, not an operator Algolia credential.
+It is therefore safe to commit and does not touch the AGENTS.md operator-key rule.
+
+The probe performs reads only. It cannot write to any index.
+
+### B3 — postflight capture: RECONCILED
+
+`guard.postflight()` captures once after the local postflight and compares it to
+the baseline. `run-qa.mjs` records `remoteIdentityPostflightError` and feeds a
+failure into `comparabilityReasons`.
+
+The paired printer now requires `postflight.attempted === true` and
+`postflight.matches === true`. It also requires the last capture to carry the
+`postflight` phase at the final sequence number.
+
+## Finding reconciliation
+
+### F4 — pre-arm vector pin: RECONCILED
+
+`--expect-remote-identity-sha256` is now required for collection.
+`createRemoteIdentityGuard` refuses a malformed value.
+The first `beforeCall` compares the baseline hash to the pin and stops on a mismatch.
+The paired printer requires `expectedBaselineVectorSha256` to equal the recomputed
+baseline hash, so the pin travels into the artifact and across both arms.
+
+### F5 — primary paid-call error preserved: RECONCILED
+
+The wrapper no longer runs `afterCall` from `finally`.
+I threw `BUDGET-PRIMARY-CAUSE` from the paid call while forcing an identity change.
+The surfaced error was `BUDGET-PRIMARY-CAUSE`, with the guard error as `cause`.
+The budget classification at `run-qa.mjs:1874` therefore survives.
+
+### F6 — completed-call accounting: RECONCILED
+
+`afterCall(context, { completed })` increments only when the paid call returned.
+My thrown-call test recorded `completedAnsweringCalls: 0` with two captures.
+The paired invariant moved to `completedAnsweringCalls * 2 + 1` for the postflight.
+
+### F7 — paired gate tests: RECONCILED
+
+The commit adds table-driven tests for all eight mutations I named.
+Each asserts the `remote-identity-guard` reason code, not just `INDETERMINATE`.
+
+I added ten further mutations in a scratch test and deleted it.
+All ten were rejected: postflight not attempted, postflight not matching,
+postflight hash differing, a wrong final phase, non-alternating phases, a drifted
+mid-run capture hash, both pin fields, a renumbered sequence, and a `2N` record
+with no postflight entry.
+
+### F8 — real probe path tests: RECONCILED
+
+`test/qa-remote-identity-probe.test.mjs` is new and covers real spawns.
+I independently reproduced fail-closed behavior for a tampered binary, exit
+status 3, a 300 ms timeout, invalid JSON, an invalid vector, a missing file, a
+non-executable file, and a directory.
+
+### F9 — probe diagnostics: RECONCILED
+
+`RemoteIdentityProbeError` carries `kind`, `path`, `status`, `signal`, and `timedOut`.
+I observed seven distinct kinds: `nonzero-exit` with status 3, `timeout` with
+`SIGTERM` and `timedOut: true`, `invalid-json`, `invalid-vector`, `hash-mismatch`,
+`not-executable`, and `not-file`.
+No message carried stdout or stderr.
+
+### F10 — bounded probe retries: RECONCILED, with one bound mismatch
+
+Each source gets a 20-second timeout and two retries at 250 ms and 1,000 ms.
+Retries fire on timeout, network error, 408, 425, 429, and 5xx. Other errors fail fast.
+
+See finding R3 below. The retry budget slightly exceeds the harness timeout.
+
+### F11 — no absolute path in artifacts: RECONCILED
+
+`publicProbeRecord` emits `path`, not `resolvedPath`.
+My record dump contained `eval/qa/probe-remote-identities.mjs` and no absolute path.
+An out-of-repo probe falls back to the basename, which also leaks no directory.
+
+### F12 — `eval/EVALS.md`: RECONCILED
+
+Item 11 states that a stable listener does not prove remote identity.
+It names the pinned probe, the pinned pre-arm vector, the per-call captures, and
+the postflight, and it states the aggregate-suppression consequence.
+
+### Pre-existing observation: RECONCILED
+
+`judgeStoredResults` now tests `meta.comparable === true` instead of `!== false`.
+An artifact with an absent field no longer passes.
+
+## New findings from the repair
+
+These are new observations, not regressions. None blocks the commit.
+
+### R1 — Scout's release cadence probably prevents a valid pair
+
+This answers the drift question directly. The probe induces no drift itself.
+It performs reads only, and seven runs gave one identical hash.
+The drift risk is external, and Scout dominates it.
+
+The repository has recorded Scout at `1.9.0`, `1.9.1`, `1.9.8`, `1.9.13`, `1.9.14`,
+`1.9.15`, `1.9.16`, `1.9.23`, and `1.9.30`.
+The stopped candidate arm alone spanned `1.9.23` to `1.9.30` in about ten hours.
+That is roughly seven releases inside one arm.
+
+The vector hashes the complete Scout OpenAPI document, so any release stops the arm.
+A paired run needs two arms of about eleven hours inside one identity window.
+The stop audit also requires the intermediate review to sit inside that window.
+The pair therefore needs more than twenty-two hours of Scout stability.
+
+The guard is correct. It converts a silent invalid measurement into a loud stop.
+The consequence is that the current 500-case paired design may never complete.
+The owner should settle this before spending the next authorization.
+I do not prescribe a code change, because the vector content is the audit's own contract.
+
+For comparison, `stellar/stellar-docs` had 29 commits over 30 days on twelve days.
+Only a page add, removal, or `lvl1` retitle moves the Docs title hash, so Docs is
+a far smaller risk than Scout.
+
+### R2 — Algolia load lands on the public shared DocSearch key
+
+The volume is real but the wall-clock cost is not a problem.
+
+I measured one capture at about 0.36 seconds. A 500-case arm makes 1,001 captures,
+so the guard adds roughly six minutes per arm. That is cheap.
+
+The request count is the concern. Each capture makes six HTTP requests:
+
+| Host | Requests per arm |
+|---|---|
+| `stellarlight.xyz` | 1,001 |
+| `api.lumenloop.com` | 3,003 |
+| `VNSJF5AWIZ-dsn.algolia.net` | 2,002 |
+
+The Algolia figure understates the billed cost. The title request is one
+multiple-query POST that carries ten sub-queries, and Algolia counts each
+sub-query as one search operation.
+One arm therefore issues about 10,010 Algolia search operations plus 1,001
+settings reads. A pair issues about 20,020 search operations.
+
+That load lands on the same public key that serves the real developers.stellar.org
+search box. AGENTS.md asks for shared-corpus caution on exactly this surface.
+
+Three of the ten sub-queries are always wasted. I measured the live index at
+`nbHits: 650` across `nbPages: 7`, because the public key clamps `hitsPerPage`
+to 100 rather than the requested 1,000.
+Sizing the batch to the real page count would remove about 3,003 search
+operations per arm at no loss of coverage.
+
+A 429 is the failure this makes plausible, and the current retry handles it poorly.
+See R3.
+
+### R3 — the retry budget slightly exceeds the harness timeout, and ignores `Retry-After`
+
+`captureRemoteIdentity` uses a 60-second `spawnSync` timeout, and `run-qa.mjs`
+passes no override.
+The probe's worst case per source is three 20-second attempts plus 250 ms and
+1,000 ms of delay, which is 61.25 seconds.
+
+The outer kill therefore truncates the third attempt by 1.25 seconds whenever two
+attempts time out in full. That is the exact case F10 exists to survive.
+The effect is small, but the two bounds should not disagree.
+
+The retry delays are also fixed at 250 ms and 1,000 ms with no jitter, and the
+probe does not read `Retry-After`.
+Against a 429 the three attempts finish inside 1.25 seconds and then stop the arm.
+Given R2's volume, a rate-limit response is the most likely transient failure, and
+it is the one the current backoff handles worst.
+
+### R4 — the Docs title enumeration has a 1,000-record ceiling
+
+The probe requests ten pages and rejects a page count above ten.
+The live index reports `paginationLimitedTo: 1000`, and the public key clamps
+`hitsPerPage` to 100, so ten pages is exactly 1,000 records.
+
+The current title set holds 650 records, which is 65 percent of that ceiling.
+When Stellar Docs passes 1,000 `lvl1` records the probe will throw and block every
+paid arm. Raising the page count will not help, because Algolia's own
+`paginationLimitedTo` sets the same limit.
+A different enumeration strategy would be needed at that point.
+The failure is loud and fail-closed, so this is a scheduling risk, not a safety risk.
+
+### R5 — one comparability reason string is wrong for the new failure kind
+
+`run-qa.mjs` maps any non-`identity-changed` guard failure to the string
+`remote identity probe unavailable`.
+The new `pre-arm-vector-mismatch` reason therefore reports a probe failure that
+did not happen.
+
+A stopped guard also makes `postflight()` throw `already stopped`, so the artifact
+gains a second reason line that names neither the pre-arm mismatch nor the probe.
+
+The artifact stays correctly non-comparable, and
+`meta.remoteIdentityGuard.failure.reason` records the truth.
+Only the human-readable summary misleads. This is a one-line wording fix.
+
+## Residual notes
+
+The guard pins probe bytes, not probe provenance.
+An operator can still pass a different executable that hashes to its own value.
+The F4 pre-arm vector pin narrows this, because a substitute probe must also
+reproduce the pinned vector.
+The skill now names the committed probe, which is the practical control.
+
+`--stable-sha256` blocks its shell for about ten minutes and prints nothing until
+it finishes. That is expected, and the skill states the interval.
+
+## Blockers for the next paid authorization
+
+The guard work no longer blocks anything. Two round-level blockers remain, and
+R1 adds a planning decision.
+
+1. The Scout `1.9.30` drift decision is still open.
+2. The candidate row review and closeout decision are still incomplete.
+3. R1 needs an owner decision on how a valid pair can complete at Scout's cadence.
+
+## Definition-of-done check
+
+| Item | Result |
+|---|---|
+| Diff scoped, unrelated work preserved | PASS |
+| Proportionate tests pass | PASS, F7 and F8 gaps closed |
+| Required gates pass | PASS |
+| Generated artifacts from scripts | PASS, none changed |
+| Secrets scanning | PASS |
+| Independent review completed | this document |
+| Documentation describes current behavior | PASS, F12 closed |
