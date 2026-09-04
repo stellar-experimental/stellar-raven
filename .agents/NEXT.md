@@ -45,6 +45,10 @@ is owner-blocked. The integration sequence is machine-ready and keeps these auth
   `eval:protocol-history` stopped correctly as `source-expired` with no scored question.
   `improvements:index` produced 70 findings. The final repair full run passed 108 files and 1,974
   tests. The documentation follow-up passed its final diff and secret checks.
+- PR #125 failed only on two vectorize test timeouts. Controlled CPU load reproduced both failures.
+  The repair keeps all behavior checks and timeout limits. The two-file run fell from
+  13.72–13.83 seconds to 1.41 seconds. The CI-like suite passed 108 files and 1,974 tests.
+  Report: `ci-vectorize-timeout-repair-sol.md`.
 - The 2026-09-04 candidate arm completed 500 rows and stopped as a diagnostic. Raw counts: 199
   correct, 230 partial, 71 wrong. Raw shares: strict 39.8%, half-credit 62.8%, core-answer-correct
   92.6%. Cost `$190.1686672`. Scout changed from `1.9.23` to `1.9.30` inside the arm. The executor
@@ -74,10 +78,11 @@ is owner-blocked. The integration sequence is machine-ready and keeps these auth
 
 ### Machine-ready sequence
 
-1. Run the final local checks at the integration revision.
-2. Integrate the PR after the owner grants merge authority.
-3. Deploy and verify production after the owner grants deployment authority.
-4. Clean up only the owned worktree, panes, and agents after the handoff is complete.
+1. Add the local timeout repair commit to PR #125 after the owner grants external-write authority.
+2. Confirm that PR #125 CI passes all checks.
+3. Integrate the PR after the owner grants merge authority.
+4. Deploy and verify production after the owner grants deployment authority.
+5. Clean up only the owned worktree, panes, and agents after the handoff is complete.
 
 Complete since the previous handoff:
 
@@ -92,6 +97,8 @@ Complete since the previous handoff:
   R1 persists terminal re-judge outcomes and postflight evidence. R2 reports the first command
   difference. R3 explains the capacity environment wrapper. C1 to C3 correct the dated records.
   Report: `final-launch-contract-repair-sol.md`.
+- The PR #125 timeout repair passed five narrow runs, the 32-worker stress loop, and the full suite.
+  Typecheck, build, and all 83 smoke tests also passed. No timeout changed.
 
 ### Trigger-only and monitor-only
 
@@ -346,7 +353,8 @@ and cleanup remain. The items below are complete.
 
 ## Suggested sequence
 
-Run the final local checks. Then prepare PR integration, deployment verification, and cleanup.
-Merge and deploy only after the owner grants each required authority. Bring decisions A to J to
-the owner in one sitting. Keep each paid, filing, and production action behind its authorization.
+Add the timeout repair commit to PR #125 after the owner grants external-write authority.
+Confirm CI, then prepare PR integration, deployment verification, and cleanup. Merge and deploy
+only after the owner grants each required authority. Bring decisions A to J to the owner together.
+Keep each paid, filing, and production action behind its authorization.
 No current item has authorization for evaluation ladder stages 3 or 4.

@@ -34,6 +34,7 @@ import {
 import {
   CLAUSE_ARTIFACT_SHA256,
   CLAUSE_SET_SHA256,
+  sha256,
 } from "../eval/vectorize/rerank-config.mjs";
 
 const familyPurposes = [{ family: "scout", label: "Scout", line: "Scout source line.", authority: "Scout authority." }];
@@ -289,6 +290,7 @@ describe("artifact integrity", () => {
 
   it.skipIf(!artifactExists)("23. leaves the banked artifact unchanged after a builder source mismatch", async () => {
     const bytes = readFileSync(CLAUSE_ARTIFACT_PATH);
+    const bytesSha256 = sha256(bytes);
     const artifact = JSON.parse(bytes.toString("utf8"));
     const directory = mkdtempSync(path.join(tmpdir(), "clause-build-"));
     const artifactPath = path.join(directory, "banked.json");
@@ -303,7 +305,9 @@ describe("artifact integrity", () => {
 
     await expect(buildClauseArtifact({ source, artifactPath, embed, write }))
       .rejects.toThrow(/surface-expired: clause artifact input drift/);
-    expect(readFileSync(artifactPath)).toEqual(bytes);
+    const unchangedBytes = readFileSync(artifactPath);
+    expect(unchangedBytes).toHaveLength(bytes.length);
+    expect(sha256(unchangedBytes)).toBe(bytesSha256);
     expect(embed).not.toHaveBeenCalled();
     expect(write).not.toHaveBeenCalled();
   });

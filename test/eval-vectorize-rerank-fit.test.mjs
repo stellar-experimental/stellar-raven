@@ -52,6 +52,16 @@ function clausesFixture() {
   return clauseData;
 }
 
+const candidateUnionCache = new Map();
+function candidateUnionFixture(question) {
+  let union = candidateUnionCache.get(question);
+  if (!union) {
+    union = buildCandidateUnion(searchCatalog, catalog, question);
+    candidateUnionCache.set(question, union);
+  }
+  return union;
+}
+
 describe("pair construction and encoding", () => {
   it("1. validates the banked artifact without reconstructing current source text", () => {
     const { artifact, clauses } = clausesFixture();
@@ -211,7 +221,7 @@ describe("candidate union", () => {
     const positives = [originalContract, blindContract].flatMap((contract) => contract.positiveCases);
     expect(positives).toHaveLength(19);
     for (const row of positives) {
-      expect(buildCandidateUnion(searchCatalog, catalog, row.question).map((hit) => hit.id), row.id)
+      expect(candidateUnionFixture(row.question).map((hit) => hit.id), row.id)
         .toContain("scout.searchResearch");
     }
   });
@@ -219,7 +229,7 @@ describe("candidate union", () => {
   it("18. has no duplicates and marks every gated failure as backfill", () => {
     expect(frozenRows).toHaveLength(32);
     for (const row of frozenRows) {
-      const union = buildCandidateUnion(searchCatalog, catalog, row.question);
+      const union = candidateUnionFixture(row.question);
       expect(new Set(union.map((hit) => hit.id)).size, row.id).toBe(union.length);
       for (const hit of union.slice(5)) {
         const entry = catalog.entries.find((candidate) => candidate.id === hit.id);
@@ -242,7 +252,7 @@ describe("candidate union", () => {
       routingKeywords: entry.routingKeywords,
     });
     for (const row of frozenRows) {
-      const remainder = buildCandidateUnion(searchCatalog, catalog, row.question).slice(5);
+      const remainder = candidateUnionFixture(row.question).slice(5);
       const sorted = remainder.slice().sort((left, right) => right.ungatedScore - left.ungatedScore || left.id.localeCompare(right.id));
       expect(remainder.map((hit) => hit.id), row.id).toEqual(sorted.map((hit) => hit.id));
     }
@@ -271,13 +281,31 @@ describe("score cache and referee", () => {
     expect(dataset.questions).toEqual([...new Set(dataset.allRows.map((row) => row.question))]);
     expect(dataset.questions).toHaveLength(563);
     const clauses = clausesFixture().clauses;
-    for (const question of dataset.questions) {
-      const base = buildCandidateUnion(searchCatalog, catalog, question);
+    const representativeQuestions = [
+      inputs.compiled.cases[0].question,
+      inputs.compiled.extendedCases[0].question,
+      inputs.skills[0].question,
+      inputs.holdout[0].question,
+      inputs.original.positiveCases[0].question,
+      inputs.blind.positiveCases[0].question,
+    ];
+    for (const question of representativeQuestions) {
+      const base = candidateUnionFixture(question);
       const indexes = pairIndexForBase(base, clauses);
       expect(indexes).toEqual(indexes.slice().sort((left, right) => left - right));
       const baseIds = new Set(base.map((hit) => hit.id));
       expect(indexes).toEqual(clauses.flatMap((clause, index) => baseIds.has(clause.entryId) ? [index] : []));
     }
+
+    const clauseEntryIds = [...new Set(clauses.map((clause) => clause.entryId))];
+    const sparseIds = new Set(clauseEntryIds.filter((_, index) => index % 3 === 0));
+    const reversedSparseBase = [...sparseIds].reverse().map((id) => ({ id }));
+    const sparseIndexes = pairIndexForBase(reversedSparseBase, clauses);
+    expect(sparseIndexes.length).toBeGreaterThan(0);
+    expect(sparseIndexes.length).toBeLessThan(clauses.length);
+    expect(sparseIndexes).toEqual(
+      clauses.flatMap((clause, index) => sparseIds.has(clause.entryId) ? [index] : []),
+    );
 
     const batches = [];
     const tokenizer = (queries, options) => {

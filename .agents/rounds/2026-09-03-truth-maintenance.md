@@ -366,6 +366,9 @@ Updated 2026-09-04.
       after repair.
 - [x] Independent confirmation review returns `CLOSEOUT-OK`. The final Opus review first withheld
       the verdict on C1 to C3. Its appended confirmation grants the verdict after repair.
+- [x] PR #125 vectorize timeout repair passes local stress and CI-like validation. The two-file
+      run fell from 13.72–13.83 seconds to 1.41 seconds. The full suite passed 108 files and 1,974
+      tests. See `ci-vectorize-timeout-repair-sol.md`.
 - [ ] Owned Herdr panes and agents are closed without touching unrelated resources.
 
 ## Candidate arm result and stop (2026-09-04)
@@ -637,10 +640,12 @@ launch revision, a current capacity artifact, and a weekend window.
 | Repairs | envelope, coverage metric, evidence support, remote guard, and supervisor landed with independent `PASS` reviews on the branch | `## Repairs after the stop (2026-09-04)` |
 | Measurement design | Opus checked revision 3 and first withheld `LAUNCH-OK` on L1. The confirmation granted it after repair. Paid execution stays unauthorized. | `revised-impact-measurement-fable.md`, `final-synthesis-review-sol.md`, `final-launch-contract-repair-sol.md` |
 | Launch contract repair | P1 to P3 use the `1847ffd` launch-enforcement base. The reviewed R1/R2 repair is the current diagnostic layer. | `launch-contract-repair-sol.md`, `final-launch-contract-repair-sol.md` |
+| CI vectorize timeout repair | Controlled CPU load reproduced both timeouts. Structural tests removed redundant work without raising limits. | `ci-vectorize-timeout-repair-sol.md` |
 | Free capacity check | complete; authoritative v2 `PASS` artifact recorded at `dc0761d`; owner acceptance open | `paired-capacity-check-terra.md` |
 | Final independent closeout review | Opus first withheld both verdicts. Its appended confirmation grants both after repair. | `final-launch-contract-review-opus.md` |
 
 Remaining risk: the branch `codex/truth-maintenance-2026-09-03` is unmerged and undeployed. The
 last recorded deployment state, from 2026-09-02, is `0c71b99` with the envelope fault. The final
-repair validation passed with 108 files and 1,974 tests. The handoff and owner decisions are in
+repair validation passed with 108 files and 1,974 tests. The PR #125 timeout repair passed the same
+full count. Its CI rerun needs an external write. The handoff and owner decisions are in
 `.agents/NEXT.md`. The queue is in `.agents/TODO.md`.
