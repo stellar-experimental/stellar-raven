@@ -514,48 +514,27 @@ Record the `--json` form in the round ledger. It includes `verdict`, the adjacen
 `transitions.perLook` records each look's T1/T1 attempts before union exclusion.
 `transitions.perId` records the first look for final eligible IDs.
 
-For concurrent paired collection, use
-`npm run eval:qa:paired:collect -- --plan <absolute-plan.json>`. The
-`qa-paired-collection-plan-v1` manifest freezes the ordered ID list, its digest, selected content,
-cases bytes, exact commands, four distinct worktrees, and every input hash. Each cases path must
-resolve inside its runner. The executing supervisor and imported control module must match their
-manifest pins and both runner copies. The plan also freezes the comparison command and accepted
-two-agent capacity evidence.
+For concurrent paired collection, use the v2 paired launch command:
 
-The baseline and candidate commands require different exact server revisions and surface hashes.
-Baseline uses `add-missing`; candidate uses `verify-native`. Both share the adapter revision and
-measurement flags. Their public and upstream ports are pairwise distinct. Each arm keeps its own
-port pair and server revision through every repeat.
+```sh
+npm run eval:qa:paired:plan-sha256 -- --plan <absolute-plan.json>
+npm run eval:qa:paired:collect -- \
+  --plan <absolute-plan.json> \
+  --authorized-plan-sha256 <owner-authorized-canonical-sha256>
+```
 
-Create one random 64-character lowercase hexadecimal `devVars.salt` for each plan. Record only the
-salt, exact code-unit-sorted names, and the salted canonical name-value hash. Both server worktrees
-must reproduce that identity. Keep the plan uncommitted. Delete it after success or failure. The
-digest algorithm and complete manifest contract live in `eval/qa/README.md`.
+The plan uses `qa-paired-collection-plan-v2`. Keep the owner authorization record outside the
+plan. The external record names the canonical plan SHA-256 and covers every command array.
 
-The supervisor starts answer-only arms after matching readiness. It applies one barrier after every
-row and alternates the first IPC send. Monotonic `releaseSequence` values prove send order;
-wall-clock timestamps supply duration evidence only. A shared cancellation marker stops every later
-authorization. Every cancellation has a bounded drain. Surviving children receive `SIGTERM`, then
-`SIGKILL` before forced settlement. Guard, budget, child, IPC, ordering, artifact, and deadline
-failures produce no receipt.
+Before launch, run the fixed free capacity check. Its accepted artifact must be at most 24 hours
+old. The plan freezes exactly 200 selected IDs and 500 active corpus IDs. It also freezes the P6
+exclusive output and both flip Claude identity contracts. The P6 output path and its `.tmp` path
+must not exist before P6 starts. Each flip command pins the Claude path, binary, and environment.
 
-Before a receipt, the supervisor reads each reported artifact below its arm results directory. It
-requires `meta.comparable === true`, the exact ID digest, exact ordered row IDs, and matching
-exact content identity. Each artifact server revision must match its arm's frozen
-`--server-revision`. The receipt includes the validated plan digest, monotonic releases, and
-collection, row, postflight, arm-finish, and final wall-clock times. Do not launch two independent
-`run-qa.mjs` processes as a substitute.
-
-The proposed two-arm method uses cumulative caps. Each `--no-judge` command uses
-`--max-budget-usd 80`. Each later `--judge-stored` command raises that artifact's same ledger to
-`--max-budget-usd 120`. The judge phase does not use a new `$40` cap. The two artifacts therefore
-have a `$240` cumulative maximum before separate approved diagnostics. The manifest validates this
-sequence before collection.
-
-Stored judging requires `meta.comparable === true` before any judge authorization. The paired
-tuple requires valid expected and matching binary and environment stamps for collection and
-stored judging. The stamps must match within each arm and across both arms. Cross-arm listener
-ports may differ. Each artifact must still pass its own preflight and postflight port attestations.
+The supervisor runs only the two answer-only collection commands. An operator runs the frozen
+judge, comparison, and flip commands after collection. Use the complete manifest, capacity,
+command, receipt, and cleanup contract in
+[`eval/qa/README.md` "Paired verdict"](../../../eval/qa/README.md#paired-pass--fail--indeterminate-verdict).
 
 Run `npm run eval:qa:paired:validate` after any method change. The simulator reports look-1 and
 two-look tables at n=90 and n=100. It reports 0, 5, 8, 10, 12, and 16-point losses. Its gates

@@ -32,7 +32,7 @@ live read behind this file is the public Scout changelog read for revision 1 on 
 | P1 authorization | The plan uses `qa-paired-collection-plan-v2`. The owner signs an external record that names the canonical plan SHA-256. The signature covers that hash and every command array in the plan. The plan freezes the exact P6, capacity, collection, stored-judge, flip, and comparison commands. Each flip command pins the Claude path, binary SHA-256, and environment SHA-256. A valid zero-flip result requires `--allow-empty`. |
 | P2 capacity | The plan binds the exact free capacity command, the instrument bytes, the artifact bytes, a fixed schedule, fixed thresholds, and a 24-hour freshness window. The authoritative v2 `PASS` artifact is recorded below. |
 | P3 denominator | The plan records `selected.count: 200` and `selected.activeCorpusCount: 500`. It records all four corpus hashes. Both runner worktrees recompute every one. Any mismatch stops the launch. |
-| S1 stale claims | The final supervisor contract is `1847ffd`, not `e0df186`. Commits `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d` are in the round record. The whole-round branch is `codex/truth-maintenance-2026-09-03` at `dc0761d`. Every provisional hash below is recomputed at `dc0761d`. |
+| S1 stale claims | The final supervisor contract is `1847ffd`, not `e0df186`. Commits `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d` are in the round record. The whole-round branch contains the work through `dc0761d`. Every provisional hash below is recomputed at `dc0761d`. |
 | S2 round state | The round stays open. `NEXT.md` lists completed repair work, not a completed round. |
 | S3 production label | Production is described as the last recorded deployment state from 2026-09-02. Nobody verified the live Worker during this documentation pass. |
 
@@ -687,7 +687,8 @@ The full 500 candidate arm stays a separate future authorization.
 - The owner must accept the concurrent-load estimand (decision 5). It is still open.
 - The launch revision must be one clean commit that contains the guard, the envelope repair, the
   coverage-metric retirement, the supervisor, and the launch-contract enforcement. The branch
-  `codex/truth-maintenance-2026-09-03` at `dc0761d` contains all five but is not merged.
+  `codex/truth-maintenance-2026-09-03` contains the work through `dc0761d`. It contains all five
+  but is not merged.
 - The full validation after `1847ffd` is complete on the round branch through `dc0761d`. See
   the ledger `## Final checklist`. The documentation-only correction after it still needs final
   diff and secret checks.

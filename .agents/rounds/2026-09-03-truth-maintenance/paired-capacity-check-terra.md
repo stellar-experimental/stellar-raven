@@ -82,6 +82,10 @@ The provisional artifact cannot enter a v2 launch manifest.
 
 The orchestrator reran the revised instrument after commit `1847ffd`.
 The exact command used the same empty environment and public read-only request set.
+The `/usr/bin/env -i` prefix is an environment-hygiene wrapper.
+The signed `capacity.command` records the unwrapped command array.
+That array starts at `/usr/local/bin/node` and includes the script, `--out`, and the artifact path.
+The supervisor validates the artifact bytes and the unwrapped array.
 
 ```sh
 /usr/bin/env -i PATH=/usr/local/bin:/usr/bin:/bin \

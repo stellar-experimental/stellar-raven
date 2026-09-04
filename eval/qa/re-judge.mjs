@@ -59,7 +59,7 @@ import {
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
-const TOOL_VERSION = "re-judge/v6";
+const TOOL_VERSION = "re-judge/v7";
 export const REJUDGE_RESULT_SCHEMA = "qa-rejudge-v1";
 const GIT_MAX_BUFFER = 32 * 1024 * 1024;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
@@ -272,13 +272,102 @@ export function assertStableRejudgeIdentity(before, after) {
   const binaryChanged = binaryFields.filter(
     (field) => before?.binary?.[field] !== after?.binary?.[field]
   );
+  const environmentChanged = before?.environment?.sha256 !== after?.environment?.sha256;
+  const guard = {
+    matches: binaryChanged.length === 0 && !environmentChanged,
+    attestationCompleted: true,
+    binaryChanged,
+    environmentChanged
+  };
   if (binaryChanged.length) {
-    throw new Error(`re-judge Claude binary identity changed during judging (${binaryChanged.join(", ")})`);
+    const error = new Error(`re-judge Claude binary identity changed during judging (${binaryChanged.join(", ")})`);
+    error.identityGuard = guard;
+    throw error;
   }
-  if (before?.environment?.sha256 !== after?.environment?.sha256) {
-    throw new Error("re-judge Claude environment identity changed during judging");
+  if (environmentChanged) {
+    const error = new Error("re-judge Claude environment identity changed during judging");
+    error.identityGuard = guard;
+    throw error;
   }
-  return { matches: true, binaryChanged, environmentChanged: false };
+  return guard;
+}
+
+function rejudgeErrorRecord(error) {
+  if (!error) return null;
+  return {
+    name: typeof error.name === "string" && error.name ? error.name : "Error",
+    ...(typeof error.code === "string" && error.code ? { code: error.code } : {}),
+    message: typeof error.message === "string" ? error.message : String(error)
+  };
+}
+
+export function finalizeRejudgeRun({
+  options,
+  baseMeta,
+  judgeIdentityBefore,
+  rows,
+  runState,
+  judgingError = null,
+  writeCheckpoint,
+  attestIdentity = attestRejudgeIdentity,
+  assertStableIdentity = assertStableRejudgeIdentity,
+  terminalAt = new Date().toISOString()
+}) {
+  let postflightError = null;
+  let postflightStatus = "passed";
+  try {
+    const judgeIdentityAfter = attestIdentity(options);
+    baseMeta.judgeIdentity.after = judgeIdentityAfter;
+    try {
+      baseMeta.judgeIdentity.guard = assertStableIdentity(
+        judgeIdentityBefore,
+        judgeIdentityAfter
+      );
+    } catch (error) {
+      postflightError = error;
+      postflightStatus = "identity-drifted";
+      baseMeta.judgeIdentity.guard = error.identityGuard ?? {
+        matches: false,
+        attestationCompleted: true,
+        binaryChanged: [],
+        environmentChanged: null
+      };
+    }
+  } catch (error) {
+    postflightError = error;
+    postflightStatus = "attestation-failed";
+    baseMeta.judgeIdentity.guard = {
+      matches: false,
+      attestationCompleted: false,
+      binaryChanged: null,
+      environmentChanged: null
+    };
+  }
+
+  let judgingStatus = "completed";
+  if (judgingError) judgingStatus = "failed";
+  else if (runState.stopError) judgingStatus = "budget-stopped";
+
+  let status = "successful";
+  if (judgingError) status = "judging-failed";
+  else if (postflightStatus === "identity-drifted") status = "identity-drifted";
+  else if (postflightStatus === "attestation-failed") status = "attestation-failed";
+  else if (judgingStatus === "budget-stopped") status = "budget-stopped";
+  baseMeta.outcome = {
+    status,
+    terminalAt,
+    judging: {
+      status: judgingStatus,
+      error: rejudgeErrorRecord(judgingError ?? runState.stopError)
+    },
+    postflight: {
+      status: postflightStatus,
+      error: rejudgeErrorRecord(postflightError)
+    }
+  };
+  const finishedAt = status === "successful" || status === "budget-stopped" ? terminalAt : null;
+  writeCheckpoint(rows, finishedAt);
+  return { error: judgingError ?? postflightError, status };
 }
 
 function mappedRepositoryRelativePath(casesPath, repoRoot) {
@@ -908,11 +997,19 @@ async function main() {
         after: null,
         guard: null
       },
+      outcome: {
+        status: "running",
+        terminalAt: null,
+        judging: { status: "running", error: null },
+        postflight: { status: "pending", error: null }
+      },
       startedAt,
       toolVersion: TOOL_VERSION
   };
   mkdirSync(resultsDir, { recursive: true });
+  let checkpointRows = [];
   const writeCheckpoint = (rows, finishedAt = null) => {
+    checkpointRows = rows;
     const artifact = buildRejudgeArtifact({ baseMeta, rows, spendLedger, runState, finishedAt });
     const tmpPath = `${outPath}.tmp`;
     writeFileSync(tmpPath, JSON.stringify(artifact, null, 2) + "\n");
@@ -940,14 +1037,16 @@ async function main() {
   } catch (error) {
     judgingError = error;
   }
-  const judgeIdentityAfter = attestRejudgeIdentity(options);
-  baseMeta.judgeIdentity.after = judgeIdentityAfter;
-  baseMeta.judgeIdentity.guard = assertStableRejudgeIdentity(
+  const final = finalizeRejudgeRun({
+    options,
+    baseMeta,
     judgeIdentityBefore,
-    judgeIdentityAfter
-  );
-  if (judgingError) throw judgingError;
-  writeCheckpoint(rows, new Date().toISOString());
+    rows: rows ?? checkpointRows,
+    runState,
+    judgingError,
+    writeCheckpoint
+  });
+  if (final.error) throw final.error;
   console.log(`wrote ${outPath}`);
 }
 

@@ -65,6 +65,30 @@ function canonicalize(value) {
   return value;
 }
 
+function commandValueAt(command, index) {
+  if (!Array.isArray(command) || index >= command.length) return "<end>";
+  const encoded = JSON.stringify(command[index]);
+  if (encoded.length <= 200) return encoded;
+  return `${JSON.stringify(String(command[index]).slice(0, 160))} (truncated)`;
+}
+
+function firstCommandDifference(expected, actual) {
+  if (!Array.isArray(actual)) {
+    return { index: 0, expected: commandValueAt(expected, 0), actual: `<${typeof actual}>` };
+  }
+  const length = Math.max(expected.length, actual.length);
+  for (let index = 0; index < length; index++) {
+    if (expected[index] !== actual[index]) {
+      return {
+        index,
+        expected: commandValueAt(expected, index),
+        actual: commandValueAt(actual, index)
+      };
+    }
+  }
+  return null;
+}
+
 export function pairedCollectionPlanSha256(plan) {
   return sha256(JSON.stringify(canonicalize(plan)));
 }
@@ -410,8 +434,12 @@ function validateFlipRejudgeContract(plan, runnerWorktrees) {
       "--max-budget-usd",
       String(FLIP_REJUDGE_CAP_USD)
     ];
-    if (JSON.stringify(contract?.commands?.[arm]) !== JSON.stringify(expected)) {
-      throw new Error(`${arm} flip re-judge command has the wrong source order, identity, cases reference, judge tuple, cap, or zero-flip behavior`);
+    const difference = firstCommandDifference(expected, contract?.commands?.[arm]);
+    if (difference) {
+      throw new Error(
+        `${arm} flip re-judge command differs at index ${difference.index}: ` +
+        `expected ${difference.expected}, actual ${difference.actual}`
+      );
     }
   }
   if (contract.judgeImplementationSha256 !== plan.p6.judgeSha256) {

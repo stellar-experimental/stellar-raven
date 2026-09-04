@@ -1769,7 +1769,14 @@ and judge-model/rubric/pack tuple guards, writing `results/<stamp>-rejudge.json`
 Every paid re-judge also requires `--claude-path <path>`,
 `--expect-agent-binary-sha256 <sha256>`, and
 `--expect-agent-environment-sha256 <sha256>`. Use only spaced flag values.
-The final artifact records both identities in `meta.judgeIdentity`.
+Every checkpoint records `meta.outcome`. Its status distinguishes `running`, `successful`,
+`budget-stopped`, `judging-failed`, `identity-drifted`, and `attestation-failed` runs. The
+postflight record stays separate from the judging record. A judging failure remains the process
+error when postflight attestation also fails.
+
+The final checkpoint records both identities in `meta.judgeIdentity` when postflight attestation
+succeeds. Identity drift records the after identity and a failed guard before exit. An attestation
+failure records a failed guard with `attestationCompleted: false` and keeps the after identity null.
 
 Pin the corpus revision when the battery has moved since collection — otherwise the identity
 guard compares saved rows against today's working tree and refuses.

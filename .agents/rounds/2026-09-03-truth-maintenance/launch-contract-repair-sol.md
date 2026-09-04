@@ -64,11 +64,12 @@ No `.agents` file changed in the repair lane. No paid call ran. No live network 
 
 ## Checks in the repair worktree
 
-Sol ran these checks on branch `codex/tm-launch-contract-repair` at `e5c835e`. That commit has
-the same tree as `1847ffd`.
+Sol ran these checks on branch `codex/tm-launch-contract-repair` at `e5c835e`. The trees at
+`e5c835e` and `1847ffd` differ only by `final-synthesis-review-sol.md`. Every code file is
+byte-identical.
 
 - Focused second-pass tests: 153 passed.
-- Full `npm test`: 1,961 passed in the first complete run.
+- Full `npm test`: 1,961 passed in the restricted sandbox measurement.
 - A later full rerun hit sandbox `listen EPERM` and GPG test-commit restrictions. It passed 1,923
   tests before those environment failures.
 - `npm run typecheck`: passed after the second pass.

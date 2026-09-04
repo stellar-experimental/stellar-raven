@@ -1,8 +1,9 @@
 # NEXT — current handoff
 
 Updated 2026-09-04. The truth-maintenance round stopped its paid pair and landed its repairs.
-Sol then returned `CHANGES-REQUIRED` on measurement revision 2. Commit `1847ffd` enforced the
-paired launch contract. The round is open. Read this first.
+The final Opus review withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
+The current repair resolves L1, C1 to C3, and R1 to R3. The historical verdict stays unchanged.
+The round is open. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 No unconditional paid or external block remains. Every paid, filing, deployment, and golden action
@@ -23,15 +24,18 @@ is owner-blocked. A short list of free documentation and review actions is machi
   `qa-paired-collection-plan-v2`. Launch requires `--authorized-plan-sha256` equal to the canonical
   plan SHA-256. The plan freezes every paid command array and the flip Claude pins. It binds the
   fixed capacity contract with 24-hour freshness. It requires exactly 200 selected and 500 active
-  corpus IDs with all four corpus hashes. Report: `launch-contract-repair-sol.md`. No independent
-  review of `1847ffd` is recorded.
+  corpus IDs with all four corpus hashes. Report: `launch-contract-repair-sol.md`.
+  The supplied final Opus review inspected revision 3 and the launch contract.
+  That review withheld `LAUNCH-OK` because the `run-evals` skill still published v1.
+  The current repair updates the skill to the v2 command and points to `eval/qa/README.md`.
 - The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact has SHA-256
   `f94663390187a52a89007ca22a23530c873cb8e00b4117bece045265a56c2423` and completed at
   `2026-09-04T10:25:17.815Z`. It expires at `2026-09-05T10:25:17.815Z`. It proves the technical
   gate only. The owner has not accepted the concurrent-load estimand.
 - Measurement design revision 2 received `CHANGES-REQUIRED` from Sol (`final-synthesis-review-sol.md`,
-  P1 to P3 and S1 to S3). Revision 3 repairs all six against `1847ffd`. Nobody has reviewed
-  revision 3. It authorizes nothing.
+  P1 to P3 and S1 to S3). Revision 3 repairs all six against `1847ffd`. The final Opus review
+  checked revision 3 and withheld its verdict only for the recorded findings. It authorizes
+  nothing.
 - The full validation after `1847ffd` is complete. The orchestrator ran it on the root branch
   with the work through `dc0761d`. `npm run typecheck`, `npm test` (108 files, 1,971 tests),
   `npm run test:smoke` (4 files, 83 tests), and `npm run build` passed. `eval:selftest`,
@@ -70,10 +74,9 @@ is owner-blocked. A short list of free documentation and review actions is machi
 
 ### Machine-ready (free, no authority needed)
 
-1. Obtain an independent review of `revised-impact-measurement-fable.md` revision 3 and of the
-   launch contract at `1847ffd`. The reviewer must not be Fable 5.1 and must not be the
-   orchestrator. Sol high or Opus high fit. Revision 2 received `CHANGES-REQUIRED`.
-2. Obtain an independent closeout review of the round ledger and this handoff.
+1. Obtain an independent confirmation review of the L1, C1 to C3, and R1 to R3 repairs.
+   The historical Opus review withheld `LAUNCH-OK` and `CLOSEOUT-OK` before these repairs.
+2. Confirm the round ledger and this handoff during that closeout review.
 
 Complete since the previous handoff:
 
@@ -84,6 +87,10 @@ Complete since the previous handoff:
 - The free two-agent capacity check ran twice. The authoritative v2 `PASS` artifact is recorded
   in `paired-capacity-check-terra.md` (commit `dc0761d`). The owner acceptance of the
   concurrent load is a separate open decision.
+- The final Opus findings are repaired. L1 now points operators to the v2 paired launch contract.
+  R1 persists terminal re-judge outcomes and postflight evidence. R2 reports the first command
+  difference. R3 explains the capacity environment wrapper. C1 to C3 correct the dated records.
+  Report: `final-launch-contract-repair-sol.md`.
 
 ### Trigger-only and monitor-only
 
@@ -306,8 +313,8 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 
 ## Completed repair work
 
-The truth-maintenance round 2026-09-03 stays open. Its closeout gates are the revision 3 review
-and the closeout review above. The items below are complete.
+The truth-maintenance round 2026-09-03 stays open. Its closeout gate is the confirmation review
+above. The items below are complete.
 
 - Repair work inside the open round: `.agents/rounds/2026-09-03-truth-maintenance.md`, section
   "Repairs after the stop (2026-09-04)", and its report directory. Key reports:
@@ -315,7 +322,7 @@ and the closeout review above. The items below are complete.
   `remote-identity-guard-review-opus.md`, `paired-collection-supervisor-review-opus.md`,
   `scout-1.9.30-drift-terra.md`, `revised-impact-measurement-review-sol.md`,
   `final-synthesis-review-sol.md`, `launch-contract-repair-sol.md`,
-  `paired-capacity-check-terra.md`.
+  `paired-capacity-check-terra.md`, `final-launch-contract-repair-sol.md`.
 - Raven monitor and protocol-history PH2 decisions: `.agents/rounds/2026-09-03-owner-decisions.md`.
 - Production deployment of `0c71b99`: `.agents/rounds/2026-09-02-agent-queue-deployment.md`.
 - Earlier: ids selector guards, residual fail-closed runner flags, protocol-history free evidence,
@@ -340,7 +347,7 @@ and the closeout review above. The items below are complete.
 
 ## Suggested sequence
 
-Run the two independent reviews first. Then bring decisions A to J
+Run the independent confirmation review first. Then bring decisions A to J
 to the owner in one sitting. Keep each paid action, filing action, and production action behind
 its separate authorization. No current item has authorization for evaluation ladder stages 3 or 4.
 The general round approval does not move any item to stage 3.

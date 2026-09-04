@@ -1175,23 +1175,54 @@ describe("paired QA collection supervisor", () => {
     ["flip source order", (plan) => {
       [plan.flipRejudge.commands.baseline[2], plan.flipRejudge.commands.baseline[4]] =
         [plan.flipRejudge.commands.baseline[4], plan.flipRejudge.commands.baseline[2]];
-    }, /wrong source order/],
-    ["flip cases reference", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--cases-ref", "b".repeat(40)), /wrong source order/],
-    ["flip judge tuple", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--judge-model", "other"), /wrong source order/],
-    ["flip Claude path", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--claude-path", "/other/claude"), /identity/],
-    ["flip binary identity", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--expect-agent-binary-sha256", "0".repeat(64)), /identity/],
-    ["flip environment identity", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--expect-agent-environment-sha256", "0".repeat(64)), /identity/],
+    }, /differs at index 2/],
+    ["flip cases reference", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--cases-ref", "b".repeat(40)), /differs at index 14/],
+    ["flip judge tuple", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--judge-model", "other"), /differs at index 6/],
+    ["flip Claude path", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--claude-path", "/other/claude"), /differs at index 8/],
+    ["flip binary identity", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--expect-agent-binary-sha256", "0".repeat(64)), /differs at index 10/],
+    ["flip environment identity", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--expect-agent-environment-sha256", "0".repeat(64)), /differs at index 12/],
     ["flip rubric tuple", (plan) => { plan.flipRejudge.judgeTuple.rubric = "other"; }, /judgeTuple/],
-    ["flip cap", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--max-budget-usd", "16"), /wrong source order/],
+    ["flip cap", (plan) => setFlag(plan.flipRejudge.commands.baseline, "--max-budget-usd", "16"), /differs at index 17/],
     ["flip zero-flip flag", (plan) => {
       plan.flipRejudge.commands.baseline.splice(plan.flipRejudge.commands.baseline.indexOf("--allow-empty"), 1);
-    }, /zero-flip behavior/],
+    }, /differs at index 15/],
     ["re-judge implementation hash", (plan) => { plan.flipRejudge.implementationSha256 = "0".repeat(64); }, /re-judge implementation does not match/]
   ])("rejects an invalid paid-command contract: %s", (_label, mutate, expected) => {
     const { root, plan, inspectWorktree } = planFixture();
     try {
       mutate(plan);
       expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("reports safe expected and actual values for the first flip-command difference", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      setFlag(plan.flipRejudge.commands.baseline, "--cases-ref", "b".repeat(40));
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
+        `baseline flip re-judge command differs at index 14: expected ${JSON.stringify("a".repeat(40))}, actual ${JSON.stringify("b".repeat(40))}`
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("bounds a long flip-command value in the mismatch diagnostic", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const longValue = `${"x".repeat(250)}hidden-tail`;
+      setFlag(plan.flipRejudge.commands.baseline, "--cases-ref", longValue);
+      let message = "";
+      try {
+        validatePairedCollectionPlan(plan, { inspectWorktree });
+      } catch (error) {
+        message = error.message;
+      }
+      expect(message).toContain("differs at index 14");
+      expect(message).toContain("(truncated)");
+      expect(message).not.toContain("hidden-tail");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

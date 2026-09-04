@@ -93,7 +93,11 @@ async function loadRejudgeIdentityHelpers() {
     assertStableRejudgeIdentity: module.assertStableRejudgeIdentity as (
       before: RejudgeIdentity,
       after: RejudgeIdentity
-    ) => Record<string, unknown>
+    ) => Record<string, unknown>,
+    finalizeRejudgeRun: module.finalizeRejudgeRun as (options: Record<string, unknown>) => {
+      error: Error | null;
+      status: string;
+    }
   };
 }
 
@@ -360,7 +364,8 @@ describe("re-judge saved-answer selection", () => {
       environment: { sha256: "b".repeat(64) }
     };
     expect(assertStableRejudgeIdentity(before, structuredClone(before))).toMatchObject({
-      matches: true
+      matches: true,
+      attestationCompleted: true
     });
     for (const field of ["resolvedPath", "realPath", "sha256", "version"] as const) {
       const after = structuredClone(before);
@@ -372,6 +377,141 @@ describe("re-judge saved-answer selection", () => {
     expect(() => assertStableRejudgeIdentity(before, changedEnvironment)).toThrow(
       /environment identity changed/
     );
+  });
+
+  it("persists each terminal outcome and keeps the judging error primary", async () => {
+    const { finalizeRejudgeRun } = await loadRejudgeIdentityHelpers();
+    const before: RejudgeIdentity = {
+      binary: {
+        resolvedPath: "/opt/claude",
+        realPath: "/opt/claude-real",
+        sha256: "a".repeat(64),
+        version: "1.2.3"
+      },
+      environment: { sha256: "b".repeat(64) }
+    };
+    const terminalAt = "2026-09-04T12:00:00.000Z";
+    const exercise = ({
+      judgingError = null,
+      stopError = null,
+      after = structuredClone(before),
+      attestationError = null
+    }: {
+      judgingError?: Error | null;
+      stopError?: Error | null;
+      after?: RejudgeIdentity;
+      attestationError?: Error | null;
+    } = {}) => {
+      const baseMeta = {
+        judgeIdentity: { before, after: null, guard: null },
+        outcome: {
+          status: "running",
+          terminalAt: null,
+          judging: { status: "running", error: null },
+          postflight: { status: "pending", error: null }
+        }
+      };
+      let checkpoint: { finishedAt: string | null; meta: typeof baseMeta } | null = null;
+      const result = finalizeRejudgeRun({
+        options: {},
+        baseMeta,
+        judgeIdentityBefore: before,
+        rows: [{ id: "one" }],
+        runState: { stopError, incompleteIds: [], unattemptedIds: [] },
+        judgingError,
+        terminalAt,
+        attestIdentity: () => {
+          if (attestationError) throw attestationError;
+          return after;
+        },
+        writeCheckpoint: (_rows: unknown[], finishedAt: string | null) => {
+          checkpoint = { finishedAt, meta: structuredClone(baseMeta) };
+        }
+      });
+      return { result, checkpoint: checkpoint! };
+    };
+
+    const successful = exercise();
+    expect(successful.result).toEqual({ error: null, status: "successful" });
+    expect(successful.checkpoint).toMatchObject({
+      finishedAt: terminalAt,
+      meta: {
+        outcome: {
+          status: "successful",
+          judging: { status: "completed", error: null },
+          postflight: { status: "passed", error: null }
+        },
+        judgeIdentity: { after: before, guard: { matches: true, attestationCompleted: true } }
+      }
+    });
+
+    const budgetError = Object.assign(new Error("budget exhausted"), { code: "budget-exhausted" });
+    const budgetStopped = exercise({ stopError: budgetError });
+    expect(budgetStopped.result.status).toBe("budget-stopped");
+    expect(budgetStopped.checkpoint).toMatchObject({
+      finishedAt: terminalAt,
+      meta: { outcome: { judging: { status: "budget-stopped", error: { code: "budget-exhausted" } } } }
+    });
+
+    const judgingError = new Error("judge process failed");
+    const judgingFailed = exercise({ judgingError });
+    expect(judgingFailed.result).toEqual({ error: judgingError, status: "judging-failed" });
+    expect(judgingFailed.checkpoint).toMatchObject({
+      finishedAt: null,
+      meta: {
+        outcome: {
+          status: "judging-failed",
+          judging: { status: "failed", error: { message: "judge process failed" } },
+          postflight: { status: "passed" }
+        }
+      }
+    });
+
+    const driftedAfter = structuredClone(before);
+    driftedAfter.binary.sha256 = "c".repeat(64);
+    const identityDrifted = exercise({ after: driftedAfter });
+    expect(identityDrifted.result.status).toBe("identity-drifted");
+    expect(identityDrifted.checkpoint).toMatchObject({
+      finishedAt: null,
+      meta: {
+        outcome: { status: "identity-drifted", postflight: { status: "identity-drifted" } },
+        judgeIdentity: {
+          after: driftedAfter,
+          guard: { matches: false, attestationCompleted: true, binaryChanged: ["sha256"] }
+        }
+      }
+    });
+
+    const attestationError = new Error("postflight identity unavailable");
+    const attestationFailed = exercise({ attestationError });
+    expect(attestationFailed.result).toEqual({ error: attestationError, status: "attestation-failed" });
+    expect(attestationFailed.checkpoint).toMatchObject({
+      finishedAt: null,
+      meta: {
+        outcome: {
+          status: "attestation-failed",
+          postflight: {
+            status: "attestation-failed",
+            error: { message: "postflight identity unavailable" }
+          }
+        },
+        judgeIdentity: {
+          after: null,
+          guard: {
+            matches: false,
+            attestationCompleted: false
+          }
+        }
+      }
+    });
+
+    const bothFailed = exercise({ judgingError, attestationError });
+    expect(bothFailed.result).toEqual({ error: judgingError, status: "judging-failed" });
+    expect(bothFailed.checkpoint.meta.outcome).toMatchObject({
+      status: "judging-failed",
+      judging: { status: "failed" },
+      postflight: { status: "attestation-failed" }
+    });
   });
 
   it("defaults the cases revision to the recorded runner revision", async () => {
