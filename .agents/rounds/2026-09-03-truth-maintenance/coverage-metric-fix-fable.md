@@ -4,6 +4,9 @@ Date: 2026-09-04
 Lane: Claude, Fable 5.1, `xhigh`
 Branch: `codex/tm-coverage-metric` in worktree `/private/tmp/stellar-raven-tm-coverage-metric`
 Base commit: `80aaf52`
+First repair commit: `d1fddb9f32ce77532d719a1ab9c6254378ad023f`
+Independent review: `coverage-metric-review-sol.md` (Sol high, `CHANGES-REQUIRED`, R1 and R2)
+Follow-up repair: the commit that carries this revision of the report
 
 ## Scope
 
@@ -155,16 +158,30 @@ No current reader consumes them.
 `cluster-missing-facts.mjs`, and `eval/plan/grade-plan.mjs` read rows, tuples, or verdicts only.
 A new test proves the paired printer accepts an asymmetric pair where one arm carries the keys.
 
-I added no key-deletion shim for old artifacts.
-The stored-judge path clears only the keys it currently owns.
-A finalized artifact with the retired keys is never rewritten, because `--judge-stored` refuses a
-fully judged file.
-One inert residual remains and is listed under risks.
+The first repair cleared only the five current keys on a stored-judge write.
+I claimed that a finalized artifact with the retired keys is never rewritten.
+That claim was wrong.
+`--judge-stored` refuses a file only when it has both a summary and a `judgeStored` block.
+An inline arm has a summary and no `judgeStored` block.
+The zero-call finalization path rewrites such an arm and stamps `judgeStored`.
+The reviewer reproduced this on a copy of the 2026-09-04 arm.
+The rewrite kept `meanContinuousCoverage: 0.5601952380952382` next to the five current fields.
+
+The follow-up repair makes every stored-judge write own the measurement block.
+`writeState` deletes `meanContinuousCoverage` and `continuousCoverageRowCount` before each write.
+This covers the judged write, the zero-call finalization, and the suppressed-aggregate write.
+The retired key names live in the exported `RETIRED_MEASUREMENT_METRIC_KEYS` constant.
+The deletion changes only artifacts that the new stored-judge code rewrites.
+An artifact nobody rewrites keeps its original bytes.
+`sourceResultsSha256` still records the pre-judge collection identity of a rewritten artifact.
 
 I did not rewrite dated records.
 `eval/qa/README.md` tables dated 2026-08-28 and 2026-08-30, the 2026-08-25 round ledger, and
 `research/qa-deep-dive-2026-08-25/build-measure.md` still show coverage values.
-The new README section says to read them as invalid.
+The README section says to read them as invalid.
+The first README text used a date cutoff of 2026-09-04.
+That cutoff excluded the defective `2026-09-04T05-40-51-variantA` arm.
+The follow-up text describes artifacts produced before this repair and names that arm.
 
 ## Changes
 
@@ -175,6 +192,15 @@ The new README section says to read them as invalid.
 | `test/qa-measure-harness.test.mjs` | Rewrites the metrics tests. Adds a panel-union case that reproduces the `-0.5` shape, a duplicated-paraphrase case, an over-count single-judge case, empty-denominator cases, and a key-set guard that every share lies in `[0, 1]` and no coverage text is printed. |
 | `test/qa-judge-stored.test.mjs` | Stored `meta` asserts the five fields and the absence of both retired keys. The crash-suppression check now uses a live field. |
 | `test/qa-paired-verdict.test.mjs` | Proves an artifact with the retired keys still compares and the keys are outside the measurement tuple. |
+
+Follow-up repair after the independent review:
+
+| File | Change |
+| --- | --- |
+| `eval/qa/run-qa.mjs` | Exports `RETIRED_MEASUREMENT_METRIC_KEYS`. `writeState` deletes both retired keys and the five current keys before every stored-judge write. |
+| `test/qa-judge-stored.test.mjs` | Adds a pre-repair fixture with both retired keys and a summary but no `judgeStored` block. A throwing judge proves zero calls. Asserts both keys are gone and the five current fields are present after finalization. Adds a suppressed-aggregate fixture with both keys and asserts all seven keys are absent. Seeds the crash test with both keys and asserts the mid-run suppressed write drops them. |
+| `eval/qa/README.md` | Replaces the 2026-09-04 date cutoff with "produced before this repair", names the defective arm, and states the stored-judge deletion rule. |
+| `test/qa-paired-verdict.test.mjs` | Comment now describes artifacts produced before the retirement and names the arm. |
 
 ## Commands
 
@@ -191,6 +217,18 @@ The new README section says to read them as invalid.
 Row counts above came from one Node script over the artifact and `eval/qa/cases.json`.
 No paid call ran.
 
+Follow-up repair commands:
+
+| Command | Result |
+| --- | --- |
+| `npx vitest run test/qa-measure-harness.test.mjs test/qa-judge-stored.test.mjs test/qa-paired-verdict.test.mjs test/qa-harness-preconditions.test.mjs` | 4 files, 193 tests passed, exit 0 |
+| `npm test` | 103 files, 1778 tests passed, exit 0 |
+| `npm run typecheck` | exit 0 |
+| `npm run build` | exit 0, `--dry-run: exiting now.` |
+| `npm run eval:qa:paired:validate` | exit 0, `"pass": true` |
+| `npm run secrets:scan -- --tree` | exit 0, `secret-scan: clean (+ gitleaks)` |
+| `git diff --check` | exit 0 |
+
 ## Risks
 
 - **QA implementation hash moves.** `sourceIdentity.qaImplementationSha256` hashes every
@@ -198,18 +236,30 @@ No paid call ran.
   `qaImplementationSha256` on both arms. The candidate arm was collected at runner revision
   `65d2f98`. Collect the baseline arm from that same runner revision. Do not advance the runner
   worktree to this commit between the two arms.
-- **Stale keys in the candidate `meta`.** The variantA artifact still carries
+- **Stale keys in the candidate `meta`.** The untouched variantA artifact still carries
   `meanContinuousCoverage: 0.5601952380952382`. The value is invalid. The paired printer ignores
-  it. Any human summary of that arm must omit it.
-- **Inert residual.** A `--no-judge` artifact collected by the old runner carries
-  `meanContinuousCoverage: null` and `continuousCoverageRowCount: 0`. The new stored-judge path
-  leaves those two keys in place. They hold no number.
+  it. Any human summary of that arm must omit it. Nobody should rewrite the paid artifact only to
+  drop the keys. A future stored-judge write would drop them.
+- **Prior residual, now closed.** The first repair left both retired keys in place on every
+  stored-judge rewrite, including the zero-call finalization of an inline arm. The follow-up
+  deletes them on every write. Artifacts that nobody rewrites keep their bytes and their invalid
+  values.
+- **In-place rewrite changes metadata bytes.** A stored-judge write of a pre-repair artifact now
+  removes two keys. `judgeStored.sourceResultsSha256` preserves the collection identity, and the
+  measurement tuple does not include either key.
 - **Other prose counts.** `boundaryEscalationReason` uses `missingFacts.length <= 1` on a single
   vote to pick the `boundary-partial` tier. `judge-stability.mjs` records
   `partialMissingFactCounts`. Both read one vote's prose list. Neither is a reported share. They
   are unchanged and remain a tiering heuristic with the same prose-count weakness.
 - **Dated records.** Historical tables still print coverage values. The README now labels them
   invalid. Nobody should compare them.
+
+## Review reconciliation
+
+| Finding | Repair | Evidence |
+| --- | --- | --- |
+| R1: the stored-judge rewrite keeps both retired fields | `writeState` deletes both keys before every write. Three stored tests cover the zero-call finalization, the suppressed-aggregate write, and the mid-run crash write. | `test/qa-judge-stored.test.mjs`, commands table above |
+| R2: the retirement date text excludes the named defective artifact | README and the paired test comment now describe artifacts produced before this repair and name the `2026-09-04T05-40-51-variantA` arm. | `eval/qa/README.md` `### Measurement shares` |
 
 ## Blockers
 

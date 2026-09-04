@@ -223,7 +223,8 @@ describe("paired QA verdict", () => {
   });
 
   it("reads stored artifacts that still carry the retired coverage keys", () => {
-    // Artifacts finalized before 2026-09-04 stamp `meanContinuousCoverage` and
+    // Artifacts produced before the coverage-share retirement, such as the
+    // 2026-09-04T05-40-51-variantA arm, stamp `meanContinuousCoverage` and
     // `continuousCoverageRowCount`. Neither key is part of the measurement
     // tuple, so an asymmetric pair still compares and the values are ignored.
     const retired = { meanContinuousCoverage: 0.5601952380952382, continuousCoverageRowCount: 500 };

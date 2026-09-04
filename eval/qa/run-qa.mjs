@@ -577,6 +577,11 @@ export function judgeTieringMetadata({
  * unions every vote's paraphrases. A count ratio over that list has no valid
  * meaning and went negative on 49 panel rows of the 2026-09-04 500-case arm.
  */
+export const RETIRED_MEASUREMENT_METRIC_KEYS = Object.freeze([
+  "meanContinuousCoverage",
+  "continuousCoverageRowCount"
+]);
+
 export function qaMeasurementMetrics(rows) {
   const verdictRows = rows.filter((row) => typeof row.verdict?.score === "string");
   const gradedRows = verdictRows.filter((row) => ["correct", "partial", "wrong"].includes(row.verdict.score));
@@ -1305,8 +1310,14 @@ export async function judgeStoredResults(
     meta.judgingCompleteness = completeness;
     const aggregatesAllowed = collectionAggregatesAllowed && completeness.aggregatesAllowed;
     meta.aggregatesSuppressed = !aggregatesAllowed;
+    // Every stored-judge write owns the measurement block: drop the current
+    // keys before re-stamping them, and drop the retired coverage keys that an
+    // artifact produced before the retirement still carries. This runs on the
+    // zero-call finalization and on the suppressed-aggregate write too.
     const measurementMetrics = qaMeasurementMetrics(storedActiveRows());
-    for (const key of Object.keys(measurementMetrics)) delete meta[key];
+    for (const key of [...RETIRED_MEASUREMENT_METRIC_KEYS, ...Object.keys(measurementMetrics)]) {
+      delete meta[key];
+    }
     if (aggregatesAllowed) Object.assign(meta, measurementMetrics);
     if (judgeBinary) meta.judgeBinary = judgeBinary;
     if (judgeEnvironment) meta.judgeEnvironment = judgeEnvironment;

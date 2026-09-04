@@ -694,12 +694,15 @@ its denominator is empty. `aggregatesSuppressed: true` removes all five.
 There is no key-fact coverage share. `verdict.missingFacts` is judge prose, not an index into
 `golden.keyFacts`: one judge may write several entries for one fact or one entry for several
 facts, and a panel unions every vote's paraphrases. The former `meanContinuousCoverage` divided
-that list length by the key-fact count. It went negative on 49 panel rows of the 2026-09-04
-500-case arm and reported an invalid `56.0%` mean, so it was retired on 2026-09-04
-(`.agents/rounds/2026-09-03-truth-maintenance/coverage-metric-fix-fable.md`). Records dated before
-2026-09-04 still show a `coverage` or `mean continuous coverage` value. Read those values as
-invalid; do not compare them. Stored artifacts that carry the two retired keys stay readable by
-every current reader, and the paired printer ignores them.
+that list length by the key-fact count. It went negative on 49 panel rows of the
+`2026-09-04T05-40-51-variantA` 500-case arm and reported an invalid `56.0%` mean, so it was
+retired (`.agents/rounds/2026-09-03-truth-maintenance/coverage-metric-fix-fable.md`). Artifacts
+and records produced before this repair still carry a `coverage` or `mean continuous coverage`
+value; that 2026-09-04 arm is one of them. Read those values as invalid; do not compare them.
+Such artifacts stay readable by every current reader, and the paired printer ignores both keys.
+A stored-judge write of such an artifact deletes `meanContinuousCoverage` and
+`continuousCoverageRowCount`, including the zero-call finalization and the suppressed-aggregate
+write. An artifact nobody rewrites keeps its original bytes.
 
 ### Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
 
