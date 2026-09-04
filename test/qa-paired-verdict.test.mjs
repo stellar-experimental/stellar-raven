@@ -788,6 +788,24 @@ describe("paired QA verdict", () => {
     );
   });
 
+  it("rejects intra-arm server revision drift across the paired repeat", () => {
+    const baselineFirst = withRuntimeAdapter(result(Array(100).fill("correct")), "baseline");
+    const baselineSecond = withRuntimeAdapter(result(Array(100).fill("correct")), "baseline");
+    setServerRevision(baselineSecond, "e".repeat(40));
+    const candidateGrades = [...Array(5).fill("partial"), ...Array(95).fill("correct")];
+    const candidateFirst = withRuntimeAdapter(result(candidateGrades), "candidate");
+    const candidateSecond = withRuntimeAdapter(result(Array(100).fill("correct")), "candidate");
+    const compared = comparePairedArtifacts({
+      baselineRuns: [baselineFirst, baselineSecond],
+      candidateRuns: [candidateFirst, candidateSecond]
+    });
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "server-revision-pairing" })
+    );
+  });
+
   it("rejects equal baseline and candidate server revisions", () => {
     const baseline = withRuntimeAdapter(result(Array(100).fill("partial")), "baseline");
     const candidate = withRuntimeAdapter(result(Array(100).fill("partial")), "candidate");

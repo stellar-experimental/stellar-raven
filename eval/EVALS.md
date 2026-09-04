@@ -135,12 +135,19 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
     The runner suppresses all aggregates after such a failure.
 12. **Concurrent paired collection has one supervisor.** Use
     `npm run eval:qa:paired:collect -- --plan <plan.json>`. The plan freezes the exact ordered IDs,
-    selected content, cases bytes, commands, four worktrees, and input hashes. The supervisor
-    enforces a row barrier, shared cancellation, child exits, and a four-hour deadline. It emits a
-    receipt only after both arms finish. Different cross-arm ports are valid when each arm's own
-    listener and adapter attestations remain stable. Collection uses `$80` per arm. Stored judging
-    raises the same artifact ledger to the cumulative `$120` arm cap. A failed collection produces
-    no paired aggregate or receipt.
+    selected content, cases bytes, commands, four worktrees, and input hashes. Each cases path stays
+    inside its runner. The executing supervisor and control module must match their pins.
+    Baseline and candidate use different revisions and surface hashes. Baseline uses `add-missing`;
+    candidate uses `verify-native`. Their public and upstream ports are pairwise distinct.
+    Shared measurement flags match. Both servers reproduce one salted `.dev.vars` identity without
+    recording values. Keep this salted plan uncommitted, then delete it after the run.
+    The supervisor enforces row barriers, alternating monotonic release order, shared cancellation,
+    child exits, a bounded termination drain, and a four-hour deadline. Wall-clock times provide
+    duration evidence only. Before the receipt, each artifact must exist in its arm results
+    directory. It must be comparable and match the selected IDs and available content identity.
+    Collection uses `$80` per arm. Stored judging raises the same ledger to `$120` per arm.
+    A failed collection produces no paired aggregate or receipt. See `qa/README.md` for the full
+    plan and receipt contract.
 
 ## Primary artifact: service-improvement recommendations
 

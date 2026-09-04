@@ -63,7 +63,7 @@ The manifest validator requires:
 - one shared adapter revision and shared measurement flags;
 - baseline `add-missing` and candidate `verify-native` adapter modes;
 - four pairwise-distinct public and upstream ports;
-- sorted `.dev.vars` names and one canonical name-value SHA-256, without values;
+- a random per-plan salt, sorted `.dev.vars` names, and one salted name-value SHA-256;
 - identical load-bearing hashes across the two arms;
 - one accepted two-agent capacity record with free evidence;
 - `$80` answer-only collection and cumulative `$120` stored judging per arm;
@@ -71,8 +71,9 @@ The manifest validator requires:
 - the fixed 14,400,000 ms collection deadline.
 
 Both children finish free preflight before the supervisor releases the first row. The supervisor
-releases row N+1 only after both children report row N complete. The first release alternates
-between baseline and candidate by row index. Separate runner worktrees isolate result paths.
+releases row N+1 only after both children report row N complete. The first IPC send alternates
+between baseline and candidate by row index. Monotonic sequence values record this order.
+Wall-clock timestamps record duration evidence only. Separate runner worktrees isolate result paths.
 
 A cancellation marker sits outside all four worktrees. `run-qa.mjs` checks it before every agent
 spend authorization. This check also covers a same-row transport retry. IPC cancellation wakes a
@@ -87,6 +88,20 @@ aggregate on any failure.
 The supervisor waits for IPC closure after child exit. This wait lets a buffered completion message
 arrive before the exit decision. The receipt records the validated plan SHA-256 and all required
 collection timestamps. Each reported artifact must exist below its arm runner results directory.
+The supervisor reads each artifact before receipt. It binds comparability, ordered IDs, their
+digest, and each available content identity to the validated plan.
+
+### Residual repair
+
+The repair closes G1 through G9 from the Opus 5 xhigh re-review. One comparator now controls
+`.dev.vars` parsing and manifest validation. Missing or unreadable files produce clear arm-specific
+launch-gate errors. The salted plan records no values and stays uncommitted. The operator deletes it
+after success or failure.
+
+The executing supervisor verifies its own bytes and the imported control module. Each cases path
+must resolve inside its runner worktree. New tests cover intra-arm revision drift, the IPC drain,
+the production event order, and a closed peer before release. `eval/EVALS.md` and the `run-evals`
+skill now contain the complete operator contract.
 
 ### Stored judging
 
@@ -135,13 +150,15 @@ probe, vector, capture chain, postflight, and no-resume record. Guard and probe 
 - Four distinct worktrees and cumulative cap semantics are manifest-tested.
 - Command, revision, mode, port, `.dev.vars`, and control-byte mismatches fail before collection.
 - Missing, malformed, and mismatched judge identity stamps fail comparison.
+- Non-comparable, wrong-ID, wrong-digest, and wrong-content artifacts fail before receipt.
+- Intra-arm revision drift, IPC drain, production IPC order, and a closed peer are tested.
 
 ## Validation
 
 | Command | Result |
 |---|---|
-| `./node_modules/.bin/vitest run test/qa-paired-collection-control.test.mjs test/qa-paired-collection-supervisor.test.mjs test/qa-paired-verdict.test.mjs test/qa-judge-stored.test.mjs test/qa-harness-preconditions.test.mjs` | PASS, 5 files and 229 tests |
-| `npm test` | PASS, 107 files and 1,886 tests |
+| `./node_modules/.bin/vitest run test/qa-paired-collection-control.test.mjs test/qa-paired-collection-supervisor.test.mjs test/qa-paired-verdict.test.mjs test/qa-judge-stored.test.mjs test/qa-harness-preconditions.test.mjs` | PASS, 5 files and 243 tests |
+| `npm test` | PASS, 107 files and 1,900 tests |
 | `npm run eval:qa:paired:validate` | PASS, all deterministic gates true |
 | `npm run typecheck` | PASS |
 | `npm run build` | PASS |

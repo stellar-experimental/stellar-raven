@@ -12,7 +12,7 @@ import {
 } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "./paired-collection-control.mjs";
 
 export const PAIRED_COLLECTION_PLAN_SCHEMA = "qa-paired-collection-plan-v1";
@@ -27,6 +27,10 @@ const ARMS = ["baseline", "candidate"];
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function compareText(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
 }
 
 function canonicalize(value) {
@@ -86,24 +90,49 @@ function inspectGitWorktree(worktree) {
   };
 }
 
-function devVarsIdentity(worktree) {
-  const source = readFileSync(path.join(worktree, ".dev.vars"), "utf8");
+export function devVarsIdentity(worktree, salt) {
+  validateHash(salt, "devVars.salt");
+  let source;
+  try {
+    source = readFileSync(path.join(worktree, ".dev.vars"), "utf8");
+  } catch {
+    throw new Error(".dev.vars is missing or unreadable");
+  }
   const entries = [];
   const names = new Set();
   for (const [index, sourceLine] of source.split(/\r?\n/).entries()) {
     const line = sourceLine.trim();
     if (!line || line.startsWith("#")) continue;
     const match = /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/.exec(line);
-    if (!match) throw new Error(`${worktree} has malformed .dev.vars line ${index + 1}`);
-    if (names.has(match[1])) throw new Error(`${worktree} has duplicate .dev.vars name ${match[1]}`);
+    if (!match) throw new Error(`.dev.vars line ${index + 1} is malformed`);
+    if (names.has(match[1])) throw new Error(`.dev.vars has duplicate name ${match[1]}`);
     names.add(match[1]);
     entries.push([match[1], match[2]]);
   }
-  entries.sort(([left], [right]) => left.localeCompare(right));
+  entries.sort(([left], [right]) => compareText(left, right));
   return {
     names: entries.map(([name]) => name),
-    sha256: sha256(JSON.stringify(entries))
+    sha256: sha256(JSON.stringify({ salt, entries }))
   };
+}
+
+function executingControlHashes() {
+  const supervisorPath = fileURLToPath(import.meta.url);
+  const controlPath = fileURLToPath(new URL("./paired-collection-control.mjs", import.meta.url));
+  return {
+    pairedCollectionSupervisorSha256: sha256(readFileSync(supervisorPath)),
+    pairedCollectionControlSha256: sha256(readFileSync(controlPath))
+  };
+}
+
+function pathInside(root, candidate, label) {
+  const realRoot = realpathSync(root);
+  const realCandidate = realpathSync(candidate);
+  const relative = path.relative(realRoot, realCandidate);
+  if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`${label} must resolve inside its runner worktree`);
+  }
+  return realCandidate;
 }
 
 function validateHash(value, label) {
@@ -111,7 +140,11 @@ function validateHash(value, label) {
 }
 
 function selectedCasesFromWorktree(worktree, casesPath, selectedIds) {
-  const absolutePath = path.resolve(worktree, casesPath);
+  const absolutePath = pathInside(
+    worktree,
+    path.resolve(worktree, casesPath),
+    "--cases"
+  );
   const bytes = readFileSync(absolutePath);
   const parsed = JSON.parse(bytes);
   if (!Array.isArray(parsed.cases)) throw new Error(`${absolutePath} has no cases[]`);
@@ -243,19 +276,27 @@ export function validatePairedCollectionPlan(plan, {
       !plan.concurrentLoad.evidence.trim()) {
     throw new Error("paired collection requires an accepted two-agent capacity record");
   }
+  validateHash(plan.devVars?.salt, "devVars.salt");
   validateHash(plan.devVars?.sha256, "devVars.sha256");
   if (!Array.isArray(plan.devVars?.names) ||
       plan.devVars.names.some((name) => typeof name !== "string") ||
-      !plan.devVars.names.every((name, index, names) => index === 0 || names[index - 1] < name)) {
+      !plan.devVars.names.every((name, index, names) =>
+        index === 0 || compareText(names[index - 1], name) < 0)) {
     throw new Error("devVars.names must be a sorted unique name list");
   }
   for (const arm of ARMS) {
-    const identity = readDevVarsIdentity(plan.worktrees[`${arm}Server`]);
+    let identity;
+    try {
+      identity = readDevVarsIdentity(plan.worktrees[`${arm}Server`], plan.devVars.salt);
+    } catch (error) {
+      throw new Error(`${arm} server launch gate: ${error instanceof Error ? error.message : String(error)}`);
+    }
     if (identity.sha256 !== plan.devVars.sha256 ||
         JSON.stringify(identity.names) !== JSON.stringify(plan.devVars.names)) {
       throw new Error(`${arm} server .dev.vars does not match the frozen identity`);
     }
   }
+  const executingHashes = executingControlHashes();
 
   for (const arm of ARMS) {
     const cap = plan.caps?.[arm];
@@ -279,6 +320,10 @@ export function validatePairedCollectionPlan(plan, {
       "pairedCollectionSupervisorSha256",
       "pairedCollectionControlSha256"
     ]) validateHash(hashes?.[name], `${arm}.inputHashes.${name}`);
+    if (hashes.pairedCollectionSupervisorSha256 !== executingHashes.pairedCollectionSupervisorSha256 ||
+        hashes.pairedCollectionControlSha256 !== executingHashes.pairedCollectionControlSha256) {
+      throw new Error(`${arm} manifest does not pin the executing paired collection control bytes`);
+    }
     const collection = plan.arms[arm].collectionCommand;
     const judge = plan.arms[arm].judgeCommand;
     if (flagValue(collection, "--expect-agent-binary-sha256") !== hashes.agentBinarySha256 ||
@@ -420,6 +465,33 @@ function artifactPathFromArm(plan, arm, reportedPath) {
   if (!relative || relative.startsWith("..") || path.isAbsolute(relative) || !statSync(artifactPath).isFile()) {
     throw new Error(`${arm} artifact must be a file below its runner results directory`);
   }
+  let artifact;
+  try {
+    artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+  } catch {
+    throw new Error(`${arm} artifact must contain readable JSON`);
+  }
+  if (artifact.meta?.comparable !== true) {
+    throw new Error(`${arm} artifact must stamp meta.comparable: true`);
+  }
+  const artifactIds = Array.isArray(artifact.rows) ? artifact.rows.map((row) => row?.id) : null;
+  if (!artifactIds || JSON.stringify(artifactIds) !== JSON.stringify(plan.selected.ids) ||
+      sha256(JSON.stringify(artifactIds)) !== plan.selected.idsSha256 ||
+      artifact.meta?.inputSnapshot?.caseIdsSha256 !== plan.selected.idsSha256) {
+    throw new Error(`${arm} artifact does not match the frozen selected IDs`);
+  }
+  if (artifact.meta.selectedIds !== undefined &&
+      JSON.stringify(artifact.meta.selectedIds) !== JSON.stringify(plan.selected.ids)) {
+    throw new Error(`${arm} artifact selectedIds does not match the frozen selected IDs`);
+  }
+  for (const contentSha256 of [
+    artifact.meta.inputSnapshot.casesSha256,
+    artifact.meta.selectedContentSha256
+  ]) {
+    if (contentSha256 !== undefined && contentSha256 !== plan.selected.contentSha256) {
+      throw new Error(`${arm} artifact does not match the frozen selected content`);
+    }
+  }
   return artifactPath;
 }
 
@@ -466,10 +538,13 @@ export function supervisePairedChildren({
       index,
       id,
       firstReleasedArm: index % 2 === 0 ? "baseline" : "candidate",
+      releaseSequence: { baseline: null, candidate: null },
       releasedAt: { baseline: null, candidate: null },
       completedAt: { baseline: null, candidate: null }
     }));
     const collectionStartedAt = now();
+    const releaseSequence = [];
+    let nextReleaseSequence = 1;
     let settled = false;
     let failureReason = null;
     let deadlineTimer = null;
@@ -556,6 +631,7 @@ export function supervisePairedChildren({
         selectedContentSha256: plan.selected.contentSha256,
         rows: plan.selected.ids.length,
         collectionStartedAt,
+        releaseSequence,
         rowTimeline: receiptTimeline,
         postflightAt: Object.fromEntries(ARMS.map((arm) => [arm, state[arm].postflightAt])),
         finishedAt: now(),
@@ -566,12 +642,22 @@ export function supervisePairedChildren({
     const releaseAfterBarrier = (completedIndex) => {
       const nextIndex = completedIndex + 1;
       const orderedArms = nextIndex % 2 === 0 ? ARMS : [...ARMS].reverse();
+      for (const name of ARMS) {
+        if (children[name].connected === false) {
+          throw new Error(`${name} IPC channel is closed before row release`);
+        }
+      }
       for (const name of orderedArms) {
         const control = nextIndex === 0
           ? { schema: PAIRED_COLLECTION_CONTROL_SCHEMA, type: "start" }
           : { schema: PAIRED_COLLECTION_CONTROL_SCHEMA, type: "continue", index: completedIndex };
         sendControl(name, control);
-        if (nextIndex < receiptTimeline.length) receiptTimeline[nextIndex].releasedAt[name] = now();
+        if (nextIndex < receiptTimeline.length) {
+          const sequence = nextReleaseSequence++;
+          receiptTimeline[nextIndex].releaseSequence[name] = sequence;
+          receiptTimeline[nextIndex].releasedAt[name] = now();
+          releaseSequence.push({ sequence, index: nextIndex, id: plan.selected.ids[nextIndex], arm: name });
+        }
       }
     };
     const evaluateExit = (arm) => {

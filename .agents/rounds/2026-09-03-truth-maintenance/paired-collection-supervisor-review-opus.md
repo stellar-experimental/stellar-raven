@@ -2,7 +2,7 @@
 
 Date: 2026-09-04
 
-Reviewer: Claude Code, Opus 5, high effort.
+Reviewer lane: Claude Opus 5 at xhigh effort.
 
 Reviewed commit: `79080bd70f0a603daf422432cf4708bef522e389` ("eval: supervise paired QA collection").
 
@@ -814,3 +814,22 @@ I did not run `npm run test:smoke`. The repair touches no path under `src/execut
 6. Obtain the new owner authorization. This re-review grants none.
 
 This re-review authorizes no spend, no deployment, and no merge.
+
+## Author residual reconciliation
+
+This section records the later G1 through G9 repair. It does not change either historical verdict.
+
+| Residual | Author disposition |
+|---|---|
+| G1 | Closed. The supervisor reads each artifact and binds comparability, IDs, and available content identity before receipt. |
+| G2 | Closed. Monotonic `releaseSequence` values record IPC order. Wall-clock timestamps record duration evidence only. |
+| G3 | Closed. Parsing and manifest validation use one code-unit comparator. |
+| G4 | Closed. Missing or unreadable `.dev.vars` produces an arm-specific launch-gate error without values. |
+| G5 | Closed. The executing supervisor and imported control bytes must match both manifest pins. |
+| G6 | Closed. Each cases path must resolve inside its own runner worktree. |
+| G7 | Closed. Tests cover revision drift, IPC drain, production event order, and a closed release peer. |
+| G8 | Closed. `eval/EVALS.md` and `run-evals/SKILL.md` contain the repaired operator contract. |
+| G9 | Closed. Each plan uses a random salt. The plan remains uncommitted and is deleted after the run. |
+
+The changes preserve the prior F1 through F8 repairs and the additive review record. No repair made
+a network call or a paid call. This author reconciliation grants no launch authorization.

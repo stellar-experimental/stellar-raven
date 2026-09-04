@@ -16,6 +16,7 @@ import {
   PAIRED_COLLECTION_DEADLINE_MS,
   PAIRED_COLLECTION_PLAN_SCHEMA,
   PAIRED_COLLECTION_RECEIPT_SCHEMA,
+  devVarsIdentity,
   pairedCollectionPlanSha256,
   supervisePairedChildren,
   validatePairedCollectionPlan
@@ -24,6 +25,11 @@ import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "../eval/qa/paired-collection-c
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const devVarsPairs = [["ALPHA", "one"], ["ZETA", "two"]];
+const DEV_VARS_SALT = "9".repeat(64);
+const devVarsSha256 = (pairs = devVarsPairs) => sha256(JSON.stringify({
+  salt: DEV_VARS_SALT,
+  entries: pairs
+}));
 
 class FakeChild extends EventEmitter {
   constructor() {
@@ -67,6 +73,22 @@ function message(arm, type, extra = {}) {
   return { schema: PAIRED_COLLECTION_CONTROL_SCHEMA, arm, type, ...extra };
 }
 
+function artifactForPlan(plan, overrides = {}) {
+  return {
+    ...overrides,
+    meta: {
+      comparable: true,
+      selectedIds: [...plan.selected.ids],
+      inputSnapshot: {
+        caseIdsSha256: plan.selected.idsSha256,
+        casesSha256: plan.selected.contentSha256
+      },
+      ...overrides.meta
+    },
+    rows: overrides.rows ?? plan.selected.ids.map((id) => ({ id }))
+  };
+}
+
 function setFlag(command, flag, value) {
   command[command.indexOf(flag) + 1] = value;
 }
@@ -107,14 +129,16 @@ function planFixture() {
     { id: "case-b", question: "B?" }
   ];
   const casesBytes = JSON.stringify({ cases });
+  const supervisorBytes = readFileSync(path.resolve("eval/qa/paired-collection-supervisor.mjs"));
+  const controlBytes = readFileSync(path.resolve("eval/qa/paired-collection-control.mjs"));
   const files = {
     runQaSha256: sha256("run-qa"),
     pairedVerdictSha256: sha256("paired-verdict"),
     adapterImplementationSha256: sha256("adapter"),
     remoteIdentityProbeSha256: sha256("probe"),
     stabilityRegisterSha256: sha256("register"),
-    pairedCollectionSupervisorSha256: sha256("supervisor"),
-    pairedCollectionControlSha256: sha256("control")
+    pairedCollectionSupervisorSha256: sha256(supervisorBytes),
+    pairedCollectionControlSha256: sha256(controlBytes)
   };
   for (const arm of ["baseline", "candidate"]) {
     const runner = base.plan.worktrees[`${arm}Runner`];
@@ -122,8 +146,8 @@ function planFixture() {
     writeFileSync(path.join(runner, "eval", "qa", "cases.json"), casesBytes);
     writeFileSync(path.join(runner, "eval", "qa", "run-qa.mjs"), "run-qa");
     writeFileSync(path.join(runner, "eval", "qa", "paired-verdict.mjs"), "paired-verdict");
-    writeFileSync(path.join(runner, "eval", "qa", "paired-collection-supervisor.mjs"), "supervisor");
-    writeFileSync(path.join(runner, "eval", "qa", "paired-collection-control.mjs"), "control");
+    writeFileSync(path.join(runner, "eval", "qa", "paired-collection-supervisor.mjs"), supervisorBytes);
+    writeFileSync(path.join(runner, "eval", "qa", "paired-collection-control.mjs"), controlBytes);
     writeFileSync(path.join(runner, "eval", "qa", "exact-old-runtime-adapter.mjs"), "adapter");
     writeFileSync(path.join(runner, "eval", "qa", "probe-remote-identities.mjs"), "probe");
     writeFileSync(path.join(runner, "stability.json"), "register");
@@ -195,8 +219,9 @@ function planFixture() {
       evidence: "free capacity check record"
     },
     devVars: {
+      salt: DEV_VARS_SALT,
       names: devVarsPairs.map(([name]) => name),
-      sha256: sha256(JSON.stringify(devVarsPairs))
+      sha256: devVarsSha256()
     },
     comparisonCommand: [
       process.execPath,
@@ -254,14 +279,12 @@ describe("paired QA collection supervisor", () => {
         const resultsDir = path.join(plan.worktrees[`${arm}Runner`], "eval", "qa", "results");
         mkdirSync(resultsDir, { recursive: true });
         artifactPaths[arm] = path.join(resultsDir, `${arm}.json`);
-        writeFileSync(artifactPaths[arm], "{}");
+        writeFileSync(artifactPaths[arm], JSON.stringify(artifactForPlan(plan)));
       }
-      let clock = 0;
       const run = supervisePairedChildren({
         children,
         plan,
-        cancellationFile: path.join(root, "cancelled"),
-        now: () => `time-${String(clock++).padStart(3, "0")}`
+        cancellationFile: path.join(root, "cancelled")
       });
       for (const arm of ["baseline", "candidate"]) {
         children[arm].emit("message", message(arm, "ready", {
@@ -308,8 +331,14 @@ describe("paired QA collection supervisor", () => {
         candidate: realpathSync(artifactPaths.candidate)
       });
       expect(receipt.rowTimeline.map((row) => row.firstReleasedArm)).toEqual(["baseline", "candidate"]);
-      expect(receipt.rowTimeline[0].releasedAt.baseline < receipt.rowTimeline[0].releasedAt.candidate).toBe(true);
-      expect(receipt.rowTimeline[1].releasedAt.candidate < receipt.rowTimeline[1].releasedAt.baseline).toBe(true);
+      expect(receipt.rowTimeline[0].releaseSequence).toEqual({ baseline: 1, candidate: 2 });
+      expect(receipt.rowTimeline[1].releaseSequence).toEqual({ baseline: 4, candidate: 3 });
+      expect(receipt.releaseSequence.map(({ sequence, index, arm }) => ({ sequence, index, arm }))).toEqual([
+        { sequence: 1, index: 0, arm: "baseline" },
+        { sequence: 2, index: 0, arm: "candidate" },
+        { sequence: 3, index: 1, arm: "candidate" },
+        { sequence: 4, index: 1, arm: "baseline" }
+      ]);
       expect(receipt.rowTimeline.every((row) => Object.values(row.releasedAt).every(Boolean))).toBe(true);
       expect(receipt.rowTimeline.every((row) => Object.values(row.completedAt).every(Boolean))).toBe(true);
       expect(Object.values(receipt.postflightAt).every(Boolean)).toBe(true);
@@ -553,6 +582,67 @@ describe("paired QA collection supervisor", () => {
     }
   });
 
+  it("accepts the production complete-disconnect-exit event order", async () => {
+    const { root, plan, children } = fixture();
+    try {
+      const run = supervisePairedChildren({
+        children,
+        plan,
+        cancellationFile: path.join(root, "cancelled"),
+        validateArtifactPath: (_arm, reportedPath) => reportedPath
+      });
+      reachFinalBarrier(plan, children);
+      for (const arm of ["baseline", "candidate"]) {
+        children[arm].emit("message", message(arm, "complete", { resultsPath: `/tmp/${arm}.json` }));
+        children[arm].emit("disconnect");
+        children[arm].emit("exit", 0, null);
+      }
+      await expect(run).resolves.toMatchObject({ rows: 2 });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("hard-cancels when IPC does not close after child exit", async () => {
+    const { root, plan, children } = fixture();
+    try {
+      const timers = [];
+      const run = supervisePairedChildren({
+        children,
+        plan,
+        cancellationFile: path.join(root, "cancelled"),
+        setTimer: (callback, delay) => {
+          timers.push({ callback, delay });
+          return timers.length;
+        },
+        clearTimer: () => {}
+      });
+      children.baseline.emit("exit", 0, null);
+      timers.find((timer) => timer.delay === 1_000).callback();
+      expect(children.candidate.killed).toEqual(["SIGTERM"]);
+      timers.find((timer) => timer.delay === 5_000).callback();
+      await expect(run).rejects.toThrow(/IPC did not close after child exit/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("cancels before releasing either arm when a peer channel is closed", async () => {
+    const { root, plan, children } = fixture();
+    try {
+      children.candidate.connected = false;
+      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      sendReadiness(plan, children, "baseline");
+      sendReadiness(plan, children, "candidate");
+      expect(children.baseline.sent.some((item) => item.type === "start")).toBe(false);
+      children.baseline.emit("exit", 1, null);
+      children.candidate.emit("exit", 1, null);
+      await expect(run).rejects.toThrow(/closed before row release/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it.each(["absent", "outside"])("hard-cancels when an artifact is %s", async (kind) => {
     const { root, plan, children } = fixture();
     try {
@@ -569,6 +659,37 @@ describe("paired QA collection supervisor", () => {
       children.baseline.emit("exit", 1, null);
       children.candidate.emit("exit", 1, null);
       await expect(run).rejects.toThrow(/protocol failure/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["non-comparable", (artifact) => { artifact.meta.comparable = false; }],
+    ["wrong selected digest", (artifact) => { artifact.meta.inputSnapshot.caseIdsSha256 = "0".repeat(64); }],
+    ["wrong row IDs", (artifact) => { artifact.rows[0].id = "wrong"; }],
+    ["wrong selectedIds", (artifact) => { artifact.meta.selectedIds[0] = "wrong"; }],
+    ["wrong content identity", (artifact) => { artifact.meta.inputSnapshot.casesSha256 = "0".repeat(64); }]
+  ])("hard-cancels for a %s artifact before receipt", async (_label, mutate) => {
+    const { root, plan, children } = fixture();
+    try {
+      const artifactPaths = {};
+      for (const arm of ["baseline", "candidate"]) {
+        const resultsDir = path.join(plan.worktrees[`${arm}Runner`], "eval", "qa", "results");
+        mkdirSync(resultsDir, { recursive: true });
+        artifactPaths[arm] = path.join(resultsDir, `${arm}.json`);
+        const artifact = artifactForPlan(plan);
+        if (arm === "baseline") mutate(artifact);
+        writeFileSync(artifactPaths[arm], JSON.stringify(artifact));
+      }
+      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      reachFinalBarrier(plan, children);
+      children.baseline.emit("message", message("baseline", "complete", {
+        resultsPath: artifactPaths.baseline
+      }));
+      children.baseline.emit("exit", 1, null);
+      children.candidate.emit("exit", 1, null);
+      await expect(run).rejects.toThrow(/artifact/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -627,6 +748,77 @@ describe("paired QA collection supervisor", () => {
       );
     } finally {
       rmSync(second.root, { recursive: true, force: true });
+    }
+  });
+
+  it("uses one exact sort order for mixed-case .dev.vars names", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const pairs = [["BETA", "one"], ["alpha", "two"]];
+      for (const arm of ["baseline", "candidate"]) {
+        writeFileSync(path.join(plan.worktrees[`${arm}Server`], ".dev.vars"), "alpha=two\nBETA=one\n");
+      }
+      plan.devVars.names = pairs.map(([name]) => name);
+      plan.devVars.sha256 = devVarsSha256(pairs);
+      expect(devVarsIdentity(plan.worktrees.baselineServer, DEV_VARS_SALT).names).toEqual([
+        "BETA",
+        "alpha"
+      ]);
+      expect(validatePairedCollectionPlan(plan, { inspectWorktree })).toBe(plan);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("reports a clear launch-gate error for a missing .dev.vars file", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      rmSync(path.join(plan.worktrees.baselineServer, ".dev.vars"));
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
+        /baseline server launch gate: \.dev\.vars is missing or unreadable/
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects control pins that differ from the executing modules", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      for (const arm of ["baseline", "candidate"]) {
+        plan.arms[arm].inputHashes.pairedCollectionSupervisorSha256 = "0".repeat(64);
+      }
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
+        /executing paired collection control bytes/
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a cases path outside its runner worktree", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const externalCases = path.join(root, "external-cases.json");
+      writeFileSync(externalCases, readFileSync(path.join(plan.worktrees.baselineRunner, "eval", "qa", "cases.json")));
+      for (const arm of ["baseline", "candidate"]) {
+        plan.arms[arm].collectionCommand.push("--cases", externalCases);
+      }
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
+        /--cases must resolve inside its runner worktree/
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("requires the per-plan salt for the .dev.vars digest", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      delete plan.devVars.salt;
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(/devVars\.salt/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
     }
   });
 });

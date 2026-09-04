@@ -882,9 +882,17 @@ It records four distinct worktree roots: two runner worktrees and two server wor
 must belong to one Git repository. Both runner worktrees must reproduce the same cases and runner
 bytes before either child starts a paid call.
 
-The manifest records `devVars.names` and `devVars.sha256`. The names are sorted. The hash covers
-the canonical sorted name-value pairs. The manifest never records a value. Both server worktrees
-must reproduce the names and hash before collection starts.
+The manifest records `devVars.salt`, `devVars.names`, and `devVars.sha256`. Generate a new random
+64-character lowercase hexadecimal salt for each plan. The names use exact code-unit order. The
+salted hash covers the canonical sorted name-value pairs. The manifest never records a value. Both
+server worktrees must reproduce the names and salted hash before collection starts.
+
+Sort `[name, value]` pairs with JavaScript code-unit comparison on each name. Compute SHA-256 over
+the UTF-8 bytes of `JSON.stringify({ salt, entries })`. Use the same `entries` array to derive the
+stored name list.
+
+Keep the plan uncommitted. Delete it after the supervisor finishes. This rule applies after success
+and failure. A failed supervisor keeps its external cancellation marker directory.
 
 Each arm records exact `collectionCommand` and `judgeCommand` argument arrays. The executable must
 be the absolute `process.execPath`. The collection command must use explicit `--ids` and
@@ -898,6 +906,10 @@ environment, adapter implementation, remote identity probe, remote identity vect
 register, `run-qa.mjs`, `paired-verdict.mjs`, `paired-collection-supervisor.mjs`, and
 `paired-collection-control.mjs`. The collection and judge binary pins must match. Their environment
 pins must also match. Every listed hash must match across arms.
+
+The executing supervisor verifies its own bytes and its imported control module against these
+pins. Both runner copies must match the same pins. Each `--cases` path must resolve inside its own
+runner worktree.
 
 The validator requires different server revisions and surface hashes. Each server worktree must
 match its exact command revision. The baseline uses `add-missing`. The candidate uses
@@ -922,9 +934,16 @@ prints no aggregate or receipt on failure.
 
 Every cancellation starts a bounded drain. The supervisor then sends `SIGTERM` and later
 `SIGKILL` to a child that does not exit. It settles without waiting for a missing exit event. The
-receipt records the validated plan hash, collection start, alternating row release order, each row
-completion, each postflight, each arm finish, and the final finish time. Every reported artifact
-must exist below that arm runner's `eval/qa/results` directory.
+receipt records the validated plan hash, collection start, each row completion, each postflight,
+each arm finish, and the final finish time. Wall-clock timestamps provide duration evidence only.
+Monotonic `releaseSequence` values record the exact IPC send order. Even rows release baseline
+first. Odd rows release candidate first. This order does not prove which child starts its provider
+call first.
+
+Every reported artifact must exist below that arm runner's `eval/qa/results` directory. Before the
+receipt, the supervisor reads each artifact. It requires `meta.comparable === true`, the exact
+selected-ID digest, and the exact ordered row IDs. It also verifies recorded selected IDs and
+selected-content hashes when those fields exist.
 
 The paired printer permits different port pairs across the two arms. Each artifact must still
 contain matching preflight and postflight listener and adapter attestations for its own ports.

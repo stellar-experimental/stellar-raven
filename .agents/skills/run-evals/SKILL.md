@@ -516,13 +516,34 @@ Record the `--json` form in the round ledger. It includes `verdict`, the adjacen
 
 For concurrent paired collection, use
 `npm run eval:qa:paired:collect -- --plan <absolute-plan.json>`. The
-`qa-paired-collection-plan-v1` manifest freezes the ordered ID list and its content hash. It also
-freezes exact collection and stored-judge commands, four distinct worktrees, and all input hashes.
-It also freezes the paired comparison command and records the accepted two-agent capacity evidence.
-The supervisor starts answer-only arms together and applies one barrier after every row. It uses a
-shared cancellation marker before every later authorization. It stops both arms on a guard stop,
-budget stop, child exit, ordering failure, or the four-hour deadline. It emits no receipt on
-failure. Do not launch two independent `run-qa.mjs` processes as a substitute.
+`qa-paired-collection-plan-v1` manifest freezes the ordered ID list, its digest, selected content,
+cases bytes, exact commands, four distinct worktrees, and every input hash. Each cases path must
+resolve inside its runner. The executing supervisor and imported control module must match their
+manifest pins and both runner copies. The plan also freezes the comparison command and accepted
+two-agent capacity evidence.
+
+The baseline and candidate commands require different exact server revisions and surface hashes.
+Baseline uses `add-missing`; candidate uses `verify-native`. Both share the adapter revision and
+measurement flags. Their public and upstream ports are pairwise distinct. Each arm keeps its own
+port pair and server revision through every repeat.
+
+Create one random 64-character lowercase hexadecimal `devVars.salt` for each plan. Record only the
+salt, exact code-unit-sorted names, and the salted canonical name-value hash. Both server worktrees
+must reproduce that identity. Keep the plan uncommitted. Delete it after success or failure. The
+digest algorithm and complete manifest contract live in `eval/qa/README.md`.
+
+The supervisor starts answer-only arms after matching readiness. It applies one barrier after every
+row and alternates the first IPC send. Monotonic `releaseSequence` values prove send order;
+wall-clock timestamps supply duration evidence only. A shared cancellation marker stops every later
+authorization. Every cancellation has a bounded drain. Surviving children receive `SIGTERM`, then
+`SIGKILL` before forced settlement. Guard, budget, child, IPC, ordering, artifact, and deadline
+failures produce no receipt.
+
+Before a receipt, the supervisor reads each reported artifact below its arm results directory. It
+requires `meta.comparable === true`, the exact ID digest, exact ordered row IDs, and matching
+available content identity. The receipt includes the validated plan digest, monotonic releases, and
+collection, row, postflight, arm-finish, and final wall-clock times. Do not launch two independent
+`run-qa.mjs` processes as a substitute.
 
 The proposed two-arm method uses cumulative caps. Each `--no-judge` command uses
 `--max-budget-usd 80`. Each later `--judge-stored` command raises that artifact's same ledger to
