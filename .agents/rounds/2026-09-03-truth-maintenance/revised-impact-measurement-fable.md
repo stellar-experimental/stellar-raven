@@ -690,9 +690,9 @@ confirmation granted `LAUNCH-OK` after repair. The remaining blockers follow.
   canonical plan SHA-256. The general round approval does not substitute for it.
 - The owner must accept the concurrent-load estimand (decision 5). It is still open.
 - The launch revision must be one clean commit that contains the guard, the envelope repair, the
-  coverage-metric retirement, the supervisor, and the launch-contract enforcement. The branch
-  `codex/truth-maintenance-2026-09-03` contains the work through `dc0761d`. It contains all five
-  but is not merged.
+  coverage-metric retirement, the supervisor, and the launch-contract enforcement. PR #125 merged
+  that work as `50bf5518860584ec1e5d352acbe11033515a0b7f`. A future paid launch must create its
+  final manifest at one current clean revision.
 - The final repair validation is complete. It passed 108 files and 1,974 tests. See the ledger
   `## Final checklist`.
 - The manifest instance must be produced at that revision with a fresh salt and recomputed hashes.
