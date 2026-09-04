@@ -1112,6 +1112,20 @@ keyword projection across the 544-case corpus.
 The rejection does not rebaseline `eval/gates.json`.
 See `.agents/rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md`.
 
+## Decision (2026-09-04): Reject Scout 1.9.30 drift
+
+The committed Scout inventory remains 1.9.1.
+The 1.9.30 candidate keeps the same 36 paths and 37 operations.
+It changes 27 operation objects, 15 `x-routing` blocks, 22 direct schemas, and six shared schemas.
+The generated candidate meets the numeric routing floors.
+However, the current gates have no accepted fingerprint for its changed routing intent.
+Both protocol-history v2 contracts also stop as `source-expired` on the current manifest.
+
+Raven therefore rejects the generated 1.9.30 surface.
+It keeps `scout.getQualityReport` and `scout.verifyClaim` excluded.
+No policy, golden answer, finding state, or routing baseline changes with this decision.
+See `.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`.
+
 ## Protocol-history frozen measurement (2026-08-30)
 
 This round adds a frozen diagnostic with eight positive cases and four direct controls.
