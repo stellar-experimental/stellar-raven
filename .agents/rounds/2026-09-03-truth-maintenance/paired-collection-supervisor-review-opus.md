@@ -501,3 +501,26 @@ command.
 7. Obtain the new owner authorization. This review grants none.
 
 This review authorizes no spend, no deployment, and no merge.
+
+## Author repair reconciliation
+
+This section records the later repair. It does not change the independent verdict for commit
+`79080bd70f0a603daf422432cf4708bef522e389`.
+
+- F1: Every cancellation now has a bounded drain, `SIGTERM`, `SIGKILL`, and forced settlement.
+  The failure path keeps the exclusive no-new-spend marker.
+- F2 and F8: The manifest validates revisions, surface hashes, adapter modes, shared flags, and
+  four distinct ports. The printer rejects equal baseline and candidate revisions.
+- F3: The supervisor waits for IPC closure before it decides whether a child exit succeeded.
+- F4: The committed tests cover each requested fail-closed branch and control-module behavior.
+- F5: Row releases alternate baseline-first and candidate-first. The receipt records all required
+  timestamps.
+- F6: The manifest records sorted `.dev.vars` names and a canonical name-value SHA-256 only.
+- F7: Stored judging handles absent metadata and rejects paired collection control.
+
+The repair also pins both paired control files. It records the validated plan hash in the receipt.
+It validates artifact locations. Malformed IPC and path failures now cause shared hard cancellation.
+Closed channels, missing processes, and missing exit events cannot keep the supervisor pending.
+
+No repair path made a network call or a paid call. A later independent review can assess the repair
+commit. This author reconciliation does not grant launch authorization.

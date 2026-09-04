@@ -8,12 +8,12 @@ Worktree: `/private/tmp/stellar-raven-tm-paired-supervisor`
 
 ## Outcome
 
-Implemented the no-spend paired QA launch repairs. No QA answering call, judge call, paid self-test,
+Implemented the no-spend paired QA launch repairs and repaired findings F1 through F8. No QA answering call, judge call, paid self-test,
 server process, deployment, issue, push, or merge occurred.
 
 The new `qa-paired-collection-plan-v1` interface freezes the paired launch. The supervisor enforces
 four distinct worktrees, exact ordered IDs, selected content identity, exact commands, binary and
-environment pins, cumulative caps, shared cancellation, row barriers, and a four-hour deadline.
+environment pins, `.dev.vars` identity, cumulative caps, shared cancellation, row barriers, and a four-hour deadline.
 It emits a receipt only after both collection artifacts finish and both child processes exit zero.
 
 ## Inputs read
@@ -58,7 +58,12 @@ The manifest validator requires:
 - one exact ordered ID array and its SHA-256;
 - one cases-file SHA-256 and selected-content SHA-256;
 - exact collection, stored-judge, and paired-comparison commands;
-- exact answering, judge, adapter, probe, vector, register, runner, and printer hashes;
+- exact answering, judge, adapter, probe, vector, register, runner, printer, supervisor, and control hashes;
+- different exact server revisions and surface hashes;
+- one shared adapter revision and shared measurement flags;
+- baseline `add-missing` and candidate `verify-native` adapter modes;
+- four pairwise-distinct public and upstream ports;
+- sorted `.dev.vars` names and one canonical name-value SHA-256, without values;
 - identical load-bearing hashes across the two arms;
 - one accepted two-agent capacity record with free evidence;
 - `$80` answer-only collection and cumulative `$120` stored judging per arm;
@@ -66,17 +71,22 @@ The manifest validator requires:
 - the fixed 14,400,000 ms collection deadline.
 
 Both children finish free preflight before the supervisor releases the first row. The supervisor
-releases row N+1 only after both children report row N complete. It alternates no shared mutable
-repository state. Separate runner worktrees isolate result paths and same-second stamps.
+releases row N+1 only after both children report row N complete. The first release alternates
+between baseline and candidate by row index. Separate runner worktrees isolate result paths.
 
 A cancellation marker sits outside all four worktrees. `run-qa.mjs` checks it before every agent
 spend authorization. This check also covers a same-row transport retry. IPC cancellation wakes a
 child at a row or final barrier. An IPC disconnect fails closed before later authorization.
 
-A guard failure or budget failure cancels both arms. An unexpected child exit or deadline also
-terminates both child process groups. The final postflight barrier ensures that an arm suppresses
+A guard failure or budget failure cancels both arms. Every cancellation starts a bounded drain.
+The supervisor then sends `SIGTERM`, waits 5,000 ms, sends `SIGKILL`, and settles without exit events.
+The no-new-spend marker remains after forced settlement. The final postflight barrier ensures that an arm suppresses
 its aggregates when its peer fails before finalization. The supervisor writes no receipt or paired
 aggregate on any failure.
+
+The supervisor waits for IPC closure after child exit. This wait lets a buffered completion message
+arrive before the exit decision. The receipt records the validated plan SHA-256 and all required
+collection timestamps. Each reported artifact must exist below its arm runner results directory.
 
 ### Stored judging
 
@@ -115,23 +125,27 @@ probe, vector, capture chain, postflight, and no-resume record. Guard and probe 
 - A budget stop cancels both arms and returns no receipt.
 - An unexpected child exit cancels and terminates both arms.
 - The four-hour deadline cancels and terminates both arms.
+- A missing exit event cannot keep the supervisor pending.
+- Closed IPC and missing processes do not break cancellation.
+- Malformed IPC data and failed realpath checks cause shared hard cancellation.
+- Buffered completion after exit succeeds when IPC then closes cleanly.
 - The ordered per-row barrier waits for both arms.
+- The first released arm alternates by row.
 - The final postflight barrier waits for both arms.
 - Four distinct worktrees and cumulative cap semantics are manifest-tested.
+- Command, revision, mode, port, `.dev.vars`, and control-byte mismatches fail before collection.
+- Missing, malformed, and mismatched judge identity stamps fail comparison.
 
 ## Validation
 
 | Command | Result |
 |---|---|
-| `./node_modules/.bin/vitest run test/qa-paired-collection-supervisor.test.mjs test/qa-paired-verdict.test.mjs test/qa-judge-stored.test.mjs test/qa-budget.test.mjs` | PASS, 4 files and 117 tests |
-| Wider QA guard, probe, precondition, postflight, and measure tests | PASS, 5 files and 168 tests; the two listener tests needed the approved non-sandbox run |
-| `npm test` | PASS, 106 files and 1,853 tests |
+| `./node_modules/.bin/vitest run test/qa-paired-collection-control.test.mjs test/qa-paired-collection-supervisor.test.mjs test/qa-paired-verdict.test.mjs test/qa-judge-stored.test.mjs test/qa-harness-preconditions.test.mjs` | PASS, 5 files and 229 tests |
+| `npm test` | PASS, 107 files and 1,886 tests |
 | `npm run eval:qa:paired:validate` | PASS, all deterministic gates true |
-| `npm run eval:selftest` | PASS |
-| `npm run eval:qa:lint -- --stale` | PASS, 0 errors and 62 existing warnings |
-| `npm run typecheck` | PASS after the required local `.dev.vars` and `npm run typegen` setup |
+| `npm run typecheck` | PASS |
 | `npm run build` | PASS |
-| `npm run secrets:scan -- --tree` | PASS before this report; rerun after the report before commit |
+| `npm run secrets:scan -- --tree` | PASS, no leaks |
 | `git diff --check` | PASS |
 
 The first direct `npx vitest` attempt did not start. This worktree had no `node_modules`, and the
@@ -148,20 +162,23 @@ I audited the complete diff from `HEAD` in repair mode. The first pass found a f
 One arm could retain aggregates if its peer failed during postflight. The added final postflight
 barrier closes that race.
 
-The second pass found an IPC lifecycle defect. The message listener could keep a successful child
-alive. The child now closes IPC only after its result path reaches the supervisor.
+The second pass found an IPC lifecycle defect. The child now closes IPC only after completion
+delivery. The supervisor waits for IPC closure before it decides whether an exit succeeded.
 
 The third pass found that the manifest's recorded collection command omitted the injected control
 flag. The manifest now records the exact executed command, including `--paired-control-arm`.
 
-No reviewability finding remains open.
+The repair audit used commit `79080bd` as its fixed point. It found one additional cleanup risk.
+A forced settlement could remove the no-new-spend marker before a missing child confirmed exit.
+The failure path now keeps that marker. No reviewability finding remains open.
 
 ## Risks
 
 - No real paired collection exercised provider processes. Tests use deterministic fake children
   and existing no-spend guard fixtures.
-- A hard deadline terminates process groups. It guarantees no later spend or aggregate, but an
-  in-flight child may not flush a partial artifact.
+- A failed run keeps its temporary cancellation directory. This can leave a small stale directory.
+  The retained marker protects against later spend by a missing child.
+- A hard stop can prevent an in-flight child from flushing a partial artifact.
 - Concurrent external rate limits remain an experimental condition. The manifest requires an
   accepted two-agent capacity record, but it cannot prove external capacity mechanically.
 - Scout release cadence can still stop a valid arm. The supervisor makes that stop shared and
@@ -170,7 +187,7 @@ No reviewability finding remains open.
 
 ## Blockers
 
-No implementation blocker remains.
+No implementation blocker remains after the F1 through F8 repairs.
 
 A paid launch remains blocked until an owner supplies a valid final manifest. The manifest needs
 the final worktree paths, selected IDs, content hashes, exact commands, input hashes, capacity

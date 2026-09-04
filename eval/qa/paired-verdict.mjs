@@ -445,6 +445,15 @@ function comparisonProblems(baselineRuns, candidateRuns) {
   problems.push(...adapterPairingProblems(baselineRuns, candidateRuns));
   if (problems.length) return problems;
 
+  const baselineRevisions = baselineRuns.map((run) => run.meta.sourceIdentity.serverRevision);
+  const candidateRevisions = candidateRuns.map((run) => run.meta.sourceIdentity.serverRevision);
+  if (new Set(baselineRevisions).size !== 1 || new Set(candidateRevisions).size !== 1) {
+    problems.push(reason("server-revision-pairing", "each arm must keep one exact server revision"));
+  } else if (baselineRevisions[0] === candidateRevisions[0]) {
+    problems.push(reason("server-revision-pairing", "baseline and candidate server revisions must differ"));
+  }
+  if (problems.length) return problems;
+
   const expectedIds = rowIds(baselineRuns[0]);
   const expectedIdsSha256 = baselineRuns[0].meta?.inputSnapshot?.caseIdsSha256 ?? null;
   const expectedTuple = collectionTuple(baselineRuns[0]);

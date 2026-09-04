@@ -555,6 +555,23 @@ describe("run-qa --judge-stored", () => {
     }
   });
 
+  it("refuses an artifact without meta before judge spend", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-no-meta-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      delete results.meta;
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+      const calls = [];
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(calls), log: () => {} })
+      ).rejects.toThrow(/artifact is non-comparable/);
+      expect(calls).toEqual([]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("does not restore aggregates for an incomplete original collection", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {

@@ -10,8 +10,13 @@ export class PairedCollectionCancelledError extends Error {
   }
 }
 
-export function createPairedCollectionChildControl({ arm, cancellationFile }) {
-  if (!process.send) {
+export function createPairedCollectionChildControl({
+  arm,
+  cancellationFile,
+  processRef = process,
+  cancellationExists = existsSync
+}) {
+  if (typeof processRef.send !== "function") {
     throw new Error("paired collection control requires a Node IPC channel");
   }
   if (!arm || !cancellationFile) {
@@ -29,7 +34,7 @@ export function createPairedCollectionChildControl({ arm, cancellationFile }) {
     const waiter = waiters.shift();
     if (waiter) waiter({ schema: PAIRED_COLLECTION_CONTROL_SCHEMA, type: "cancel" });
   };
-  process.on("message", (message) => {
+  processRef.on("message", (message) => {
     if (message?.schema !== PAIRED_COLLECTION_CONTROL_SCHEMA) return;
     if (message.type === "cancel") {
       cancelLocal(message.reason);
@@ -38,12 +43,12 @@ export function createPairedCollectionChildControl({ arm, cancellationFile }) {
     const waiter = waiters.shift();
     if (waiter) waiter(message);
   });
-  process.on("disconnect", () => {
+  processRef.on("disconnect", () => {
     if (!closing) cancelLocal("paired collection supervisor disconnected");
   });
 
   const assertActive = () => {
-    if (cancelled || existsSync(cancellationFile)) {
+    if (cancelled || cancellationExists(cancellationFile)) {
       throw new PairedCollectionCancelledError(cancellationReason);
     }
   };
@@ -57,11 +62,22 @@ export function createPairedCollectionChildControl({ arm, cancellationFile }) {
       if (message.type === type) return message;
     }
   };
-  const send = (message) => process.send({
-    schema: PAIRED_COLLECTION_CONTROL_SCHEMA,
-    arm,
-    ...message
-  });
+  const send = (message, callback) => {
+    assertActive();
+    if (processRef.connected === false) {
+      throw new PairedCollectionCancelledError("paired collection supervisor disconnected");
+    }
+    try {
+      processRef.send({
+        schema: PAIRED_COLLECTION_CONTROL_SCHEMA,
+        arm,
+        ...message
+      }, callback);
+    } catch (error) {
+      cancelLocal("paired collection supervisor disconnected");
+      throw new PairedCollectionCancelledError(error.message);
+    }
+  };
 
   return {
     assertActive,
@@ -78,31 +94,32 @@ export function createPairedCollectionChildControl({ arm, cancellationFile }) {
       await waitFor("finalize");
     },
     failed(error) {
-      send({
-        type: "failed",
-        code: error?.code ?? "collection-failed",
-        message: String(error?.message ?? error)
-      });
+      try {
+        send({
+          type: "failed",
+          code: error?.code ?? "collection-failed",
+          message: String(error?.message ?? error)
+        });
+      } catch {}
     },
     complete({ resultsPath }) {
       return new Promise((resolve, reject) => {
-        process.send({
-          schema: PAIRED_COLLECTION_CONTROL_SCHEMA,
-          arm,
-          type: "complete",
-          resultsPath
-        }, (error) => {
-          if (error) return reject(error);
-          closing = true;
-          process.disconnect();
-          resolve();
-        });
+        try {
+          send({ type: "complete", resultsPath }, (error) => {
+            if (error) return reject(error);
+            closing = true;
+            if (processRef.connected !== false) processRef.disconnect();
+            resolve();
+          });
+        } catch (error) {
+          reject(error);
+        }
       });
     },
     close() {
-      if (!process.connected) return;
+      if (processRef.connected === false) return;
       closing = true;
-      process.disconnect();
+      try { processRef.disconnect(); } catch {}
     }
   };
 }

@@ -604,6 +604,21 @@ describe("run-qa optional IDs selector guards", () => {
       rmSync(fixture.root, { recursive: true, force: true });
     }
   });
+
+  it("rejects paired collection control in stored judging before a paid call", () => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "paired-control-judge-stored");
+      const result = fixture.run(resultsPath, ["--paired-control-arm", "baseline"]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/valid only for --no-judge collection/);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("fail-closed CLI syntax helper", () => {

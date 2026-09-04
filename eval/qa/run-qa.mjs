@@ -1185,7 +1185,7 @@ export async function judgeStoredResults(
   const results = JSON.parse(sourceText);
   if (results.meta?.comparable !== true) {
     throw new Error(
-      `--judge-stored: artifact is non-comparable: ${(results.meta.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`
+      `--judge-stored: artifact is non-comparable: ${(results.meta?.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`
     );
   }
   if (!Array.isArray(results?.rows) || results.rows.length === 0) {
@@ -1611,6 +1611,15 @@ async function main() {
     const i = args.indexOf(flag);
     return i !== -1 ? args[i + 1] : undefined;
   };
+  const noJudge = args.includes("--no-judge");
+  const pairedControlArm = argVal("--paired-control-arm");
+  if (args.includes("--paired-control-arm") &&
+      !["baseline", "candidate"].includes(pairedControlArm)) {
+    throw new Error("--paired-control-arm must be baseline or candidate");
+  }
+  if (pairedControlArm && (args.includes("--judge-stored") || !noJudge)) {
+    throw new Error("--paired-control-arm is valid only for --no-judge collection");
+  }
   const agentBinary = assertExpectedExecutable(
     executableIdentity("claude"),
     parseRequiredFlagValue(args, "--expect-agent-binary-sha256"),
@@ -1681,14 +1690,6 @@ async function main() {
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
   const stabilityRegister = prepareStabilityRegister();
-  const noJudge = args.includes("--no-judge");
-  const pairedControlArm = argVal("--paired-control-arm");
-  if (pairedControlArm && !noJudge) {
-    throw new Error("--paired-control-arm requires --no-judge");
-  }
-  if (pairedControlArm && !["baseline", "candidate"].includes(pairedControlArm)) {
-    throw new Error("--paired-control-arm must be baseline or candidate");
-  }
   const pairedControl = pairedControlArm
     ? createPairedCollectionChildControl({
         arm: pairedControlArm,

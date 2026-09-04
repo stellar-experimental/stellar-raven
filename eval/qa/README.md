@@ -882,6 +882,10 @@ It records four distinct worktree roots: two runner worktrees and two server wor
 must belong to one Git repository. Both runner worktrees must reproduce the same cases and runner
 bytes before either child starts a paid call.
 
+The manifest records `devVars.names` and `devVars.sha256`. The names are sorted. The hash covers
+the canonical sorted name-value pairs. The manifest never records a value. Both server worktrees
+must reproduce the names and hash before collection starts.
+
 Each arm records exact `collectionCommand` and `judgeCommand` argument arrays. The executable must
 be the absolute `process.execPath`. The collection command must use explicit `--ids` and
 `--no-judge`; `--sample` is forbidden. The judge command uses `{artifact}` as its frozen result
@@ -891,9 +895,14 @@ judge command later, after replacing `{artifact}` with the successful receipt pa
 
 Each arm records these input hashes: answering binary, answering environment, judge binary, judge
 environment, adapter implementation, remote identity probe, remote identity vector, stability
-register, `run-qa.mjs`, and `paired-verdict.mjs`. The collection and judge binary pins must match. Their environment pins
-must also match. Every listed hash must match across arms. Surface and server revision pins remain
-arm-specific inside each exact command.
+register, `run-qa.mjs`, `paired-verdict.mjs`, `paired-collection-supervisor.mjs`, and
+`paired-collection-control.mjs`. The collection and judge binary pins must match. Their environment
+pins must also match. Every listed hash must match across arms.
+
+The validator requires different server revisions and surface hashes. Each server worktree must
+match its exact command revision. The baseline uses `add-missing`. The candidate uses
+`verify-native`. Both commands share the adapter revision and measurement tuple flags. The public
+and upstream ports form four pairwise-distinct ports.
 
 The manifest also records the exact paired JSON comparison command. It records an accepted
 two-answering-agent capacity decision and its free evidence. A missing capacity record blocks the
@@ -911,9 +920,16 @@ exit, ordering failure, readiness mismatch, or deadline cancels both arms. The s
 `qa-paired-collection-receipt-v1` JSON receipt only after both complete artifacts exit cleanly. It
 prints no aggregate or receipt on failure.
 
+Every cancellation starts a bounded drain. The supervisor then sends `SIGTERM` and later
+`SIGKILL` to a child that does not exit. It settles without waiting for a missing exit event. The
+receipt records the validated plan hash, collection start, alternating row release order, each row
+completion, each postflight, each arm finish, and the final finish time. Every reported artifact
+must exist below that arm runner's `eval/qa/results` directory.
+
 The paired printer permits different port pairs across the two arms. Each artifact must still
 contain matching preflight and postflight listener and adapter attestations for its own ports.
 Repeats within one arm must reuse that arm's port pair.
+The baseline and candidate must use different exact server revisions.
 
 Stored judging requires `meta.comparable === true` before its first judge authorization. A missing,
 null, or malformed value stops judging. The final paired tuple includes the judge binary and judge

@@ -257,6 +257,17 @@ function withRuntimeAdapter(run, arm, overrides = {}) {
   };
 }
 
+function setServerRevision(run, revision) {
+  run.meta.sourceIdentity.serverRevision = revision;
+  run.meta.runtimeAdapter.sourceRevision = revision;
+  run.meta.runtimeAdapter.attestation.sourceRevision = revision;
+  run.meta.runtimeAdapter.attestation.upstream.revision = revision;
+  run.meta.runtimeAdapter.attestationAfter.sourceRevision = revision;
+  run.meta.runtimeAdapter.attestationAfter.upstream.revision = revision;
+  run.meta.listenerPair.upstream.revision = revision;
+  run.meta.listenerPairAfter.upstream.revision = revision;
+}
+
 function compare(baseline, candidate, repeats = null) {
   return comparePairedArtifacts({
     baselineRuns: repeats
@@ -544,6 +555,50 @@ describe("paired QA verdict", () => {
     );
   });
 
+  it("rejects valid but different cross-arm judge identity hashes", () => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    const candidateBinary = "7".repeat(64);
+    const candidateEnvironment = "8".repeat(64);
+    candidate.meta.agentBinary = {
+      sha256: candidateBinary,
+      expectedSha256: candidateBinary,
+      matches: true
+    };
+    candidate.meta.judgeBinary = structuredClone(candidate.meta.agentBinary);
+    candidate.meta.agentEnvironment.inherited = {
+      sha256: candidateEnvironment,
+      expectedSha256: candidateEnvironment,
+      matches: true
+    };
+    candidate.meta.judgeEnvironment = structuredClone(candidate.meta.agentEnvironment.inherited);
+    const compared = compare(baseline, candidate);
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "measurement-tuple" })
+    );
+  });
+
+  it.each([
+    ["missing judge binary", (meta) => { delete meta.judgeBinary; }],
+    ["malformed judge binary hash", (meta) => { meta.judgeBinary.sha256 = "bad"; }],
+    ["missing expected judge hash", (meta) => { delete meta.judgeBinary.expectedSha256; }],
+    ["failed judge hash match", (meta) => { meta.judgeBinary.matches = false; }],
+    ["missing judge environment", (meta) => { delete meta.judgeEnvironment; }],
+    ["malformed judge environment hash", (meta) => { meta.judgeEnvironment.sha256 = "bad"; }]
+  ])("rejects %s", (_label, mutate) => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    mutate(candidate.meta);
+    const compared = compare(baseline, candidate);
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "binary-environment-pairing" })
+    );
+  });
+
   it("rejects a forced judge-panel size change", () => {
     const baseline = result(Array(100).fill("partial"), {
       tuple: { judgePanel: 2, judgeTiering: tiering({ policy: "forced-panel", judgePanel: 2 }) }
@@ -702,6 +757,70 @@ describe("paired QA verdict", () => {
 
     expect(compared.verdict).toBe("PASS");
     expect(compared.reasons.some((item) => item.code === "runtime-adapter-pairing")).toBe(false);
+  });
+
+  it("rejects intra-arm port drift across the paired repeat", () => {
+    const baselineFirst = withRuntimeAdapter(result(Array(100).fill("correct")), "baseline", {
+      publicPort: 8789,
+      upstreamPort: 8791
+    });
+    const baselineSecond = withRuntimeAdapter(result(Array(100).fill("correct")), "baseline", {
+      publicPort: 8787,
+      upstreamPort: 8793
+    });
+    const candidateGrades = [...Array(5).fill("partial"), ...Array(95).fill("correct")];
+    const candidateFirst = withRuntimeAdapter(result(candidateGrades), "candidate", {
+      publicPort: 8788,
+      upstreamPort: 8790
+    });
+    const candidateSecond = withRuntimeAdapter(result(Array(100).fill("correct")), "candidate", {
+      publicPort: 8788,
+      upstreamPort: 8790
+    });
+    const compared = comparePairedArtifacts({
+      baselineRuns: [baselineFirst, baselineSecond],
+      candidateRuns: [candidateFirst, candidateSecond]
+    });
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "runtime-adapter-pairing" })
+    );
+  });
+
+  it("rejects equal baseline and candidate server revisions", () => {
+    const baseline = withRuntimeAdapter(result(Array(100).fill("partial")), "baseline");
+    const candidate = withRuntimeAdapter(result(Array(100).fill("partial")), "candidate");
+    setServerRevision(candidate, BASELINE_REVISION);
+    const compared = comparePairedArtifacts({ baselineRuns: [baseline], candidateRuns: [candidate] });
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "server-revision-pairing" })
+    );
+  });
+
+  it("makes the printer reject equal baseline and candidate revisions", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-paired-verdict-revision-"));
+    try {
+      const baselinePath = join(root, "baseline.json");
+      const candidatePath = join(root, "candidate.json");
+      const baseline = withRuntimeAdapter(result(Array(100).fill("partial")), "baseline");
+      const candidate = withRuntimeAdapter(result(Array(100).fill("partial")), "candidate");
+      setServerRevision(candidate, BASELINE_REVISION);
+      writeFileSync(baselinePath, JSON.stringify(baseline));
+      writeFileSync(candidatePath, JSON.stringify(candidate));
+
+      const run = spawnSync(
+        process.execPath,
+        ["eval/qa/paired-verdict.mjs", baselinePath, candidatePath],
+        { cwd: process.cwd(), encoding: "utf8" }
+      );
+      expect(run.status).toBe(2);
+      expect(run.stdout).toMatch(/server-revision-pairing/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 
   it("keeps strict equality with the experimental margin boundary indeterminate", () => {
