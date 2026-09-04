@@ -29,7 +29,8 @@ The current official SDK repository said `npm install --save @stellar/stellar-sd
 
 The page itself shows no install command.
 The unscoped name is still installable on npm.
-An install of that name therefore fails silently.
+The install succeeds and returns the deprecated package.
+No error tells the reader about the stale result.
 
 On 2026-09-04, npm served `stellar-sdk` 13.3.0 from 2025-04-21 with a deprecation notice.
 It served `@stellar/stellar-sdk` 17.0.1 from 2026-08-25.

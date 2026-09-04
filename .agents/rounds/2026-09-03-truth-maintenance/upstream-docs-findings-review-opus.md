@@ -126,6 +126,13 @@ I corrected the title to name the deprecated unscoped package.
 I replaced the install-command claim with the verified registry facts.
 The recommendation was already correct and is unchanged.
 
+My first correction introduced its own contradiction.
+It said the install fails silently, next to the line that says the name installs.
+The install succeeds, so "fails" was wrong.
+A follow-up commit states that the install succeeds and returns the deprecated package.
+It adds that no error tells the reader about the stale result.
+This matches the `sd-032` vocabulary for silent staleness against a hard failure.
+
 The repository's own golden agrees with the corrected wording.
 `q-tool-js-sdk-package` avoids naming `stellar-sdk` as unscoped and legacy.
 
