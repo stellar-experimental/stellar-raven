@@ -1243,6 +1243,30 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/0306425752a0fb4c1b1965d64236c5a975aafa5b/improvements/stellar-light-scout/sls-022-yieldblox-incident-fact-model.md"
     },
     {
+      "id": "sls-023",
+      "title": "Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-10",
+      "resolved": "2026-09-08",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/494"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/494",
+        "https://github.com/Stellar-Light/stellarlight/pull/1298",
+        "https://github.com/Stellar-Light/stellarlight/pull/1299",
+        "https://github.com/Stellar-Light/stellarlight/pull/1301",
+        "https://github.com/Stellar-Light/stellarlight/pull/1302",
+        "https://github.com/Stellar-Light/stellarlight/pull/1305",
+        "https://github.com/Stellar-Light/stellarlight/pull/1306"
+      ],
+      "liveRecheck": "2026-09-08 Scout API 1.9.48: GET /api/projects/search?q=real%20world%20asset&limit=100 returned DTCC as Development with one announced H1 2027 product; every broad-search row joined to GET /api/rwa?limit=100 had products and a known network; the registry returned 97 verified assets from 52 issuers. Response SHA-256 values: fe2a0ffa3ab2e219a04e2c0460016ca4f445d02eef03acc4ab4ebb0657eda2ae and 3b36e92e1d8382c740466ae487c22bf46a5ab9fcd83ccaf6e115ab605d6a5f3f. The smaller Etherfuse completeness residual is sls-083.",
+      "reviewEvidence": "Claude Fable 5.1 high independently re-ran the original trigger and adjacent checks: .agents/rounds/2026-09-08-improvements-followups/sls023-review-fable.md",
+      "sourceCommit": "426afd3fc4df75cfb95f5be262d7ad360c0844c6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/426afd3fc4df75cfb95f5be262d7ad360c0844c6/improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md"
+    },
+    {
       "id": "sls-025",
       "title": "Scout can retrieve Stellar ERC-8004-style implementation records under broad 8004 vocabulary while missing exact identifiers and…",
       "service": "stellar-light-scout",

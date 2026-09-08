@@ -13,6 +13,8 @@ evidence:
   - standalone upstream issue filed 2026-07-27 after PR 2367 stalled: https://github.com/stellar/stellar-docs/issues/2700; its LaunchTube migration scope remains current, while its former joint sd-034 legacy/successor premise now needs correction
   - PR-state follow-up posted and read back 2026-07-27: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5091971087
 recurrences:
+  - date: 2026-09-08
+    evidence: Live Guestbook prerequisites still require a LaunchTube JWT; response SHA-256 657c65c9ba51fbce9868a85af453daa3def3856192822dedc929278b15b35ee6. PR #2367 restarted at head bdc081d9c25d2e2db6f674b8b61421a4f2bf32cd with passing checks, but its current tutorial still targets Smart Account Kit 0.2.x behavior and Cloudflare Pages while the selected ElliotFriend companion uses 0.6.2 and Vercel. The author confirmed the companion choice, and the triage bot left the PR at bot:needs-decision: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5587369224. Issue #2700 remains open.
   - date: 2026-08-11
     evidence: live Guestbook source and indexed-page recheck still requires a LaunchTube JWT and links the archived kalepail/passkey-kit move pointer. Issue #2700 remains open; PR #2367 remains open, conflicting, and awaiting ElliotFriend review despite successful last-run checks. Both recorded PR comments are authored by Raven.
 ---

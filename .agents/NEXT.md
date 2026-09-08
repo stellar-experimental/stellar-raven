@@ -72,11 +72,11 @@ golden action stays owner-blocked. Repository and Herdr cleanup are complete.
   `1.9.30` on 2026-09-04.
 - Both protocol-history v2 contracts are `source-expired` on the accepted manifest. The free
   diagnostic returns no counts until a new independently authored contract pins a new epoch.
-- `improvements/` contains 70 active findings: 56 `reported-upstream`, 11 `verified`, and 3
-  `declined-upstream`. The eleven verified findings are not filed.
+- `improvements/` contains 71 active findings: 55 `reported-upstream`, 13 `verified`, and 3
+  `declined-upstream`. The thirteen verified findings are not filed.
 - Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
   Raven handoff #131 is closed. Findings `sd-042` and `sd-047` wait for the daily Docs search crawler.
-- The compiled corpus has 500 active cases. Content SHA-256 `49bc52ba…289cd`.
+- The compiled corpus has 500 active cases. Content SHA-256 `8dcf4adf…c9f4`.
   Corpus lint passed with 0 errors and 62 warnings after the `sd-043` resolver.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - The 2026-09-04 closeout had only the root worktree and local and remote `main`.
@@ -127,8 +127,8 @@ Complete since the previous handoff:
 
 ### Filing-authority-blocked
 
-- Eleven verified findings: `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
-  `sk-022`, `sk-023`, `sk-024`, and `sls-082`. Filing
+- Thirteen verified findings: `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
+  `sk-022`, `sk-023`, `sk-024`, `sls-082`, `sls-083`, and `sls-084`. Filing
   needs explicit owner authority. See owner decision B.
 
 ### Paid-authority-blocked
@@ -192,14 +192,14 @@ Evidence needed before signing: a capacity artifact at most 24 hours old at laun
 needs one clean launch revision and the printed canonical plan SHA-256. The final Opus confirmation
 granted `LAUNCH-OK`. Maximum spend: `$273.50`. Safe default: no spend.
 
-### B. Authorize upstream filing for the eleven verified findings
+### B. Authorize upstream filing for the thirteen verified findings
 
-Question: file all eleven, a subset, or none. Evidence: each record, its independent review, and its
+Question: file all thirteen, a subset, or none. Evidence: each record, its independent review, and its
 dry-run body. Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision.
 Owners: `stellar/stellar-docs` (`sd-046`, `sd-049`, `sd-050`, `sd-051`), `stellar/stellar-cli`
 (`sd-052`), `stellar/stellar-dev-skill` (`sk-021`, `sk-023`, `sk-024`),
 `OpenZeppelin/openzeppelin-skills` (`sk-022`), `lumenloop/lumenloop-backend` (`ll-030`), and
-`Stellar-Light/stellarlight` (`sls-082`).
+`Stellar-Light/stellarlight` (`sls-082`, `sls-083`, `sls-084`).
 Safe default: no filing.
 
 ### C. Golden truth and product judgment blockers
