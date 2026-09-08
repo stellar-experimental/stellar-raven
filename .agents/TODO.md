@@ -31,6 +31,21 @@ Raven handoff #131 closed after `sd-043` reached its terminal receipt.
 
 Done when: both exact search triggers stop reproducing, or the queue records a crawler failure.
 
+### Re-check `sd-027` and `sd-034` after PR #2367 receives a maintainer decision
+
+PR https://github.com/stellar/stellar-docs/pull/2367 restarted on 2026-09-08.
+Its refreshed head passes checks and fixes the two smart-wallet reference pages.
+The combined Guestbook rewrite still targets Smart Account Kit 0.2.x behavior and Cloudflare Pages.
+The selected ElliotFriend companion uses Smart Account Kit 0.6.2 and Vercel.
+The PR carries `bot:needs-decision` while maintainers choose whether to split or update the tutorial.
+
+Re-check the PR when that label clears, its head changes, or it closes.
+If it merges and deploys, run both original live page checks before changing either finding.
+Do not post a status comment while the maintainers are already working on the decision.
+Use `.agents/rounds/2026-09-08-improvements-followups.md` for the current state.
+
+Done when: each finding records the resulting live state, and any fixed finding completes the resolver gates.
+
 ### Re-check `sd-037` issue #1981 after 2026-09-13
 
 Issue https://github.com/stellar/stellar-protocol/issues/1981 was open on 2026-09-04.
@@ -44,19 +59,21 @@ Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` f
 
 Done when: the next state read is recorded without an upstream reminder comment.
 
-### File the eleven verified findings only after explicit owner authority
+### File the thirteen verified findings only after explicit owner authority
 
 Trigger only when the owner records filing authority in a round ledger.
 The verified findings are `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
-`sk-022`, `sk-023`, `sk-024`, and `sls-082`. The first ten passed
+`sk-022`, `sk-023`, `sk-024`, `sls-082`, `sls-083`, and `sls-084`. The first ten passed
 `npm run improvements:file -- --dry-run` on 2026-09-04 with a resolved owner.
-Run the `sls-082` dry run before any filing action. `ll-030` resolves through the Lumenloop service
-rule and has no override. The evidence is
-`.agents/rounds/2026-09-03-truth-maintenance/verified-intake-readiness-terra.md`.
+The `sls-082` dry run passed on 2026-09-08 with its immutable source snapshot.
+The new `sls-083` dry run resolved its owner and body, but needs a rerun after its first commit.
+Run the `sls-084` dry run before its first commit and again after that commit.
+`ll-030` resolves through the Lumenloop service rule and has no override.
+The original evidence is `.agents/rounds/2026-09-03-truth-maintenance/verified-intake-readiness-terra.md`.
 
-Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision. Their record
-bodies were corrected on a separate branch, and the immutable snapshot must point at the corrected
-text. Pace the filing wave for owner-readable, deduplicated issues. Cross-link the open
+The `sk-023` and `sk-024` dry runs passed again at merged commit `a0a398ad447e` on 2026-09-08.
+Their immutable snapshots point at the corrected committed text.
+Pace the filing wave for owner-readable, deduplicated issues. Cross-link the open
 `OpenZeppelin/openzeppelin-skills` issue from `sk-015` when `sk-022` is filed.
 
 Done when: each authorized finding is `reported-upstream` with a read-back issue URL, or the owner

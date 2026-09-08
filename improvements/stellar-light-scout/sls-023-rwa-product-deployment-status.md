@@ -1,7 +1,7 @@
 ---
 id: sls-023
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-10
 evidence:
   - live searchProjects query for real world asset returned 51 rows
@@ -12,6 +12,11 @@ evidence:
   - GT-18 recurrence: CRDT required issuer-primary legal class, transfer-agent record priority, eligibility/controls, exact issuer/SAC, and multichain launch scope not represented by a project-level row
   - https://github.com/Stellar-Light/stellarlight/issues/494; live re-check 2026-07-13 returns DTCC as Development with dated operator-announcement provenance, so the false-live regression no longer reproduces
   - partial-fix verification posted and read back 2026-07-15: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-4982290048
+  - owner correction after an independent audit, including the deployed product model and its explicit remaining limits: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5547988441
+  - owner deployment of classic-asset authorization, revocation, and clawback controls: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5548777030
+  - resolving changes merged in Stellar-Light/stellarlight PRs #1298, #1299, #1301, #1302, #1305, and #1306 between 2026-09-04T20:43:29Z and 2026-09-05T02:34:46Z
+  - 2026-09-08 Production API 1.9.48 independently stopped both original failure modes. DTCC is Development with one announced H1 2027 product. Every broad-search row joined to the RWA registry has products and a known network. The registry returns 97 verified assets from 52 issuers with exact identities, states, evidence URLs, verification levels, asset classes, and classic-asset controls. Broad-search response SHA-256 fe2a0ffa3ab2e219a04e2c0460016ca4f445d02eef03acc4ab4ebb0657eda2ae; registry response SHA-256 3b36e92e1d8382c740466ae487c22bf46a5ab9fcd83ccaf6e115ab605d6a5f3f. A smaller Etherfuse completeness defect is split to sls-083.
+  - independent terminal review: .agents/rounds/2026-09-08-improvements-followups/sls023-review-fable.md
 recurrences:
   - date: 2026-07-14
     evidence: DTCC now correctly serves Development with dated operator-announcement provenance, but the row still exposes no product/asset/deployment keys; the product-level deployment model remains unresolved under #494
@@ -25,8 +30,6 @@ recurrences:
     evidence: the round ledger `.agents/rounds/2026-09-03-truth-maintenance/improvements-terra.md` records 61 RWA rows. DTCC has one product, but its generic deployment remains unknown and assets remain absent. The partial model still reproduces the finding.
   - date: 2026-09-04
     evidence: `GET /api/projects/search?q=real%20world%20asset&limit=100` returned 61 rows at 2026-09-04T06:54:40.644Z, Scout API 1.9.30, response SHA-256 f6c976a7b9c82f61e4f2ab5c5cbfd0b9cb907ff09b89289fa45fd47905d32e0d. Deployment exists on 61 rows, but 47 have network unknown, basis null, and sourceUrl null. Only one row has products, no row has productKind, and assets are absent from all rows. DTCC remains Development with one announced mainnet product and an H1 2027 note. Fourteen rows gained onchain-activity deployment data, but the exact partial product and deployment model defect remains.
-  - date: 2026-09-08
-    evidence: Production API 1.9.48 returned 60 RWA search rows at 2026-09-08T14:33:51.197Z, response SHA-256 3432eb36beac6db702bcf0a0561cd6ecdff74b0db2a4df57603292f5e1bce580. Eleven rows have products, but 40 retain deployment network unknown. The 97-row RWA registry improves asset evidence but does not complete the project-level product and deployment model.
 ---
 
 ## Finding

@@ -28,7 +28,7 @@ recurrences:
   - date: 2026-08-28
     evidence: Production API 1.9.1 gives Slender, Laina, K2 Lend, and OrbitCDP dated status, statusBasis, and statusSourceUrl. K2 Lend still has null supportedNetworks, and all four have null products and deployments. Issue stellar-scout#9 and service-owner issue #494 are closed as completed, but the deployment-qualifier part of the finding still reproduces.
   - date: 2026-09-08
-    evidence: Production API 1.9.48 returned Fluxity as Live with repo-activity status basis at 2026-09-08T14:41:22.168Z. Its deployment remains unknown with null basis, sourceUrl, and asOf, while products remains null. Response SHA-256 366b9ce6895c5a12b45b9d5b37b65ca6800046370a75e32d1ace55da22acc58a.
+    evidence: Production API 1.9.48 gives the five named fixtures dated lifecycle provenance and a separate deployment object. A seven-category scan covered all 981 searchable rows. Five rows retain human-verified or source-inherited statusBasis with null statusSourceUrl: Scam Flagging System, Stellar Pulse, Pactta, The Blue Marble, and ChainCred. MyDataCoin correctly pairs unverified with a null source. All 887 unknown deployments consistently use null evidence fields, so those fields are explicit unknown semantics rather than defects. The duplicate QCAD and GLOUSD rows also retain unknown deployment and no canonical product link even though the RWA registry proves QCAD under stablecorp and USDGLO under glo-dollar. The separate undocumented package-release statusBasis defect is sls-084. Population review: .agents/rounds/2026-09-08-improvements-followups/sls024-review-sol.md.
 ---
 
 ## Finding
