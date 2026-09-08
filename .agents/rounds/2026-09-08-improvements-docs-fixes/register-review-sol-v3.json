@@ -1,0 +1,48 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance changed only their truth.verified.rootCause provenance. Their deleted active sd-043 paths now point to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all 15 members. No answer, key fact, avoid item, note, numeric value, formula, cadence claim, fee rule, or monetary-history claim changed. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-054",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves changed only its truth.verified.rootCause provenance. The deleted active sd-043 path now points to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all four members. Keypair creation, CreateAccount, the dated unsponsored 1 XLM minimum, sponsored zero-balance creation, sponsorship obligations, and AccountMerge blockers remain unchanged. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-114",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance changed only their truth.verified.rootCause provenance. Their deleted active sd-043 paths now point to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all four members. The sponsorship-aware formula, selling-liability boundary, sponsored zero-balance creation, and two-reserve pool-share rule remain unchanged. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-123",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Final resolver follow-up (2026-09-08): q-protocol-base-reserve-min-balance changed only its truth.verified.rootCause provenance. The deleted active sd-043 path now points to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all six members. They still agree on the dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, ordinary trustlines, pool-share trustlines, and reserve-release qualifications. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

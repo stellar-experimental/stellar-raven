@@ -168,10 +168,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "The EVM migration guide's Horizon lifecycle wording contradicts four canonical Docs pages."
     },
-    "sd-043": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The sponsored-reserves minimum-balance formula contradicts stellar-core getMinBalance and the Lumens page."
-    },
     "sd-044": {
       "repo": "stellar/stellar-docs",
       "reason": "The Quickstart docs section already documents container run options and omits the shipped manual-close flag."

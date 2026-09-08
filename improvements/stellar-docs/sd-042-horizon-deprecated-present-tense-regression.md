@@ -11,6 +11,9 @@ evidence:
   - resolved ledger entry sd-017 in improvements/resolved.json recorded this defect class as cleared on 2026-07-27; this is a new occurrence on a page that recheck did not cover
   - Solo scratchpad 809, todo 1541 finding F4
   - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2770
+recurrences:
+  - date: 2026-09-08
+    evidence: PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8 and the rendered EVM guide now says "Horizon API (nearing end-of-life)"; however, production `stellarDocs.search_docs` still returned the pre-deploy "deprecated Horizon API" snippet at 15:43Z, so the original two-surface trigger still reproduces until the daily crawler refreshes
 ---
 
 ## Finding

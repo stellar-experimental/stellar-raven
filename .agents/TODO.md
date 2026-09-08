@@ -13,18 +13,23 @@ The round ledger is `.agents/rounds/2026-09-03-truth-maintenance.md`. The ranked
 
 ## Improvements follow-up
 
-### Re-check `sd-047` only after PR #2806 merges
+### Re-check `sd-042` and `sd-047` after the Docs crawler refreshes
 
-Trigger only when https://github.com/stellar/stellar-docs/pull/2806 merges.
-Do not poll the pull request or post reminder comments.
+PR https://github.com/stellar/stellar-docs/pull/2806 merged and deployed on 2026-09-08.
+The rendered pages and current source pass both original content checks.
+The production Raven Docs index still returned both pre-deploy snippets after the deployment.
 
-After the merge, re-read the cadence sentences in `docs/validators/README.mdx` and
-`docs/learn/fundamentals/stellar-stack.mdx`.
-Record the result against `sd-047` and issue https://github.com/stellar/stellar-docs/issues/2805.
-Use `.agents/rounds/2026-09-01-free-improvements-maintenance.md` as the prior evidence ledger.
+On the first improvements round after 2026-09-09T00:00Z, rerun these exact searches:
 
-Done when: both current sentences agree, or the queue records the remaining contradiction.
-Move `sd-047` only after the normal live verification and lifecycle gates pass.
+- `stellarDocs.search_docs({query:"deprecated Horizon API stellar-sdk networking layer",hitsPerPage:10,includeContent:true})`
+- `stellarDocs.search_docs({query:"3-5 seconds",hitsPerPage:10,includeContent:true})`
+
+Use `.agents/rounds/2026-09-08-improvements-docs-fixes.md` and its verification reports.
+If both stale snippets disappear, run the normal `fixed-upstream` and resolver gates.
+Resolve Raven handoff issues #130 and #132 only after the active findings reach terminal receipts.
+Raven handoff #131 closed after `sd-043` reached its terminal receipt.
+
+Done when: both exact search triggers stop reproducing, or the queue records a crawler failure.
 
 ### Re-check `sd-037` issue #1981 after 2026-09-13
 
@@ -39,13 +44,14 @@ Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` f
 
 Done when: the next state read is recorded without an upstream reminder comment.
 
-### File the ten verified findings only after explicit owner authority
+### File the eleven verified findings only after explicit owner authority
 
 Trigger only when the owner records filing authority in a round ledger.
 The verified findings are `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
-`sk-022`, `sk-023`, and `sk-024`. Each passed `npm run improvements:file -- --dry-run` on
-2026-09-04 with a resolved owner. `ll-030` resolves through the Lumenloop service rule and has no
-override. The evidence is
+`sk-022`, `sk-023`, `sk-024`, and `sls-082`. The first ten passed
+`npm run improvements:file -- --dry-run` on 2026-09-04 with a resolved owner.
+Run the `sls-082` dry run before any filing action. `ll-030` resolves through the Lumenloop service
+rule and has no override. The evidence is
 `.agents/rounds/2026-09-03-truth-maintenance/verified-intake-readiness-terra.md`.
 
 Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision. Their record

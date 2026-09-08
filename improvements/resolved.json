@@ -553,6 +553,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f5260f91537c83998658149dd03d24b4565bc968/improvements/stellar-docs/sd-038-stellar-asset-interface-cap67-event-doc-comments.md"
     },
     {
+      "id": "sd-043",
+      "title": "The sponsored-reserves guide states this minimum-balance formula under \"Effect on minimum balance\":",
+      "service": "stellar-docs",
+      "discovered": "2026-08-14",
+      "resolved": "2026-09-08",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2771"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2771",
+        "https://github.com/stellar/stellar-docs/pull/2806"
+      ],
+      "liveRecheck": "2026-09-08T15:50:00Z rendered Sponsored Reserves and Lumens pages matched the corrected minimum-balance formula and separate available-balance identity; stellar-core 7e64393b independently confirmed the same split.",
+      "reviewEvidence": "Independent Codex GPT-5.6 Sol high review: .agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md; it repeated the live trigger, checked current source and Core, scanned adjacent Docs, and reconciled every repository reference. Resolution comment read back at https://github.com/stellar/stellar-docs/issues/2771#issuecomment-5588559296.",
+      "sourceCommit": "767c981a9304bd74b167357ffdf9a39dd017cce4",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/767c981a9304bd74b167357ffdf9a39dd017cce4/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",
