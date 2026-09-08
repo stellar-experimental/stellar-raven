@@ -352,12 +352,12 @@ describe("build-catalog.mjs", () => {
     // API-onboarding skills are never emitted, skill or sections (see
     // build-catalog.mjs RETIRED_ONBOARDING_SKILLS + the rename-guard).
     expect(count((e) => e.service === "skills" && e.kind === "skill")).toBe(19);
-    expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBeGreaterThan(0);
+    expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBe(174);
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: 60 operations + 19 whole skills + 173 skill sections.
-    expect(catalog.entries).toHaveLength(252);
+    // Grand total: 60 operations + 19 whole skills + 174 skill sections.
+    expect(catalog.entries).toHaveLength(253);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {

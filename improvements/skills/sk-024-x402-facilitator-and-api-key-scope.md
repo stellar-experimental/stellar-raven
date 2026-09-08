@@ -5,6 +5,7 @@ status: verified
 discovered: 2026-09-04
 upstreamTitle: The x402 guide presents OpenZeppelin Channels and its API key as the only facilitator path
 evidence:
+  - 2026-09-08 recurrence at accepted pin 03b2f8e8c88a42b16551926a938ec8173763b45a: `SKILL.md` still says "Needs facilitator? | Yes (OZ Channels)", while `x402.md` still makes `OZ_API_KEY` required. SHA-256 values are 2af48a37773b2d1eaa42270b13dae6c49ebbf49050c58457e47fe2e2372af570 and c3c92eaa7b4266ee08c74f92ff7447e135a25c34200dcde6bc6085e0ba2bd5bc.
   - 2026-09-04 source read of https://raw.githubusercontent.com/stellar/stellar-dev-skill/790f607b451372495c94c76ec15a520e5e9b8d66/skills/agentic-payments/SKILL.md; SHA-256 2af48a37773b2d1eaa42270b13dae6c49ebbf49050c58457e47fe2e2372af570. Its decision table says "Needs facilitator? | Yes (OZ Channels)". Its shared setup says "x402 additionally needs the web-only OZ Channels key generator".
   - 2026-09-04 source read of https://raw.githubusercontent.com/stellar/stellar-dev-skill/790f607b451372495c94c76ec15a520e5e9b8d66/skills/agentic-payments/x402.md; SHA-256 5b07269ec626abede4020525e744a1285e3aad23bf3aa3de8ca0b10523eff950. The seller example throws "OZ_API_KEY is required" at startup. The runbook says the key is "Required, not optional". The env list, the mainnet checklist, and a pitfall repeat the requirement. The only alternative is one parenthetical, "(or a self-hosted relayer)".
   - The served pin in ecosystem-skills/MANIFEST.json (b78983c92330d81943fa99cdaee4e4a52e85eba3), commit 790f607, and current main carry identical bytes for both files.

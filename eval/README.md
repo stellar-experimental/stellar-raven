@@ -1126,6 +1126,26 @@ It keeps `scout.getQualityReport` and `scout.verifyClaim` excluded.
 No policy, golden answer, finding state, or routing baseline changes with this decision.
 See `.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`.
 
+## Decision (2026-09-08): Reject Scout 1.9.48 drift
+
+The committed Scout inventory remains 1.9.1.
+The 1.9.48 candidate adds `GET /api/rwa` and changes 17 routing blocks.
+It also changes 12 operation schemas.
+
+The new RWA card captures 52 of the 495 ranked cases.
+False captures include Friendbot, RPC, WASM, simulation, and balance questions.
+Removing only that operation does not restore every accepted routing result.
+The remaining regressions match the rejected 1.9.30 pattern.
+
+The RWA request and response contracts omit `issued-single-holder` from their state enums.
+The live handler accepts that value and lists it in validation errors.
+Finding `sls-082` records the defect.
+
+Raven rejects the generated 1.9.48 surface and does not rebaseline for that Scout candidate.
+It keeps the committed Scout pin and current-state documentation unchanged.
+The decision changes no golden answer or finding status.
+See `.agents/rounds/2026-09-08-live-drift-91.md`.
+
 ## Protocol-history frozen measurement (2026-08-30)
 
 This round adds a frozen diagnostic with eight positive cases and four direct controls.

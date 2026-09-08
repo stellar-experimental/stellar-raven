@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-09-03T17:23:50.826Z",
+  "baselinedAt": "2026-09-08T14:52:09.758Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729"
+        "sha256": "618c3503b49d101edc8ddc41d51704bccc548716589419be0bc0743b0b76332a"
       },
       {
         "path": "eval/routing-cases.json",
@@ -49,9 +49,9 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-09-03T17-23-50-826Z.json"
+    "localTrace": "routing-2026-09-08T14-52-09-758Z.json"
   },
-  "note": "2026-09-03 Stellar Docs title refresh: the title inventory added only /docs/tokens/usdt0-layerzero, titled USDT0 Transfers with LayerZero. The generated asset-token Docs entry gained the derived keywords usdt0, layer, and zero. Ordered top-five route IDs and all committed gate totals remain unchanged across the same inputs. Only the catalog manifest evidence fingerprint changes. Scout remains OpenAPI 1.9.1. Decision record: .agents/rounds/2026-09-03-truth-maintenance/docs-drift-review-sol.md.",
+  "note": "2026-09-08 stellar-dev skill re-pin: the served selection adds LayerZero guidance and expands the MPP, x402, asset, and cross-chain bodies. All accepted routing totals remain unchanged. Only the catalog manifest evidence fingerprint changes. Scout remains OpenAPI 1.9.1 because Raven rejected the 1.9.48 surface. Decision record: .agents/rounds/2026-09-08-live-drift-91.md.",
   "legacy": {
     "n": 338,
     "top1": 213,

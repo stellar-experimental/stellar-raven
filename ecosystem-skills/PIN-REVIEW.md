@@ -221,3 +221,23 @@ The changes stay within the Scout skill's topic. They add no credential, behavio
 instruction, or retired skill. Raven still excludes both new sections through the shared Scout
 operation and skill-body exposure filter. The build and skill-scrub guards verify that the served
 skill cannot advertise either excluded path.
+
+### 2026-09-08 — stellar-dev re-pin (drift issue #91)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `03b2f8e8c88a42b16551926a938ec8173763b45a` | `sel:e9f82f593834` | complete old-to-new body diff read |
+
+The other three sources did not change their served selections.
+
+The selection expands the MPP and x402 guides with production patterns and fail-closed setup.
+It adds asset verification guidance and a LayerZero companion to the cross-chain skill.
+The LayerZero guide keeps transaction submission behind explicit user signing agreement.
+
+An independent Claude Fable high reviewer read all five changed `stellar-dev` files and their diffs.
+The reviewer verified every new blob hash, checked the added links, and checked mutable claims.
+The changes contain no credential, behavior-hijack instruction, retired skill, or excluded operation.
+The round ledger records the reviewer, evidence, and bounded external-claim risks.
+
+Findings `sk-023` and `sk-024` still reproduce at this pin.
+Their status remains `verified`, and this change records dated recurrence evidence.

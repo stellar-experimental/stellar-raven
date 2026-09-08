@@ -173,6 +173,11 @@ source freeze. That is an owner evidence box under PH3. The rejected Scout 1.9.2
 PH1 on 2026-09-03 and its counts are in the round ledger. The committed inventory did not change,
 so PH1 has not fired on the accepted surface.
 
+The rejected Scout 1.9.48 candidate also fired PH1 on 2026-09-08.
+Both v2 contracts stopped as `source-expired` before scoring.
+The result authorizes no new epoch, mechanism, or baseline change.
+The committed Scout inventory remains 1.9.1.
+
 This queue calls the dated brief's T1 to T4 triggers `PH1` to `PH4`. This avoids collision with
 the five-track T1 to T5 contract.
 
@@ -228,6 +233,11 @@ The rejected Scout 1.9.30 surface changed 15 `x-routing` blocks and 22 direct sc
 diagnostic met the numeric floors without an accepted intent decision. The record is
 `.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`. It adds no new
 acceptance check.
+The rejected Scout 1.9.48 surface added `GET /api/rwa`.
+Its new card captured 52 of 495 ranked cases, including Friendbot, RPC, WASM, simulation, and
+balance questions. The operation also lacked accepted intent coverage.
+Keep `GET /api/rwa` excluded until the general scoring repair passes the added check below.
+The upstream request and response state enums must also match the live handler.
 This item also owns the `sls-078` residual. Scout fixed its quality `x-routing`
 contract in 1.9.13. The reviewed 1.9.23 candidate still caused 90 unrelated
 `scout.getQualityReport` captures through Raven response-schema keywords. Keep
@@ -243,11 +253,13 @@ Acceptance checks:
 5. `has` cannot match inside the schema keyword `phase`.
 6. Strong Docs evidence remains eligible after five weak gated Scout candidates.
 7. All eight regression rows meet their clean grades.
-8. The leaderboard and RFP improvements remain.
-9. The full legacy, extended, skills, and holdout gates do not regress.
-10. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
+8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
+   simulation, and balance questions do not capture it.
+9. The leaderboard and RFP improvements remain.
+10. The full legacy, extended, skills, and holdout gates do not regress.
+11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
 
-Done when: all ten acceptance checks pass in a reviewed general scoring change. The existing
+Done when: all eleven acceptance checks pass in a reviewed general scoring change. The existing
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
 ## Eval instruments
