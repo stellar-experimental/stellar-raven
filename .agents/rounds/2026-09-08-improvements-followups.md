@@ -4,7 +4,8 @@ Base commit: `a0a398ad447e2845b4a1e9dcf90458c41c222777`.
 
 This round reviews upstream references that changed after the 2026-09-03 maintenance round.
 It uses public read-only service calls and GitHub reads.
-It makes no paid calls, upstream comments, issue filings, or provider writes.
+It makes no paid calls, issue filings, or provider writes.
+The owner authorized one `sls-023` resolution comment after reviewing its exact body.
 
 ## State table
 
@@ -12,7 +13,7 @@ It makes no paid calls, upstream comments, issue filings, or provider writes.
 |---|---|---|---|---|---|---|
 | `sd-027` | Guestbook prerequisites still require a LaunchTube JWT | `stellar/stellar-docs#2700`, PR `#2367` | Issue open; PR open at `bdc081d9c25d2e2db6f674b8b61421a4f2bf32cd`, updated 2026-09-08 | All current checks pass. Copilot found current-version and safety defects. The author selected `ElliotFriend/ye-olde-guestbook`. The triage bot left `bot:needs-decision`. | 2026-09-08 live page SHA-256 `657c65c9ba51fbce9868a85af453daa3def3856192822dedc929278b15b35ee6`; LaunchTube and JWT instructions remain. | Keep `reported-upstream`; record the material PR activity; wait for a maintainer decision. |
 | `sd-034` | The smart-wallet page names only Passkey Kit and links the archived `kalepail/passkey-kit` move pointer | `stellar/stellar-docs#2700`, PR `#2367` | Issue open; PR open at the same refreshed head | The branch fixes the two reference pages. Its combined tutorial still needs a current-stack decision. | 2026-09-08 live page SHA-256 `a31347abd00f32d9558c3ceeaa543acb81ab5a38996e3c4fc3deb9132ece111b`; the original trigger remains. | Keep `reported-upstream`; record the material PR activity; wait for a maintainer decision. |
-| `sls-023` | Broad RWA project search, named issuer examples, and the RWA registry | `Stellar-Light/stellarlight#494` | Closed completed; four owner comments from 2026-09-04 through 2026-09-05 claim a deployed fix and narrow its limits | Not a PR owned by this repository | 2026-09-08 project search returned 59 rows, 11 product-bearing rows, and 38 product records; SHA-256 `fe2a0ffa3ab2e219a04e2c0460016ca4f445d02eef03acc4ab4ebb0657eda2ae`. `/api/rwa` returned 97 verified assets from 52 issuers, including the named examples, exact identities, states, evidence, verification levels, asset classes, and classic-asset controls. | Set `fixed-upstream`. Fable independently confirmed both original failure modes stopped. Route the smaller Etherfuse completeness residual to `sls-083`. Reconcile two corpus references before terminal deletion. |
+| `sls-023` | Broad RWA project search, named issuer examples, and the RWA registry | `Stellar-Light/stellarlight#494` | Closed completed; four owner comments from 2026-09-04 through 2026-09-05 claim a deployed fix and narrow its limits | Not a PR owned by this repository | 2026-09-08 project search returned 59 rows, 11 product-bearing rows, and 38 product records; SHA-256 `fe2a0ffa3ab2e219a04e2c0460016ca4f445d02eef03acc4ab4ebb0657eda2ae`. `/api/rwa` returned 97 verified assets from 52 issuers, including the named examples, exact identities, states, evidence, verification levels, asset classes, and classic-asset controls. | Retired to `improvements/resolved.json`. Fable independently confirmed both original failure modes stopped. The smaller Etherfuse residual is `sls-083`. The two corpus references now use the resolved receipt. |
 | `sls-024` | Exact lifecycle fixtures plus the full searchable population | `Stellar-Light/stellarlight#494`, `Stellar-Light/stellar-scout#9` | Both closed completed; the claimed full lifecycle population does not match the current response | Not applicable | The five named fixtures now pass. Five other rows use `human-verified` or `source-inherited` with a null `statusSourceUrl`. All 887 unknown deployments use consistent explicit unknown semantics. QCAD and GLOUSD also lack canonical product links to their verified registry rows. | Keep `reported-upstream`. Do not post a resolution comment. Sol independently found the five remaining source gaps and separated the schema defect into `sls-084`. |
 | `sls-083` | Exact Etherfuse project, registry, issuer TOML, and Horizon issuer lookup | No upstream ref | New verified residual | Not applicable | Scout exposes five Etherfuse products. The operator TOML declares nine assets for the same issuer, and Horizon confirms all nine. The missing assets are `MEX`, `CETESZ`, `GILTS`, and `MEXe`. | Keep `verified` until the owner grants filing authority. |
 | `sls-084` | OpenAPI enum plus all seven paged project categories | No upstream ref | New verified schema mismatch | Not applicable | All 981 searchable rows were scanned. Nine rows return `statusBasis: "package-release"`, but OpenAPI 1.9.48 contains no such value. | Keep `verified` until the owner grants filing authority. |
@@ -38,6 +39,13 @@ The same review found a smaller issuer-completeness defect.
 The Etherfuse project and RWA registry expose five products without a partial-coverage field.
 The issuer TOML and Horizon confirm four additional current assets under the same issuer.
 That distinct defect is `sls-083`.
+
+The owner authorized the exact `sls-023` resolution comment.
+GitHub read-back confirmed the `kalepail` author and an exact body match.
+The comment identifies the review as work from the `kalepail agents`.
+Its durable URL is https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5589712494.
+The resolver removed the active finding and intake override.
+It preserved the source snapshot and all seven resolving references in `improvements/resolved.json`.
 
 Sol independently checked `sls-024` against all 981 searchable project rows.
 The five named fixtures now pass, and `deployment.network: unknown` has correct null evidence fields.
@@ -68,6 +76,32 @@ No review finding remains unreconciled.
 `sls-084` does not duplicate `sls-082`.
 The earlier finding covers the RWA `state` request and response enums.
 The new finding covers `Project.statusBasis` on the project search response.
+
+## Golden reference cleanup
+
+Fable identified two active corpus references to the retired `sls-023` file.
+The author replaced both paths with the `improvements/resolved.json` receipt.
+The CRDT grader note now limits its partial-grade caution to active Lumenloop finding `ll-012`.
+The primary RWA and CRDT facts did not change.
+
+The sibling sweep found no other active corpus reference to `sls-023`.
+Four consistency clusters reopened because the two case-file hashes changed.
+The author re-swept all four clusters and confirmed their prior `consistent` verdicts.
+`npm run eval:qa:register -- --check` then reported an up-to-date register.
+The compiled corpus remains at 500 active cases with SHA-256 `8dcf4adf4e5189c332f316f66398673919dd8838d6a737c140707bdafff8c9f4`.
+
+## Validation
+
+- `npm run improvements:index` wrote 71 active findings.
+- `npm run improvements:lint` passed with 71 findings.
+- `npm run improvements:lint -- --live` passed after the intake override deletion.
+- `npm run eval:qa:compile` wrote 500 cases with SHA-256 `8dcf4adf…c9f4`.
+- `npm run eval:qa:register -- --check` reported an up-to-date register.
+- `npm run eval:qa:lint -- --since a0a398ad447e2845b4a1e9dcf90458c41c222777` passed with zero errors.
+- The corpus lint reported 62 existing advisory warnings. The changed CRDT case has no symmetric-caution warning.
+- The saved plan regrade again reported seven of eight required plans covered. Its generated metadata output was restored.
+- Parsed JSON scope found only `golden.notes` and `truth.verified` changes in the two owned cases.
+- `npm test` passed all 1,974 tests across 108 files.
 
 ## Filing readiness
 

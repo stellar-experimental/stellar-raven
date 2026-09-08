@@ -51,16 +51,16 @@
           "q-rwa-projects-tokenizing-stellar"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-benji-franklin-templeton, q-rwa-projects-tokenizing-stellar changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "The changed RWA case only replaces active sls-023 provenance with its resolved receipt. BENJI remains a live product example, and the dated roster remains illustrative. The prior consistency verdict stands.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
-          "q-rwa-projects-tokenizing-stellar": "5efa6eff769f6d95eab25187aa254d26900ee1c261dade213d65a39f1919ba1a"
+          "q-rwa-projects-tokenizing-stellar": "329cbcf9c5d29eb9f4a030023e59af0a0ad82ed5a06fa9a088182c4d388d2bf1"
         }
       },
       {
@@ -442,10 +442,10 @@
           "q-tool-cctp-stellar-integration"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "The two changed cases preserve every RWA issuer, date, live-versus-planned, and product fact. The CRDT note now limits its partial-grade caution to active Lumenloop finding ll-012. The prior consistency verdict stands.",
           "verdict": "consistent"
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC DTC service planned H1 2027 NOT live. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
@@ -455,10 +455,10 @@
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
           "q-defi-named-newer-protocols": "45d5b291eccf922e1cd11f29886d9b147eec7711968533412cb348f5276699fb",
           "q-defi-ondo-usdy": "6b3f7e4fde78404d9df4a9b411845f4bf6ad2041e07c0e4ac8b7b7dc69a623f5",
-          "q-defi-wisdomtree-crdt": "8c2c579fd0e4e5b6f5045e6bf2f9d470cab1356ecf10a0ac5f4371d4c6773ad2",
+          "q-defi-wisdomtree-crdt": "12bd370e7313e8fbc61b85d2a0d84c8a81c81ae2b08bfadaf26466783466433b",
           "q-eco-pyusd-stellar-freshness": "0a3a899e077d7072f2dc7ba0a286ba7e9ec11620a0abdbfa7580ecc2f39e640b",
           "q-eco-stablecoins-on-stellar": "fac467330cc87f7f3da94d70df3bbdcb8eb6708ce34db93b414ea30c2cac7e42",
-          "q-rwa-projects-tokenizing-stellar": "5efa6eff769f6d95eab25187aa254d26900ee1c261dade213d65a39f1919ba1a",
+          "q-rwa-projects-tokenizing-stellar": "329cbcf9c5d29eb9f4a030023e59af0a0ad82ed5a06fa9a088182c4d388d2bf1",
           "q-token-circle-usdc-on-stellar": "2647f13e3aee14662fd849a26f6bdb8fc67b745e1c50e88cd601c4dbf78c9316",
           "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         }
@@ -1166,16 +1166,16 @@
           "q-hist-unhcr-stellar-aid-assist"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "The CRDT answer and historical 2025 launch facts did not change. The edit removes a resolved Scout caution and preserves the distinction between a launch and current deployment. The prior consistency verdict stands.",
           "verdict": "consistent"
         },
         "note": "Announcements, capabilities, historic routes, phased activation, GA, and current deployment are distinct. Aid individuals/households/countries/windows and RWA chain/suite/fund values remain source-scoped. Current rosters and chain support never overwrite dated launch history or imply sole-chain deployment.",
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
-          "q-defi-wisdomtree-crdt": "8c2c579fd0e4e5b6f5045e6bf2f9d470cab1356ecf10a0ac5f4371d4c6773ad2",
+          "q-defi-wisdomtree-crdt": "12bd370e7313e8fbc61b85d2a0d84c8a81c81ae2b08bfadaf26466783466433b",
           "q-hist-remittance-corridors": "9f81f9f7e089c4c772bcdbf0f252d6aaa32ffaa45df040c875dfe5fc3a8a45a7",
           "q-hist-soroban-launch-protocol20": "b2542d4630bec071ed34425a3d14168369915a5b7f282f5ebcac453669bf3168",
           "q-hist-unhcr-stellar-aid-assist": "f1e27f0ac911513c9ccca99360e7deee6ff27af8d435df2966bb15f796c61f07"
@@ -1825,10 +1825,10 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "The CRDT entity and source-routing facts did not change. The narrowed Lumenloop caution does not change the person-versus-project boundary. The prior consistency verdict stands.",
           "verdict": "consistent"
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
@@ -1836,7 +1836,7 @@
           "q-builder-content-by-person": "cce42c00a37d04797236c5b9b93518df632848057f513c38070998476c3ac59e",
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
           "q-defi-ondo-usdy": "6b3f7e4fde78404d9df4a9b411845f4bf6ad2041e07c0e4ac8b7b7dc69a623f5",
-          "q-defi-wisdomtree-crdt": "8c2c579fd0e4e5b6f5045e6bf2f9d470cab1356ecf10a0ac5f4371d4c6773ad2"
+          "q-defi-wisdomtree-crdt": "12bd370e7313e8fbc61b85d2a0d84c8a81c81ae2b08bfadaf26466783466433b"
         }
       },
       {

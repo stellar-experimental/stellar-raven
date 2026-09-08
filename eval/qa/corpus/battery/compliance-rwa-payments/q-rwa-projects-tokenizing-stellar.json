@@ -145,11 +145,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-09-08",
+      "by": "golden-truth sls-023 resolution cleanup (2026-09-08, orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-11 live/planned and mechanism matrices",
-        "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
+        "improvements/resolved.json entry sls-023",
         "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
         "2026-07-11 localhost:8787 search→execute probe observed: a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.",
         "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
@@ -161,7 +161,9 @@
         "Live re-check 2026-08-29: https://ondo.finance/blog/usdy-is-now-live-on-stellar — the dated issuer page confirms USDY as a live Stellar product.",
         "Live re-check 2026-08-29: https://ondo.finance/blog/usdy-is-now-live-on-stellar — the issuer page gives a visible publication date for its live-product claim.",
         "Live re-check 2026-08-29: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy — DTCC still describes its Stellar connection as planned for the first half of 2027.",
-        "Sibling sweep 2026-08-29: grep WisdomTree|USDY|YLDS|DTCC|RWA-tokenization → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-defi-ondo-usdy, q-defi-wisdomtree-crdt; no contradiction"
+        "Sibling sweep 2026-08-29: grep WisdomTree|USDY|YLDS|DTCC|RWA-tokenization → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-defi-ondo-usdy, q-defi-wisdomtree-crdt; no contradiction",
+        "Resolution review 2026-09-08: improvements/resolved.json entry sls-023 records the deployed Scout product and deployment model; https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5589712494 records the independent live recheck.",
+        "Sibling sweep 2026-09-08: active sls-023 references were limited to q-rwa-projects-tokenizing-stellar and q-defi-wisdomtree-crdt; improvements/lumenloop/ll-012-rwa-live-planned-recall.md remains active; no contradiction."
       ],
       "rootCause": [
         "Entity status and directory presence were treated as product deployment proof.",

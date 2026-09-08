@@ -72,11 +72,11 @@ golden action stays owner-blocked. Repository and Herdr cleanup are complete.
   `1.9.30` on 2026-09-04.
 - Both protocol-history v2 contracts are `source-expired` on the accepted manifest. The free
   diagnostic returns no counts until a new independently authored contract pins a new epoch.
-- `improvements/` contains 72 active findings: 55 `reported-upstream`, 13 `verified`, 3
-  `declined-upstream`, and one `fixed-upstream` deletion candidate. The thirteen verified findings are not filed.
+- `improvements/` contains 71 active findings: 55 `reported-upstream`, 13 `verified`, and 3
+  `declined-upstream`. The thirteen verified findings are not filed.
 - Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
   Raven handoff #131 is closed. Findings `sd-042` and `sd-047` wait for the daily Docs search crawler.
-- The compiled corpus has 500 active cases. Content SHA-256 `49bc52ba…289cd`.
+- The compiled corpus has 500 active cases. Content SHA-256 `8dcf4adf…c9f4`.
   Corpus lint passed with 0 errors and 62 warnings after the `sd-043` resolver.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - The 2026-09-04 closeout had only the root worktree and local and remote `main`.
