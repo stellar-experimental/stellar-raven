@@ -1,7 +1,7 @@
 # NEXT — current handoff
 
-Updated 2026-09-04. The truth-maintenance round stopped its paid pair, landed its repairs, and
-completed its production deployment.
+Updated 2026-09-08. PR #129 landed the accepted Scout pin and completed its production deployment.
+The Docs follow-up resolved `sd-043` and left `sd-042` and `sd-047` on a crawler-refresh trigger.
 The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
 Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
 The round has no review gate. Read this first.
@@ -72,17 +72,15 @@ golden action stays owner-blocked. Repository and Herdr cleanup are complete.
   `1.9.30` on 2026-09-04.
 - Both protocol-history v2 contracts are `source-expired` on the accepted manifest. The free
   diagnostic returns no counts until a new independently authored contract pins a new epoch.
-- `improvements/` contains 70 active findings: 57 `reported-upstream`, 10 `verified`, and 3
-  `declined-upstream`. The ten verified findings pass filing dry runs. None is filed.
-- Issues stellar-docs#2805, stellar-docs PR #2806, and lumenloop-backend#35 remain open at the
-  last recorded reads on 2026-09-04.
-- The compiled corpus has 500 active cases. Content SHA-256 `c5d0c804…7b43e`. Cases file SHA-256
-  `1842a188…2396`. Corpus lint: 0 errors and 62 warnings. Do not chase these counts to zero.
+- `improvements/` contains 70 active findings: 56 `reported-upstream`, 11 `verified`, and 3
+  `declined-upstream`. The eleven verified findings are not filed.
+- Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
+  Findings `sd-042` and `sd-047` wait for the daily Docs search crawler.
+- The compiled corpus has 500 active cases. Content SHA-256 `49bc52ba…289cd`.
+  Corpus lint passed with 0 errors and 62 warnings after the `sd-043` resolver.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
-- Repository cleanup is complete. Only the root worktree and local `main` remain. Only remote
-  `main` remains. The repository has no stash or open pull request.
-- Herdr cleanup is complete. Workspace `w16` contains only the current root pane `w16:pG` and tab
-  `w16:t6`. The authorized task panes and workspaces `w2R`, `w2S`, and `w2T` are closed.
+- The 2026-09-04 closeout had only the root worktree and local and remote `main`.
+- The 2026-09-04 Herdr closeout left only the root pane in workspace `w16`.
 
 ## Next actions by class
 
@@ -111,7 +109,7 @@ Complete since the previous handoff:
 
 ### Trigger-only and monitor-only
 
-- `sd-047`: re-check only after stellar-docs PR #2806 merges. No polling, no comments.
+- `sd-042` and `sd-047`: recheck their exact Raven search triggers after 2026-09-09T00:00Z.
 - `sd-037`: read issue #1981 state after 2026-09-13. No keep-alive comment.
 - `sls-080`: one free `scout.explainRepo` reading per improvements or drift round. The 2026-09-03
   reading passed.
@@ -123,14 +121,14 @@ Complete since the previous handoff:
 
 ### Upstream-blocked
 
-- `sd-047` waits for PR #2806. `ll-019` and `ll-029` wait for substantive activity on issue #35.
+- `sd-042` and `sd-047` wait for the Docs crawler. `ll-019` and `ll-029` wait on issue #35.
   `sd-044` waits on issue #2772. `sd-037` waits on issue #1981.
-- The 57 reported findings stay silent. They are not a filing queue.
+- The 56 reported findings stay silent. They are not a filing queue.
 
 ### Filing-authority-blocked
 
-- Ten verified findings: `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
-  `sk-022`, `sk-023`, `sk-024`. Each passes `npm run improvements:file -- --dry-run`. Filing
+- Eleven verified findings: `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
+  `sk-022`, `sk-023`, `sk-024`, and `sls-082`. Filing
   needs explicit owner authority. See owner decision B.
 
 ### Paid-authority-blocked
@@ -194,13 +192,14 @@ Evidence needed before signing: a capacity artifact at most 24 hours old at laun
 needs one clean launch revision and the printed canonical plan SHA-256. The final Opus confirmation
 granted `LAUNCH-OK`. Maximum spend: `$273.50`. Safe default: no spend.
 
-### B. Authorize upstream filing for the ten verified findings
+### B. Authorize upstream filing for the eleven verified findings
 
-Question: file all ten, a subset, or none. Evidence: each record, its independent review, and its
+Question: file all eleven, a subset, or none. Evidence: each record, its independent review, and its
 dry-run body. Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision.
 Owners: `stellar/stellar-docs` (`sd-046`, `sd-049`, `sd-050`, `sd-051`), `stellar/stellar-cli`
 (`sd-052`), `stellar/stellar-dev-skill` (`sk-021`, `sk-023`, `sk-024`),
-`OpenZeppelin/openzeppelin-skills` (`sk-022`), `lumenloop/lumenloop-backend` (`ll-030`).
+`OpenZeppelin/openzeppelin-skills` (`sk-022`), `lumenloop/lumenloop-backend` (`ll-030`), and
+`Stellar-Light/stellarlight` (`sls-082`).
 Safe default: no filing.
 
 ### C. Golden truth and product judgment blockers

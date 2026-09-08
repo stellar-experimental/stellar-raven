@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "5a66e56c55b69a261311b255529b6e50a78b35a1a6e16e693a55494071351604",
+  "corpusContentSha256": "49bc52baae868ff48ca5c04d5f3a823cc7bb4fc0a4e4f5adae34810f954289cd",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -28197,7 +28197,7 @@
             "Sibling sweep: q-protocol-base-reserve-min-balance changed with the same source result; sd-046 remains active for the separate pool-share reserve omission."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
+            "Resolved finding sd-043 at Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4"
           ]
         },
         "origin": "raven-next q-pc-sponsored-reserves"
@@ -29406,7 +29406,7 @@
             "The accepted base-reserve case now keeps a claim-specific caution for the still-active sd-046 conflict."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
+            "Resolved finding sd-043 at Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4",
             "improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md"
           ]
         },

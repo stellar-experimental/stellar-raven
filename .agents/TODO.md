@@ -43,13 +43,14 @@ Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` f
 
 Done when: the next state read is recorded without an upstream reminder comment.
 
-### File the ten verified findings only after explicit owner authority
+### File the eleven verified findings only after explicit owner authority
 
 Trigger only when the owner records filing authority in a round ledger.
 The verified findings are `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
-`sk-022`, `sk-023`, and `sk-024`. Each passed `npm run improvements:file -- --dry-run` on
-2026-09-04 with a resolved owner. `ll-030` resolves through the Lumenloop service rule and has no
-override. The evidence is
+`sk-022`, `sk-023`, `sk-024`, and `sls-082`. The first ten passed
+`npm run improvements:file -- --dry-run` on 2026-09-04 with a resolved owner.
+Run the `sls-082` dry run before any filing action. `ll-030` resolves through the Lumenloop service
+rule and has no override. The evidence is
 `.agents/rounds/2026-09-03-truth-maintenance/verified-intake-readiness-terra.md`.
 
 Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision. Their record

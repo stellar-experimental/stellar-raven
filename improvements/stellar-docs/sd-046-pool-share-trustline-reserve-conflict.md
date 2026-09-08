@@ -25,8 +25,8 @@ two subentries and requires two base reserves.
 The Liquidity Pools page states the two-reserve rule. CAP-0038 defines the same rule. A reader who
 uses only the general account pages can treat every trustline as one reserve unit.
 
-This finding is distinct from fixed-upstream finding `sd-043`.
-That finding removed selling liabilities from the minimum-balance formula and awaits local resolution.
+This finding is distinct from resolved finding `sd-043` in `improvements/resolved.json`.
+That finding removed selling liabilities from the minimum-balance formula.
 This finding concerns the subentry multiplier for pool-share trustlines.
 
 ## Evidence

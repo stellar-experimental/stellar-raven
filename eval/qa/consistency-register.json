@@ -511,7 +511,7 @@
         "lastChecked": "2026-09-08",
         "reSwept": {
           "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): only q-protocol-base-reserve-min-balance changed in this cluster, and only in golden.notes plus matching verification evidence. Its accepted caution now covers active sd-046 instead of fixed-upstream sd-043. All 15 members were re-read. No answer, key fact, avoid item, numeric value, formula, cadence claim, fee rule, or monetary-history claim changed. The active pool-share conflict is now graded symmetrically without changing the controlling two-reserve truth. Verdict consistent.",
+          "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance changed only their truth.verified.rootCause provenance. Their deleted active sd-043 paths now point to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all 15 members. No answer, key fact, avoid item, note, numeric value, formula, cadence claim, fee rule, or monetary-history claim changed. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -525,8 +525,8 @@
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b",
-          "q-pc-sponsored-reserves": "98252d7244f2504a129238d669d2aad432df2858efac47e3419b57e8af60f124",
-          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c",
+          "q-pc-sponsored-reserves": "fa66b2cf2e0d1d7fb25837350c702a333fe2a02d8aa305d2394077b7a56f717a",
+          "q-protocol-base-reserve-min-balance": "4d3f7de37f0fcdb4e7c236c36d822ef6cea308b2cf99c41fd9408f9c9970e7bb",
           "q-protocol-ledger-close-time": "886aa1cb5ec462840569e44277579eacddd4c0add475f0bcd2423d1ce95c20ea",
           "q-sor-doc-timestamping-manage-data": "57b34a7c8abbd547f967f39d1cc78780e3293a68d5f11a529910d2994aa072d9",
           "q-soroban-simulate-resource-fee": "2be7b06bd31021bf1b3af819b60bbdb5db6c091772c938234b2641c540d2dd95",
@@ -1420,7 +1420,7 @@
         "lastChecked": "2026-09-08",
         "reSwept": {
           "date": "2026-09-08",
-          "reason": "Improvements follow-up (2026-09-08): q-pc-sponsored-reserves now uses the corrected minimum-balance and available-balance split. Re-read all four members. They still distinguish keypair creation, CreateAccount, the dated unsponsored 1 XLM minimum, sponsored zero-balance creation, sponsorship obligations, and AccountMerge blockers. Verdict consistent.",
+          "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves changed only its truth.verified.rootCause provenance. The deleted active sd-043 path now points to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all four members. Keypair creation, CreateAccount, the dated unsponsored 1 XLM minimum, sponsored zero-balance creation, sponsorship obligations, and AccountMerge blockers remain unchanged. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "A keypair is not an account and Payment does not create one. The dated 1 XLM empty-account minimum is the unsponsored path; CAP-0033 sponsored CreateAccount may use startingBalance=0. AccountMerge requires non-signer blockers and provided-sponsorship obligations to be resolved, but current Core removes remaining signers during deletion.",
@@ -1428,7 +1428,7 @@
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-pc-account-merge-reclaim-reserve": "61fb3b8197c6d1f15468e7de28c987b0b43b23dace4560007b64b1187efcb009",
-          "q-pc-sponsored-reserves": "98252d7244f2504a129238d669d2aad432df2858efac47e3419b57e8af60f124"
+          "q-pc-sponsored-reserves": "fa66b2cf2e0d1d7fb25837350c702a333fe2a02d8aa305d2394077b7a56f717a"
         }
       },
       {
@@ -2714,15 +2714,15 @@
         "lastChecked": "2026-09-08",
         "reSwept": {
           "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read all four members. The sponsorship-aware formula, separate selling-liability boundary, sponsored zero-balance creation, and two-reserve pool-share rule remain unchanged. The new caution correctly preserves partial credit for an attributed one-reserve quote from the active sd-046 pages. Verdict consistent.",
+          "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance changed only their truth.verified.rootCause provenance. Their deleted active sd-043 paths now point to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all four members. The sponsorship-aware formula, selling-liability boundary, sponsored zero-balance creation, and two-reserve pool-share rule remain unchanged. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-pc-sponsored-reserves": "98252d7244f2504a129238d669d2aad432df2858efac47e3419b57e8af60f124",
-          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c"
+          "q-pc-sponsored-reserves": "fa66b2cf2e0d1d7fb25837350c702a333fe2a02d8aa305d2394077b7a56f717a",
+          "q-protocol-base-reserve-min-balance": "4d3f7de37f0fcdb4e7c236c36d822ef6cea308b2cf99c41fd9408f9c9970e7bb"
         }
       },
       {
@@ -2924,7 +2924,7 @@
         "lastChecked": "2026-09-08",
         "reSwept": {
           "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read all six members. They still agree on the dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, one reserve for an ordinary trustline, two reserves for a pool-share trustline, and reserve release qualifications. Verdict consistent.",
+          "reason": "Final resolver follow-up (2026-09-08): q-protocol-base-reserve-min-balance changed only its truth.verified.rootCause provenance. The deleted active sd-043 path now points to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all six members. They still agree on the dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, ordinary trustlines, pool-share trustlines, and reserve-release qualifications. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "At the checked network setting, one base reserve is 0.5 XLM; an empty unsponsored account needs two reserves (1 XLM), ordinary subentries add one reserve, and a pool-share trustline adds two. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2933,7 +2933,7 @@
           "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c",
+          "q-protocol-base-reserve-min-balance": "4d3f7de37f0fcdb4e7c236c36d822ef6cea308b2cf99c41fd9408f9c9970e7bb",
           "q-raph-low-xlm-transfer-fail": "708796fcb7cd1fda916f09883339a601a693068beecb04c57baadb5aca99c275"
         }
       },
@@ -3354,14 +3354,14 @@
         "memberContentSha256": {
           "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
-          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c",
+          "q-protocol-base-reserve-min-balance": "4d3f7de37f0fcdb4e7c236c36d822ef6cea308b2cf99c41fd9408f9c9970e7bb",
           "q-raph-low-xlm-transfer-fail": "708796fcb7cd1fda916f09883339a601a693068beecb04c57baadb5aca99c275"
         },
         "verdict": "consistent",
         "lastChecked": "2026-09-08",
         "reSwept": {
           "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-protocol-base-reserve-min-balance, and q-raph-low-xlm-transfer-fail. The dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, sponsorship-aware formula, and pool-share qualification remain unchanged. The active sd-046 caution changes grading for an attributed official-page quote, not the authoritative numeric value. Verdict consistent.",
+          "reason": "Final resolver follow-up (2026-09-08): q-protocol-base-reserve-min-balance changed only its truth.verified.rootCause provenance. The deleted active sd-043 path now points to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-protocol-base-reserve-min-balance, and q-raph-low-xlm-transfer-fail. The dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, sponsorship-aware formula, and pool-share qualification remain unchanged. Verdict consistent.",
           "verdict": "consistent"
         }
       },

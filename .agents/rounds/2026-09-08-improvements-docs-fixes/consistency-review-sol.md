@@ -188,3 +188,68 @@ Both references also state that the local resolver receipt remains pending.
 ### Follow-up final verdict
 
 PASS
+
+---
+
+## Final register follow-up after the `sd-043` resolver
+
+Date: 2026-09-08
+
+This follow-up supersedes the previous register verdict.
+I reviewed the two resolver edits and all affected members.
+
+### Resolver edit review
+
+Only `q-pc-sponsored-reserves` and `q-protocol-base-reserve-min-balance` changed.
+Each edit replaces the deleted active-file `rootCause` with Raven commit `767c981a9304bd74b167357ffdf9a39dd017cce4`.
+No question, answer, key fact, avoid item, note, source, or corroboration changed.
+
+The commit exists in this repository.
+Its archived `sd-043` file records the verified defect, evidence, fix, and `fixed-upstream` status.
+The `sd-043` receipt in `improvements/resolved.json` names the same commit and immutable source URL.
+The remaining `sd-046` root cause stays active for the separate pool-share conflict.
+
+### Reopened register review
+
+| Entry | Members re-read | Result |
+|---|---|---|
+| `cluster-017` | All 15 registered members | The provenance-only edits change no fee, reserve, cadence, supply, or monetary-history claim. |
+| `cluster-054` | All four registered members | Account creation, reserve sponsorship, and AccountMerge rules remain compatible. |
+| `cluster-114` | All four registered members | The formula, liability boundary, sponsored creation, and pool-share rule remain compatible. |
+| `cluster-123` | All six registered members | The reserve values and all qualifications remain compatible. |
+| `base reserve` | All four registered members | The provenance-only edit changes no value, formula, or qualification. |
+
+All five entries have verdict `consistent`.
+The helper-compatible file covers the four cluster entries.
+The helper does not apply numeric-invariant reviews.
+
+### Exact manual base-reserve `reSwept` text
+
+Use this exact replacement for the `base reserve` review fields.
+Remove its `reopened` object during application.
+
+```json
+{
+  "verdict": "consistent",
+  "lastChecked": "2026-09-08",
+  "reSwept": {
+    "date": "2026-09-08",
+    "reason": "Final resolver follow-up (2026-09-08): q-protocol-base-reserve-min-balance changed only its truth.verified.rootCause provenance. The deleted active sd-043 path now points to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-protocol-base-reserve-min-balance, and q-raph-low-xlm-transfer-fail. The dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, sponsorship-aware formula, and pool-share qualification remain unchanged. Verdict consistent.",
+    "verdict": "consistent"
+  }
+}
+```
+
+### Final follow-up verification
+
+- `npm run eval:qa:compile`: wrote 500 cases and a 30-case sample.
+- The compiled corpus SHA-256 is `49bc52baae868ff48ca5c04d5f3a823cc7bb4fc0a4e4f5adae34810f954289cd`.
+- `npm run eval:qa:lint -- --since HEAD`: zero errors and 62 warnings.
+- `npm run eval:qa:register -- --check`: `up to date`.
+- The helper accepted `register-review-sol-v3.json` against a copied register.
+- The helper cleared all four reopened cluster markers in that copy.
+- `git diff --check`: passed.
+
+### Final register verdict
+
+PASS

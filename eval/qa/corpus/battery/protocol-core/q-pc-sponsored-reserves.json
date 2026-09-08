@@ -87,7 +87,7 @@
         "Sibling sweep: q-protocol-base-reserve-min-balance changed with the same source result; sd-046 remains active for the separate pool-share reserve omission."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
+        "Resolved finding sd-043 at Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4"
       ]
     },
     "origin": "raven-next q-pc-sponsored-reserves"

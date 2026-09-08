@@ -86,6 +86,41 @@ The review verdict was `CHANGES-REQUIRED` before this reconciliation.
 The follow-up review passed all seven entries reopened by two caution-wording repairs.
 The second finding is corrected in this branch.
 
-The final corpus contains 500 cases with content SHA-256
+The pre-resolver corpus contains 500 cases with content SHA-256
 `5a66e56c55b69a261311b255529b6e50a78b35a1a6e16e693a55494071351604`.
 The lint passed with zero errors and 63 warnings before the `sd-043` resolver.
+
+## `sd-043` terminal resolution
+
+The pre-resolution source snapshot is Raven commit
+`767c981a9304bd74b167357ffdf9a39dd017cce4`.
+
+- Immutable finding: https://github.com/stellar-experimental/stellar-raven/blob/767c981a9304bd74b167357ffdf9a39dd017cce4/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md
+- Upstream resolution comment: https://github.com/stellar/stellar-docs/issues/2771#issuecomment-5588559296
+- Resolving upstream work: https://github.com/stellar/stellar-docs/issues/2771 and https://github.com/stellar/stellar-docs/pull/2806
+- Terminal receipt: `improvements/resolved.json` entry `sd-043`
+
+The comment read-back matched the resolver-generated text.
+The resolver deleted the active finding and removed its intake override.
+The receipt preserves the live result, independent review, resolving refs, and source snapshot.
+
+The post-resolver corpus contains 500 cases with content SHA-256
+`49bc52baae868ff48ca5c04d5f3a823cc7bb4fc0a4e4f5adae34810f954289cd`.
+
+## Final validation before completion review
+
+- `npm run typecheck`: PASS
+- `npm test`: PASS, 108 files and 1,974 tests
+- `npm run build`: PASS
+- `npm run eval:selftest`: PASS
+- `npm run eval:qa:lint -- --stale --enforce-floors --since origin/main`: PASS, 0 errors and 62 warnings
+- `npm run eval:qa:register -- --check`: PASS
+- `npm run eval:routing -- --gate`: PASS
+- `npm run improvements:lint`: PASS, 70 findings
+- `npm run improvements:lint -- --live`: PASS
+- `npm run improvements:probes`: seven recurring, zero fixed candidates, two credential-gated inconclusive results, and zero errors
+- `npm run secrets:scan -- --tree`: PASS before the source-snapshot commit
+- `git diff --check`: PASS
+
+The two inconclusive probes require `LUMENLOOP_API_KEY`.
+No credential value was available or needed for this Docs closeout.
