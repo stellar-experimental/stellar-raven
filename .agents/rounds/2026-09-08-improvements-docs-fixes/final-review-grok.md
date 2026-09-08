@@ -303,3 +303,51 @@ Repair: label `5a66e56c…` as pre-resolver, and record `49bc52ba…` as the pos
 7. Commit the dirty-tree resolver before any merge. Do not land `767c981` without the receipt.
 
 ## CHANGES-REQUIRED
+
+---
+
+## Reconciliation after `709d8c6`
+
+Reviewer: Grok 4.6, high effort.
+Date: 2026-09-08.
+Fixed point: `origin/main` = `76e0bf4`.
+Candidate: `HEAD` = `709d8c694823c31733f0f08ea6834e78c4613686`.
+Remote: `origin/codex/improvements-docs-fixes-2026-09-08` equals `HEAD`.
+Working tree: clean. No untracked files.
+
+This follow-up re-read `709d8c6`, issue `#131`, `#130`, and `#132`.
+It did not re-edit any file except this report.
+
+### Branch state
+
+| Check | Result |
+|---|---|
+| `HEAD` | `709d8c6` `docs: close sd-043 handoff` |
+| Receipt commit | `dfce973` `chore: resolve sd-043 finding` |
+| Snapshot commit | `767c981` `docs: record deployed Stellar Docs fixes` |
+| Dirty tree | none |
+| Ahead/behind remote | `0 0` |
+| Active `sd-043` file | absent at `HEAD` |
+
+### F1–F6
+
+| ID | Original defect | Current evidence | Status |
+|---|---|---|---|
+| F1 | `#131` open, no comment | Closed `completed` at `2026-09-08T17:01:38Z` by `kalepail`. Comment `5588863541` names `dfce973`, snapshot `767c981`, Sol review, and issue `2771` comment `5588559296`. `#130` and `#132` stay `open`. | Resolved |
+| F2 | `NEXT.md` said `None is filed` | `NEXT.md` now says `The eleven verified findings are not filed.` | Resolved |
+| F3 | `TODO.md` listed ten verified ids | `TODO.md` lists the same eleven ids as `NEXT.md`, including `sls-082`. | Resolved |
+| F4 | `register-review-sol-v3.json` untracked | Present in `dfce973` and `709d8c6`. | Resolved |
+| F5 | `NEXT.md` claimed only `main` remains | Those sentences now name the 2026-09-04 closeout. | Resolved |
+| F6 | Ledger called `5a66e56c…` final | Ledger labels that hash pre-resolver and records post-resolver `49bc52baae868ff48ca5c04d5f3a823cc7bb4fc0a4e4f5adae34810f954289cd`. | Resolved |
+
+Actionable item 7 is also resolved.
+`dfce973` holds the receipt.
+`709d8c6` is a later handoff commit on the same pushed branch.
+
+`gh api` read-back of comment `5588863541` matches the GitHub MCP body.
+The comment author is `kalepail`.
+It does not invert maintainer validation.
+
+No actionable finding remains.
+
+## PASS
