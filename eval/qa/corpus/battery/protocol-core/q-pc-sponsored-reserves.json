@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The docs give the sponsored-reserve minimum balance formula as `(2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. Stellar Core calculates these boundaries separately: `getMinBalance` excludes liabilities, and `getAvailableBalance` subtracts selling liabilities after subtracting the minimum balance. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+    "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The current Docs and Core give the sponsored-reserve minimum balance formula as `(2 + numSubEntries + numSponsoring - numSponsored) * baseReserve`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. They calculate spendability separately: `available balance = balance - minimum balance - liabilities.selling`. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
     "keyFacts": [
       "One account can sponsor another account's or ledger entry's minimum-balance reserve.",
       "Future reserves use BeginSponsoringFutureReserves and EndSponsoringFutureReserves.",
@@ -19,7 +19,7 @@
       "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization.",
       "Do NOT add liabilities inside Core's minimum-balance calculation; Core subtracts selling liabilities when it calculates available balance."
     ],
-    "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nAccurately quoting the canonical Stellar Docs page on sponsored-reserve minimum balance with `+ liabilities.selling` is not a wrong claim while sd-043 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
   },
   "tags": {
     "category": "protocol-core",
@@ -37,7 +37,7 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
-        "note": "class inferred at migration"
+        "note": "Observed 2026-09-08: the current guide matches Core and separates minimum balance from selling liabilities."
       },
       {
         "class": "A",
@@ -51,54 +51,43 @@
       },
       {
         "class": "B",
-        "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
-        "note": "Observed 2026-08-14: getMinBalance excludes liabilities, while getAvailableBalance subtracts selling liabilities separately."
+        "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
+        "note": "Observed 2026-09-08: getMinBalance excludes liabilities, while getAvailableBalance subtracts selling liabilities separately."
       }
     ],
     "corroboration": [
       {
-        "claim": "The official sponsored-reserves guide publishes the attributed formula with liabilities.selling, while Stellar Core excludes liabilities from getMinBalance and subtracts selling liabilities separately in getAvailableBalance.",
+        "claim": "The current Sponsored Reserves guide and Stellar Core compute minimum balance without liabilities and subtract selling liabilities separately from available balance.",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
-            "observedAt": "2026-08-14",
-            "note": "The guide publishes the formula with + liabilities.selling."
+            "observedAt": "2026-09-08",
+            "note": "The rendered guide states the reserve-unit product and the separate available-balance identity."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
-            "observedAt": "2026-08-14",
-            "note": "getMinBalance returns the reserve-unit product without liabilities; getAvailableBalance subtracts selling liabilities after minimum balance."
+            "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
+            "observedAt": "2026-09-08",
+            "note": "getMinBalance multiplies effective reserve units by baseReserve; getAvailableBalance then subtracts selling liabilities from protocol V10."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-09-08",
+      "by": "improvements follow-up with Codex GPT-5.6 Sol high source matrix",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
-        "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
-        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
-        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
-        "Sibling sweep: q-protocol-base-reserve-min-balance uses the Core formula without liabilities and subtracts selling liabilities only from available balance.",
-        "Structural re-form (symmetric-caution): added a source-specific grading caution for sd-043; the Core minimum-balance distinction is unchanged.",
-        "Improvements review 2026-08-27: improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md remains reported upstream; the disputed claim is the sponsored-reserves page adding liabilities.selling to minimum balance.",
-        "Sibling sweep 2026-08-27: grep sd-043|liabilities.selling|numSponsored → q-protocol-base-reserve-min-balance; no contradiction",
-        "Structural re-form (long-fact): shortened the sponsorship reserve and operation facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — one account can pay another account's base reserves for accounts and ledger entries.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — both begin and end operations must appear in the sponsorship transaction.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — sponsorship shifts reserve requirements from the sponsored account to the sponsor.",
-        "Sibling sweep 2026-08-29: grep BeginSponsoring|numSponsored|sponsored reserve|0-XLM → q-smart-wallet-fee-sponsorship, q-pc-account-activation-not-found, q-protocol-base-reserve-min-balance, and q-protocol-operation-types-list; no contradiction"
+        ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md",
+        "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8.",
+        "Live re-check: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves gives (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve.",
+        "Live re-check: https://developers.stellar.org/docs/learn/fundamentals/lumens gives the same separate available-balance identity.",
+        "Current Core source at 7e64393b61808fd498ae13317e0cf9cdc0a0c018 confirms the minimum-balance and available-balance split.",
+        "Sibling sweep: q-protocol-base-reserve-min-balance changed with the same source result; sd-046 remains active for the separate pool-share reserve omission."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
-        "eval-authoring: the attributed Docs formula lacked the Core distinction and conflicted with the sibling avoid rule.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
       ]
     },
     "origin": "raven-next q-pc-sponsored-reserves"

@@ -21,6 +21,8 @@ evidence:
 recurrences:
   - date: 2026-09-01
     evidence: issue #2805 remains open without comments; PR https://github.com/stellar/stellar-docs/pull/2806 is open; `gh api repos/stellar/stellar-docs/contents/<path> -H 'Accept: application/vnd.github.raw+json'` at repo HEAD 83c68f21c721905327f5db12fb84702e3a48367c found 3-5 seconds in docs/validators/README.mdx blob 37f879807c150e794578e80d2e751597938f8423 and 5-7 seconds in docs/learn/fundamentals/stellar-stack.mdx blob 06c92f8dbcd2f30e0f855bd18bf7abbc3c9e9713, so the conflict still reproduces
+  - date: 2026-09-08
+    evidence: PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8 and both rendered pages now say 5-7 seconds; however, production `stellarDocs.search_docs({query:"3-5 seconds"})` still returned the pre-deploy Validators snippet at 15:49:07Z, so the original search trigger still reproduces until the daily crawler refreshes
 ---
 
 ## Finding

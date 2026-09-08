@@ -508,10 +508,10 @@
           "q-token-initial-supply-distribution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): q-protocol-ledger-close-time changed one judge-facing sentence in golden.notes (stale '~3-5s ledger close.' superseded by 'roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas'); answer, keyFacts, and avoid unchanged. Every other member was re-read on 2026-08-31 for a ledger-cadence claim: none states any close-time figure, so no member can contradict the superseded sentence; verdict consistent. Same-day follow-up: final-review fixes on q-protocol-ledger-close-time only (GT-32 correction narrative dropped from golden.notes; third Horizon window removed; target-floor wording); no other member changed and no member states a cadence figure.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): only q-protocol-base-reserve-min-balance changed in this cluster, and only in golden.notes plus matching verification evidence. Its accepted caution now covers active sd-046 instead of fixed-upstream sd-043. All 15 members were re-read. No answer, key fact, avoid item, numeric value, formula, cadence claim, fee rule, or monetary-history claim changed. The active pool-share conflict is now graded symmetrically without changing the controlling two-reserve truth. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -524,10 +524,10 @@
           "q-edge-noinfo-stellar-pos-staking-rewards": "5d62e5f09e0c19773e579e22d4e82867820a2423d464d03b2949ada7ad6eb3de",
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5",
-          "q-pc-sponsored-reserves": "f42bf3cc0e0e5fb63effb21b02a2f2ec884c7f3f009ffe91eb556a43a89eac70",
-          "q-protocol-base-reserve-min-balance": "8ab3e260e5993233fce56893ffcb967522342f4700ee296c4bee7885c5c3fff1",
-          "q-protocol-ledger-close-time": "0f59733ded7480bf265a3b7f2c7c5eb94c1cf075fe8e68fb23d684decc932ba2",
+          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b",
+          "q-pc-sponsored-reserves": "98252d7244f2504a129238d669d2aad432df2858efac47e3419b57e8af60f124",
+          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c",
+          "q-protocol-ledger-close-time": "886aa1cb5ec462840569e44277579eacddd4c0add475f0bcd2423d1ce95c20ea",
           "q-sor-doc-timestamping-manage-data": "57b34a7c8abbd547f967f39d1cc78780e3293a68d5f11a529910d2994aa072d9",
           "q-soroban-simulate-resource-fee": "2be7b06bd31021bf1b3af819b60bbdb5db6c091772c938234b2641c540d2dd95",
           "q-token-initial-supply-distribution": "be211329ab5e607eb3539018d51e1b1acf4f698c89e26511b903ec90e4549ef8"
@@ -551,15 +551,15 @@
           "q-ti-self-host-retention-backfill"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the RPC source and documentation notes; the configurable-default dispute remains consistent.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): only q-infra-horizon-vs-rpc changed in this cluster, and only by lint-canonical wording in its existing accepted caution. All 12 members were re-read. The edit still distinguishes the rendered nearing-end-of-life label from the stale official documentation search index. Endpoint overlap, provider-configured retention, getLedgers-only archive scope, and historical indexer roles remain unchanged. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "25b94303374e4b7af0674d08c7782c302b000f6652e02e1a68837f9df3dc4122",
+          "q-infra-horizon-vs-rpc": "697510bf5c19e2313f07afa3963485be71b4915b168ea2e71c560e859b680b65",
           "q-infra-hubble-bigquery": "ed5379bf50ec0faa9426e65fad29bf7dd41f53fb4d711d492f08c8ca06ac6153",
           "q-infra-rpc-methods-list": "1c1a70e7139ef47bf805a99bad1127848fb111357ee2b31a12c709452e8313db",
           "q-infra-rpc-provider-archive-tier": "9f97c25d3c228d790b8ed146ff4fda969b8d97cf33e8541c312e2d881ad1c78b",
@@ -1143,16 +1143,16 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-hot-fee-pool-burn-deflation, q-pc-practical-fee-setting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its Horizon lifecycle guidance. Re-read both members. q-hot-fee-pool-burn-deflation still separates fee-pool sequestration from supply burn, inflation removal, validator rewards, and the 2019 SDF burn. The fee-setting case does not contradict those facts. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "Core accounts transaction/resource fees in an inaccessible fee pool that remains inside totalCoins conservation; this is non-circulating sequestration, not automatic supply burn. CAP-26 ended inflation on 2019-10-28; SDF's ~55.44B treasury burn on 2019-11-04 was separate. Fees are not validator rewards.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
-          "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5"
+          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
         }
       },
       {
@@ -1417,10 +1417,10 @@
           "q-pc-sponsored-reserves"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-pc-account-activation-not-found, q-pc-sponsored-reserves changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "Improvements follow-up (2026-09-08): q-pc-sponsored-reserves now uses the corrected minimum-balance and available-balance split. Re-read all four members. They still distinguish keypair creation, CreateAccount, the dated unsponsored 1 XLM minimum, sponsored zero-balance creation, sponsorship obligations, and AccountMerge blockers. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "A keypair is not an account and Payment does not create one. The dated 1 XLM empty-account minimum is the unsponsored path; CAP-0033 sponsored CreateAccount may use startingBalance=0. AccountMerge requires non-signer blockers and provided-sponsorship obligations to be resolved, but current Core removes remaining signers during deletion.",
@@ -1428,7 +1428,7 @@
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-pc-account-merge-reclaim-reserve": "61fb3b8197c6d1f15468e7de28c987b0b43b23dace4560007b64b1187efcb009",
-          "q-pc-sponsored-reserves": "f42bf3cc0e0e5fb63effb21b02a2f2ec884c7f3f009ffe91eb556a43a89eac70"
+          "q-pc-sponsored-reserves": "98252d7244f2504a129238d669d2aad432df2858efac47e3419b57e8af60f124"
         }
       },
       {
@@ -1464,17 +1464,17 @@
           "q-ti-channel-accounts-throughput"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its dated Horizon lifecycle guidance. Re-read all five members. They still agree that the fee source pays one outer fee, inner and outer fee fields are not additive charges, channel sources consume independent sequences, live fee estimates use getFeeStats or fee_stats, and fees do not reward validators. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "Fee source pays the outer charged fee once; inner/outer visible fee fields are not additive charges. Channel transaction sources consume their own sequences. Live estimates should use RPC getFeeStats/current CLI or Horizon /fee_stats; Horizon is legacy/no-new-features but not formally deprecated, and Hubble is historical analytics. Fees are not validator rewards. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
           "q-pc-fee-bump-channel-accounts-feepool": "0788ab8d5affc0339413f414f9fc7c189ac862fb4dece7853a8289b07dfec5fe",
-          "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5",
+          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b",
           "q-pc-sequence-numbers-ordering-replace": "abd89e306d57a25f792ddc204ccfdc393212444d4881163e7f4543325b04e827",
           "q-ti-channel-accounts-throughput": "0b73d24da2438a871e5d2ae8afb8bf392de61b409e262775c2bc792115cd27f6"
         }
@@ -1569,16 +1569,16 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-infra-horizon-vs-rpc, q-pc-practical-fee-setting (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-infra-horizon-vs-rpc changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): q-infra-horizon-vs-rpc changed only the wording of its existing accepted caution. Re-read both members. Both still use the rendered nearing-end-of-life label, preserve the stale-index qualifier, and reject a complete Horizon-to-RPC replacement claim. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "encode dispute; sd-017",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "25b94303374e4b7af0674d08c7782c302b000f6652e02e1a68837f9df3dc4122",
-          "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5"
+          "q-infra-horizon-vs-rpc": "697510bf5c19e2313f07afa3963485be71b4915b168ea2e71c560e859b680b65",
+          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
         }
       },
       {
@@ -1609,16 +1609,16 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-infra-horizon-vs-rpc, q-pc-practical-fee-setting (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-infra-horizon-vs-rpc changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): q-infra-horizon-vs-rpc changed only the wording of its existing accepted caution. Re-read both members. The dated 100-stroop floor, RPC getFeeStats priority, Horizon fee_stats availability, Hubble historical role, rendered lifecycle label, and stale-index qualifier still agree. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. Official Horizon lifecycle polarity is disputed.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "25b94303374e4b7af0674d08c7782c302b000f6652e02e1a68837f9df3dc4122",
-          "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5"
+          "q-infra-horizon-vs-rpc": "697510bf5c19e2313f07afa3963485be71b4915b168ea2e71c560e859b680b65",
+          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
         }
       },
       {
@@ -1651,15 +1651,15 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-08",
         "note": "Observed Pubnet cadence is about 5–7 seconds from a multi-ledger sample. Current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "0f59733ded7480bf265a3b7f2c7c5eb94c1cf075fe8e68fb23d684decc932ba2",
+          "q-protocol-ledger-close-time": "886aa1cb5ec462840569e44277579eacddd4c0add475f0bcd2423d1ce95c20ea",
           "q-protocol-max-tx-set-size": "ba2858f1caed9e74cd40db66851ee3cd3dc4cf744b7a1f12c77fb25ac2e561ed"
         },
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): q-protocol-ledger-close-time changed one judge-facing sentence in golden.notes (stale '~3-5s ledger close.' superseded by 'roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas'); answer, keyFacts, and avoid unchanged. Every other member was re-read on 2026-08-31 for a ledger-cadence claim: none states any close-time figure, so no member can contradict the superseded sentence; verdict consistent. Same-day follow-up: final-review fixes on q-protocol-ledger-close-time only (GT-32 correction narrative dropped from golden.notes; third Horizon window removed; target-floor wording); no other member changed and no member states a cadence figure.",
+          "date": "2026-09-08",
+          "reason": "Improvements follow-up (2026-09-08): q-protocol-ledger-close-time refreshed the corrected 5-7-second Docs evidence and retained its dated empirical claim. Re-read both members. q-protocol-max-tx-set-size states only the separate dated network count limits and does not assert a conflicting cadence. Verdict consistent.",
           "verdict": "consistent"
         }
       },
@@ -2711,18 +2711,18 @@
           "q-protocol-base-reserve-min-balance"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read all four members. The sponsorship-aware formula, separate selling-liability boundary, sponsored zero-balance creation, and two-reserve pool-share rule remain unchanged. The new caution correctly preserves partial credit for an attributed one-reserve quote from the active sd-046 pages. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-pc-sponsored-reserves": "f42bf3cc0e0e5fb63effb21b02a2f2ec884c7f3f009ffe91eb556a43a89eac70",
-          "q-protocol-base-reserve-min-balance": "8ab3e260e5993233fce56893ffcb967522342f4700ee296c4bee7885c5c3fff1"
+          "q-pc-sponsored-reserves": "98252d7244f2504a129238d669d2aad432df2858efac47e3419b57e8af60f124",
+          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c"
         }
       },
       {
@@ -2921,10 +2921,10 @@
           "q-raph-low-xlm-transfer-fail"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read all six members. They still agree on the dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, one reserve for an ordinary trustline, two reserves for a pool-share trustline, and reserve release qualifications. Verdict consistent.",
           "verdict": "consistent"
         },
         "note": "At the checked network setting, one base reserve is 0.5 XLM; an empty unsponsored account needs two reserves (1 XLM), ordinary subentries add one reserve, and a pool-share trustline adds two. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2933,7 +2933,7 @@
           "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-protocol-base-reserve-min-balance": "8ab3e260e5993233fce56893ffcb967522342f4700ee296c4bee7885c5c3fff1",
+          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c",
           "q-raph-low-xlm-transfer-fail": "708796fcb7cd1fda916f09883339a601a693068beecb04c57baadb5aca99c275"
         }
       },
@@ -3354,14 +3354,14 @@
         "memberContentSha256": {
           "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
-          "q-protocol-base-reserve-min-balance": "8ab3e260e5993233fce56893ffcb967522342f4700ee296c4bee7885c5c3fff1",
+          "q-protocol-base-reserve-min-balance": "b8ee3ee0ebb2e7e552e6ea48590c843fa345213553fbe766bc7f30f73acd122c",
           "q-raph-low-xlm-transfer-fail": "708796fcb7cd1fda916f09883339a601a693068beecb04c57baadb5aca99c275"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-08",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-09-08",
+          "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-protocol-base-reserve-min-balance, and q-raph-low-xlm-transfer-fail. The dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, sponsorship-aware formula, and pool-share qualification remain unchanged. The active sd-046 caution changes grading for an attributed official-page quote, not the authoritative numeric value. Verdict consistent.",
           "verdict": "consistent"
         }
       },
@@ -3602,13 +3602,13 @@
           "q-edge-fresh-latest-scf-round": "3949ed2b3292f0c27a394e7bc82161dc0536bcceff5d3ed32cf2e67586f5386c",
           "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2"
         },
-      "verdict": "consistent",
-      "reSwept": {
-        "date": "2026-09-03",
-        "reason": "Final-review reconciliation: both affected cases encode #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded.",
-        "verdict": "consistent"
-      },
-      "lastChecked": "2026-09-03"
+        "verdict": "consistent",
+        "reSwept": {
+          "date": "2026-09-03",
+          "reason": "Final-review reconciliation: both affected cases encode #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded.",
+          "verdict": "consistent"
+        },
+        "lastChecked": "2026-09-03"
       },
       {
         "label": "Stellar base fee floor",
@@ -3645,15 +3645,15 @@
         ],
         "memberContentSha256": {
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
-          "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5"
+          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-edge-1xlm-activation-fee, q-pc-practical-fee-setting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-09-08",
+          "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed its dated Horizon lifecycle guidance and current provenance only. Its 100-stroop-per-operation floor, surge qualification, and fee-estimator guidance remain unchanged. Re-read q-edge-1xlm-activation-fee; it states the same dated 100-stroop floor and keeps transaction fees separate from the 0.5 XLM base reserve and 1 XLM empty-account minimum. Verdict consistent.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-27"
+        "lastChecked": "2026-09-08"
       }
     ]
   },

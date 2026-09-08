@@ -1,0 +1,70 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Follow-up consistency review (2026-09-08): only q-protocol-base-reserve-min-balance changed in this cluster, and only in golden.notes plus matching verification evidence. Its accepted caution now covers active sd-046 instead of fixed-upstream sd-043. All 15 members were re-read. No answer, key fact, avoid item, numeric value, formula, cadence claim, fee rule, or monetary-history claim changed. The active pool-share conflict is now graded symmetrically without changing the controlling two-reserve truth. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-018",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Follow-up consistency review (2026-09-08): only q-infra-horizon-vs-rpc changed in this cluster, and only by lint-canonical wording in its existing accepted caution. All 12 members were re-read. The edit still distinguishes the rendered nearing-end-of-life label from the stale official documentation search index. Endpoint overlap, provider-configured retention, getLedgers-only archive scope, and historical indexer roles remain unchanged. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-061",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Follow-up consistency review (2026-09-08): q-infra-horizon-vs-rpc changed only the wording of its existing accepted caution. Re-read both members. Both still use the rendered nearing-end-of-life label, preserve the stale-index qualifier, and reject a complete Horizon-to-RPC replacement claim. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-063",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Follow-up consistency review (2026-09-08): q-infra-horizon-vs-rpc changed only the wording of its existing accepted caution. Re-read both members. The dated 100-stroop floor, RPC getFeeStats priority, Horizon fee_stats availability, Hubble historical role, rendered lifecycle label, and stale-index qualifier still agree. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-114",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read all four members. The sponsorship-aware formula, separate selling-liability boundary, sponsored zero-balance creation, and two-reserve pool-share rule remain unchanged. The new caution correctly preserves partial credit for an attributed one-reserve quote from the active sd-046 pages. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-123",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Follow-up consistency review (2026-09-08): q-protocol-base-reserve-min-balance changed only its accepted canonical-page caution and matching verification evidence. Re-read all six members. They still agree on the dated 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, one reserve for an ordinary trustline, two reserves for a pool-share trustline, and reserve release qualifications. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

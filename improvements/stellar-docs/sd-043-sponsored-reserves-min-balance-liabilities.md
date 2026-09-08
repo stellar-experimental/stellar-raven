@@ -1,7 +1,7 @@
 ---
 id: sd-043
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-14
 upstreamTitle: The sponsored-reserves minimum-balance formula wrongly adds liabilities.selling
 evidence:
@@ -13,6 +13,9 @@ evidence:
   - "sibling case eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json uses the Core formula without liabilities and subtracts selling liabilities only from available balance, so the two owned cases now encode one definition"
   - Solo scratchpad 809, todo 1542 review and todo 1550 reciprocal-citation round
   - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2771
+  - PR `stellar/stellar-docs#2806` merged 2026-09-08 as https://github.com/stellar/stellar-docs/commit/ad0accbd0da545ccba12b5a01fd5dc9e387977f8; current Docs source at 83b4612d6b8d63d7c2e2dc28b69524783fa40848 retains the corrected Sponsored Reserves and Lumens blobs
+  - 2026-09-08T15:50:00Z live re-check found the corrected minimum-balance formula and separate available-balance identity on both rendered pages; current stellar-core at 7e64393b61808fd498ae13317e0cf9cdc0a0c018 independently confirms the same split
+  - independent resolution review: .agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md
 ---
 
 ## Finding

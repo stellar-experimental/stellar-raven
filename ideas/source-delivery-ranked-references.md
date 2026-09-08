@@ -45,9 +45,9 @@ is a routing defect.
 the second voice.**
 
 - `q-protocol-base-reserve-min-balance`: `stellar-core` `getMinBalance` in
-  `src/transactions/TransactionUtils.cpp` excludes selling liabilities; the sponsored-reserves
-  docs page adds `+ liabilities.selling` (`sd-043`). Grok's verdict: "Core agrees with the golden,
-  official docs do not... This grades 'did you read Core?' not 'did Raven retrieve Stellar docs?'"
+  `src/transactions/TransactionUtils.cpp` excludes selling liabilities. The sponsored-reserves
+  page formerly added `+ liabilities.selling` (`sd-043`). Stellar Docs fixed this conflict on
+  2026-09-08. Raven has not created the local resolution receipt yet.
 - Fable §7 Q2 names six goldens that "punish docs-faithful answers" and asks for a docs-vs-source
   policy. Terra's top-10 puts a canonical technical reader at rank 1 (up to 14 rows), an advisory
   source at rank 8, and docs repair at rank 3.
@@ -498,8 +498,9 @@ the ship reason, and a battery-only gain with a flat locator gate is a stop sign
   `src/catalog/search.ts` (`MAX_SEARCH_LIMIT = 50`), `src/catalog/types.ts`
   (`CATALOG_SERVICES`), `src/adapters/index.ts` (dispatcher), `eval/gates.json` (routing floors
   and holdout contract)
-- Findings: `sd-003`, `sd-004`, `sd-043`, `sd-044` under
-  [`improvements/stellar-docs/`](../improvements/stellar-docs/)
+- Active findings: `sd-003`, `sd-004`, `sd-043`, and `sd-044` under
+  [`improvements/stellar-docs/`](../improvements/stellar-docs/). Finding `sd-043` is fixed upstream
+  and awaits the local resolver receipt.
 - Neighboring held source lanes for format precedent:
   [`partner-doc-live-sources.md`](./partner-doc-live-sources.md),
   [`stellar-org-source-lane.md`](./stellar-org-source-lane.md)

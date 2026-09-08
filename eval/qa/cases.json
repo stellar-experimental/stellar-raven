@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "c5d0c804ddd9ce241fae90398ee0d83808e5d847f049d118e4ad15903d07b43e",
+  "corpusContentSha256": "5a66e56c55b69a261311b255529b6e50a78b35a1a6e16e693a55494071351604",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -21573,19 +21573,20 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. Official pages currently dispute whether Horizon is already 'deprecated' versus nearing EOL, so state that conflict rather than pinning either label.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. As of 2026-09-08, the live official pages describe Horizon as nearing end-of-life and eventually deprecated. The Docs search index can lag a deployment, so verify the rendered page before pinning its status.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents sourced observations as current or dated.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Treats transport/data shapes as different with partial overlap.",
-          "States RPC's classic+contract scope and encodes the Horizon lifecycle dispute."
+          "States RPC's classic and contract scope.",
+          "Dates Horizon's nearing-end-of-life label."
         ],
         "avoid": [
           "Do NOT call RPC Soroban-only or a complete Horizon replacement.",
-          "Do NOT pin a categorical Horizon status or promise universal full history.",
+          "Do NOT call Horizon already deprecated or promise universal full history.",
           "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture; lifecycle polarity remains disputed.\nAccurately quoting the canonical source page is not a wrong claim while the filed upstream defect stands; grade caps at partial for that dispute unless the answer contradicts the golden fact independently of the quoted page."
+        "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture and date the lifecycle label.\nThe live pages agreed on 2026-09-08, but the official documentation search index still returned the pre-deploy phrase. An attributed quote from that official index is not a wrong claim; grade caps at partial until the crawler refreshes. Current answers must prefer the rendered page."
       },
       "tags": {
         "category": "tooling-infra",
@@ -21599,7 +21600,7 @@
         },
         "domain": "mixed",
         "status": "disputed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-09-08",
         "sources": [
           {
             "class": "A",
@@ -21648,80 +21649,44 @@
             ]
           },
           {
-            "claim": "Official pages dispute Horizon's lifecycle label: the EVM migration guide calls it deprecated, while four canonical pages say it is nearing end-of-life and will eventually be deprecated.",
+            "claim": "The live official pages describe Horizon as nearing end-of-life, while the daily Docs search index still returns the pre-deploy 'deprecated Horizon API' clause.",
             "verdict": "disputed",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment",
-                "observedAt": "2026-08-29",
-                "note": "The Soroban Client section calls Horizon the deprecated Horizon API."
+                "observedAt": "2026-09-08",
+                "note": "The rendered Soroban Client section says 'the Horizon API (nearing end-of-life)' and contains no 'deprecated Horizon' phrase."
               },
               {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
-                "observedAt": "2026-08-29",
-                "note": "The warning says Horizon is nearing end-of-life and will eventually be deprecated."
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/blob/997a85c23f5c458313fac4c30ec4fbd4c4e841ef/docs/learn/migrate/evm/smart-contract-deployment.mdx",
+                "observedAt": "2026-09-08",
+                "note": "Current source blob c7b63187d38d9d368e7eadade08df45d88bff886 matches the rendered clause."
               },
               {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
-                "observedAt": "2026-08-29",
-                "note": "The Horizon card says Horizon is nearing end-of-life and will eventually be deprecated."
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack#horizon",
-                "observedAt": "2026-08-29",
-                "note": "The Horizon warning says it is nearing end-of-life and will eventually be deprecated."
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/data/apis#horizon",
-                "observedAt": "2026-08-29",
-                "note": "The Horizon warning says it is nearing end-of-life and will eventually be deprecated."
-              },
-              {
-                "class": "D",
-                "ref": "https://www.google.com/search?q=site%3Adevelopers.stellar.org+Horizon+deprecated+nearing+end-of-life+maintained",
-                "observedAt": "2026-08-29",
-                "note": "Dated web sweep query: ‘site:developers.stellar.org Horizon deprecated nearing end-of-life maintained’. Top primary results: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint, https://developers.stellar.org/docs/learn/fundamentals/stellar-stack, https://developers.stellar.org/docs/data/apis, and https://github.com/stellar/stellar-horizon. Exact observed text conflicts: ‘Horizon is considered deprecated’ versus ‘Horizon is nearing end-of-life and will eventually be deprecated’; the current owner repository remained active. The sweep confirms the disputed lifecycle labeling."
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'deprecated Horizon API stellar-sdk networking layer',hitsPerPage:10,includeContent:true})",
+                "observedAt": "2026-09-08",
+                "note": "Production Raven returned the stale pre-deploy snippet for the same page after the source deployment."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
+          "date": "2026-09-08",
+          "by": "improvements follow-up with Claude Fable high source matrix",
           "evidence": [
-            "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; sibling q-protocol-horizon-vs-rpc already encoded the dispute.",
-            "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; successor occurrence confirmed against improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md on 2026-08-29",
-            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep Horizon|RPC|complete or permanent roster → q-infra-horizon-vs-rpc, q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier; no contradiction",
-            "Structural re-form (negative-predicate): Shortened a sourcing fact and stated the Horizon/RPC taxonomy positively; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed current REST/HAL and JSON-RPC descriptions.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed partial endpoint mappings and endpoints without direct replacements.",
-            "Sibling sweep 2026-08-27: grep Horizon|RPC|full parity → q-gap-rpc-horizon-unindexed-reference, q-infra-horizon-vs-rpc, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-compute-token-lp-market-data; no contradiction",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — the Soroban Client section calls Horizon the deprecated Horizon API.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint — the warning says Horizon is nearing end-of-life and will eventually be deprecated.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/api-explorer — the Horizon card repeats the future-tense warning.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack#horizon — the Horizon warning repeats the future-tense label.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis#horizon — the Horizon warning repeats the future-tense label.",
-            "Sibling sweep 2026-08-29: grep Horizon|RPC|deprecated|end-of-life → q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-provider-archive-tier, and related RPC cases; no contradictory lifecycle fact found.",
-            "Independent blind re-derivation 2026-08-29: a targeted recheck added the EVM migration page that the blind search missed; the four canonical warning pages remained unchanged.",
-            "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-042-fable.md",
+            "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8; the deploy workflow completed successfully.",
+            "Live re-check: https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment says 'Horizon API (nearing end-of-life)' and has no present-tense deprecated claim.",
+            "Current upstream source at 997a85c23f5c458313fac4c30ec4fbd4c4e841ef has no present-tense Horizon-deprecated line in docs/.",
+            "Production Raven re-check at 2026-09-08T15:43Z still returned the pre-deploy phrase from the daily Algolia index.",
+            "Sibling sweep: q-pc-practical-fee-setting and q-ti-compute-token-lp-market-data were reviewed; only q-pc-practical-fee-setting repeated the obsolete live-page conflict and changed in this round."
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
-            "Historical Soroban RPC naming persisted after scope expansion.",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
+            "The rendered source deployed before the daily Docs search index refreshed."
           ]
         },
         "origin": "raven-next q-infra-horizon-vs-rpc"
@@ -27222,7 +27187,7 @@
         "stellarDocs.search_sdk_cli_tools_docs"
       ],
       "golden": {
-        "answer": "`TransactionBuilder`'s fee is a maximum inclusion-fee bid per operation, not guaranteed spend. **As of 2026-07-10**, the effective base-fee floor is 100 stroops per operation, but 100 does not guarantee inclusion under surge; a low bid can be delayed or discarded. Smart-contract transactions also pay resource fees and compete against resource limits. For live estimates, use Stellar RPC **`getFeeStats`** (also exposed by current `stellar fees stats`) for classic/Soroban inclusion-fee percentiles. Horizon `GET /fee_stats` remains available and some Horizon endpoints lack direct RPC equivalents; official Docs currently conflict between calling Horizon deprecated and calling it legacy/no-new-features, nearing EOL but not yet deprecated. Hubble is historical analytics rather than the primary real-time submission estimator. Estimate immediately before submission, cap risk, add bounds, and treat values/status as dated.",
+        "answer": "`TransactionBuilder`'s fee is a maximum inclusion-fee bid per operation, not guaranteed spend. **As of 2026-07-10**, the effective base-fee floor is 100 stroops per operation, but 100 does not guarantee inclusion under surge; a low bid can be delayed or discarded. Smart-contract transactions also pay resource fees and compete against resource limits. For live estimates, use Stellar RPC **`getFeeStats`** (also exposed by current `stellar fees stats`) for classic/Soroban inclusion-fee percentiles. Horizon `GET /fee_stats` remains available and some Horizon endpoints lack direct RPC equivalents. As of 2026-09-08, the live Docs describe Horizon as nearing end-of-life and eventually deprecated. Hubble is historical analytics rather than the primary real-time submission estimator. Estimate immediately before submission, cap risk, add bounds, and treat values/status as dated.",
         "keyFacts": [
           "Explains maximum per-op bid, dated 100-stroop floor, and surge delay/exclusion.",
           "Prioritizes live RPC getFeeStats, CLI, or Horizon fee_stats.",
@@ -27232,7 +27197,7 @@
           "Do NOT say 100 always wins, freeze current percentiles, or use Ethereum gas/gwei framing.",
           "Do NOT claim Hubble is the primary real-time submission estimator or overbid without an application risk cap."
         ],
-        "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. GT-32 blind found an official deprecated/not-yet-deprecated wording conflict tracked by sd-017; grade durable endpoint behavior rather than a categorical label.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. The 2026-09-08 live pages agree on the nearing-end-of-life label. The daily search index still has one pre-deploy phrase under sd-042, so grade durable endpoint behavior.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
       },
       "tags": {
         "category": "protocol-core",
@@ -27295,27 +27260,19 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-09-08",
+          "by": "improvements follow-up with Claude Fable high source matrix",
           "evidence": [
-            "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; mechanics agreed, reviewer independently corrected endpoint priority.",
-            "Structural re-form (symmetric-caution): Added a claim-specific caution for RPC getFeeStats discoverability; the truth is unchanged.",
-            "Finding read 2026-08-27: improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md — disputed reliable search discovery of generated RPC method references.",
-            "Sibling sweep 2026-08-27: grep getFeeStats|fee_stats|100 stroops|surge pricing → q-pc-fee-bump-channel-accounts-feepool, q-pc-surge-griefing-threat-model, q-edge-1xlm-activation-fee; no contradiction",
-            "Structural re-form (presentation-avoid): rewrote the presentational Hubble clause as the same concrete false-content claim; both trap targets are unchanged.",
-            "No live re-check was required because the avoid rewrite does not change the forbidden claims.",
-            "Sibling sweep 2026-08-27: grep Hubble|real-time estimator|overbid → q-infra-hubble-bigquery, q-ti-compute-token-lp-market-data; no contradiction",
-            "Structural re-form (negative-predicate): Split the endpoint-priority fact from the Hubble role fact; truth unchanged",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getFeeStats — getFeeStats returned recent inclusion-fee distributions for Soroban and classic transactions.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the fee guide treated current bids and surge conditions as submission-time inputs, consistent with using Hubble only for historical analytics.",
-            "Sibling sweep 2026-08-27: grep getFeeStats|fee_stats|100 stroops|Hubble → q-edge-1xlm-activation-fee, q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-rpc-methods-list, q-pc-practical-fee-setting, q-ti-compute-token-lp-market-data; no contradiction"
+            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-042-fable.md",
+            "Live re-check: https://developers.stellar.org/docs/data/apis and https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment agree that Horizon is nearing end-of-life.",
+            "Production Raven still returned the pre-deploy EVM-guide phrase from the daily Docs search index.",
+            "Sibling sweep: q-infra-horizon-vs-rpc and q-ti-compute-token-lp-market-data now state the same current lifecycle boundary.",
+            "The fee, surge, getFeeStats, and Hubble claims did not change."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
-            "Eval-side current-versus-historical endpoint routing error.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
+            "The rendered source deployed before the daily Docs search index refreshed.",
+            "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md"
           ]
         },
         "origin": "raven-next q-pc-practical-fee-setting"
@@ -28160,7 +28117,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The docs give the sponsored-reserve minimum balance formula as `(2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. Stellar Core calculates these boundaries separately: `getMinBalance` excludes liabilities, and `getAvailableBalance` subtracts selling liabilities after subtracting the minimum balance. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+        "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The current Docs and Core give the sponsored-reserve minimum balance formula as `(2 + numSubEntries + numSponsoring - numSponsored) * baseReserve`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. They calculate spendability separately: `available balance = balance - minimum balance - liabilities.selling`. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
         "keyFacts": [
           "One account can sponsor another account's or ledger entry's minimum-balance reserve.",
           "Future reserves use BeginSponsoringFutureReserves and EndSponsoringFutureReserves.",
@@ -28172,7 +28129,7 @@
           "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization.",
           "Do NOT add liabilities inside Core's minimum-balance calculation; Core subtracts selling liabilities when it calculates available balance."
         ],
-        "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nAccurately quoting the canonical Stellar Docs page on sponsored-reserve minimum balance with `+ liabilities.selling` is not a wrong claim while sd-043 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
       },
       "tags": {
         "category": "protocol-core",
@@ -28190,7 +28147,7 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
-            "note": "class inferred at migration"
+            "note": "Observed 2026-09-08: the current guide matches Core and separates minimum balance from selling liabilities."
           },
           {
             "class": "A",
@@ -28204,54 +28161,43 @@
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
-            "note": "Observed 2026-08-14: getMinBalance excludes liabilities, while getAvailableBalance subtracts selling liabilities separately."
+            "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
+            "note": "Observed 2026-09-08: getMinBalance excludes liabilities, while getAvailableBalance subtracts selling liabilities separately."
           }
         ],
         "corroboration": [
           {
-            "claim": "The official sponsored-reserves guide publishes the attributed formula with liabilities.selling, while Stellar Core excludes liabilities from getMinBalance and subtracts selling liabilities separately in getAvailableBalance.",
+            "claim": "The current Sponsored Reserves guide and Stellar Core compute minimum balance without liabilities and subtract selling liabilities separately from available balance.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
-                "observedAt": "2026-08-14",
-                "note": "The guide publishes the formula with + liabilities.selling."
+                "observedAt": "2026-09-08",
+                "note": "The rendered guide states the reserve-unit product and the separate available-balance identity."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
-                "observedAt": "2026-08-14",
-                "note": "getMinBalance returns the reserve-unit product without liabilities; getAvailableBalance subtracts selling liabilities after minimum balance."
+                "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
+                "observedAt": "2026-09-08",
+                "note": "getMinBalance multiplies effective reserve units by baseReserve; getAvailableBalance then subtracts selling liabilities from protocol V10."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+          "date": "2026-09-08",
+          "by": "improvements follow-up with Codex GPT-5.6 Sol high source matrix",
           "evidence": [
-            "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
-            "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
-            "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
-            "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-            "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
-            "Sibling sweep: q-protocol-base-reserve-min-balance uses the Core formula without liabilities and subtracts selling liabilities only from available balance.",
-            "Structural re-form (symmetric-caution): added a source-specific grading caution for sd-043; the Core minimum-balance distinction is unchanged.",
-            "Improvements review 2026-08-27: improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md remains reported upstream; the disputed claim is the sponsored-reserves page adding liabilities.selling to minimum balance.",
-            "Sibling sweep 2026-08-27: grep sd-043|liabilities.selling|numSponsored → q-protocol-base-reserve-min-balance; no contradiction",
-            "Structural re-form (long-fact): shortened the sponsorship reserve and operation facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — one account can pay another account's base reserves for accounts and ledger entries.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — both begin and end operations must appear in the sponsorship transaction.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — sponsorship shifts reserve requirements from the sponsored account to the sponsor.",
-            "Sibling sweep 2026-08-29: grep BeginSponsoring|numSponsored|sponsored reserve|0-XLM → q-smart-wallet-fee-sponsorship, q-pc-account-activation-not-found, q-protocol-base-reserve-min-balance, and q-protocol-operation-types-list; no contradiction"
+            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md",
+            "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8.",
+            "Live re-check: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves gives (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve.",
+            "Live re-check: https://developers.stellar.org/docs/learn/fundamentals/lumens gives the same separate available-balance identity.",
+            "Current Core source at 7e64393b61808fd498ae13317e0cf9cdc0a0c018 confirms the minimum-balance and available-balance split.",
+            "Sibling sweep: q-protocol-base-reserve-min-balance changed with the same source result; sd-046 remains active for the separate pool-share reserve omission."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
-            "eval-authoring: the attributed Docs formula lacked the Core distinction and conflicted with the sibling avoid rule.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
           ]
         },
         "origin": "raven-next q-pc-sponsored-reserves"
@@ -29310,7 +29256,7 @@
           "Do NOT claim every trustline costs one reserve or that a sponsored account can remain under-reserved after sponsorship ends.",
           "Do NOT claim 0.5 XLM is timeless or that classic account reserves apply to Soroban contract storage."
         ],
-        "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve.\nCanonical-page caution: The official Sponsored Reserves page states a liabilities term. An attributed quote is not a wrong claim; grade caps at partial. This caution tracks improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md and expires when sd-043 reaches fixed-upstream and the live page no longer carries that wording."
+        "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve.\nCanonical-page caution: The official Lumens and Accounts pages group pool-share trustlines with ordinary subentries. An attributed one-reserve quote is not a wrong claim; grade caps at partial for that claim. This caution tracks improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md and expires when sd-046 reaches fixed-upstream and both live pages state the two-reserve rule."
       },
       "tags": {
         "category": "protocol-core",
@@ -29329,13 +29275,13 @@
         "sources": [
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-core/blob/c16a6d17c6519505f7d1190fa6594cbdd68bce0c/src/transactions/TransactionUtils.cpp",
-            "note": "class inferred at migration"
+            "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
+            "note": "Observed 2026-09-08: getMinBalance excludes liabilities and getAvailableBalance subtracts selling liabilities separately."
           },
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
-            "note": "The official page includes liabilities.selling in its attributed minimum-balance formula."
+            "note": "Observed 2026-09-08: the current page matches Core and separates minimum balance from available balance."
           },
           {
             "class": "B",
@@ -29375,20 +29321,20 @@
         ],
         "corroboration": [
           {
-            "claim": "Core computes minimum balance as (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve; selling liabilities are subtracted separately from available balance.",
+            "claim": "Core and the current Sponsored Reserves guide compute minimum balance as (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve; selling liabilities reduce available balance separately.",
             "verdict": "confirmed",
             "evidence": [
               {
-                "class": "B",
-                "ref": "B: current stellar-core TransactionUtils.cpp",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+                "observedAt": "2026-09-08",
+                "note": "The rendered guide gives the reserve-unit product and the separate available-balance identity."
               },
               {
                 "class": "B",
-                "ref": "B: CAP-0033 sponsorship accounting and official reserve documentation",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/stellar-core/blob/7e64393b61808fd498ae13317e0cf9cdc0a0c018/src/transactions/TransactionUtils.cpp",
+                "observedAt": "2026-09-08",
+                "note": "getMinBalance excludes liabilities; getAvailableBalance subtracts selling liabilities after minimum balance from protocol V10."
               }
             ]
           },
@@ -29448,40 +29394,20 @@
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; mutual sd-046 link)",
+          "date": "2026-09-08",
+          "by": "improvements follow-up with Codex GPT-5.6 Sol high source matrix",
           "evidence": [
-            "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
-            "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
-            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claims; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-protocol-base-reserve-min-balance, q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction",
-            "Structural re-form (compound-predicate): Kept the dated base reserve as a modifier of the pool-share cost and made contract rent an atomic fact; truth is unchanged.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools confirms a pool-share trustline requires two base reserves.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens confirms the current 0.5 XLM base reserve and separate smart-contract rent model.",
-            "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance — the official page states the reserve product plus liabilities.selling.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — getMinBalance returns the reserve product, while getAvailableBalance subtracts selling liabilities separately.",
-            "Sibling sweep 2026-08-29: grep liabilities.selling|numSponsoring|numSponsored|getMinBalance → q-pc-sponsored-reserves; it encodes the same Docs/Core distinction.",
-            "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/Core conflict and the source-specific caution boundary.",
-            "Live re-check 2026-08-30: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — getMinBalance returns (2 + numSubentries + numSponsoring - numSponsored) * baseReserve; selling liabilities are subtracted separately in the available-balance path.",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance — the page still adds liabilities.selling to its minimum-balance formula (sd-043 stands, reported-upstream).",
-            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md and https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — a pool-share trustline requires two base reserves.",
-            "Live re-check 2026-08-30: https://horizon.stellar.org/ledgers?order=desc&limit=1 — base_reserve_in_stroops 5000000 (0.5 XLM) at ledger 64193982.",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Smart contract data does not require any base reserves … must pay rent instead'; the same page lists pool-share trustlines among ordinary one-reserve subentries, recorded as provenance for the conflict, not as support.",
-            "Disposition 2026-08-30: keep the two-reserve pool-share rule (CAP-0038 + dedicated liquidity page); the Lumens and Accounts pages' generic subentry list is recorded as a conflicting official source. No new caution (ADR-0008 boundary); the existing sd-043 caution is unchanged.",
-            "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same verdicts on the formula, the liabilities conflict, the two-reserve rule, and the live base reserve.",
-            "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no contradiction",
-            "Mutual link 2026-08-31: improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md was filed from this case on 2026-08-30 (Lumens and Accounts pages omit the pool-share two-reserve exception); the finding now names this case file and this entry. No judge-facing change."
+            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md",
+            "Live re-check: Sponsored Reserves and Lumens now agree with current stellar-core on minimum balance and available balance.",
+            "Current Core source at 7e64393b61808fd498ae13317e0cf9cdc0a0c018 confirms the formula split.",
+            "The expired sd-043 canonical-page caution was removed.",
+            "Sibling sweep: q-pc-sponsored-reserves changed with the same source result; q-asset-amm-fee-reserve and q-asset-trustline-basics do not contradict it.",
+            "The separate pool-share two-reserve conflict remains tracked by improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md.",
+            "The accepted base-reserve case now keeps a claim-specific caution for the still-active sd-046 conflict."
           ],
           "rootCause": [
-            "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
             "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
-            ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
-            ".agents/TODO.md — Review five round-specific golden-truth candidates",
-            "improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md",
-            ".agents/TODO.md — Close two metadata gaps found by the 2026-08-31 verification"
+            "improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md"
           ]
         },
         "origin": "raven-next q-protocol-base-reserve-min-balance"
@@ -29913,7 +29839,7 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/validators",
-            "note": "On 2026-08-30 this page still says 'every 3-5 seconds'; it conflicts with the stellar-stack page and with live samples and is recorded as a stale official page, not as support."
+            "note": "On 2026-09-08 the rendered page says 'every 5-7 seconds'; the daily Docs search index still returned its pre-deploy 3-5-second snippet."
           },
           {
             "class": "A",
@@ -30014,6 +29940,18 @@
                 "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h",
                 "observedAt": "2026-08-31",
                 "note": "The configured target cannot be set below 4000 ms. That is a target floor, not an observed-close floor; the two 2026-08-31 samples had no delta below 5 s."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/validators",
+                "observedAt": "2026-09-08",
+                "note": "The rendered page now says every 5-7 seconds and contains no 3-5-second claim."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'3-5 seconds',hitsPerPage:10,includeContent:true})",
+                "observedAt": "2026-09-08",
+                "note": "Production Raven still returned the pre-deploy Validators snippet after the source deployment."
               }
             ]
           },
@@ -30043,35 +29981,20 @@
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, D1 reconciliation; proposer lane B matrices-lane-b-events-d1.md, blind re-derivation review-blind-ledger-close-grok.md; orchestrator reconciled and applied)",
+          "date": "2026-09-08",
+          "by": "improvements follow-up with Codex GPT-5.6 Terra high source matrix and targeted production search delta",
           "evidence": [
-            "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling.",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — 'update the ledger every 5-7 seconds'.",
-            "Live re-check 2026-08-30: https://horizon.stellar.org/ledgers?order=desc&limit=200 — two independent 199-delta samples: min 5 / max 7 / median 6 s and min 5 / max 9 (one delta) / median 6 s.",
-            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md — target close time plus nomination and ballot timeouts are network-configurable; initial target 5000 ms.",
-            "Official-page inventory 2026-08-30: stellar-stack 5-7 s; docs/validators 3-5 s (stale); storage-strategies '~5-second'; fees-resource-limits-metering 'a few seconds'; stellar.org/soroban '5-second finality'; intro-to-stellar 'under 6 seconds'. The 199-ledger 2026-07-10 observation is kept as a dated historical sample; its Solo attribution is not re-walkable and the fresh samples stand as its independent replacement.",
-            "Disposition 2026-08-30: the golden's 'roughly 5–7 seconds' with a dated sample stays; one 9-second delta in one fresh sample does not move a 'roughly' range. A live official conflict (validators 3-5 s vs stack 5-7 s) remains after direct confirmation; ADR-0008 caps canonical-page cautions at three cases, so no caution was added and the Stellar Docs finding is left as an owner decision (recorded in the round ledger).",
-            "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same sample statistics; found no official 3–5 wording on the pages it visited (it did not visit docs/validators); orchestrator direct fetch confirmed both pages.",
-            "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction",
-            "Gospel change 2026-08-31: the stale golden.notes sentence '~3-5s ledger close.' is superseded by 'roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas'; answer, keyFacts, avoid, and the no-caution decision are unchanged.",
-            "Live re-check 2026-08-31: https://developers.stellar.org/docs/validators — rendered and raw (docs/validators/README.mdx, blob 37f879807c150e794578e80d2e751597938f8423) both say 'update the ledger every 3-5 seconds'.",
-            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — rendered and raw (stellar-stack.mdx, blob 06c92f8dbcd2f30e0f855bd18bf7abbc3c9e9713) both say 'update the ledger every 5-7 seconds'.",
-            "Live re-check 2026-08-31: https://horizon.stellar.org/ledgers?order=desc&limit=200 — two independent 199-delta samples (ledgers 64209159–64209358 at 13:10:23Z; 64209225–64209424 at 13:16:30Z): min 5 / max 9 / median 6 / mean 5.688–5.693 s; 5s×75–77, 6s×111–113, 7s×8–10, 8s×0–1, 9s×1–2.",
-            "Live re-check 2026-08-31: https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h — LEDGER_TARGET_CLOSE_TIME_MILLISECONDS initial 5000, minimum 4000, maximum 5000; LedgerManagerImpl::getExpectedLedgerCloseTime() returns ledgerTargetCloseTimeMilliseconds() as std::chrono::milliseconds on protocol 23+; Herder::TARGET_LEDGER_CLOSE_TIME_BEFORE_PROTOCOL_VERSION_23_MS = 5000.",
-            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — closeTime is a UNIX timestamp, may lag a few seconds or lead up to 60 seconds, strictly monotonic.",
-            "Docs index 2026-08-31: stellarDocs.search_docs '3-5 seconds' → 1 hit (docs/validators); '5-7 seconds' → 1 hit (stellar-stack#stellar-core); both strings indexed, so this is a content conflict, not a search miss.",
-            "Lane disagreement resolved 2026-08-31: lane B marked keyFact 1 contradicted because the full observed range is 5–9 s; the blind lane read 5–7 s as typical with rare 8–9 s deltas. The answer says 'roughly 5–7' with a dated sample and the 5–7 band holds 196–198 of 199 deltas in every sample, so the keyFact stands as confirmed-as-of; the notes now name the rare 8–9-second deltas.",
-            "Finding filed 2026-08-31: improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md (docs-content, verified); no caution added because ADR-0008 fixes the canonical-page caution boundary at three cases.",
-            "Sibling sweep 2026-08-31: grep 3-5 seconds|5-7 seconds|ledger close|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit, q-soroban-storage-types, q-infra-quickstart-local-network read; no sibling states a 3–5-second cadence; no contradiction",
-            "Review fixes 2026-08-31 (review-final-grok.md F1, F2, F4): the CAP-0070/NetworkConfig.h range [4000, 5000] ms bounds the configured target only and is not an observed-close floor, so no evidence claims a 3-second close is impossible; the undocumented third Horizon window was removed and only the two mirrored samples remain; the GT-32 correction narrative was dropped from golden.notes, which now carries only current guidance."
+            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-047-terra.md",
+            "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8.",
+            "Live re-check: https://developers.stellar.org/docs/validators and https://developers.stellar.org/docs/learn/fundamentals/stellar-stack each say 'every 5-7 seconds'.",
+            "Current upstream docs/ contains no 3-5-second cadence line and contains the same 5-7-second sentence in both canonical files.",
+            "Production Raven re-check at 2026-09-08T15:49:07Z still returned the pre-deploy 3-5-second Validators snippet.",
+            "Sibling sweep: q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit, q-soroban-storage-types, and q-infra-quickstart-local-network contain no conflicting cadence claim.",
+            "The golden answer, key facts, avoid items, and empirical cadence claims did not change."
           ],
           "rootCause": [
-            "Old target/marketing range and insufficient empirical sampling.",
-            ".agents/TODO.md — Recheck two dated source-metadata conflicts",
-            "eval-authoring — the GT-32 correction of 2026-07-10 appended a correction line but left the original '~3-5s' sentence in golden.notes",
             "improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md",
-            ".agents/TODO.md — Decide the ledger-close-time documentation conflict (D1)"
+            "The rendered source deployed before the daily Docs search index refreshed."
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"

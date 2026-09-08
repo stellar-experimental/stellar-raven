@@ -7,19 +7,20 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. Official pages currently dispute whether Horizon is already 'deprecated' versus nearing EOL, so state that conflict rather than pinning either label.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. As of 2026-09-08, the live official pages describe Horizon as nearing end-of-life and eventually deprecated. The Docs search index can lag a deployment, so verify the rendered page before pinning its status.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Treats transport/data shapes as different with partial overlap.",
-      "States RPC's classic+contract scope and encodes the Horizon lifecycle dispute."
+      "States RPC's classic and contract scope.",
+      "Dates Horizon's nearing-end-of-life label."
     ],
     "avoid": [
       "Do NOT call RPC Soroban-only or a complete Horizon replacement.",
-      "Do NOT pin a categorical Horizon status or promise universal full history.",
+      "Do NOT call Horizon already deprecated or promise universal full history.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture; lifecycle polarity remains disputed.\nAccurately quoting the canonical source page is not a wrong claim while the filed upstream defect stands; grade caps at partial for that dispute unless the answer contradicts the golden fact independently of the quoted page."
+    "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture and date the lifecycle label.\nThe live pages agreed on 2026-09-08, but the official documentation search index still returned the pre-deploy phrase. An attributed quote from that official index is not a wrong claim; grade caps at partial until the crawler refreshes. Current answers must prefer the rendered page."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,7 +34,7 @@
     },
     "domain": "mixed",
     "status": "disputed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-09-08",
     "sources": [
       {
         "class": "A",
@@ -82,80 +83,44 @@
         ]
       },
       {
-        "claim": "Official pages dispute Horizon's lifecycle label: the EVM migration guide calls it deprecated, while four canonical pages say it is nearing end-of-life and will eventually be deprecated.",
+        "claim": "The live official pages describe Horizon as nearing end-of-life, while the daily Docs search index still returns the pre-deploy 'deprecated Horizon API' clause.",
         "verdict": "disputed",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment",
-            "observedAt": "2026-08-29",
-            "note": "The Soroban Client section calls Horizon the deprecated Horizon API."
+            "observedAt": "2026-09-08",
+            "note": "The rendered Soroban Client section says 'the Horizon API (nearing end-of-life)' and contains no 'deprecated Horizon' phrase."
           },
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
-            "observedAt": "2026-08-29",
-            "note": "The warning says Horizon is nearing end-of-life and will eventually be deprecated."
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/blob/997a85c23f5c458313fac4c30ec4fbd4c4e841ef/docs/learn/migrate/evm/smart-contract-deployment.mdx",
+            "observedAt": "2026-09-08",
+            "note": "Current source blob c7b63187d38d9d368e7eadade08df45d88bff886 matches the rendered clause."
           },
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
-            "observedAt": "2026-08-29",
-            "note": "The Horizon card says Horizon is nearing end-of-life and will eventually be deprecated."
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack#horizon",
-            "observedAt": "2026-08-29",
-            "note": "The Horizon warning says it is nearing end-of-life and will eventually be deprecated."
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/data/apis#horizon",
-            "observedAt": "2026-08-29",
-            "note": "The Horizon warning says it is nearing end-of-life and will eventually be deprecated."
-          },
-          {
-            "class": "D",
-            "ref": "https://www.google.com/search?q=site%3Adevelopers.stellar.org+Horizon+deprecated+nearing+end-of-life+maintained",
-            "observedAt": "2026-08-29",
-            "note": "Dated web sweep query: ‘site:developers.stellar.org Horizon deprecated nearing end-of-life maintained’. Top primary results: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint, https://developers.stellar.org/docs/learn/fundamentals/stellar-stack, https://developers.stellar.org/docs/data/apis, and https://github.com/stellar/stellar-horizon. Exact observed text conflicts: ‘Horizon is considered deprecated’ versus ‘Horizon is nearing end-of-life and will eventually be deprecated’; the current owner repository remained active. The sweep confirms the disputed lifecycle labeling."
+            "class": "E",
+            "ref": "stellarDocs.search_docs({query:'deprecated Horizon API stellar-sdk networking layer',hitsPerPage:10,includeContent:true})",
+            "observedAt": "2026-09-08",
+            "note": "Production Raven returned the stale pre-deploy snippet for the same page after the source deployment."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
+      "date": "2026-09-08",
+      "by": "improvements follow-up with Claude Fable high source matrix",
       "evidence": [
-        "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; sibling q-protocol-horizon-vs-rpc already encoded the dispute.",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; successor occurrence confirmed against improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md on 2026-08-29",
-        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Horizon|RPC|complete or permanent roster → q-infra-horizon-vs-rpc, q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier; no contradiction",
-        "Structural re-form (negative-predicate): Shortened a sourcing fact and stated the Horizon/RPC taxonomy positively; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed current REST/HAL and JSON-RPC descriptions.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed partial endpoint mappings and endpoints without direct replacements.",
-        "Sibling sweep 2026-08-27: grep Horizon|RPC|full parity → q-gap-rpc-horizon-unindexed-reference, q-infra-horizon-vs-rpc, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-compute-token-lp-market-data; no contradiction",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — the Soroban Client section calls Horizon the deprecated Horizon API.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint — the warning says Horizon is nearing end-of-life and will eventually be deprecated.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/api-explorer — the Horizon card repeats the future-tense warning.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack#horizon — the Horizon warning repeats the future-tense label.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis#horizon — the Horizon warning repeats the future-tense label.",
-        "Sibling sweep 2026-08-29: grep Horizon|RPC|deprecated|end-of-life → q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-provider-archive-tier, and related RPC cases; no contradictory lifecycle fact found.",
-        "Independent blind re-derivation 2026-08-29: a targeted recheck added the EVM migration page that the blind search missed; the four canonical warning pages remained unchanged.",
-        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-042-fable.md",
+        "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8; the deploy workflow completed successfully.",
+        "Live re-check: https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment says 'Horizon API (nearing end-of-life)' and has no present-tense deprecated claim.",
+        "Current upstream source at 997a85c23f5c458313fac4c30ec4fbd4c4e841ef has no present-tense Horizon-deprecated line in docs/.",
+        "Production Raven re-check at 2026-09-08T15:43Z still returned the pre-deploy phrase from the daily Algolia index.",
+        "Sibling sweep: q-pc-practical-fee-setting and q-ti-compute-token-lp-market-data were reviewed; only q-pc-practical-fee-setting repeated the obsolete live-page conflict and changed in this round."
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
-        "Historical Soroban RPC naming persisted after scope expansion.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
+        "The rendered source deployed before the daily Docs search index refreshed."
       ]
     },
     "origin": "raven-next q-infra-horizon-vs-rpc"

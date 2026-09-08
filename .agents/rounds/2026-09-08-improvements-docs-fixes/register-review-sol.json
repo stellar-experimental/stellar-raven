@@ -1,0 +1,114 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its Horizon lifecycle guidance; q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance now reflect the corrected Docs/Core formula; q-protocol-ledger-close-time refreshed its source evidence without changing its empirical cadence claim. All 15 members were re-read. They still distinguish the 100-stroop fee floor, 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, sponsorship adjustments, fee-pool accounting, and monetary history. q-asset-path-payment-ops uses an approximate one-ledger-close value near the lower end of the 5-7-second range, not a fixed conflicting cadence. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-018",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-infra-horizon-vs-rpc now reports the aligned rendered lifecycle wording and the stale daily Docs index separately. All 12 members were re-read. They still agree that Horizon and RPC have partial endpoint overlap, RPC is not an unbounded historical index, retention is provider-configured, archive extension is getLedgers-only, and Hubble/indexers provide historical workloads. q-ti-compute-token-lp-market-data uses the same current Horizon label and endpoint-by-endpoint boundary. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-042",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its Horizon lifecycle guidance. Re-read both members. q-hot-fee-pool-burn-deflation still separates fee-pool sequestration from supply burn, inflation removal, validator rewards, and the 2019 SDF burn. The fee-setting case does not contradict those facts. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-054",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-pc-sponsored-reserves now uses the corrected minimum-balance and available-balance split. Re-read all four members. They still distinguish keypair creation, CreateAccount, the dated unsponsored 1 XLM minimum, sponsored zero-balance creation, sponsorship obligations, and AccountMerge blockers. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-056",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its dated Horizon lifecycle guidance. Re-read all five members. They still agree that the fee source pays one outer fee, inner and outer fee fields are not additive charges, channel sources consume independent sequences, live fee estimates use getFeeStats or fee_stats, and fees do not reward validators. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-061",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): both members now state that rendered Docs use the nearing-end-of-life label. Both preserve the stale daily-index qualifier and the durable endpoint boundary. Neither calls Horizon already deprecated or RPC a complete replacement. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-063",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): both members now use the same dated rendered-page Horizon label and stale-index qualifier. q-pc-practical-fee-setting still identifies 100 stroops as a dated floor, prefers RPC getFeeStats for live estimates, keeps Horizon fee_stats available, and treats Hubble as historical analytics. q-infra-horizon-vs-rpc does not contradict those estimator roles. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-065",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-protocol-ledger-close-time refreshed the corrected 5-7-second Docs evidence and retained its dated empirical claim. Re-read both members. q-protocol-max-tx-set-size states only the separate dated network count limits and does not assert a conflicting cadence. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-114",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance now share the corrected sponsorship-aware formula and separate selling-liability boundary. Re-read all four members. q-pc-account-activation-not-found preserves sponsored zero-balance creation, and q-asset-amm-fee-reserve preserves the two-reserve pool-share exception. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-123",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-08",
+      "reSwept": {
+        "date": "2026-09-08",
+        "reason": "Improvements follow-up (2026-09-08): q-protocol-base-reserve-min-balance changed its current Docs/Core evidence, not its reserve values. Re-read all six members. They still agree on a dated 0.5 XLM base reserve, a 1 XLM empty unsponsored minimum, one reserve for an ordinary trustline, two reserves for a pool-share trustline, and reserve release subject to liabilities and sponsorship. Verdict consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}
