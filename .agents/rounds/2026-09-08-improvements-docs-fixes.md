@@ -124,3 +124,10 @@ The post-resolver corpus contains 500 cases with content SHA-256
 
 The two inconclusive probes require `LUMENLOOP_API_KEY`.
 No credential value was available or needed for this Docs closeout.
+
+## Raven handoff closeout
+
+Raven handoff #131 closed at `2026-09-08T17:01:38Z`.
+The closeout comment is https://github.com/stellar-experimental/stellar-raven/issues/131#issuecomment-5588863541.
+Its read-back matched the live result, terminal receipt commit, independent review, and source snapshot.
+Handoffs #130 and #132 remain open until the two exact search triggers stop reproducing.

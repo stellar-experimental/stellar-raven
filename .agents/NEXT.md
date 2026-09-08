@@ -75,7 +75,7 @@ golden action stays owner-blocked. Repository and Herdr cleanup are complete.
 - `improvements/` contains 70 active findings: 56 `reported-upstream`, 11 `verified`, and 3
   `declined-upstream`. The eleven verified findings are not filed.
 - Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
-  Findings `sd-042` and `sd-047` wait for the daily Docs search crawler.
+  Raven handoff #131 is closed. Findings `sd-042` and `sd-047` wait for the daily Docs search crawler.
 - The compiled corpus has 500 active cases. Content SHA-256 `49bc52ba…289cd`.
   Corpus lint passed with 0 errors and 62 warnings after the `sd-043` resolver.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.

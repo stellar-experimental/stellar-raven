@@ -27,6 +27,7 @@ On the first improvements round after 2026-09-09T00:00Z, rerun these exact searc
 Use `.agents/rounds/2026-09-08-improvements-docs-fixes.md` and its verification reports.
 If both stale snippets disappear, run the normal `fixed-upstream` and resolver gates.
 Resolve Raven handoff issues #130 and #132 only after the active findings reach terminal receipts.
+Raven handoff #131 closed after `sd-043` reached its terminal receipt.
 
 Done when: both exact search triggers stop reproducing, or the queue records a crawler failure.
 
