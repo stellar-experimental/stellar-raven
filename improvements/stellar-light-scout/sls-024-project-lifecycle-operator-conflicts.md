@@ -27,6 +27,8 @@ recurrences:
     evidence: Production API 1.8.87 fixed the nightly restamp and populated statusAsOf, statusBasis, and statusConfidence across all 583 rows reachable through the five documented status filters; however, 86 rows still lacked statusSourceUrl, 241 lacked supportedNetworks/networksBasis, and 582 lacked product deployment records, while /api/status reported 1025 total projects, so provenance coverage and testnet/mainnet product scope remain incomplete
   - date: 2026-08-28
     evidence: Production API 1.9.1 gives Slender, Laina, K2 Lend, and OrbitCDP dated status, statusBasis, and statusSourceUrl. K2 Lend still has null supportedNetworks, and all four have null products and deployments. Issue stellar-scout#9 and service-owner issue #494 are closed as completed, but the deployment-qualifier part of the finding still reproduces.
+  - date: 2026-09-08
+    evidence: Production API 1.9.48 returned Fluxity as Live with repo-activity status basis at 2026-09-08T14:41:22.168Z. Its deployment remains unknown with null basis, sourceUrl, and asOf, while products remains null. Response SHA-256 366b9ce6895c5a12b45b9d5b37b65ca6800046370a75e32d1ace55da22acc58a.
 ---
 
 ## Finding

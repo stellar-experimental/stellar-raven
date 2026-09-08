@@ -25,6 +25,8 @@ recurrences:
     evidence: the round ledger `.agents/rounds/2026-09-03-truth-maintenance/improvements-terra.md` records 61 RWA rows. DTCC has one product, but its generic deployment remains unknown and assets remain absent. The partial model still reproduces the finding.
   - date: 2026-09-04
     evidence: `GET /api/projects/search?q=real%20world%20asset&limit=100` returned 61 rows at 2026-09-04T06:54:40.644Z, Scout API 1.9.30, response SHA-256 f6c976a7b9c82f61e4f2ab5c5cbfd0b9cb907ff09b89289fa45fd47905d32e0d. Deployment exists on 61 rows, but 47 have network unknown, basis null, and sourceUrl null. Only one row has products, no row has productKind, and assets are absent from all rows. DTCC remains Development with one announced mainnet product and an H1 2027 note. Fourteen rows gained onchain-activity deployment data, but the exact partial product and deployment model defect remains.
+  - date: 2026-09-08
+    evidence: Production API 1.9.48 returned 60 RWA search rows at 2026-09-08T14:33:51.197Z, response SHA-256 3432eb36beac6db702bcf0a0561cd6ecdff74b0db2a4df57603292f5e1bce580. Eleven rows have products, but 40 retain deployment network unknown. The 97-row RWA registry improves asset evidence but does not complete the project-level product and deployment model.
 ---
 
 ## Finding
