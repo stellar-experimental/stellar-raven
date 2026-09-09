@@ -241,3 +241,34 @@ The round ledger records the reviewer, evidence, and bounded external-claim risk
 
 Findings `sk-023` and `sk-024` still reproduce at this pin.
 Their status remains `verified`, and this change records dated recurrence evidence.
+
+### 2026-09-09 — isolated stellar-dev acceptance from issue #141
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `0472452a05731de5e0a1e886d8aae6df24873fe2` | `sel:7b68c8b72b2f` | All four changed body diffs read |
+
+The Astra author and parent read all four changed stellar-dev body diffs.
+The independent Grok 4.6 high reviewer read those diffs and verified the source claims.
+The other three source selections remain unchanged.
+The root and reviewer each fetched and verified all 44 selected files without the cache.
+
+The stellar-dev changes separate x402 facilitator requirements from protocol requirements.
+They explain the general MPP protocol and update the Soroban SDK example to version 27.
+The changes contain no literal credential, instruction override, retired skill, or excluded Raven operation reference.
+The live source hashes match the selected bodies.
+The source audit confirms stable soroban-sdk 27.0.6 and Mainnet protocol 27.
+It confirms MPP payment-method-agnostic scope and the public x402 facilitator's Stellar testnet-only support.
+The audit does not claim a compiled Rust example or a payment test.
+
+The combined Scout candidate remains rejected and does not ship.
+Its OpenAPI omits the live `issued-single-holder` RWA state.
+The accepted Scout inventory and Stellar Light selection remain byte-identical to the base.
+
+The isolated candidate passes the routing gate, 1995 tests, and 85 smoke tests.
+All routing thresholds and accepted totals remain unchanged.
+The catalog evidence fingerprint changes. Incidental ranking changes cause no grade losses.
+The acceptance review is `.agents/rounds/2026-09-09-skill-pin-acceptance-grok.md`.
+The source audit is `.agents/rounds/2026-09-09-upstream-handoffs-grok.md`.
+The rejected candidate remains documented in `.agents/rounds/2026-09-09-drift-141-astra.md`.
+This entry approves the isolated pin for merge, not production deployment or finding retirement.

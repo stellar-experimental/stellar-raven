@@ -5,6 +5,8 @@ status: reported-upstream
 discovered: 2026-09-03
 upstreamTitle: The Smart Contracts skill example says Mainnet runs Protocol 26
 evidence:
+  - 2026-09-09 at 16:46Z the root read the production skill through Raven. Its URL still pins 03b2f8e8 and its content retains Mainnet is on protocol 26. The separately reviewed source candidate requires deployment before retirement.
+  - .agents/rounds/2026-09-09-upstream-handoffs-grok.md repeats the live source, Horizon protocol, SDK registry, and reference checks.
   - 2026-09-09 canonical correction deployed in https://github.com/stellar/stellar-dev-skill/pull/127 at 711d6e293b0ba6ae110db0ae307a4d7805a00b8a; live skills.stellar.org bytes match SHA-256 205faa248dd6c828da4679cee9bfdbf0d71d99269a9a469bafd526756b2a273e. Accepted Raven pin 03b2f8e8 still reproduces the original trigger; retain pending source acceptance.
   - .agents/rounds/2026-09-09-sk021-handoff-review-grok.md independently verifies the deployed correction, accepted-pin residual, and retirement boundary.
   - Raven handoff acknowledged with verified partial result: https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5595645949

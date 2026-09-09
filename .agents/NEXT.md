@@ -1,7 +1,10 @@
 # NEXT — current handoff
 
-Updated 2026-09-08. PR #129 landed the accepted Scout pin and completed its production deployment.
-The Docs follow-up resolved `sd-043`. Content fixes for `sd-039`, `sd-042`, and `sd-047` await search ingestion.
+Updated 2026-09-09. The current round is `rounds/2026-09-09-truth-maintenance.md`.
+The isolated stellar-dev `0472452a` pin passes source review, tests, and unchanged routing thresholds.
+Production still serves the old pin. This round's deployment requires owner approval.
+The September 9 crawl ingested the fixes for `sd-039`, `sd-042`, and `sd-047`.
+Their corpus-reference cleanup and independent retirement review remain pending.
 The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
 Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
 The maintenance execution and isolated search advisory completed their independent reviews.
@@ -9,7 +12,7 @@ The maintenance execution and isolated search advisory completed their independe
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 The 2026-09-08 maintenance execution merged through PR #135. PR #137 deployed the isolated search advisory.
 Paid and unresolved golden decisions remain owner-blocked. The broader scoring candidate remains unreleased.
-Use `rounds/2026-09-08-maintenance-execution.md` for current branches, agents, checks, and issue actions.
+Use `rounds/2026-09-08-maintenance-execution.md` for the prior deployment and advisory closeout.
 
 ## State at handoff
 
@@ -76,7 +79,7 @@ Use `rounds/2026-09-08-maintenance-execution.md` for current branches, agents, c
 - `improvements/` contains 70 active findings: 67 `reported-upstream` and 3 `declined-upstream`.
   The authorized filing queue is empty. The invalid Saved Keypairs finding has a terminal receipt.
 - Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
-  Raven handoff #131 is closed. Findings `sd-039`, `sd-042`, and `sd-047` await a verified post-deployment crawl.
+  Raven handoff #131 is closed. The September 9 crawl fixed the `sd-039`, `sd-042`, and `sd-047` search triggers.
   The observed noon run conflicts with the stored midnight schedule. The cause remains unknown.
 - The compiled corpus has 500 active cases. Content SHA-256 `4f8d38a6…3aca`.
   Corpus lint passed with 0 errors and 62 warnings after the Saved Keypairs correction.
@@ -113,9 +116,10 @@ Complete since the previous handoff:
 
 - Playground #40: use an authorized authenticated production session to copy an existing answer without a new paid chat request.
   The 8000-character limit stays; persistent history is declined. Local tests pass, but production acceptance remains open.
-- `sd-039`, `sd-042`, and `sd-047`: recheck crawler and index timestamps after 2026-09-09T12:05Z.
-  Repeat their exact Raven searches and verify corrected positive records. This checkpoint is not a schedule guarantee.
-  Use `rounds/2026-09-08-docs-index-execution-astra.md`; keep #130 and #132 open until resolver gates pass.
+- `sd-039`, `sd-042`, and `sd-047`: complete corpus-reference cleanup and the independent retirement review.
+  The original triggers and corrected positive records pass after the September 9 crawl.
+  Use `rounds/2026-09-09-docs-ingestion-sol.md`; keep #130 and #132 open until resolver gates pass.
+- `sk-021`, `sk-023`, and `sk-024`: deploy the reviewed pin only after owner approval, then complete production acceptance and retirement.
 - `sd-037`: read issue #1981 state after 2026-09-13. No keep-alive comment.
 - `sls-080`: one free `scout.explainRepo` reading per improvements or drift round. The 2026-09-09
   reading matched source at its scanned ref and passed.
@@ -127,7 +131,7 @@ Complete since the previous handoff:
 
 ### Upstream-blocked
 
-- `sd-039`, `sd-042`, and `sd-047` await verified Docs ingestion. `ll-019` and `ll-029` wait on issue #35.
+- `ll-019` and `ll-029` wait on issue #35.
   `sd-044` waits on issue #2772. `sd-037` waits on issue #1981.
 - The three Docs fixes have substantive verification results for their owners.
   Other reported findings remain silent without new evidence that changes the action. They are not a filing queue.

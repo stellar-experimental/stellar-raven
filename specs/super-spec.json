@@ -158,7 +158,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-09-08T14:18:31Z"
+    "x-generatedAt": "2026-09-09T16:34:39Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4862,7 +4862,7 @@
             "source": "openzeppelin-stellar"
           },
           {
-            "description": "Agentic and machine-to-machine payments on Stellar. Covers x402 (HTTP 402 paid APIs via OZ Channels facilitator, fee-sponsored clients) and MPP (Machine Payments Protocol) in both Charge mode (per-request SAC) and Session mode (channel-backed off-chain commits, high-frequency; formerly called Channel mode). Defaults to USDC (SEP-41 SAC) on `stellar:testnet`/`stellar:pubnet` (CAIP-2). Use when selling a paid API to AI agents, building an x402 client, or designing a payment-channel architecture for high-frequency agent traffic.",
+            "description": "Agentic and machine-to-machine payments on Stellar. Covers x402 (HTTP 402 paid APIs through a facilitator, fee-sponsored clients; the guide configures OZ Channels) and MPP (Machine Payments Protocol) in both Charge mode (per-request SAC) and Session mode (channel-backed off-chain commits, high-frequency; formerly called Channel mode). Defaults to USDC (SEP-41 SAC) on `stellar:testnet`/`stellar:pubnet` (CAIP-2). Use when selling a paid API to AI agents, building an x402 client, or designing a payment-channel architecture for high-frequency agent traffic.",
             "id": "skills.stellar-dev.agentic-payments",
             "sections": [
               "Quick decision",
@@ -6404,7 +6404,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 253,
-    "generatedAt": "2026-09-08T14:18:31Z"
+    "generatedAt": "2026-09-09T16:34:39Z"
   },
   "x-services": {
     "lumenloop": {
@@ -6443,7 +6443,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-09-08T14:18:31Z"
+      "syncedAt": "2026-09-09T16:34:39Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",
