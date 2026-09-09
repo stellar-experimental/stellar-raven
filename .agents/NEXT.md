@@ -1,14 +1,15 @@
 # NEXT — current handoff
 
 Updated 2026-09-08. PR #129 landed the accepted Scout pin and completed its production deployment.
-The Docs follow-up resolved `sd-043` and left `sd-042` and `sd-047` on a crawler-refresh trigger.
+The Docs follow-up resolved `sd-043`. Content fixes for `sd-039`, `sd-042`, and `sd-047` await search ingestion.
 The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
 Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
-The round has no review gate. Read this first.
+The 2026-09-03 closeout completed its review. The active maintenance execution still requires independent review.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
-Open work is trigger-only or owner-blocked. It is not deployment work. Every paid, filing, and
-golden action stays owner-blocked. Repository and Herdr cleanup are complete.
+The 2026-09-08 maintenance execution is active. The owner authorized fresh filing checks and search repair.
+Paid and unresolved golden decisions remain owner-blocked. Current work does not include deployment.
+Use `rounds/2026-09-08-maintenance-execution.md` for current branches, agents, checks, and issue actions.
 
 ## State at handoff
 
@@ -72,24 +73,25 @@ golden action stays owner-blocked. Repository and Herdr cleanup are complete.
   `1.9.30` on 2026-09-04.
 - Both protocol-history v2 contracts are `source-expired` on the accepted manifest. The free
   diagnostic returns no counts until a new independently authored contract pins a new epoch.
-- `improvements/` contains 71 active findings: 55 `reported-upstream`, 13 `verified`, and 3
-  `declined-upstream`. The thirteen verified findings are not filed.
+- `improvements/` contains 71 active findings: 56 `reported-upstream`, 11 `verified`, 1 `fixed-upstream`, and 3
+  `declined-upstream`. Eleven verified findings await filing. One invalid finding awaits its terminal receipt.
 - Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
-  Raven handoff #131 is closed. Findings `sd-042` and `sd-047` wait for the daily Docs search crawler.
-- The compiled corpus has 500 active cases. Content SHA-256 `8dcf4adf…c9f4`.
-  Corpus lint passed with 0 errors and 62 warnings after the `sd-043` resolver.
+  Raven handoff #131 is closed. Findings `sd-039`, `sd-042`, and `sd-047` await a verified post-deployment crawl.
+  The observed noon run conflicts with the stored midnight schedule. The cause remains unknown.
+- The compiled corpus has 500 active cases. Content SHA-256 `4f8d38a6…3aca`.
+  Corpus lint passed with 0 errors and 62 warnings after the Saved Keypairs correction.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - The 2026-09-04 closeout had only the root worktree and local and remote `main`.
 - The 2026-09-04 Herdr closeout left only the root pane in workspace `w16`.
 
 ## Next actions by class
 
-### Deployment closeout complete
+### Historical deployment closeout — 2026-09-04
 
 - PR #125 merged. Final CI passed. Production verification passed.
 - PR #126 merged. It records the reviewed production closeout.
-- Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent.
-- Deployment and Herdr cleanup are complete.
+- That closeout deployed Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` at 100 percent.
+- That deployment and Herdr cleanup completed. PR #129 has a later deployment record.
 
 Complete since the previous handoff:
 
@@ -109,7 +111,11 @@ Complete since the previous handoff:
 
 ### Trigger-only and monitor-only
 
-- `sd-042` and `sd-047`: recheck their exact Raven search triggers after 2026-09-09T00:00Z.
+- Playground #40: use an authorized authenticated production session to copy an existing answer without a new paid chat request.
+  The 8000-character limit stays; persistent history is declined. Local tests pass, but production acceptance remains open.
+- `sd-039`, `sd-042`, and `sd-047`: recheck crawler and index timestamps after 2026-09-09T12:05Z.
+  Repeat their exact Raven searches and verify corrected positive records. This checkpoint is not a schedule guarantee.
+  Use `rounds/2026-09-08-docs-index-execution-astra.md`; keep #130 and #132 open until resolver gates pass.
 - `sd-037`: read issue #1981 state after 2026-09-13. No keep-alive comment.
 - `sls-080`: one free `scout.explainRepo` reading per improvements or drift round. The 2026-09-03
   reading passed.
@@ -121,15 +127,16 @@ Complete since the previous handoff:
 
 ### Upstream-blocked
 
-- `sd-042` and `sd-047` wait for the Docs crawler. `ll-019` and `ll-029` wait on issue #35.
+- `sd-039`, `sd-042`, and `sd-047` await verified Docs ingestion. `ll-019` and `ll-029` wait on issue #35.
   `sd-044` waits on issue #2772. `sd-037` waits on issue #1981.
-- The 56 reported findings stay silent. They are not a filing queue.
+- The three Docs fixes have substantive verification results for their owners.
+  Other reported findings remain silent without new evidence that changes the action. They are not a filing queue.
 
-### Filing-authority-blocked
+### Authorized filing checks in progress
 
-- Thirteen verified findings: `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
+- Eleven verified findings: `ll-030`, `sd-046`, `sd-051`, `sd-052`, `sk-021`,
   `sk-022`, `sk-023`, `sk-024`, `sls-082`, `sls-083`, and `sls-084`. Filing
-  needs explicit owner authority. See owner decision B.
+  has owner authority. Fresh verification, deduplication, review, and dry runs remain required. See decision B.
 
 ### Paid-authority-blocked
 
@@ -148,16 +155,14 @@ Complete since the previous handoff:
 
 - Golden truth blockers B1 to B11. See owner decision C.
 - Adjudication of the candidate row-review disagreements. See owner decision D.
-- The general Raven scoring repair. See owner decision F.
 - The Raven capability-boundary third-case confirmation. See owner decision G.
 - Selection of harness follow-ups from the candidate audit. See owner decision H.
 - Paired promotion design: denominator, candidate-only T4 rule, and margin. See owner decision J.
 
-### Repository and Herdr cleanup complete
+### Historical repository and Herdr cleanup — 2026-09-04
 
-- All related worktrees, local branches, remote branches, stashes, pull requests, panes, agents,
-  tabs, and task workspaces are reconciled. Unrelated Herdr workspaces were not changed.
-- Paid, filing, golden, and human-decision work stays in the blocks below.
+- The dated closeout reconciled its owned resources. Unrelated Herdr workspaces were not changed.
+- Current maintenance resources remain active and have separate ownership in the execution ledger.
 
 ## Owner decisions
 
@@ -192,15 +197,15 @@ Evidence needed before signing: a capacity artifact at most 24 hours old at laun
 needs one clean launch revision and the printed canonical plan SHA-256. The final Opus confirmation
 granted `LAUNCH-OK`. Maximum spend: `$273.50`. Safe default: no spend.
 
-### B. Authorize upstream filing for the thirteen verified findings
+### B. Upstream filing authorized — 2026-09-08
 
-Question: file all thirteen, a subset, or none. Evidence: each record, its independent review, and its
-dry-run body. Before filing, re-run the `sk-023` and `sk-024` dry runs at the merged revision.
-Owners: `stellar/stellar-docs` (`sd-046`, `sd-049`, `sd-050`, `sd-051`), `stellar/stellar-cli`
+The owner approved filing all findings whose fresh checks support filing. Evidence: each record,
+its independent review, and its dry-run body. Re-run all dry runs at the committed filing revision.
+Owners: `stellar/stellar-docs` (`sd-046`, `sd-051`), `stellar/stellar-cli`
 (`sd-052`), `stellar/stellar-dev-skill` (`sk-021`, `sk-023`, `sk-024`),
 `OpenZeppelin/openzeppelin-skills` (`sk-022`), `lumenloop/lumenloop-backend` (`ll-030`), and
 `Stellar-Light/stellarlight` (`sls-082`, `sls-083`, `sls-084`).
-Safe default: no filing.
+The execution ledger records the authority and each filing read-back. Skip fixed or duplicate findings.
 
 ### C. Golden truth and product judgment blockers
 
@@ -228,8 +233,6 @@ these items without a `golden-truth` edit and independent review.
   review, or keep the goldens strict and route the gap to a coverage diagnostic? Evidence: the docs
   state the simple framing. The goldens require entity, activity, custody, route, and jurisdiction.
 - B7 and B8: paid rejudges. See decision D.
-- B9 `q-ti-stellar-lab-usage-and-new-ui`. The `sd-049` caution stays until source, UI, and
-  documentation agree. This is upstream-blocked and filing-authority-blocked.
 - B10 `q-edge-metamask-evm-mental-model`. Question: move the case from `stable` to `scheduled` with
   a re-verify cadence? Evidence: the answer carries a dated third-party Snap claim.
 - B11 `q-defi-aquarius-what-is`. Question: should key fact 3 bind on the tested surface? Evidence:
@@ -260,12 +263,12 @@ The owner granted this authority. PR #125 merged as
 `8022e211-c731-49cc-aef1-a20f1da798b9` at `2026-09-04T12:29:24.371Z`. Production verification
 proved that the repaired raw-envelope path works. See `production-deployment-terra.md`.
 
-### F. Authorize the general Raven scoring repair
+### F. General Raven scoring repair authorized — 2026-09-08
 
-Question: open the general scoring design in `TODO.md` ("Preserve structured routing intent
-across extraction caps and gate tiers") after this round closes? Evidence: the 2026-09-03
-attribution of eight real regressions and the 2026-09-04 category-routing miss. The repair changes
-routing and its gates, so it needs an owner start and independent review.
+The owner authorized the general scoring repair in `TODO.md` ("Preserve structured routing intent
+across extraction caps and gate tiers"). Work is active in `fix/search-name-and-noun-ranking`.
+Independent review remains required. Existing gate thresholds and frozen holdout labels stay unchanged.
+Source acceptance and deployment remain separate from a local scoring repair.
 
 ### G. Confirm the Raven capability-boundary third case
 
@@ -327,8 +330,8 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 
 ## Completed repair work
 
-The truth-maintenance round 2026-09-03 has no review gate. Integration, deployment verification,
-and cleanup remain. The items below are complete.
+The truth-maintenance round 2026-09-03 completed its review, integration, deployment verification,
+and cleanup. The items below are historical completion records.
 
 - Repair work inside the open round: `.agents/rounds/2026-09-03-truth-maintenance.md`, section
   "Repairs after the stop (2026-09-04)", and its report directory. Key reports:
@@ -361,8 +364,7 @@ and cleanup remain. The items below are complete.
 
 ## Suggested sequence
 
-PR #125 merged, final CI passed, and production verification passed. Finish the exact task-owned
-Herdr, worktree, branch, and remote-reference cleanup. Bring open decisions A to D and F to J to
-the owner together. Decision E is complete. Keep each paid and filing action behind its
-authorization.
+Finish the active search repair, Docs index checks, and verified filing wave in the execution ledger.
+Reconcile independent review before integration. Record exact branch, issue, and deployment states separately.
+Decisions B and F have owner authority. Decisions A, C, D, G, H, I, and J retain their stated gates.
 No current item has authorization for evaluation ladder stages 3 or 4.

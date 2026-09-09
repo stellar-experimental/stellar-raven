@@ -5,6 +5,7 @@ status: verified
 discovered: 2026-09-04
 upstreamTitle: OpenZeppelin upgrade skill teaches retired derive APIs as current
 evidence:
+  - 2026-09-08 fresh main read reproduced the retired guidance; SHA-256 80f565dbf623c2c0ca400c0591023f91ede9f314d487dabd255a449a83579b71. A minimal `cargo check` against `stellar-contract-utils` 0.7.2 failed with unresolved `UpgradeableMigratable` and no `Upgradeable` derive macro. The current upgradeable page teaches direct trait implementation; rendered SHA-256 3e127e2a4f358c9b06b0ee3a4a45959a67cb65f1c1c628c36df2dea9f38d3129.
   - 2026-09-04 source read of https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/upgrade-stellar-contracts/SKILL.md; SHA-256 80f565dbf623c2c0ca400c0591023f91ede9f314d487dabd255a449a83579b71. Commit 6f215af is the current main head and the pin in ecosystem-skills/MANIFEST.json. The file recommends #[derive(Upgradeable)] and #[derive(UpgradeableMigratable)] and the UpgradeableInternal and UpgradeableMigratableInternal traits.
   - 2026-09-04 live read of https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable; SHA-256 55a9d1f04749cb3af95eca77d659b8ddcdd0bb276be63a8e4acefa639ebaaeb0. The page defines the Upgradeable trait and UpgradeableClient, says to implement the trait directly with #[contractimpl], and has a section titled "Why There Is No Migratable Trait".
   - 2026-09-04 source read of https://github.com/OpenZeppelin/stellar-contracts/commit/e7722e4923accfd754991a56b3226e0a834c27a1 (pull request 585, merged 2026-02-26) removed the derive macros and the internal traits. packages/macros/src/lib.rs at tag v0.6.0 (2026-01-09) still defines them; the same file at tag v0.7.0 (2026-04-03) does not.
@@ -59,3 +60,4 @@ State that atomic upgrade-and-migrate requires an auxiliary `Upgrader` contract.
 Update every location that repeats the derive claim, including the description item (2).
 Re-verify the SEP-49 version-metadata claim against the current crate, because the skill attributes it to the removed macros.
 `sk-015` already asks for a description change in its open issue; one description edit can serve both findings.
+That related work is https://github.com/OpenZeppelin/openzeppelin-skills/issues/14.

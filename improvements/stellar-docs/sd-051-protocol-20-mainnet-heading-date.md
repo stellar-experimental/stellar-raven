@@ -5,6 +5,7 @@ status: verified
 discovered: 2026-09-04
 upstreamTitle: Protocol 20 history heading conflates a software release with Mainnet activation
 evidence:
+  - 2026-09-08 fresh stellar/stellar-docs main read reproduced the heading at commit db501fe9; source SHA-256 012391ecd96a48be6a9b43fac27b60020a4625344d33e435cdaf2ed902e49a84. The current upgrade guide still states that Mainnet upgraded on February 20 at 1700 UTC; rendered SHA-256 9d7e329a1fafd371f262ce3052fae5553e3d8490e0312fdf7e3b856eacbd47c5.
   - 2026-09-04 live read of https://developers.stellar.org/docs/networks/software-versions shows Protocol 20 Phase 1 Mainnet Edition dated February 5, 2024
   - 2026-09-04 live read of the same page shows sibling headings Protocol 21 (Mainnet, June 18, 2024) and Protocol 22 (Mainnet, December 5, 2024), which use the Mainnet token for a network activation date
   - 2026-09-04 live read of the same page shows the February 5 entry lists Phase 0 Limits and Phase 0 Fees although its heading says Phase 1, while the separate February 27, 2024 entry lists Phase 1 Limits and Phase 1 Fees

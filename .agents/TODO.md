@@ -7,29 +7,50 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-04 after the truth-maintenance round stopped its paid pair and landed its repairs.
-The round ledger is `.agents/rounds/2026-09-03-truth-maintenance.md`. The ranked handoff is
+Updated 2026-09-08 during the authorized maintenance execution.
+The current ledger is `.agents/rounds/2026-09-08-maintenance-execution.md`. The ranked handoff is
 `NEXT.md`.
 
 ## Improvements follow-up
 
-### Re-check `sd-042` and `sd-047` after the Docs crawler refreshes
+### Finish authenticated production acceptance for playground #40
+
+The owner chose the existing 8000-character limit and declined persistent history for the demonstration.
+The copy action shipped previously. All 51 local playground tests passed on 2026-09-08.
+The unauthenticated production page requires sign-in, so authenticated copying remains unverified.
+Decision and boundary: https://github.com/stellar-experimental/stellar-raven/issues/40#issuecomment-5595065793.
+When an authorized authenticated session is available, verify copying an existing answer without a new paid chat request.
+Close #40 after that acceptance check. Use `rounds/2026-09-08-maintenance-execution.md` for the local evidence.
+
+Done when: the production copy check passes and #40 records its closure.
+
+### Verify the Docs crawler schedule and `sd-039`, `sd-042`, and `sd-047` ingestion
 
 PR https://github.com/stellar/stellar-docs/pull/2806 merged and deployed on 2026-09-08.
 The rendered pages and current source pass both original content checks.
 The production Raven Docs index still returned both pre-deploy snippets after the deployment.
 
-On the first improvements round after 2026-09-09T00:00Z, rerun these exact searches:
+PR https://github.com/stellar/stellar-docs/pull/2723 also deployed the `sd-039` content correction.
+The 2026-09-09T02:48Z checks still returned all three stale search triggers.
+The last completed crawl ended at 2026-09-08T12:03:10.118Z, before both deployments.
+The stored midnight schedule conflicts with the observed noon start. The cause remains unknown.
+
+At the next round after 2026-09-09T12:05Z, re-read crawler timestamps, blocking state, and index timestamps.
+This checkpoint follows the observed noon start; it does not assert the next scheduled run.
+Then rerun these exact searches and verify corrected positive records:
 
 - `stellarDocs.search_docs({query:"deprecated Horizon API stellar-sdk networking layer",hitsPerPage:10,includeContent:true})`
 - `stellarDocs.search_docs({query:"3-5 seconds",hitsPerPage:10,includeContent:true})`
+- `stellarDocs.search_sdk_cli_tools_docs({query:"managed Channels",hitsPerPage:15,includeContent:true})`
 
-Use `.agents/rounds/2026-09-08-improvements-docs-fixes.md` and its verification reports.
-If both stale snippets disappear, run the normal `fixed-upstream` and resolver gates.
+Use `.agents/rounds/2026-09-08-docs-index-execution-astra.md` for safe read projections and current evidence.
+If stale text survives a completed new crawl, inspect affected URL cache, fetch, and extraction evidence.
+If no new crawl starts, request scheduler evidence from the owner. Operator writes need separate authority.
+If all stale snippets disappear, run the normal `fixed-upstream` and resolver gates.
 Resolve Raven handoff issues #130 and #132 only after the active findings reach terminal receipts.
 Raven handoff #131 closed after `sd-043` reached its terminal receipt.
 
-Done when: both exact search triggers stop reproducing, or the queue records a crawler failure.
+Done when: all three findings complete resolver gates, or a verified crawler defect has its own actionable record.
 
 ### Re-check `sd-027` and `sd-034` after PR #2367 receives a maintainer decision
 
@@ -59,11 +80,12 @@ Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` f
 
 Done when: the next state read is recorded without an upstream reminder comment.
 
-### File the thirteen verified findings only after explicit owner authority
+### File the eleven verified findings after fresh checks and review
 
-Trigger only when the owner records filing authority in a round ledger.
-The verified findings are `ll-030`, `sd-046`, `sd-049`, `sd-050`, `sd-051`, `sd-052`, `sk-021`,
-`sk-022`, `sk-023`, `sk-024`, `sls-082`, `sls-083`, and `sls-084`. The first ten passed
+The owner granted filing authority in `.agents/rounds/2026-09-08-maintenance-execution.md`.
+Fresh triggers, deduplication, independent review, and dry-run bodies remain required.
+The verified findings are `ll-030`, `sd-046`, `sd-051`, `sd-052`, `sk-021`,
+`sk-022`, `sk-023`, `sk-024`, `sls-082`, `sls-083`, and `sls-084`. Earlier candidates passed
 `npm run improvements:file -- --dry-run` on 2026-09-04 with a resolved owner.
 The `sls-082` dry run passed on 2026-09-08 with its immutable source snapshot.
 The new `sls-083` dry run resolved its owner and body, but needs a rerun after its first commit.
@@ -375,7 +397,9 @@ vector, one probe hash, and different exact server revisions across arms. Commit
 enforced the v2 launch contract. The plan schema is `qa-paired-collection-plan-v2`. The launch
 requires an external authorized canonical plan SHA-256. The plan freezes every paid command array
 and the flip Claude pins. It binds a fixed capacity contract with 24-hour freshness. It requires
-exactly 200 selected and 500 active corpus IDs. No independent review of `1847ffd` is recorded.
+exactly 200 selected and 500 active corpus IDs. The final Opus confirmation grants `LAUNCH-OK`
+after the repairs at `352e517`. See
+`.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-review-opus.md`.
 The full contract is in `eval/qa/README.md` and `eval/EVALS.md` item 12.
 
 The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact is recorded in
@@ -383,8 +407,8 @@ The free two-agent capacity check is complete. The authoritative v2 `PASS` artif
 `2026-09-05T10:25:17.815Z`. A launch after that time needs a fresh artifact.
 
 Permitted now: free validator work on a pre-registered selected denominator above 100. Also
-permitted: a fresh free capacity artifact when the current one expires, and independent review of
-design revision 3. Review denominator and candidate-only rules before the first new look. Never
+permitted: a fresh free capacity artifact for the chosen launch window. Revision 3 has its
+independent confirmation. Review denominator and candidate-only rules before the first new look. Never
 change either rule after reading a paid look.
 
 The spend trigger is a signed authorization for the revised method in
@@ -412,7 +436,8 @@ concurrent-load acceptance, and one clean launch revision. The signed record liv
 plan. It names the canonical plan SHA-256 from `npm run eval:qa:paired:plan-sha256`. The owner
 signature covers that hash and every command array in the plan. The owner's general approval of
 paid work for the round is not this authorization. Revision 1 and revision 2 received
-`CHANGES-REQUIRED`. Revision 3 is unreviewed on 2026-09-04.
+`CHANGES-REQUIRED`. The appended final Opus confirmation grants `LAUNCH-OK` for revision 3
+after repair. This verdict does not grant paid authority.
 
 The method is one supervised 200-ID answer-only pair, stored judging one arm after the other, one
 paired comparison, and two frozen flip rejudge commands with `--allow-empty` and Claude identity

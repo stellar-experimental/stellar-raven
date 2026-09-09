@@ -5,6 +5,7 @@ status: verified
 discovered: 2026-08-28
 upstreamTitle: Lumenloop project records count sub-products without naming them
 evidence:
+  - 2026-09-08 fresh authenticated free calls reproduced the gap. `get_project({slug:"wisdomtree"})` returned the count with no CRDT or CRDYX, SHA-256 e2e0f203d8cfbcb4dd27827561c063d7cee62fcba59b9e066a8d40c6324fbe61. `search_directory({query:"CRDT",limit:10})` returned ten semantic matches without CRDT, SHA-256 7e0e151b23a8f790477ea5a0767db34242e01f7f87688319fdf18f727d3e594e. The original semantic query returned no CRDT or CRDYX string, SHA-256 a4220bac8134d21614d1b7af12994f3e1948ff32245eddde43ac5200f1963ac8.
   - eval/qa/results/2026-08-28T19-27-08-variantA.json row q-defi-wisdomtree-crdt
   - live re-execution 2026-08-28 lumenloop.get_project({slug:"wisdomtree"}) returns a 624-character WisdomTree Prime record stating "13 digital funds and a Gold token" with no CRDT or CRDYX substring
   - live re-execution 2026-08-28 lumenloop.search_directory({query:"CRDT"}) degrades to match_mode semantic and returns DTCC, Stellar Router SDK, Decentrio, OrbitCDP, and DeFarm
@@ -19,12 +20,12 @@ recurrences:
 
 `lumenloop.get_project` returns a record for `wisdomtree` that counts the
 issuer's tokenized funds without naming any of them. The record states "13
-digital funds and a Gold token" and names no fund. No content row in the
-semantic index names an individual fund ticker either.
+digital funds and a Gold token" and names no fund. No returned match from the
+tested semantic query names an individual fund ticker either.
 
-A consumer asking about one named fund on Stellar cannot reach it from the
-Lumenloop surface. The directory holds the issuer and states the fund count,
-but the named products stay unreachable.
+The tested project, directory, and semantic calls did not return the named fund.
+The directory holds the issuer and states the fund count, but these returned
+matches do not name the products.
 
 This is not a recurrence of `ll-012`. `ll-012` covers weak recall in broad RWA
 discovery and its live/planned state mixing; its 2026-08-14 recurrence already

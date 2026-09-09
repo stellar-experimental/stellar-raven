@@ -29,7 +29,7 @@ Total findings: 71
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
 | sls-082 | The GET /api/rwa request and response schemas omit one accepted state value. The parameter description lists issued-single-holder. The…     | verified          | 2026-09-08 | 0           |
 | sls-083 | Scout's RWA registry and the Etherfuse project row expose five Etherfuse assets. The current issuer stellar.toml declares nine assets for…  | verified          | 2026-09-08 | 0           |
-| sls-084 | The project response returns a statusBasis value that the OpenAPI enum omits. Nine current rows return package-release. The…                | verified          | 2026-09-08 | 0           |
+| sls-084 | The project response returns a statusBasis value that the OpenAPI enum omits. The original 2026-09-08 population scan found nine rows with… | verified          | 2026-09-08 | 0           |
 
 ## stellar-docs
 
@@ -46,17 +46,17 @@ Total findings: 71
 | sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 5           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 3           |
-| sd-039 | The current Tools documentation presents "OpenZeppelin Relayer" and the managed Stellar Channels service as the same product. Both…         | reported-upstream | 2026-07-27 | 4           |
+| sd-039 | The serving search index retains the old alias on both Tools pages as of 2026-09-09. The live pages contain the correction from PR #2723.…  | reported-upstream | 2026-07-27 | 5           |
 | sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()                              | reported-upstream | 2026-08-11 | 0           |
 | sd-041 | The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos      | reported-upstream | 2026-08-14 | 0           |
-| sd-042 | Stellar Docs publish two incompatible lifecycle labels for Horizon                                                                          | reported-upstream | 2026-08-14 | 1           |
+| sd-042 | The serving search index retains the EVM guide's old Horizon lifecycle label as of 2026-09-09. The live guide contains the correction from… | reported-upstream | 2026-08-14 | 2           |
 | sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | reported-upstream | 2026-08-14 | 2           |
 | sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | reported-upstream | 2026-08-14 | 1           |
 | sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | verified          | 2026-08-30 | 1           |
-| sd-047 | Two canonical developer-docs pages state different ledger cadences with the same sentence frame. The Validators introduction…               | reported-upstream | 2026-08-31 | 2           |
+| sd-047 | The serving search index retains the old Validators cadence as of 2026-09-09. Both live pages contain matching 5-7 wording from PR #2806.…  | reported-upstream | 2026-08-31 | 3           |
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
-| sd-049 | The Saved Keypairs page says saved keys are obfuscated but not encrypted. The current storage helper serializes each SavedKeypair directly… | verified          | 2026-09-03 | 0           |
-| sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | verified          | 2026-09-04 | 0           |
+| sd-049 | The claimed conflict does not reproduce on the Laboratory default branch. The current writer passes each saved keypair array through…       | fixed-upstream    | 2026-09-03 | 0           |
+| sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 0           |
 | sd-051 | The software-versions page labels a February 5 entry as Mainnet Edition. Sibling headings on the same page use the Mainnet token for a…     | verified          | 2026-09-04 | 0           |
 | sd-052 | The generated CLI manual lists five placeholder languages as binding generators. Each command exits before generating bindings in Stellar…  | verified          | 2026-09-04 | 0           |
 
@@ -67,7 +67,7 @@ Total findings: 71
 | ll-001 | Weekly-roundup canonical slugs mismatch their content dates. The research doc for "week of May 29, 2026" lives at slug…                     | reported-upstream | 2026-07-03 | 1           |
 | ll-002 | The Messari "State of Stellar Q1 2026" AV/research item carries only ~702 chars of extracted content. A load-bearing source is…             | reported-upstream | 2026-07-03 | 1           |
 | ll-003 | Region vocabulary is free-text rather than a controlled list. The live-lane eval case q-live-ll-regions-vocab currently passes on…          | reported-upstream | 2026-07-03 | 3           |
-| ll-004 | The 2026-07-14 partner-listing regression stopped reproducing later that day and remained absent on 2026-07-27: authenticated /v1/tools…    | reported-upstream | 2026-07-03 | 2           |
+| ll-004 | The authenticated tool listing intermittently omitted partner-visible names while /v1/me still reported those tools as available. The…      | reported-upstream | 2026-07-03 | 2           |
 | ll-005 | find_content_by_entity advertises entity_type: "person" in its input schema enum, but the external lane returns success: true with…         | reported-upstream | 2026-07-03 | 5           |
 | ll-006 | search_content_semantic over articles has no freshness weighting, so "recent report"-shaped queries surface years-stale editions of…        | reported-upstream | 2026-07-03 | 1           |
 | ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 3           |
@@ -98,4 +98,4 @@ Total findings: 71
 
 | id      | title                                                                                                                                    | status            | discovered | recurrences |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| wai-001 | workers-ai-provider 4.0.0 cannot delegate the Unified Billing catalog slug moonshotai/kimi-k3 when provider plugins are configured. The… | reported-upstream | 2026-08-06 | 1           |
+| wai-001 | workers-ai-provider 4.0.0 cannot delegate the Unified Billing catalog slug moonshotai/kimi-k3 when provider plugins are configured. The… | reported-upstream | 2026-08-06 | 2           |

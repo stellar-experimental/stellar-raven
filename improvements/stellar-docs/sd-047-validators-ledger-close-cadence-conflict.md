@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-08-31
 upstreamTitle: The Validators introduction says ledgers close every 3-5 seconds while the Stellar Stack page says every 5-7 seconds
 evidence:
+  - 2026-09-09 Raven-authored partial verification reply by kalepail: https://github.com/stellar-experimental/stellar-raven/issues/132#issuecomment-5595182816; live pages agree but the original search still returns the stale Validators record. The handoff and finding stay open. Read back after posting.
   - 2026-08-31 rendered fetch of https://developers.stellar.org/docs/validators returned "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 3-5 seconds."
   - 2026-08-31 raw fetch of https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/validators/README.mdx (blob 37f879807c150e794578e80d2e751597938f8423, repo HEAD 21557e044aa578d6e4a5f764c788a16a6fbafef7) carries the same 3-5 sentence
   - 2026-08-31 rendered fetch of https://developers.stellar.org/docs/learn/fundamentals/stellar-stack returned "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds."
@@ -19,6 +20,8 @@ evidence:
   - proposer and blind re-derivation reports in .agents/rounds/2026-08-31-golden-metadata-remainder/ (matrices-lane-b-events-d1.md, review-blind-ledger-close-grok.md)
   - upstream issue filed 2026-08-31: https://github.com/stellar/stellar-docs/issues/2805
 recurrences:
+  - date: 2026-09-09
+    evidence: Both live pages say 5-7 seconds at 02:46:11Z, but production Raven query 3-5 seconds still returns the stale Validators record at 02:48:09Z. The serving index updatedAt is 2026-09-08T12:03:01.745Z, before deployment. No completed post-deployment crawl proves ingestion. See .agents/rounds/2026-09-08-docs-index-execution-astra.md.
   - date: 2026-09-01
     evidence: issue #2805 remains open without comments; PR https://github.com/stellar/stellar-docs/pull/2806 is open; `gh api repos/stellar/stellar-docs/contents/<path> -H 'Accept: application/vnd.github.raw+json'` at repo HEAD 83c68f21c721905327f5db12fb84702e3a48367c found 3-5 seconds in docs/validators/README.mdx blob 37f879807c150e794578e80d2e751597938f8423 and 5-7 seconds in docs/learn/fundamentals/stellar-stack.mdx blob 06c92f8dbcd2f30e0f855bd18bf7abbc3c9e9713, so the conflict still reproduces
   - date: 2026-09-08
@@ -27,10 +30,15 @@ recurrences:
 
 ## Finding
 
-Two canonical developer-docs pages state different ledger cadences with the same sentence frame.
-The Validators introduction (`docs/validators/README.mdx`) says nodes update the ledger "every 3-5
-seconds". The Stellar Stack page (`docs/learn/fundamentals/stellar-stack.mdx`) says "every 5-7
-seconds". Both sentences are live on 2026-08-31, in rendered HTML, in raw MDX, and in the docs
+The serving search index retains the old Validators cadence as of 2026-09-09.
+Both live pages contain matching 5-7 wording from PR #2806. Full verification awaits search ingestion.
+
+## Original content finding — 2026-08-31
+
+Two canonical developer-docs pages stated different ledger cadences with the same sentence frame.
+The Validators introduction (`docs/validators/README.mdx`) said nodes update the ledger "every 3-5
+seconds". The Stellar Stack page (`docs/learn/fundamentals/stellar-stack.mdx`) said "every 5-7
+seconds". Both sentences were live on 2026-08-31, in rendered HTML, in raw MDX, and in the docs
 search index.
 
 The 3-5 range does not match the network. CAP-0070 sets the target close time to 5000 ms with a
@@ -39,9 +47,8 @@ The configured target cannot be set below 4000 ms. That range bounds the target,
 A fresh 199-delta Pubnet sample on 2026-08-31 had no delta below 5 seconds, a median of 6 seconds, and
 rare 8 to 9-second deltas.
 
-This is a `docs-content` defect. Both strings are indexed, so search is not the cause. A reader who
-opens the Validators introduction receives a cadence that neither the configured target nor the
-sampled closes support.
+The original defect was `docs-content`: search accurately indexed both conflicting source sentences.
+The current residual is stale search ingestion after the content correction.
 
 ## Evidence
 
@@ -55,6 +62,11 @@ listed in the frontmatter.
 No Stellar Docs issue or pull request mentions "3-5 seconds" on 2026-08-31.
 
 ## Recommendation
+
+The content correction is deployed. Verify a completed post-deployment crawl and corrected positive search records.
+Keep the finding open while the original search trigger reproduces.
+
+## Original content recommendation
 
 Change the sentence in `docs/validators/README.mdx` so it matches the Stellar Stack page. The
 smallest correction is "every 5-7 seconds". A better correction names the target and the observed
