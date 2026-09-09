@@ -125,6 +125,34 @@ The seven active probes all reproduced their recorded defects; none failed or re
 These were `ll-003`, `ll-007`, `sk-005`, `sk-007`, `sk-014`, `sk-015`, and `sk-022`.
 Root posted no routine recurrence comments.
 
+Terra's separate upstream retirement review passed for `sls-082`, `sls-083`, and `sls-084`.
+Its original-trigger and adjacent checks ran at `2026-09-09T18:40:59Z`–`18:42:29Z`.
+The report is `2026-09-09-scout-retirement-live-terra.md`.
+The current issuer TOML and registry have exactly the same nine code-and-issuer pairs.
+Horizon independently confirms zero balances for `CETESZ` despite its 16 authorized trustlines.
+All nine original `package-release` rows match the corrected schema.
+Circle explicitly marks its incomplete issuer coverage.
+No golden or active research pointer requires an edit for these three findings.
+
+Source snapshot: `1de777ed60471ec134a13c8c4d66e332c7709940`.
+Root confirmed each public source blob matched the current finding before posting resolution comments.
+All seven comments were read back byte-for-byte from author `kalepail`:
+
+| Finding | Upstream issue | Raven handoff |
+| --- | --- | --- |
+| `sls-082` | https://github.com/Stellar-Light/stellarlight/issues/1529#issuecomment-5606976012 | https://github.com/stellar-experimental/stellar-raven/issues/144#issuecomment-5606976257 |
+| `sls-083` | https://github.com/Stellar-Light/stellarlight/issues/1531#issuecomment-5606976609 | https://github.com/stellar-experimental/stellar-raven/issues/146#issuecomment-5606976918 |
+| `sls-084` | https://github.com/Stellar-Light/stellarlight/issues/1530#issuecomment-5606977241 | https://github.com/stellar-experimental/stellar-raven/issues/145#issuecomment-5606977548 |
+
+Shared resolving PR comment: https://github.com/Stellar-Light/stellarlight/pull/1532#issuecomment-5606977846.
+The resolver wrote three complete receipts and removed the active files and index rows.
+No intake overrides or probes existed for these three findings.
+The active queue now has 61 findings. Lint passed.
+Terra's final cleanup review passed in `2026-09-09-scout-retirement-cleanup-terra.md`.
+Merged-main receipt verification remains pending before closing handoffs #144, #145, and #146.
+Drift #141 stays open for Raven routing acceptance.
+The verified update is https://github.com/stellar-experimental/stellar-raven/issues/141#issuecomment-5606920659.
+
 ## Own-repo todos
 
 #124 requires a general repair that preserves authorized gates. #40 requires authenticated production copying.
@@ -136,6 +164,9 @@ Root authorized one source-identical selector experiment, with unchanged scoring
 Sol owns its narrow source/test files and `2026-09-09-search-124-implementation-sol.md`.
 An independent review and all existing gates must pass before any release.
 This is not authority to accept the rejected Scout surface.
+Grok's design review accepted the general selector but rejected the example-length query threshold.
+The experiment must require independent description coverage instead, before its measurement freeze.
+The design report is `2026-09-09-search-124-design-grok.md`.
 
 For #40, root opened an owned production tab and requested an existing authenticated answer from the owner.
 The tab still showed the sign-in page on recheck. Root did not accept Terms or send a paid chat request.
