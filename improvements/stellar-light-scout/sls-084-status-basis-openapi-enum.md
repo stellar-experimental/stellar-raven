@@ -5,6 +5,7 @@ status: fixed-upstream
 discovered: 2026-09-08
 upstreamTitle: The project response returns package-release outside the documented statusBasis enum
 evidence:
+  - Maintainer theboycoder supplied the deployed correction and shared STATUS_BASES contract in https://github.com/stellar-experimental/stellar-raven/issues/145. Root read the handoff and independently repeated its schema and ACTA checks on 2026-09-09.
   - 2026-09-09T18:27:37Z root read OpenAPI 1.9.49; SHA-256 2a44488dbf4c9fc3d7114a38d8cee29596d0cc37f367d74b0b7e5fc323f1cc01. Project.statusBasis includes package-release and defines publication evidence without deployment proof. At 18:27:20Z the ACTA search returned that documented value. The original upstream trigger is fixed; Raven catalog acceptance remains separate under issue 141.
   - .agents/rounds/2026-09-09-upstream-sweep-terra.md independently repeats the schema and ACTA checks.
   - https://github.com/Stellar-Light/stellarlight/pull/1532

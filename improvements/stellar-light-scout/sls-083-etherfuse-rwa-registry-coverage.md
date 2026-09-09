@@ -5,6 +5,7 @@ status: fixed-upstream
 discovered: 2026-09-08
 upstreamTitle: The RWA registry omits four current Etherfuse assets and does not mark project coverage partial
 evidence:
+  - Maintainer theboycoder supplied the deployed correction and clarified trustlines versus supply in https://github.com/stellar-experimental/stellar-raven/issues/146. At 2026-09-09T18:38:49Z root independently confirmed CETESZ has 16 authorized trustlines and zero balances. Trustlines alone do not prove issuance. The Circle control reports complete=false and issuersUnreconciled=1, so partial coverage remains explicit.
   - 2026-09-09T18:27:20Z root live RWA recheck returned nine Etherfuse assets, including MEX, CETESZ, GILTS, and MEXe. The project reports productsCoverage declared=9, tracked=9, served=8, complete=true. CETESZ is deployed-no-supply and stays outside the served products. The issuer TOML still declares those same nine assets; SHA-256 f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe. The original upstream trigger is fixed; Raven catalog acceptance remains separate.
   - .agents/rounds/2026-09-09-upstream-sweep-terra.md independently repeats the registry and project coverage checks.
   - https://github.com/Stellar-Light/stellarlight/pull/1532
@@ -45,7 +46,8 @@ The live checks used one exact issuer:
 
 The operator file declares `USTRY`, `CETES`, `TESOURO`, `MEX`, `CETESZ`, `EUROB`, `KTB`, `GILTS`, and `MEXe`.
 The Scout surfaces return `USTRY`, `CETES`, `TESOURO`, `EUROB`, and `KTB`.
-Horizon independently confirms issuance and authorized trustlines for the four omitted assets.
+Horizon independently confirms authorized trustlines for the four omitted assets.
+Trustlines do not prove issuance: the current `CETESZ` balances are zero.
 It also returns undeclared `USTR` and `GBPx`, so the TOML-declared set is the correct comparison set.
 
 The RWA registry correctly says that absence means untracked.

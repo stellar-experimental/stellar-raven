@@ -5,6 +5,7 @@ status: fixed-upstream
 discovered: 2026-09-08
 upstreamTitle: The RWA state request and response enums omit issued-single-holder
 evidence:
+  - Maintainer theboycoder supplied the deployed correction and shared-state-list contract in https://github.com/stellar-experimental/stellar-raven/issues/144. Root read the handoff and independently repeated its request and schema checks on 2026-09-09.
   - 2026-09-09T18:27:37Z root read OpenAPI 1.9.49; SHA-256 2a44488dbf4c9fc3d7114a38d8cee29596d0cc37f367d74b0b7e5fc323f1cc01. Both state enums now contain issued-single-holder. At 18:27:19Z the matching request returned 200, one matching row, and 34 matches; state=bogus returned 400. The original upstream trigger is fixed. Raven catalog acceptance remains separate under issue 141.
   - .agents/rounds/2026-09-09-upstream-sweep-terra.md independently repeats the live enums and request checks.
   - https://github.com/Stellar-Light/stellarlight/pull/1532
