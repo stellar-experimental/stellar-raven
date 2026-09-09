@@ -1,10 +1,12 @@
 ---
 id: sk-024
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-04
 upstreamTitle: The x402 guide presents OpenZeppelin Channels and its API key as the only facilitator path
 evidence:
+  - 2026-09-09 after deployment 0dad1151-56f5-4e7d-ae75-b4b81f3601f9 the root re-read Raven production. The router and x402.md pin 0472452a05731de5e0a1e886d8aae6df24873fe2. They describe multiple facilitator options and scope OZ_API_KEY to OpenZeppelin Channels. The original trigger no longer reproduces.
+  - .agents/rounds/2026-09-09-outstanding-closeout.md records production acceptance and the independent retirement review.
   - 2026-09-09 independent live verification confirms the correction from https://github.com/stellar/stellar-dev-skill/pull/128. Live x402.md SHA-256 is 6b7e58d8c49139edbadea37387b24c67bc0a59c58ffeef34b4d3100a66819304. The public facilitator advertises stellar:testnet with sponsored fees and no stellar:pubnet entry. Raven production still serves 03b2f8e8; retain pending reviewed source deployment.
   - .agents/rounds/2026-09-09-upstream-handoffs-grok.md records the fresh trigger, source comparison, and reference review.
   - 2026-09-08 fresh main reads at stellar/stellar-dev-skill 03b2f8e8 reproduced the universal OZ framing. `SKILL.md` SHA-256 is 2af48a37773b2d1eaa42270b13dae6c49ebbf49050c58457e47fe2e2372af570. `x402.md` SHA-256 is c3c92eaa7b4266ee08c74f92ff7447e135a25c34200dcde6bc6085e0ba2bd5bc. Current Stellar Docs still list Coinbase and OpenZeppelin options; rendered SHA-256 3631a62eeedb6bc92b2f3519847c336a9c6237f1aa03b579a39d71b41b6d17f7.
@@ -47,7 +49,7 @@ Three candidate answers reproduced that framing.
 ## Evidence
 
 The deployed upstream guide now separates facilitator options and scopes the API key to OpenZeppelin Channels.
-Raven source deployment remains incomplete. The prior accepted pin still carries the defect.
+Raven production now serves the corrected source at pin `0472452a05731de5e0a1e886d8aae6df24873fe2`.
 
 The prior guide names OpenZeppelin Channels in its first sentence and in every configuration step.
 It mentions "a self-hosted relayer" once, inside a trade-off parenthetical, with no configuration.
@@ -61,7 +63,7 @@ The resolved `sd-039` receipt in `improvements/resolved.json` covers the Relayer
 
 ## Recommendation
 
-The upstream correction is complete. Verify Raven's reviewed source deployment before retirement.
+The root verified the corrected production source. Complete independent retirement review and reference cleanup.
 The following request describes the original correction.
 
 Keep the OpenZeppelin Channels example, and label it as one facilitator option.

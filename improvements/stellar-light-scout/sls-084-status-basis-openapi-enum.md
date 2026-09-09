@@ -1,10 +1,13 @@
 ---
 id: sls-084
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-08
 upstreamTitle: The project response returns package-release outside the documented statusBasis enum
 evidence:
+  - 2026-09-09T18:27:37Z root read OpenAPI 1.9.49; SHA-256 2a44488dbf4c9fc3d7114a38d8cee29596d0cc37f367d74b0b7e5fc323f1cc01. Project.statusBasis includes package-release and defines publication evidence without deployment proof. At 18:27:20Z the ACTA search returned that documented value. The original upstream trigger is fixed; Raven catalog acceptance remains separate under issue 141.
+  - .agents/rounds/2026-09-09-upstream-sweep-terra.md independently repeats the schema and ACTA checks.
+  - https://github.com/Stellar-Light/stellarlight/pull/1532
   - 2026-09-08 fresh OpenAPI 1.9.48 read still contains zero `package-release` strings; SHA-256 2f042393eec673f80b661b65c5e6e11c4af10b7f2496b6d530e3bb7aa70f9639. `GET /api/projects/search?q=ACTA&limit=10` returned ACTA with `statusBasis: package-release`; response SHA-256 aaa020196f71250c4034572c30427915c0506dd3bbeb9bf75453b296dfac4f34.
   - 2026-09-08 live OpenAPI 1.9.48 read from https://stellarlight.xyz/api/openapi.json; SHA-256 2f042393eec673f80b661b65c5e6e11c4af10b7f2496b6d530e3bb7aa70f9639. The document contains zero package-release strings.
   - The original 2026-09-08 complete seven-category scan paged all 981 searchable project rows. Nine rows returned statusBasis package-release: ACTA, AXIS, Blockaid, Cypher, DeFarm, Drips, Fundable, Smart Treasury, and Unstoppable Wallet. The normalized scan summary has SHA-256 ec1c00760efb7b268bea71ca18909eeea860d007226f5bbd372927d678569c20.
@@ -25,6 +28,13 @@ A generated client can reject these valid live responses.
 A strict validator can also treat the nine rows as malformed.
 
 ## Evidence
+
+The original trigger no longer reproduces on OpenAPI 1.9.49.
+The `Project.statusBasis` enum now includes and describes `package-release`.
+The ACTA response agrees with that schema.
+Raven's full catalog update remains unaccepted because its routing review is separate.
+
+The following observations describe the previous defect.
 
 On 2026-09-08, the original scan covered 981 searchable rows and 981 unique IDs.
 The scan paged each category with the documented `limit=100` cap.

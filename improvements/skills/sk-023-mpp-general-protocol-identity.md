@@ -1,10 +1,12 @@
 ---
 id: sk-023
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-04
 upstreamTitle: The agentic-payments MPP guide omits MPP's payment-method-agnostic scope
 evidence:
+  - 2026-09-09 after deployment 0dad1151-56f5-4e7d-ae75-b4b81f3601f9 the root re-read Raven production. Its mpp.md pins 0472452a05731de5e0a1e886d8aae6df24873fe2 and states payment-method-agnostic HTTP 402 protocol scope. It distinguishes mppx from the Stellar payment method. The original trigger no longer reproduces.
+  - .agents/rounds/2026-09-09-outstanding-closeout.md records production acceptance and the independent retirement review.
   - 2026-09-09 independent live verification confirms the correction from https://github.com/stellar/stellar-dev-skill/pull/129. Live mpp.md SHA-256 is 2c5daaee9d723727f227160ce706aad1363715c11beed65081596af86ab345c1. Raven production still serves 03b2f8e8; retain pending reviewed source deployment.
   - .agents/rounds/2026-09-09-upstream-handoffs-grok.md records the fresh trigger, source comparison, and reference review.
   - 2026-09-08 fresh main read at stellar/stellar-dev-skill 03b2f8e8 reproduced the Stellar-native-only framing; SHA-256 1ce5499a55d5144b0a58399afc3a790b7c7adca7030ad234b39fb8ed9d334b60. The current MPP protocol still says it works with any payment network and has a Payment method agnostic section; SHA-256 a2abfffc6ed63c99c29a9dfc1797a284c954b2f975e0fe2171f513b07435575d.
@@ -45,7 +47,7 @@ Two candidate answers reached that conclusion from this guide.
 ## Evidence
 
 The deployed upstream guide now states the general protocol scope and identifies its Stellar payment method.
-Raven source deployment remains incomplete. The prior accepted pin still carries the defect.
+Raven production now serves the corrected source at pin `0472452a05731de5e0a1e886d8aae6df24873fe2`.
 The probe now tests the missing scope sentence, not the retained Stellar-specific use-case bullet.
 
 The prior guide opens with Stellar settlement and gives only SAC and Stellar channel instructions.
@@ -60,7 +62,7 @@ No finding covers protocol identity in the skill.
 
 ## Recommendation
 
-The upstream correction is complete. Verify Raven's reviewed source deployment before retirement.
+The root verified the corrected production source. Complete independent retirement review and reference cleanup.
 The following request describes the original correction.
 
 Add one scope sentence at the top of `mpp.md`.

@@ -1,10 +1,12 @@
 ---
 id: sk-021
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-03
 upstreamTitle: The Smart Contracts skill example says Mainnet runs Protocol 26
 evidence:
+  - 2026-09-09 after deployment 0dad1151-56f5-4e7d-ae75-b4b81f3601f9 the root re-read Raven production. The Smart Contracts skill pins 0472452a05731de5e0a1e886d8aae6df24873fe2 and states stable SDK 27 with Mainnet protocol 27. The original trigger no longer reproduces.
+  - .agents/rounds/2026-09-09-outstanding-closeout.md records production acceptance and the independent retirement review.
   - 2026-09-09 at 16:46Z the root read the production skill through Raven. Its URL still pins 03b2f8e8 and its content retains Mainnet is on protocol 26. The separately reviewed source candidate requires deployment before retirement.
   - .agents/rounds/2026-09-09-upstream-handoffs-grok.md repeats the live source, Horizon protocol, SDK registry, and reference checks.
   - 2026-09-09 canonical correction deployed in https://github.com/stellar/stellar-dev-skill/pull/127 at 711d6e293b0ba6ae110db0ae307a4d7805a00b8a; live skills.stellar.org bytes match SHA-256 205faa248dd6c828da4679cee9bfdbf0d71d99269a9a469bafd526756b2a273e. Accepted Raven pin 03b2f8e8 still reproduces the original trigger; retain pending source acceptance.
@@ -20,7 +22,7 @@ evidence:
 
 ## Finding
 
-The accepted Raven Smart Contracts skill example uses a Protocol 27 release candidate.
+The previously accepted Raven Smart Contracts skill example used a Protocol 27 release candidate.
 Its next comment says Mainnet runs Protocol 26.
 Mainnet reports protocol version 27.
 
@@ -28,9 +30,10 @@ The stale comment can cause an agent to select an obsolete protocol version.
 
 ## Evidence
 
-The accepted Raven pin `03b2f8e8` contains the conflicting example and comment.
+The former Raven pin `03b2f8e8` contains the conflicting example and comment.
 The deployed upstream skill now uses stable `27` and correctly identifies Mainnet protocol 27.
-The live bytes match upstream merge `711d6e29`. Raven source acceptance remains incomplete.
+The live bytes match upstream merge `711d6e29`.
+Raven production now serves the corrected source at pin `0472452a05731de5e0a1e886d8aae6df24873fe2`.
 The live Horizon root response independently reports Mainnet protocol 27.
 
 This check only read public source and a public network-status response.
@@ -38,4 +41,4 @@ This check only read public source and a public network-status response.
 ## Recommendation
 
 The upstream correction is complete. No further upstream edit is requested.
-Review and accept the corrected source separately, then verify the accepted-pin trigger before retirement.
+The root verified the corrected production source. Complete independent retirement review and reference cleanup.

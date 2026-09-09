@@ -1,10 +1,13 @@
 ---
 id: sls-083
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-08
 upstreamTitle: The RWA registry omits four current Etherfuse assets and does not mark project coverage partial
 evidence:
+  - 2026-09-09T18:27:20Z root live RWA recheck returned nine Etherfuse assets, including MEX, CETESZ, GILTS, and MEXe. The project reports productsCoverage declared=9, tracked=9, served=8, complete=true. CETESZ is deployed-no-supply and stays outside the served products. The issuer TOML still declares those same nine assets; SHA-256 f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe. The original upstream trigger is fixed; Raven catalog acceptance remains separate.
+  - .agents/rounds/2026-09-09-upstream-sweep-terra.md independently repeats the registry and project coverage checks.
+  - https://github.com/Stellar-Light/stellarlight/pull/1532
   - 2026-09-08 fresh checks reproduced five Scout assets and nine issuer-declared assets. Scout RWA SHA-256 is 3fb7e278ad5c7452ec15e061c2983e0384e3492fcf945874b70243acdf519def. Project search SHA-256 is 0c41ff0039823cf56f214fb657520fd848fa037935a3d6fcdc3a3ba51ed1c031. `stellar.toml` SHA-256 is f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe. Horizon SHA-256 is 0b7fabe1bcfb10fc5b33a9154ecaa5639b39955ee85dd99901e9d7c0f409ca1a and confirms authorized trustlines for all nine declared assets.
   - 2026-09-08T17:32:33.197Z live `GET /api/projects/search?q=etherfuse&limit=20` returned five Etherfuse products with no completeness qualifier; response SHA-256 85667958f041f49756dc586f568059d974ef265167a83f343796c2e95e26b4c9.
   - 2026-09-08 live `GET /api/rwa?project=etherfuse&limit=100` returned the same five assets: USTRY, CETES, TESOURO, EUROB, and KTB.
@@ -29,6 +32,12 @@ That finding established the product and deployment model across verified RWA is
 This finding concerns completeness within one issuer that the registry already tracks.
 
 ## Evidence
+
+The original trigger no longer reproduces on the live service.
+The registry contains all nine issuer-declared assets and the project declares its coverage explicitly.
+The difference between nine tracked assets and eight products is the zero-supply `CETESZ` asset.
+
+The following observations describe the previous defect.
 
 The live checks used one exact issuer:
 
