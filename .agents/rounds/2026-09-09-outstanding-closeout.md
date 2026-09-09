@@ -239,4 +239,60 @@ Grok's bounded final delta review passed the fingerprint-only update and documen
 Root reran `npm run typecheck`, `npm test`, `npm run build`, and the tree secrets scan successfully.
 The full unit run passed 2,014 tests in 109 files.
 The author's smoke run passed 85 tests in four files.
-Production acceptance and issue #124 closure remain pending.
+Production acceptance and issue #124 closure were pending at the implementation handoff.
+
+## Search production acceptance
+
+The owner authorized deployment with `continue` after the explicit deployment question.
+The deployed commit is `63a1c2c980ab794590e40cd998ec947322f5173c`, from PR #148.
+`npm run deploy` passed its clean-tree and fetched `origin/main` preflight.
+Wrangler used the repository-bound `sdf` profile.
+The deployment completed without a configuration, credential, inventory, or source-pin change.
+
+- Deployment ID: `a63bd383-c6a3-4bba-848e-198409828741`.
+- Created: `2026-09-09T19:34:54.866201Z`.
+- Worker Version: `89b1459f-8187-46a9-b8d1-c34373c1b086`.
+- Traffic: `100%`, verified with `wrangler deployments list --json`.
+
+Root captured six production `search` responses before and after deployment, always with `limit: 5`.
+Both original leaderboard queries now include `scout.getLeaderboard`:
+
+| Query | Prior target rank | Production target rank | Target score | Total candidates |
+| --- | --- | ---: | ---: | ---: |
+| `top projects by GitHub activity` | absent | 4 | 108 | 41 |
+| `top Stellar projects by GitHub activity` | absent | 5 | 129 | 33 |
+
+Both responses retain `truncated: true`.
+The shared hits and all non-hit response fields equal the pre-deployment responses.
+The following four complete control responses remain byte-equal after JSON serialization:
+
+- `freighter`, including its #109 directory advisory.
+- `scout.getLeaderboard`, including exact-ID resolution.
+- `jobs, bounties and freelance work for Stellar contributors`.
+- `how does the Blend lending pool calculate interest`.
+
+Root compared all six production responses with `searchCatalogPage` on the deployed commit.
+All shared page fields match: complete hits, totals, truncation, wider candidates, confidence, and recovery metadata.
+The comparison excludes only local `effectiveLimit` and the transport-owned `recovery` and `nextSteps` fields.
+The first comparator omitted these shape differences; the corrected comparator explicitly checks the shared fields.
+
+Root also called production `execute` with two `codemode.search({query, limit: 5})` calls.
+Both returned `ok: true` and matched the top-level search responses after removing their documented wrapper differences.
+That comparison excludes inner `ok` and outer `nextSteps` only.
+All production responses were captured before `2026-09-09T19:36:53Z`.
+These catalog-only calls made no upstream service request or paid model call.
+
+The RFP wording remains an accepted-source limitation; #141 tracks source adoption.
+The Blend example does not establish repository-specific intent.
+Root recorded both dispositions without claiming those unchanged routes were repaired.
+
+Root closed #124 as `completed` at `2026-09-09T19:38:02Z`.
+The closing comment is https://github.com/stellar-experimental/stellar-raven/issues/124#issuecomment-5607646240.
+Root read back the exact comment body, author `kalepail`, closed state, and completed reason.
+The active #124 TODO is removed; this dated record retains the evidence.
+
+The older broader candidate remains rejected in `/Users/kalepail/Desktop/sr-wt-search-name-ranking`.
+Its branch is `fix/search-name-and-noun-ranking`; its owner retains control.
+This deployment did not adopt, edit, release, or remove that candidate.
+The local rejected Scout 1.9.49 stash also remains preserved.
+#141 still requires catalog acceptance. #40 still requires authenticated production copying.

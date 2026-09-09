@@ -100,27 +100,6 @@ program. Select each later Scout ID from the maximum active and resolved ID; `sl
 
 ## Routing
 
-### Finish production acceptance for #124
-
-The separate accepted-source selector preserves both original leaderboard queries within the existing service quota.
-Independent review found no page or grade change across the 544 frozen routing rows.
-The routing gate passed after accepting only the generated catalog fingerprint.
-All totals, thresholds, labels, Scout 1.9.1 inventory, and skill pins stay unchanged.
-Reports: `rounds/2026-09-09-search-124-implementation-sol.md` and `rounds/2026-09-09-search-124-final-grok.md`.
-
-Request deployment approval before changing production.
-Then repeat both original leaderboard queries against the deployed catalog.
-Record the RFP source-vocabulary limitation and the Blend query's missing repository intent from `rounds/2026-09-09-search-124-sol.md`.
-Do not claim that those distinct cases share the leaderboard selection defect.
-
-The older broader candidate remains rejected in `/Users/kalepail/Desktop/sr-wt-search-name-ranking` on `fix/search-name-and-noun-ranking`.
-Its report is `.agents/rounds/2026-09-08-search-repair-execution-sol.md` in that worktree.
-Its result `routing-2026-09-09T03-23-21-923Z.json` exceeds the unchanged top-five band and retains 16 expected-operation losses.
-Do not adopt that worktree or release that candidate through this bounded fix.
-Historical update: https://github.com/stellar-experimental/stellar-raven/issues/124#issuecomment-5595611718.
-
-Done when: production repeats the accepted-source fix and #124 records the remaining cases' distinct dispositions.
-
 ### `search` does not surface the research lane for protocol-history questions
 
 Eval case `q-protocol-24-whisk-incident` asks why Protocol 24 followed Protocol 23 so quickly. The
