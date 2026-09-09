@@ -7,35 +7,27 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-09 after the authorized maintenance execution and advisory deployment.
-The current ledger is `.agents/rounds/2026-09-08-maintenance-execution.md`. The ranked handoff is
+Updated 2026-09-09 during issue #141 and upstream handoff verification.
+The current ledger is `.agents/rounds/2026-09-09-truth-maintenance.md`. The ranked handoff is
 `NEXT.md`.
 
 ## Improvements follow-up
 
-### Verify new `sk-024` handoff #138
+### Complete production acceptance for `sk-021`, `sk-023`, and `sk-024`
 
-Handoff https://github.com/stellar-experimental/stellar-raven/issues/138 arrived during the production closeout.
-Its author reports that upstream PR https://github.com/stellar/stellar-dev-skill/pull/128 deployed through run `34309419809`.
-The root read the notification, but did not independently verify its content, API claims, or deployment.
-Keep `sk-024` reported upstream. Do not treat the notification as fix evidence.
-Rerun the finding's original trigger against the live skill and Raven accepted pin.
-Check the provider-scoped key requirement and testnet-only facilitator support before accepting the wording.
-Use the normal independent retirement and source-acceptance gates. No payment or paid API call is required.
+The root and Grok independently verified upstream PRs `stellar/stellar-dev-skill#127`, `#129`, and `#128`.
+Their live body hashes match the isolated `0472452a05731de5e0a1e886d8aae6df24873fe2` pin.
+The isolated pin passes the tests and unchanged routing thresholds.
+The source and acceptance reports are in `rounds/2026-09-09-upstream-handoffs-grok.md` and `rounds/2026-09-09-skill-pin-acceptance-grok.md`.
+Production reads at 2026-09-09T16:46Z–16:47Z still returned `03b2f8e8` and all three original defects.
+Keep all three findings `reported-upstream` until an authorized deployment and independent production recheck pass.
+The owner has not authorized this round's deployment.
+After approval, deploy clean merged main and verify the four changed skill bodies through production `codemode.skill.read`.
+Then complete reference cleanup, upstream resolution comments, and the resolver gates.
+Handoffs #136, #140, and #138 remain open until those gates finish.
+Do not request further upstream corrections for these resolved source defects. No payment test is required.
 
-Done when: the live recheck receives a recorded classification and #138 receives the verified result.
-
-### Accept the corrected Smart Contracts source before retiring `sk-021`
-
-Upstream PR https://github.com/stellar/stellar-dev-skill/pull/127 deployed the correction on 2026-09-09.
-The live skill matches merge `711d6e293b0ba6ae110db0ae307a4d7805a00b8a` byte-for-byte.
-Raven still serves accepted pin `03b2f8e8c88a42b16551926a938ec8173763b45a`, which retains the original defect.
-The independent review keeps `sk-021` active pending the separate source-acceptance review.
-Use `rounds/2026-09-09-sk021-handoff-review-grok.md` for both hashes and the exact trigger.
-Handoff: https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5595645949.
-The upstream correction needs no further request. Do not post reminders or combine a pin refresh with scoring repair.
-
-Done when: an accepted pin passes the original trigger, resolver gates complete, and #136 records the terminal receipt.
+Done when: production checks pass, the resolver writes terminal receipts, and the three handoffs record verified closure.
 
 ### Finish authenticated production acceptance for playground #40
 
@@ -48,29 +40,28 @@ Close #40 after that acceptance check. Use `rounds/2026-09-08-maintenance-execut
 
 Done when: the production copy check passes and #40 records its closure.
 
-### Verify the Docs crawler schedule and `sd-039`, `sd-042`, and `sd-047` ingestion
+### Retire the ingested `sd-039`, `sd-042`, and `sd-047` fixes
 
 PR https://github.com/stellar/stellar-docs/pull/2806 merged and deployed on 2026-09-08.
 The rendered pages and current source pass both original content checks.
-The production Raven Docs index still returned both pre-deploy snippets after the deployment.
+The production Raven Docs index initially retained both pre-deploy snippets.
 
 PR https://github.com/stellar/stellar-docs/pull/2723 also deployed the `sd-039` content correction.
-The 2026-09-09T02:48Z checks still returned all three stale search triggers.
-The last completed crawl ended at 2026-09-08T12:03:10.118Z, before both deployments.
-The stored midnight schedule conflicts with the observed noon start. The cause remains unknown.
+The 2026-09-09 crawl ended at `12:03:55.702Z`, after both deployments.
+Both serving indexes updated at `12:03:49.402Z` and contain the corrected positive records.
+Sol independently verified all three original Raven triggers at `16:42:19.343Z`.
+All three triggers are fixed. The stored midnight schedule still conflicts with the observed noon start.
+The schedule cause remains unknown, but it does not block these verified ingestion results.
 
-At the next round after 2026-09-09T12:05Z, re-read crawler timestamps, blocking state, and index timestamps.
-This checkpoint follows the observed noon start; it does not assert the next scheduled run.
-Then rerun these exact searches and verify corrected positive records:
+The distinct retirement reviewer must repeat these searches and verify corrected positive records:
 
 - `stellarDocs.search_docs({query:"deprecated Horizon API stellar-sdk networking layer",hitsPerPage:10,includeContent:true})`
 - `stellarDocs.search_docs({query:"3-5 seconds",hitsPerPage:10,includeContent:true})`
 - `stellarDocs.search_sdk_cli_tools_docs({query:"managed Channels",hitsPerPage:15,includeContent:true})`
 
-Use `.agents/rounds/2026-09-08-docs-index-execution-astra.md` for safe read projections and current evidence.
-If stale text survives a completed new crawl, inspect affected URL cache, fetch, and extraction evidence.
-If no new crawl starts, request scheduler evidence from the owner. Operator writes need separate authority.
-If all stale snippets disappear, run the normal `fixed-upstream` and resolver gates.
+Use `.agents/rounds/2026-09-09-docs-ingestion-sol.md` for source, deployment, index, and positive-record evidence.
+Update the four affected golden cases through golden-truth, preserving unrelated disputes and historical evidence.
+Then run the normal `fixed-upstream`, independent review, upstream-comment, and resolver gates.
 Resolve Raven handoff issues #130 and #132 only after the active findings reach terminal receipts.
 Raven handoff #131 closed after `sd-043` reached its terminal receipt.
 

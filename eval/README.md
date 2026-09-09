@@ -1202,3 +1202,18 @@ audit result without scored sets. Each audit result stamps the actual manifest a
 
 The earlier 4/8 and 3/11 readings remain historical diagnostics. Later Scout source changes cannot
 turn those readings into product evidence. A new blind contract needs a new accepted source freeze.
+
+## Stellar-dev-only source acceptance (2026-09-09)
+
+The isolated `0472452a` skill pin corrects MPP scope, x402 facilitator scope, and the Mainnet SDK example.
+Scout stays at OpenAPI 1.9.1 with its accepted Stellar Light skill pin.
+The combined 1.9.48 candidate remains rejected because its RWA contract omits a live state.
+
+All accepted routing totals and thresholds remain unchanged.
+Legacy top-1/top-3/top-5 remain 213/279/312. Skills remain 16/23/23. Holdout remains 10/22/26.
+The catalog evidence fingerprint changes to `83d9998f984cae38c363524e0592c6d035e80ba09cc27003f7a65e11bb0350f9`.
+The passing root trace is `routing-2026-09-09T16-46-02-887Z.json`.
+The full 544-page comparison finds 19 changed pages, including seven ordered-identifier changes and six membership changes.
+No expected-service hit or forbidden-absence assertion regresses.
+The round ledger records the independent review and source-acceptance decision:
+`.agents/rounds/2026-09-09-truth-maintenance.md`.

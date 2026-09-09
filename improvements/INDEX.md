@@ -16,8 +16,8 @@ Total findings: 70
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 0           |
 | sk-021 | The accepted Raven Smart Contracts skill example uses a Protocol 27 release candidate. Its next comment says Mainnet runs Protocol 26.…     | reported-upstream | 2026-09-03 | 0           |
 | sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 0           |
-| sk-023 | The MPP guide mpp.md never states the scope of MPP. Its only scope statements are Stellar-specific. The router SKILL.md introduces x402…    | reported-upstream | 2026-09-04 | 0           |
-| sk-024 | The router SKILL.md and the guide x402.md present OpenZeppelin Channels as the only facilitator for x402 on Stellar. The root decision…     | reported-upstream | 2026-09-04 | 0           |
+| sk-023 | The previously accepted MPP guide mpp.md never states the scope of MPP. Its only scope statements are Stellar-specific. The router…         | reported-upstream | 2026-09-04 | 0           |
+| sk-024 | The previously accepted router and x402 guide present OpenZeppelin Channels as the only facilitator for x402 on Stellar. The root decision… | reported-upstream | 2026-09-04 | 0           |
 
 ## stellar-light-scout
 

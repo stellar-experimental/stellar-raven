@@ -5,6 +5,8 @@ status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: The x402 guide presents OpenZeppelin Channels and its API key as the only facilitator path
 evidence:
+  - 2026-09-09 independent live verification confirms the correction from https://github.com/stellar/stellar-dev-skill/pull/128. Live x402.md SHA-256 is 6b7e58d8c49139edbadea37387b24c67bc0a59c58ffeef34b4d3100a66819304. The public facilitator advertises stellar:testnet with sponsored fees and no stellar:pubnet entry. Raven production still serves 03b2f8e8; retain pending reviewed source deployment.
+  - .agents/rounds/2026-09-09-upstream-handoffs-grok.md records the fresh trigger, source comparison, and reference review.
   - 2026-09-08 fresh main reads at stellar/stellar-dev-skill 03b2f8e8 reproduced the universal OZ framing. `SKILL.md` SHA-256 is 2af48a37773b2d1eaa42270b13dae6c49ebbf49050c58457e47fe2e2372af570. `x402.md` SHA-256 is c3c92eaa7b4266ee08c74f92ff7447e135a25c34200dcde6bc6085e0ba2bd5bc. Current Stellar Docs still list Coinbase and OpenZeppelin options; rendered SHA-256 3631a62eeedb6bc92b2f3519847c336a9c6237f1aa03b579a39d71b41b6d17f7.
   - 2026-09-08 recurrence at accepted pin 03b2f8e8c88a42b16551926a938ec8173763b45a: `SKILL.md` still says "Needs facilitator? | Yes (OZ Channels)", while `x402.md` still makes `OZ_API_KEY` required. SHA-256 values are 2af48a37773b2d1eaa42270b13dae6c49ebbf49050c58457e47fe2e2372af570 and c3c92eaa7b4266ee08c74f92ff7447e135a25c34200dcde6bc6085e0ba2bd5bc.
   - 2026-09-04 source read of https://raw.githubusercontent.com/stellar/stellar-dev-skill/790f607b451372495c94c76ec15a520e5e9b8d66/skills/agentic-payments/SKILL.md; SHA-256 2af48a37773b2d1eaa42270b13dae6c49ebbf49050c58457e47fe2e2372af570. Its decision table says "Needs facilitator? | Yes (OZ Channels)". Its shared setup says "x402 additionally needs the web-only OZ Channels key generator".
@@ -27,7 +29,7 @@ probe:
 
 ## Finding
 
-The router `SKILL.md` and the guide `x402.md` present OpenZeppelin Channels as the only facilitator for x402 on Stellar.
+The previously accepted router and x402 guide present OpenZeppelin Channels as the only facilitator for x402 on Stellar.
 The root decision table says x402 needs OZ Channels.
 The shared setup says x402 needs the OZ Channels key generator.
 The seller example stops at startup without `OZ_API_KEY`.
@@ -44,7 +46,10 @@ Three candidate answers reproduced that framing.
 
 ## Evidence
 
-The current guide names OpenZeppelin Channels in its first sentence and in every configuration step.
+The deployed upstream guide now separates facilitator options and scopes the API key to OpenZeppelin Channels.
+Raven source deployment remains incomplete. The prior accepted pin still carries the defect.
+
+The prior guide names OpenZeppelin Channels in its first sentence and in every configuration step.
 It mentions "a self-hosted relayer" once, inside a trade-off parenthetical, with no configuration.
 The root table and the shared setup use universal wording.
 
@@ -55,6 +60,9 @@ The official Stellar page separates the Coinbase facilitator from the OpenZeppel
 `sd-039` covers the Relayer versus Channels product identity on Stellar Docs Tools pages. It does not cover this skill.
 
 ## Recommendation
+
+The upstream correction is complete. Verify Raven's reviewed source deployment before retirement.
+The following request describes the original correction.
 
 Keep the OpenZeppelin Channels example, and label it as one facilitator option.
 Change the root table cell to say that x402 needs a facilitator, and that the guide uses OZ Channels.

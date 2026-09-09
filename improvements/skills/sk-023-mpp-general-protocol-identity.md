@@ -5,6 +5,8 @@ status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: The agentic-payments MPP guide omits MPP's payment-method-agnostic scope
 evidence:
+  - 2026-09-09 independent live verification confirms the correction from https://github.com/stellar/stellar-dev-skill/pull/129. Live mpp.md SHA-256 is 2c5daaee9d723727f227160ce706aad1363715c11beed65081596af86ab345c1. Raven production still serves 03b2f8e8; retain pending reviewed source deployment.
+  - .agents/rounds/2026-09-09-upstream-handoffs-grok.md records the fresh trigger, source comparison, and reference review.
   - 2026-09-08 fresh main read at stellar/stellar-dev-skill 03b2f8e8 reproduced the Stellar-native-only framing; SHA-256 1ce5499a55d5144b0a58399afc3a790b7c7adca7030ad234b39fb8ed9d334b60. The current MPP protocol still says it works with any payment network and has a Payment method agnostic section; SHA-256 a2abfffc6ed63c99c29a9dfc1797a284c954b2f975e0fe2171f513b07435575d.
   - 2026-09-08 recurrence at accepted pin 03b2f8e8c88a42b16551926a938ec8173763b45a: `mpp.md` still says "building a Stellar-native payment stack" and adds no payment-method-agnostic scope sentence. SHA-256 1ce5499a55d5144b0a58399afc3a790b7c7adca7030ad234b39fb8ed9d334b60.
   - 2026-09-04 source read of https://raw.githubusercontent.com/stellar/stellar-dev-skill/790f607b451372495c94c76ec15a520e5e9b8d66/skills/agentic-payments/mpp.md; SHA-256 14214c9ae7e1e61a3f00c0df50a7d40fcd323997aa06399bf36613c2e39d279d.
@@ -20,13 +22,13 @@ probe:
   url: https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/agentic-payments/mpp.md
   expect:
     status: 200
-    contains:
-      - "building a Stellar-native payment stack"
+    excludes:
+      - "payment-method-agnostic HTTP 402 protocol"
 ---
 
 ## Finding
 
-The MPP guide `mpp.md` never states the scope of MPP.
+The previously accepted MPP guide `mpp.md` never states the scope of MPP.
 Its only scope statements are Stellar-specific.
 The router `SKILL.md` introduces x402 and MPP as "payments on Stellar".
 
@@ -42,7 +44,11 @@ Two candidate answers reached that conclusion from this guide.
 
 ## Evidence
 
-The current guide opens with Stellar settlement and gives only SAC and Stellar channel instructions.
+The deployed upstream guide now states the general protocol scope and identifies its Stellar payment method.
+Raven source deployment remains incomplete. The prior accepted pin still carries the defect.
+The probe now tests the missing scope sentence, not the retained Stellar-specific use-case bullet.
+
+The prior guide opens with Stellar settlement and gives only SAC and Stellar channel instructions.
 It links mpp.dev only for service discovery and registries.
 
 The MPP protocol pages describe an open protocol that works with any payment network.
@@ -53,6 +59,9 @@ The Stellar documentation distinguishes the MPP specification, the `mppx` framew
 No finding covers protocol identity in the skill.
 
 ## Recommendation
+
+The upstream correction is complete. Verify Raven's reviewed source deployment before retirement.
+The following request describes the original correction.
 
 Add one scope sentence at the top of `mpp.md`.
 State that MPP is a payment-method-agnostic HTTP 402 protocol, and that this guide documents its Stellar payment method.
