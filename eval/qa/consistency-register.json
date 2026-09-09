@@ -508,10 +508,10 @@
           "q-token-initial-supply-distribution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Final resolver follow-up (2026-09-08): q-pc-sponsored-reserves and q-protocol-base-reserve-min-balance changed only their truth.verified.rootCause provenance. Their deleted active sd-043 paths now point to immutable Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4. Re-read all 15 members. No answer, key fact, avoid item, note, numeric value, formula, cadence claim, fee rule, or monetary-history claim changed. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): the 15 member goldens retain the same fee, reserve, supply, monetary-history, and cadence facts. The fee-setting case changes only Horizon lifecycle sourcing. The cadence case changes only source/index provenance. Related-claim sweep found no contradiction; prior numeric evidence remains dated and unchanged.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -524,10 +524,10 @@
           "q-edge-noinfo-stellar-pos-staking-rewards": "5d62e5f09e0c19773e579e22d4e82867820a2423d464d03b2949ada7ad6eb3de",
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b",
+          "q-pc-practical-fee-setting": "b2b3add37716a621f8a813b058bdafa1455b6c3884b5ef41e1abb67263b84385",
           "q-pc-sponsored-reserves": "fa66b2cf2e0d1d7fb25837350c702a333fe2a02d8aa305d2394077b7a56f717a",
           "q-protocol-base-reserve-min-balance": "4d3f7de37f0fcdb4e7c236c36d822ef6cea308b2cf99c41fd9408f9c9970e7bb",
-          "q-protocol-ledger-close-time": "886aa1cb5ec462840569e44277579eacddd4c0add475f0bcd2423d1ce95c20ea",
+          "q-protocol-ledger-close-time": "b9accde040d46de223f08aebd18a5967659db045889337c1c44486929278c67d",
           "q-sor-doc-timestamping-manage-data": "57b34a7c8abbd547f967f39d1cc78780e3293a68d5f11a529910d2994aa072d9",
           "q-soroban-simulate-resource-fee": "2be7b06bd31021bf1b3af819b60bbdb5db6c091772c938234b2641c540d2dd95",
           "q-token-initial-supply-distribution": "be211329ab5e607eb3539018d51e1b1acf4f698c89e26511b903ec90e4549ef8"
@@ -551,15 +551,15 @@
           "q-ti-self-host-retention-backfill"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): only q-infra-horizon-vs-rpc changed in this cluster, and only by lint-canonical wording in its existing accepted caution. All 12 members were re-read. The edit still distinguishes the rendered nearing-end-of-life label from the stale official documentation search index. Endpoint overlap, provider-configured retention, getLedgers-only archive scope, and historical indexer roles remain unchanged. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): the 12 members retain endpoint-specific Horizon/RPC roles, provider retention, getLedgers archive scope, and historical indexer boundaries. The Horizon case removes only the expired source/index conflict. The market-data sibling already uses nearing-end-of-life wording. Related-claim sweep found no contradiction.",
           "verdict": "consistent"
         },
-        "note": "Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
+        "note": "Current review 2026-09-09: the rendered Horizon pages and their positive indexed records agree on nearing-end-of-life wording. The source/index conflict is fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "697510bf5c19e2313f07afa3963485be71b4915b168ea2e71c560e859b680b65",
+          "q-infra-horizon-vs-rpc": "ac50a0b0fca7863e7e5bae064f3d2961113f0e77e24b53f2f841578f62375f3f",
           "q-infra-hubble-bigquery": "ed5379bf50ec0faa9426e65fad29bf7dd41f53fb4d711d492f08c8ca06ac6153",
           "q-infra-rpc-methods-list": "1c1a70e7139ef47bf805a99bad1127848fb111357ee2b31a12c709452e8313db",
           "q-infra-rpc-provider-archive-tier": "9f97c25d3c228d790b8ed146ff4fda969b8d97cf33e8541c312e2d881ad1c78b",
@@ -1143,16 +1143,16 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its Horizon lifecycle guidance. Re-read both members. q-hot-fee-pool-burn-deflation still separates fee-pool sequestration from supply burn, inflation removal, validator rewards, and the 2019 SDF burn. The fee-setting case does not contradict those facts. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): both members retain fee-pool sequestration, supply-burn distinctions, and fee-estimator facts. Only the fee-setting case's Horizon source/index qualifier changes. No monetary-history fact changes.",
           "verdict": "consistent"
         },
         "note": "Core accounts transaction/resource fees in an inaccessible fee pool that remains inside totalCoins conservation; this is non-circulating sequestration, not automatic supply burn. CAP-26 ended inflation on 2019-10-28; SDF's ~55.44B treasury burn on 2019-11-04 was separate. Fees are not validator rewards.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
-          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
+          "q-pc-practical-fee-setting": "b2b3add37716a621f8a813b058bdafa1455b6c3884b5ef41e1abb67263b84385"
         }
       },
       {
@@ -1464,17 +1464,17 @@
           "q-ti-channel-accounts-throughput"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed only its dated Horizon lifecycle guidance. Re-read all five members. They still agree that the fee source pays one outer fee, inner and outer fee fields are not additive charges, channel sources consume independent sequences, live fee estimates use getFeeStats or fee_stats, and fees do not reward validators. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): all five members retain outer-fee charging, independent channel sequences, fee-estimator priority, and the absence of validator fee rewards. The only judge-facing change concerns the fee-setting case's Horizon source/index agreement.",
           "verdict": "consistent"
         },
         "note": "Fee source pays the outer charged fee once; inner/outer visible fee fields are not additive charges. Channel transaction sources consume their own sequences. Live estimates should use RPC getFeeStats/current CLI or Horizon /fee_stats; Horizon is legacy/no-new-features but not formally deprecated, and Hubble is historical analytics. Fees are not validator rewards. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
           "q-pc-fee-bump-channel-accounts-feepool": "0788ab8d5affc0339413f414f9fc7c189ac862fb4dece7853a8289b07dfec5fe",
-          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b",
+          "q-pc-practical-fee-setting": "b2b3add37716a621f8a813b058bdafa1455b6c3884b5ef41e1abb67263b84385",
           "q-pc-sequence-numbers-ordering-replace": "abd89e306d57a25f792ddc204ccfdc393212444d4881163e7f4543325b04e827",
           "q-ti-channel-accounts-throughput": "0b73d24da2438a871e5d2ae8afb8bf392de61b409e262775c2bc792115cd27f6"
         }
@@ -1569,16 +1569,16 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): q-infra-horizon-vs-rpc changed only the wording of its existing accepted caution. Re-read both members. Both still use the rendered nearing-end-of-life label, preserve the stale-index qualifier, and reject a complete Horizon-to-RPC replacement claim. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): both members now state the verified September 9 Horizon source/index agreement. Neither claims complete Horizon/RPC parity. The expired index caution is removed; endpoint and fee facts remain unchanged.",
           "verdict": "consistent"
         },
-        "note": "encode dispute; sd-017",
+        "note": "As of 2026-09-09, the rendered Horizon pages and indexed EVM record agree on nearing-end-of-life wording. The sd-042 occurrence is fixed. Both cases retain the endpoint-specific Horizon/RPC boundary rather than claiming complete replacement.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "697510bf5c19e2313f07afa3963485be71b4915b168ea2e71c560e859b680b65",
-          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
+          "q-infra-horizon-vs-rpc": "ac50a0b0fca7863e7e5bae064f3d2961113f0e77e24b53f2f841578f62375f3f",
+          "q-pc-practical-fee-setting": "b2b3add37716a621f8a813b058bdafa1455b6c3884b5ef41e1abb67263b84385"
         }
       },
       {
@@ -1609,16 +1609,16 @@
           "q-pc-practical-fee-setting"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Follow-up consistency review (2026-09-08): q-infra-horizon-vs-rpc changed only the wording of its existing accepted caution. Re-read both members. The dated 100-stroop floor, RPC getFeeStats priority, Horizon fee_stats availability, Hubble historical role, rendered lifecycle label, and stale-index qualifier still agree. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): both members retain the dated 100-stroop floor, RPC getFeeStats priority, Horizon fee_stats availability, and Hubble historical role. Only Horizon lifecycle sourcing and the expired index qualifier change.",
           "verdict": "consistent"
         },
-        "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. Official Horizon lifecycle polarity is disputed.",
+        "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. As of 2026-09-09, the rendered Horizon pages and indexed EVM record agree on nearing-end-of-life wording.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "697510bf5c19e2313f07afa3963485be71b4915b168ea2e71c560e859b680b65",
-          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
+          "q-infra-horizon-vs-rpc": "ac50a0b0fca7863e7e5bae064f3d2961113f0e77e24b53f2f841578f62375f3f",
+          "q-pc-practical-fee-setting": "b2b3add37716a621f8a813b058bdafa1455b6c3884b5ef41e1abb67263b84385"
         }
       },
       {
@@ -1651,15 +1651,15 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-09",
         "note": "Observed Pubnet cadence is about 5–7 seconds from a multi-ledger sample. Current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "886aa1cb5ec462840569e44277579eacddd4c0add475f0bcd2423d1ce95c20ea",
+          "q-protocol-ledger-close-time": "b9accde040d46de223f08aebd18a5967659db045889337c1c44486929278c67d",
           "q-protocol-max-tx-set-size": "ba2858f1caed9e74cd40db66851ee3cd3dc4cf744b7a1f12c77fb25ac2e561ed"
         },
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Improvements follow-up (2026-09-08): q-protocol-ledger-close-time refreshed the corrected 5-7-second Docs evidence and retained its dated empirical claim. Re-read both members. q-protocol-max-tx-set-size states only the separate dated network count limits and does not assert a conflicting cadence. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): both members retain their prior numeric claims. The cadence case changes only current source/index provenance and preserves all historical samples. The max-tx-set case asserts separate dated limits, not a conflicting cadence.",
           "verdict": "consistent"
         }
       },
@@ -3645,15 +3645,15 @@
         ],
         "memberContentSha256": {
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
-          "q-pc-practical-fee-setting": "8cd7e96145a21296d2d7bc508a622f9333abf96c3d0ea813d1c6f6b7fd2c412b"
+          "q-pc-practical-fee-setting": "b2b3add37716a621f8a813b058bdafa1455b6c3884b5ef41e1abb67263b84385"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "Improvements follow-up (2026-09-08): q-pc-practical-fee-setting changed its dated Horizon lifecycle guidance and current provenance only. Its 100-stroop-per-operation floor, surge qualification, and fee-estimator guidance remain unchanged. Re-read q-edge-1xlm-activation-fee; it states the same dated 100-stroop floor and keeps transaction fees separate from the 0.5 XLM base reserve and 1 XLM empty-account minimum. Verdict consistent.",
+          "date": "2026-09-09",
+          "reason": "Docs ingestion review (2026-09-09): q-pc-practical-fee-setting changes only its Horizon source/index agreement and current provenance. Its dated 100-stroop floor, surge qualification, and fee-estimator facts remain unchanged. The sibling q-edge-1xlm-activation-fee retains the same dated fee floor and distinguishes fees from reserves. This review does not refresh the network fee setting.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-09-08"
+        "lastChecked": "2026-09-09"
       }
     ]
   },

@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "4f8d38a66b980b5855643a0e2fb49c671a145a4c197f1c3b9a36e6116b053aca",
+  "corpusContentSha256": "6f18f34d60097d20fc99c8c12b22d4d0fa7abccce896b7d4306bff30aa1d6f46",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -1955,7 +1955,7 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/validators",
-            "note": "On 2026-09-08 the rendered page says 'every 5-7 seconds'; the daily Docs search index still returned its pre-deploy 3-5-second snippet."
+            "note": "On 2026-09-09, the rendered page and its indexed record both say every 5-7 seconds. The September 9 crawl removed the pre-deploy snippet."
           },
           {
             "class": "A",
@@ -2094,23 +2094,52 @@
                 "note": "InitialSorobanNetworkConfig::LEDGER_TARGET_CLOSE_TIME_MILLISECONDS = 5000; Minimum 4000; Maximum 5000. These bound the configured target, not observed closes."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-09-09, Validators and Stellar Stack state every 5-7 seconds in their rendered pages, current source, and indexed records.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/validators",
+                "observedAt": "2026-09-09",
+                "note": "The rendered introduction says every 5-7 seconds."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+                "observedAt": "2026-09-09",
+                "note": "The Stellar Core section says every 5-7 seconds."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842/docs/validators/README.mdx",
+                "observedAt": "2026-09-09",
+                "note": "Blob f74c26290ba7653f584805bb3b02867b97aee3af contains the corrected sentence."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'5-7 seconds',hitsPerPage:10,includeContent:true})",
+                "observedAt": "2026-09-09",
+                "note": "Both corrected positive records are present. The original 3-5 seconds query no longer returns the stale Validators sentence."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-08",
-          "by": "improvements follow-up with Codex GPT-5.6 Terra high source matrix and targeted production search delta",
+          "date": "2026-09-09",
+          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
           "evidence": [
-            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-047-terra.md",
-            "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8.",
-            "Live re-check: https://developers.stellar.org/docs/validators and https://developers.stellar.org/docs/learn/fundamentals/stellar-stack each say 'every 5-7 seconds'.",
-            "Current upstream docs/ contains no 3-5-second cadence line and contains the same 5-7-second sentence in both canonical files.",
-            "Production Raven re-check at 2026-09-08T15:49:07Z still returned the pre-deploy 3-5-second Validators snippet.",
-            "Sibling sweep: q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit, q-soroban-storage-types, and q-infra-quickstart-local-network contain no conflicting cadence claim.",
-            "The golden answer, key facts, avoid items, and empirical cadence claims did not change."
+            ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
+            ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
+            "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
+            "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
+            "Only the latest source/index verification changes. All judge-facing fields, historical samples, target-versus-observation distinctions, and dated historical contradiction rows remain unchanged.",
+            "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md",
-            "The rendered source deployed before the daily Docs search index refreshed."
+            "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"

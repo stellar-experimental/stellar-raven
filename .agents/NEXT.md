@@ -208,10 +208,9 @@ these items without a `golden-truth` edit and independent review.
   figure trip avoid item 2? Evidence: the storage-strategies page states 64 KiB twelve times. The
   live network setting was not queried.
 - B3 `q-protocol-ledger-close-time`. Question: does key fact 1 keep the live multi-ledger sample
-  requirement, or accept an attributed docs range with a conflict disclosure? Evidence: no exposed
-  operation returns ledger close timestamps. The docs pages conflict (`sd-047`).
-- B4 `q-protocol-ledger-close-time`. Question: add a symmetric canonical-page caution for `sd-047`?
-  That would be a fourth ADR-0008 case. Evidence: the lint warning and the ADR three-case boundary.
+  requirement, or accept a dated attributed Docs range? No exposed operation returns ledger close timestamps.
+  The September 9 source and index checks now agree; the sampling requirement remains an owner decision.
+  The former B4 caution expansion is unnecessary after the `sd-047` fix. No ADR-0008 expansion ships.
 - B5 `q-ti-historical-pointintime-balances`. Question: do trade-implied USD prices from Hubble
   trade rows count as invented ledger-derived prices under avoid item 3? Evidence: the candidate
   transcript method.
