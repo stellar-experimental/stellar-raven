@@ -4,11 +4,11 @@ Updated 2026-09-08. PR #129 landed the accepted Scout pin and completed its prod
 The Docs follow-up resolved `sd-043`. Content fixes for `sd-039`, `sd-042`, and `sd-047` await search ingestion.
 The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
 Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
-The 2026-09-03 closeout completed its review. The active maintenance execution still requires independent review.
+The maintenance execution and isolated search advisory completed their independent reviews.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
-The 2026-09-08 maintenance execution is active. The owner authorized fresh filing checks and search repair.
-Paid and unresolved golden decisions remain owner-blocked. Current work does not include deployment.
+The 2026-09-08 maintenance execution merged through PR #135. PR #137 deployed the isolated search advisory.
+Paid and unresolved golden decisions remain owner-blocked. The broader scoring candidate remains unreleased.
 Use `rounds/2026-09-08-maintenance-execution.md` for current branches, agents, checks, and issue actions.
 
 ## State at handoff
@@ -251,7 +251,12 @@ proved that the repaired raw-envelope path works. See `production-deployment-ter
 
 The owner authorized the general scoring repair. The combined candidate remains preserved in `fix/search-name-and-noun-ranking`.
 Its unchanged routing gate fails on legacy top-five `319 > 315`; 16 exact-operation losses still need independent reconciliation.
-The #109 advisory is isolated on `fix/search-directory-advisory` and preserves all 544 routing result rows.
+PR #137 deployed the #109 advisory and preserves all 544 routing result rows.
+Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7` serves commit `f6d31dc07705bc16d83696fc234506534b1e2b5e`.
+All seven reported production names passed exact ranking and advisory checks. Issue #109 reached production acceptance.
+See `rounds/2026-09-09-search-advisory-production-after.json` for production evidence.
+Handoff #136 confirms an upstream skill correction, but Raven still serves the old accepted pin.
+The independent `sk-021` review retains its source-acceptance and retirement gates in TODO.
 See `TODO.md` for the #124 release boundary. Existing gate thresholds and frozen holdout labels stay unchanged.
 Source acceptance and deployment remain separate from a local scoring repair.
 

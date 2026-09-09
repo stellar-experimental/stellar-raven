@@ -7,11 +7,35 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-08 during the authorized maintenance execution.
+Updated 2026-09-09 after the authorized maintenance execution and advisory deployment.
 The current ledger is `.agents/rounds/2026-09-08-maintenance-execution.md`. The ranked handoff is
 `NEXT.md`.
 
 ## Improvements follow-up
+
+### Verify new `sk-024` handoff #138
+
+Handoff https://github.com/stellar-experimental/stellar-raven/issues/138 arrived during the production closeout.
+Its author reports that upstream PR https://github.com/stellar/stellar-dev-skill/pull/128 deployed through run `34309419809`.
+The root read the notification, but did not independently verify its content, API claims, or deployment.
+Keep `sk-024` reported upstream. Do not treat the notification as fix evidence.
+Rerun the finding's original trigger against the live skill and Raven accepted pin.
+Check the provider-scoped key requirement and testnet-only facilitator support before accepting the wording.
+Use the normal independent retirement and source-acceptance gates. No payment or paid API call is required.
+
+Done when: the live recheck receives a recorded classification and #138 receives the verified result.
+
+### Accept the corrected Smart Contracts source before retiring `sk-021`
+
+Upstream PR https://github.com/stellar/stellar-dev-skill/pull/127 deployed the correction on 2026-09-09.
+The live skill matches merge `711d6e293b0ba6ae110db0ae307a4d7805a00b8a` byte-for-byte.
+Raven still serves accepted pin `03b2f8e8c88a42b16551926a938ec8173763b45a`, which retains the original defect.
+The independent review keeps `sk-021` active pending the separate source-acceptance review.
+Use `rounds/2026-09-09-sk021-handoff-review-grok.md` for both hashes and the exact trigger.
+Handoff: https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5595645949.
+The upstream correction needs no further request. Do not post reminders or combine a pin refresh with scoring repair.
+
+Done when: an accepted pin passes the original trigger, resolver gates complete, and #136 records the terminal receipt.
 
 ### Finish authenticated production acceptance for playground #40
 
@@ -130,7 +154,7 @@ program. Select each later Scout ID from the maximum active and resolved ID; `sl
 
 ### Reconcile the preserved #124 scoring candidate before release
 
-The isolated #109 directory advisory leaves ranking unchanged. Do not merge the broader candidate with it.
+PR #137 deployed the isolated #109 directory advisory and leaves ranking unchanged. The broader candidate remains unreleased.
 The broader patch remains in `/Users/kalepail/Desktop/sr-wt-search-name-ranking` on `fix/search-name-and-noun-ranking`.
 Its report is `.agents/rounds/2026-09-08-search-repair-execution-sol.md` in that worktree.
 The final result is `routing-2026-09-09T03-23-21-923Z.json` there.
@@ -143,6 +167,7 @@ The bare leaderboard query reaches rank four locally. Jobs and Blend evidence st
 Keep the thresholds and frozen labels unchanged. Do not tune useful results downward to enter the band.
 Review all 16 remaining losses independently before accepting any broader repair or requesting a separate baseline decision.
 The accepted source and served catalog must pass the agreed query set before closing #124.
+Measured update: https://github.com/stellar-experimental/stellar-raven/issues/124#issuecomment-5595611718.
 No deployment, source acceptance, or paid QA follows from this local candidate.
 
 Done when: an independently reviewed candidate passes the authorized gates and production acceptance, or the owner rejects the candidate.
