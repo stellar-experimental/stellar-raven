@@ -100,25 +100,26 @@ program. Select each later Scout ID from the maximum active and resolved ID; `sl
 
 ## Routing
 
-### Reconcile the preserved #124 scoring candidate before release
+### Finish production acceptance for #124
 
-PR #137 deployed the isolated #109 directory advisory and leaves ranking unchanged. The broader candidate remains unreleased.
-The broader patch remains in `/Users/kalepail/Desktop/sr-wt-search-name-ranking` on `fix/search-name-and-noun-ranking`.
+The separate accepted-source selector preserves both original leaderboard queries within the existing service quota.
+Independent review found no page or grade change across the 544 frozen routing rows.
+The routing gate passed after accepting only the generated catalog fingerprint.
+All totals, thresholds, labels, Scout 1.9.1 inventory, and skill pins stay unchanged.
+Reports: `rounds/2026-09-09-search-124-implementation-sol.md` and `rounds/2026-09-09-search-124-final-grok.md`.
+
+Request deployment approval before changing production.
+Then repeat both original leaderboard queries against the deployed catalog.
+Record the RFP source-vocabulary limitation and the Blend query's missing repository intent from `rounds/2026-09-09-search-124-sol.md`.
+Do not claim that those distinct cases share the leaderboard selection defect.
+
+The older broader candidate remains rejected in `/Users/kalepail/Desktop/sr-wt-search-name-ranking` on `fix/search-name-and-noun-ranking`.
 Its report is `.agents/rounds/2026-09-08-search-repair-execution-sol.md` in that worktree.
-The final result is `routing-2026-09-09T03-23-21-923Z.json` there.
+Its result `routing-2026-09-09T03-23-21-923Z.json` exceeds the unchanged top-five band and retains 16 expected-operation losses.
+Do not adopt that worktree or release that candidate through this bounded fix.
+Historical update: https://github.com/stellar-experimental/stellar-raven/issues/124#issuecomment-5595611718.
 
-The unchanged gate fails because legacy top-five is 319, above the 315 upper bound.
-Exact-card totals return to baseline, but 14 legacy and two extended cases still lose their expected operation.
-The dated-launch case loses `lumenloop.search_content_semantic` for directory discovery. That remains a material scope loss.
-The bare leaderboard query reaches rank four locally. Jobs and Blend evidence still depends on the rejected-source fixture.
-
-Keep the thresholds and frozen labels unchanged. Do not tune useful results downward to enter the band.
-Review all 16 remaining losses independently before accepting any broader repair or requesting a separate baseline decision.
-The accepted source and served catalog must pass the agreed query set before closing #124.
-Measured update: https://github.com/stellar-experimental/stellar-raven/issues/124#issuecomment-5595611718.
-No deployment, source acceptance, or paid QA follows from this local candidate.
-
-Done when: an independently reviewed candidate passes the authorized gates and production acceptance, or the owner rejects the candidate.
+Done when: production repeats the accepted-source fix and #124 records the remaining cases' distinct dispositions.
 
 ### `search` does not surface the research lane for protocol-history questions
 

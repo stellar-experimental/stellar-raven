@@ -1217,3 +1217,26 @@ The full 544-page comparison finds 19 changed pages, including seven ordered-ide
 No expected-service hit or forbidden-absence assertion regresses.
 The round ledger records the independent review and source-acceptance decision:
 `.agents/rounds/2026-09-09-truth-maintenance.md`.
+
+## Structured-intent selection on accepted Scout 1.9.1 (2026-09-09)
+
+The bounded #124 selector preserves coherent upstream intent within an existing service quota.
+Both original leaderboard queries now include `scout.getLeaderboard` in the default top five.
+The selector changes neither scorer admission nor scores.
+The generated catalog adds separate positive routing phrases to 26 existing Scout operations.
+All other catalog values remain unchanged.
+
+Independent comparison found zero changed pages or grades across all 544 frozen rows.
+The two original issue queries are outside those frozen rows and have separate regression tests.
+Legacy top-1/top-3/top-5 remain 213/279/312. Skills remain 16/23/23. Holdout remains 10/22/26.
+Holdout forbidden captures remain 11, with 21 cases passed.
+The protocol-history diagnostic remains unchanged at 4/8 targets and 2/4 control captures.
+
+The reviewed trace is `routing-2026-09-09T18-59-36-518Z.json`.
+Its sole gate failure was the expected new catalog fingerprint.
+The explicit acceptance updates that fingerprint to `0745b09421e0ad56e4398dcdabde8477a047c3852bb4c528567b8af0028abcfd`.
+The post-acceptance gate passed in `routing-2026-09-09T19-06-43-311Z.json`.
+All accepted totals, thresholds, labels, and other input fingerprints remain unchanged.
+The decision record is `.agents/rounds/2026-09-09-outstanding-closeout.md`.
+The independent review is `.agents/rounds/2026-09-09-search-124-final-grok.md`.
+This local acceptance does not establish production acceptance or close #124.

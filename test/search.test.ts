@@ -509,6 +509,69 @@ describe("searchCatalog — excluded ops are absent by construction (ADR-0003)",
 });
 
 describe("searchCatalog — routing quality", () => {
+  function structuredIntentFixture({
+    query,
+    overflowDescription,
+    overflowPhrases,
+    overflowRoutingKeywords,
+    overflowKeywords,
+    overflowLane
+  }: {
+    query: string;
+    overflowDescription: string;
+    overflowPhrases?: CatalogEntry["routingPhrases"];
+    overflowRoutingKeywords?: string[];
+    overflowKeywords?: string[];
+    overflowLane?: "detail";
+  }): Catalog {
+    const tokens = query.split(" ");
+    const querySlug = tokens.join("_");
+    const entry = (
+      service: "lumenloop" | "scout" | "stellarDocs" | "skills",
+      name: string,
+      description: string,
+      extra: Partial<CatalogEntry> = {}
+    ): CatalogEntry => ({
+      id: `${service}.${name}`,
+      service,
+      kind: service === "skills" ? "skill" : "operation",
+      description,
+      inputSchema: null,
+      outputSchema: null,
+      transport: null,
+      provenance: { source: "test://structured-intent", fetchedAt: "2026-01-01T00:00:00Z" },
+      ...extra
+    });
+
+    return loadManifest({
+      version: 1,
+      generatedAt: "2026-01-01T00:00:00Z",
+      entries: [
+        entry("scout", `${querySlug}_primary`, `${tokens[0]} route`),
+        entry("scout", `${querySlug}_secondary`, `${tokens[1]} route`),
+        entry("scout", "overflow", overflowDescription, {
+          ...(overflowPhrases ? { routingPhrases: overflowPhrases } : {}),
+          ...(overflowRoutingKeywords ? { routingKeywords: overflowRoutingKeywords } : {}),
+          ...(overflowKeywords ? { keywords: overflowKeywords } : {}),
+          ...(overflowLane ? {
+            retrievalProfile: {
+              lane: overflowLane,
+              emptyScope: "operation",
+              recoverWith: [{
+                id: `scout.${querySlug}_primary`,
+                relation: "cross-family",
+                on: ["empty"]
+              }]
+            }
+          } : {})
+        }),
+        entry("lumenloop", `${querySlug}_aux`, `${tokens[0]} route`),
+        entry("stellarDocs", `${querySlug}_aux`, `${tokens[1]} route`),
+        entry("skills", `${querySlug}_aux`, `${tokens[2] ?? tokens[0]} route`)
+      ]
+    });
+  }
+
   it.each([1, 5])("preserves the default-kind name ranking and page facts at limit %i", (limit) => {
     const page = searchCatalogPage(catalog, { query: "freighter", limit });
     const expected = [
@@ -523,6 +586,225 @@ describe("searchCatalog — routing quality", () => {
     expect(page.widerCandidates).toEqual([
       expect.objectContaining({ id: "scout.searchProjects", basis: "short-query-directory" })
     ]);
+  });
+
+  it("keeps the accepted GitHub-activity leaderboard intent inside the Scout quota", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "top projects by GitHub activity",
+      limit: 5
+    });
+
+    expect(page.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
+      { id: "scout.searchProjects", score: 165, tier: "gated" },
+      { id: "lumenloop.find_similar_projects_semantic", score: 155, tier: "gated" },
+      { id: "lumenloop.find_content_by_entity", score: 145, tier: "gated" },
+      { id: "scout.getLeaderboard", score: 108, tier: "gated" },
+      { id: "skills.lumenloop.stellar-project-dossier", score: 90, tier: "gated" }
+    ]);
+    expect(page.total).toBe(41);
+    expect(page.truncated).toBe(true);
+  });
+
+  it("keeps the accepted Stellar GitHub-activity leaderboard intent inside the Scout quota", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "top Stellar projects by GitHub activity",
+      limit: 5
+    });
+
+    expect(page.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
+      { id: "skills.lumenloop.stellar-project-dossier", score: 199, tier: "gated" },
+      { id: "scout.searchProjects", score: 185, tier: "gated" },
+      { id: "skills.lumenloop.stellar-ecosystem-scout", score: 165, tier: "gated" },
+      { id: "stellarDocs.get_doc_page_sections", score: 157, tier: "gated" },
+      { id: "scout.getLeaderboard", score: 129, tier: "gated" }
+    ]);
+    expect(page.total).toBe(33);
+    expect(page.truncated).toBe(true);
+  });
+
+  it("does not preserve a description-only full match without a qualifying phrase", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta gamma delta",
+      overflowDescription: "alpha beta gamma delta"
+    });
+
+    const ids = searchCatalogPage(synthetic, {
+      query: "alpha beta gamma delta",
+      limit: 5
+    }).hits.map((hit) => hit.id);
+
+    expect(ids).toContain("scout.alpha_beta_gamma_delta_primary");
+    expect(ids).toContain("scout.alpha_beta_gamma_delta_secondary");
+    expect(ids).not.toContain("scout.overflow");
+  });
+
+  it("preserves a complete three-token intent with two description tokens", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta gamma",
+      overflowDescription: "alpha beta ranking",
+      overflowPhrases: [{ field: "useWhen", tokens: ["beta", "gamma"] }]
+    });
+
+    const ids = searchCatalogPage(synthetic, {
+      query: "alpha beta gamma",
+      limit: 5
+    }).hits.map((hit) => hit.id);
+
+    expect(ids).toContain("scout.alpha_beta_gamma_primary");
+    expect(ids).not.toContain("scout.alpha_beta_gamma_secondary");
+    expect(ids).toContain("scout.overflow");
+  });
+
+  it("does not preserve an ambiguous two-token intent with one description token", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta",
+      overflowDescription: "alpha ranking",
+      overflowPhrases: [{ field: "keywords", tokens: ["alpha", "beta"] }],
+      overflowRoutingKeywords: ["alpha", "beta"]
+    });
+
+    const ids = searchCatalogPage(synthetic, {
+      query: "alpha beta",
+      limit: 5
+    }).hits.map((hit) => hit.id);
+
+    expect(ids).toContain("scout.alpha_beta_primary");
+    expect(ids).toContain("scout.alpha_beta_secondary");
+    expect(ids).not.toContain("scout.overflow");
+  });
+
+  it("does not admit an ungated overflow operation through phrase metadata", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta gamma delta epsilon",
+      overflowDescription: "alpha ranking",
+      overflowPhrases: [{
+        field: "useWhen",
+        tokens: ["alpha", "beta", "gamma", "delta", "epsilon"]
+      }]
+    });
+
+    const page = searchCatalogPage(synthetic, {
+      query: "alpha beta gamma delta epsilon",
+      limit: 5
+    });
+
+    expect(page.hits).toHaveLength(5);
+    expect(page.hits.map((hit) => hit.id)).not.toContain("scout.overflow");
+  });
+
+  it("does not use schema keywords as structured intent evidence", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta gamma delta",
+      overflowDescription: "alpha beta ranking",
+      overflowKeywords: ["gamma", "delta"]
+    });
+
+    const ids = searchCatalogPage(synthetic, {
+      query: "alpha beta gamma delta",
+      limit: 5
+    }).hits.map((hit) => hit.id);
+
+    expect(ids).toContain("scout.alpha_beta_gamma_delta_secondary");
+    expect(ids).not.toContain("scout.overflow");
+  });
+
+  it("does not combine two source phrases into one complete intent", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta gamma delta",
+      overflowDescription: "alpha beta ranking",
+      overflowPhrases: [
+        { field: "useWhen", tokens: ["beta", "gamma"] },
+        { field: "exampleQuestions", tokens: ["beta", "delta"] }
+      ],
+      overflowRoutingKeywords: ["alpha", "beta", "gamma", "delta"]
+    });
+
+    const ids = searchCatalogPage(synthetic, {
+      query: "alpha beta gamma delta",
+      limit: 5
+    }).hits.map((hit) => hit.id);
+
+    expect(ids).toContain("scout.alpha_beta_gamma_delta_secondary");
+    expect(ids).not.toContain("scout.overflow");
+  });
+
+  it("does not preserve a complete detail-lane overflow operation", () => {
+    const synthetic = structuredIntentFixture({
+      query: "alpha beta gamma",
+      overflowDescription: "alpha beta ranking",
+      overflowPhrases: [{ field: "useWhen", tokens: ["beta", "gamma"] }],
+      overflowLane: "detail"
+    });
+
+    const ids = searchCatalogPage(synthetic, {
+      query: "alpha beta gamma",
+      limit: 5
+    }).hits.map((hit) => hit.id);
+
+    expect(ids).toContain("scout.alpha_beta_gamma_secondary");
+    expect(ids).not.toContain("scout.overflow");
+  });
+
+  it("changes one later Scout slot without changing page facts or scores", () => {
+    const control = loadManifest({
+      ...catalog,
+      entries: catalog.entries.map(({ routingPhrases: _phrases, ...entry }) => entry)
+    });
+    const query = "top projects by GitHub activity";
+    const before = searchCatalogPage(control, { query, limit: 5 });
+    const after = searchCatalogPage(catalog, { query, limit: 5 });
+    const scoutCount = (page: typeof after) =>
+      page.hits.filter((hit) => hit.service === "scout").length;
+
+    expect(after.hits[0]).toEqual(before.hits[0]);
+    expect(scoutCount(after)).toBe(scoutCount(before));
+    expect(after.total).toBe(before.total);
+    expect(after.truncated).toBe(before.truncated);
+    expect(after.hits.filter((hit) => before.hits.some((old) => old.id === hit.id))).toEqual(
+      before.hits.filter((hit) => after.hits.some((current) => current.id === hit.id))
+    );
+    expect(before.hits.map((hit) => hit.id).filter((id) => !after.hits.some((hit) => hit.id === id)))
+      .toEqual(["scout.searchRepos"]);
+    expect(after.hits.map((hit) => hit.id).filter((id) => !before.hits.some((hit) => hit.id === id)))
+      .toEqual(["scout.getLeaderboard"]);
+    for (let repeat = 0; repeat < 10; repeat++) {
+      expect(searchCatalogPage(catalog, { query, limit: 5 })).toEqual(after);
+    }
+  });
+
+  it("keeps Scout-only and exact-id pages source-identical", () => {
+    const control = loadManifest({
+      ...catalog,
+      entries: catalog.entries.map(({ routingPhrases: _phrases, ...entry }) => entry)
+    });
+    for (const query of [
+      "top projects by GitHub activity",
+      "top Stellar projects by GitHub activity"
+    ]) {
+      expect(searchCatalogPage(catalog, { query, service: "scout", limit: 5 })).toEqual(
+        searchCatalogPage(control, { query, service: "scout", limit: 5 })
+      );
+    }
+    expect(searchCatalogPage(catalog, { query: "scout.getLeaderboard", limit: 5 })).toEqual(
+      searchCatalogPage(control, { query: "scout.getLeaderboard", limit: 5 })
+    );
+  });
+
+  it("keeps source-drift controls source-identical", () => {
+    const control = loadManifest({
+      ...catalog,
+      entries: catalog.entries.map(({ routingPhrases: _phrases, ...entry }) => entry)
+    });
+    for (const query of [
+      "Walk me through issuing a new custom token on Stellar from scratch.",
+      "How do I fetch every asset balance held by an account or a contract (C…) address — classic trustline assets AND Soroban/SAC balances — given Horizon's account endpoint doesn't return Soroban assets (getSACBalance)?",
+      "What is the current Stellar Mainnet protocol version?",
+      "what protocol version is stellar mainnet on right now"
+    ]) {
+      expect(searchCatalogPage(catalog, { query, limit: 5 }), query).toEqual(
+        searchCatalogPage(control, { query, limit: 5 })
+      );
+    }
   });
 
   it.each([

@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-09-09T16:44:14.656Z",
+  "baselinedAt": "2026-09-09T18:59:36.518Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "83d9998f984cae38c363524e0592c6d035e80ba09cc27003f7a65e11bb0350f9"
+        "sha256": "0745b09421e0ad56e4398dcdabde8477a047c3852bb4c528567b8af0028abcfd"
       },
       {
         "path": "eval/routing-cases.json",
@@ -49,9 +49,9 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-09-09T16-44-14-655Z.json"
+    "localTrace": "routing-2026-09-09T18-59-36-518Z.json"
   },
-  "note": "2026-09-09 stellar-dev-only skill re-pin corrects MPP protocol scope, x402 facilitator scope, and the Mainnet SDK example. All accepted totals and thresholds remain unchanged. The catalog evidence fingerprint changes. The per-case review records incidental ranking changes separately. Scout remains OpenAPI 1.9.1, with its accepted skill pin unchanged. Decision record: .agents/rounds/2026-09-09-truth-maintenance.md.",
+  "note": "2026-09-09 structured-intent selection preserves both original issue #124 leaderboard queries within the existing service quota. Generated routingPhrases metadata changes only the catalog evidence fingerprint. Independent review confirms identical page facts and grades across all 544 frozen rows. All accepted totals, thresholds, labels, and other input fingerprints remain unchanged. Scout remains OpenAPI 1.9.1 with unchanged skill pins. Decision record: .agents/rounds/2026-09-09-outstanding-closeout.md. Independent review: .agents/rounds/2026-09-09-search-124-final-grok.md.",
   "legacy": {
     "n": 338,
     "top1": 213,

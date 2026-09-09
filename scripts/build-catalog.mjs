@@ -25,6 +25,7 @@ import { execFileSync } from "node:child_process";
 // Loaded via native type stripping (Node >= 23.6) — the same way
 // eval/run-routing.mjs imports src/catalog/search.ts. Still zero deps.
 import { extractKeywords } from "../src/catalog/extract-keywords.ts";
+import { extractRoutingPhrases } from "../src/catalog/extract-routing-phrases.ts";
 import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
 import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §2/§5):
@@ -161,6 +162,19 @@ function attachRoutingKeywords(entries, bodiesById) {
       cap: 256
     });
     return routingKeywords.length > 0 ? { ...entry, routingKeywords } : entry;
+  });
+}
+
+/**
+ * Preserve each positive x-routing source string without changing scoring.
+ * A multiword keywords item remains one phrase. Separate items never join.
+ */
+function attachRoutingPhrases(entries, sourcesById) {
+  return entries.map((entry) => {
+    const source = sourcesById.get(entry.id);
+    if (!source) return entry;
+    const routingPhrases = extractRoutingPhrases(source);
+    return routingPhrases.length > 0 ? { ...entry, routingPhrases } : entry;
   });
 }
 
@@ -599,6 +613,10 @@ function buildScout(inv) {
   // as this op's keywords would recreate the cross-capture the upstream fix
   // removed.
   const routingExtras = new Map();
+  // Phrase metadata preserves the same positive fields as source strings.
+  // Multiword keywords such as "top projects" are real published phrases.
+  // Separate keyword items never join, and `notFor` remains excluded.
+  const routingPhraseExtras = new Map();
   const openapi = inv.openapi;
   const base = openapi.servers?.[0]?.url ?? "https://stellarlight.xyz";
   const consumedNotes = new Set();
@@ -629,13 +647,26 @@ function buildScout(inv) {
       if (note !== undefined) consumedNotes.add(opId);
       const routing = op["x-routing"];
       if (routing && typeof routing === "object") {
+        const asStrings = (value) =>
+          Array.isArray(value)
+            ? value.filter((item) => typeof item === "string" && item.length > 0)
+            : [];
+        const source = {
+          purpose: typeof routing.purpose === "string" ? [routing.purpose] : [],
+          useWhen: asStrings(routing.useWhen),
+          exampleQuestions: asStrings(routing.exampleQuestions),
+          keywords: asStrings(routing.keywords)
+        };
         const parts = [
-          routing.purpose,
-          ...(Array.isArray(routing.useWhen) ? routing.useWhen : []),
-          ...(Array.isArray(routing.exampleQuestions) ? routing.exampleQuestions : []),
-          ...(Array.isArray(routing.keywords) ? routing.keywords : [])
-        ].filter((v) => typeof v === "string" && v.length > 0);
-        if (parts.length > 0) routingExtras.set(`scout.${opId}`, [parts.join("\n")]);
+          ...source.purpose,
+          ...source.useWhen,
+          ...source.exampleQuestions,
+          ...source.keywords
+        ];
+        if (parts.length > 0) {
+          routingExtras.set(`scout.${opId}`, [parts.join("\n")]);
+          routingPhraseExtras.set(`scout.${opId}`, source);
+        }
       }
       const id = `scout.${opId}`;
       const contract = applyModelContractCorrection(id, {
@@ -683,7 +714,7 @@ function buildScout(inv) {
       );
     }
   }
-  return { entries, routingExtras };
+  return { entries, routingExtras, routingPhraseExtras };
 }
 
 // ---------------------------------------------------------------------------
@@ -1052,6 +1083,7 @@ export function assertNoNonExposedRefs(entries) {
       entry.description ?? "",
       ...(entry.keywords ?? []),
       ...(entry.routingKeywords ?? []),
+      ...(entry.routingPhrases ?? []).flatMap((phrase) => phrase.tokens),
       ...(entry.knownAliases ?? []),
       ...(entry.knownAliasTriggers ?? []),
       // Operation and runnable-skill schemas ship to the model through
@@ -1118,7 +1150,12 @@ async function main() {
         ...attachOperationKeywords(buildLumenloop(lumenloop)),
         // Scout ops: x-routing vocabulary → routingKeywords (lever 7) first,
         // then schema tokens → keywords with the routing tokens excluded.
-        ...attachOperationKeywords(attachRoutingKeywords(scout.entries, scout.routingExtras)),
+        ...attachOperationKeywords(
+          attachRoutingPhrases(
+            attachRoutingKeywords(scout.entries, scout.routingExtras),
+            scout.routingPhraseExtras
+          )
+        ),
         // Docs ops carry page-title vocabulary (hundreds of distinct frequency-1
         // tokens post-DF) — the default 64 cap truncates the alphabetical tail,
         // so they get a roomier cap. Still bounded: 12 ops × ≤256 short tokens.

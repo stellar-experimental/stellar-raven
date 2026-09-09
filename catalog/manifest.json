@@ -1966,6 +1966,442 @@
         "opportunity",
         "thin"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "ecosystem",
+            "wide",
+            "macro",
+            "totals",
+            "hackathons",
+            "scf",
+            "funding",
+            "category",
+            "distribution",
+            "tvl"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "overall",
+            "state",
+            "stellar",
+            "hackathons",
+            "grants"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "total",
+            "scf",
+            "funding",
+            "distributed",
+            "mean",
+            "award",
+            "size"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "much",
+            "prize",
+            "money",
+            "across",
+            "all",
+            "hackathons",
+            "total",
+            "events",
+            "pools",
+            "registered",
+            "hackers",
+            "live",
+            "dora",
+            "hacks"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "many",
+            "projects",
+            "built",
+            "vs",
+            "abandoned",
+            "after",
+            "hackathons"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "total",
+            "top",
+            "de",
+            "fi",
+            "tvl",
+            "stellar",
+            "defi",
+            "llama",
+            "tracked",
+            "protocols",
+            "only",
+            "undercounts",
+            "chain",
+            "wide",
+            "dated",
+            "never",
+            "exact",
+            "dollar",
+            "live",
+            "figure"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "build",
+            "whitespace",
+            "dimension",
+            "gaps",
+            "returns",
+            "per",
+            "vertical",
+            "coverage",
+            "product",
+            "types",
+            "under",
+            "built",
+            "unproven",
+            "nothing",
+            "live",
+            "absent",
+            "supply",
+            "side",
+            "demand"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "many",
+            "active",
+            "developers",
+            "build",
+            "stellar",
+            "developer",
+            "growth",
+            "trend",
+            "dimension",
+            "returns",
+            "current",
+            "electric",
+            "capital",
+            "monthly",
+            "dev",
+            "count",
+            "total",
+            "exclusive",
+            "month",
+            "year",
+            "deltas",
+            "full",
+            "time",
+            "part",
+            "tenure",
+            "top",
+            "countries",
+            "peer",
+            "chain",
+            "scale",
+            "commit",
+            "derived",
+            "dated",
+            "headcount"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "much",
+            "scf",
+            "funding",
+            "distributed",
+            "total"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "total",
+            "prize",
+            "money",
+            "across",
+            "all",
+            "stellar",
+            "hackathons"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "total",
+            "de",
+            "fi",
+            "tvl",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "build",
+            "stellar",
+            "gaps"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "product",
+            "verticals",
+            "live",
+            "projects",
+            "yet"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "many",
+            "active",
+            "developers",
+            "building",
+            "stellar",
+            "dimension"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "stellar",
+            "developer",
+            "base",
+            "growing",
+            "year",
+            "over"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "macro",
+            "stats"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "ecosystem",
+            "wide"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prize",
+            "money"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prize",
+            "pools"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "total",
+            "prize",
+            "pool",
+            "usd"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "registered",
+            "hackers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "funding",
+            "distributed"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "mean",
+            "award"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "per",
+            "round",
+            "breakdown"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "status",
+            "funnel"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "built",
+            "vs",
+            "abandoned"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "category",
+            "distribution"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "project",
+            "counts",
+            "category"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "defi",
+            "tvl"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "top",
+            "protocols",
+            "tvl"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "under",
+            "built"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "verticals",
+            "thin"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "live",
+            "projects"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "many",
+            "developers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "active",
+            "developers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "developer",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "monthly",
+            "active",
+            "developers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "developer",
+            "growth"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "developer",
+            "trend"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "full",
+            "time",
+            "developers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "electric",
+            "capital"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "devs",
+            "building",
+            "stellar"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "many",
+            "devs"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -2095,6 +2531,146 @@
         "submission",
         "survival",
         "survived"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "compare",
+            "named",
+            "hackathons",
+            "prizes",
+            "turnout",
+            "outcomes"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "stellar",
+            "hackathon",
+            "enter"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "event",
+            "compare",
+            "prizes",
+            "turnout"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "event",
+            "projects",
+            "still",
+            "active",
+            "alive",
+            "today",
+            "cohort",
+            "durability",
+            "curated",
+            "events",
+            "only"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "event",
+            "bigger"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "compare",
+            "last",
+            "two",
+            "sdf",
+            "hackathons",
+            "prize",
+            "money"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "hackathon",
+            "projects",
+            "still",
+            "active",
+            "today"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prize",
+            "pool"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prize",
+            "per",
+            "winner"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "registered",
+            "hackers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "submission",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "still",
+            "active"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "still",
+            "alive"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "survival",
+            "rate"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "projects",
+            "survived"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "most",
+            "durable",
+            "cohort"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -2387,6 +2963,129 @@
         "ingest",
         "sdk",
         "deepwiki"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "deep",
+            "code",
+            "answers",
+            "grounded",
+            "authoritative",
+            "stellar",
+            "repo",
+            "internals"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "defined",
+            "work",
+            "stellar",
+            "internal",
+            "error",
+            "result",
+            "codes",
+            "consensus",
+            "scp",
+            "ledger",
+            "xdr",
+            "sep",
+            "implementation"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "show",
+            "implementation",
+            "deep",
+            "code",
+            "questions",
+            "answered",
+            "authoritative",
+            "repo",
+            "internals"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "transaction",
+            "result",
+            "codes",
+            "defined"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "scp",
+            "reach",
+            "consensus"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "horizon",
+            "ingest",
+            "ledger",
+            "data"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "error",
+            "codes"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "result",
+            "codes"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "core"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "go"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "rpc"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sep",
+            "reference",
+            "implementation"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sdk",
+            "internals"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -2903,6 +3602,148 @@
         "smart",
         "contract",
         "latam"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "find",
+            "stellar",
+            "builders",
+            "people",
+            "skill",
+            "location",
+            "shipped",
+            "projects",
+            "recruiting",
+            "hiring"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "find",
+            "developers",
+            "stack",
+            "role",
+            "seniority",
+            "experienced",
+            "rust",
+            "soroban",
+            "devs"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "find",
+            "teammate",
+            "collaborator",
+            "shipped"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "stellar",
+            "devs",
+            "place",
+            "ve",
+            "done",
+            "soroban",
+            "rust",
+            "builders",
+            "hire",
+            "lat",
+            "am",
+            "working",
+            "payments"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "hire",
+            "anchor",
+            "build",
+            "want",
+            "person",
+            "contact"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "filter",
+            "find",
+            "people",
+            "region",
+            "latin",
+            "america",
+            "india",
+            "africa",
+            "asia",
+            "europe",
+            "stack"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "experienced",
+            "rust",
+            "soroban",
+            "devs",
+            "work"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "find",
+            "experienced",
+            "soroban",
+            "devs",
+            "reach",
+            "out"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "rust",
+            "builders",
+            "hire",
+            "lat",
+            "am",
+            "working",
+            "payments"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "lagos",
+            "shipped",
+            "stellar",
+            "project"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "smart",
+            "contract",
+            "developer"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "latin",
+            "america"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -3457,6 +4298,114 @@
         "anchors",
         "defi"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "category",
+            "crowdedness",
+            "whitespace",
+            "analysis",
+            "over",
+            "project",
+            "directory"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "most",
+            "crowded",
+            "category",
+            "stellar",
+            "categories"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "show",
+            "underbuilt",
+            "whitespace",
+            "area",
+            "competition",
+            "thin"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "many",
+            "projects",
+            "scf",
+            "funded",
+            "rwa",
+            "vs",
+            "wallets",
+            "per",
+            "category"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "build",
+            "opportunity",
+            "gap",
+            "questions",
+            "across",
+            "project",
+            "directory"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "most",
+            "crowded",
+            "category",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "many",
+            "projects",
+            "rwa",
+            "vs",
+            "wallets"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "room",
+            "build"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "opportunity",
+            "gap"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "market",
+            "map"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "category",
+            "counts"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -3691,6 +4640,101 @@
         "abandoned",
         "scf",
         "awarded"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "one",
+            "hackathon",
+            "winners",
+            "submissions",
+            "tracks",
+            "outcome",
+            "stats"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "won",
+            "event",
+            "soroban",
+            "track"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "projects",
+            "submitted",
+            "event"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "tracks",
+            "event",
+            "pay"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "many",
+            "event",
+            "submissions",
+            "still",
+            "being",
+            "built"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "won",
+            "stellar",
+            "x402",
+            "hackathon"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prize",
+            "track"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "soroban",
+            "track"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "post",
+            "hack",
+            "status"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "outcome",
+            "funnel"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "awarded"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -3991,6 +5035,83 @@
         "pool",
         "hackers",
         "buildonstellar"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "list",
+            "browse",
+            "stellar",
+            "hackathon",
+            "events",
+            "curated",
+            "dora",
+            "hacks",
+            "sdf",
+            "orgs",
+            "3096",
+            "3853",
+            "resolve",
+            "event",
+            "slugs"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "stellar",
+            "hackathons",
+            "coming",
+            "running",
+            "now",
+            "recently",
+            "ended"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "list",
+            "sdf",
+            "hackathons"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "need",
+            "slug",
+            "event",
+            "before",
+            "drilling"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "stellar",
+            "hackathons",
+            "coming"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "list",
+            "recently",
+            "completed",
+            "sdf",
+            "hackathons"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prize",
+            "pool"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -4388,6 +5509,370 @@
         "locked",
         "largest",
         "token"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "ranked",
+            "active",
+            "project",
+            "leaderboard",
+            "electric",
+            "capital",
+            "ecosystem",
+            "developer",
+            "stats",
+            "population",
+            "every",
+            "live",
+            "development",
+            "pre",
+            "release",
+            "indexed",
+            "repo",
+            "rollup",
+            "default",
+            "range",
+            "all",
+            "absence",
+            "top",
+            "means",
+            "below",
+            "repos",
+            "never",
+            "liveness",
+            "verdict"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "projects",
+            "open",
+            "issues",
+            "biggest",
+            "issue",
+            "backlog"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "repo",
+            "health",
+            "maintenance",
+            "activity",
+            "comparisons",
+            "across",
+            "projects"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "top",
+            "most",
+            "active",
+            "stellar",
+            "projects"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "most",
+            "starred",
+            "projects",
+            "shipped",
+            "recently",
+            "last",
+            "30d"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "many",
+            "active",
+            "stellar",
+            "devs",
+            "dev",
+            "activity",
+            "look",
+            "ec",
+            "28",
+            "day",
+            "only",
+            "multichain",
+            "splits"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "top",
+            "de",
+            "fi",
+            "protocols",
+            "tvl",
+            "sort",
+            "type",
+            "dex",
+            "lending",
+            "defi",
+            "llama",
+            "verified",
+            "dated",
+            "per",
+            "row"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "biggest",
+            "stablecoin",
+            "issued",
+            "asset",
+            "circulating",
+            "supply",
+            "sort",
+            "pair",
+            "type",
+            "holders",
+            "stellar",
+            "expert"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "csv",
+            "dune",
+            "style",
+            "export",
+            "ranked",
+            "projects",
+            "default",
+            "top",
+            "50",
+            "max",
+            "300"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "leaderboard",
+            "projects",
+            "open",
+            "issues"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "most",
+            "active",
+            "stellar",
+            "projects",
+            "last",
+            "30",
+            "days"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "many",
+            "active",
+            "developers",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "biggest",
+            "stablecoin",
+            "stellar",
+            "supply"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "export",
+            "top",
+            "100",
+            "stellar",
+            "projects",
+            "csv"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "open",
+            "issues"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "issue",
+            "tracker"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "issue",
+            "backlog"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "repo",
+            "health"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "repository",
+            "health"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "most",
+            "active"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "top",
+            "projects"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "most",
+            "starred"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "recently",
+            "shipped"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "developer",
+            "counts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "active",
+            "devs"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "electric",
+            "capital"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "full",
+            "time"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "part",
+            "time"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "repo",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "total",
+            "value",
+            "locked"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "top",
+            "defi"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "biggest",
+            "protocols"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "circulating",
+            "supply"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "biggest",
+            "stablecoin"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "largest",
+            "stablecoin"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "asset",
+            "supply"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "token",
+            "holders"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -5218,6 +6703,146 @@
         "corridor",
         "clients"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "directory",
+            "hireable",
+            "integratable",
+            "ecosystem",
+            "partners",
+            "verified",
+            "activity",
+            "signals"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "audit",
+            "soroban",
+            "contract",
+            "type",
+            "firm"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "find",
+            "anchor",
+            "off",
+            "ramp",
+            "region"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "partner",
+            "discovery",
+            "integration"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "audit",
+            "soroban",
+            "contract"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "find",
+            "usdc",
+            "off",
+            "ramp",
+            "partner",
+            "mexico"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "audit",
+            "firms"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "audit",
+            "contract"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "ramp",
+            "providers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "off",
+            "ramp",
+            "providers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "kyc",
+            "providers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "find",
+            "partner"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "integration",
+            "partner"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "off",
+            "ramp"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "audit",
+            "firm"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "service",
+            "provider"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "accepting",
+            "clients"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -5483,6 +7108,124 @@
         "advisor",
         "founder",
         "staff"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "look",
+            "named",
+            "person",
+            "sdf",
+            "roster",
+            "leadership",
+            "board",
+            "advisors",
+            "current",
+            "role",
+            "affiliation"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "person",
+            "role",
+            "sdf"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "leads",
+            "ecosystem",
+            "product",
+            "engineering",
+            "sdf"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "sits",
+            "sdf",
+            "board",
+            "directors",
+            "advisory"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "named",
+            "sdf",
+            "staffer",
+            "leader",
+            "builders",
+            "git",
+            "hub",
+            "contributors",
+            "doesn",
+            "cover"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "justin",
+            "rice",
+            "he",
+            "sdf"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "sdf",
+            "chief",
+            "scientist"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "stellar",
+            "development",
+            "foundation",
+            "board",
+            "directors"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "vp",
+            "ecosystem"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "board",
+            "directors"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sdf",
+            "team"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "development",
+            "foundation",
+            "team"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -5756,6 +7499,98 @@
         "abandoned",
         "production",
         "ready"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "assess",
+            "one",
+            "repo",
+            "trustworthiness",
+            "maintenance",
+            "audit",
+            "state",
+            "verified",
+            "evidence",
+            "single",
+            "call"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "repo",
+            "still",
+            "maintained",
+            "audited",
+            "used",
+            "mainnet",
+            "one",
+            "call",
+            "instead",
+            "five"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "code",
+            "changed",
+            "since",
+            "last",
+            "audit",
+            "drift"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "verifying",
+            "generated",
+            "contract",
+            "calls",
+            "against",
+            "real",
+            "scanned",
+            "interface"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "actively",
+            "maintained"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "audit",
+            "drift"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "dependency",
+            "safety"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "production",
+            "ready"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "contract",
+            "interface"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -6111,6 +7946,134 @@
         "bounty",
         "opportunity"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "open",
+            "closed",
+            "stellar",
+            "rfps",
+            "sponsor",
+            "briefs",
+            "live",
+            "scf",
+            "round",
+            "submission",
+            "window"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "rfps",
+            "bounties",
+            "grants",
+            "match",
+            "idea",
+            "open"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "scf",
+            "funding",
+            "asking",
+            "quarter",
+            "ecosystem",
+            "want",
+            "built"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "sponsor",
+            "brief",
+            "funded",
+            "build",
+            "scf",
+            "grant"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "scf",
+            "round",
+            "currently",
+            "open",
+            "submissions",
+            "deadline"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "whether",
+            "past",
+            "rfp",
+            "kelp",
+            "hummingbot",
+            "one",
+            "closed",
+            "still",
+            "applied",
+            "post",
+            "submission",
+            "review",
+            "lifecycle"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "rfps",
+            "open",
+            "quarter"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "sponsor",
+            "brief",
+            "funded",
+            "build"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "scf",
+            "round",
+            "open",
+            "close"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sponsor",
+            "brief"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "funding",
+            "opportunity"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "submission",
+            "deadline"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -6237,6 +8200,101 @@
         "follow",
         "quote",
         "show"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "one",
+            "skill",
+            "full",
+            "md",
+            "content",
+            "metadata",
+            "install",
+            "command"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "already",
+            "know",
+            "skill",
+            "name",
+            "need",
+            "actual",
+            "instructions",
+            "install",
+            "command",
+            "md",
+            "body",
+            "follow",
+            "quote"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "show",
+            "skill",
+            "md",
+            "agentic",
+            "payments"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "install",
+            "smart",
+            "contracts",
+            "skill"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "skill",
+            "content"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "skill",
+            "md"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "install",
+            "command"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "agentic",
+            "payments"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "smart",
+            "contracts",
+            "skill"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "scout"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -6624,6 +8682,150 @@
         "pyusd",
         "eurc"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "authoritative",
+            "usd",
+            "comparable",
+            "stablecoin",
+            "ranking",
+            "answers",
+            "biggest",
+            "largest",
+            "issuer",
+            "total",
+            "market",
+            "cap",
+            "raw",
+            "supply",
+            "denominated",
+            "each",
+            "asset",
+            "own",
+            "peg",
+            "across",
+            "rows"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "biggest",
+            "largest",
+            "stablecoin",
+            "stellar",
+            "usd",
+            "market",
+            "cap"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "top",
+            "stablecoin",
+            "issuers",
+            "total",
+            "market",
+            "cap",
+            "supply",
+            "holders",
+            "peg"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "comparing",
+            "stablecoins",
+            "size",
+            "use",
+            "market",
+            "cap",
+            "usd",
+            "never",
+            "raw",
+            "supply",
+            "across",
+            "different",
+            "pegs"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "biggest",
+            "stablecoin",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "stablecoin",
+            "most",
+            "holders"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "list",
+            "usd",
+            "pegged",
+            "stablecoins",
+            "market",
+            "cap"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "total",
+            "stablecoin",
+            "market",
+            "cap",
+            "stellar"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "biggest",
+            "stablecoin"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "largest",
+            "stablecoin"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "top",
+            "stablecoin"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "market",
+            "cap"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "circulating",
+            "supply"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -6776,6 +8978,131 @@
         "research",
         "docs",
         "partners"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "service",
+            "health",
+            "per",
+            "source",
+            "data",
+            "freshness",
+            "endpoint",
+            "discovery"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "fresh",
+            "large",
+            "data",
+            "many",
+            "projects",
+            "indexed"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "endpoints",
+            "exist",
+            "sanity",
+            "check",
+            "api"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "many",
+            "projects",
+            "indexed"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "repo",
+            "index",
+            "last",
+            "updated"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "endpoints",
+            "scout",
+            "api",
+            "expose"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "last",
+            "updated"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "projects",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "hackathons",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "builders",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "repos",
+            "count"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "ecosystem",
+            "stats"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sdf",
+            "skills"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "research",
+            "docs"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "partners",
+            "count"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -6965,6 +9292,113 @@
         "repo",
         "already",
         "hackmeridian"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "one",
+            "call",
+            "hackathon",
+            "team",
+            "built",
+            "fork",
+            "trust",
+            "live",
+            "build",
+            "against",
+            "money",
+            "after",
+            "demo",
+            "must",
+            "claim"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "re",
+            "hack",
+            "meridian",
+            "want",
+            "build",
+            "start",
+            "one",
+            "call",
+            "instead",
+            "five"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "give",
+            "us",
+            "brief",
+            "confidential",
+            "token",
+            "payroll",
+            "idea"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "idea",
+            "taken",
+            "safe",
+            "fork"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "hackathon",
+            "brief"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "re",
+            "hackathon"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "48",
+            "hours"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "starting",
+            "point"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "starter",
+            "repo"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "already",
+            "built"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "build",
+            "brief"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -7310,6 +9744,112 @@
         "halborn",
         "history"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "list",
+            "filter",
+            "security",
+            "audit",
+            "reports",
+            "structured",
+            "rows",
+            "audits",
+            "exist",
+            "project",
+            "firm"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "list",
+            "all",
+            "audits",
+            "project",
+            "audited",
+            "absence",
+            "caveat"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "firm",
+            "audited",
+            "stellar"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "enumerating",
+            "counting",
+            "audit",
+            "corpus",
+            "newest",
+            "first",
+            "activity"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "audit",
+            "firms",
+            "reviewed",
+            "blend"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "list",
+            "otter",
+            "sec",
+            "audits",
+            "stellar",
+            "projects"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "newest",
+            "soroban",
+            "audits"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "audit",
+            "report"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "security",
+            "audit"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "projects",
+            "audited"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "audit",
+            "history"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -7530,6 +10070,114 @@
         "joining",
         "call",
         "address"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "enumerate",
+            "filter",
+            "verified",
+            "mainnet",
+            "contracts",
+            "entities",
+            "exist",
+            "code",
+            "usage",
+            "audit",
+            "evidence",
+            "per",
+            "domain",
+            "project"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "verified",
+            "contracts",
+            "live",
+            "mainnet",
+            "show",
+            "deployed",
+            "de",
+            "fi",
+            "domain",
+            "defi",
+            "lending",
+            "etc"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "contract",
+            "project",
+            "run"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "joining",
+            "contract",
+            "code",
+            "usage",
+            "audit",
+            "evidence",
+            "one",
+            "call"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "mainnet",
+            "contracts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "deployed",
+            "contracts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "verified",
+            "contracts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "soroban",
+            "contracts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "contract",
+            "registry"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "contracts",
+            "live"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "contract",
+            "address"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -7819,6 +10467,108 @@
         "exist",
         "marketplace"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "browse",
+            "installable",
+            "stellar",
+            "ai",
+            "skills",
+            "mcp",
+            "servers",
+            "sdks",
+            "clis",
+            "agent",
+            "kits"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "stellar",
+            "ai",
+            "skills",
+            "mcp",
+            "servers",
+            "sdks",
+            "install"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "skill",
+            "soroban",
+            "anchors",
+            "payments"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "matching",
+            "builder",
+            "idea",
+            "right",
+            "installable",
+            "tool"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "mcp",
+            "servers",
+            "exist",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "skill",
+            "anchors"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "ai",
+            "skills"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "mcp",
+            "server"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "agent",
+            "kit"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "skill",
+            "md"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "skills",
+            "stellar",
+            "org"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -8105,6 +10855,115 @@
         "dead",
         "former"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "turn",
+            "stale",
+            "unfamiliar",
+            "project",
+            "name",
+            "current",
+            "identity",
+            "successor",
+            "status",
+            "evidence"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "name",
+            "old",
+            "article",
+            "repo",
+            "matches",
+            "nothing",
+            "current",
+            "directory"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "deciding",
+            "whether",
+            "project",
+            "renamed",
+            "actually",
+            "wound",
+            "down"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "reconciling",
+            "outdated",
+            "reference",
+            "before",
+            "citing"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "happened",
+            "passport",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "project",
+            "still",
+            "around",
+            "renamed"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "blog",
+            "post",
+            "mentions",
+            "project",
+            "cannot",
+            "find",
+            "now"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "longer",
+            "exists"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "dead",
+            "project"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "former",
+            "name"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "old",
+            "name"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -8260,6 +11119,115 @@
         "much",
         "funding",
         "submission"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "prepare",
+            "ground",
+            "scf",
+            "grant",
+            "application",
+            "round",
+            "timing",
+            "funded",
+            "competition",
+            "evidence",
+            "based",
+            "angles"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "want",
+            "apply",
+            "scf",
+            "pitch",
+            "say",
+            "one",
+            "call"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "scf",
+            "round",
+            "open",
+            "right",
+            "now",
+            "close"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "already",
+            "got",
+            "scf",
+            "money",
+            "vertical",
+            "much"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "pitch"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "community",
+            "fund"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "grant",
+            "application"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "apply",
+            "funding"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "round",
+            "open"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "submission",
+            "deadline"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "got",
+            "funded"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "pitch",
+            "idea"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -8489,6 +11457,163 @@
         "privacy",
         "buidls",
         "submissions"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "prior",
+            "art",
+            "over",
+            "hackathon",
+            "prototypes",
+            "idea",
+            "already",
+            "hacked",
+            "together",
+            "stellar"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "want",
+            "build",
+            "anyone",
+            "prototyped",
+            "stellar",
+            "hackathon"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "got",
+            "built",
+            "around",
+            "topic",
+            "hackathons"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "hackathon",
+            "projects",
+            "topic"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "winning",
+            "builds",
+            "topic"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "anyone",
+            "built",
+            "recurring",
+            "payments",
+            "protocol",
+            "stellar",
+            "hackathon"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "prediction",
+            "markets",
+            "built",
+            "stellar",
+            "hackathons"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "show",
+            "winning",
+            "zk",
+            "privacy",
+            "builds"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "hackathon",
+            "builds"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "hackathon",
+            "projects"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "built",
+            "hackathon"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "anyone",
+            "built"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prior",
+            "art"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "already",
+            "built"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "hackathon",
+            "submissions"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "winning",
+            "projects"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "winning",
+            "builds"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "hackathon",
+            "winners",
+            "topic"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {
@@ -10499,6 +13624,440 @@
         "stellarchain",
         "chama"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "directory",
+            "lookup",
+            "built",
+            "stellar",
+            "projects",
+            "products",
+            "status",
+            "scf",
+            "funding",
+            "builder",
+            "links",
+            "keyword",
+            "synonym",
+            "ranked",
+            "prominence",
+            "verification",
+            "live",
+            "semantic",
+            "fallback",
+            "hits",
+            "thin"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "built",
+            "anyone",
+            "live",
+            "scf",
+            "funded",
+            "project"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "projects",
+            "exist",
+            "give",
+            "directory",
+            "market",
+            "map",
+            "category",
+            "wallets",
+            "de",
+            "fi",
+            "nft",
+            "marketplaces",
+            "anchors",
+            "anchor",
+            "infrastructure",
+            "explorers"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "directory",
+            "facts",
+            "named",
+            "product",
+            "status",
+            "funding",
+            "builder",
+            "links",
+            "etherfuse",
+            "stablebonds",
+            "ustry",
+            "cetes",
+            "soroswap"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "mature",
+            "integrate",
+            "building",
+            "projects",
+            "operating",
+            "anchors"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "list",
+            "enumerate",
+            "compare",
+            "curated",
+            "directory",
+            "wallets",
+            "exist",
+            "differ",
+            "main",
+            "de",
+            "fi",
+            "projects",
+            "perpetuals",
+            "derivatives",
+            "dexes",
+            "amm",
+            "liquidity",
+            "protocols",
+            "yields"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "accountability",
+            "diligence",
+            "composing",
+            "structured",
+            "filters",
+            "scf",
+            "funded",
+            "projects",
+            "went",
+            "inactive",
+            "awarded",
+            "status",
+            "live",
+            "category",
+            "type",
+            "wallet",
+            "natural",
+            "language",
+            "words",
+            "defunct",
+            "abandoned",
+            "dead",
+            "route",
+            "must",
+            "passed",
+            "meta",
+            "counts",
+            "total",
+            "answers",
+            "many",
+            "form"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "wallets",
+            "exist",
+            "stellar",
+            "differ"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "anyone",
+            "built",
+            "rosca",
+            "susu",
+            "app",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "etherfuse",
+            "stablebonds",
+            "live",
+            "scf",
+            "funded"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "built",
+            "soroswap"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "give",
+            "market",
+            "map",
+            "stellar",
+            "de",
+            "fi",
+            "projects"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "scf",
+            "funded",
+            "projects",
+            "gone",
+            "inactive",
+            "awarded",
+            "status"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "card",
+            "issuing"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "debit",
+            "cards"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "card",
+            "program"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "services",
+            "integrate"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "providers",
+            "support",
+            "stellar"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "custody",
+            "providers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "lending",
+            "protocols"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "price",
+            "feeds"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "centralized",
+            "exchanges"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "exchanges",
+            "list",
+            "xlm"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "look",
+            "project",
+            "name"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "find",
+            "specific",
+            "project"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "named",
+            "project"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "project",
+            "name"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "market",
+            "map"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "chain",
+            "activity"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "public",
+            "goods"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "public",
+            "goods",
+            "award"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "onchain",
+            "metrics"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "contract",
+            "events"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "contract",
+            "invocations"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "asset",
+            "holders"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "circulating",
+            "supply"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prior",
+            "art"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "nft",
+            "marketplace"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "off",
+            "ramps"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "real",
+            "world",
+            "asset",
+            "tokenization"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "block",
+            "explorers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "expert"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "etherfuse",
+            "stablebonds"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "funded"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -11244,6 +14803,324 @@
         "price",
         "feed"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "find",
+            "quality",
+            "graded",
+            "stellar",
+            "git",
+            "hub",
+            "source",
+            "code",
+            "libraries",
+            "contracts",
+            "sdks",
+            "templates",
+            "indexes",
+            "topics",
+            "description",
+            "language",
+            "readme",
+            "expands",
+            "tech",
+            "synonyms"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "show",
+            "code",
+            "git",
+            "hub",
+            "repos",
+            "exist"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "find",
+            "rust",
+            "soroban",
+            "implementation",
+            "example",
+            "reference",
+            "contract",
+            "sep",
+            "41",
+            "token",
+            "impls",
+            "open",
+            "zeppelin",
+            "rwa",
+            "regulated",
+            "contracts"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "find",
+            "libraries",
+            "sdks",
+            "boilerplate",
+            "starters",
+            "testing",
+            "tooling",
+            "fuzz",
+            "property",
+            "based",
+            "unit",
+            "tests",
+            "soroban",
+            "rust",
+            "stellar"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "streaming",
+            "recurring",
+            "payment",
+            "contract",
+            "examples",
+            "groth16",
+            "zk",
+            "proof",
+            "verifiers",
+            "passkey",
+            "smart",
+            "wallet",
+            "implementations",
+            "ai",
+            "agent",
+            "identity",
+            "work"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "current",
+            "soroban",
+            "sdk",
+            "stellar",
+            "cli",
+            "release",
+            "versions",
+            "target",
+            "protocol",
+            "top",
+            "rated",
+            "client",
+            "library",
+            "repos"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "find",
+            "soroban",
+            "amm",
+            "implementation",
+            "rust"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "open",
+            "zeppelin",
+            "contracts",
+            "exist",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "show",
+            "passkey",
+            "smart",
+            "wallet",
+            "repos"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "groth16",
+            "proof",
+            "verifier",
+            "soroban"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "client",
+            "libraries"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "example",
+            "contracts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "reference",
+            "contracts"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sep",
+            "41",
+            "token"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "sep",
+            "reference",
+            "impls"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "openzeppelin",
+            "soroban"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "testing",
+            "tooling"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "property",
+            "based"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "unit",
+            "tests"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "streaming",
+            "payments"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "recurring",
+            "payments"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "zero",
+            "knowledge"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "proof",
+            "verifier"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "smart",
+            "wallet"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "soroban",
+            "sdk",
+            "version"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "cli",
+            "release"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "target",
+            "protocol"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "openzeppelin",
+            "rwa"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "regulated",
+            "token"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "erc",
+            "3643"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "ai",
+            "agent",
+            "identity"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "price",
+            "feed"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -11779,6 +15656,426 @@
         "india",
         "listing"
       ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "cited",
+            "knowledge",
+            "docs",
+            "answers",
+            "stellar",
+            "research",
+            "corpus",
+            "vector",
+            "search",
+            "over",
+            "voyage",
+            "embeddings",
+            "bm25",
+            "lite",
+            "keyword",
+            "fallback",
+            "vectors",
+            "unavailable"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "sdf",
+            "organizational",
+            "questions",
+            "enterprise",
+            "fund",
+            "mandate",
+            "leadership",
+            "structure"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "work",
+            "possible",
+            "discussed",
+            "stellar",
+            "sep",
+            "spec",
+            "audit",
+            "say"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "primary",
+            "source",
+            "citations",
+            "thesis",
+            "design",
+            "question",
+            "ecosystem",
+            "knowledge",
+            "explainer",
+            "questions",
+            "true"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "security",
+            "risk",
+            "audits",
+            "exploits",
+            "incidents",
+            "post",
+            "mortems",
+            "oracle",
+            "manipulation",
+            "bug",
+            "bounty",
+            "disclosure",
+            "program",
+            "status",
+            "source",
+            "current",
+            "hacker",
+            "one",
+            "vs",
+            "immunefi",
+            "report",
+            "compliance",
+            "regulation",
+            "travel",
+            "rule",
+            "fatf",
+            "kyc",
+            "aml",
+            "sanctions"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "sdf",
+            "canonical",
+            "organizational",
+            "pages",
+            "source",
+            "org",
+            "mandate",
+            "incl",
+            "self",
+            "funded",
+            "pays",
+            "taxes",
+            "structure",
+            "terms",
+            "service",
+            "delaware",
+            "non",
+            "profit",
+            "legal",
+            "form",
+            "foundation",
+            "mission",
+            "leadership",
+            "board",
+            "roster",
+            "enterprise",
+            "fund",
+            "scope",
+            "portfolio",
+            "size",
+            "quarterly",
+            "reports",
+            "index"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "funding",
+            "governance",
+            "scf",
+            "v7",
+            "award",
+            "tiers",
+            "neural",
+            "quorum",
+            "program",
+            "mechanics",
+            "apply",
+            "step",
+            "build",
+            "instawards",
+            "liquidity",
+            "public",
+            "goods",
+            "awards",
+            "eligibility",
+            "review",
+            "timeline",
+            "prescreen",
+            "panel",
+            "community",
+            "vote",
+            "kyc",
+            "deadlines"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "sdf",
+            "org",
+            "mission",
+            "legal",
+            "structure",
+            "protocol",
+            "history",
+            "scp",
+            "whitepaper",
+            "authors",
+            "ecosystem",
+            "programs",
+            "ambassadors",
+            "regional",
+            "chapters",
+            "bootcamps"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "soroban",
+            "security",
+            "incidents",
+            "reentrancy",
+            "sdk",
+            "advisories",
+            "cves",
+            "ecosystem",
+            "history",
+            "protocol",
+            "20",
+            "mainnet",
+            "launch",
+            "xlm",
+            "initial",
+            "supply",
+            "unhcr",
+            "aid",
+            "enterprise",
+            "fund"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "making",
+            "issued",
+            "asset",
+            "tradable",
+            "visible",
+            "exchanges",
+            "wallets",
+            "explorers",
+            "aggregators",
+            "contract",
+            "source",
+            "verification",
+            "release",
+            "yml",
+            "stellar",
+            "lab",
+            "vs",
+            "expert",
+            "fact",
+            "checking",
+            "claim"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "sdf",
+            "enterprise",
+            "fund",
+            "mandate"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "stellar",
+            "consensus",
+            "protocol",
+            "work"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "scf",
+            "handbook",
+            "say",
+            "award",
+            "tiers"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "reentrancy",
+            "incident",
+            "soroban"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "apply",
+            "scf",
+            "build",
+            "award"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "make",
+            "issued",
+            "asset",
+            "visible",
+            "exchanges",
+            "explorers"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "development",
+            "foundation"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "enterprise",
+            "fund"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "organizational",
+            "structure"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "chief",
+            "scientist"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "grants",
+            "program"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "dev",
+            "docs"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "stellar",
+            "consensus",
+            "protocol"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "handbook"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "proposals"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "ec",
+            "research"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "bug",
+            "bounty"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "security",
+            "program"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "responsible",
+            "disclosure"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "vulnerability",
+            "disclosure"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "security",
+            "audit"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "post",
+            "mortem"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "oracle",
+            "manipulation"
+          ]
+        }
+      ],
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -11967,6 +16264,119 @@
         "landscape",
         "built",
         "fundable"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "assess",
+            "build",
+            "idea",
+            "against",
+            "ecosystem",
+            "exists",
+            "mature",
+            "tried",
+            "vertical",
+            "funded"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "want",
+            "build",
+            "lending",
+            "protocol",
+            "exists",
+            "already",
+            "one",
+            "call",
+            "instead",
+            "five"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "wallet",
+            "space",
+            "crowded",
+            "stellar",
+            "gap",
+            "competitors",
+            "maturity"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "anyone",
+            "tried",
+            "hackathon",
+            "prior",
+            "art",
+            "alive",
+            "dead",
+            "state"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "vet",
+            "idea"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "validate",
+            "idea"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "already",
+            "exists"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "competitive",
+            "landscape"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "market",
+            "gap"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "prior",
+            "art"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "anyone",
+            "built"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "scf",
+            "fundable"
+          ]
+        }
       ],
       "service": "scout",
       "transport": {

@@ -42,6 +42,17 @@ export type CatalogKind = (typeof CATALOG_KINDS)[number];
 export const SEARCH_KINDS = ["operation", "skill"] as const;
 export type SearchKind = (typeof SEARCH_KINDS)[number];
 
+/**
+ * Positive Scout x-routing fields retained as bounded source phrases.
+ * Each keywords item remains separate. Only a multiword item is a phrase.
+ */
+export const ROUTING_FIELDS = ["purpose", "useWhen", "exampleQuestions", "keywords"] as const;
+export const routingPhraseSchema = z.object({
+  field: z.enum(ROUTING_FIELDS),
+  tokens: z.array(z.string().min(1)).min(1)
+});
+export type RoutingPhrase = z.infer<typeof routingPhraseSchema>;
+
 /** A JSON Schema fragment — kept opaque; only the TS renderer walks it. */
 const jsonSchemaShape = z.record(z.string(), z.unknown());
 
@@ -165,6 +176,11 @@ const catalogEntryBaseSchema = z.object({
    * schema-derived shrapnel. Never rendered to users.
    */
   routingKeywords: z.array(z.string()).optional(),
+  /**
+   * Positive Scout x-routing source strings used only for intent-preserving
+   * service selection. They never affect scorer admission or score values.
+   */
+  routingPhrases: z.array(routingPhraseSchema).optional(),
   /** Receipt-backed entity identities, activated only by a complete trigger. */
   knownAliases: z.array(z.string().trim().min(1)).min(2).optional(),
   /** Distinctive complete sequences that activate knownAliases during search. */
