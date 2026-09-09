@@ -214,4 +214,30 @@ The full tracked-tree secret scan passed, including Gitleaks. No paid evaluation
 - [x] Required local maintenance tests, lint, probes, and secret scan pass. Post-filing live lint passes with 70 findings.
 - [x] Every completed external write has a read-back URL.
 - [x] Completed maintenance items leave the active queue; unresolved items have concrete triggers.
-- [ ] Branch, commit, PR, deployment, and issue states are reported separately.
+- [x] Branch, commit, PR, deployment, and issue states are reported separately below.
+
+## Integrated release state — 2026-09-09
+
+Maintenance PR #135 merged at `2026-09-09T03:43:29Z` as `8ab7b88f95177022cd24c0d0acb6e619b19ea23c`.
+The isolated search advisory passed independent review and all checks in PR #137.
+It merged as `f6d31dc07705bc16d83696fc234506534b1e2b5e` and deployed Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7`.
+This later release used the approved #109 production-acceptance workflow. The maintenance snapshot above made no deployment.
+The seven production names passed exact before/after ranking and advisory checks. Issue #109 closed.
+Use `2026-09-08-search-advisory-closeout.md` and `2026-09-09-search-advisory-production-after.json` for the complete release evidence.
+Issue #124 retains its measured blockers and preserved worktree. No broader scoring repair deployed.
+
+New handoff #136 arrived after upstream skill PR #127 deployed.
+The root and independent Grok reviewer fetched the live skill and exact accepted-pin source separately.
+The live skill matches merge `711d6e293b0ba6ae110db0ae307a4d7805a00b8a` with SHA-256 `205faa248dd6c828da4679cee9bfdbf0d71d99269a9a469bafd526756b2a273e`.
+The accepted pin still has the original Protocol 26 comment and SHA-256 `2561ecf136096d2418ff17f6eee896aaa1323d4e07fd8ea21e7352dc822835eb`.
+Mainnet reports protocol 27. Upstream deployment run `34308521287` completed successfully.
+The finding remains active until a reviewed Raven source refresh passes its original trigger and retirement gates.
+No additional upstream correction is requested. The acknowledged result is https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5595645949.
+The root verified the posted body and author byte-for-byte. Handoff #136 remains open.
+Independent report: `2026-09-09-sk021-handoff-review-grok.md`.
+
+The final active queue remains 70 findings: 67 reported upstream and three declined upstream.
+The remaining production and source gates stay in TODO. Paid QA remains unauthorized.
+New handoff #138 arrived during closeout and reports a deployed `sk-024` correction.
+The root read its body and author, but did not independently verify the claimed fix.
+TODO records the exact next verification. No status change or upstream comment follows from the notification alone.

@@ -1,0 +1,434 @@
+{
+  "observedAt": {
+    "current_time": "2026-09-09 04:08:44 UTC"
+  },
+  "surface": "production Raven MCP search",
+  "workerVersion": "b8e5dd1d-d965-401d-92dd-96091639a1a7",
+  "deployedCommit": "f6d31dc07705bc16d83696fc234506534b1e2b5e",
+  "limit": 5,
+  "kind": "default",
+  "rows": [
+    {
+      "query": "freighter",
+      "hits": [
+        {
+          "id": "skills.stellar-dev.dapp",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 30,
+          "tier": "gated"
+        }
+      ],
+      "total": 3,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        }
+      ],
+      "conditionalAdvice": true
+    },
+    {
+      "query": "openx402",
+      "hits": [
+        {
+          "id": "lumenloop.find_content_about_project",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getBuilders",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getLeaderboard",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.develop-secure-contracts",
+          "score": 35,
+          "tier": "gated"
+        }
+      ],
+      "total": 15,
+      "truncated": true,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        }
+      ],
+      "conditionalAdvice": true
+    },
+    {
+      "query": "hypertron",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        },
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        }
+      ],
+      "conditionalAdvice": true
+    },
+    {
+      "query": "planbok",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        },
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        }
+      ],
+      "conditionalAdvice": true
+    },
+    {
+      "query": "vigente",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        },
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        }
+      ],
+      "conditionalAdvice": true
+    },
+    {
+      "query": "cointracker",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        },
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        }
+      ],
+      "conditionalAdvice": true
+    },
+    {
+      "query": "alypay",
+      "hits": [
+        {
+          "id": "lumenloop.find_av_passages",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.find_content_about_project",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.analyzeEcosystem",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.compareHackathons",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "score": 35,
+          "tier": "gated"
+        }
+      ],
+      "total": 59,
+      "truncated": true,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        }
+      ],
+      "conditionalAdvice": true
+    }
+  ],
+  "boundaryChecks": [
+    {
+      "input": {
+        "query": "open x402"
+      },
+      "hits": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 55,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getBuilders",
+          "score": 55,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 55,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.develop-secure-contracts",
+          "score": 49,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 22,
+          "tier": "gated"
+        }
+      ],
+      "total": 27,
+      "truncated": true,
+      "widerCandidates": []
+    },
+    {
+      "input": {
+        "query": "open-x402"
+      },
+      "hits": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 55,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getBuilders",
+          "score": 55,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 55,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.develop-secure-contracts",
+          "score": 49,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 22,
+          "tier": "gated"
+        }
+      ],
+      "total": 27,
+      "truncated": true,
+      "widerCandidates": []
+    },
+    {
+      "input": {
+        "query": "rfp"
+      },
+      "hits": [
+        {
+          "id": "scout.getRfps",
+          "score": 251,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.hackathonBrief",
+          "score": 65,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-light.stellar-scout",
+          "score": 65,
+          "tier": "gated"
+        }
+      ],
+      "total": 3,
+      "truncated": false,
+      "widerCandidates": []
+    },
+    {
+      "input": {
+        "query": "audit"
+      },
+      "hits": [
+        {
+          "id": "skills.lumenloop.stellar-content-auditor",
+          "score": 266,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.listAudits",
+          "score": 251,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getPartners",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-light.stellar-scout",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.find_av_passages",
+          "score": 35,
+          "tier": "gated"
+        }
+      ],
+      "total": 62,
+      "truncated": true,
+      "widerCandidates": []
+    },
+    {
+      "input": {
+        "query": "freighter",
+        "kind": "skill"
+      },
+      "hits": [
+        {
+          "id": "skills.stellar-dev.dapp",
+          "score": 75,
+          "tier": "gated"
+        }
+      ],
+      "total": 1,
+      "truncated": false,
+      "widerCandidates": []
+    },
+    {
+      "input": {
+        "query": "freighter",
+        "service": "scout"
+      },
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchProjects",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        },
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        }
+      ]
+    },
+    {
+      "input": {
+        "query": "freighter",
+        "service": "stellarDocs"
+      },
+      "hits": [
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 30,
+          "tier": "gated"
+        }
+      ],
+      "total": 2,
+      "truncated": false,
+      "widerCandidates": []
+    },
+    {
+      "input": {
+        "query": "freighter",
+        "service": "lumenloop"
+      },
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "lumenloop.search_directory",
+          "basis": "short-query-directory",
+          "lane": "directory"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        },
+        {
+          "id": "lumenloop.find_av_passages",
+          "basis": "catalog-anchor",
+          "lane": "av"
+        }
+      ]
+    }
+  ]
+}

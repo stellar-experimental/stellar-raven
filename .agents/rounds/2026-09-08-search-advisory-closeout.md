@@ -68,12 +68,30 @@ The compact results are in `2026-09-08-search-advisory-production-before.json`.
 None had a directory recommendation before deployment.
 These reads made no service lookup, signing, submission, or paid model request.
 
-## Remaining work
+## Release completion
 
 The tracked-tree secret scan passed. The independent final review passed at `2026-09-09T04:01:36Z`.
-Commit, CI, deployment, and production acceptance remain pending.
-Issue #109 remains open until the deployed recommendation passes the reported-name checks.
+Commit `677ffe4cf1e526c964feb03f4b80ecd19731cdd1` passed every PR #137 check.
+PR #137 merged at `2026-09-09T04:05:30Z` as `f6d31dc07705bc16d83696fc234506534b1e2b5e`.
+Deployment preflight proved a clean tree with HEAD equal to origin/main.
+Wrangler deployed Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7` from that merged commit.
+Deployment readback shows 100 percent at `2026-09-09T04:07:34.057Z`.
+The previous deployment is Worker Version `c08f9e17-661b-40e4-af1d-2ece67b02fb7`.
+Production acceptance passed for all seven reported names on 2026-09-09.
+Their complete ranked IDs, scores, tiers, totals, and truncation flags match the committed before artifact exactly.
+Each now includes `scout.searchProjects` with basis `short-query-directory` and conditional lookup guidance.
+The production boundary checks passed for ordinary terms, two-token names, skill-only searches, and all three service filters.
+Sandbox `codemode.search` independently returned the same freighter ranking and advisory.
+These checks executed no upstream directory lookup or paid model operation.
+The compact production result is `2026-09-09-search-advisory-production-after.json`.
+Issue #109 closed after https://github.com/stellar-experimental/stellar-raven/issues/109#issuecomment-5595645825 recorded production acceptance.
+The root verified the comment body and author byte-for-byte before closure.
 Issue #124 remains open. The combined candidate has a separate routing-gate failure and unaccepted source dependencies.
+Its measured update is https://github.com/stellar-experimental/stellar-raven/issues/124#issuecomment-5595611718.
+The root verified that body and author byte-for-byte. No scoring code or new source pin deployed.
+The independent production closeout review passed through `2026-09-09T04:16:00Z`.
+Report: `2026-09-09-production-closeout-review-grok.md`. It rechecked deployment, ranking artifacts, issue states, and source boundaries.
+The evidence-only follow-up passed improvements lint, live intake checks, whitespace checks, and secret scans.
 
 ## Preserved #124 candidate
 
