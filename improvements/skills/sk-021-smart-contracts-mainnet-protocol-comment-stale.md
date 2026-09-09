@@ -1,7 +1,7 @@
 ---
 id: sk-021
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-03
 upstreamTitle: The Smart Contracts skill example says Mainnet runs Protocol 26
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-09-03 read-only Horizon root response at https://horizon.stellar.org/ returned current_protocol_version 27 and core_supported_protocol_version 28
   - .agents/rounds/2026-09-03-truth-maintenance/golden-sol.md records the stale-comment review and the Mainnet protocol observation
   - .agents/rounds/2026-09-03-truth-maintenance/golden-final-review-sol.md independently re-derived the live trigger
+  - upstream issue filed 2026-09-09: https://github.com/stellar/stellar-dev-skill/issues/124
 ---
 
 ## Finding

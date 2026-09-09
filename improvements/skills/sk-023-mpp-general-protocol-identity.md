@@ -1,7 +1,7 @@
 ---
 id: sk-023
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: The agentic-payments MPP guide omits MPP's payment-method-agnostic scope
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - 2026-09-04 source read of https://mpp.dev/protocol; SHA-256 a2abfffc6ed63c99c29a9dfc1797a284c954b2f975e0fe2171f513b07435575d. It says MPP "works with any payment network", has a section titled "Payment method agnostic", and lists payment methods as the network integration layer.
   - 2026-09-04 source read of https://developers.stellar.org/docs/build/agentic-payments/mpp; SHA-256 9056df9951a1624ce5e2c6a3b7f431d0a6d9d6c252da4eafd3ce5134c9e182f7. It names @stellar/mpp as the npm package for MPP on Stellar, calls mppx the core MPP framework library, and links the MPP specification separately.
   - eval/qa/results/2026-09-04T05-40-51-variantA.json row q-defi-agentic-payment-standards-compare read the skill at pin b78983c, labeled MPP "Stellar-native", and received a wrong verdict. Row q-mpp-discovery-and-modes repeated "the Stellar-native alternative to x402". The artifact is a stopped mixed-upstream diagnostic; the skill source is unaffected by that stop.
+  - upstream issue filed 2026-09-09: https://github.com/stellar/stellar-dev-skill/issues/125
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/agentic-payments/mpp.md

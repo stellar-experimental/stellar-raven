@@ -1,7 +1,7 @@
 ---
 id: sls-084
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-08
 upstreamTitle: The project response returns package-release outside the documented statusBasis enum
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - The original 2026-09-08 complete seven-category scan paged all 981 searchable project rows. Nine rows returned statusBasis package-release: ACTA, AXIS, Blockaid, Cypher, DeFarm, Drips, Fundable, Smart Treasury, and Unstoppable Wallet. The normalized scan summary has SHA-256 ec1c00760efb7b268bea71ca18909eeea860d007226f5bbd372927d678569c20.
   - Direct name searches reproduced package-release on all nine rows between 2026-09-08T17:55:14.136Z and 2026-09-08T17:55:19.369Z. Each row also returned a dated npm registry statusSourceUrl.
   - independent population review: .agents/rounds/2026-09-08-improvements-followups/sls024-review-sol.md
+  - upstream issue filed 2026-09-09: https://github.com/Stellar-Light/stellarlight/issues/1530
 ---
 
 ## Finding

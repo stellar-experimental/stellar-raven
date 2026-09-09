@@ -150,6 +150,38 @@ The root independently matched the current pinned file hashes and corrected the 
 The completed final Grok delta passed all twelve dispositions: eleven new filings and one existing issue link.
 New filings still require public evidence snapshots and committed-byte dry runs.
 
+### Filing and retirement receipts
+
+Evidence commit `8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d` was pushed before any new issue.
+The root read every public snapshot and compared its bytes with the local finding.
+All eleven committed-byte dry runs passed. Each body retained the marker and all five required sections.
+The root read each new issue through the GitHub API and compared its body with the rendered draft.
+Every comparison was byte-exact. Every new issue was open and authored by `kalepail` at read-back.
+
+| Finding | Durable issue | Created UTC | Labels at read-back |
+| --- | --- | --- | --- |
+| sls-082 | https://github.com/Stellar-Light/stellarlight/issues/1529 | 2026-09-09T03:34:52Z | none |
+| sls-084 | https://github.com/Stellar-Light/stellarlight/issues/1530 | 2026-09-09T03:35:10Z | none |
+| sk-022 | https://github.com/OpenZeppelin/openzeppelin-skills/issues/16 | 2026-09-09T03:35:50Z | none |
+| sd-052 | https://github.com/stellar/stellar-cli/issues/2722 | 2026-09-09T03:35:53Z | none |
+| ll-030 | https://github.com/lumenloop/lumenloop-backend/issues/44 | 2026-09-09T03:36:28Z | none |
+| sd-046 | https://github.com/stellar/stellar-docs/issues/2842 | 2026-09-09T03:36:31Z | raven |
+| sd-051 | https://github.com/stellar/stellar-docs/issues/2843 | 2026-09-09T03:36:33Z | raven |
+| sk-021 | https://github.com/stellar/stellar-dev-skill/issues/124 | 2026-09-09T03:37:18Z | none |
+| sk-023 | https://github.com/stellar/stellar-dev-skill/issues/125 | 2026-09-09T03:37:21Z | none |
+| sk-024 | https://github.com/stellar/stellar-dev-skill/issues/126 | 2026-09-09T03:37:23Z | none |
+| sls-083 | https://github.com/Stellar-Light/stellarlight/issues/1531 | 2026-09-09T03:37:41Z | none |
+
+The sk-022 body links the existing OpenZeppelin issue #14 and explains the distinct API defect.
+The sd-050 record links existing Docs issue #2561. No new issue or comment was necessary.
+The sd-049 resolver passed its dry run and retired the file after its public source check.
+Its receipt pins `8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d` and records the obsolete-branch source error.
+The resolver removed its intake override and regenerated the index. No upstream comment applies to this never-filed finding.
+The independent Grok cleanup review passed at `2026-09-09T03:37:08Z`.
+The corrected source remains recoverable from Git history. Historical records retain their dated provenance.
+Final active counts: 70 findings, comprising 67 reported upstream and three declined upstream.
+No verified or fixed-upstream filing candidates remain. The completed filing item left TODO and NEXT.
+
 The sls-080 monitor used production Raven because no existing local server was available.
 At `2026-09-09T02:53:32.955Z`, explainRepo returned `MaxSupportedProtocolVersion = 28`, with `answerSource: knowledge-note`.
 Its `scannedRef` was `82660510ecda7fd365a14d08badb9d85fa22bc32`; `answerAsOf` was `2026-09-01T00:00:00Z`.
@@ -178,8 +210,8 @@ No source or runtime code changed in this maintenance snapshot.
 Live improvements lint passed with 71 findings. All nine probes reproduced their findings with zero errors or inconclusive results.
 The full tracked-tree secret scan passed, including Gitleaks. No paid evaluation, provider call, or deployment ran.
 
-- [ ] All worker and reviewer results reconciled.
-- [ ] Required tests, lint, probes, and secret scan pass.
-- [ ] Every external write has a read-back URL.
-- [ ] Completed items leave the active queue; unresolved items have concrete triggers.
+- [x] Maintenance author and reviewer results reconciled. Search remains a separate active repair lane.
+- [x] Required local maintenance tests, lint, probes, and secret scan pass. Post-filing live lint passes with 70 findings.
+- [x] Every completed external write has a read-back URL.
+- [x] Completed maintenance items leave the active queue; unresolved items have concrete triggers.
 - [ ] Branch, commit, PR, deployment, and issue states are reported separately.

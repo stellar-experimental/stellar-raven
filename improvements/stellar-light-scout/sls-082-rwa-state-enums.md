@@ -1,7 +1,7 @@
 ---
 id: sls-082
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-08
 upstreamTitle: The RWA state request and response enums omit issued-single-holder
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - A live state=issued-single-holder request returned 200 with 34 matches at 2026-09-08T14:38:50.935Z; response SHA-256 7c83cbf33ac8643c5c68e337598c5a78391cdfe664af78c38584860226e1c95c.
   - A live state=bogus request returned 400 and listed issued-single-holder as a valid state; response SHA-256 7c328a1c93872800fc93b2f2a71e278c9a54a8db72614a8f35e576d7e1e1789b.
   - .agents/rounds/2026-09-08-live-drift-91.md
+  - upstream issue filed 2026-09-09: https://github.com/Stellar-Light/stellarlight/issues/1529
 ---
 
 ## Finding

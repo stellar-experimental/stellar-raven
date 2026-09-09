@@ -18,7 +18,8 @@ The Docs report’s live checks hold.
 Issue `#40` stays open for authenticated production copy acceptance only.
 `.agents/NEXT.md` now ranks that remaining `#40` check.
 The Saved Keypairs goldens and `sd-049` `fixed-upstream` record now match the 2026-09-09T03:14:02Z reconciliation.
-See the later final verdict: **PASS** for that golden and retirement delta. Queue B9 and filing rows stay until the resolver.
+See the later final verdict: **PASS** for that golden and retirement delta.
+The later resolver-cleanup check is also **PASS**.
 
 ## Scope and fixed point
 
@@ -680,3 +681,34 @@ Answer, notes, and avoid still keep no-encryption, no-custody, and legacy plaint
 `npm run eval:qa:lint -- --since b2dbde53e9c9910b6d49a87ccea829555eeb4ef1` now has 0 errors and 62 warnings.
 That case has no remaining lint hit.
 The prior negative-predicate warning is gone.
+
+## `sd-049` resolver cleanup — 2026-09-09T03:37:08Z
+
+**PASS**
+
+Audit only. Filing progress and search work were ignored.
+
+Published source: `8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d`.
+Current `HEAD` is that commit. The resolver edits are in the worktree.
+
+| check | result |
+| --- | --- |
+| Active file | absent at `improvements/stellar-docs/sd-049-lab-saved-keypairs-obfuscation-conflict.md` |
+| Intake override | absent from `improvements/intake.json` |
+| `INDEX.md` | no `sd-049` row |
+| Active findings | 70; no `sd-049`; no overlap with resolved IDs |
+| `improvements:lint` | pass, 70 findings |
+| TODO / NEXT | no `sd-049`; B9 caution gone |
+| Register | no `sd-049`; `cluster-137` is `consistent` as of 2026-09-09 |
+
+Resolved receipt `sd-049`:
+
+- `sourceCommit`: `8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d`
+- `sourceUrl`: `https://github.com/stellar-experimental/stellar-raven/blob/8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d/improvements/stellar-docs/sd-049-lab-saved-keypairs-obfuscation-conflict.md`
+- `upstreamRefs` and `resolvingRefs` empty
+- `liveRecheck` records obsolete `master` and no new upstream fix
+- `reviewEvidence` records never-filed, so no upstream comment
+
+The snapshot at that commit, and the GitHub raw URL, contain the corrected finding: obsolete `master` premise, current `main` XOR writer, do not file.
+
+Historical provenance remains in the two goldens, `eval/qa/cases.json`, `eval/qa/sample.json`, and dated round notes. Those mentions are not live queue items.

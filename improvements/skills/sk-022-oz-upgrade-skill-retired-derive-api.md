@@ -1,7 +1,7 @@
 ---
 id: sk-022
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: OpenZeppelin upgrade skill teaches retired derive APIs as current
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - eval/qa/results/2026-09-04T05-40-51-variantA.json row q-soroban-oz-upgradeable-macro read the skill at pin 6f215af through codemode.skill.read, repeated the derive macros as the current API, and received a wrong verdict. The artifact is a stopped mixed-upstream diagnostic; the skill source is unaffected by that stop.
   - eval/qa/corpus/battery/soroban/q-soroban-oz-upgradeable-macro.json already lists the retired derives as an avoid trap after its 2026-08-27 live re-check; no golden change is needed.
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-terra.md records the dated recheck
+  - upstream issue filed 2026-09-09: https://github.com/OpenZeppelin/openzeppelin-skills/issues/16
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/main/skills/upgrade-stellar-contracts/SKILL.md

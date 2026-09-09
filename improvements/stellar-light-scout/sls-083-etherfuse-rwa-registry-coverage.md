@@ -1,7 +1,7 @@
 ---
 id: sls-083
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-08
 upstreamTitle: The RWA registry omits four current Etherfuse assets and does not mark project coverage partial
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-09-08 https://etherfuse.com/.well-known/stellar.toml declares nine currencies for issuer GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC; response SHA-256 f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe.
   - 2026-09-08 `GET https://horizon.stellar.org/assets?asset_issuer=GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC&limit=200` returned 11 assets. All nine TOML-declared assets have authorized trustlines; undeclared USTR and GBPx are the other two. Response SHA-256 437383b0e96c37a81587ee0c845198f0a08eac528462fe14ade636f6bb7bf161.
   - independent residual review: .agents/rounds/2026-09-08-improvements-followups/sls023-review-fable.md
+  - upstream issue filed 2026-09-09: https://github.com/Stellar-Light/stellarlight/issues/1531
 ---
 
 ## Finding

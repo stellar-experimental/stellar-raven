@@ -572,6 +572,20 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/767c981a9304bd74b167357ffdf9a39dd017cce4/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
     },
     {
+      "id": "sd-049",
+      "title": "The claimed conflict does not reproduce on the Laboratory default branch. The current writer passes each saved keypair array through…",
+      "service": "stellar-docs",
+      "discovered": "2026-09-03",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-09-09: default main bbbe48c79b8a90bbc548115a0573c912b1e9fa9e and served lab.stellar.org writer use reversible XOR/base64; Docs and public UI agree on unprotected Testnet/Futurenet storage. The original conflict used obsolete master; this is not a new upstream fix.",
+      "reviewEvidence": "Independent Grok 4.6 high re-derived source, served bundle, Docs and public UI; final golden/retirement PASS 2026-09-09T03:24:18Z and wording PASS 03:26:25Z in .agents/rounds/2026-09-08-maintenance-independent-review-grok.md. Root reconciled both cases, clusters 023/137, and active queue references. Never filed; no upstream comment applies.",
+      "sourceCommit": "8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d/improvements/stellar-docs/sd-049-lab-saved-keypairs-obfuscation-conflict.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",

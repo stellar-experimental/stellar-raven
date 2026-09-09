@@ -1,7 +1,7 @@
 ---
 id: sk-024
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: The x402 guide presents OpenZeppelin Channels and its API key as the only facilitator path
 evidence:
@@ -15,6 +15,7 @@ evidence:
   - 2026-09-04 live read of https://developers.stellar.org/docs/build/agentic-payments/x402 (page last updated 2026-09-02). Its "x402 Facilitators" section says two options are available for Stellar: the Coinbase x402 facilitator, which supports Stellar on Testnet with sponsored fees, and the Build on Stellar Relayer with the OpenZeppelin x402 plugin, which requires an API key.
   - 2026-09-04 live read of https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar. The Built on Stellar facilitator is built with the OpenZeppelin Relayer, uses the channels.openzeppelin.com endpoints, and requires a generated API key on testnet and mainnet.
   - eval/qa/results/2026-09-04T05-40-51-variantA.json: row q-soroban-x402-auth-entry-signing read the skill at pin b78983c, wrote "an API key is required on both testnet and mainnet" for the flow, and received a wrong verdict. Row q-defi-x402-on-stellar-what presented OZ Channels as the facilitator and received a partial verdict for the missing second option. Row q-agent-payment-standard-choice reproduced the "Yes (OZ Channels)" table. The artifact is a stopped mixed-upstream diagnostic; the skill source is unaffected by that stop.
+  - upstream issue filed 2026-09-09: https://github.com/stellar/stellar-dev-skill/issues/126
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/agentic-payments/SKILL.md

@@ -80,27 +80,6 @@ Use `.agents/rounds/2026-09-03-truth-maintenance/finding-recurrences-terra.md` f
 
 Done when: the next state read is recorded without an upstream reminder comment.
 
-### File the eleven verified findings after fresh checks and review
-
-The owner granted filing authority in `.agents/rounds/2026-09-08-maintenance-execution.md`.
-Fresh triggers, deduplication, independent review, and dry-run bodies remain required.
-The verified findings are `ll-030`, `sd-046`, `sd-051`, `sd-052`, `sk-021`,
-`sk-022`, `sk-023`, `sk-024`, `sls-082`, `sls-083`, and `sls-084`. Earlier candidates passed
-`npm run improvements:file -- --dry-run` on 2026-09-04 with a resolved owner.
-The `sls-082` dry run passed on 2026-09-08 with its immutable source snapshot.
-The new `sls-083` dry run resolved its owner and body, but needs a rerun after its first commit.
-Run the `sls-084` dry run before its first commit and again after that commit.
-`ll-030` resolves through the Lumenloop service rule and has no override.
-The original evidence is `.agents/rounds/2026-09-03-truth-maintenance/verified-intake-readiness-terra.md`.
-
-The `sk-023` and `sk-024` dry runs passed again at merged commit `a0a398ad447e` on 2026-09-08.
-Their immutable snapshots point at the corrected committed text.
-Pace the filing wave for owner-readable, deduplicated issues. Cross-link the open
-`OpenZeppelin/openzeppelin-skills` issue from `sk-015` when `sk-022` is filed.
-
-Done when: each authorized finding is `reported-upstream` with a read-back issue URL, or the owner
-records an explicit deferral for it.
-
 ## Recovery
 
 ### Monitor the rejected repository-tooling recovery experiment
@@ -145,7 +124,7 @@ G1's detailed record is in closed PR #102 at commit `6baec0a4`. Fetch it with
 `git fetch origin pull/102/head` if this block reopens.
 
 Done when: a reviewed v3 plan later passes ADR-0008 and ships, or the owner retires this recovery
-program. A later Scout finding must use `sls-082`; `sls-081` is historical only.
+program. Select each later Scout ID from the maximum active and resolved ID; `sls-081` is historical only.
 
 ## Routing
 

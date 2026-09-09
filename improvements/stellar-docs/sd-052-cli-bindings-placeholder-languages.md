@@ -1,7 +1,7 @@
 ---
 id: sd-052
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: CLI manual presents unimplemented bindings as generators
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-09-04 local read-only run of stellar 27.1.0 showed each listed placeholder command exits with a not implemented error and links to https://github.com/lightsail-network/stellar-contract-bindings
   - eval/qa/results/2026-09-04T05-40-51-variantA.json row q-soroban-cli-bindings presented placeholder languages as built-in generators and received a wrong verdict
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-terra.md records the dated recheck
+  - upstream issue filed 2026-09-09: https://github.com/stellar/stellar-cli/issues/2722
 ---
 
 ## Finding

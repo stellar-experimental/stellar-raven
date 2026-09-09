@@ -1,7 +1,7 @@
 ---
 id: sd-051
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: Protocol 20 history heading conflates a software release with Mainnet activation
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - eval/qa/results/2026-09-04T05-40-51-variantA.json row q-hist-soroban-launch-protocol20 treated the heading date as the Mainnet date and received a wrong verdict
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-terra.md records the dated recheck
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-review-opus.md records the independent review and this correction
+  - upstream issue filed 2026-09-09: https://github.com/stellar/stellar-docs/issues/2843
 ---
 
 ## Finding
