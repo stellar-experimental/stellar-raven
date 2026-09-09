@@ -1,15 +1,17 @@
 ---
 id: sls-083
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-08
 upstreamTitle: The RWA registry omits four current Etherfuse assets and does not mark project coverage partial
 evidence:
+  - 2026-09-08 fresh checks reproduced five Scout assets and nine issuer-declared assets. Scout RWA SHA-256 is 3fb7e278ad5c7452ec15e061c2983e0384e3492fcf945874b70243acdf519def. Project search SHA-256 is 0c41ff0039823cf56f214fb657520fd848fa037935a3d6fcdc3a3ba51ed1c031. `stellar.toml` SHA-256 is f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe. Horizon SHA-256 is 0b7fabe1bcfb10fc5b33a9154ecaa5639b39955ee85dd99901e9d7c0f409ca1a and confirms authorized trustlines for all nine declared assets.
   - 2026-09-08T17:32:33.197Z live `GET /api/projects/search?q=etherfuse&limit=20` returned five Etherfuse products with no completeness qualifier; response SHA-256 85667958f041f49756dc586f568059d974ef265167a83f343796c2e95e26b4c9.
   - 2026-09-08 live `GET /api/rwa?project=etherfuse&limit=100` returned the same five assets: USTRY, CETES, TESOURO, EUROB, and KTB.
   - 2026-09-08 https://etherfuse.com/.well-known/stellar.toml declares nine currencies for issuer GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC; response SHA-256 f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe.
   - 2026-09-08 `GET https://horizon.stellar.org/assets?asset_issuer=GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC&limit=200` returned 11 assets. All nine TOML-declared assets have authorized trustlines; undeclared USTR and GBPx are the other two. Response SHA-256 437383b0e96c37a81587ee0c845198f0a08eac528462fe14ade636f6bb7bf161.
   - independent residual review: .agents/rounds/2026-09-08-improvements-followups/sls023-review-fable.md
+  - upstream issue filed 2026-09-09: https://github.com/Stellar-Light/stellarlight/issues/1531
 ---
 
 ## Finding

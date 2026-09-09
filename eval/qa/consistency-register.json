@@ -690,10 +690,10 @@
           "q-tool-cli-testnet-identity-howto"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Rechecked the Lab custody warning and Testnet/Futurenet boundary; no Friendbot contradiction.",
+          "date": "2026-09-09",
+          "reason": "Root and independent Grok review checked all seven members. The Lab storage correction preserves the non-production funding boundary. The existing Testnet shorthand does not state Testnet-only coverage.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -702,7 +702,7 @@
           "q-edge-send-me-free-xlm": "2a6287ef7a1ff80613c611aa03542a657df4363663912c63ca9a7750a3153443",
           "q-infra-testnet-vs-futurenet": "0cbacad7c6ce832c85a791e78ebb68753111fabaf3d7370878fc9a29953418d5",
           "q-ti-custodial-account-generation-c-address": "9201738ea99647028b00a71648da5b96a30d8149e751a858f271d8a1b5aef042",
-          "q-ti-stellar-lab-usage-and-new-ui": "813eb45e303a13842f3e81a3ec825695153b14dfd9126c9a5d1a6e9611726d68",
+          "q-ti-stellar-lab-usage-and-new-ui": "bc79be8354e3a44bffd51f2ca841aa36776f74cda0492bc64801e1670857e3b9",
           "q-ti-testnet-usdc-faucet": "b63dbd8f354b77b26f4847dc55bc9006dc6f33ec570775fc7a17c0775359dc4c",
           "q-tool-cli-testnet-identity-howto": "43cfc42ea3ad0429fc7ea7a57b30981327de833c7567602e6a17dc20a7a37b7f"
         }
@@ -3252,16 +3252,16 @@
           "q-ti-stellar-lab-usage-and-new-ui"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-09-09",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Rechecked the documentation-versus-implementation caution across both Saved Keypairs cases; no contradiction.",
+          "date": "2026-09-09",
+          "reason": "Root and independent Grok review reconciled both cases against current main source, served code, Docs, and public UI. Both describe reversible obfuscation, readable legacy plaintext, and unprotected test-network storage.",
           "verdict": "consistent"
         },
-        "note": "Saved Keypairs is Testnet/Futurenet browser storage. Current source and UI show plaintext JSON. Current official documentation still says obfuscated.",
+        "note": "Saved Keypairs is unprotected Testnet/Futurenet browser storage. Current writes use reversible XOR/base64 obfuscation and legacy plaintext rows remain readable. Docs, source, and UI warnings agree. The former conflict used Laboratory's obsolete master branch.",
         "memberContentSha256": {
-          "q-ti-secret-key-vs-mnemonic-derivation": "0ccfb3ba6c59e4fcfb01e30766d3e716243d0f37f5a35f46cce0cbd15b2c07a4",
-          "q-ti-stellar-lab-usage-and-new-ui": "813eb45e303a13842f3e81a3ec825695153b14dfd9126c9a5d1a6e9611726d68"
+          "q-ti-secret-key-vs-mnemonic-derivation": "a12dc527ea94f7350be7ee6df042da06a167cf42b8331c6ad28f2be32df3c33b",
+          "q-ti-stellar-lab-usage-and-new-ui": "bc79be8354e3a44bffd51f2ca841aa36776f74cda0492bc64801e1670857e3b9"
         }
       }
     ]

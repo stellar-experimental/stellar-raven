@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-03
 evidence:
+  - 2026-09-09T02:45:05.123Z fresh name-only listing check returned 21 authenticated tools and all three account-scoped names. At 02:45:18.924Z the same key GET /v1/me returned tools.available=21 and tools.visible=21. The anonymous control returned 18 tools and none of those names. No partner descriptions or paid operation were requested.
   - live regression re-check 2026-07-14: authenticated partner-tier GET /v1/tools returned the same 18 rows as the anonymous control and omitted list_my_research, request_research, and research_result, while same-key GET /v1/me reported tools.available=21 and tools.visible=21
   - upstream regression issue filed 2026-07-14: https://github.com/lumenloop/lumenloop-backend/issues/42
   - research/services/lumenloop.md (documented quirk)
@@ -23,12 +24,11 @@ recurrences:
 
 ## Finding
 
-The 2026-07-14 partner-listing regression stopped reproducing later that day and
-remained absent on 2026-07-27: authenticated `/v1/tools` and `/v1/me` both show
-21 available tools, while the anonymous listing correctly shows 18 public tools.
-Keep this finding `reported-upstream` until upstream links the deployed fix and
-closes #42. Retirement needs that resolution because the defect flapped within a
-single day on 2026-07-14.
+The authenticated tool listing intermittently omitted partner-visible names while `/v1/me` still reported those tools as available.
+The defect reproduced again on 2026-08-11 after passing checks in July.
+The 2026-09-09 check passes: authenticated discovery and account metadata both report 21 tools.
+The anonymous control exposes only 18 public tools.
+Keep this finding `reported-upstream` pending independent verification and resolution evidence for the intermittent defect.
 
 ## Evidence
 
@@ -41,8 +41,12 @@ and `/v1/me` again reported 21 available/visible tools; the anonymous control st
 at 18. The 2026-07-27 upstream comment records that recheck. Issue #42 remains open
 without a linked deployed-fix reference.
 
+The 2026-08-11 recurrence supersedes the July pass as historical defect evidence.
+The 2026-09-09 name-only check again passes all three comparisons.
+One fresh passing observation does not establish that the intermittent cause is resolved.
+
 ## Recommendation
 
 Keep the authenticated listing and `/v1/me` counts consistent, and link the deployed
-fix before closing #42. Consumers may retain the count cross-check as a drift guard;
-no two-endpoint union is currently needed to discover partner-tier tool names.
+fix before closing #42. Consumers should retain the count cross-check as a drift guard.
+Do not remove discovery safeguards on one passing observation.

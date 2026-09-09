@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-07-27
 upstreamTitle: Separate the self-hosted OpenZeppelin Relayer from the managed Stellar Channels service in Tools docs
 evidence:
+  - 2026-09-09 Raven-authored partial verification reply by kalepail: https://github.com/stellar/stellar-docs/issues/2707#issuecomment-5595183018; live pages pass, original search alias persists, and the corrected page occurrence stays closed. Read back after posting.
   - eval round 2026-07-27 QA sample-30, results stamp 2026-07-27T22-50-16-variantA.json, case q-ti-openzeppelin-relayer graded wrong with 3 missing facts and 2 wrong claims
   - 2026-07-27 live production stellarDocs.search_sdk_cli_tools_docs({ query "managed Channels", hitsPerPage 15, includeContent true }) returned the alias framing on both /docs/tools and /docs/tools/openzeppelin-relayer
   - 2026-07-27 live production scout.searchRepos({ query "openzeppelin relayer", limit 100 }) returned the canonical OpenZeppelin/openzeppelin-relayer Rust repository, indexed activity 2026-07-14
@@ -12,6 +13,8 @@ evidence:
   - 2026-07-27 live production scout.searchResearch returned /docs/build/agentic-payments/x402, which already states the x402 plugin uses the Relayer framework and leverages managed Channels underneath
   - filed upstream 2026-07-28: https://github.com/stellar/stellar-docs/issues/2707
 recurrences:
+  - date: 2026-09-09
+    evidence: PR https://github.com/stellar/stellar-docs/pull/2723 merged as df8417ab9de4eb75e893e81c2c262fe9d274318f and deployed at 2026-09-08T17:19:07Z. Both live Tools pages pass the product distinction at 02:46:11Z. Production Raven still returned the old alias on both pages at 02:48:09Z. The last completed crawl ended before deployment. See .agents/rounds/2026-09-08-docs-index-execution-astra.md for separate source and index evidence.
   - date: 2026-09-02
     evidence: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md rechecked the live Tools page against OpenZeppelin's current Relayer, Relayer Service, and Channels documentation; the alias framing still reproduces. The page also links an inactive Channels Statuspage and OpenZeppelin's 1.3.x guide while rendered docs label 1.5.x stable. Issue #2707 remains open without comments or maintainer activity, so no recurrence-only comment was posted.
   - date: 2026-08-11
@@ -24,9 +27,12 @@ recurrences:
 
 ## Finding
 
-The current Tools documentation presents "OpenZeppelin Relayer" and the managed
+The serving search index retains the old alias on both Tools pages as of 2026-09-09.
+The live pages contain the correction from PR #2723. Full verification awaits search ingestion.
+
+The original Tools documentation presented "OpenZeppelin Relayer" and the managed
 Stellar Channels service as the same product. Both `/docs/tools` and
-`/docs/tools/openzeppelin-relayer` carry the framing that OpenZeppelin Relayer
+`/docs/tools/openzeppelin-relayer` carried the framing that OpenZeppelin Relayer
 is "also known as Stellar Channels Service, … managed infrastructure".
 
 OpenZeppelin's canonical `openzeppelin-relayer` repository is a distinct,
@@ -42,10 +48,10 @@ therefore gives wrong funding and top-up guidance while correctly citing its
 source — the failure mode is invisible to the reader because the citation is
 genuine.
 
-The docs already demonstrate the correct distinction elsewhere:
+The docs already demonstrated the correct distinction elsewhere:
 `/docs/build/agentic-payments/x402` describes the x402 plugin as using the
 Relayer framework while leveraging managed Channels underneath. The Tools pages
-have not adopted that separation.
+adopted that separation in PR #2723, but search still returns their old text.
 
 ## Evidence
 
@@ -85,6 +91,11 @@ tested surface, and current managed-service provider health was not verifiable
 — documented endpoint reachability is not the same as a working relay.
 
 ## Recommendation
+
+The content correction is deployed. Verify a completed post-deployment crawl and the corrected positive search records.
+Keep the finding open while the original search trigger reproduces. Do not rewrite individual index records.
+
+## Original content recommendation
 
 For the Stellar Docs owner, cheapest fix first: rename or restructure the
 managed-service page so "OpenZeppelin Relayer" and the managed Stellar
