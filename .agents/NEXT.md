@@ -251,12 +251,16 @@ proved that the repaired raw-envelope path works. See `production-deployment-ter
 The owner authorized the general scoring repair. The combined candidate remains preserved in `fix/search-name-and-noun-ranking`.
 Its unchanged routing gate fails on legacy top-five `319 > 315`; 16 exact-operation losses still need independent reconciliation.
 PR #137 deployed the #109 advisory and preserves all 544 routing result rows.
-Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7` serves commit `f6d31dc07705bc16d83696fc234506534b1e2b5e`.
+Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7` served commit `f6d31dc07705bc16d83696fc234506534b1e2b5e`.
 All seven reported production names passed exact ranking and advisory checks. Issue #109 reached production acceptance.
 See `rounds/2026-09-09-search-advisory-production-after.json` for production evidence.
 The corrected stellar-dev pin reached production in Worker Version `0dad1151-56f5-4e7d-ae75-b4b81f3601f9`.
 The independent production review passed. Skill-finding receipts live in `improvements/resolved.json`.
-See `TODO.md` for the #124 release boundary. Existing gate thresholds and frozen holdout labels stay unchanged.
+The separate #124 selector reached production in Worker Version `89b1459f-8187-46a9-b8d1-c34373c1b086`.
+It serves commit `63a1c2c980ab794590e40cd998ec947322f5173c`; both original leaderboard searches passed production acceptance.
+Issue #124 closed after the verified production result and separate RFP/Blend dispositions.
+See `rounds/2026-09-09-outstanding-closeout.md` for the deployment receipt and checks.
+Existing gate thresholds and frozen holdout labels stay unchanged.
 Source acceptance and deployment remain separate from a local scoring repair.
 
 ### G. Confirm the Raven capability-boundary third case
