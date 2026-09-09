@@ -1,7 +1,8 @@
 # Upstream sweep — Terra high — 2026-09-09
 
 Scope: a read-only check of all 67 active findings and all six open Raven issues.
-The check ran from `2026-09-09T18:11:00Z` to `2026-09-09T18:22:05Z`.
+The receipt began after the `2026-09-09T18:16:00Z` lane launch and ended at `2026-09-09T18:22:05Z`.
+The `18:11` values below are upstream event times, not this lane's collection start time.
 No paid call, browser session, comment, filing, closure, finding edit, generated change, or account action occurred.
 This file is the only write from this lane.
 

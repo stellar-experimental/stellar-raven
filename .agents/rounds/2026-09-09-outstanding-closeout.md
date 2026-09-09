@@ -50,6 +50,11 @@ The current issuer TOML declares the same nine assets; SHA-256 `f9b923ae30b0abf1
 Terra independently reproduced the service checks in `2026-09-09-upstream-sweep-terra.md`.
 These upstream fixes do not establish Raven catalog acceptance.
 
+Terra independently rejected the full source candidate in `2026-09-09-scout-drift-terra.md`.
+Root preserved its 17 changed files in local stash commit `5d9d35bed804064482a66ba8f8f76b71f5759327`.
+The working runtime returned to accepted Scout `1.9.1` and the previous stellar-light skill pin.
+This rejects the source candidate, not the independently verified upstream fixes.
+
 ## Eval verdict
 
 Run deterministic routing, corpus, and focused regressions. Do not run paid model-answering or judging lanes.
@@ -95,9 +100,45 @@ No golden changes are assumed. Any necessary change requires the golden-truth wo
 
 Retirement requires fresh independent production verification, public source snapshots, comments, reference cleanup, and resolver receipts.
 
+Grok's independent production review passed for `sk-021`, `sk-023`, and `sk-024`.
+The complete report is `2026-09-09-skill-retirement-live-grok.md`.
+Public source snapshot: `09820d46ad3cbc64a9cced3786831aa24ab1c8a6`.
+Root fetched each commit-pinned public finding and confirmed byte equality before posting comments.
+The resolver removed all three active files, probes, and intake overrides and regenerated the index.
+It wrote three complete receipts in `improvements/resolved.json`.
+The active queue now has 64 findings. Lint passed.
+Root removed the completed TODO item and the obsolete NEXT deployment trigger.
+Historical round records and PIN-REVIEW entries remain historical evidence.
+
+Each resolution comment was posted by `kalepail` and read back byte-for-byte:
+
+| Finding | Upstream issue | Resolving PR | Raven handoff |
+| --- | --- | --- | --- |
+| `sk-021` | https://github.com/stellar/stellar-dev-skill/issues/124#issuecomment-5606818314 | https://github.com/stellar/stellar-dev-skill/pull/127#issuecomment-5606818613 | https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5606818877 |
+| `sk-023` | https://github.com/stellar/stellar-dev-skill/issues/125#issuecomment-5606819192 | https://github.com/stellar/stellar-dev-skill/pull/129#issuecomment-5606819499 | https://github.com/stellar-experimental/stellar-raven/issues/140#issuecomment-5606819822 |
+| `sk-024` | https://github.com/stellar/stellar-dev-skill/issues/126#issuecomment-5606820137 | https://github.com/stellar/stellar-dev-skill/pull/128#issuecomment-5606820497 | https://github.com/stellar-experimental/stellar-raven/issues/138#issuecomment-5606820777 |
+
+Grok's final cleanup review passed in `2026-09-09-skill-retirement-cleanup-grok.md`.
+Merged-main receipt verification remains pending before closing the Raven handoffs.
+Live improvements lint passed for all 64 remaining findings.
+The seven active probes all reproduced their recorded defects; none failed or returned an inconclusive result.
+These were `ll-003`, `ll-007`, `sk-005`, `sk-007`, `sk-014`, `sk-015`, and `sk-022`.
+Root posted no routine recurrence comments.
+
 ## Own-repo todos
 
 #124 requires a general repair that preserves authorized gates. #40 requires authenticated production copying.
+
+Sol's accepted-source diagnosis is `2026-09-09-search-124-sol.md`.
+The two leaderboard queries admit the correct operation, but final service diversity removes it.
+The RFP query remains dependent on accepted source wording; the Blend query has no unconditional repository intent.
+Root authorized one source-identical selector experiment, with unchanged scoring, thresholds, labels, and exposure.
+Sol owns its narrow source/test files and `2026-09-09-search-124-implementation-sol.md`.
+An independent review and all existing gates must pass before any release.
+This is not authority to accept the rejected Scout surface.
+
+For #40, root opened an owned production tab and requested an existing authenticated answer from the owner.
+The tab still showed the sign-in page on recheck. Root did not accept Terms or send a paid chat request.
 
 ## Decisions
 

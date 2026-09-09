@@ -915,6 +915,64 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/462ff2b1976040d9d04097981f71ae8970f1439c/improvements/skills/sk-020-standards-skill-stale-discord-vanity.md"
     },
     {
+      "id": "sk-021",
+      "title": "The previously accepted Raven Smart Contracts skill example used a Protocol 27 release candidate. Its next comment says Mainnet runs…",
+      "service": "skills",
+      "discovered": "2026-09-03",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/136",
+        "https://github.com/stellar/stellar-dev-skill/issues/124",
+        "https://github.com/stellar/stellar-dev-skill/pull/127"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/127"
+      ],
+      "liveRecheck": "2026-09-09 production skill.read at 18:20Z and 18:21Z pins 0472452a05731de5e0a1e886d8aae6df24873fe2. Stable SDK 27 and Mainnet protocol 27 replace the original stale comment. Worker 0dad1151-56f5-4e7d-ae75-b4b81f3601f9.",
+      "reviewEvidence": "Grok 4.6 high independently rechecked production, canonical hashes, original triggers, and references; .agents/rounds/2026-09-09-skill-retirement-live-grok.md. Root posted and read back all upstream and handoff resolution comments.",
+      "sourceCommit": "09820d46ad3cbc64a9cced3786831aa24ab1c8a6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-021-smart-contracts-mainnet-protocol-comment-stale.md"
+    },
+    {
+      "id": "sk-023",
+      "title": "The previously accepted MPP guide mpp.md never states the scope of MPP. Its only scope statements are Stellar-specific. The router…",
+      "service": "skills",
+      "discovered": "2026-09-04",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/125",
+        "https://github.com/stellar/stellar-dev-skill/pull/129"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/129"
+      ],
+      "liveRecheck": "2026-09-09 production skill.read at 18:20Z and 18:21Z pins 0472452a05731de5e0a1e886d8aae6df24873fe2. The MPP guide states payment-method-agnostic scope and distinguishes mppx from the Stellar payment method. Worker 0dad1151-56f5-4e7d-ae75-b4b81f3601f9.",
+      "reviewEvidence": "Grok 4.6 high independently rechecked production, canonical hashes, original triggers, and references; .agents/rounds/2026-09-09-skill-retirement-live-grok.md. Root posted and read back all upstream and handoff resolution comments.",
+      "sourceCommit": "09820d46ad3cbc64a9cced3786831aa24ab1c8a6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-023-mpp-general-protocol-identity.md"
+    },
+    {
+      "id": "sk-024",
+      "title": "The previously accepted router and x402 guide present OpenZeppelin Channels as the only facilitator for x402 on Stellar. The root decision…",
+      "service": "skills",
+      "discovered": "2026-09-04",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/126",
+        "https://github.com/stellar/stellar-dev-skill/pull/128"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/128"
+      ],
+      "liveRecheck": "2026-09-09 production skill.read at 18:20Z and 18:21Z pins 0472452a05731de5e0a1e886d8aae6df24873fe2. The router and x402 guide describe multiple facilitators and scope OZ_API_KEY to OpenZeppelin Channels. Worker 0dad1151-56f5-4e7d-ae75-b4b81f3601f9.",
+      "reviewEvidence": "Grok 4.6 high independently rechecked production, canonical hashes, original triggers, and references; .agents/rounds/2026-09-09-skill-retirement-live-grok.md. Root posted and read back all upstream and handoff resolution comments.",
+      "sourceCommit": "09820d46ad3cbc64a9cced3786831aa24ab1c8a6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-024-x402-facilitator-and-api-key-scope.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",

@@ -116,7 +116,6 @@ Complete since the previous handoff:
 
 - Playground #40: use an authorized authenticated production session to copy an existing answer without a new paid chat request.
   The 8000-character limit stays; persistent history is declined. Local tests pass, but production acceptance remains open.
-- `sk-021`, `sk-023`, and `sk-024`: deploy the reviewed pin only after owner approval, then complete production acceptance and retirement.
 - `sd-037`: read issue #1981 state after 2026-09-13. No keep-alive comment.
 - `sls-080`: one free `scout.explainRepo` reading per improvements or drift round. The 2026-09-09
   reading matched source at its scanned ref and passed.
@@ -255,8 +254,8 @@ PR #137 deployed the #109 advisory and preserves all 544 routing result rows.
 Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7` serves commit `f6d31dc07705bc16d83696fc234506534b1e2b5e`.
 All seven reported production names passed exact ranking and advisory checks. Issue #109 reached production acceptance.
 See `rounds/2026-09-09-search-advisory-production-after.json` for production evidence.
-Handoff #136 confirms an upstream skill correction, but Raven still serves the old accepted pin.
-The independent `sk-021` review retains its source-acceptance and retirement gates in TODO.
+The corrected stellar-dev pin reached production in Worker Version `0dad1151-56f5-4e7d-ae75-b4b81f3601f9`.
+The independent production review passed. Skill-finding receipts live in `improvements/resolved.json`.
 See `TODO.md` for the #124 release boundary. Existing gate thresholds and frozen holdout labels stay unchanged.
 Source acceptance and deployment remain separate from a local scoring repair.
 
@@ -306,8 +305,8 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
   the canonical plan SHA-256. Collection needs the owner acceptance of the concurrent load. It
   also needs a current capacity artifact and the final manifest.
 - Repository recovery: keep the exact free monitor in `TODO.md`. The durable record is the
-  `sls-080` receipt. Source parity authorizes no paid collection. Use `sls-082` for a distinct
-  defect.
+  `sls-080` receipt. Source parity authorizes no paid collection.
+  Choose each new finding ID above the maximum active and resolved ID; never reuse an existing ID.
 - Protocol-history routing: PH2 is complete. Keep the three-attempt box closed. Use PH1, PH3, and
   PH4 in `TODO.md` only. The v2 diagnostic is source-expired and authorizes no mechanism. A new
   epoch needs a new independently authored contract under PH3.
