@@ -178,3 +178,53 @@ The final CI run `34380495719` passed, including the complete generated-sync che
 The root read back the new issue #141 comment and confirmed its author as `kalepail`.
 Comment: https://github.com/stellar-experimental/stellar-raven/issues/141#issuecomment-5605720923.
 The unresolved Scout drift remains open. No deployment ran.
+
+## Docs terminal cleanup — 2026-09-09
+
+The independent Grok final-bytes gate passed before the golden evidence commit.
+Evidence commit `25d8d8f` preserves all four answers, key facts, avoid arrays, and historical observations.
+The source snapshot commit is `176513cc5e058fa12ad81f607ea4ca0d514a659a`.
+The root verified every public source blob against its local finding before retirement.
+The root posted the live result and immutable source on all seven distinct upstream references.
+Every comment body and the `kalepail` author passed an exact GitHub API readback.
+
+- sd-039: https://github.com/stellar/stellar-docs/issues/2707#issuecomment-5606026404
+- sd-039: https://github.com/stellar/stellar-docs/pull/2723#issuecomment-5606026849
+- sd-042: https://github.com/stellar-experimental/stellar-raven/issues/130#issuecomment-5606027493
+- sd-042: https://github.com/stellar/stellar-docs/issues/2770#issuecomment-5606027983
+- sd-042, sd-047: https://github.com/stellar/stellar-docs/pull/2806#issuecomment-5606028449
+- sd-047: https://github.com/stellar-experimental/stellar-raven/issues/132#issuecomment-5606028913
+- sd-047: https://github.com/stellar/stellar-docs/issues/2805#issuecomment-5606029417
+
+The resolver removed the active sd-039, sd-042, and sd-047 files and both existing intake overrides.
+It appended three complete receipts in `improvements/resolved.json`.
+The active collection now contains 67 findings: 64 reported upstream and three declined upstream.
+The root replaced four active-file root-cause pointers with resolved-ledger references and the source commit.
+The sk-024 sibling reference now points to the sd-039 receipt; its production acceptance remains open.
+The root removed the completed Docs TODO and retained unrelated TODO entries.
+Historical research, round notes, archived corpus, and dated corroboration rows remain unchanged.
+The compiler regenerated 500 cases, the 30-case sample, and the lifecycle registry.
+Compiled content SHA-256: `631a03338681f8846866f5ee5e5830dacab4c8ed70611bfe0a08fa164c14aad7`.
+Seven clusters and the Stellar base fee floor reopened after pointer-only changes.
+The same sibling sweep confirms consistency; no judge-facing value changed during terminal cleanup.
+
+The root also posted and read back the three skill handoff updates.
+- #136: https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5605813696
+- #140: https://github.com/stellar-experimental/stellar-raven/issues/140#issuecomment-5605813976
+- #138: https://github.com/stellar-experimental/stellar-raven/issues/138#issuecomment-5605814294
+
+Final cleanup review, CI, and merge remain pending at this checkpoint.
+Raven #130 and #132 stay open until the terminal receipts merge.
+No deployment or paid QA ran.
+
+Final local validation passed: typecheck, 1995 tests in 108 files, build, and 85 smoke tests in four files.
+Eval self-tests and the unchanged routing gate passed.
+The historical plan regression remains 93/100 required-covered with a 0.95 mean on-plan ratio.
+Corpus lint passed with zero errors and 64 warnings; the same expired-caution heuristic warnings remain.
+The consistency register check and live improvements lint passed with 67 active findings.
+Probes reported seven recurrences, two fixed candidates, zero inconclusive results, and zero errors.
+The complete CI generation sequence produced no unrelated artifact changes and the same compiled corpus digest.
+The root independently compared each final owned case against `25d8d8f`: only the root-cause receipt pointer changed.
+Grok 4.6 high completed the independent final cleanup gate with PASS.
+The reviewer independently verified the three public source blobs, seven comments, generated cases, register hashes, and retained TODO headings.
+All review findings are reconciled. CI and merge remain the final repository gates.

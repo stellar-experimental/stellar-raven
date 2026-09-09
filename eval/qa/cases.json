@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "6f18f34d60097d20fc99c8c12b22d4d0fa7abccce896b7d4306bff30aa1d6f46",
+  "corpusContentSha256": "631a03338681f8846866f5ee5e5830dacab4c8ed70611bfe0a08fa164c14aad7",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -21712,7 +21712,7 @@
             "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
+            "improvements/resolved.json entry sd-042; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
             "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },
@@ -27322,7 +27322,7 @@
             "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
+            "improvements/resolved.json entry sd-042; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
             "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies.",
             "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md"
           ]
@@ -30074,7 +30074,7 @@
             "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md",
+            "improvements/resolved.json entry sd-047; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
             "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },
@@ -51195,7 +51195,7 @@
             "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md",
+            "improvements/resolved.json entry sd-039; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
             "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },

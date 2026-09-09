@@ -373,3 +373,92 @@ Cluster-061 and cluster-063 standing notes now state current source/index agreem
 
 `rootCause` still names the active finding files. Keep that until resolver deletion.
 Do not comment or delete in this golden commit.
+
+---
+
+# Final cleanup review — Grok 4.6 high — 2026-09-09
+
+Reviewer: Grok 4.6, high effort. Reviewer ≠ author and ≠ orchestrator.
+HEAD: `25d8d8f53858e3935af614fd2d1fd9ff180ff2b1`.
+Working-tree cleanup is uncommitted against that golden package.
+Total scope also compared to `9a3e1857b02870fc09d9469edf0a2917b807b8ed`.
+Prior live-source and final-bytes PASSes in this file are reused. Live facts were not re-fetched.
+Root runs full tests and live lint in parallel. This lane did not wait for them.
+
+This append is the only write.
+
+## Verdict
+
+**PASS.**
+
+The three resolver receipts pin public finding snapshots at `176513cc5e058fa12ad81f607ea4ca0d514a659a`.
+GitHub blob SHAs match local `176513cc` blobs.
+Active files and intake overrides are gone.
+INDEX is 67 findings and contains no `sd-039` / `sd-042` / `sd-047` rows.
+Four golden `rootCause` pointers name the resolved-ledger entries and that source commit.
+All judge-facing bytes match the reviewed `25d8d8f` package.
+Register hashes are current. The Docs retire TODO is gone. No unrelated TODO heading was lost.
+Seven ledger comment URLs exist. Author is `kalepail`. Bodies pin the same snapshot.
+
+## Snapshot receipts
+
+Latest git commit that still contains each finding file is `176513cc`.
+`176513cc` vs `25d8d8f` finding-file bytes are identical.
+
+| ID | local blob at `176513cc` | GitHub `contents?ref=176513cc` sha | match |
+|---|---|---|---|
+| `sd-039` | `79e5c510f3953169c4406b81e9ad87423c0a0afe` | same | yes |
+| `sd-042` | `5a0aff2c189fa24a06a6ebb53a1da51245fc03bb` | same | yes |
+| `sd-047` | `c62008b53ff8cc6701434b0aaa4723bd08420bcc` | same | yes |
+
+Receipts in `improvements/resolved.json` use `sourceCommit` `176513cc5e058fa12ad81f607ea4ca0d514a659a` and the matching `sourceUrl` blob paths.
+`resolved` date is `2026-09-09`. Review evidence cites this report.
+
+Working tree deletes the three active files. They still exist on `25d8d8f` HEAD, as expected before the cleanup commit.
+`improvements/intake.json` no longer contains `sd-039` or `sd-042`. `sd-047` had no override.
+`npm run improvements:lint` → `ok (67 findings)`.
+
+`sk-024` now points at the `sd-039` receipt. That skill finding stays open.
+
+## Goldens vs `25d8d8f`
+
+`25d8d8f` owned-file SHA-256 values match the prior final-bytes PASS.
+The cleanup diff changes only `truth.verified.rootCause` on the four cases:
+
+- Relayer → `improvements/resolved.json entry sd-039; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a`
+- Horizon/RPC and fee-setting → `… entry sd-042; source commit 176513cc…`
+- Cadence → `… entry sd-047; source commit 176513cc…`
+- Fee-setting keeps `improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md`
+
+`golden.answer`, `keyFacts`, `avoid`, `notes`, corroboration, sources, `asOf`, `reverifyBy`, and `truth.status` are identical to `25d8d8f`.
+
+Compiled `cases.json` (500, content SHA-256 `631a03338681f8846866f5ee5e5830dacab4c8ed70611bfe0a08fa164c14aad7`) and `sample.json` (30) match the owned files.
+
+## Register, TODO, historical refs
+
+`npm run eval:qa:register -- --check` → `up to date`.
+Seven clusters plus `Stellar base fee floor` stay `consistent` with current member hashes.
+
+TODO: only `### Retire the ingested sd-039, sd-042, and sd-047 fixes` was removed (18 → 17 headings). No other heading added or dropped.
+
+Remaining `sd-039` / `sd-042` / `sd-047` hits are receipts, golden notes, register history, dated corroboration, round notes, and research. Those stay historical. No live active finding path remains.
+
+## Seven comments (`gh api` issue-comment readback)
+
+All seven are `kalepail`. Each body contains the `176513cc5e058fa12ad81f607ea4ca0d514a659a` permalink.
+
+| Finding | URL | Created |
+|---|---|---|
+| `sd-039` | https://github.com/stellar/stellar-docs/issues/2707#issuecomment-5606026404 | `2026-09-09T17:28:19Z` |
+| `sd-039` | https://github.com/stellar/stellar-docs/pull/2723#issuecomment-5606026849 | `2026-09-09T17:28:21Z` |
+| `sd-042` | https://github.com/stellar-experimental/stellar-raven/issues/130#issuecomment-5606027493 | `2026-09-09T17:28:24Z` |
+| `sd-042` | https://github.com/stellar/stellar-docs/issues/2770#issuecomment-5606027983 | `2026-09-09T17:28:26Z` |
+| `sd-042`/`sd-047` | https://github.com/stellar/stellar-docs/pull/2806#issuecomment-5606028449 | `2026-09-09T17:28:28Z` |
+| `sd-047` | https://github.com/stellar-experimental/stellar-raven/issues/132#issuecomment-5606028913 | `2026-09-09T17:28:31Z` |
+| `sd-047` | https://github.com/stellar/stellar-docs/issues/2805#issuecomment-5606029417 | `2026-09-09T17:28:33Z` |
+
+Bodies report the live trigger result and the immutable finding blob. They were posted before resolver deletion.
+
+`npm run eval:qa:lint -- --since 25d8d8f` → **0 error(s), 64 warning(s)**. Expected `symmetric-caution` warnings remain.
+
+Non-blocking: Raven #130 and #132 stay open until this cleanup merges. Comment text still says retirement follows reference checks, because the comments preceded the resolver. This lane posted no comment and made no external write.
