@@ -112,8 +112,8 @@ export type WiderCandidate = {
   id: string;
   service: string;
   /** The candidate operation's own retrieval lane. */
-  lane: "semantic" | "research" | "av" | "corpus";
-  basis: "page-broad-hit" | "catalog-anchor";
+  lane: "directory" | "semantic" | "research" | "av" | "corpus";
+  basis: "short-query-directory" | "page-broad-hit" | "catalog-anchor";
   description: string;
   signature?: string;
   outputKeys?: string[];
@@ -171,8 +171,8 @@ export type SearchPage = {
   /** The page size after the default/min/max clamp was applied. */
   effectiveLimit: number;
   /**
-   * Advisory broad-operation recommendations for structurally poor operation
-   * pages. Separate from ranked hits: never counted, scored, or paginated.
+   * Advisory operation recommendations for broader discovery. Separate
+   * from ranked hits: never counted, scored, or paginated.
    */
   widerCandidates: WiderCandidate[];
   /** Lightweight ranking facts for caller-controlled broaden-or-abstain decisions. */
@@ -193,7 +193,11 @@ export const MAX_SEARCH_LIMIT = 50;
  */
 export const TIER_INTERLEAVE_MARGIN = 1.6;
 const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"] as const);
-type BroadRetrievalLane = WiderCandidate["lane"];
+type BroadRetrievalLane = Exclude<WiderCandidate["lane"], "directory">;
+const WIDER_RETRIEVAL_LANES = new Set<WiderCandidate["lane"]>([
+  "directory",
+  ...BROAD_RETRIEVAL_LANES
+]);
 
 /**
  * The valid `service` filter values, derived from the catalog itself (unique
@@ -702,7 +706,7 @@ function widerCandidateOf(
   if (
     entry.kind !== "operation" ||
     lane === undefined ||
-    !BROAD_RETRIEVAL_LANES.has(lane as BroadRetrievalLane)
+    !WIDER_RETRIEVAL_LANES.has(lane as WiderCandidate["lane"])
   ) {
     return undefined;
   }
@@ -712,13 +716,75 @@ function widerCandidateOf(
   return {
     id: entry.id,
     service: entry.service,
-    lane: lane as BroadRetrievalLane,
+    lane: lane as WiderCandidate["lane"],
     basis,
     description: entry.description,
     ...(signature ? { signature } : {}),
     ...(outputKeys.length > 0 ? { outputKeys } : {}),
     ...(Object.keys(outputItemKeys).length > 0 ? { outputItemKeys } : {})
   };
+}
+
+/** Select the strongest directory hub from the query-independent recovery graph. */
+function catalogDirectoryAnchors(
+  catalog: Catalog,
+  service: string | undefined
+): CatalogEntry[] {
+  const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+  const inbound = new Map<string, number>();
+  const crossFamilyOut = new Map<string, number>();
+  for (const source of catalog.entries) {
+    if (source.kind !== "operation" || source.retrievalProfile?.lane !== "directory") continue;
+    for (const edge of source.retrievalProfile.recoverWith) {
+      const target = byId.get(edge.id);
+      if (target?.kind !== "operation" || target.retrievalProfile?.lane !== "directory") continue;
+      inbound.set(target.id, (inbound.get(target.id) ?? 0) + 1);
+      if (edge.relation === "cross-family") {
+        crossFamilyOut.set(source.id, (crossFamilyOut.get(source.id) ?? 0) + 1);
+      }
+    }
+  }
+  return catalog.entries
+    .filter((entry) =>
+      entry.kind === "operation" &&
+      entry.retrievalProfile?.lane === "directory" &&
+      (service === undefined || entry.service === service)
+    )
+    .sort((a, b) =>
+      (inbound.get(b.id) ?? 0) - (inbound.get(a.id) ?? 0) ||
+      (crossFamilyOut.get(b.id) ?? 0) - (crossFamilyOut.get(a.id) ?? 0) ||
+      (a.id < b.id ? -1 : 1)
+    );
+}
+
+function matchesIdentityToken(queryToken: string, identityToken: string): boolean {
+  if (queryToken === identityToken) return true;
+  if (queryToken.length >= 2 && `${queryToken}s` === identityToken) return true;
+  if (identityToken.length >= 2 && `${identityToken}s` === queryToken) return true;
+  if (queryToken.length > 3 && queryToken.endsWith("y")) {
+    return `${queryToken.slice(0, -1)}ies` === identityToken;
+  }
+  if (identityToken.length > 3 && identityToken.endsWith("y")) {
+    return `${identityToken.slice(0, -1)}ies` === queryToken;
+  }
+  return false;
+}
+
+/** True when one content token does not identify an operation id or name. */
+function isShortUnresolvedOperationQuery(catalog: Catalog, opts: SearchOptions): boolean {
+  if (opts.kind === "skill") return false;
+  const queryTokens = [...new Set(
+    tokenize(opts.query).filter((token) => token.length >= 2 && !STOPWORDS.has(token))
+  )];
+  if (queryTokens.length !== 1) return false;
+  return !catalog.entries.some((entry) => {
+    if (entry.kind !== "operation") return false;
+    if (opts.service !== undefined && entry.service !== opts.service) return false;
+    const identityTokens = tokenize(`${entry.id} ${lastIdSegment(entry.id)}`);
+    return queryTokens.some((queryToken) =>
+      identityTokens.some((identityToken) => matchesIdentityToken(queryToken, identityToken))
+    );
+  });
 }
 
 function catalogBroadAnchors(
@@ -782,19 +848,21 @@ function deriveWiderCandidates(
   limit = 3
 ): WiderCandidate[] {
   if (limit <= 0 || opts.kind === "skill") return [];
-  const allBackfill = hits.length > 0 && hits.every((hit) => hit.tier === "backfill");
-  if (hits.length > 0 && !allBackfill) return [];
-
   const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+  const allBackfill = hits.length > 0 && hits.every((hit) => hit.tier === "backfill");
+  const shortUnresolved = isShortUnresolvedOperationQuery(catalog, opts);
+  if (hits.length > 0 && !allBackfill && !shortUnresolved) return [];
+
   const selectedIds = new Set<string>();
-  const selectedLanes = new Set<BroadRetrievalLane>();
+  const selectedLanes = new Set<WiderCandidate["lane"]>();
   const out: WiderCandidate[] = [];
   const add = (entry: CatalogEntry | undefined, basis: WiderCandidate["basis"]) => {
     if (!entry || selectedIds.has(entry.id)) return;
     if (opts.service !== undefined && entry.service !== opts.service) return;
     const profile = entry.retrievalProfile;
+    if (profile?.lane === "directory" && basis !== "short-query-directory") return;
     // Same-lane broader-semantic edges mark narrower ops; let canonical anchor take lane.
-    if (profile?.recoverWith.some((edge) => {
+    if (profile?.lane !== "directory" && profile?.recoverWith.some((edge) => {
       const target = byId.get(edge.id);
       return edge.relation === "broader-semantic" &&
         target?.kind === "operation" &&
@@ -806,6 +874,13 @@ function deriveWiderCandidates(
     selectedLanes.add(candidate.lane);
     out.push(candidate);
   };
+
+  if (shortUnresolved) {
+    add(catalogDirectoryAnchors(catalog, opts.service)[0], "short-query-directory");
+    if (out.length >= limit) return out;
+  }
+
+  if (hits.length > 0 && !allBackfill) return out;
 
   if (allBackfill) {
     for (const hit of hits) {

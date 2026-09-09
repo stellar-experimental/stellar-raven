@@ -408,7 +408,7 @@ describe("searchCatalogPage — structural wider candidates", () => {
     ]);
   });
 
-  it("stays silent for gated, mixed, and skill-only pages and honors service filters", () => {
+  it("stays silent for multi-token gated and mixed pages and skill-only pages, and honors service filters", () => {
     expect(
       searchCatalogPage(catalog, {
         query: "stellar soroban contract",
@@ -509,6 +509,134 @@ describe("searchCatalog — excluded ops are absent by construction (ADR-0003)",
 });
 
 describe("searchCatalog — routing quality", () => {
+  it.each([1, 5])("preserves the default-kind name ranking and page facts at limit %i", (limit) => {
+    const page = searchCatalogPage(catalog, { query: "freighter", limit });
+    const expected = [
+      { id: "skills.stellar-dev.dapp", score: 75, tier: "gated" },
+      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" },
+      { id: "stellarDocs.search_soroban_contract_docs", score: 30, tier: "gated" }
+    ];
+    expect(page.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual(expected.slice(0, limit));
+    expect(page.total).toBe(3);
+    expect(page.truncated).toBe(limit < 3);
+    expect(page.effectiveLimit).toBe(limit);
+    expect(page.widerCandidates).toEqual([
+      expect.objectContaining({ id: "scout.searchProjects", basis: "short-query-directory" })
+    ]);
+  });
+
+  it.each([
+    "freighter",
+    "openx402",
+    "hypertron",
+    "planbok",
+    "vigente",
+    "cointracker",
+    "alypay"
+  ])("adds a directory advisory for the bare project name %s", (query) => {
+    const directoryIds = new Set([
+      "lumenloop.search_directory",
+      "scout.searchProjects"
+    ]);
+    const page = searchCatalogPage(catalog, { query, kind: "operation", limit: 5 });
+    expect(
+      page.widerCandidates.some(
+        (candidate) => directoryIds.has(candidate.id) &&
+          candidate.basis === "short-query-directory" &&
+          candidate.lane === "directory"
+      )
+    ).toBe(true);
+    expect(page.hits.some((hit) => directoryIds.has(hit.id) && hit.score === 0)).toBe(false);
+  });
+
+  it.each([
+    ["audit", "scout.listAudits"],
+    ["rfp", "scout.getRfps"]
+  ])("does not add directory advice for the operation word %s", (query, operationId) => {
+    const page = searchCatalogPage(catalog, {
+      query,
+      kind: "operation",
+      limit: 5
+    });
+    expect(page.hits.some((hit) => hit.id === operationId)).toBe(true);
+    expect(page.widerCandidates).toEqual([]);
+  });
+
+  it.each(["open x402", "open-x402"])("does not add short-query directory advice for %s", (query) => {
+    const page = searchCatalogPage(catalog, {
+      query,
+      kind: "operation",
+      limit: 5
+    });
+    expect(page.widerCandidates).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ basis: "short-query-directory" })
+      ])
+    );
+  });
+
+  it("constrains short-query directory advice to the service filter", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "freighter",
+      kind: "operation",
+      service: "lumenloop",
+      limit: 5
+    });
+    expect(page.widerCandidates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "lumenloop.search_directory",
+          service: "lumenloop",
+          basis: "short-query-directory"
+        })
+      ])
+    );
+    expect(page.widerCandidates.every((candidate) => candidate.service === "lumenloop")).toBe(true);
+  });
+
+  it("suppresses short-query directory advice for skill-only searches", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "freighter",
+      kind: "skill",
+      limit: 5
+    });
+    expect(page.widerCandidates).toEqual([]);
+  });
+
+  it("uses only a Scout directory recommendation under the Scout service filter", () => {
+    const page = searchCatalogPage(catalog, { query: "freighter", service: "scout", limit: 5 });
+    expect(page.widerCandidates).toContainEqual(
+      expect.objectContaining({ id: "scout.searchProjects", basis: "short-query-directory" })
+    );
+    expect(page.widerCandidates.every((candidate) => candidate.service === "scout")).toBe(true);
+  });
+
+  it("adds no directory recommendation under the Docs service filter", () => {
+    const page = searchCatalogPage(catalog, { query: "freighter", service: "stellarDocs", limit: 5 });
+    expect(page.widerCandidates).toEqual([]);
+  });
+
+  it("keeps literal identity tokens distinct from semantic matches", () => {
+    const page = searchCatalogPage(catalog, { query: "person", limit: 5 });
+    expect(page.hits.some((hit) => hit.id === "scout.getPeople")).toBe(true);
+    expect(page.widerCandidates).toContainEqual(
+      expect.objectContaining({ id: "scout.searchProjects", basis: "short-query-directory" })
+    );
+  });
+
+  it("keeps broad recommendations after directory advice on a zero-hit name query", () => {
+    const page = searchCatalogPage(catalog, { query: "hypertron", limit: 5 });
+    expect(page.hits).toEqual([]);
+    expect(page.total).toBe(0);
+    expect(page.truncated).toBe(false);
+    expect(page.effectiveLimit).toBe(5);
+    expect(page.widerCandidates.map(({ id, basis }) => ({ id, basis }))).toEqual([
+      { id: "scout.searchProjects", basis: "short-query-directory" },
+      { id: "scout.searchResearch", basis: "catalog-anchor" },
+      { id: "lumenloop.search_content_semantic", basis: "catalog-anchor" }
+    ]);
+  });
+
   it("never surfaces skill-section hits — sections left search (2026-07-13 A/B)", () => {
     // Sections are exposed (skill.read, availableSections) but carry
     // searchable:false since arm B shipped; a WHOLE skill may still rank.

@@ -249,9 +249,10 @@ proved that the repaired raw-envelope path works. See `production-deployment-ter
 
 ### F. General Raven scoring repair authorized — 2026-09-08
 
-The owner authorized the general scoring repair in `TODO.md` ("Preserve structured routing intent
-across extraction caps and gate tiers"). Work is active in `fix/search-name-and-noun-ranking`.
-Independent review remains required. Existing gate thresholds and frozen holdout labels stay unchanged.
+The owner authorized the general scoring repair. The combined candidate remains preserved in `fix/search-name-and-noun-ranking`.
+Its unchanged routing gate fails on legacy top-five `319 > 315`; 16 exact-operation losses still need independent reconciliation.
+The #109 advisory is isolated on `fix/search-directory-advisory` and preserves all 544 routing result rows.
+See `TODO.md` for the #124 release boundary. Existing gate thresholds and frozen holdout labels stay unchanged.
 Source acceptance and deployment remain separate from a local scoring repair.
 
 ### G. Confirm the Raven capability-boundary third case

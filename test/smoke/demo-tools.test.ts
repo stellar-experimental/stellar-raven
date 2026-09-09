@@ -46,6 +46,48 @@ describe("demo tools at the worker boundary", () => {
     ).toBe("empty-success");
   });
 
+  it("displays short-name directory advice without adding it to ranked hits", async () => {
+    const { search } = makeTools();
+    const result = (await search.execute({
+      query: "freighter",
+      limit: 5
+    })) as {
+      hits: Array<{ id: string; score: number; tier: string }>;
+      total: number;
+      truncated: boolean;
+      widerCandidates: Array<{ id: string; lane: string; basis: string }>;
+      nextSteps: string;
+    };
+    expect(result.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
+      { id: "skills.stellar-dev.dapp", score: 75, tier: "gated" },
+      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" },
+      { id: "stellarDocs.search_soroban_contract_docs", score: 30, tier: "gated" }
+    ]);
+    expect(result.total).toBe(3);
+    expect(result.truncated).toBe(false);
+    expect(result.widerCandidates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "scout.searchProjects",
+          lane: "directory",
+          basis: "short-query-directory"
+        })
+      ])
+    );
+    expect(result.nextSteps).toContain("Use the advisory directory candidate");
+  });
+
+  it("retains bounded broad guidance after a zero-hit name lookup", async () => {
+    const { search } = makeTools();
+    const result = (await search.execute({ query: "hypertron", limit: 5 })) as {
+      hits: unknown[];
+      nextSteps: string;
+    };
+    expect(result.hits).toEqual([]);
+    expect(result.nextSteps).toContain("Use the advisory directory candidate");
+    expect(result.nextSteps).toContain("use one relevant broad advisory for a bounded pass");
+  });
+
   it("projects exact-ID recovery with the full compacted shape and MCP-compatible telemetry", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {

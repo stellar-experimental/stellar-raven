@@ -384,7 +384,9 @@ export function buildDemoTools(opts: {
             ? `No navigation hits. Use another candidate family or varied vocabulary (${remainingSearches} searches remain), or use codemode.search inside execute; do not conclude the capability or fact is absent from one empty catalog search.`
             : "No navigation hits and no top-level search calls remain. You may use codemode.search inside execute; do not conclude the capability or fact is absent from an empty catalog search, and qualify if factual evidence cannot be recovered.";
       const nextSteps =
-        widerCandidates.length > 0
+        widerCandidates.some((candidate) => candidate.basis === "short-query-directory")
+          ? `${baseNextSteps} This query has one content token without an operation-name token match. Use the advisory directory candidate for a bounded name lookup when the ranked hits do not identify the requested entity.${widerCandidates.some((candidate) => candidate.lane !== "directory") ? " If that lookup does not answer the question, use one relevant broad advisory for a bounded pass." : ""}`
+          : widerCandidates.length > 0
           ? hits.length > 0
             ? `${baseNextSteps} This page has no gated operation match, so the ranked hits are lexical-only candidates; prefer the leading hit that fits the question, and if none does, run one bounded broad pass over the advisory widerCandidates.`
             : `${baseNextSteps} No gated operation matched either; run one bounded broad pass over the advisory widerCandidates before retrying, and still do not conclude absence.`
