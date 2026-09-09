@@ -112,4 +112,13 @@ The root and reviewer distinguish nine top-hit changes from ten additional total
 
 ## Final checklist
 
-Pending checks, reconciliation, merge, and any approved production verification.
+PR #142 carries commit `ea8bbbfc40ad223f0d399fe4477226b8586b644a`.
+Its first CI run `34380004756` passed typecheck, build, 1995 tests, 85 smoke tests, and the routing gate.
+The final generated-sync check failed because the root omitted `ecosystem-skills/INDEX.md` after isolation.
+The root ran `node ecosystem-skills/build-index.mjs` and the complete CI regeneration sequence.
+Only the skill index changed. The second index build produced the same bytes.
+The index SHA-256 is `6f7491771b2514e0e23fa4701c54a5f415717ff89bdea13a9b9aab16826360b1`.
+No generator, runtime code, threshold, or source pin changed in that repair.
+Astra medium independently reproduced the generator output in memory and confirmed the exact index hash.
+The bounded check is `2026-09-09-pin-index-check-astra.md`.
+CI must pass before merge. Production deployment still requires owner approval.
