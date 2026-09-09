@@ -8,26 +8,10 @@ Add an item when you find work you are not doing now. Delete it when it is done;
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
 Updated 2026-09-09 during issue #141 and upstream handoff verification.
-The current ledger is `.agents/rounds/2026-09-09-truth-maintenance.md`. The ranked handoff is
+The current ledger is `.agents/rounds/2026-09-09-outstanding-closeout.md`. The ranked handoff is
 `NEXT.md`.
 
 ## Improvements follow-up
-
-### Complete production acceptance for `sk-021`, `sk-023`, and `sk-024`
-
-The root and Grok independently verified upstream PRs `stellar/stellar-dev-skill#127`, `#129`, and `#128`.
-Their live body hashes match the isolated `0472452a05731de5e0a1e886d8aae6df24873fe2` pin.
-The isolated pin passes the tests and unchanged routing thresholds.
-The source and acceptance reports are in `rounds/2026-09-09-upstream-handoffs-grok.md` and `rounds/2026-09-09-skill-pin-acceptance-grok.md`.
-Production reads at 2026-09-09T16:46Z–16:47Z still returned `03b2f8e8` and all three original defects.
-Keep all three findings `reported-upstream` until an authorized deployment and independent production recheck pass.
-The owner has not authorized this round's deployment.
-After approval, deploy clean merged main and verify the four changed skill bodies through production `codemode.skill.read`.
-Then complete reference cleanup, upstream resolution comments, and the resolver gates.
-Handoffs #136, #140, and #138 remain open until those gates finish.
-Do not request further upstream corrections for these resolved source defects. No payment test is required.
-
-Done when: production checks pass, the resolver writes terminal receipts, and the three handoffs record verified closure.
 
 ### Finish authenticated production acceptance for playground #40
 
@@ -270,6 +254,10 @@ Its new card captured 52 of 495 ranked cases, including Friendbot, RPC, WASM, si
 balance questions. The operation also lacked accepted intent coverage.
 Keep `GET /api/rwa` excluded until the general scoring repair passes the added check below.
 The upstream request and response state enums must also match the live handler.
+Scout 1.9.49 fixes those upstream enums, but the full source candidate still fails the intent checks.
+It introduces 61 RWA top-five captures across the routing and holdout cases, including unrelated implementation questions.
+The independent rejection is `rounds/2026-09-09-scout-drift-terra.md`.
+Accepted Scout remains 1.9.1. Issue #141 now needs Raven routing acceptance, not another upstream enum correction.
 This item also owns the `sls-078` residual. Scout fixed its quality `x-routing`
 contract in 1.9.13. The reviewed 1.9.23 candidate still caused 90 unrelated
 `scout.getQualityReport` captures through Raven response-schema keywords. Keep

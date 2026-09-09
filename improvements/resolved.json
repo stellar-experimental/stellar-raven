@@ -915,6 +915,64 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/462ff2b1976040d9d04097981f71ae8970f1439c/improvements/skills/sk-020-standards-skill-stale-discord-vanity.md"
     },
     {
+      "id": "sk-021",
+      "title": "The previously accepted Raven Smart Contracts skill example used a Protocol 27 release candidate. Its next comment says Mainnet runs…",
+      "service": "skills",
+      "discovered": "2026-09-03",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/136",
+        "https://github.com/stellar/stellar-dev-skill/issues/124",
+        "https://github.com/stellar/stellar-dev-skill/pull/127"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/127"
+      ],
+      "liveRecheck": "2026-09-09 production skill.read at 18:20Z and 18:21Z pins 0472452a05731de5e0a1e886d8aae6df24873fe2. Stable SDK 27 and Mainnet protocol 27 replace the original stale comment. Worker 0dad1151-56f5-4e7d-ae75-b4b81f3601f9.",
+      "reviewEvidence": "Grok 4.6 high independently rechecked production, canonical hashes, original triggers, and references; .agents/rounds/2026-09-09-skill-retirement-live-grok.md. Root posted and read back all upstream and handoff resolution comments.",
+      "sourceCommit": "09820d46ad3cbc64a9cced3786831aa24ab1c8a6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-021-smart-contracts-mainnet-protocol-comment-stale.md"
+    },
+    {
+      "id": "sk-023",
+      "title": "The previously accepted MPP guide mpp.md never states the scope of MPP. Its only scope statements are Stellar-specific. The router…",
+      "service": "skills",
+      "discovered": "2026-09-04",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/125",
+        "https://github.com/stellar/stellar-dev-skill/pull/129"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/129"
+      ],
+      "liveRecheck": "2026-09-09 production skill.read at 18:20Z and 18:21Z pins 0472452a05731de5e0a1e886d8aae6df24873fe2. The MPP guide states payment-method-agnostic scope and distinguishes mppx from the Stellar payment method. Worker 0dad1151-56f5-4e7d-ae75-b4b81f3601f9.",
+      "reviewEvidence": "Grok 4.6 high independently rechecked production, canonical hashes, original triggers, and references; .agents/rounds/2026-09-09-skill-retirement-live-grok.md. Root posted and read back all upstream and handoff resolution comments.",
+      "sourceCommit": "09820d46ad3cbc64a9cced3786831aa24ab1c8a6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-023-mpp-general-protocol-identity.md"
+    },
+    {
+      "id": "sk-024",
+      "title": "The previously accepted router and x402 guide present OpenZeppelin Channels as the only facilitator for x402 on Stellar. The root decision…",
+      "service": "skills",
+      "discovered": "2026-09-04",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/126",
+        "https://github.com/stellar/stellar-dev-skill/pull/128"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/128"
+      ],
+      "liveRecheck": "2026-09-09 production skill.read at 18:20Z and 18:21Z pins 0472452a05731de5e0a1e886d8aae6df24873fe2. The router and x402 guide describe multiple facilitators and scope OZ_API_KEY to OpenZeppelin Channels. Worker 0dad1151-56f5-4e7d-ae75-b4b81f3601f9.",
+      "reviewEvidence": "Grok 4.6 high independently rechecked production, canonical hashes, original triggers, and references; .agents/rounds/2026-09-09-skill-retirement-live-grok.md. Root posted and read back all upstream and handoff resolution comments.",
+      "sourceCommit": "09820d46ad3cbc64a9cced3786831aa24ab1c8a6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-024-x402-facilitator-and-api-key-scope.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",
@@ -2302,6 +2360,66 @@
       "reviewEvidence": "Independent Grok 4.6 deletion review 2026-09-01: .agents/rounds/2026-09-01-free-improvements-maintenance/grok-sls080-review.md; live Raven execute plus source read at scannedRef; fixed-state blob a8dafc22962088295bf138ac204e087b62b3fb00 is public in commit 9074093d4686cb34a05371b5a21a4b6c83aa80f2; posted and read back resolution comment https://github.com/Stellar-Light/stellarlight/issues/1134#issuecomment-5499763507 on issue 1134 only; adjacent defects remain out of scope for sls-080",
       "sourceCommit": "9074093d4686cb34a05371b5a21a4b6c83aa80f2",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/9074093d4686cb34a05371b5a21a4b6c83aa80f2/improvements/stellar-light-scout/sls-080-explain-repo-deepwiki-answer-freshness.md"
+    },
+    {
+      "id": "sls-082",
+      "title": "The GET /api/rwa request and response schemas omit one accepted state value. The parameter description lists issued-single-holder. The…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-08",
+      "resolved": "2026-09-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1529",
+        "https://github.com/Stellar-Light/stellarlight/pull/1532",
+        "https://github.com/stellar-experimental/stellar-raven/issues/144"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1532"
+      ],
+      "liveRecheck": "2026-09-09 root and independent Terra checks of deployed Scout 1.9.49, with reviewer captures 18:40:59Z through 18:42:29Z. Both RWA state enums match all four handler values. The valid filter returned 34 matching rows; an invalid state returned 400.",
+      "reviewEvidence": "Terra high independently repeated original direct upstream triggers, issuer TOML and Horizon checks, adjacent residuals, and persistent references; .agents/rounds/2026-09-09-scout-retirement-live-terra.md. Upstream retirement is separate from rejected Raven catalog adoption.",
+      "sourceCommit": "1de777ed60471ec134a13c8c4d66e332c7709940",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1de777ed60471ec134a13c8c4d66e332c7709940/improvements/stellar-light-scout/sls-082-rwa-state-enums.md"
+    },
+    {
+      "id": "sls-083",
+      "title": "Scout's RWA registry and the Etherfuse project row expose five Etherfuse assets. The current issuer stellar.toml declares nine assets for…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-08",
+      "resolved": "2026-09-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1531",
+        "https://github.com/Stellar-Light/stellarlight/pull/1532",
+        "https://github.com/stellar-experimental/stellar-raven/issues/146"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1532"
+      ],
+      "liveRecheck": "2026-09-09 root and independent Terra checks of deployed Scout 1.9.49, with reviewer captures 18:40:59Z through 18:42:29Z. The registry matches all nine issuer TOML code-and-issuer pairs. Project coverage states 9 declared, 9 tracked, 8 served, complete=true. CETESZ has zero supply and is not a served product. Circle reports incomplete coverage.",
+      "reviewEvidence": "Terra high independently repeated original direct upstream triggers, issuer TOML and Horizon checks, adjacent residuals, and persistent references; .agents/rounds/2026-09-09-scout-retirement-live-terra.md. Upstream retirement is separate from rejected Raven catalog adoption.",
+      "sourceCommit": "1de777ed60471ec134a13c8c4d66e332c7709940",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1de777ed60471ec134a13c8c4d66e332c7709940/improvements/stellar-light-scout/sls-083-etherfuse-rwa-registry-coverage.md"
+    },
+    {
+      "id": "sls-084",
+      "title": "The project response returns a statusBasis value that the OpenAPI enum omits. The original 2026-09-08 population scan found nine rows with…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-08",
+      "resolved": "2026-09-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1530",
+        "https://github.com/Stellar-Light/stellarlight/pull/1532",
+        "https://github.com/stellar-experimental/stellar-raven/issues/145"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1532"
+      ],
+      "liveRecheck": "2026-09-09 root and independent Terra checks of deployed Scout 1.9.49, with reviewer captures 18:40:59Z through 18:42:29Z. Project.statusBasis includes package-release and its publication-only definition. All nine original named project rows return that documented value.",
+      "reviewEvidence": "Terra high independently repeated original direct upstream triggers, issuer TOML and Horizon checks, adjacent residuals, and persistent references; .agents/rounds/2026-09-09-scout-retirement-live-terra.md. Upstream retirement is separate from rejected Raven catalog adoption.",
+      "sourceCommit": "1de777ed60471ec134a13c8c4d66e332c7709940",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1de777ed60471ec134a13c8c4d66e332c7709940/improvements/stellar-light-scout/sls-084-status-basis-openapi-enum.md"
     }
   ]
 }
