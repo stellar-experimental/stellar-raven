@@ -524,7 +524,7 @@ describe("build-catalog.mjs", () => {
   });
 });
 
-describe("x-routing ingestion — routingKeywords field", () => {
+describe("x-routing ingestion — routingKeywords and routingPhrases fields", () => {
   it("attaches routingKeywords to exactly the exposed scout ops that publish x-routing", () => {
     const withField = catalog.entries.filter((e) => (e.routingKeywords ?? []).length > 0);
     // 29 upstream ops carry x-routing; partnerAssistant, getQualityReport, and verifyClaim are excluded.
@@ -547,18 +547,55 @@ describe("x-routing ingestion — routingKeywords field", () => {
     }
   });
 
+  it("preserves bounded positive source phrases only on exposed Scout operations", () => {
+    const withPhrases = catalog.entries.filter((entry) => (entry.routingPhrases ?? []).length > 0);
+    expect(withPhrases).toHaveLength(26);
+    for (const entry of withPhrases) {
+      expect(entry.service, entry.id).toBe("scout");
+      expect(entry.kind, entry.id).toBe("operation");
+      expect(
+        entry.routingPhrases!.reduce((total, phrase) => total + phrase.tokens.length, 0),
+        entry.id
+      ).toBeLessThanOrEqual(256);
+      for (const phrase of entry.routingPhrases!) {
+        expect(phrase.tokens.length, `${entry.id}:${phrase.field}`).toBeGreaterThanOrEqual(2);
+      }
+    }
+  });
+
+  it("keeps the published multiword leaderboard keyword as one source phrase", () => {
+    const leaderboard = catalog.entries.find((entry) => entry.id === "scout.getLeaderboard");
+    expect(leaderboard?.routingPhrases).toContainEqual({
+      field: "keywords",
+      tokens: ["top", "projects"]
+    });
+  });
+
   it("drops notFor — cross-op routing clauses never become this op's vocabulary", () => {
     // Sentinel: getBuilders' upstream x-routing notFor routes stat questions
     // to getLeaderboard. Ingesting notFor would plant "leaderboard" here and
     // recreate the cross-capture the 1.7.16 fix removed.
     const builders = catalog.entries.find((e) => e.id === "scout.getBuilders");
     expect(builders?.routingKeywords ?? []).not.toContain("leaderboard");
+    expect(builders?.routingPhrases ?? []).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ tokens: expect.arrayContaining(["leaderboard"]) })])
+    );
   });
 
   it("ADR-0003 guard scans routingKeywords like any other emitted text", () => {
     const entries = catalog.entries.map((e) => ({ ...e }));
     const victim = entries.find((e) => e.id === "scout.getBuilders")!;
     victim.routingKeywords = [...(victim.routingKeywords ?? []), "scout.partnerAssistant"];
+    expect(() => assertNoNonExposedRefs(entries)).toThrow(/ADR-0003 leak/);
+  });
+
+  it("ADR-0003 guard scans routingPhrases like any other emitted text", () => {
+    const entries = catalog.entries.map((entry) => ({ ...entry }));
+    const victim = entries.find((entry) => entry.id === "scout.getBuilders")!;
+    victim.routingPhrases = [
+      ...(victim.routingPhrases ?? []),
+      { field: "useWhen", tokens: ["scout.partnerAssistant", "lookup"] }
+    ];
     expect(() => assertNoNonExposedRefs(entries)).toThrow(/ADR-0003 leak/);
   });
 });

@@ -119,7 +119,7 @@ Each resolution comment was posted by `kalepail` and read back byte-for-byte:
 | `sk-024` | https://github.com/stellar/stellar-dev-skill/issues/126#issuecomment-5606820137 | https://github.com/stellar/stellar-dev-skill/pull/128#issuecomment-5606820497 | https://github.com/stellar-experimental/stellar-raven/issues/138#issuecomment-5606820777 |
 
 Grok's final cleanup review passed in `2026-09-09-skill-retirement-cleanup-grok.md`.
-Merged-main receipt verification remains pending before closing the Raven handoffs.
+Root verified the merged-main receipts and closed handoffs #136, #138, and #140 as completed.
 Live improvements lint passed for all 64 remaining findings.
 The seven active probes all reproduced their recorded defects; none failed or returned an inconclusive result.
 These were `ll-003`, `ll-007`, `sk-005`, `sk-007`, `sk-014`, `sk-015`, and `sk-022`.
@@ -149,7 +149,7 @@ The resolver wrote three complete receipts and removed the active files and inde
 No intake overrides or probes existed for these three findings.
 The active queue now has 61 findings. Lint passed.
 Terra's final cleanup review passed in `2026-09-09-scout-retirement-cleanup-terra.md`.
-Merged-main receipt verification remains pending before closing handoffs #144, #145, and #146.
+Root verified the merged-main receipts and closed handoffs #144, #145, and #146 as completed.
 Drift #141 stays open for Raven routing acceptance.
 The verified update is https://github.com/stellar-experimental/stellar-raven/issues/141#issuecomment-5606920659.
 
@@ -177,4 +177,66 @@ Do not treat an upstream correction, merged source, deployment, and finding reti
 
 ## Final checklist
 
-Pending.
+PR #147 merged as `58898790348b05601bc70b992507f0a8ba6aed0c` at `2026-09-09T18:53:48Z`.
+All four final-head checks passed: test, secrets, Analyze (actions), and CodeQL.
+Root fetched `origin/main` and verified all six receipts and all six active-file removals.
+The generated index contains 61 findings.
+The accepted catalog remained unchanged.
+Its SHA-256 is `83d9998f984cae38c363524e0592c6d035e80ba09cc27003f7a65e11bb0350f9`.
+Live improvements lint passed for all 61 findings.
+All seven active probes reproduced their recorded defects without errors or inconclusive responses.
+
+Root verified the six handoffs have state `closed` and reason `completed`.
+The final comments link the merged receipts and both independent reviews:
+
+- #136: https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5607098830
+- #140: https://github.com/stellar-experimental/stellar-raven/issues/140#issuecomment-5607099314
+- #138: https://github.com/stellar-experimental/stellar-raven/issues/138#issuecomment-5607099721
+- #144: https://github.com/stellar-experimental/stellar-raven/issues/144#issuecomment-5607100243
+- #146: https://github.com/stellar-experimental/stellar-raven/issues/146#issuecomment-5607100704
+- #145: https://github.com/stellar-experimental/stellar-raven/issues/145#issuecomment-5607101221
+
+Root corrected initial comment formatting and read back each final body byte-for-byte.
+Each comment author is `kalepail`.
+## Search experiment acceptance
+
+Sol completed the bounded accepted-source experiment without changing scorer admission or scores.
+Its report is `2026-09-09-search-124-implementation-sol.md`.
+Grok 4.6 high independently passed the implementation and both original leaderboard triggers.
+Its report is `2026-09-09-search-124-final-grok.md`.
+The reviewer differs from the author and orchestrator.
+Root independently reran the 145 focused tests successfully.
+Root confirmed the candidate catalog equals merged main after removing only the new `routingPhrases` fields.
+All 253 entries remain present; 26 Scout operations gain those fields.
+
+The independent comparison covers 544 frozen rows with zero page or grade changes.
+The two original issue queries are separate regression tests, not frozen evaluation rows.
+Their leaderboard result enters the top five at unchanged scores of 108 and 129.
+The existing protocol-history diagnostic remains failed and unchanged.
+No new upstream defect surfaced during this bounded selector experiment.
+The source-gap and repository-intent distinctions in the earlier #124 diagnosis remain applicable.
+
+Root accepts the new catalog fingerprint under the `run-evals` legitimate-change rule.
+The reviewed trace is `routing-2026-09-09T18-59-36-518Z.json`.
+Its only gate failure is the expected catalog fingerprint mismatch.
+The new SHA-256 is `0745b09421e0ad56e4398dcdabde8477a047c3852bb4c528567b8af0028abcfd`.
+All accepted totals, thresholds, labels, grading rules, and other input fingerprints stay unchanged.
+This acceptance does not include Scout 1.9.49, the older rejected scoring candidate, deployment, or paid QA.
+The implementation and this evidence update must enter the same commit.
+The post-acceptance gate passed in `routing-2026-09-09T19-06-43-311Z.json`.
+Root compared every complete row with the accepted passing trace `routing-2026-09-09T16-46-02-887Z.json`.
+All 544 rows match exactly, across the five separate lanes.
+`npm run eval:selftest` passed.
+Root also verified that every non-catalog gate policy field remains unchanged.
+
+Root audited the eight implementation files against `5889879` with the reviewability rubric.
+The generated catalog has an explicit metadata-only comparison and builder ownership.
+The source comments describe current contracts rather than review history.
+The tests cover public behavior and distinct boundary conditions.
+No code repair followed from that audit.
+The architecture description now includes the new selection stage.
+Grok's bounded final delta review passed the fingerprint-only update and documentation.
+Root reran `npm run typecheck`, `npm test`, `npm run build`, and the tree secrets scan successfully.
+The full unit run passed 2,014 tests in 109 files.
+The author's smoke run passed 85 tests in four files.
+Production acceptance and issue #124 closure remain pending.

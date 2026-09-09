@@ -36,6 +36,7 @@ import {
   STOPWORDS,
   scoreEntryWeighted,
   scoreEntryWeightedUngated,
+  serviceQuota,
   diversifyByService
 } from "./scoring.ts";
 import { tokenize } from "./vendor/search-scoring.ts";
@@ -517,6 +518,115 @@ function scoreCandidates(
 type SelectedCandidate = { entry: CatalogEntry; score: number };
 type TieredCandidate = SelectedCandidate & { tier: SearchHit["tier"] };
 
+function uniqueContentTokens(value: string | readonly string[]): string[] {
+  const tokens = typeof value === "string" ? tokenize(value) : value;
+  return [...new Set(tokens.filter((token) => token.length >= 2 && !STOPWORDS.has(token)))];
+}
+
+/**
+ * Return the strongest coverage from the description plus one positive
+ * routing phrase. Return null when no phrase meets the structural rules.
+ * Schema keywords never participate in this selection.
+ */
+function structuredIntentCoverage(
+  entry: CatalogEntry,
+  queryTokens: readonly string[]
+): number | null {
+  const descriptionTokens = new Set(uniqueContentTokens(entry.description));
+  const descriptionMatches = queryTokens.filter((token) => descriptionTokens.has(token));
+  if (descriptionMatches.length < 2) return null;
+  let best: number | null = null;
+
+  for (const phrase of entry.routingPhrases ?? []) {
+    const phraseTokens = new Set(uniqueContentTokens(phrase.tokens));
+    const phraseMatches = queryTokens.filter((token) => phraseTokens.has(token));
+    if (phraseMatches.length < 2) continue;
+    if (!phraseMatches.some((token) => !descriptionTokens.has(token))) continue;
+    const covered = queryTokens.filter(
+      (token) => descriptionTokens.has(token) || phraseTokens.has(token)
+    ).length;
+    best = Math.max(best ?? 0, covered);
+  }
+
+  return best;
+}
+
+function intentCoverage(entry: CatalogEntry, queryTokens: readonly string[]): number {
+  const descriptionTokens = new Set(uniqueContentTokens(entry.description));
+  const descriptionCoverage = queryTokens.filter((token) => descriptionTokens.has(token)).length;
+  return Math.max(
+    descriptionCoverage,
+    structuredIntentCoverage(entry, queryTokens) ?? 0
+  );
+}
+
+function preservesCompleteStructuredIntent(
+  candidate: SelectedCandidate,
+  queryTokens: readonly string[]
+): boolean {
+  return candidate.entry.kind === "operation" &&
+    candidate.entry.retrievalProfile?.lane !== "detail" &&
+    structuredIntentCoverage(candidate.entry, queryTokens) === queryTokens.length;
+}
+
+/**
+ * Keep one complete, coherent intent inside an already-full service quota.
+ * Membership stays gated, and each service keeps its original page count.
+ */
+function preserveStructuredIntentWithinServiceQuota(
+  selected: SelectedCandidate[],
+  gated: SelectedCandidate[],
+  query: string,
+  limit: number
+): SelectedCandidate[] {
+  if (selected.length < limit) return selected;
+  const queryTokens = uniqueContentTokens(query);
+
+  const quota = serviceQuota(limit);
+  const selectedIds = new Set(selected.map((candidate) => candidate.entry.id));
+  const selectedIndexes = new Map<string, number[]>();
+  for (const [index, candidate] of selected.entries()) {
+    const indexes = selectedIndexes.get(candidate.entry.service) ?? [];
+    indexes.push(index);
+    selectedIndexes.set(candidate.entry.service, indexes);
+  }
+
+  const preserved = selected.slice();
+  for (const [service, indexes] of selectedIndexes) {
+    if (indexes.length !== quota) continue;
+    const replacement = gated.find(
+      (candidate) =>
+        candidate.entry.service === service &&
+        !selectedIds.has(candidate.entry.id) &&
+        preservesCompleteStructuredIntent(candidate, queryTokens)
+    );
+    if (!replacement) continue;
+
+    const replaceable = indexes.slice(1).sort((left, right) => {
+      const coverageDelta =
+        intentCoverage(preserved[left]!.entry, queryTokens) -
+        intentCoverage(preserved[right]!.entry, queryTokens);
+      return coverageDelta || preserved[left]!.score - preserved[right]!.score || right - left;
+    });
+    const victimIndex = replaceable[0];
+    if (victimIndex === undefined) continue;
+    if (
+      intentCoverage(replacement.entry, queryTokens) <=
+      intentCoverage(preserved[victimIndex]!.entry, queryTokens)
+    ) {
+      continue;
+    }
+    selectedIds.delete(preserved[victimIndex]!.entry.id);
+    selectedIds.add(replacement.entry.id);
+    preserved[victimIndex] = replacement;
+  }
+
+  return preserved.sort(
+    (left, right) => right.score - left.score ||
+      (left.entry.id < right.entry.id ? -1 : left.entry.id > right.entry.id ? 1 : 0)
+  );
+}
+
 /**
  * Stably reorder one already-selected mixed-tier page without changing its
  * membership. In a single left-to-right pass over the backfill run, each
@@ -601,6 +711,7 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
 
   const gated = scoreCandidates(catalog, opts, scoreEntryWeighted);
   let selected = diversifyByService(gated, limit, (s) => s.entry.service);
+  selected = preserveStructuredIntentWithinServiceQuota(selected, gated, opts.query, limit);
   let total = gated.length;
   const gatedCount = selected.length; // page seam: hits below this index are tier 2
   if (selected.length < limit) {

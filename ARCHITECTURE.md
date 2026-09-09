@@ -184,7 +184,7 @@ untouched.
    the vendor. `searchCatalog` uses it only to **backfill a short page** (below). Membership is
    gated-first, then the fixed page is interleaved on the shared score scale: a backfill hit may
    move above adjacent gated hits only when it dominates by at least 1.6×. A page the gated tier
-   fills remains byte-identical to the pre-lever-5 behavior.
+   fills remains unchanged by backfill.
 
 **Set shaping** — `src/catalog/search.ts`. `loadManifest` enforces structural invariants at
 load: globally unique entry ids, and unique operation terminal names per service (those
@@ -195,20 +195,30 @@ everything in the manifest is exposed by construction (ADR-0003,
 `lumenloop.skill.*` twin namespace and the retired onboarding skills, are never emitted by
 `scripts/build-catalog.mjs`). The page-shaping pipeline lives in `searchCatalogPage`
 (returns `{ hits, total, truncated }`; `searchCatalog` is its thin `.hits` wrapper — the
-frozen eval/vitest contract). It sorts score-desc then id-asc, and shapes the page in one
-way:
+frozen eval/vitest contract). It sorts score-desc then id-asc and applies these stages:
 
+- *Structured-intent preservation* — after service diversity fills the page, a gated overflow
+  operation can replace one later result within a full service quota. The first result for
+  that service stays selected. The operation must cover two query content tokens in its
+  description. One positive upstream routing phrase must cover two query tokens and add a
+  token absent from the description. Together, the description and that phrase must cover
+  every query content token. The displaced result must have weaker intent coverage.
+  Detail-lane operations cannot qualify. Scores, service counts, candidate totals, and gate
+  admission stay unchanged. The selector restores score-descending, id-ascending order.
+  The builder preserves separate positive `x-routing` strings in `routingPhrases`, including
+  individual multiword keyword items. It excludes `notFor` and keeps complete phrases within
+  a 256-token budget. Schema keywords and combined source phrases cannot supply this evidence.
 - *Tiered gate-rescue backfill* — tier 1 is the pipeline above (levers 1–4). Only when it leaves
   the page short (fewer than `limit` gate-passing candidates exist — measured on long
   extended-lane questions that gate to zero) does tier 2 re-run the same pipeline under the
-  ungated scorer (lever 5) and add its novel hits to complete membership. A full page is
-  byte-identical to the pre-tiering behavior; a mixed page is then stably interleaved: a tier-2
+  ungated scorer (lever 5) and add its novel hits to complete membership. Backfill leaves a full
+  gated page unchanged; a mixed page is then stably interleaved: a tier-2
   hit is promoted above adjacent tier-1 hits only while its score is at least
   `TIER_INTERLEAVE_MARGIN` (1.6×) times theirs, otherwise gated hits rank first. The drift guard
   in `test/scoring.test.ts` proves the ungated scorer equals the gated scorer wherever the gate
   passes, so `score` is one common scale across the seam. Every hit carries
-  `tier: "gated" | "backfill"`, and hit order is the ranking to trust. Behavior changes only for
-  long multi-clause queries that previously returned a short (or empty) page.
+  `tier: "gated" | "backfill"`, and hit order is the ranking to trust. Backfill changes only
+  queries that otherwise return a short or empty page.
 - `total` counts the distinct candidates the consulted tiers accepted (post kind/service
   filter, pre diversity/paging): tier-1 candidates alone when tier 1 filled the page, plus the
   novel ungated candidates when the backfill ran; `truncated` = `total > hits.length`.
