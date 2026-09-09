@@ -1,10 +1,11 @@
 ---
 id: sd-042
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-14
 upstreamTitle: The EVM migration guide calls Horizon deprecated while canonical pages say deprecation is future
 evidence:
+  - 2026-09-09 Sol independently verified source, rendered pages, deployment, both indexes, and the original production query after the completed 12:03:55.702Z crawl. The positive EVM record says Horizon API (nearing end-of-life); strict old-phrase searches return zero hits. See .agents/rounds/2026-09-09-docs-ingestion-sol.md. The root separately confirmed the corrected production EVM record at 16:53Z. Terminal retirement review remains pending.
   - 2026-09-09 Raven-authored partial verification reply by kalepail: https://github.com/stellar-experimental/stellar-raven/issues/130#issuecomment-5595182633; content passes but the original search still returns the stale phrase. The handoff and finding stay open. Read back after posting.
   - 2026-08-14 live read of https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment returned "the deprecated Horizon API" in the Soroban Client section
   - 2026-08-14 live stellarDocs.search_docs for "Horizon nearing end-of-life deprecated" returned four canonical pages carrying "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"
@@ -21,8 +22,9 @@ recurrences:
 
 ## Finding
 
-The serving search index retains the EVM guide's old Horizon lifecycle label as of 2026-09-09.
-The live guide contains the correction from PR #2806. Full verification awaits search ingestion.
+The September 9 crawl ingested the EVM guide correction from PR #2806.
+The current source, rendered guide, and original production search agree on the nearing-end-of-life label.
+The finding is a deletion candidate pending independent retirement review and reference cleanup.
 
 ## Original content finding — 2026-08-14
 
@@ -54,8 +56,7 @@ pages. The migration-guide read returned the present-tense phrase verbatim.
 
 ## Recommendation
 
-The occurrence correction is deployed. Verify a completed post-deployment crawl and corrected positive search records.
-Keep the finding open while the original search trigger reproduces.
+The occurrence correction is deployed and indexed. Complete independent retirement review and reference cleanup.
 The shared lifecycle-text refactor remains separate from this occurrence correction.
 
 ## Original content recommendation

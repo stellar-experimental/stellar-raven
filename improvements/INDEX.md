@@ -46,14 +46,14 @@ Total findings: 70
 | sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 5           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 3           |
-| sd-039 | The serving search index retains the old alias on both Tools pages as of 2026-09-09. The live pages contain the correction from PR #2723.…  | reported-upstream | 2026-07-27 | 5           |
+| sd-039 | The September 9 crawl ingested the correction from PR #2723 into both serving indexes. The live pages, current source, and original…        | fixed-upstream    | 2026-07-27 | 5           |
 | sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()                              | reported-upstream | 2026-08-11 | 0           |
 | sd-041 | The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos      | reported-upstream | 2026-08-14 | 0           |
-| sd-042 | The serving search index retains the EVM guide's old Horizon lifecycle label as of 2026-09-09. The live guide contains the correction from… | reported-upstream | 2026-08-14 | 2           |
+| sd-042 | The September 9 crawl ingested the EVM guide correction from PR #2806. The current source, rendered guide, and original production search…  | fixed-upstream    | 2026-08-14 | 2           |
 | sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | reported-upstream | 2026-08-14 | 2           |
 | sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | reported-upstream | 2026-08-14 | 1           |
 | sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | reported-upstream | 2026-08-30 | 1           |
-| sd-047 | The serving search index retains the old Validators cadence as of 2026-09-09. Both live pages contain matching 5-7 wording from PR #2806.…  | reported-upstream | 2026-08-31 | 3           |
+| sd-047 | The September 9 crawl ingested the Validators correction from PR #2806. Both canonical pages and their positive production search records…  | fixed-upstream    | 2026-08-31 | 3           |
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 0           |
 | sd-051 | The software-versions page labels a February 5 entry as Mainnet Edition. Sibling headings on the same page use the Mainnet token for a…     | reported-upstream | 2026-09-04 | 0           |

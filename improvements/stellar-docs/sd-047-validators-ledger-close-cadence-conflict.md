@@ -1,10 +1,11 @@
 ---
 id: sd-047
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-31
 upstreamTitle: The Validators introduction says ledgers close every 3-5 seconds while the Stellar Stack page says every 5-7 seconds
 evidence:
+  - 2026-09-09 Sol independently verified both canonical pages, source, deployment, both indexes, and the original Raven query after the completed 12:03:55.702Z crawl. Both positive records say every 5-7 seconds; strict old-phrase searches return zero hits. See .agents/rounds/2026-09-09-docs-ingestion-sol.md. The root separately confirmed the corrected production Validators record at 16:53Z. Terminal retirement review remains pending.
   - 2026-09-09 Raven-authored partial verification reply by kalepail: https://github.com/stellar-experimental/stellar-raven/issues/132#issuecomment-5595182816; live pages agree but the original search still returns the stale Validators record. The handoff and finding stay open. Read back after posting.
   - 2026-08-31 rendered fetch of https://developers.stellar.org/docs/validators returned "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 3-5 seconds."
   - 2026-08-31 raw fetch of https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/validators/README.mdx (blob 37f879807c150e794578e80d2e751597938f8423, repo HEAD 21557e044aa578d6e4a5f764c788a16a6fbafef7) carries the same 3-5 sentence
@@ -30,8 +31,9 @@ recurrences:
 
 ## Finding
 
-The serving search index retains the old Validators cadence as of 2026-09-09.
-Both live pages contain matching 5-7 wording from PR #2806. Full verification awaits search ingestion.
+The September 9 crawl ingested the Validators correction from PR #2806.
+Both canonical pages and their positive production search records now say every 5-7 seconds.
+The finding is a deletion candidate pending independent retirement review and reference cleanup.
 
 ## Original content finding — 2026-08-31
 
@@ -48,7 +50,7 @@ A fresh 199-delta Pubnet sample on 2026-08-31 had no delta below 5 seconds, a me
 rare 8 to 9-second deltas.
 
 The original defect was `docs-content`: search accurately indexed both conflicting source sentences.
-The current residual is stale search ingestion after the content correction.
+The stale search ingestion residual ended with the September 9 crawl.
 
 ## Evidence
 
@@ -63,8 +65,7 @@ No Stellar Docs issue or pull request mentions "3-5 seconds" on 2026-08-31.
 
 ## Recommendation
 
-The content correction is deployed. Verify a completed post-deployment crawl and corrected positive search records.
-Keep the finding open while the original search trigger reproduces.
+The content correction is deployed and indexed. Complete independent retirement review and reference cleanup.
 
 ## Original content recommendation
 

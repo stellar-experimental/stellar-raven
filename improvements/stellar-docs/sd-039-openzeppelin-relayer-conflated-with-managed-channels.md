@@ -1,10 +1,11 @@
 ---
 id: sd-039
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-27
 upstreamTitle: Separate the self-hosted OpenZeppelin Relayer from the managed Stellar Channels service in Tools docs
 evidence:
+  - 2026-09-09 Sol independently verified the original production managed Channels query after the completed 12:03:55.702Z crawl. Both affected Tools records now distinguish Relayer from managed Channels. Live pages and source match; strict old-alias searches return zero hits in both indexes. See .agents/rounds/2026-09-09-docs-ingestion-sol.md. The root separately confirmed both corrected production snippets at 16:58Z. Terminal retirement review remains pending.
   - 2026-09-09 Raven-authored partial verification reply by kalepail: https://github.com/stellar/stellar-docs/issues/2707#issuecomment-5595183018; live pages pass, original search alias persists, and the corrected page occurrence stays closed. Read back after posting.
   - eval round 2026-07-27 QA sample-30, results stamp 2026-07-27T22-50-16-variantA.json, case q-ti-openzeppelin-relayer graded wrong with 3 missing facts and 2 wrong claims
   - 2026-07-27 live production stellarDocs.search_sdk_cli_tools_docs({ query "managed Channels", hitsPerPage 15, includeContent true }) returned the alias framing on both /docs/tools and /docs/tools/openzeppelin-relayer
@@ -27,8 +28,9 @@ recurrences:
 
 ## Finding
 
-The serving search index retains the old alias on both Tools pages as of 2026-09-09.
-The live pages contain the correction from PR #2723. Full verification awaits search ingestion.
+The September 9 crawl ingested the correction from PR #2723 into both serving indexes.
+The live pages, current source, and original production search now distinguish the two products.
+The finding is a deletion candidate pending independent retirement review and reference cleanup.
 
 The original Tools documentation presented "OpenZeppelin Relayer" and the managed
 Stellar Channels service as the same product. Both `/docs/tools` and
@@ -51,7 +53,7 @@ genuine.
 The docs already demonstrated the correct distinction elsewhere:
 `/docs/build/agentic-payments/x402` describes the x402 plugin as using the
 Relayer framework while leveraging managed Channels underneath. The Tools pages
-adopted that separation in PR #2723, but search still returns their old text.
+adopted that separation in PR #2723. The September 9 crawl corrected their search records.
 
 ## Evidence
 
@@ -92,8 +94,8 @@ tested surface, and current managed-service provider health was not verifiable
 
 ## Recommendation
 
-The content correction is deployed. Verify a completed post-deployment crawl and the corrected positive search records.
-Keep the finding open while the original search trigger reproduces. Do not rewrite individual index records.
+The content correction is deployed and indexed. Complete independent retirement review and reference cleanup.
+Do not rewrite individual index records.
 
 ## Original content recommendation
 
@@ -113,7 +115,7 @@ Finally, date the mutable claims. Version numbers, supported networks, and
 provider health are all observation-time facts; presenting them undated is what
 lets a stale reading survive as current guidance.
 
-Consumer-side workaround currently required: cross-check the Docs description
+Original consumer-side workaround: cross-check the Docs description
 against the canonical `openzeppelin-relayer` repository before advising anyone
 on funding or custody, which defeats the purpose of consulting official
 documentation for a tools question.
