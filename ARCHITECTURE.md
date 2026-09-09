@@ -225,7 +225,9 @@ includes both compared tiers because tier ordering can differ from score orderin
 non-skills service filter. These surfaces also return up to three advisory `widerCandidates`
 separately from ranked hits. Page-resident broad operations lead on all-backfill
 pages, then deterministic manifest anchors fill one slot per remaining broad lane; zero-hit pages
-use anchors only. Service filters constrain the advice and skill-only searches suppress it. Public
+use anchors only. A one-content-token query with no operation-name token match adds one directory anchor, including on gated pages.
+Recovery-graph centrality selects that anchor. Service filters constrain the advice, and
+skill-only searches suppress it. Public
 `search`, in-sandbox `codemode.search`, and Playground search also accept caller-reported exact
 prior operation ids in `recoverFrom` plus an optional `reason` and return `recovery` separately
 from both `hits` and `widerCandidates`; omitted or empty `recoverFrom` always returns no recovery,
@@ -781,7 +783,7 @@ before model/tool execution, so later model or tool failure still counts.
 | Demo search page | Default 5 hits, caller `limit` clamped to 6. | `src/demo/budget.ts`, `src/demo/tools.ts` |
 | Demo search hit text | Description clipped to 220 chars; signature clipped to 400 chars while preserving the callable line. | `src/demo/tools.ts` |
 | Execute calls | 3 per turn. The host aggregates operation outcomes and a structural positive-data flag without retaining payload data, so the loop can recover from empty successes and failed calls. | `src/demo/budget.ts`, `src/demo/tools.ts`, `src/executor/run.ts` |
-| Recovery guidance | Structurally poor operation searches expose up to three `widerCandidates`; explicit caller-reported exact operation ids in `recoverFrom` expose separate bounded `recovery` candidates after ranking; execute exposes at most one hint-driven recovery cycle per turn. Independent structural failure recovery remains active. | `src/catalog/search.ts`, `src/demo/tools.ts`, `src/demo/steps.ts` |
+| Recovery guidance | Unresolved one-content-token queries can add a directory recommendation, including on gated pages. Zero-hit and all-backfill pages can add broad recommendations. The combined `widerCandidates` list holds at most three entries. Explicit caller-reported exact operation ids in `recoverFrom` expose separate bounded `recovery` candidates after ranking. Execute exposes at most one hint-driven recovery cycle per turn. Independent structural failure recovery remains active. | `src/catalog/search.ts`, `src/demo/tools.ts`, `src/demo/steps.ts` |
 | Execute code length | 8,000 chars. | `src/demo/budget.ts`, `src/demo/tools.ts` |
 | Execute preflight | Known-bad `Promise.all({ ... })` fanout is refused before sandbox execution. | `src/demo/tools.ts` |
 | In-script discovery | Same as `/mcp`: `codemode.search`, `codemode.describe`, `codemode.catalog`, and `codemode.spec`, plus skill helpers. | `src/demo/tools.ts`, `src/demo/prompt.ts` |

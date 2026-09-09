@@ -1,0 +1,189 @@
+{
+  "observedAt": "2026-09-09 03:45:15 UTC",
+  "surface": "production Raven MCP search",
+  "limit": 5,
+  "kind": "default",
+  "rows": [
+    {
+      "query": "freighter",
+      "hits": [
+        {
+          "id": "skills.stellar-dev.dapp",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "score": 75,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 30,
+          "tier": "gated"
+        }
+      ],
+      "total": 3,
+      "truncated": false,
+      "widerCandidates": []
+    },
+    {
+      "query": "openx402",
+      "hits": [
+        {
+          "id": "lumenloop.find_content_about_project",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getBuilders",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getLeaderboard",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.develop-secure-contracts",
+          "score": 35,
+          "tier": "gated"
+        }
+      ],
+      "total": 15,
+      "truncated": true,
+      "widerCandidates": []
+    },
+    {
+      "query": "hypertron",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "basis": "catalog-anchor",
+          "lane": "corpus"
+        }
+      ]
+    },
+    {
+      "query": "planbok",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "basis": "catalog-anchor",
+          "lane": "corpus"
+        }
+      ]
+    },
+    {
+      "query": "vigente",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "basis": "catalog-anchor",
+          "lane": "corpus"
+        }
+      ]
+    },
+    {
+      "query": "cointracker",
+      "hits": [],
+      "total": 0,
+      "truncated": false,
+      "widerCandidates": [
+        {
+          "id": "scout.searchResearch",
+          "basis": "catalog-anchor",
+          "lane": "research"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "basis": "catalog-anchor",
+          "lane": "semantic"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "basis": "catalog-anchor",
+          "lane": "corpus"
+        }
+      ]
+    },
+    {
+      "query": "alypay",
+      "hits": [
+        {
+          "id": "lumenloop.find_av_passages",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.find_content_about_project",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.analyzeEcosystem",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.compareHackathons",
+          "score": 35,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "score": 35,
+          "tier": "gated"
+        }
+      ],
+      "total": 59,
+      "truncated": true,
+      "widerCandidates": []
+    }
+  ]
+}

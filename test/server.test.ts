@@ -819,6 +819,47 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.nextSteps).toMatch(/single-step how-to or debugging/i);
   });
 
+  it("returns short-name directory advice without adding it to ranked hits", async () => {
+    const result = await client.callTool({
+      name: "search",
+      arguments: { query: "freighter", limit: 5 }
+    });
+    expect(result.isError).toBeFalsy();
+    const structured = result.structuredContent as {
+      hits: Array<{ id: string; score: number; tier: string }>;
+      total: number;
+      truncated: boolean;
+      widerCandidates: Array<{ id: string; lane: string; basis: string }>;
+      nextSteps: string;
+    };
+    expect(structured.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
+      { id: "skills.stellar-dev.dapp", score: 75, tier: "gated" },
+      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" },
+      { id: "stellarDocs.search_soroban_contract_docs", score: 30, tier: "gated" }
+    ]);
+    expect(structured.total).toBe(3);
+    expect(structured.truncated).toBe(false);
+    expect(structured.widerCandidates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "scout.searchProjects",
+          lane: "directory",
+          basis: "short-query-directory"
+        })
+      ])
+    );
+    expect(structured.nextSteps).toContain("Use the advisory directory candidate");
+  });
+
+  it("retains bounded broad guidance after a zero-hit name lookup", async () => {
+    const result = await client.callTool({ name: "search", arguments: { query: "hypertron", limit: 5 } });
+    expect(result.isError).toBeFalsy();
+    const structured = result.structuredContent as { hits: unknown[]; nextSteps: string };
+    expect(structured.hits).toEqual([]);
+    expect(structured.nextSteps).toContain("Use the advisory directory candidate");
+    expect(structured.nextSteps).toContain("use one relevant broad advisory for a bounded pass");
+  });
+
   it("returns bounded exact-ID recovery separately from ranked hits", async () => {
     const baseline = await client.callTool({
       name: "search",

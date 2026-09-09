@@ -128,6 +128,25 @@ program. Select each later Scout ID from the maximum active and resolved ID; `sl
 
 ## Routing
 
+### Reconcile the preserved #124 scoring candidate before release
+
+The isolated #109 directory advisory leaves ranking unchanged. Do not merge the broader candidate with it.
+The broader patch remains in `/Users/kalepail/Desktop/sr-wt-search-name-ranking` on `fix/search-name-and-noun-ranking`.
+Its report is `.agents/rounds/2026-09-08-search-repair-execution-sol.md` in that worktree.
+The final result is `routing-2026-09-09T03-23-21-923Z.json` there.
+
+The unchanged gate fails because legacy top-five is 319, above the 315 upper bound.
+Exact-card totals return to baseline, but 14 legacy and two extended cases still lose their expected operation.
+The dated-launch case loses `lumenloop.search_content_semantic` for directory discovery. That remains a material scope loss.
+The bare leaderboard query reaches rank four locally. Jobs and Blend evidence still depends on the rejected-source fixture.
+
+Keep the thresholds and frozen labels unchanged. Do not tune useful results downward to enter the band.
+Review all 16 remaining losses independently before accepting any broader repair or requesting a separate baseline decision.
+The accepted source and served catalog must pass the agreed query set before closing #124.
+No deployment, source acceptance, or paid QA follows from this local candidate.
+
+Done when: an independently reviewed candidate passes the authorized gates and production acceptance, or the owner rejects the candidate.
+
 ### `search` does not surface the research lane for protocol-history questions
 
 Eval case `q-protocol-24-whisk-incident` asks why Protocol 24 followed Protocol 23 so quickly. The
