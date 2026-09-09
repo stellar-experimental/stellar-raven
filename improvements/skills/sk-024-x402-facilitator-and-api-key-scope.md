@@ -57,7 +57,7 @@ The x402 facilitator page lists many providers and documents self-facilitation.
 Its Stellar entry, Built on Stellar, is the same OpenZeppelin Channels endpoint and also needs a key.
 The official Stellar page separates the Coinbase facilitator from the OpenZeppelin option.
 
-`sd-039` covers the Relayer versus Channels product identity on Stellar Docs Tools pages. It does not cover this skill.
+The resolved `sd-039` receipt in `improvements/resolved.json` covers the Relayer versus Channels product identity on Stellar Docs Tools pages. It does not cover this skill.
 
 ## Recommendation
 

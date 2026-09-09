@@ -4,7 +4,7 @@ Updated 2026-09-09. The current round is `rounds/2026-09-09-truth-maintenance.md
 The isolated stellar-dev `0472452a` pin passes source review, tests, and unchanged routing thresholds.
 Production still serves the old pin. This round's deployment requires owner approval.
 The September 9 crawl ingested the fixes for `sd-039`, `sd-042`, and `sd-047`.
-Their corpus-reference cleanup and independent retirement review remain pending.
+Their corpus-reference cleanup and independent live review passed. The resolver wrote all three terminal receipts.
 The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
 Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
 The maintenance execution and isolated search advisory completed their independent reviews.
@@ -76,13 +76,13 @@ Use `rounds/2026-09-08-maintenance-execution.md` for the prior deployment and ad
   `1.9.30` on 2026-09-04.
 - Both protocol-history v2 contracts are `source-expired` on the accepted manifest. The free
   diagnostic returns no counts until a new independently authored contract pins a new epoch.
-- `improvements/` contains 70 active findings: 67 `reported-upstream` and 3 `declined-upstream`.
+- `improvements/` contains 67 active findings: 64 `reported-upstream` and 3 `declined-upstream`.
   The authorized filing queue is empty. The invalid Saved Keypairs finding has a terminal receipt.
 - Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
   Raven handoff #131 is closed. The September 9 crawl fixed the `sd-039`, `sd-042`, and `sd-047` search triggers.
   The observed noon run conflicts with the stored midnight schedule. The cause remains unknown.
-- The compiled corpus has 500 active cases. Content SHA-256 `4f8d38a6…3aca`.
-  Corpus lint passed with 0 errors and 62 warnings after the Saved Keypairs correction.
+- The compiled corpus has 500 active cases. Content SHA-256 `631a0333…aad7` after the Docs retirement.
+  The independent review preserves all four answers, key facts, avoid arrays, and historical observations.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - The 2026-09-04 closeout had only the root worktree and local and remote `main`.
 - The 2026-09-04 Herdr closeout left only the root pane in workspace `w16`.
@@ -116,9 +116,6 @@ Complete since the previous handoff:
 
 - Playground #40: use an authorized authenticated production session to copy an existing answer without a new paid chat request.
   The 8000-character limit stays; persistent history is declined. Local tests pass, but production acceptance remains open.
-- `sd-039`, `sd-042`, and `sd-047`: complete corpus-reference cleanup and the independent retirement review.
-  The original triggers and corrected positive records pass after the September 9 crawl.
-  Use `rounds/2026-09-09-docs-ingestion-sol.md`; keep #130 and #132 open until resolver gates pass.
 - `sk-021`, `sk-023`, and `sk-024`: deploy the reviewed pin only after owner approval, then complete production acceptance and retirement.
 - `sd-037`: read issue #1981 state after 2026-09-13. No keep-alive comment.
 - `sls-080`: one free `scout.explainRepo` reading per improvements or drift round. The 2026-09-09
@@ -208,10 +205,9 @@ these items without a `golden-truth` edit and independent review.
   figure trip avoid item 2? Evidence: the storage-strategies page states 64 KiB twelve times. The
   live network setting was not queried.
 - B3 `q-protocol-ledger-close-time`. Question: does key fact 1 keep the live multi-ledger sample
-  requirement, or accept an attributed docs range with a conflict disclosure? Evidence: no exposed
-  operation returns ledger close timestamps. The docs pages conflict (`sd-047`).
-- B4 `q-protocol-ledger-close-time`. Question: add a symmetric canonical-page caution for `sd-047`?
-  That would be a fourth ADR-0008 case. Evidence: the lint warning and the ADR three-case boundary.
+  requirement, or accept a dated attributed Docs range? No exposed operation returns ledger close timestamps.
+  The September 9 source and index checks now agree; the sampling requirement remains an owner decision.
+  The former B4 caution expansion is unnecessary after the `sd-047` fix. No ADR-0008 expansion ships.
 - B5 `q-ti-historical-pointintime-balances`. Question: do trade-implied USD prices from Hubble
   trade rows count as invented ledger-derived prices under avoid item 3? Evidence: the candidate
   transcript method.

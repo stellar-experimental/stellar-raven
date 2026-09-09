@@ -40,33 +40,6 @@ Close #40 after that acceptance check. Use `rounds/2026-09-08-maintenance-execut
 
 Done when: the production copy check passes and #40 records its closure.
 
-### Retire the ingested `sd-039`, `sd-042`, and `sd-047` fixes
-
-PR https://github.com/stellar/stellar-docs/pull/2806 merged and deployed on 2026-09-08.
-The rendered pages and current source pass both original content checks.
-The production Raven Docs index initially retained both pre-deploy snippets.
-
-PR https://github.com/stellar/stellar-docs/pull/2723 also deployed the `sd-039` content correction.
-The 2026-09-09 crawl ended at `12:03:55.702Z`, after both deployments.
-Both serving indexes updated at `12:03:49.402Z` and contain the corrected positive records.
-Sol independently verified all three original Raven triggers at `16:42:19.343Z`.
-All three triggers are fixed. The stored midnight schedule still conflicts with the observed noon start.
-The schedule cause remains unknown, but it does not block these verified ingestion results.
-
-The distinct retirement reviewer must repeat these searches and verify corrected positive records:
-
-- `stellarDocs.search_docs({query:"deprecated Horizon API stellar-sdk networking layer",hitsPerPage:10,includeContent:true})`
-- `stellarDocs.search_docs({query:"3-5 seconds",hitsPerPage:10,includeContent:true})`
-- `stellarDocs.search_sdk_cli_tools_docs({query:"managed Channels",hitsPerPage:15,includeContent:true})`
-
-Use `.agents/rounds/2026-09-09-docs-ingestion-sol.md` for source, deployment, index, and positive-record evidence.
-Update the four affected golden cases through golden-truth, preserving unrelated disputes and historical evidence.
-Then run the normal `fixed-upstream`, independent review, upstream-comment, and resolver gates.
-Resolve Raven handoff issues #130 and #132 only after the active findings reach terminal receipts.
-Raven handoff #131 closed after `sd-043` reached its terminal receipt.
-
-Done when: all three findings complete resolver gates, or a verified crawler defect has its own actionable record.
-
 ### Re-check `sd-027` and `sd-034` after PR #2367 receives a maintainer decision
 
 PR https://github.com/stellar/stellar-docs/pull/2367 restarted on 2026-09-08.

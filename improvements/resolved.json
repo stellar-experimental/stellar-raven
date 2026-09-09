@@ -553,6 +553,47 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/f5260f91537c83998658149dd03d24b4565bc968/improvements/stellar-docs/sd-038-stellar-asset-interface-cap67-event-doc-comments.md"
     },
     {
+      "id": "sd-039",
+      "title": "The September 9 crawl ingested the correction from PR #2723 into both serving indexes. The live pages, current source, and original…",
+      "service": "stellar-docs",
+      "discovered": "2026-07-27",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2707",
+        "https://github.com/stellar/stellar-docs/pull/2723"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2707",
+        "https://github.com/stellar/stellar-docs/pull/2723"
+      ],
+      "liveRecheck": "2026-09-09: live Tools pages, current source, both serving indexes, and production stellarDocs.search_sdk_cli_tools_docs({query:\"managed Channels\",hitsPerPage:15,includeContent:true}) distinguish self-hosted Relayer from managed Channels. Corrected positive records exist for both affected pages; strict old-alias searches return zero hits.",
+      "reviewEvidence": "Independent Grok 4.6 high freshly re-derived all original triggers without the Sol matrix and passed the pre-retirement four-case, generated-artifact, and register diff. See .agents/rounds/2026-09-09-docs-retirement-review-grok.md and .agents/rounds/2026-09-09-docs-golden-matrix-sol.md. Root reconciled current references and preserved historical evidence.",
+      "sourceCommit": "176513cc5e058fa12ad81f607ea4ca0d514a659a",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/176513cc5e058fa12ad81f607ea4ca0d514a659a/improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md"
+    },
+    {
+      "id": "sd-042",
+      "title": "The September 9 crawl ingested the EVM guide correction from PR #2806. The current source, rendered guide, and original production search…",
+      "service": "stellar-docs",
+      "discovered": "2026-08-14",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/130",
+        "https://github.com/stellar/stellar-docs/issues/2770",
+        "https://github.com/stellar/stellar-docs/pull/2806"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2770",
+        "https://github.com/stellar/stellar-docs/pull/2806"
+      ],
+      "liveRecheck": "2026-09-09: the rendered EVM guide, current source, four canonical Horizon controls, and the original production search agree on Horizon API (nearing end-of-life). Both serving indexes contain corrected EVM object 21 after the 12:03:55.702Z completed crawl. Strict old-phrase searches return zero hits.",
+      "reviewEvidence": "Independent Grok 4.6 high freshly re-derived all original triggers without the Sol matrix and passed the pre-retirement four-case, generated-artifact, and register diff. See .agents/rounds/2026-09-09-docs-retirement-review-grok.md and .agents/rounds/2026-09-09-docs-golden-matrix-sol.md. Root reconciled current references and preserved historical evidence.",
+      "sourceCommit": "176513cc5e058fa12ad81f607ea4ca0d514a659a",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/176513cc5e058fa12ad81f607ea4ca0d514a659a/improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md"
+    },
+    {
       "id": "sd-043",
       "title": "The sponsored-reserves guide states this minimum-balance formula under \"Effect on minimum balance\":",
       "service": "stellar-docs",
@@ -570,6 +611,27 @@
       "reviewEvidence": "Independent Codex GPT-5.6 Sol high review: .agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md; it repeated the live trigger, checked current source and Core, scanned adjacent Docs, and reconciled every repository reference. Resolution comment read back at https://github.com/stellar/stellar-docs/issues/2771#issuecomment-5588559296.",
       "sourceCommit": "767c981a9304bd74b167357ffdf9a39dd017cce4",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/767c981a9304bd74b167357ffdf9a39dd017cce4/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
+    },
+    {
+      "id": "sd-047",
+      "title": "The September 9 crawl ingested the Validators correction from PR #2806. Both canonical pages and their positive production search records…",
+      "service": "stellar-docs",
+      "discovered": "2026-08-31",
+      "resolved": "2026-09-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/132",
+        "https://github.com/stellar/stellar-docs/issues/2805",
+        "https://github.com/stellar/stellar-docs/pull/2806"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2805",
+        "https://github.com/stellar/stellar-docs/pull/2806"
+      ],
+      "liveRecheck": "2026-09-09: live Validators and Stellar Stack pages, current source, and both positive production search records say every 5-7 seconds. The original 3-5 seconds query no longer returns the stale Validators sentence. Both serving indexes return zero strict old-phrase hits after the completed crawl.",
+      "reviewEvidence": "Independent Grok 4.6 high freshly re-derived all original triggers without the Sol matrix and passed the pre-retirement four-case, generated-artifact, and register diff. See .agents/rounds/2026-09-09-docs-retirement-review-grok.md and .agents/rounds/2026-09-09-docs-golden-matrix-sol.md. Root reconciled current references and preserved historical evidence.",
+      "sourceCommit": "176513cc5e058fa12ad81f607ea4ca0d514a659a",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/176513cc5e058fa12ad81f607ea4ca0d514a659a/improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md"
     },
     {
       "id": "sd-049",

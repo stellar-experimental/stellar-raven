@@ -20,7 +20,7 @@
       "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
       "Do NOT pin release, network support, or provider health without an as-of date."
     ],
-    "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-09-02, repository v1.8.0 and rendered 1.5.x docs disagreed. The public Channels Statuspage was inactive. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. Sources disagree: the official Stellar Docs page calls Relayer 'also known as Stellar Channels Service,' while OpenZeppelin distinguishes the self-hosted Relayer, hosted Relayer Service, and Channels plugin. An attributed official source is not a wrong claim. Grade a product-identity conflation at partial."
+    "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-09-02, repository v1.8.0 and rendered 1.5.x docs disagreed. The public Channels Statuspage was inactive. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. On 2026-09-09, the official Stellar Docs Tools pages and their indexed records distinguish the self-hosted Relayer from managed Channels. The old product-alias source caution no longer applies. The separately dated version and service-health observations remain unchanged."
   },
   "tags": {
     "category": "tooling-infra",
@@ -141,22 +141,52 @@
             "note": "The page states that it is inactive and only visible to team members."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-09-09, the official Stellar Docs Tools pages and their search records distinguish self-hosted Relayer from managed Channels.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/openzeppelin-relayer",
+            "observedAt": "2026-09-09",
+            "note": "The page distinguishes the open-source framework, operator-controlled signer and funded fee accounts, and managed Channels."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools",
+            "observedAt": "2026-09-09",
+            "note": "The Tools entry distinguishes self-hosted Relayer and its plugin from managed Channels."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842/docs/tools/openzeppelin-relayer.mdx",
+            "observedAt": "2026-09-09",
+            "note": "Blob 8ef7a6f219393fb8495fecc848982e1f37d78a13 contains the corrected product distinction."
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_sdk_cli_tools_docs({query:'managed Channels',hitsPerPage:15,includeContent:true})",
+            "observedAt": "2026-09-09",
+            "note": "Both affected Tools records return corrected managed-service snippets. Neither uses the old alias."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-09-02",
-      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md (Grok 4.6 high; orchestrator reconciled)",
+      "date": "2026-09-09",
+      "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
       "evidence": [
-        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
-        "Release review 2026-09-02: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.8.0",
-        "Documentation review 2026-09-02: https://docs.openzeppelin.com/relayer/1.5.x",
-        "Product and fair-use review 2026-09-02: https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
-        "Status review 2026-09-02: https://relayerchannelsmainnet.statuspage.io/inactive",
-        "Sibling sweep 2026-09-02: q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing, q-x402-payment-verification, q-smart-wallet-fee-sponsorship, q-pc-fee-bump-channel-accounts-feepool, and q-tool-passkeykit-smart-wallet; no contradiction."
+        ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
+        ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
+        "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
+        "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
+        "Only the expired official-Docs product-alias caution changes. The answer, key facts, avoid items, September 2 version/health observations, disputed status, asOf, and reverifyBy remain unchanged.",
+        "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md"
+        "improvements/resolved.json entry sd-039; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
+        "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
       ]
     },
     "origin": "raven-next q-ti-openzeppelin-relayer"

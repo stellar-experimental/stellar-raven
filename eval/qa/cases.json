@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "4f8d38a66b980b5855643a0e2fb49c671a145a4c197f1c3b9a36e6116b053aca",
+  "corpusContentSha256": "631a03338681f8846866f5ee5e5830dacab4c8ed70611bfe0a08fa164c14aad7",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -21589,7 +21589,7 @@
           "Do NOT call Horizon already deprecated or promise universal full history.",
           "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture and date the lifecycle label.\nThe live pages agreed on 2026-09-08, but the official documentation search index still returned the pre-deploy phrase. An attributed quote from that official index is not a wrong claim; grade caps at partial until the crawler refreshes. Current answers must prefer the rendered page."
+        "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture and date the lifecycle label.\nOn 2026-09-09, the rendered EVM guide and its positive search record agree on the nearing-end-of-life label. The pre-deploy search-index caution expired after the completed crawl. Preserve the durable architecture distinctions and date later lifecycle claims."
       },
       "tags": {
         "category": "tooling-infra",
@@ -21602,7 +21602,7 @@
           "reviewState": "none"
         },
         "domain": "mixed",
-        "status": "disputed",
+        "status": "confirmed",
         "asOf": "2026-09-08",
         "sources": [
           {
@@ -21674,22 +21674,46 @@
                 "note": "Production Raven returned the stale pre-deploy snippet for the same page after the source deployment."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-09-09, the rendered EVM guide, current source, canonical Horizon pages, and positive search record agree on Horizon's nearing-end-of-life lifecycle label.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment",
+                "observedAt": "2026-09-09",
+                "note": "The Soroban Client section says Horizon API (nearing end-of-life). Four canonical Horizon pages retain future-deprecation wording."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842/docs/learn/migrate/evm/smart-contract-deployment.mdx",
+                "observedAt": "2026-09-09",
+                "note": "Blob c7b63187d38d9d368e7eadade08df45d88bff886 contains the corrected lifecycle wording."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'deprecated Horizon API stellar-sdk networking layer',hitsPerPage:10,includeContent:true})",
+                "observedAt": "2026-09-09",
+                "note": "The corrected positive EVM record ranks first after the September 9 crawl. The old present-tense phrase is absent."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-08",
-          "by": "improvements follow-up with Claude Fable high source matrix",
+          "date": "2026-09-09",
+          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
           "evidence": [
-            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-042-fable.md",
-            "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8; the deploy workflow completed successfully.",
-            "Live re-check: https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment says 'Horizon API (nearing end-of-life)' and has no present-tense deprecated claim.",
-            "Current upstream source at 997a85c23f5c458313fac4c30ec4fbd4c4e841ef has no present-tense Horizon-deprecated line in docs/.",
-            "Production Raven re-check at 2026-09-08T15:43Z still returned the pre-deploy phrase from the daily Algolia index.",
-            "Sibling sweep: q-pc-practical-fee-setting and q-ti-compute-token-lp-market-data were reviewed; only q-pc-practical-fee-setting repeated the obsolete live-page conflict and changed in this round."
+            ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
+            ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
+            "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
+            "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
+            "Only the dated Horizon source/index agreement and expired caution change. Architecture, endpoint overlap, key facts, and avoid items remain unchanged. The September 8 conflict remains dated historical evidence.",
+            "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
-            "The rendered source deployed before the daily Docs search index refreshed."
+            "improvements/resolved.json entry sd-042; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
+            "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },
         "origin": "raven-next q-infra-horizon-vs-rpc"
@@ -27200,7 +27224,7 @@
           "Do NOT say 100 always wins, freeze current percentiles, or use Ethereum gas/gwei framing.",
           "Do NOT claim Hubble is the primary real-time submission estimator or overbid without an application risk cap."
         ],
-        "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. The 2026-09-08 live pages agree on the nearing-end-of-life label. The daily search index still has one pre-deploy phrase under sd-042, so grade durable endpoint behavior.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. On 2026-09-09, the live pages and positive search records agree on the nearing-end-of-life label. The sd-042 search-ingestion conflict no longer applies. Grade durable endpoint behavior.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
       },
       "tags": {
         "category": "protocol-core",
@@ -27260,21 +27284,46 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-09-09, the live Docs and indexed EVM record describe Horizon as nearing end-of-life and eventually deprecated.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment",
+                "observedAt": "2026-09-09",
+                "note": "The Soroban Client section says Horizon API (nearing end-of-life). Four canonical Horizon pages retain future-deprecation wording."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842/docs/learn/migrate/evm/smart-contract-deployment.mdx",
+                "observedAt": "2026-09-09",
+                "note": "Blob c7b63187d38d9d368e7eadade08df45d88bff886 contains the corrected lifecycle wording."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'deprecated Horizon API stellar-sdk networking layer',hitsPerPage:10,includeContent:true})",
+                "observedAt": "2026-09-09",
+                "note": "The corrected positive EVM record ranks first after the September 9 crawl. The old present-tense phrase is absent."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-08",
-          "by": "improvements follow-up with Claude Fable high source matrix",
+          "date": "2026-09-09",
+          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
           "evidence": [
-            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-042-fable.md",
-            "Live re-check: https://developers.stellar.org/docs/data/apis and https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment agree that Horizon is nearing end-of-life.",
-            "Production Raven still returned the pre-deploy EVM-guide phrase from the daily Docs search index.",
-            "Sibling sweep: q-infra-horizon-vs-rpc and q-ti-compute-token-lp-market-data now state the same current lifecycle boundary.",
-            "The fee, surge, getFeeStats, and Hubble claims did not change."
+            ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
+            ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
+            "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
+            "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
+            "Only the dated Horizon lifecycle and search-ingestion qualifier change. Fee, surge, getFeeStats, Hubble, key facts, avoid items, and the separate sd-003 caution remain unchanged.",
+            "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
-            "The rendered source deployed before the daily Docs search index refreshed.",
+            "improvements/resolved.json entry sd-042; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
+            "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies.",
             "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md"
           ]
         },
@@ -29842,7 +29891,7 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/validators",
-            "note": "On 2026-09-08 the rendered page says 'every 5-7 seconds'; the daily Docs search index still returned its pre-deploy 3-5-second snippet."
+            "note": "On 2026-09-09, the rendered page and its indexed record both say every 5-7 seconds. The September 9 crawl removed the pre-deploy snippet."
           },
           {
             "class": "A",
@@ -29981,23 +30030,52 @@
                 "note": "InitialSorobanNetworkConfig::LEDGER_TARGET_CLOSE_TIME_MILLISECONDS = 5000; Minimum 4000; Maximum 5000. These bound the configured target, not observed closes."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-09-09, Validators and Stellar Stack state every 5-7 seconds in their rendered pages, current source, and indexed records.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/validators",
+                "observedAt": "2026-09-09",
+                "note": "The rendered introduction says every 5-7 seconds."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+                "observedAt": "2026-09-09",
+                "note": "The Stellar Core section says every 5-7 seconds."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842/docs/validators/README.mdx",
+                "observedAt": "2026-09-09",
+                "note": "Blob f74c26290ba7653f584805bb3b02867b97aee3af contains the corrected sentence."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'5-7 seconds',hitsPerPage:10,includeContent:true})",
+                "observedAt": "2026-09-09",
+                "note": "Both corrected positive records are present. The original 3-5 seconds query no longer returns the stale Validators sentence."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-08",
-          "by": "improvements follow-up with Codex GPT-5.6 Terra high source matrix and targeted production search delta",
+          "date": "2026-09-09",
+          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
           "evidence": [
-            ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-047-terra.md",
-            "PR https://github.com/stellar/stellar-docs/pull/2806 merged as ad0accbd0da545ccba12b5a01fd5dc9e387977f8.",
-            "Live re-check: https://developers.stellar.org/docs/validators and https://developers.stellar.org/docs/learn/fundamentals/stellar-stack each say 'every 5-7 seconds'.",
-            "Current upstream docs/ contains no 3-5-second cadence line and contains the same 5-7-second sentence in both canonical files.",
-            "Production Raven re-check at 2026-09-08T15:49:07Z still returned the pre-deploy 3-5-second Validators snippet.",
-            "Sibling sweep: q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit, q-soroban-storage-types, and q-infra-quickstart-local-network contain no conflicting cadence claim.",
-            "The golden answer, key facts, avoid items, and empirical cadence claims did not change."
+            ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
+            ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
+            "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
+            "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
+            "Only the latest source/index verification changes. All judge-facing fields, historical samples, target-versus-observation distinctions, and dated historical contradiction rows remain unchanged.",
+            "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md",
-            "The rendered source deployed before the daily Docs search index refreshed."
+            "improvements/resolved.json entry sd-047; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
+            "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"
@@ -50952,7 +51030,7 @@
           "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
           "Do NOT pin release, network support, or provider health without an as-of date."
         ],
-        "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-09-02, repository v1.8.0 and rendered 1.5.x docs disagreed. The public Channels Statuspage was inactive. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. Sources disagree: the official Stellar Docs page calls Relayer 'also known as Stellar Channels Service,' while OpenZeppelin distinguishes the self-hosted Relayer, hosted Relayer Service, and Channels plugin. An attributed official source is not a wrong claim. Grade a product-identity conflation at partial."
+        "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-09-02, repository v1.8.0 and rendered 1.5.x docs disagreed. The public Channels Statuspage was inactive. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. On 2026-09-09, the official Stellar Docs Tools pages and their indexed records distinguish the self-hosted Relayer from managed Channels. The old product-alias source caution no longer applies. The separately dated version and service-health observations remain unchanged."
       },
       "tags": {
         "category": "tooling-infra",
@@ -51073,22 +51151,52 @@
                 "note": "The page states that it is inactive and only visible to team members."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-09-09, the official Stellar Docs Tools pages and their search records distinguish self-hosted Relayer from managed Channels.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools/openzeppelin-relayer",
+                "observedAt": "2026-09-09",
+                "note": "The page distinguishes the open-source framework, operator-controlled signer and funded fee accounts, and managed Channels."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools",
+                "observedAt": "2026-09-09",
+                "note": "The Tools entry distinguishes self-hosted Relayer and its plugin from managed Channels."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842/docs/tools/openzeppelin-relayer.mdx",
+                "observedAt": "2026-09-09",
+                "note": "Blob 8ef7a6f219393fb8495fecc848982e1f37d78a13 contains the corrected product distinction."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_sdk_cli_tools_docs({query:'managed Channels',hitsPerPage:15,includeContent:true})",
+                "observedAt": "2026-09-09",
+                "note": "Both affected Tools records return corrected managed-service snippets. Neither uses the old alias."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-02",
-          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md (Grok 4.6 high; orchestrator reconciled)",
+          "date": "2026-09-09",
+          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
           "evidence": [
-            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
-            "Release review 2026-09-02: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.8.0",
-            "Documentation review 2026-09-02: https://docs.openzeppelin.com/relayer/1.5.x",
-            "Product and fair-use review 2026-09-02: https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
-            "Status review 2026-09-02: https://relayerchannelsmainnet.statuspage.io/inactive",
-            "Sibling sweep 2026-09-02: q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing, q-x402-payment-verification, q-smart-wallet-fee-sponsorship, q-pc-fee-bump-channel-accounts-feepool, and q-tool-passkeykit-smart-wallet; no contradiction."
+            ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
+            ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
+            "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
+            "Source classes A, B, and E agree on the corrected occurrence. Each new corroboration row records the exact page, source, and production query.",
+            "Only the expired official-Docs product-alias caution changes. The answer, key facts, avoid items, September 2 version/health observations, disputed status, asOf, and reverifyBy remain unchanged.",
+            "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
-            "freshness-drift",
-            "improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md"
+            "improvements/resolved.json entry sd-039; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
+            "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
         },
         "origin": "raven-next q-ti-openzeppelin-relayer"

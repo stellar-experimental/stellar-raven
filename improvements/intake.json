@@ -152,10 +152,6 @@
       "repo": "stellar/stellar-protocol",
       "reason": "SLP proposal-family discoverability is rooted in the normative stellar-protocol limits/ source and needs canonical family metadata/cross-links."
     },
-    "sd-039": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Official Tools pages conflate the self-hosted OpenZeppelin Relayer with the managed Channels service."
-    },
     "sd-040": {
       "repo": "stellar/stellar-docs",
       "reason": "The smart-contract Address conversion guide owns the malformed-XDR handling example."
@@ -163,10 +159,6 @@
     "sd-041": {
       "repo": "stellar/stellar-docs",
       "reason": "The pooled-accounts guide's own lead paragraph contradicts its later memo guidance."
-    },
-    "sd-042": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The EVM migration guide's Horizon lifecycle wording contradicts four canonical Docs pages."
     },
     "sd-044": {
       "repo": "stellar/stellar-docs",
