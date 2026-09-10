@@ -8,6 +8,7 @@ Add an item when you find work you are not doing now. Delete it when it is done;
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
 Updated 2026-09-09 during issue #141 and upstream handoff verification.
+Rejected-candidate retirement and the remaining OAuth review were recorded on 2026-09-10.
 The current ledger is `.agents/rounds/2026-09-09-outstanding-closeout.md`. The ranked handoff is
 `NEXT.md`.
 
@@ -209,6 +210,11 @@ our ranking.
 
 ### Preserve structured routing intent across extraction caps and gate tiers
 
+The rejected search and Scout candidates are retired, not pending implementations.
+Their disposition is recorded in `rounds/2026-09-09-outstanding-closeout.md#rejected-candidate-retirement--2026-09-10`.
+PR #148 supplied the accepted bounded search repair. This item retains the broader source-acceptance requirements for #141.
+Use current accepted main and a fresh source snapshot for any later authorized repair.
+
 Trigger only after the current truth-maintenance round closes and the owner authorizes a general
 Raven scoring repair. The 2026-09-03 Scout routing attribution found eight real regressions from
 phrase flattening, first-token truncation, generic schema-word coverage, substring coverage, and
@@ -261,6 +267,21 @@ Acceptance checks:
 
 Done when: all eleven acceptance checks pass in a reviewed general scoring change. The existing
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+
+## Authentication
+
+### Complete the unmerged OAuth consent and redirect review
+
+Branch `fix-h1-3972929-consent-redirect` contains commit `db6a825eef231a01252eda7e2f0beff6bcab5b8d`.
+It shows the validated redirect destination and unverified client name, and rejects non-loopback HTTP redirects.
+The 2026-09-10 source reviews found no confirmed functional blocker; the private H1 report was unavailable.
+Before integration, verify the original requirements and add POST authorization and registration-endpoint regression tests.
+Document the auth behavior in `ARCHITECTURE.md` and remove the misleading test-only helper re-export comment.
+Review whether the consent destination should be required and its unverified-name disclosure unconditional.
+That API simplification is a review suggestion, not a confirmed functional defect.
+
+Done when: the reviewed change passes required checks and merges, or the owner explicitly retires it.
+This branch is unmerged work, not a rejected candidate.
 
 ## Eval instruments
 

@@ -296,3 +296,38 @@ Its branch is `fix/search-name-and-noun-ranking`; its owner retains control.
 This deployment did not adopt, edit, release, or remove that candidate.
 The local rejected Scout 1.9.49 stash also remains preserved.
 #141 still requires catalog acceptance. #40 still requires authenticated production copying.
+
+## Rejected-candidate retirement — 2026-09-10
+
+The owner retired the rejected candidates after the repository cleanup review.
+This decision supersedes this record's earlier local-preservation instructions.
+The findings remain useful; the rejected implementations do not remain pending work.
+
+| Retired item | Reason |
+| --- | --- |
+| `fix/search-name-and-noun-ranking` and its worktree | The broad scoring candidate failed its unchanged routing gate and retained harmful result substitutions. PR #148 supplied the accepted bounded repair. |
+| Stash `5d9d35bed804064482a66ba8f8f76b71f5759327` | Scout 1.9.49 caused unrelated RWA captures and displaced useful routes. The drift and eval verdicts above preserve the rejection evidence. |
+
+The search worktree's committed base was `b2dbde53e9c9910b6d49a87ccea829555eeb4ef1`.
+It contained 32 changed tracked paths, including seven with unstaged changes, and three untracked handoff files.
+The final stored result was `routing-2026-09-09T03-23-21-923Z.json`.
+Its SHA-256 was `be322bb349c8c29c27119b9d68ee15f126d1f4b94c8abeff68b5d284e1467dd2`.
+The cleanup independently read its failure: legacy top-five `319` exceeded the unchanged upper limit `315`.
+Comparison with the stored clean baseline confirmed 14 legacy exact-card losses and 14 gains.
+The extended lane had two exact-card losses and two gains.
+Equal totals therefore did not establish equal results.
+The author identified `q-eco-2025-defi-launches` as a materially weak loss of Lumenloop evidence.
+The final scoring delta lacked independent release acceptance.
+Earlier tests passing did not clear these rejection reasons.
+
+The accepted advisory in PR #137 and search repair in PR #148 remain on main.
+The accepted repair preserved all 544 frozen rows; the production acceptance section above records its verification.
+The obsolete combined patch, fixture, handoffs, local results, and generated caches can be discarded.
+The worktree's `.dev.vars` contained only nine placeholder values.
+No rejected source is copied into runtime code, a new branch, or a replacement stash.
+The result hash identifies the inspected historical artifact; it is not a promise to retain that raw file.
+
+Remaining work belongs in [the structured-routing TODO](../TODO.md#preserve-structured-routing-intent-across-extraction-caps-and-gate-tiers).
+Issue #141 still needs a fresh source-acceptance decision against current accepted main and the existing intent checks.
+This retirement does not accept Scout 1.9.49 or weaken an evaluation gate.
+The separate OAuth branch remains unmerged and is tracked in [the authentication TODO](../TODO.md#complete-the-unmerged-oauth-consent-and-redirect-review).
