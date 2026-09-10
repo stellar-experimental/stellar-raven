@@ -38,3 +38,15 @@
 - Wrangler emitted existing missing-source sourcemap warnings.
 - I did not run the full suite or build because the parent owns those checks.
 - I made no commit, push, deployment, or Wrangler development process.
+
+## Positive assembled Cancel follow-up
+
+- Added one assembled Worker test for the complete Cancel flow.
+- The test registers a client with `https://client.example/cancelled` through DCR.
+- It gets the consent page and extracts the CSRF token and matching cookie.
+- It posts `decision=deny` without the Terms field.
+- It verifies `access_denied`, `state`, `iss`, and the cleared consent CSRF cookie.
+- The test uses manual redirect handling, so it never requests the reserved callback.
+- `npm run test:smoke -- --run test/smoke/auth-redirects.test.ts` passed, 9 tests.
+- The first run followed the redirect and observed the smoke wall response.
+- I corrected only the test harness. I made no source change.

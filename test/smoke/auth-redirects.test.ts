@@ -65,6 +65,51 @@ describe("assembled OAuth redirect transport policy", () => {
     expect(await response.json()).toMatchObject({ redirect_uris: [redirectUri] });
   });
 
+  it("returns access_denied from the assembled consent Cancel flow", async () => {
+    const redirectUri = "https://client.example/cancelled";
+    const registration = await SELF.fetch(registrationRequest(redirectUri));
+    expect(registration.status).toBe(201);
+    const { client_id: clientId } = (await registration.json()) as { client_id: string };
+    const authorizeUrl = `${ORIGIN}/authorize?${new URLSearchParams({
+      response_type: "code",
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: "mcp",
+      state: "cancel-smoke-state",
+      code_challenge: "a".repeat(43),
+      code_challenge_method: "S256"
+    })}`;
+
+    const consent = await SELF.fetch(authorizeUrl);
+    expect(consent.status).toBe(200);
+    const page = await consent.text();
+    const csrfToken = page.match(/name="csrf_token" value="([^"]+)"/)?.[1];
+    expect(csrfToken).toBeTruthy();
+    const consentCookie = consent.headers.get("set-cookie") ?? "";
+    const cookiePair = consentCookie.split(";", 1)[0] ?? "";
+    expect(cookiePair).toBe(`__Host-MCP_CONSENT_CSRF=${csrfToken}`);
+
+    const denial = await SELF.fetch(authorizeUrl, {
+      method: "POST",
+      redirect: "manual",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        cookie: cookiePair
+      },
+      body: new URLSearchParams({ csrf_token: csrfToken!, decision: "deny" })
+    });
+
+    expect(denial.status).toBe(303);
+    const location = new URL(denial.headers.get("location") ?? "");
+    expect(location.origin + location.pathname).toBe(redirectUri);
+    expect(location.searchParams.get("error")).toBe("access_denied");
+    expect(location.searchParams.get("state")).toBe("cancel-smoke-state");
+    expect(location.searchParams.get("iss")).toBe(ORIGIN);
+    const clearedCookie = denial.headers.get("set-cookie") ?? "";
+    expect(clearedCookie).toContain("__Host-MCP_CONSENT_CSRF=;");
+    expect(clearedCookie).toContain("Max-Age=0");
+  });
+
   it.each(["GET", "POST"])(
     "refuses legacy non-loopback HTTP on the %s authorization leg",
     async (method) => {

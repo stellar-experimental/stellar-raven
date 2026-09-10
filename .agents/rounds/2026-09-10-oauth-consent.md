@@ -90,7 +90,7 @@ Raw results remain in `/tmp/raven-oauth-consent-a11y-desktop.json` and `/tmp/rav
 
 ## Validation and disposition
 
-Typecheck, 2042 unit tests, 93 assembled-worker smoke tests, and the dry-run Worker build passed.
+Typecheck, 2042 unit tests, 94 assembled-worker smoke tests, and the dry-run Worker build passed.
 The eval self-test, routing gate, corpus lint, helper registry, improvements lint, and pin-review check passed.
 All CI artifact generators ran; their committed outputs remained unchanged.
 The routing gate still reports its existing protocol-history diagnostic failure; that diagnostic is outside the accepted gate.
@@ -98,7 +98,19 @@ Fable approved the final UI after reconciliation in [the product review](2026-09
 The review corrected destination serialization, approval wording, empty scopes, and the action shadow.
 Normal form submission remains approval because CSRF and Terms already guard it, including keyboard submission.
 The full client name remains visible because clipping removes useful identity information.
-The independent technical review remains pending.
+Grok found no blocking bugs in [the technical review](2026-09-10-oauth-consent/review-grok.md).
+Its scheme-denylist suggestion remains outside this change because the provider owns scheme validation.
+Duplicating that list would create a second policy source without a demonstrated current failure.
+Cancel stays below approval because full-width controls keep clear labels and touch targets at 320 CSS pixels.
+The suggested assembled-worker Cancel check now passes through registration, consent GET, and CSRF-protected denial POST.
+It verifies `access_denied`, state, issuer, and cookie removal without Terms acceptance.
+Root corrected the test's possibly undefined cookie split result; typecheck and all 94 smoke tests then passed.
+PR [#150](https://github.com/stellar-experimental/stellar-raven/pull/150) contains the reviewed change.
+GitHub CI and CodeQL passed on implementation commit `10f706f`.
+The final test and review-record commit must pass GitHub checks before the merge.
+Local tree and staged secret scans passed, including the gitleaks commit hook.
+The retirement record is included in this PR; no unique local documentation commit needs a separate push.
+After a verified squash merge, the completion and original OAuth branches can be removed.
 No runtime acceptance or private-report resolution is claimed yet.
 
 The unchanged dependency tree reports eight npm audit findings: one moderate and seven high.
