@@ -330,4 +330,5 @@ The result hash identifies the inspected historical artifact; it is not a promis
 Remaining work belongs in [the structured-routing TODO](../TODO.md#preserve-structured-routing-intent-across-extraction-caps-and-gate-tiers).
 Issue #141 still needs a fresh source-acceptance decision against current accepted main and the existing intent checks.
 This retirement does not accept Scout 1.9.49 or weaken an evaluation gate.
-The separate OAuth branch remains unmerged and is tracked in [the authentication TODO](../TODO.md#complete-the-unmerged-oauth-consent-and-redirect-review).
+The separate OAuth branch remained unmerged at this retirement checkpoint.
+Its subsequent implementation and review are recorded in [the OAuth completion ledger](2026-09-10-oauth-consent.md).

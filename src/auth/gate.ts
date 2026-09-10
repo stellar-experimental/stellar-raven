@@ -19,7 +19,7 @@
  */
 import type { OAuthProviderOptions } from "@cloudflare/workers-oauth-provider";
 import { WorkOSAuthHandler } from "./workos";
-import { isInsecureRedirectUri } from "./redirects";
+import { hasAllowedRedirectTransport } from "./redirects";
 // Token lifetimes derive from the retention leaf that privacy disclosures
 // quote, so a published duration can never drift from the enforced one.
 import { RETENTION } from "./retention";
@@ -66,17 +66,13 @@ export function oauthProviderOptions(
     // needs the `global_fetch_strictly_public` compat flag (wrangler.jsonc);
     // the provider gates on BOTH before advertising/serving it.
     clientIdMetadataDocumentEnabled: true,
-    /**
-     * OAuth 2.1 hardening the library does not do itself: reject
-     * plain-http redirect URIs to non-loopback hosts at registration time.
-     * Loopback http (RFC 8252), custom schemes (native apps), and https pass.
-     * The /authorize legs enforce the same rule on the validated request
-     * (resolveAuthRequest in workos.ts), which also covers CIMD clients.
-     * Rejections follow RFC 7591 §3.2.2 (invalid_client_metadata, 400).
-     */
+    // Reject non-loopback HTTP redirects before the provider stores a DCR client.
     clientRegistrationCallback: ({ clientMetadata }) => {
       const uris = (clientMetadata as { redirect_uris?: unknown }).redirect_uris;
-      if (Array.isArray(uris) && uris.some((u) => typeof u === "string" && isInsecureRedirectUri(u))) {
+      if (
+        Array.isArray(uris) &&
+        uris.some((uri) => typeof uri !== "string" || !hasAllowedRedirectTransport(uri))
+      ) {
         return {
           code: "invalid_client_metadata",
           description: "redirect_uris must use https for non-loopback hosts."
@@ -94,11 +90,6 @@ export function oauthProviderOptions(
 
 /** Loopback hostnames wrangler dev binds to (URL.hostname forms). */
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
-
-// Re-export from the leaf module (src/auth/redirects.ts) — existing
-// importers (tests) keep this path; workos.ts imports the leaf directly to
-// avoid a module cycle through gate.ts.
-export { isInsecureRedirectUri } from "./redirects";
 
 /**
  * Local-dev bypass: the var must be the exact string "true" (only ever set via

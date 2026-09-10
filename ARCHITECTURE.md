@@ -34,6 +34,19 @@ For `/mcp` paths the auth gate runs in this order:
    (`src/auth/workos.ts`). `src/server.ts` also aliases the path-suffixed RFC 8414 and OIDC
    discovery paths onto the lib's exact-path metadata endpoint.
 
+The OAuth provider owns client and redirect matching, permitted URI schemes, and native loopback port matching.
+Raven additionally rejects non-loopback HTTP redirects during client registration and authorization.
+The same transport check covers typed authorization errors before their redirects leave the Worker.
+An insecure target produces a local 400 response without a `Location` header.
+HTTPS, loopback HTTP, and provider-permitted native application schemes remain supported.
+
+The script-free consent page labels the client name as unverified.
+It shows the complete validated return address as plain text, using the browser's URL serialization.
+Approval requires the form's CSRF token and Terms acknowledgement before Raven starts the WorkOS login.
+Cancel requires CSRF validation but no Terms acknowledgement. It returns a 303 `access_denied` response to the validated client address.
+Cancellation preserves the OAuth state and issuer, clears the consent cookie, and creates no login state or grant.
+Technical sources and design evidence live in [the OAuth completion record](.agents/rounds/2026-09-10-oauth-consent.md).
+
 **Non-`/mcp` requests are the public site.** Everything the OAuth provider doesn't claim falls
 through to its `defaultHandler` (`src/auth/workos.ts`), which — besides `/authorize` /
 `/callback` / the consent page — serves the public site from `src/site.ts`: the landing page,

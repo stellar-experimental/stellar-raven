@@ -863,8 +863,7 @@ body{display:flex;flex-direction:column}
 main.auth{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 22px 64px;
   position:relative;z-index:2}
 .card{width:100%;max-width:460px;border:1px solid var(--line-2);border-radius:20px;
-  background:linear-gradient(180deg,rgba(24,38,23,.84),rgba(14,21,13,.82));
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:var(--green-2);
   box-shadow:0 40px 90px -38px rgba(0,0,0,.85),inset 0 1px 0 rgba(238,240,226,.05);overflow:hidden}
 .card-top{padding:36px 34px 0;text-align:center}
 .conn{display:flex;align-items:center;justify-content:center;margin:6px 0 24px}
@@ -880,24 +879,32 @@ main.auth{flex:1;display:flex;align-items:center;justify-content:center;padding:
 .card .sub{color:var(--dim);font-size:15px;max-width:35ch;margin:14px auto 0;line-height:1.55;
   text-wrap:balance}
 .card .sub b{color:var(--fog);font-weight:600}
-.card .dest{color:var(--dim);font-size:13px;max-width:38ch;margin:12px auto 0;line-height:1.5;
-  text-wrap:balance;overflow-wrap:anywhere}
-.card .dest-code{font-family:var(--mono);font-size:12px;color:var(--fog)}
-.card .unverified{color:var(--dim);font-size:12.5px;max-width:38ch;margin:8px auto 0;line-height:1.5;
+.card .unverified{color:var(--dim);font-size:13px;max-width:36ch;margin:10px auto 0;line-height:1.5;
   text-wrap:balance}
+.destination{margin:24px 34px 0;padding:16px;border:1px solid var(--line-2);border-radius:10px;
+  background:rgba(6,10,6,.28)}
+.destination h2{font-size:13px;font-weight:600;color:var(--fog);margin:0}
+.destination p{font-size:13px;color:var(--dim);margin:4px 0 10px;line-height:1.5}
+.destination code{display:block;font-family:var(--mono);font-size:12px;color:var(--fog);
+  line-height:1.6;overflow-wrap:anywhere;white-space:pre-wrap;unicode-bidi:isolate}
 .panel-h{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);padding:28px 34px 4px}
+  color:var(--dim);margin:0;padding:24px 34px 4px}
 .scopes{list-style:none;margin:0;padding:0 34px}
 /* grid so the tick centres on the mcp pill by row (align-items:center), while the
    description flows in column 2 under the pill — no per-element margin nudging. */
 .scopes li{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}
 .scopes li:first-child{border-top:0}
 .tick{flex:none}
-.scope-code{grid-column:2;justify-self:start;font-family:var(--mono);font-size:12px;color:var(--orange);background:var(--orange-soft);
+.scope-code{grid-column:2;justify-self:start;font-family:var(--mono);font-size:12px;color:var(--orange-2);background:var(--orange-soft);
   border:1px solid rgba(255,85,0,.24);padding:1px 7px;border-radius:6px}
 .scope-desc{grid-column:2;font-size:13.5px;color:var(--dim);margin-top:6px;line-height:1.5}
+.scope-empty{padding:13px 34px 0;margin:0;font-size:13.5px;color:var(--dim);line-height:1.5}
 .act{padding:24px 34px 32px}
-.act .btn-primary{width:100%;justify-content:center;padding:15px}
+.act .btn-primary{width:100%;justify-content:center;padding:15px;box-shadow:none}
+.act .btn-cancel{width:100%;justify-content:center;min-height:46px;margin-top:10px;padding:10px;
+  color:var(--fog);background:transparent;border:1px solid var(--line-2);box-shadow:none}
+.act .btn-cancel:hover{background:rgba(238,240,226,.06);border-color:var(--dim)}
+.act :is(button,input,a):focus-visible{outline:2px solid var(--fog);outline-offset:4px}
 .consent-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12.5px;
   color:var(--dim);line-height:1.5;margin:0 0 16px}
 /* centre the box on the first line, not the whole phrase (see the demo page). */
@@ -905,11 +912,6 @@ main.auth{flex:1;display:flex;align-items:center;justify-content:center;padding:
 .consent-row span{min-width:0;max-width:48ch;text-wrap:balance}
 .consent-row a{color:var(--fog);text-decoration:underline;text-underline-offset:2px}
 .consent-row a:hover{color:var(--orange)}
-/* CSS-only gate (script-free page): the submit button is inert until #tos-agree
-   is checked. Server-side POST /authorize also requires tos_agree — this is UX,
-   not the enforcement boundary. */
-.act:not(:has(#tos-agree:checked)) .btn-primary{opacity:.45;pointer-events:none;
-  cursor:not-allowed;box-shadow:none;transform:none}
 .note{display:flex;gap:9px;align-items:center;font-size:12.5px;color:var(--dim);margin:16px 0 0;line-height:1.5}
 .note span{min-width:0;text-wrap:balance}
 .note svg{flex:none}
@@ -917,9 +919,10 @@ main.auth{flex:1;display:flex;align-items:center;justify-content:center;padding:
   position:relative;z-index:2}
 .auth-brand .rv{width:22px;height:22px;fill:var(--orange);filter:drop-shadow(0 0 12px rgba(255,85,0,.5));align-self:center}
 .auth-brand b{font-family:var(--display);font-weight:600;font-size:17px;color:var(--fog)}
-.auth-brand i{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.auth-brand i{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 @media (max-width:380px){
-  .card-top,.panel-h,.scopes,.act{padding-inline:22px}
+  .card-top,.panel-h,.scopes,.scope-empty,.act{padding-inline:22px}
+  .destination{margin-inline:22px}
   .card h1{max-width:21ch}
 }
 `;
@@ -938,43 +941,23 @@ const SHIELD =
   `fill="none" stroke="#71806a" stroke-width="1.3" stroke-linejoin="round"/></svg>`;
 
 const SCOPE_GLOSS: Record<string, string> = {
-  mcp: "Run search and execute against the Stellar service catalog on your behalf."
+  mcp: "Search Stellar resources and retrieve data on your behalf."
 };
 
-/**
- * View-model rendering for the consent page. workos.ts passes the already-safe
- * display strings and wraps the result in a Response (cookies live there).
- */
+/** Render untrusted client metadata as text. The auth handler owns validation and cookies. */
 export function consentPage(args: {
   clientName: string;
   scopes: string[];
   csrfToken: string;
   formAction: string;
-  /**
-   * The validated redirect target for THIS authorization request
-   * (AuthRequest.redirectUri, already checked against the client's registered
-   * URIs by parseAuthRequest). Rendered as plain text so the approver sees
-   * where the authorization code actually goes. Unknown when the stubbed test
-   * caller omits it.
-   */
-  redirectDestination?: string;
-  /**
-   * Whether the client name above is app-supplied (DCR/CIMD) and therefore
-   * not a Raven-verified identity. Shown as a fixed qualifier line.
-   */
-  clientNameUnverified?: boolean;
+  /** Exact redirect URI from the validated authorization request. */
+  redirectDestination: string;
 }): string {
   const clientName = escapeHtml(args.clientName.trim() || "Unknown MCP client");
   const initial = escapeHtml((args.clientName.trim() || "?").charAt(0).toUpperCase());
-  const destination = (args.redirectDestination ?? "").trim();
-  const redirectLine = destination
-    ? `<p class="dest">Authorization code goes to <code class="dest-code">${escapeHtml(destination)}</code></p>`
-    : ``;
-  const unverifiedLine = args.clientNameUnverified
-    ? `<p class="unverified">Client name supplied by the app — not verified by Stellar Raven.</p>`
-    : ``;
-  const scopes = args.scopes.length ? args.scopes : ["(no scopes requested)"];
-  const scopeItems = scopes
+  // Match the browser's destination serialization, including IDN hostnames.
+  const destination = new URL(args.redirectDestination).href;
+  const scopeItems = args.scopes
     .map((s) => {
       const gloss = SCOPE_GLOSS[s];
       return (
@@ -987,28 +970,34 @@ export function consentPage(args: {
   return (
     head("Authorize · Stellar Raven", "Authorize an MCP client to connect to Stellar Raven.", BASE + CONSENT_CSS, "", true) +
     `<div class="stage"></div><div class="scrim"></div>` +
-    `<div class="auth-brand">${ravenSvg("rv")}<b>Stellar Raven</b><i>codemode</i></div>` +
+    `<header class="auth-brand">${ravenSvg("rv")}<b>Stellar Raven</b><i>codemode</i></header>` +
     `<main class="auth"><div class="card">
   <div class="card-top">
-    <div class="conn"><div class="node client">${initial}</div><div class="wire"></div>
+    <div class="conn" aria-hidden="true"><div class="node client">${initial}</div><div class="wire"></div>
       <div class="node raven">${ravenSvg("rv")}</div></div>
-    <h1>${clientName} wants to connect</h1>
-    <p class="sub">It will access <b>Stellar Raven</b> for you once you sign in with WorkOS.</p>
-    ${redirectLine}${unverifiedLine}
+    <h1><bdi>${clientName}</bdi> wants to connect</h1>
+    <p class="unverified">App name supplied by the client, not verified by Stellar Raven.</p>
+    <p class="sub">This app will use <b>Stellar Raven</b> on your behalf.</p>
   </div>
-  <div class="panel-h">This connection grants</div>
-  <ul class="scopes">${scopeItems}</ul>
+  <section class="destination" aria-labelledby="destination-title">
+    <h2 id="destination-title">Return address</h2>
+    <p>After sign-in, your browser returns here.</p>
+    <code dir="ltr">${escapeHtml(destination)}</code>
+  </section>
+  <h2 class="panel-h">This connection grants</h2>
+  ${scopeItems ? `<ul class="scopes">${scopeItems}</ul>` : `<p class="scope-empty">No scopes requested.</p>`}
   <div class="act">
     <form method="post" action="${escapeHtml(args.formAction)}">
       <input type="hidden" name="csrf_token" value="${escapeHtml(args.csrfToken)}"/>
-      <label class="consent-row"><input type="checkbox" name="tos_agree" id="tos-agree"/>
+      <label class="consent-row"><input type="checkbox" name="tos_agree" id="tos-agree" required/>
         <span>I have read and agree to the
         <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>
         and the <a href="https://stellar.org/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
-      <button class="btn btn-primary" type="submit">Approve and continue ${ARROW}</button>
+      <button class="btn btn-primary" type="submit">Sign in and connect ${ARROW}</button>
+      <button class="btn btn-cancel" type="submit" name="decision" value="deny" formnovalidate>Cancel</button>
     </form>
-    <p class="note">${SHIELD}<span>Only continue if you started this connection. Approving redirects
-      you to WorkOS AuthKit to sign in — your password never reaches this server.</span></p>
+    <p class="note">${SHIELD}<span>Continue only if you recognize this app and started this connection.
+      You will sign in with WorkOS. Raven never receives your password.</span></p>
   </div>
 </div></main>` +
     `</body></html>`
