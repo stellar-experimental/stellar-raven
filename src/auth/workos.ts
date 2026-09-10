@@ -49,6 +49,7 @@ import {
 } from "../site";
 import { OG_PNG_BASE64 } from "../og";
 import { logEvent } from "../observability.ts";
+import { hasAllowedRedirectTransport } from "./redirects";
 import { skillHealthResponse } from "../skills/canary.ts";
 import { mintDemoCookie, parseDemoParkedState } from "../demo/auth";
 
@@ -167,7 +168,8 @@ export const WorkOSAuthHandler = {
         clientName: client?.clientName?.trim() || oauthReq.clientId || "Unknown MCP client",
         scopes: oauthReq.scope,
         csrfToken,
-        formAction: `/authorize${url.search}`
+        formAction: `/authorize${url.search}`,
+        redirectDestination: oauthReq.redirectUri
       });
       return new Response(body, {
         headers: {
@@ -191,10 +193,25 @@ export const WorkOSAuthHandler = {
         return retryConsent("CSRF token mismatch", url);
       }
 
-      // Explicit Terms/Privacy acknowledgement: the consent form's checkbox
-      // (name="tos_agree") only submits when ticked. The CSS gate on the
-      // button is UX and mouse-only — `pointer-events: none` does not stop a
-      // keyboard submit — so this is the enforcement boundary: no ack, no grant.
+      const decisions = form.getAll("decision");
+      if (decisions.length === 1 && decisions[0] === "deny") {
+        return authorizationErrorResponse(
+          new AuthorizationError("access_denied", {
+            description: "The user denied the authorization request.",
+            redirectUri: oauthReq.redirectUri,
+            state: oauthReq.state || undefined,
+            issuer: oauthReq.issuer
+          }),
+          { "set-cookie": clearCookie(CONSENT_CSRF_COOKIE) }
+        );
+      }
+      // An unknown or duplicate decision must not fall through as approval.
+      if (decisions.length !== 0) {
+        return retryConsent("Invalid consent decision", url);
+      }
+
+      // Native form validation helps the browser user. The server still owns
+      // the enforcement boundary: no acknowledgement means no grant.
       if (!form.get("tos_agree")) {
         return retryConsent("Terms acknowledgement required", url);
       }
@@ -453,6 +470,11 @@ async function resolveAuthRequest(
 ): Promise<ResolvedAuthRequest> {
   try {
     const parsed = await provider.parseAuthRequest(request);
+    if (!hasAllowedRedirectTransport(parsed.redirectUri)) {
+      throw new AuthorizationError("invalid_request", {
+        description: "redirect_uri must use https for non-loopback hosts."
+      });
+    }
     if (!parsed.codeChallenge || parsed.codeChallengeMethod !== "S256") {
       throw new AuthorizationError("invalid_request", {
         description: "PKCE is required: send code_challenge with code_challenge_method=S256.",
@@ -482,9 +504,16 @@ async function resolveAuthRequest(
  * place for attacker-chosen text. The description still goes to the client,
  * percent-encoded by URLSearchParams, which is what it is for.
  */
-function authorizationErrorResponse(error: unknown): Response {
-  if (!(error instanceof AuthorizationError) || !error.redirectUri) {
-    return text("Invalid authorization request", 400, {}, unredirectableReason(error));
+function authorizationErrorResponse(
+  error: unknown,
+  headers: Record<string, string> = {}
+): Response {
+  if (
+    !(error instanceof AuthorizationError) ||
+    !error.redirectUri ||
+    !hasAllowedRedirectTransport(error.redirectUri)
+  ) {
+    return text("Invalid authorization request", 400, headers, unredirectableReason(error));
   }
   const target = new URL(error.redirectUri);
   target.searchParams.set("error", error.code);
@@ -494,7 +523,7 @@ function authorizationErrorResponse(error: unknown): Response {
   logEvent("auth_reject", { status: 303, reason: error.code });
   return new Response(null, {
     status: 303,
-    headers: { location: target.toString(), "cache-control": "no-store" }
+    headers: { location: target.toString(), "cache-control": "no-store", ...headers }
   });
 }
 

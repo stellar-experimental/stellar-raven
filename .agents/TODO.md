@@ -8,6 +8,8 @@ Add an item when you find work you are not doing now. Delete it when it is done;
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
 Updated 2026-09-09 during issue #141 and upstream handoff verification.
+Rejected-candidate retirement and OAuth completion were recorded on 2026-09-10.
+The OAuth record is [the consent completion ledger](rounds/2026-09-10-oauth-consent.md).
 The current ledger is `.agents/rounds/2026-09-09-outstanding-closeout.md`. The ranked handoff is
 `NEXT.md`.
 
@@ -209,6 +211,11 @@ our ranking.
 
 ### Preserve structured routing intent across extraction caps and gate tiers
 
+The rejected search and Scout candidates are retired, not pending implementations.
+Their disposition is recorded in `rounds/2026-09-09-outstanding-closeout.md#rejected-candidate-retirement--2026-09-10`.
+PR #148 supplied the accepted bounded search repair. This item retains the broader source-acceptance requirements for #141.
+Use current accepted main and a fresh source snapshot for any later authorized repair.
+
 Trigger only after the current truth-maintenance round closes and the owner authorizes a general
 Raven scoring repair. The 2026-09-03 Scout routing attribution found eight real regressions from
 phrase flattening, first-token truncation, generic schema-word coverage, substring coverage, and
@@ -261,6 +268,19 @@ Acceptance checks:
 
 Done when: all eleven acceptance checks pass in a reviewed general scoring change. The existing
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+
+## Dependencies
+
+### Resolve the existing dependency audit findings
+
+The 2026-09-10 OAuth installation reported eight npm audit findings: one moderate and seven high.
+The lockfile includes indirect Hono 4.13.1, sharp, and adm-zip dependencies through SDK and development tools.
+The OAuth change updates no packages. Source inspection found no Hono import or call in `src/`.
+Evidence and dependency boundaries are in [the OAuth research report](rounds/2026-09-10-oauth-consent/research-terra.md#dependency-audit-boundary).
+
+Refresh `npm audit --json`, verify dependency paths, and select the smallest supported upgrades.
+Do not use a forced audit fix without reviewing its dependency changes.
+Done when: reviewed upgrades pass the repository gates and a new audit records each finding's disposition.
 
 ## Eval instruments
 

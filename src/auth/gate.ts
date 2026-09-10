@@ -19,6 +19,7 @@
  */
 import type { OAuthProviderOptions } from "@cloudflare/workers-oauth-provider";
 import { WorkOSAuthHandler } from "./workos";
+import { hasAllowedRedirectTransport } from "./redirects";
 // Token lifetimes derive from the retention leaf that privacy disclosures
 // quote, so a published duration can never drift from the enforced one.
 import { RETENTION } from "./retention";
@@ -65,6 +66,19 @@ export function oauthProviderOptions(
     // needs the `global_fetch_strictly_public` compat flag (wrangler.jsonc);
     // the provider gates on BOTH before advertising/serving it.
     clientIdMetadataDocumentEnabled: true,
+    // Reject non-loopback HTTP redirects before the provider stores a DCR client.
+    clientRegistrationCallback: ({ clientMetadata }) => {
+      const uris = (clientMetadata as { redirect_uris?: unknown }).redirect_uris;
+      if (
+        Array.isArray(uris) &&
+        uris.some((uri) => typeof uri !== "string" || !hasAllowedRedirectTransport(uri))
+      ) {
+        return {
+          code: "invalid_client_metadata",
+          description: "redirect_uris must use https for non-loopback hosts."
+        };
+      }
+    },
     // RFC 9728 protected-resource metadata — how Claude/Cursor connectors
     // discover that /mcp is OAuth-protected and where to authorize.
     resourceMetadata: {

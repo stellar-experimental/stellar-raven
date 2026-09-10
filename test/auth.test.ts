@@ -26,6 +26,7 @@ import {
   rewritePath,
   timingSafeEqualBytes
 } from "../src/auth/gate";
+import { hasAllowedRedirectTransport } from "../src/auth/redirects";
 import {
   API_KEY_NAME_PATTERN,
   API_KEY_PREFIX,
@@ -286,6 +287,56 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     expect(options.refreshTokenTTL).toBe(REFRESH_TOKEN_TTL_SECONDS);
     expect(options.clientRegistrationTTL).toBe(CLIENT_REGISTRATION_TTL_SECONDS);
     expect(REFRESH_TOKEN_TTL_SECONDS).toBeGreaterThan(ACCESS_TOKEN_TTL_SECONDS);
+  });
+
+  it("rejects non-loopback HTTP redirects through the registration endpoint", async () => {
+    const env = testEnv();
+    const response = await provider.fetch(
+      new Request("https://mcp.test/register", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          client_name: "Reserved-domain client",
+          redirect_uris: ["http://client.example/callback"],
+          grant_types: ["authorization_code", "refresh_token"],
+          response_types: ["code"],
+          token_endpoint_auth_method: "none"
+        })
+      }),
+      env,
+      ctx()
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({ error: "invalid_client_metadata" });
+    const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+    expect([...kv.store.keys()].some((key) => key.startsWith("client:"))).toBe(false);
+  });
+
+  it.each([
+    ["HTTPS", "https://client.example/callback"],
+    ["IPv4 loopback HTTP", "http://127.0.0.1:8912/callback"],
+    ["IPv6 loopback HTTP", "http://[::1]:8912/callback"],
+    ["native-app scheme", "org.example.app:/oauth/callback"]
+  ])("allows %s redirects through the registration endpoint", async (_label, redirectUri) => {
+    const response = await provider.fetch(
+      new Request("https://mcp.test/register", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          client_name: "Reserved-domain client",
+          redirect_uris: [redirectUri],
+          grant_types: ["authorization_code", "refresh_token"],
+          response_types: ["code"],
+          token_endpoint_auth_method: "none"
+        })
+      }),
+      testEnv(),
+      ctx()
+    );
+
+    expect(response.status).toBe(201);
+    expect(await response.json()).toMatchObject({ redirect_uris: [redirectUri] });
   });
 
   it("unauthenticated POST /mcp → 401 with WWW-Authenticate resource_metadata pointer", async () => {
@@ -647,6 +698,79 @@ describe("WorkOSAuthHandler", () => {
     expect(page).toContain(`name="csrf_token" value="${csrf}"`);
     // Explicit Terms/Privacy acknowledgement checkbox gates the grant.
     expect(page).toContain(`type="checkbox" name="tos_agree"`);
+    // The page names the validated redirect destination and identifies the name source.
+    expect(page).toContain("Return address");
+    expect(page).toContain("After sign-in, your browser returns here.");
+    expect(page).toContain("https://client.example/cb");
+    expect(page).toContain("not verified by Stellar Raven");
+  });
+
+  it("GET /authorize refuses a plain-http redirect_uri to a non-loopback host", async () => {
+    const insecure = { ...AUTH_REQ, redirectUri: "http://client.example/cb" };
+    const env = testEnv({
+      OAUTH_PROVIDER: stubHelpers({
+        parseAuthRequest: vi.fn(async () => insecure as AuthRequest)
+      })
+    });
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc"),
+      env
+    );
+    // RFC 6749 §4.1.2.1: never redirect to an invalid redirect URI — local
+    // 400, no Location, no consent page, no fresh CSRF cookie.
+    expect(response.status).toBe(400);
+    expect(response.headers.get("location")).toBeNull();
+    expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
+  });
+
+  it.each(["GET", "POST"])(
+    "%s /authorize refuses unsafe redirect metadata from a parse error",
+    async (method) => {
+      const workosFetch = vi.fn();
+      vi.stubGlobal("fetch", workosFetch);
+      const helpers = stubHelpers({
+        parseAuthRequest: vi.fn(async () => {
+          throw new AuthorizationError("unsupported_response_type", {
+            description: "Unsupported response type",
+            redirectUri: "http://client.example/callback",
+            state: "client-state",
+            issuer: "https://mcp.test"
+          });
+        })
+      });
+      const env = testEnv({
+        OAUTH_PROVIDER: helpers
+      });
+      const response = await WorkOSAuthHandler.fetch(
+        new Request("https://mcp.test/authorize?client_id=client-abc", { method }),
+        env
+      );
+
+      expect(response.status).toBe(400);
+      expect(response.headers.get("location")).toBeNull();
+      expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
+      expect(workosFetch).not.toHaveBeenCalled();
+      expect(helpers.completeAuthorization).not.toHaveBeenCalled();
+      const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+      expect(kv.store.size).toBe(0);
+    }
+  );
+
+  it("GET /authorize still allows http loopback and custom-scheme redirects", async () => {
+    for (const redirectUri of ["http://127.0.0.1:8912/cb", "myapp://oauth/cb"]) {
+      const allowed = { ...AUTH_REQ, redirectUri };
+      const env = testEnv({
+        OAUTH_PROVIDER: stubHelpers({
+          parseAuthRequest: vi.fn(async () => allowed as AuthRequest)
+        })
+      });
+      const response = await WorkOSAuthHandler.fetch(
+        new Request("https://mcp.test/authorize?client_id=client-abc"),
+        env
+      );
+      expect(response.status).toBe(200);
+      expect(await response.text()).toContain("Return address");
+    }
   });
 
   // `allowPlainPKCE: false` only rejects the plain METHOD. The provider leaves an
@@ -773,6 +897,92 @@ describe("WorkOSAuthHandler", () => {
     expect(response.status).toBe(303);
     expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
     // No state parked when the acknowledgement is missing.
+    const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+    expect(kv.store.size).toBe(0);
+  });
+
+  it("POST /authorize accepts a CSRF-validated denial before the Terms check", async () => {
+    const helpers = stubHelpers({
+      parseAuthRequest: vi.fn(async () => ({ ...AUTH_REQ, issuer: "https://mcp.test" }))
+    });
+    const env = testEnv({ OAUTH_PROVIDER: helpers });
+    const workosFetch = vi.fn();
+    vi.stubGlobal("fetch", workosFetch);
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc", {
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          cookie: "__Host-MCP_CONSENT_CSRF=token-1"
+        },
+        body: new URLSearchParams({ csrf_token: "token-1", decision: "deny" })
+      }),
+      env
+    );
+
+    expect(response.status).toBe(303);
+    const location = new URL(response.headers.get("location") ?? "");
+    expect(location.origin + location.pathname).toBe("https://client.example/cb");
+    expect(location.searchParams.get("error")).toBe("access_denied");
+    expect(location.searchParams.get("state")).toBe("client-state");
+    expect(location.searchParams.get("iss")).toBe("https://mcp.test");
+    expect(workosFetch).not.toHaveBeenCalled();
+    expect(helpers.completeAuthorization).not.toHaveBeenCalled();
+    const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+    expect(kv.store.size).toBe(0);
+    const cookies = (response.headers as unknown as { getSetCookie(): string[] }).getSetCookie();
+    expect(cookies).toContainEqual(expect.stringContaining("__Host-MCP_CONSENT_CSRF=;"));
+    expect(cookies).toContainEqual(expect.stringContaining("Max-Age=0"));
+    expect(cookieValue(response, "__Host-MCP_STATE")).toBeUndefined();
+  });
+
+  it("POST /authorize does not accept a denial with invalid CSRF", async () => {
+    const helpers = stubHelpers();
+    const env = testEnv({ OAUTH_PROVIDER: helpers });
+    const workosFetch = vi.fn();
+    vi.stubGlobal("fetch", workosFetch);
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc", {
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          cookie: "__Host-MCP_CONSENT_CSRF=real-token"
+        },
+        body: new URLSearchParams({ csrf_token: "wrong-token", decision: "deny" })
+      }),
+      env
+    );
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
+    expect(workosFetch).not.toHaveBeenCalled();
+    expect(helpers.completeAuthorization).not.toHaveBeenCalled();
+    const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+    expect(kv.store.size).toBe(0);
+  });
+
+  it.each([
+    ["an unknown decision", ["approve"]],
+    ["duplicate decisions", ["deny", "deny"]],
+    ["conflicting decisions", ["deny", "approve"]]
+  ])("POST /authorize rejects %s instead of treating it as approval", async (_label, decisions) => {
+    const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
+    const form = new URLSearchParams({ csrf_token: "token-1", tos_agree: "on" });
+    for (const decision of decisions) form.append("decision", decision);
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc", {
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          cookie: "__Host-MCP_CONSENT_CSRF=token-1"
+        },
+        body: form
+      }),
+      env
+    );
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
     const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
     expect(kv.store.size).toBe(0);
   });
@@ -1025,6 +1235,20 @@ describe("login-state union on /callback", () => {
     expect(response.status).toBe(400);
     expect(kv.store.has("login:stY")).toBe(false);
     expect(workosFetch).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["HTTPS redirect", "https://client.example/cb", true],
+    ["IPv4 loopback HTTP", "http://127.0.0.1:8912/cb", true],
+    ["IPv6 loopback HTTP", "http://[::1]:8912/cb", true],
+    ["localhost HTTP", "http://localhost:3000/cb", true],
+    ["native-app scheme", "org.example.app:/oauth/cb", true],
+    ["public HTTP host", "http://client.example/cb", false],
+    ["documentation IP HTTP", "http://203.0.113.7/cb", false],
+    ["uppercase HTTP scheme", "HTTP://client.example/cb", false],
+    ["malformed URI", "not a URI", false]
+  ])("redirect transport: %s → allowed=%s", (_label, uri, allowed) => {
+    expect(hasAllowedRedirectTransport(uri as string)).toBe(allowed);
   });
 });
 
