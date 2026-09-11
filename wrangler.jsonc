@@ -85,6 +85,8 @@
     }
   ],
   "workers_dev": false,
+  // Persist usage metadata after each invocation. No model or adapter binding.
+  "tail_consumers": [{ "service": "stellar-raven-usage" }],
   // Skill-availability canary (src/skills/canary.ts). Hourly, because this is
   // the ONLY detector for a Cloudflare-side failure of the serve-don't-store
   // path: skill bodies are fetched from raw.githubusercontent.com at request

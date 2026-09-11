@@ -34,6 +34,7 @@ import {
 import { escapeHtml } from "./html";
 import { CONSENT_GLOBE_PNG_BASE64 } from "./consent-globe";
 import { getCatalog } from "./catalog/load";
+import { USAGE_RETENTION_MONTHS } from "./auth/retention";
 
 const MCP_ENDPOINT = "https://raven.stellar.org/mcp";
 export const HOST = "raven.stellar.org";
@@ -1010,7 +1011,7 @@ export function consentPage(args: {
 // authoritative copy lives here (this file is the source of truth).
 // ---------------------------------------------------------------------------
 
-export const TERMS_EFFECTIVE_DATE = "August 5, 2026";
+export const TERMS_EFFECTIVE_DATE = "September 11, 2026";
 
 const TERMS_CSS = `
 .stage{background:var(--green)}
@@ -1144,6 +1145,12 @@ keys, or special-category data.</p>
 <p><b>Operational and quality logs.</b> To operate the Service and improve response quality, the Service
 stores observability data, which may include the queries submitted and the responses returned, for 30
 days, after which it is deleted. This data is stored in SDF's Cloudflare environment.</p>
+<p><b>Usage statistics.</b> Separately, we retain tool-response records for ${USAGE_RETENTION_MONTHS} UTC calendar months, including the current month.
+These records contain response times, tool names, access methods, and pseudonymous account identifiers.
+They do not contain queries, answers, email addresses, or IP addresses.
+We use these records to count tool responses and distinct active accounts.
+We delete records from older months daily. Recovery backups may retain deleted records for up to 30 additional days.
+You may request deletion through the contact below.</p>
 <p><b>No sensitive data.</b> You should not submit personal, confidential, or sensitive information to the
 Service. You are solely responsible for the content you or your agent submit, and for any consequences of
 submitting content you should not have submitted.</p>
