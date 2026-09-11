@@ -105,6 +105,12 @@ provider error messages, and content-derived hashes. Existing Cloudflare platfor
 Cloudflare's fixed retention schedule (at most seven days). Playground model requests also set
 Cloudflare AI Gateway's per-request logging override to off.
 
+The separate usage archive retains response metadata for thirteen UTC calendar months, including
+the current month. It counts top-level search and execute responses, including errors and refusals.
+It counts distinct WorkOS-derived account hashes only when those accounts receive tool responses.
+API-key traffic remains separate. The archive excludes queries, answers, email addresses, and IPs.
+See [usage/README.md](usage/README.md) for monthly reports, coverage checks, retention, and deployment.
+
 ### Account-data deletion runbook
 
 There is no deployed Raven admin endpoint or self-service deletion UI. Handle a verified request in
@@ -122,11 +128,16 @@ the production consoles as follows:
    `stellar-raven-artifacts`, delete every object under `art/<ownerHash>/` and verify the prefix is empty.
 4. If the request includes deleting the identity account, delete the user in the WorkOS production
    environment after the Raven cleanup. Otherwise leave the WorkOS account in place.
+5. In the private `stellar-raven-usage` D1 database, delete `usage_responses` rows whose
+   `subject_hash` equals the `ownerHash` from step 3. Use a bound query through the Cloudflare
+   API or the production console. Verify that no matching rows remain. D1 Time Travel can retain
+   recovery copies for its configured recovery window; repeat deletion after any database restore.
 
 The unscoped `login:<state>` records expire within ten minutes. Demo throttle records expire within two
 hours and R2 artifacts within seven days even without manual deletion. Already-ingested Workers Logs and
 Cloudflare platform request metadata cannot be selectively removed with this repository's tools; they
-expire on Cloudflare's fixed retention schedule, no later than seven days. See the official
+expire on Cloudflare's fixed retention schedule, no later than seven days. The separate usage archive
+follows the thirteen-month policy above. See the official
 [WorkOS user API](https://workos.com/docs/reference/authkit/user),
 [Cloudflare KV commands](https://developers.cloudflare.com/kv/reference/kv-commands/), and
 [R2 object deletion](https://developers.cloudflare.com/r2/objects/delete-objects/).

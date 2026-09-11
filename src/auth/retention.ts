@@ -44,3 +44,6 @@ export const RETENTION = {
   /** Oversized secret-redacted execute artifacts in R2. */
   artifactSeconds: 7 * 24 * 60 * 60
 } as const;
+
+/** Usage records retain the current UTC month and twelve complete months. */
+export const USAGE_RETENTION_MONTHS = 13;

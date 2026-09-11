@@ -1,0 +1,90 @@
+# Monthly usage reports
+
+Raven records each top-level `search` and `execute` response, including errors and refusals.
+The count does not assess correctness or prove that the client received every byte.
+Protocol messages, connection checks, internal `codemode.search` calls, and upstream operations do not count.
+Playground tool responses appear separately from MCP responses.
+
+A distinct active account has at least one recorded tool response in the selected UTC month.
+The collector uses Raven's existing WorkOS-derived `subjectHash`.
+It does not use an email address, IP address, browser fingerprint, or OAuth client identifier.
+Several clients belonging to one account count as one account.
+API keys have no WorkOS identity and never count as people.
+Internal tests using an API key remain visible in the API-key response count.
+Tests using a real OAuth account cannot be distinguished from that account's other usage.
+Rotating `MCP_SERVER_SECRET` can split an account's hash. Record rotations before comparing user counts.
+
+## Storage
+
+`stellar-raven-usage` is a Tail Worker attached to `stellar-raven-codemode`.
+It extracts permitted fields from existing logs after the producer invocation finishes.
+Only this collector can access the separate D1 database through a runtime binding.
+It exposes no HTTP route, MCP operation, or public dashboard.
+
+`usage_responses` stores one row per response with its log timestamp, tool, surface, access mode,
+and optional pseudonymous account hash. An invocation identifier plus log index deduplicates retries.
+`usage_receipts` records response counts, log truncation, and the producer's hourly canary.
+Neither table stores request headers, queries, answers, code, exceptions, or raw account identifiers.
+The collector retries transient database failures three times and reports permanent failures.
+
+The daily cleanup retains thirteen UTC monthly periods: the current month and the previous twelve.
+The collector imports `USAGE_RETENTION_MONTHS` from `src/auth/retention.ts`.
+Deletion requests also remove the matching account's response rows. See the root README runbook.
+D1 recovery copies follow Cloudflare's Time Travel window; repeat requested deletions after any restore.
+
+## Report
+
+```sh
+node scripts/usage-report.mjs --from 2026-09 --to 2026-10
+```
+
+`--to` is exclusive. The command uses the SDF Wrangler profile and the account in this directory's config.
+Add `--local` to query the local test database.
+The JSON output contains MCP, playground, and combined monthly rows.
+The combined account count deduplicates users across both surfaces.
+
+Before sharing a report:
+
+- State the actual collection dates. Missing months mean unavailable data, not zero usage.
+- Separate API-key response counts from OAuth user activity.
+- Inspect unattributed responses and truncated invocations.
+- Check the producer canary timestamps and collector errors. A missing canary can signal a collection gap.
+- Retain a dated aggregate export when comparing completed months.
+
+This is an operational usage measure. Worker logs and tail delivery are not an exactly-once billing ledger.
+Database writes are idempotent, but producer crashes, truncated logs, or undelivered tail events can leave gaps.
+The receipt table helps identify gaps; it cannot prove that no event was lost.
+The diagnostic Workers Logs still follow Cloudflare's seven-day retention limit.
+
+## Setup and verification
+
+The database and collector use the same SDF account as Raven.
+Apply migrations before deploying the collector:
+
+```sh
+npx wrangler d1 migrations apply stellar-raven-usage --config usage/wrangler.jsonc --profile sdf --remote
+npx wrangler deploy --config usage/wrangler.jsonc --profile sdf
+```
+
+Attach the collector with `tail_consumers: [{ service: "stellar-raven-usage" }]` in Raven's Wrangler config.
+Publish the matching usage disclosure before starting collection.
+Verify the live producer settings after deployment. Preserve any other tail consumers.
+Check a known tool response in both the retained logs and D1, then verify the hourly canary arrives.
+Run the monthly report and inspect the collector's logs for failed writes.
+
+To stop new collection, remove only this tail consumer from the producer settings and config.
+Preserve the database for the agreed retention period.
+
+## Historical coverage
+
+The 2026-09-11 investigation recovered partial September usage from retained Workers Logs.
+The archive cannot recreate expired July or August tool events.
+Historical log aggregates and individual-event queries differ slightly, even with ABR level 1.
+Do not import these estimates as exact response rows.
+See `research/audits/2026-09-11-usage-history.md` for the dated results and query conditions.
+
+Cloudflare references:
+
+- [Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/)
+- [Tail handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/)
+- [D1 Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/)

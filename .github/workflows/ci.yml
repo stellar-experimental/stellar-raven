@@ -55,6 +55,7 @@ jobs:
       # only surfacing at the manual `npm run deploy`. Offline — `--dry-run` exits
       # before any upload, so no secrets or network are needed.
       - run: npm run build
+      - run: npm run build:usage
       # Pin .gitleaks.toml semantics in CI too: without the binary the
       # test/scan-secrets-gitleaks.test.mjs suite self-skips and the config is
       # only exercised on developer machines.

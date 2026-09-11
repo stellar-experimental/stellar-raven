@@ -844,6 +844,17 @@ auth gates, schemas, the shared sandbox, and artifact caps are the main limits.
 Observability to query: `mcp_request`, `search`, `execute`, `artifact_write`, `artifact_read`,
 `op`, `skill_run`, and `codemode.execute` spans.
 
+### Usage retention
+
+A separate Tail Worker, `stellar-raven-usage`, extracts response metadata from the producer's logs.
+It writes top-level MCP and playground tool-response records to a private D1 database.
+It excludes internal searches, protocol traffic, queries, answers, headers, and raw account identifiers.
+The existing WorkOS-derived subject hash supports distinct monthly account counts.
+API-key responses remain separate from user counts.
+The collector retains thirteen UTC calendar months, including the current month.
+It runs after the producer invocation and adds no database binding to the MCP runtime or sandbox.
+Monthly reporting, coverage limits, deployment, and deletion procedures are in [usage/README.md](usage/README.md).
+
 ## 8. Build & refresh chain — keeping the catalog honest
 
 Generated artifacts are rebuilt by scripts, never hand-edited

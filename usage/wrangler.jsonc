@@ -1,0 +1,17 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "stellar-raven-usage",
+  "account_id": "ba55b7ae9acfb3ed152103e3497c0752",
+  "main": "../src/usage/collector.ts",
+  "compatibility_date": "2026-06-11",
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["17 3 * * *"] },
+  "d1_databases": [{
+    "binding": "USAGE",
+    "database_name": "stellar-raven-usage",
+    "database_id": "bbf9bd3d-b80b-4e6c-a03b-d717d1c5e3fe",
+    "migrations_dir": "migrations"
+  }]
+}
