@@ -33,4 +33,44 @@ Wrangler returned only the last result for a multi-statement `--command`; the im
 
 ## Deployment state
 
-Pending collector deployment, producer attachment, and production receipt verification.
+PR #151 merged at `2026-09-11T14:33:12Z`.
+The merge commit is `5472c078d68499ba63d1b9711874b59eb0debe58`.
+GitHub's tests, secret scan, and CodeQL checks passed before merge.
+The producer deployment passed the normal clean-tree and `HEAD == origin/main` preflight.
+
+- Collector version: `6e93bc0b-73fa-4204-8a5f-2c0d21228ed9`.
+- Producer version: `7d303233-f3e6-4f91-af8c-4f8d07a0eb3c`.
+- The live producer settings contain exactly `stellar-raven-usage` as the tail consumer.
+- The collector binds the expected private D1 database and has no tail consumer itself.
+- The daily cleanup schedule is `17 3 * * *`.
+- The live `/terms` page returned 200 and showed the thirteen-month usage disclosure.
+
+## Production acceptance
+
+A normal API-key search and a deliberately failing execute both returned HTTP 200 with MCP results.
+The execution result had `isError: true`, as intended.
+
+| Tool | Ray ID | App request ID | Recorded rows |
+|---|---|---|---:|
+| search | `a3976579cc8deee7` | `4fe0f2db-ef39-424d-b8b5-de07e4bc0202` | 1 |
+| execute error | `a397657d7edfb074` | `daa3cb8a-bb2d-477e-89f4-0f023771cf55` | 1 |
+
+Cloudflare telemetry joined those Ray IDs to the app request IDs.
+D1 returned exactly one row for each corresponding request prefix, classified as API-key traffic.
+Two additional OAuth connector calls exercised search and execute.
+The initial monthly report contained four MCP responses and one distinct account.
+The two API-key responses did not increase the account count.
+The report showed zero unattributed responses and zero truncated invocations.
+These four verification responses remain in the archive and are part of the first partial month.
+
+The first receipt timestamp is `2026-09-11 14:34:59 UTC`.
+The first full calendar month of collection is October 2026, assuming uninterrupted operation.
+The initial check occurred before the next hourly producer canary.
+Its first receipt and the first scheduled cleanup remain future scheduled checks.
+Retention cutoff tests and the deployed cleanup schedule passed verification.
+
+The collector error query covered `2026-09-11T14:33:00Z` through the verification time.
+It filtered service `stellar-raven-usage` and existing `$metadata.error` fields.
+It returned zero error-tagged events at ABR level 1.
+Private probe receipts and the aggregate live report are under `/tmp/raven-usage-2026-09-11/`.
+No credentials, raw account identifiers, or IP addresses were included.

@@ -82,7 +82,9 @@ No IP addresses or network fingerprints were needed.
 
 `usage/README.md` specifies the separate usage collector and thirteen-month policy.
 Historical estimates remain separate from new response rows.
-The first archive month will have partial coverage.
+Live collection started on 2026-09-11; its first receipt is 14:34:59 UTC.
+The first archive month has partial coverage. October 2026 is the first possible complete month.
+PR #151 merged the collector. The deployment ledger is `.agents/rounds/2026-09-11-usage-retention.md`.
 
 Sources checked on 2026-09-11:
 
