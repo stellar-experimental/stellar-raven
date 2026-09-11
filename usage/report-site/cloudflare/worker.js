@@ -26,8 +26,15 @@ export default {
     const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
     if (!(await authorized(request, env.REPORT_TOKEN))) return new Response('Unauthorized', { status: 401, headers });
     const url = new URL(request.url);
-    if (url.pathname !== '/report' || url.search) return new Response('Not found', { status: 404, headers });
+    if (!['/report', '/launch'].includes(url.pathname) || url.search) return new Response('Not found', { status: 404, headers });
     if (request.method !== 'GET') return new Response('Method not allowed', { status: 405, headers });
+    if (url.pathname === '/launch') {
+      try {
+        const row = await env.USAGE.prepare("SELECT data_json FROM usage_report_snapshots WHERE id = 'launch' AND expires_at_ms > ?1").bind(Date.now()).first();
+        if (!row) return new Response('Snapshot unavailable', { status: 404, headers });
+        return new Response(row.data_json, { headers: { ...headers, 'Content-Type': 'application/json' } });
+      } catch { console.error('usage_snapshot_query_failed'); return new Response('Snapshot unavailable', { status: 503, headers }); }
+    }
     // Authenticate before accessing the aggregate cache. No account identifiers leave D1.
     const key = new Request(`${url.origin}/report`);
     const cache = globalThis.caches?.default;

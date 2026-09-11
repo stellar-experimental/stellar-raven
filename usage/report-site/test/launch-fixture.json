@@ -1,0 +1,62 @@
+{
+  "synthetic": true,
+  "launchDate": "2026-07-02",
+  "generatedAt": "2026-09-11T15:00:00Z",
+  "launchSource": "https://example.com/launch",
+  "requestSource": "https://example.com/metric",
+  "months": [
+    {
+      "month": "2026-07",
+      "requests": 2,
+      "days": [
+        {
+          "date": "2026-07-02",
+          "requests": 2
+        }
+      ]
+    },
+    {
+      "month": "2026-08",
+      "requests": 3,
+      "days": [
+        {
+          "date": "2026-08-02",
+          "requests": 3
+        }
+      ]
+    },
+    {
+      "month": "2026-09",
+      "requests": 4,
+      "days": [
+        {
+          "date": "2026-09-02",
+          "requests": 4
+        }
+      ]
+    }
+  ],
+  "toolWindows": [
+    {
+      "label": "Synthetic MCP",
+      "kind": "estimate",
+      "from": "2026-09-04T15:00:00Z",
+      "toExclusive": "2026-09-11T14:00:00Z",
+      "search": 2,
+      "execute": 3,
+      "accountsLowerBound": 2
+    },
+    {
+      "label": "Synthetic playground",
+      "kind": "estimate",
+      "from": "2026-09-04T15:00:00Z",
+      "toExclusive": "2026-09-11T14:00:00Z",
+      "search": 1,
+      "execute": 1,
+      "accountsLowerBound": 1
+    }
+  ],
+  "notes": [
+    "Synthetic test data."
+  ]
+}

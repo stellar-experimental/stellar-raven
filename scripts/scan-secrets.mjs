@@ -41,6 +41,9 @@ import { join } from "node:path";
 
 const ROOT = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
 
+// Private aggregate data needs a separate boundary from credential patterns.
+execFileSync(process.execPath, [join(ROOT, "scripts/check-private-usage.mjs"), process.argv.includes("--tree") ? "--tree" : "--staged"], { stdio: "inherit" });
+
 // ── Config ──────────────────────────────────────────────────────────────────
 
 // Env-var NAMES whose values are public identifiers, not secrets — excluded from

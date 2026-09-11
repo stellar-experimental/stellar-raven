@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { URL } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import { collectUsage, INSERT_RESPONSE, projectUsage, retentionCutoff } from "../src/usage/collector.ts";
+import collector, { collectUsage, INSERT_RESPONSE, projectUsage, retentionCutoff } from "../src/usage/collector.ts";
 import { termsPage } from "../src/site.ts";
 import { USAGE_RETENTION_MONTHS } from "../src/auth/retention.ts";
 // @ts-expect-error Plain-JavaScript operator script.
@@ -162,6 +162,24 @@ describe("usage persistence and reporting", () => {
     expect(db.prepare(healthSql).get(timestamp - 1, timestamp + 1)).toMatchObject({
       last_canary_ms: timestamp, failed_invocations: 1, failed_statements: 50
     });
+    db.close();
+  });
+
+  it("deletes expired snapshots while retaining current usage and snapshots", async () => {
+    const db = new DatabaseSync(":memory:");
+    for (const migration of ["0001_usage.sql", "0002_collection_health.sql", "0003_private_report_snapshots.sql"]) {
+      db.exec(readFileSync(new URL(`../usage/migrations/${migration}`, import.meta.url), "utf8"));
+    }
+    db.prepare("INSERT INTO usage_report_snapshots VALUES (?, ?, ?)").run("expired", "{}", timestamp - 1);
+    db.prepare("INSERT INTO usage_report_snapshots VALUES (?, ?, ?)").run("current", "{}", timestamp + 1);
+    db.prepare(INSERT_RESPONSE).run("current-response", timestamp, "mcp", "search", "api-key", null);
+    const database = {
+      prepare(sql: string) { return { bind(...values: number[]) { return () => db.prepare(sql).run(...values); } }; },
+      async batch(statements: (() => unknown)[]) { return statements.map(statement => statement()); }
+    } as unknown as D1Database;
+    await collector.scheduled({ scheduledTime: timestamp } as ScheduledController, { USAGE: database });
+    expect(db.prepare("SELECT id FROM usage_report_snapshots").all().map(row => row.id)).toEqual(["current"]);
+    expect(db.prepare("SELECT COUNT(*) AS count FROM usage_responses").get()?.count).toBe(1);
     db.close();
   });
 
