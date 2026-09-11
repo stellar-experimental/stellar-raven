@@ -64,7 +64,10 @@
     "improvements:index": "node scripts/improvements-index.mjs",
     "site:fonts": "node scripts/gen-site-fonts.mjs",
     "site:og": "node scripts/gen-og.mjs",
-    "site:globes": "node scripts/gen-globes.mjs"
+    "site:globes": "node scripts/gen-globes.mjs",
+    "test:usage-report": "npm --prefix usage/report-site test && npm --prefix usage/report-site run check",
+    "build:usage-report": "npm --prefix usage/report-site run build && wrangler deploy --config usage/report-site/cloudflare/wrangler.jsonc --dry-run",
+    "postdeploy": "node scripts/check-usage-deployment.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.42",

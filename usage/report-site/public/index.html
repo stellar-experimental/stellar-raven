@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raven · Usage report</title>
+  <meta name="description" content="Monthly Raven tool responses, active accounts, and collection coverage.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to report</a>
+  <header class="masthead"><div class="brand">raven<span>Usage report</span></div><a class="nav-link" href="/launch">Launch-to-date report</a></header>
+  <main id="main">
+    <div class="heading"><div><p class="eyebrow">TOOL ACTIVITY</p><h1>Monthly usage</h1></div><div class="actions"><button id="export" disabled>Export CSV</button><button id="refresh" class="primary">Refresh data</button></div></div>
+    <div class="controls"><div class="selectors"><label>Month<select id="month" disabled></select></label><label>Source<select id="surface"><option value="mcp">MCP</option><option value="playground">Playground</option><option value="all">All sources</option></select></label></div><p id="updated" role="status" aria-live="polite">Loading the archive…</p></div>
+    <div id="error" class="notice error" role="alert" hidden></div>
+    <div id="coverage" class="notice">The archive starts on September 11, 2026. Earlier monthly totals are unavailable.</div>
+    <section class="metrics" aria-label="Selected month totals" aria-busy="true">
+      <article class="metric total"><h2>Tool responses</h2><p id="total">—</p><span>Search + execute</span></article>
+      <article class="metric"><h2><i class="key search"></i>Search responses</h2><p id="search">—</p><span>Returned search results</span></article>
+      <article class="metric"><h2><i class="key execute"></i>Execute responses</h2><p id="execute">—</p><span>Returned execution results</span></article>
+      <article class="metric"><h2>Active accounts</h2><p id="accounts">—</p><span>Unique accounts with a response</span></article>
+    </section>
+    <section class="panel activity"><div class="section-head"><div><h2>Daily responses</h2><p id="chart-note">Counts use UTC dates.</p></div><div class="legend"><span><i class="key search"></i>Search</span><span><i class="key execute"></i>Execute</span></div></div><div id="chart" aria-label="Daily search and execute responses"><p class="empty">Loading daily counts…</p></div><p class="chart-help">Select a bar to view its counts. Hatched days have no recorded coverage.</p></section>
+    <section class="panel"><div class="section-head"><div><h2>Month by month</h2><p>Choose a row to view its daily counts.</p></div><span class="tag">13-month retention</span></div><div class="table-wrap"><table><caption class="sr-only">Archived monthly usage for the selected source</caption><thead><tr><th scope="col">Month</th><th scope="col">Search</th><th scope="col">Execute</th><th scope="col">Total</th><th scope="col">Accounts</th><th scope="col">Coverage</th></tr></thead><tbody id="months"><tr><td colspan="6">Loading the archive…</td></tr></tbody></table></div></section>
+    <div class="details-grid"><section class="panel compact"><h2>Account attribution</h2><p>API-key responses count toward responses. They do not count as active accounts.</p><dl><div><dt>API-key responses</dt><dd id="api-key">—</dd></div><div><dt>Unattributed responses</dt><dd id="unattributed">—</dd></div><div><dt>Development responses</dt><dd id="dev">—</dd></div></dl></section><section class="panel compact"><h2>Collection coverage</h2><p id="health">Loading collection checks…</p><dl><div><dt>Last collection check</dt><dd id="canary">—</dd></div><div><dt>Hours with a collection check</dt><dd id="checks">—</dd></div><div><dt>Truncated log records</dt><dd id="truncated">—</dd></div></dl></section></div>
+    <section class="history"><div><span class="tag">Historical estimate · MCP only</span><h2>September 4–11, 2026</h2><p>Recovered logs cover September 4 at 15:00 to September 11 at 14:00 UTC.</p><p>These estimates are separate from the archive. July and August totals are unavailable.</p></div><div class="history-values"><div><strong>~1,230</strong><span>Search</span></div><div><strong>~1,380</strong><span>Execute</span></div><div><strong>≥61</strong><span>Active accounts</span></div></div></section>
+    <footer><p>Counts include logged handler errors and refusals. Authentication rejection and failures before response logging remain excluded. These counts do not measure answer quality.</p><p>Accounts use pseudonymous WorkOS identifiers. No account identifiers appear in this report.</p><p>Missing logs can leave gaps. Monthly account totals cannot be added to find unique accounts across months.</p></footer>
+  </main>
+</body>
+</html>

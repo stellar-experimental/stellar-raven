@@ -7,6 +7,11 @@ import { USAGE_RETENTION_MONTHS } from "../auth/retention.ts";
 export type UsageEnv = { USAGE: D1Database };
 type Fields = Record<string, unknown>;
 type Log = { timestamp: number; fields: Fields; index: number };
+const OUTCOMES = new Set([
+  "ok", "canceled", "exception", "unknown", "killSwitch", "daemonDown", "exceededCpu",
+  "exceededMemory", "loadShed", "responseStreamDisconnected", "scriptNotFound",
+  "internalError", "exceededWallTime", "aborted"
+]);
 
 export type UsageResponse = {
   id: string;
@@ -73,44 +78,69 @@ export function projectUsage(trace: TraceItem) {
       subjectHash: accessMode === "oauth" ? hash(surface === "mcp" ? mcp?.subjectHash : demo?.subjectHash) : null
     });
   }
-  return { id, timestamp: trace.eventTimestamp, truncated: trace.truncated, canary, responses, missingRequestId };
+  const outcome = OUTCOMES.has(trace.outcome) ? trace.outcome : "unknown";
+  return { id, timestamp: trace.eventTimestamp, truncated: trace.truncated, canary, responses, missingRequestId, outcome };
 }
 
 export const INSERT_RESPONSE = `INSERT OR IGNORE INTO usage_responses
   (id, timestamp_ms, surface, tool, access_mode, subject_hash)
   VALUES (?, ?, ?, ?, ?, ?)`;
 
+const INSERT_RECEIPT = `INSERT OR IGNORE INTO usage_receipts
+  (id, timestamp_ms, responses, truncated, canary, outcome, missing_response_ids, failed_statements)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+async function writeBatch(env: UsageEnv, batch: D1PreparedStatement[]): Promise<boolean> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const result = await env.USAGE.batch(batch);
+      if (result.some(row => !row.success)) throw new Error("Usage batch failed");
+      return true;
+    } catch {
+      if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 200 * (attempt + 1)));
+    }
+  }
+  return false;
+}
+
 export async function collectUsage(traces: TraceItem[], env: UsageEnv): Promise<void> {
   const statements: D1PreparedStatement[] = [];
+  let missingRequestIds = 0;
   for (const trace of traces) {
     const usage = projectUsage(trace);
     if (!usage) continue;
     if (usage.missingRequestId) {
-      // No raw event or exception content enters the collector's own logs.
-      console.error(JSON.stringify({ evt: "usage_missing_request_id", count: usage.missingRequestId }));
-      throw new Error("Usage response lacks an invocation identifier");
+      missingRequestIds += usage.missingRequestId;
     }
     for (const response of usage.responses) {
       statements.push(env.USAGE.prepare(INSERT_RESPONSE).bind(
         response.id, response.timestamp, response.surface, response.tool, response.accessMode, response.subjectHash
       ));
     }
-    if (usage.id && (usage.responses.length > 0 || usage.truncated || usage.canary)) {
-      statements.push(env.USAGE.prepare(`INSERT OR IGNORE INTO usage_receipts
-        (id, timestamp_ms, responses, truncated, canary) VALUES (?, ?, ?, ?, ?)`)
-        .bind(usage.id, usage.timestamp, usage.responses.length, Number(usage.truncated), Number(usage.canary)));
+    if (usage.responses.length > 0 || usage.truncated || usage.canary || usage.missingRequestId || usage.outcome !== "ok") {
+      // Unidentified receipts describe collection gaps, never counted tool responses.
+      statements.push(env.USAGE.prepare(INSERT_RECEIPT).bind(
+        usage.id ?? `unidentified:${crypto.randomUUID()}`, usage.timestamp, usage.responses.length,
+        Number(usage.truncated), Number(usage.canary), usage.outcome, usage.missingRequestId, 0
+      ));
     }
   }
-  // Keep each transaction comfortably within the per-invocation query limit.
+  let failedStatements = 0;
+  // Bound each transaction; continue later chunks if one exhausts its retries.
   for (let offset = 0; offset < statements.length; offset += 50) {
     const batch = statements.slice(offset, offset + 50);
-    for (let attempt = 0; ; attempt++) {
-      try { await env.USAGE.batch(batch); break; }
-      catch {
-        if (attempt === 2) throw new Error("Usage database write failed after three attempts");
-        await new Promise(resolve => setTimeout(resolve, 200 * (attempt + 1)));
-      }
-    }
+    if (!(await writeBatch(env, batch))) failedStatements += batch.length;
+  }
+  if (missingRequestIds) {
+    console.error(JSON.stringify({ evt: "usage_missing_request_id", count: missingRequestIds }));
+  }
+  if (failedStatements) {
+    console.error(JSON.stringify({ evt: "usage_write_failure", failedStatements, missingRequestIds }));
+    // This receipt survives a transient/partial outage. A total D1 outage is detected by stale canaries.
+    await writeBatch(env, [env.USAGE.prepare(INSERT_RECEIPT).bind(
+      `write-failure:${crypto.randomUUID()}`, Date.now(), 0, 0, 0, "collection_write_failure", 0, failedStatements
+    )]);
+    throw new Error("Usage database write failed after three attempts");
   }
 }
 

@@ -7,6 +7,8 @@ import { termsPage } from "../src/site.ts";
 import { USAGE_RETENTION_MONTHS } from "../src/auth/retention.ts";
 // @ts-expect-error Plain-JavaScript operator script.
 import { reportSql } from "../scripts/usage-report.mjs";
+// @ts-expect-error Shared plain-JavaScript report queries.
+import { receiptsSql, healthSql } from "../usage/report-site/cloudflare/queries.js";
 
 const timestamp = Date.parse("2026-09-11T14:00:00Z");
 const subjectHash = "0123456789abcdef";
@@ -87,9 +89,56 @@ describe("usage projection", () => {
 });
 
 describe("usage persistence and reporting", () => {
+  it("persists valid invocations when another trace lacks an identifier", async () => {
+    const statement = { bind: vi.fn().mockReturnThis() };
+    const batch = vi.fn().mockResolvedValue([]);
+    const env = { USAGE: { prepare: () => statement, batch } } as unknown as { USAGE: D1Database };
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      await expect(collectUsage([
+        trace([auth, { evt: "execute" }]),
+        trace([{ evt: "execute" }]),
+        trace([{ ...auth, requestId: "87654321-4321-4321-4321-cba987654321" }, { evt: "search", source: "tool" }])
+      ], env)).resolves.toBeUndefined();
+      expect(batch).toHaveBeenCalledOnce();
+      expect(batch.mock.calls[0]?.[0]).toHaveLength(5);
+      expect(log).toHaveBeenCalledWith(JSON.stringify({ evt: "usage_missing_request_id", count: 1 }));
+    } finally { log.mockRestore(); }
+  });
+
+  it("continues later chunks after a failed transaction and records the gap", async () => {
+    vi.useFakeTimers();
+    const binds: unknown[][] = [];
+    const batch = vi.fn().mockRejectedValueOnce(new Error("failed"))
+      .mockRejectedValueOnce(new Error("failed")).mockRejectedValueOnce(new Error("failed"))
+      .mockResolvedValue([]);
+    const env = { USAGE: { prepare: () => ({ bind: (...args: unknown[]) => { binds.push(args); return {}; } }), batch } } as unknown as { USAGE: D1Database };
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const traces = Array.from({ length: 26 }, (_, i) => trace([
+        { ...auth, requestId: i.toString(16).padStart(32, "0") }, { evt: "execute" }
+      ]));
+      const result = expect(collectUsage(traces, env)).rejects.toThrow("three attempts");
+      await vi.runAllTimersAsync();
+      await result;
+      expect(batch.mock.calls.map(call => call[0].length)).toEqual([50, 50, 50, 2, 1]);
+      expect(binds.at(-1)?.slice(2)).toEqual([0, 0, 0, "collection_write_failure", 0, 50]);
+    } finally { vi.useRealTimers(); log.mockRestore(); }
+  });
+
+  it("records an interrupted invocation without claiming a response", async () => {
+    const bind = vi.fn().mockReturnValue({});
+    const batch = vi.fn().mockResolvedValue([]);
+    await collectUsage([trace([auth], { outcome: "exceededCpu" })], {
+      USAGE: { prepare: () => ({ bind }), batch }
+    } as unknown as { USAGE: D1Database });
+    expect(bind.mock.calls[0]?.slice(2)).toEqual([0, 0, 0, "exceededCpu", 0, 0]);
+  });
+
   it("deduplicates retries and counts distinct users across tools and surfaces", () => {
     const db = new DatabaseSync(":memory:");
     db.exec(readFileSync(new URL("../usage/migrations/0001_usage.sql", import.meta.url), "utf8"));
+    db.exec(readFileSync(new URL("../usage/migrations/0002_collection_health.sql", import.meta.url), "utf8"));
     const insert = db.prepare(INSERT_RESPONSE);
     for (let i = 0; i < 2; i++) {
       insert.run("mcp-search", timestamp, "mcp", "search", "oauth", subjectHash);
@@ -105,6 +154,14 @@ describe("usage persistence and reporting", () => {
       api_key_responses: 1, unattributed_responses: 1
     });
     expect(() => reportSql("2026-09';DROP TABLE usage_responses", "2026-10")).toThrow();
+    db.prepare("INSERT INTO usage_receipts (id,timestamp_ms,responses,truncated,canary,outcome,missing_response_ids,failed_statements) VALUES (?,?,?,?,?,?,?,?)")
+      .run("receipt", timestamp, 5, 0, 1, "exceededCpu", 1, 50);
+    expect(db.prepare(receiptsSql).get(timestamp - 1, timestamp + 1)).toMatchObject({
+      interrupted_invocations: 1, missing_response_ids: 1, failed_statements: 50, canary_hours: 1
+    });
+    expect(db.prepare(healthSql).get(timestamp - 1, timestamp + 1)).toMatchObject({
+      last_canary_ms: timestamp, failed_invocations: 1, failed_statements: 50
+    });
     db.close();
   });
 

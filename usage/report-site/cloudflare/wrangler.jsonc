@@ -1,0 +1,14 @@
+{
+  "name": "stellar-raven-usage-report",
+  "account_id": "ba55b7ae9acfb3ed152103e3497c0752",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-11",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  "d1_databases": [{
+    "binding": "USAGE",
+    "database_name": "stellar-raven-usage",
+    "database_id": "bbf9bd3d-b80b-4e6c-a03b-d717d1c5e3fe"
+  }]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "stellar-raven-report",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test",
+    "check": "node --check public/app.js && node --check src/server.js && node --check cloudflare/worker.js"
+  }
+}

@@ -1146,7 +1146,7 @@ keys, or special-category data.</p>
 stores observability data, which may include the queries submitted and the responses returned, for 30
 days, after which it is deleted. This data is stored in SDF's Cloudflare environment.</p>
 <p><b>Usage statistics.</b> Separately, we retain tool-response records for ${USAGE_RETENTION_MONTHS} UTC calendar months, including the current month.
-These records contain response times, tool names, access methods, and pseudonymous account identifiers.
+These records contain response times, tool names, access methods, pseudonymous account identifiers, and collection status.
 They do not contain queries, answers, email addresses, or IP addresses.
 We use these records to count tool responses and distinct active accounts.
 We delete records from older months daily. Recovery backups may retain deleted records for up to 30 additional days.

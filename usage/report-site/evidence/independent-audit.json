@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "kind": "independent-audit-counts",
+  "reviewer": "Claude Fable 5.1 (claude-fable-5-1), high effort, independent of author and orchestrator",
+  "generatedAt": "2026-09-11T15:50:00Z",
+  "baseline": {
+    "raven": "8279fc6d3c636d88a00ed54332561d33255178f1",
+    "reportSite": "3523623f2ff966134dd32e90f96ff8bf633db4a6"
+  },
+  "sanitization": "Counts and timestamps only. No account hashes, request identifiers, Ray IDs, IP data, credentials, or content.",
+  "tools": [
+    "Cloudflare API MCP: workers/observability/telemetry/query (dataset cloudflare-workers, dry=true)",
+    "Cloudflare API MCP: GraphQL workersInvocationsAdaptive",
+    "Cloudflare API MCP: workers script settings, schedules, KV key listing (counts only), R2 object listing, AI Gateway log metadata",
+    "Wrangler 4.124.0 --profile sdf: d1 execute --remote on stellar-raven-usage"
+  ],
+  "toolResponses": {
+    "definition": "Logged top-level MCP search (source=tool) and execute events, including error responses; joined to the mcp_request summary through the platform invocation id.",
+    "method": "One-hour windows, events view, limit 2000, ABR level 1 in every window, no window reached the limit, event ids deduplicated.",
+    "window": { "from": "2026-09-04T12:00:00Z", "toExclusive": "2026-09-11T14:34:59Z" },
+    "search": 1232,
+    "execute": 1388,
+    "total": 2620,
+    "joinedOauth": 1293,
+    "joinedApiKey": 1319,
+    "joinedDevBypass": 0,
+    "unjoined": 8,
+    "distinctToolUsingAccounts": 61,
+    "accountsSeenOnTwoOrMoreDays": 33,
+    "priorAuditComparison": {
+      "window": { "from": "2026-09-04T15:00:00Z", "toExclusive": "2026-09-11T14:34:59Z" },
+      "search": 1233,
+      "execute": 1389,
+      "joinedOauth": 1277,
+      "joinedApiKey": 1320,
+      "unjoined": 8,
+      "distinctToolUsingAccounts": 61
+    },
+    "note": "Retention is rolling; the first hours of the prior window had partly expired by review time, so the two windows are not identical."
+  },
+  "sixHourAggregates": {
+    "method": "Calculations view grouped by evt, 28 windows of six hours, ABR level 1; some windows reported sample intervals above 1, so these are estimates.",
+    "window": { "from": "2026-09-04T12:00:00Z", "toExclusive": "2026-09-11T14:00:00Z" },
+    "mcpSearch": 1228,
+    "mcpExecute": 1377,
+    "playgroundSearchIncludingOneRefusal": 143,
+    "playgroundExecute": 55,
+    "priorAudit": { "mcpSearch": 1231, "mcpExecute": 1376, "playgroundSearch": 143, "playgroundExecute": 53 }
+  },
+  "additionalWindow": {
+    "window": { "from": "2026-09-11T14:00:00Z", "toExclusive": "2026-09-11T14:34:59Z" },
+    "search": 6,
+    "execute": 11,
+    "distinctToolUsingAccountsInPreArchiveDay": 4
+  },
+  "archivePeriod": {
+    "window": { "from": "2026-09-11T14:34:59Z", "toExclusive": "2026-09-11T15:36:36Z" },
+    "logs": { "search": 6, "execute": 7, "joinedOauth": 11, "joinedApiKey": 2, "distinctToolUsingAccounts": 3 },
+    "d1": {
+      "usageResponsesRows": 13,
+      "search": 6,
+      "execute": 7,
+      "oauth": 11,
+      "apiKey": 2,
+      "distinctSubjectHashes": 3,
+      "oauthRowsWithoutHash": 0,
+      "firstResponseUtc": "2026-09-11T14:34:59.886Z",
+      "lastResponseUtc": "2026-09-11T14:44:18Z",
+      "receipts": 14,
+      "receiptsWithResponses": 13,
+      "canaryReceipts": 1,
+      "lastCanaryUtc": "2026-09-11T15:07:46Z",
+      "truncatedReceipts": 0,
+      "idFormat": "all 13 ids use the application request UUID; none fell back to the Ray id"
+    },
+    "boundary": "No archive row exists before 14:34:59.886 UTC and the extra log window ends at 14:34:59.000 UTC, so no response is double counted.",
+    "accountsNewAfterArchiveStart": 1,
+    "distinctToolUsingAccountsAcrossBothSpans": 62
+  },
+  "workerRequests": {
+    "metric": "GraphQL workersInvocationsAdaptive sum.requests by status; all Worker invocations, not tool responses or people.",
+    "months": [
+      { "month": "2026-07", "success": 90410, "clientDisconnected": 6500, "total": 96910, "errors": 0, "reportValue": 96910 },
+      { "month": "2026-08", "success": 554730, "clientDisconnected": 21330, "total": 576060, "errors": 0, "reportValue": 576060 },
+      { "month": "2026-09", "toExclusive": "2026-09-11T15:36:00Z", "success": 187253, "clientDisconnected": 21204, "total": 208457, "errors": 0, "reportValue": 208248, "reportCutoff": "2026-09-11T15:14:22.382Z" }
+    ],
+    "retentionLimit": "The account cannot query data older than 12w6d; July metrics stop being queryable around 2026-09-30."
+  },
+  "invocationOutcomes": {
+    "method": "cf-worker-event grouped by $workers.outcome per six-hour window",
+    "canceledShareRange": "about 10 to 15 percent of producer invocations per window",
+    "exceptionOrExceededCpuObserved": 0
+  },
+  "collector": {
+    "tailInvocationsInLogsSince1430Utc": 737,
+    "tailInvocationsSeptemberGraphql": 646,
+    "errors": 0,
+    "appLogLines": 0,
+    "liveSettings": { "producerTailConsumers": ["stellar-raven-usage"], "producerLogpush": false, "headSamplingRate": 1, "collectorCron": "17 3 * * *", "collectorCronCreatedUtc": "2026-09-11T14:31:15Z", "producerCron": "7 * * * *" }
+  },
+  "supportingActivity": {
+    "label": "Separately labeled. Never a substitute for tool responses or active tool users.",
+    "oauthGrants": { "keys": 417, "distinctSubjects": 263, "ttlDays": 90, "meaning": "Lower bound on accounts that completed OAuth authorization since launch and still hold a grant, measured 2026-09-11T15:35Z." },
+    "liveAccessTokens": { "keys": 74, "distinctSubjects": 59, "ttlHours": 1 },
+    "registeredOauthClients": 2406,
+    "oauthRequestAccountsPerDayChunk": { "min": 102, "max": 129, "meaning": "Distinct accounts with any successful OAuth MCP request, protocol traffic included; most never call a tool in a given day." },
+    "aiGatewayDemoLogs": {
+      "gateway": "stellar-raven-demo",
+      "totalMetadataRows": 5715,
+      "firstUtc": "2026-07-07T13:11:55Z",
+      "lastUtc": "2026-09-11T11:48:44Z",
+      "byMonth": { "2026-07": 2649, "2026-08": 2704, "2026-09": 362 },
+      "statusCodes": { "200": 5476, "400": 195, "402": 24, "404": 16, "500": 4 },
+      "bodiesRetrievableInSample": false,
+      "caveat": "Mixes local evaluation runs (user agent node in 43 of the 50 oldest rows) with playground traffic; not user activity."
+    }
+  },
+  "sourcesCheckedAndEmpty": {
+    "r2RavenTraces": { "objects": 230, "dateRange": "2026-06-16 to 2026-06-20", "meaning": "Pre-launch experiment; no launch-era history." },
+    "logpushJobs": "Listing returned an authentication error for this token; unverified.",
+    "otherDatastores": "No other D1, KV, or Analytics Engine dataset holds Raven usage.",
+    "instrumentationHistory": { "toolEventsSince": "2026-07-03", "subjectAttributionSince": "2026-07-12", "playgroundTelemetrySince": "2026-07-08" }
+  },
+  "conclusion": "July and August tool responses and active users are unrecoverable. The prior audit's September figures hold within a few responses and the 61 account lower bound is reproduced exactly."
+}
