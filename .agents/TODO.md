@@ -515,3 +515,16 @@ retires the program.
 
 Owner decisions that block agent work are listed once, in `NEXT.md` under "Owner decisions".
 Record each answer there or in `eval/qa/README.md`, then delete the question.
+
+## Usage archive follow-up
+
+### Verify the first scheduled events after the usage collector release
+
+The September 11 release passed independent live acceptance and matched all 17 tool records against logs.
+The 16:07 canary preceded the collector replacement. New fetch receipts verified the migrated schema after deployment.
+After September 11 at 17:10 UTC, verify a canary receipt with `outcome=ok` from the 17:07 schedule.
+After September 12 at 03:17 UTC, verify the first cleanup succeeded and retained all September records.
+The hourly usage-health workflow remains active. Its three-hour threshold does not detect one missing canary immediately.
+See [the live acceptance](../research/audits/2026-09-11-usage-fable-live-acceptance.md).
+
+Done when: the first post-deploy canary and daily cleanup have production evidence.
