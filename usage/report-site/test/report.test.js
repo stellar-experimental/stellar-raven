@@ -29,8 +29,8 @@ test('expected collection checks exclude the period before collection began', ()
 });
 test('report endpoint rejects missing and incorrect credentials before reading D1', async () => {
   const env = { REPORT_TOKEN: 'test-only-token', USAGE: { prepare() { throw new Error('must not query'); } } };
-  for (const authorization of ['', 'Bearer incorrect']) {
-    const response = await worker.fetch(new Request('https://report.example/report', { headers: { authorization } }), env, {});
+  for (const [path, authorization] of ['/report','/launch'].flatMap(path => ['', 'Bearer incorrect'].map(auth => [path, auth]))) {
+    const response = await worker.fetch(new Request('https://report.example' + path, { headers: { authorization } }), env, {});
     assert.equal(response.status, 401);
   }
 });
@@ -52,4 +52,24 @@ test('site fails closed without the server-side report connection', async () => 
   const response = await site.fetch(new Request('https://site.example/api/report'), {});
   assert.equal(response.status, 503);
   assert.equal(response.headers.get('Cache-Control'), 'no-store');
+});
+
+test('launch snapshots require authentication and an unexpired database record', async () => {
+  let query;
+  const env = { REPORT_TOKEN: 'test-only-token', USAGE: { prepare(sql) {
+    query = sql; return { bind(now) { assert.ok(now > 0); return { async first() { return { data_json: '{"synthetic":true}' }; } }; } };
+  } } };
+  const response = await worker.fetch(new Request('https://report.example/launch', { headers: { Authorization: 'Bearer test-only-token' } }), env, {});
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  assert.deepEqual(await response.json(), { synthetic: true });
+  assert.match(query, /expires_at_ms > \?1/);
+});
+
+test('missing or expired historical snapshots return 404 without a payload', async () => {
+  const env = { REPORT_TOKEN: 'test-only-token', USAGE: { prepare() { return { bind() { return { async first() { return null; } }; } }; } } };
+  const response = await worker.fetch(new Request('https://report.example/launch', { headers: { Authorization: 'Bearer test-only-token' } }), env, {});
+  assert.equal(response.status, 404);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  assert.equal(await response.text(), 'Snapshot unavailable');
 });

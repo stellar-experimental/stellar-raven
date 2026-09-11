@@ -518,13 +518,21 @@ Record each answer there or in `eval/qa/README.md`, then delete the question.
 
 ## Usage archive follow-up
 
-### Verify the first scheduled events after the usage collector release
+### Verify scheduled collection and cleanup
 
-The September 11 release passed independent live acceptance and matched all 17 tool records against logs.
-The 16:07 canary preceded the collector replacement. New fetch receipts verified the migrated schema after deployment.
-After September 11 at 17:10 UTC, verify a canary receipt with `outcome=ok` from the 17:07 schedule.
-After September 12 at 03:17 UTC, verify the first cleanup succeeded and retained all September records.
-The hourly usage-health workflow remains active. Its three-hour threshold does not detect one missing canary immediately.
-See [the live acceptance](../research/audits/2026-09-11-usage-fable-live-acceptance.md).
+After the collector release, verify the next scheduled canary and daily retention cleanup in private storage.
+The hourly usage-health workflow detects stale canaries and possible collection gaps.
+Keep production counts and request identifiers out of this public task queue.
 
-Done when: the first post-deploy canary and daily cleanup have production evidence.
+Done when: private operational checks confirm the scheduled canary and cleanup succeeded.
+
+### Coordinate removal of previously published usage evidence from Git history
+
+The forward privacy correction removes production snapshots and request identifiers from the current source tree.
+Older commits, merged feature branches, PR diffs, and the private Sites source history retain earlier copies.
+Before rewriting published refs, obtain explicit user approval and coordinate affected checkouts.
+Use exact remote-tip leases, preserve current source content, and verify the rewritten history before pushing.
+GitHub controls cached PR references; Support decides whether cleanup requests qualify.
+Never reproduce private figures or request identifiers in public cleanup notes.
+
+Done when: the approved history cleanup finishes and remaining cache, fork, and clone limits are recorded accurately.

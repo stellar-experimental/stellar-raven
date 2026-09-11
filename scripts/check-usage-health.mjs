@@ -14,7 +14,7 @@ export function healthFailures(report, now = Date.now()) {
   }
   for (const field of ["missing_response_ids", "failed_statements", "truncated_invocations", "failed_invocations"]) {
     if (!Number.isFinite(health?.[field]) || health[field] < 0) failures.push(`Missing health field: ${field}`);
-    else if (health[field] > 0) failures.push(`Possible missing responses: ${field}=${health[field]} in the last 24 hours`);
+    else if (health[field] > 0) failures.push(`Possible missing responses: ${field} detected in the last 24 hours`);
   }
   return failures;
 }

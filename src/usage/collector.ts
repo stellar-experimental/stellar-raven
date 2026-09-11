@@ -156,7 +156,8 @@ export default {
     const cutoff = retentionCutoff(controller.scheduledTime);
     await env.USAGE.batch([
       env.USAGE.prepare("DELETE FROM usage_responses WHERE timestamp_ms < ?").bind(cutoff),
-      env.USAGE.prepare("DELETE FROM usage_receipts WHERE timestamp_ms < ?").bind(cutoff)
+      env.USAGE.prepare("DELETE FROM usage_receipts WHERE timestamp_ms < ?").bind(cutoff),
+      env.USAGE.prepare("DELETE FROM usage_report_snapshots WHERE expires_at_ms <= ?").bind(controller.scheduledTime)
     ]);
   }
 } satisfies ExportedHandler<UsageEnv>;

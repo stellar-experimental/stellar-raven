@@ -94,7 +94,7 @@ The 2026-09-11 investigation recovered partial September usage from retained Wor
 The archive cannot recreate expired July or August tool events.
 Historical log aggregates and individual-event queries differ slightly, even with ABR level 1.
 Do not import these estimates as exact response rows.
-See `research/audits/2026-09-11-usage-history.md` for the dated results and query conditions.
+Historical results and query evidence remain in private storage. Do not commit production counts or request identifiers.
 
 Cloudflare references:
 
@@ -105,7 +105,7 @@ Cloudflare references:
 ### Audit limits and monitoring
 
 Interrupted invocations are informational. They can contain computed responses that did not reach the client.
-Cancellation receipts can add approximately 2,000 rows per day at the audited traffic rate.
+Cancellation receipts can increase storage volume.
 Receipt presence indicates observed invocations, not complete tool coverage.
 Missing-identifier and write-failure receipts use random identifiers; redelivery can repeat these diagnostic counts.
 Producer failure and truncation checks indicate possible missing responses, not necessarily a collector fault.
@@ -113,7 +113,14 @@ Use `npm run deploy` for the producer; direct Wrangler commands skip its postdep
 The check uses `CLOUDFLARE_API_TOKEN` when supplied, or the local Wrangler `sdf` OAuth profile.
 
 AI Gateway payload collection is disabled, but request metadata remains stored under the gateway configuration.
-On September 11, the gateway reports `collect_logs=false`, `log_management=100000`, and `log_management_strategy=DELETE_OLDEST`.
+The gateway uses a configured row-count policy with oldest-first deletion.
 This is a row-count policy, not a fixed retention period in days.
 This release preserves those existing records. It does not purge evidence or change gateway retention.
 The 13-month usage retention applies to D1 usage records, not the separate gateway metadata store.
+
+### Private historical snapshots
+
+Migration 0003 stores historical report snapshots in D1. Import the JSON with a bound parameter through the Cloudflare API.
+Each snapshot has an explicit expiry timestamp. The daily collector cleanup deletes expired snapshots.
+The report API exposes the launch snapshot only after bearer authentication. Sites renders it at request time.
+Keep production evidence outside Git. Public tests use explicitly synthetic fixtures.
