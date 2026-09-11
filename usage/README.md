@@ -18,8 +18,10 @@ Rotating `MCP_SERVER_SECRET` can split an account's hash. Record rotations befor
 
 `stellar-raven-usage` is a Tail Worker attached to `stellar-raven-codemode`.
 It extracts permitted fields from existing logs after the producer invocation finishes.
-Only this collector can access the separate D1 database through a runtime binding.
-It exposes no HTTP route, MCP operation, or public dashboard.
+The collector and the separate aggregate report Worker access the usage D1 database.
+The collector exposes no HTTP route or MCP operation.
+The report Worker requires its own bearer secret and runs fixed aggregate SELECT queries.
+It returns no account hashes. The Sites dashboard adds owner-only access.
 
 `usage_responses` stores one row per response with its log timestamp, tool, surface, access mode,
 and optional pseudonymous account hash. An invocation identifier plus log index deduplicates retries.
@@ -77,6 +79,17 @@ Preserve the database for the agreed retention period.
 
 ## Historical coverage
 
+The report source is maintained under [`report-site/`](report-site/README.md) and reviewed in Raven pull requests.
+After merging a report change, sync the reviewed main branch to the separate Sites publication checkout:
+
+```sh
+node scripts/sync-usage-site.mjs /Users/kalepail/Desktop/stellar-raven-report
+```
+
+Build, validate, and publish that exact copy through Sites. Its `.raven-source.json` records the Raven commit.
+Do not edit the publication copy independently. `npm run test:usage-report` and `npm run build:usage-report`
+run in CI alongside the collector checks.
+
 The 2026-09-11 investigation recovered partial September usage from retained Workers Logs.
 The archive cannot recreate expired July or August tool events.
 Historical log aggregates and individual-event queries differ slightly, even with ABR level 1.
@@ -88,3 +101,19 @@ Cloudflare references:
 - [Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/)
 - [Tail handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/)
 - [D1 Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/)
+
+### Audit limits and monitoring
+
+Interrupted invocations are informational. They can contain computed responses that did not reach the client.
+Cancellation receipts can add approximately 2,000 rows per day at the audited traffic rate.
+Receipt presence indicates observed invocations, not complete tool coverage.
+Missing-identifier and write-failure receipts use random identifiers; redelivery can repeat these diagnostic counts.
+Producer failure and truncation checks indicate possible missing responses, not necessarily a collector fault.
+Use `npm run deploy` for the producer; direct Wrangler commands skip its postdeploy check.
+The check uses `CLOUDFLARE_API_TOKEN` when supplied, or the local Wrangler `sdf` OAuth profile.
+
+AI Gateway payload collection is disabled, but request metadata remains stored under the gateway configuration.
+On September 11, the gateway reports `collect_logs=false`, `log_management=100000`, and `log_management_strategy=DELETE_OLDEST`.
+This is a row-count policy, not a fixed retention period in days.
+This release preserves those existing records. It does not purge evidence or change gateway retention.
+The 13-month usage retention applies to D1 usage records, not the separate gateway metadata store.

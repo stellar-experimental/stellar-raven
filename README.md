@@ -103,10 +103,12 @@ Raven's structured logs contain operational metadata only: counts, status, timin
 IDs, and pseudonymous subject/client joins. They exclude queries, execute code, tool results, answers,
 provider error messages, and content-derived hashes. Existing Cloudflare platform logs age out on
 Cloudflare's fixed retention schedule (at most seven days). Playground model requests also set
-Cloudflare AI Gateway's per-request logging override to off.
+Cloudflare AI Gateway's per-request payload collection to off. Gateway request metadata can still persist.
 
 The separate usage archive retains response metadata for thirteen UTC calendar months, including
-the current month. It counts top-level search and execute responses, including errors and refusals.
+the current month. It counts logged, handler-completed search and execute responses, including errors and refusals.
+It excludes authentication rejection, input validation errors, and failures before a response log.
+It does not confirm network delivery or judge answer correctness.
 It counts distinct WorkOS-derived account hashes only when those accounts receive tool responses.
 API-key traffic remains separate. The archive excludes queries, answers, email addresses, and IPs.
 See [usage/README.md](usage/README.md) for monthly reports, coverage checks, retention, and deployment.

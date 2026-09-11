@@ -2,6 +2,7 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
+import { countsSql } from "../usage/report-site/cloudflare/queries.js";
 
 export function monthTimestamp(value) {
   if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(value ?? "")) throw new Error("Expected a month as YYYY-MM");
@@ -13,24 +14,13 @@ export function monthTimestamp(value) {
 export function reportSql(from, to) {
   const start = monthTimestamp(from), end = monthTimestamp(to);
   if (start >= end) throw new Error("--to must follow --from");
-  const columns = `
-    SUM(tool = 'search') AS search_responses,
-    SUM(tool = 'execute') AS execute_responses,
-    COUNT(*) AS total_responses,
-    COUNT(DISTINCT CASE WHEN access_mode = 'oauth' THEN subject_hash END) AS unique_accounts,
-    SUM(access_mode = 'api-key') AS api_key_responses,
-    SUM(access_mode = 'dev-bypass') AS dev_responses,
-    SUM(access_mode = 'unknown' OR (access_mode = 'oauth' AND subject_hash IS NULL)) AS unattributed_responses`;
-  return `WITH selected AS (
-    SELECT *, strftime('%Y-%m', timestamp_ms / 1000, 'unixepoch') AS month
-    FROM usage_responses WHERE timestamp_ms >= ${start} AND timestamp_ms < ${end}
-  )
-  SELECT month, surface, ${columns} FROM selected GROUP BY month, surface
-  UNION ALL SELECT month, 'all' AS surface, ${columns} FROM selected GROUP BY month
-  ORDER BY month, surface;
+  const counts = countsSql('%Y-%m', 'month').replaceAll('?1', String(start)).replaceAll('?2', String(end));
+  return `${counts};
   SELECT datetime(MIN(timestamp_ms)/1000, 'unixepoch') AS first_receipt_utc,
     datetime(MAX(timestamp_ms)/1000, 'unixepoch') AS last_receipt_utc,
     SUM(truncated) AS truncated_invocations,
+    SUM(outcome NOT IN ('ok', 'unknown')) AS interrupted_invocations,
+    SUM(missing_response_ids) AS missing_response_ids, SUM(failed_statements) AS failed_statements,
     SUM(canary) AS canary_receipts,
     datetime(MAX(CASE WHEN canary = 1 THEN timestamp_ms END)/1000, 'unixepoch') AS last_canary_utc
   FROM usage_receipts WHERE timestamp_ms >= ${start} AND timestamp_ms < ${end};`;

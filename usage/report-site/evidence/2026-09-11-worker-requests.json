@@ -1,0 +1,662 @@
+{
+  "generatedAt": "2026-09-11T15:14:22.382Z",
+  "results": [
+    {
+      "from": "2026-07-02T00:00:00Z",
+      "to": "2026-08-01T00:00:00Z",
+      "response": {
+        "success": true,
+        "status": 200,
+        "result": {
+          "viewer": {
+            "accounts": [
+              {
+                "days": [
+                  {
+                    "dimensions": {
+                      "date": "2026-07-16"
+                    },
+                    "sum": {
+                      "requests": 4430
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-31"
+                    },
+                    "sum": {
+                      "requests": 6100
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-27"
+                    },
+                    "sum": {
+                      "requests": 4170
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-12"
+                    },
+                    "sum": {
+                      "requests": 1630
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-28"
+                    },
+                    "sum": {
+                      "requests": 5140
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-11"
+                    },
+                    "sum": {
+                      "requests": 1710
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-15"
+                    },
+                    "sum": {
+                      "requests": 3200
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-21"
+                    },
+                    "sum": {
+                      "requests": 6560
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-04"
+                    },
+                    "sum": {
+                      "requests": 1890
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-22"
+                    },
+                    "sum": {
+                      "requests": 4490
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-09"
+                    },
+                    "sum": {
+                      "requests": 2460
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-25"
+                    },
+                    "sum": {
+                      "requests": 3150
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-06"
+                    },
+                    "sum": {
+                      "requests": 950
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-03"
+                    },
+                    "sum": {
+                      "requests": 2020
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-18"
+                    },
+                    "sum": {
+                      "requests": 2730
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-14"
+                    },
+                    "sum": {
+                      "requests": 6850
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-29"
+                    },
+                    "sum": {
+                      "requests": 5620
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-10"
+                    },
+                    "sum": {
+                      "requests": 2430
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-26"
+                    },
+                    "sum": {
+                      "requests": 3350
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-13"
+                    },
+                    "sum": {
+                      "requests": 2800
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-17"
+                    },
+                    "sum": {
+                      "requests": 3930
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-30"
+                    },
+                    "sum": {
+                      "requests": 5770
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-19"
+                    },
+                    "sum": {
+                      "requests": 1660
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-02"
+                    },
+                    "sum": {
+                      "requests": 370
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-24"
+                    },
+                    "sum": {
+                      "requests": 3150
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-07"
+                    },
+                    "sum": {
+                      "requests": 2700
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-23"
+                    },
+                    "sum": {
+                      "requests": 3130
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-08"
+                    },
+                    "sum": {
+                      "requests": 2160
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-05"
+                    },
+                    "sum": {
+                      "requests": 130
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-07-20"
+                    },
+                    "sum": {
+                      "requests": 2230
+                    }
+                  }
+                ],
+                "total": [
+                  {
+                    "sum": {
+                      "requests": 96910
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "errors": [],
+        "messages": []
+      }
+    },
+    {
+      "from": "2026-08-01T00:00:00Z",
+      "to": "2026-09-01T00:00:00Z",
+      "response": {
+        "success": true,
+        "status": 200,
+        "result": {
+          "viewer": {
+            "accounts": [
+              {
+                "days": [
+                  {
+                    "dimensions": {
+                      "date": "2026-08-07"
+                    },
+                    "sum": {
+                      "requests": 7150
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-26"
+                    },
+                    "sum": {
+                      "requests": 11140
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-19"
+                    },
+                    "sum": {
+                      "requests": 14520
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-22"
+                    },
+                    "sum": {
+                      "requests": 9070
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-01"
+                    },
+                    "sum": {
+                      "requests": 6180
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-10"
+                    },
+                    "sum": {
+                      "requests": 9360
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-23"
+                    },
+                    "sum": {
+                      "requests": 17360
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-03"
+                    },
+                    "sum": {
+                      "requests": 6040
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-12"
+                    },
+                    "sum": {
+                      "requests": 6830
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-29"
+                    },
+                    "sum": {
+                      "requests": 8300
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-16"
+                    },
+                    "sum": {
+                      "requests": 9760
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-17"
+                    },
+                    "sum": {
+                      "requests": 11100
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-13"
+                    },
+                    "sum": {
+                      "requests": 34610
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-28"
+                    },
+                    "sum": {
+                      "requests": 15320
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-06"
+                    },
+                    "sum": {
+                      "requests": 13710
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-09"
+                    },
+                    "sum": {
+                      "requests": 38420
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-24"
+                    },
+                    "sum": {
+                      "requests": 32700
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-02"
+                    },
+                    "sum": {
+                      "requests": 5830
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-21"
+                    },
+                    "sum": {
+                      "requests": 12710
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-20"
+                    },
+                    "sum": {
+                      "requests": 15250
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-08"
+                    },
+                    "sum": {
+                      "requests": 6160
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-25"
+                    },
+                    "sum": {
+                      "requests": 24840
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-05"
+                    },
+                    "sum": {
+                      "requests": 7000
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-14"
+                    },
+                    "sum": {
+                      "requests": 23800
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-27"
+                    },
+                    "sum": {
+                      "requests": 30310
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-31"
+                    },
+                    "sum": {
+                      "requests": 15690
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-18"
+                    },
+                    "sum": {
+                      "requests": 17920
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-15"
+                    },
+                    "sum": {
+                      "requests": 11380
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-11"
+                    },
+                    "sum": {
+                      "requests": 14950
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-30"
+                    },
+                    "sum": {
+                      "requests": 8430
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-08-04"
+                    },
+                    "sum": {
+                      "requests": 130220
+                    }
+                  }
+                ],
+                "total": [
+                  {
+                    "sum": {
+                      "requests": 576060
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "errors": [],
+        "messages": []
+      }
+    },
+    {
+      "from": "2026-09-01T00:00:00Z",
+      "to": "2026-09-11T15:14:22.382Z",
+      "response": {
+        "success": true,
+        "status": 200,
+        "result": {
+          "viewer": {
+            "accounts": [
+              {
+                "days": [
+                  {
+                    "dimensions": {
+                      "date": "2026-09-10"
+                    },
+                    "sum": {
+                      "requests": 27818
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-07"
+                    },
+                    "sum": {
+                      "requests": 21077
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-04"
+                    },
+                    "sum": {
+                      "requests": 22232
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-09"
+                    },
+                    "sum": {
+                      "requests": 23170
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-02"
+                    },
+                    "sum": {
+                      "requests": 25095
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-01"
+                    },
+                    "sum": {
+                      "requests": 15770
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-08"
+                    },
+                    "sum": {
+                      "requests": 17337
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-05"
+                    },
+                    "sum": {
+                      "requests": 12478
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-06"
+                    },
+                    "sum": {
+                      "requests": 15023
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-11"
+                    },
+                    "sum": {
+                      "requests": 10124
+                    }
+                  },
+                  {
+                    "dimensions": {
+                      "date": "2026-09-03"
+                    },
+                    "sum": {
+                      "requests": 18124
+                    }
+                  }
+                ],
+                "total": [
+                  {
+                    "sum": {
+                      "requests": 208248
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "errors": [],
+        "messages": []
+      }
+    }
+  ]
+}
