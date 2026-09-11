@@ -33,7 +33,7 @@ The report's private access policy stays unchanged.
 - GitHub PR checks passed before merge.
 - Changed services deployed from reviewed source; live acceptance checked.
 
-Status: independent source review passed. Release acceptance remains pending.
+Status: complete. PR #153 merged, the changes deployed, and independent live acceptance passed.
 
 ## Reproduced storage failure
 
@@ -70,3 +70,18 @@ The parent verified the gateway configuration through Cloudflare MCP: `collect_l
 Fable explicitly accepted the staged tree for merge after rerunning 2,057 tests, 11 report tests, typecheck, and builds.
 The acceptance file uses an approximate review time; the parent received it around 16:04 UTC.
 The staged tree secret scan passed. Live release gates remain pending.
+
+## Release completion
+
+PR #153 merged as `75ee0315176d96cd9ad240a2ed0aa099f8fd26ac` after all checks passed.
+Migration 0002 applied before the collector. The collector, report API, and producer deployed successfully.
+Sites version 3 published the reviewed source with owner-only access.
+The manual usage-health workflow passed. The source and publication checkouts were clean after deployment.
+Fable confirmed the private dashboard refresh returns 200 and the launch audit panel renders.
+At the shared 16:10 UTC cutoff, logs and D1 exactly matched: 7 search, 10 execute, and 4 distinct accounts.
+Two new outcome receipts verified the migrated collector against production D1.
+Fable accepted the release. The next scheduled canary remains operational monitoring because it was not due at acceptance.
+
+Deployment versions and evidence: [usage release](../../research/audits/2026-09-11-usage-release.md).
+Independent result: [live acceptance](../../research/audits/2026-09-11-usage-fable-live-acceptance.md).
+The reviewer headings use approximate clock ranges; the parent received live acceptance around 16:12 UTC.
