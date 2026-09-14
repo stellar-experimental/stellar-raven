@@ -7,11 +7,8 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-09 during issue #141 and upstream handoff verification.
-Rejected-candidate retirement and OAuth completion were recorded on 2026-09-10.
-The OAuth record is [the consent completion ledger](rounds/2026-09-10-oauth-consent.md).
-The current ledger is `.agents/rounds/2026-09-14-truth-maintenance.md`. The ranked handoff is
-`NEXT.md`.
+The latest maintenance review is [the September 14 ledger](rounds/2026-09-14-truth-maintenance.md).
+[NEXT.md](NEXT.md) ranks the work and holds open owner decisions.
 
 ## Improvements follow-up
 

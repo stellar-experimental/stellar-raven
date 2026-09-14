@@ -1,7 +1,8 @@
 # Per-user MCP Observability and Future Personalization
 
-Status: privacy-safe request attribution implemented and production-verified 2026-07-13. Product
-analytics and personalization remain deliberately deferred.
+Status: historical request-attribution design, implemented and production-verified on 2026-07-13.
+Personalization remains deferred. [The usage guide](../usage/README.md) describes the later private aggregate-report implementation.
+[The architecture](../ARCHITECTURE.md) owns current authentication, logging, and retention behavior.
 
 Recorded: 2026-07-11 for Solo todo
 `solo://proj/49/todo/track-users-better-v--889`.
@@ -14,8 +15,8 @@ We want to answer two related but different questions:
    debugging, telemetry, traces, support, and aggregate product analysis?
 2. Can that identity eventually support user-controlled memory that tunes answers to an individual?
 
-The implemented local change adds privacy-safe user/client attribution to request logs while
-preserving Cloudflare-native invocation joins. Production verification remains deploy-gated. Do
+The change added privacy-safe user/client attribution to request logs while
+preserving Cloudflare-native invocation joins. Do
 not fingerprint users from IP, geo, TLS, or browser characteristics, and do not make operational
 telemetry the future personalization database.
 
@@ -29,7 +30,7 @@ The target separation is:
 These may share an internal user identity, but they need separate schemas, retention, access, and
 user controls.
 
-## Current implementation
+## Implementation snapshot — 2026-07-13
 
 ### Authentication and user identity
 

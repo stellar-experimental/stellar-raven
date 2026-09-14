@@ -4,16 +4,19 @@ Measures what the routing evals (`eval/run-routing.mjs`, `eval/agentic/`) can't:
 driving this MCP server end-to-end (**search → execute → answer**) produce a **factually
 correct, current, non-fabricated answer** to a real Stellar-ecosystem question?
 
-The battery is **owned**: one hand-authored JSON file per case under `eval/qa/corpus/battery/`,
-500 cases as of 2026-08-28 (499 as of 2026-08-19), edited directly and reviewed like code. The 2026-08-18 retrieval
-audit added five service-semantics cases to the prior 492-case corpus. The 2026-08-19
-maintenance change added two broad `scout.hackathonBrief` cases. Provenance is first-class (`truth` block per case), gospel changes are CI-linted at
-the moment of change, and the compiled artifacts are generated + byte-pinned. History — the
+The battery is owned: one hand-authored JSON file per case under `eval/qa/corpus/battery/`, reviewed like code.
+The generated lifecycle registry owns current membership and case counts.
+Each case has a `truth` provenance block. CI checks golden changes and byte-pins the generated artifacts.
+History — the
 vendored-corpus/override era, rubric evolution, and the run archaeology through 2026-07-10 — lives in
 [`research/audits/2026-07-qa-history.md`](../../research/audits/2026-07-qa-history.md); the
 migration proof is [`reviewed/2026-07-super-corpus-migration.md`](./reviewed/2026-07-super-corpus-migration.md).
 
 ## Directory / lane map
+
+Use [Commands](#commands), [Golden lifecycle](#golden-lifecycle), and
+[Judging rubric and score comparability](#judging-rubric-and-score-comparability) for current operation.
+The dated run sections retain measurement evidence. They do not authorize new paid calls.
 
 ```
 eval/qa/

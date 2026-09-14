@@ -3,9 +3,11 @@
 Status: research note only. Do not build this until a real investigation needs history beyond the
 current Workers Logs window.
 
-Verified: 2026-07-07 against the current repo and current Cloudflare docs.
+Historical research verified on 2026-07-07. Provider limits, prices, and source line numbers below are dated observations.
+Use [the architecture](../ARCHITECTURE.md) for current logging and [the usage guide](../usage/README.md) for aggregate retention.
+The implemented usage archive is not the raw-log archive proposed here.
 
-## Current state
+## Observed state — 2026-07-07
 
 The production worker already emits useful structured observability. `src/observability.ts` is a
 thin helper: `logEvent(evt, fields)` writes one flat JSON object to `console.log`. The file's

@@ -1,10 +1,8 @@
 # Architecture — how `search` and `execute` actually work
 
-The end-to-end mechanics of the two tools, verified against the code as of 2026-07-03
-(`codemode.skill.run` surface added and code-verified 2026-07-06). Read
-[`PLAN.md`](./PLAN.md) first for *why* the design is shaped this way; this doc is the *how*,
-with file paths for every claim. Nothing here is aspirational — if the code moves, this doc
-is wrong until refreshed.
+This document describes the implemented request paths and their source files.
+Read [PLAN.md](PLAN.md) for product scope and [README.md](README.md) for connection and operation.
+The source code owns current behavior; dated research records explain earlier decisions and experiments.
 
 Two tools, one Worker: `search` is a host-side ranked query over a generated catalog;
 `execute` runs LLM-authored JavaScript in a network-less Dynamic Worker isolate whose only

@@ -1,162 +1,33 @@
 # NEXT — current handoff
 
-Updated 2026-09-09. The current round is `rounds/2026-09-09-truth-maintenance.md`.
-The isolated stellar-dev `0472452a` pin passes source review, tests, and unchanged routing thresholds.
-Production still serves the old pin. This round's deployment requires owner approval.
-The September 9 crawl ingested the fixes for `sd-039`, `sd-042`, and `sd-047`.
-Their corpus-reference cleanup and independent live review passed. The resolver wrote all three terminal receipts.
-The final Opus review first withheld `LAUNCH-OK` on L1 and `CLOSEOUT-OK` on C1 to C3.
-Its appended confirmation grants both verdicts after repair. The historical verdicts stay unchanged.
-The maintenance execution and isolated search advisory completed their independent reviews.
-`TODO.md` holds the full item text.
-This file only ranks and sequences. Delete or rewrite this file when the block is done.
-The 2026-09-08 maintenance execution merged through PR #135. PR #137 deployed the isolated search advisory.
-Paid and unresolved golden decisions remain owner-blocked. The broader scoring candidate remains unreleased.
-Use `rounds/2026-09-08-maintenance-execution.md` for the prior deployment and advisory closeout.
+Updated 2026-09-14 after the [maintenance audit](rounds/2026-09-14-truth-maintenance.md).
+Use [TODO.md](TODO.md) for task requirements and completion criteria.
+This file ranks the work and retains unresolved owner decisions, not deployment history.
 
-## State at handoff
+## Next work
 
-- PR #125 merged at `2026-09-04T12:27:17Z` as
-  `50bf5518860584ec1e5d352acbe11033515a0b7f`. The Copilot comment `3933695212` was fixed in
-  `ab5388e` and resolved. Final CI passed Analyze in 49 seconds, CodeQL in 3 seconds, secrets in
-  23 seconds, and tests in 1 minute 33 seconds.
-- PR #126 merged at `2026-09-04T13:05:49Z` as
-  `dd80c0c8d1849a7e1d9daa5c6d60a714765ab538`. It was the deployment-closeout base before the
-  final cleanup record.
-- Deployment preflight proved that clean `HEAD` equals `origin/main`. `npm audit --omit=dev` found
-  zero vulnerabilities. Wrangler deployed at `2026-09-04T12:29:24.371Z`. Worker Version
-  `8022e211-c731-49cc-aef1-a20f1da798b9` is at 100 percent. The rollback version is
-  `f62b64fa-1fb7-4c25-970d-7f98c83ab302`.
-- Production verification passed. The closeout record is
-  `.agents/rounds/2026-09-03-truth-maintenance/production-deployment-terra.md`. Terra author
-  pane `w16:p2J` is recorded there and in the round ledger.
-- The paired launch contract is enforced at `1847ffd`. The plan schema is
-  `qa-paired-collection-plan-v2`. Launch requires `--authorized-plan-sha256` equal to the canonical
-  plan SHA-256. The plan freezes every paid command array and the flip Claude pins. It binds the
-  fixed capacity contract with 24-hour freshness. It requires exactly 200 selected and 500 active
-  corpus IDs with all four corpus hashes. Report: `launch-contract-repair-sol.md`.
-  The supplied final Opus review inspected revision 3 and the launch contract.
-  That review first withheld `LAUNCH-OK` because the `run-evals` skill still published v1.
-  The repair updates the skill to v2. The appended confirmation grants `LAUNCH-OK` after repair.
-- The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact has SHA-256
-  `f94663390187a52a89007ca22a23530c873cb8e00b4117bece045265a56c2423` and completed at
-  `2026-09-04T10:25:17.815Z`. It expires at `2026-09-05T10:25:17.815Z`. It proves the technical
-  gate only. The owner has not accepted the concurrent-load estimand.
-- Measurement design revision 2 received `CHANGES-REQUIRED` from Sol (`final-synthesis-review-sol.md`,
-  P1 to P3 and S1 to S3). Revision 3 repairs all six against `1847ffd`. The final Opus review
-  checked revision 3 and first withheld its verdict on L1. Its appended confirmation grants the
-  verdict after repair. It authorizes nothing.
-- The full validation after `1847ffd` is complete. The orchestrator ran it on the root branch
-  with the work through `dc0761d`. `npm run typecheck`, `npm test` (108 files, 1,971 tests),
-  `npm run test:smoke` (4 files, 83 tests), and `npm run build` passed. `eval:selftest`,
-  `eval:compile`, `eval:qa:lint -- --stale` (0 errors, 62 warnings), `eval:qa:register -- --check`,
-  `eval:routing` (gate), `eval:qa:paired:validate`, and `improvements:lint` passed.
-  `eval:qa:compile` produced 500 cases with content SHA-256 `c5d0c804…7b43e`.
-  `eval:protocol-history` stopped correctly as `source-expired` with no scored question.
-  `improvements:index` produced 70 findings. The final repair full run passed 108 files and 1,974
-  tests. The documentation follow-up passed its final diff and secret checks.
-- PR #125 failed only on two vectorize test timeouts. Controlled CPU load reproduced both failures.
-  The repair keeps all behavior checks and timeout limits. The two-file run fell from
-  13.72–13.83 seconds to 1.41 seconds. The CI-like suite passed 108 files and 1,974 tests.
-  Report: `ci-vectorize-timeout-repair-sol.md`.
-- The 2026-09-04 candidate arm completed 500 rows and stopped as a diagnostic. Raw counts: 199
-  correct, 230 partial, 71 wrong. Raw shares: strict 39.8%, half-credit 62.8%, core-answer-correct
-  92.6%. Cost `$190.1686672`. Scout changed from `1.9.23` to `1.9.30` inside the arm. The executor
-  fault hit 380 rows with 493 serialization failures. The artifact is non-comparable and is not a
-  headline. Its stored `meanContinuousCoverage` value is invalid and retired. Never quote it.
-- All 500 candidate rows received one independent sharded review. Disagreements are recorded in
-  the ledger and are not resolved.
-- No valid two-week causal measurement exists. No baseline artifact exists. The old `$882.50` plan
-  is spent for P6 and the candidate and stopped for every other method.
-- The remote identity guard, the paired collection supervisor, the envelope serialization repair,
-  the coverage-metric retirement, and the evidence-support prose probes are landed on the branch
-  with independent `PASS` reviews.
-- Scout 1.9.23 and 1.9.30 are rejected. The committed inventory remains Scout 1.9.1 with manifest
-  `b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729`. Live Scout advertised
-  `1.9.30` on 2026-09-04.
-- Both protocol-history v2 contracts are `source-expired` on the accepted manifest. The free
-  diagnostic returns no counts until a new independently authored contract pins a new epoch.
-- `improvements/` contains 67 active findings: 64 `reported-upstream` and 3 `declined-upstream`.
-  The authorized filing queue is empty. The invalid Saved Keypairs finding has a terminal receipt.
-- Stellar Docs PR #2806 merged and deployed on 2026-09-08. Finding `sd-043` has a terminal receipt.
-  Raven handoff #131 is closed. The September 9 crawl fixed the `sd-039`, `sd-042`, and `sd-047` search triggers.
-  The observed noon run conflicts with the stored midnight schedule. The cause remains unknown.
-- The compiled corpus has 500 active cases. Content SHA-256 `631a0333…aad7` after the Docs retirement.
-  The independent review preserves all four answers, key facts, avoid arrays, and historical observations.
-- The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
-- The 2026-09-04 closeout had only the root worktree and local and remote `main`.
-- The 2026-09-04 Herdr closeout left only the root pane in workspace `w16`.
+1. Resolve the rejected Scout drift candidate through isolated source comparisons and the existing routing acceptance checks.
+   Keep Scout `1.9.1` and the reviewed skill pins until a candidate passes.
+2. Recheck the original Docs index triggers for `sd-040`, `sd-041`, and `sd-045` after ingestion.
+   Rendered-page fixes do not prove an indexed fix.
+3. Follow Docs PR #2837 for `sd-027` / `sd-034`.
+   Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
+4. Complete source-metadata follow-up before October 1 and review dependency upgrades.
+5. Verify authenticated copying for Playground #40 without creating a paid chat request.
+6. Complete the private usage checks and coordinate the separately gated history cleanup.
 
-## Next actions by class
+The [September 14 improvements review](../research/audits/2026-09-14-improvements-review.md) records upstream blockers.
+Keep monitor-only programs at their triggers in TODO.md.
+The protocol-history contracts remain source-expired; changing the source hash alone does not renew them.
 
-### Historical deployment closeout — 2026-09-04
+## Evaluation state
 
-- PR #125 merged. Final CI passed. Production verification passed.
-- PR #126 merged. It records the reviewed production closeout.
-- That closeout deployed Worker Version `8022e211-c731-49cc-aef1-a20f1da798b9` at 100 percent.
-- That deployment and Herdr cleanup completed. PR #129 has a later deployment record.
-
-Complete since the previous handoff:
-
-- The full validation after `1847ffd` is complete on the root branch. See "State at handoff".
-  The final repair full run passed 108 files and 1,974 tests.
-- The dated Scout 1.9.30 rejection is recorded in `eval/README.md` beside the 1.9.23 decision
-  (commit `bd8d2d2`).
-- The free two-agent capacity check ran twice. The authoritative v2 `PASS` artifact is recorded
-  in `paired-capacity-check-terra.md` (commit `dc0761d`). The owner acceptance of the
-  concurrent load is a separate open decision.
-- The final Opus findings are repaired. L1 now points operators to the v2 paired launch contract.
-  R1 persists terminal re-judge outcomes and postflight evidence. R2 reports the first command
-  difference. R3 explains the capacity environment wrapper. C1 to C3 correct the dated records.
-  Report: `final-launch-contract-repair-sol.md`.
-- The PR #125 timeout repair passed five narrow runs, the 32-worker stress loop, and the full suite.
-  Typecheck, build, all 83 smoke tests, and final CI passed. No timeout changed.
-
-### Trigger-only and monitor-only
-
-- Playground #40: use an authorized authenticated production session to copy an existing answer without a new paid chat request.
-  The 8000-character limit stays; persistent history is declined. Local tests pass, but production acceptance remains open.
-- `sd-037`: read issue #1981 state after 2026-09-13. No keep-alive comment.
-- `sls-080`: one free `scout.explainRepo` reading per improvements or drift round. The 2026-09-09
-  reading matched source at its scanned ref and passed.
-- Protocol-history PH1, PH3, and PH4 triggers stay as written in `TODO.md`. PH2 is complete.
-- Raven capability boundary: the four monitor triggers stay as written. A candidate third distinct
-  case is recorded for owner confirmation. A confirmed trigger allows a free cause audit only.
-- Friendbot, vendor short-token, Scout exposure re-evaluation, `sources.locate`, and the Docs
-  enumeration ceiling stay monitor-only until their recorded bars fire.
-
-### Upstream-blocked
-
-- `ll-019` and `ll-029` wait on issue #35.
-  `sd-044` waits on issue #2772. `sd-037` waits on issue #1981.
-- The three Docs fixes have substantive verification results for their owners.
-  Other reported findings remain silent without new evidence that changes the action. They are not a filing queue.
-
-### Paid-authority-blocked
-
-- The supervised paired subset method, revision 3. See owner decision A. The owner's general
-  approval of paid eval work for this round is not this authorization. Only a signed external
-  record that names the canonical plan SHA-256 and covers every command array is.
-- The stopped baseline arm, candidate rerun, both flip rejudges, the canonical live-data method,
-  and the digest method. None may start under the old plan. A new method needs its own
-  authorization.
-- Paid rejudges for `q-comp-finclusive-caas`, `q-ti-stellar-lab-usage-and-new-ui`, and
-  `q-edge-send-me-free-xlm`. See owner decision D.
-- The optional one-row rubric `v2.10` rejudge of `q-eco-stellar-wallets-list`. See owner
-  decision I.
-
-### Human-judgment-blocked
-
-- Golden truth blockers B1 to B11. See owner decision C.
-- Adjudication of the candidate row-review disagreements. See owner decision D.
-- The Raven capability-boundary third-case confirmation. See owner decision G.
-- Selection of harness follow-ups from the candidate audit. See owner decision H.
-- Paired promotion design: denominator, candidate-only T4 rule, and margin. See owner decision J.
-
-### Historical repository and Herdr cleanup — 2026-09-04
-
-- The dated closeout reconciled its owned resources. Unrelated Herdr workspaces were not changed.
-- Current maintenance resources remain active and have separate ownership in the execution ledger.
+The September 4 candidate run remains diagnostic and non-comparable.
+No valid paired baseline or two-week causal measurement exists.
+The old `$882.50` plan is spent for P6 and the candidate, and stopped for all other methods.
+Its stored `meanContinuousCoverage` is invalid and must not be quoted.
+No current authorization permits new collection or paid rejudging.
+Use [the evaluation map](../eval/EVALS.md) and [the eval runbook](skills/run-evals/SKILL.md) for the measurement sequence.
 
 ## Owner decisions
 
@@ -220,8 +91,8 @@ these items without a `golden-truth` edit and independent review.
   a re-verify cadence? Evidence: the answer carries a dated third-party Snap claim.
 - B11 `q-defi-aquarius-what-is`. Question: should key fact 3 bind on the tested surface? Evidence:
   no exposed surface hosts the Aquarius ICE documentation.
-- Disputed cases stay disputed: `q-soroban-x402-auth-entry-signing`, `q-tool-cctp-stellar-integration`,
-  `q-ti-rpc-gettransactions-pagination-xdr`, `q-ti-stellar-lab-usage-and-new-ui`.
+Recheck these dated questions against the current corpus before proposing edits.
+The per-case truth metadata, not this handoff, owns current dispute status.
 
 ### D. Adjudicate the candidate row-review disagreements
 
@@ -238,30 +109,6 @@ No artifact is rewritten. No grade change affects any claim, because the artifac
   `q-n3-wallet-hacked-support-redirect`.
 
 Safe default: no rejudge spend; grades stand as diagnostic values.
-
-### E. Merge and deployment authority — exercised
-
-The owner granted this authority. PR #125 merged as
-`50bf5518860584ec1e5d352acbe11033515a0b7f`. Wrangler deployed Worker Version
-`8022e211-c731-49cc-aef1-a20f1da798b9` at `2026-09-04T12:29:24.371Z`. Production verification
-proved that the repaired raw-envelope path works. See `production-deployment-terra.md`.
-
-### F. General Raven scoring repair authorized — 2026-09-08
-
-The owner authorized the general scoring repair. The combined candidate remains preserved in `fix/search-name-and-noun-ranking`.
-Its unchanged routing gate fails on legacy top-five `319 > 315`; 16 exact-operation losses still need independent reconciliation.
-PR #137 deployed the #109 advisory and preserves all 544 routing result rows.
-Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7` served commit `f6d31dc07705bc16d83696fc234506534b1e2b5e`.
-All seven reported production names passed exact ranking and advisory checks. Issue #109 reached production acceptance.
-See `rounds/2026-09-09-search-advisory-production-after.json` for production evidence.
-The corrected stellar-dev pin reached production in Worker Version `0dad1151-56f5-4e7d-ae75-b4b81f3601f9`.
-The independent production review passed. Skill-finding receipts live in `improvements/resolved.json`.
-The separate #124 selector reached production in Worker Version `89b1459f-8187-46a9-b8d1-c34373c1b086`.
-It serves commit `63a1c2c980ab794590e40cd998ec947322f5173c`; both original leaderboard searches passed production acceptance.
-Issue #124 closed after the verified production result and separate RFP/Blend dispositions.
-See `rounds/2026-09-09-outstanding-closeout.md` for the deployment receipt and checks.
-Existing gate thresholds and frozen holdout labels stay unchanged.
-Source acceptance and deployment remain separate from a local scoring repair.
 
 ### G. Confirm the Raven capability-boundary third case
 
@@ -301,63 +148,3 @@ The three questions from the 2026-08-28 grill remain open. They overlap decision
 
 The current margin table is mixed-tuple calibration. The `0.08` value is only a no-change
 confidence radius. A same-tuple pair from decision A recalibrates it. Safe default: no promotion.
-
-## Conditional programs
-
-- Paired QA: the supervisor, the remote identity guard, and the v2 launch contract are landed. No
-  collection occurs without the signed external authorization in decision A. That record names
-  the canonical plan SHA-256. Collection needs the owner acceptance of the concurrent load. It
-  also needs a current capacity artifact and the final manifest.
-- Repository recovery: keep the exact free monitor in `TODO.md`. The durable record is the
-  `sls-080` receipt. Source parity authorizes no paid collection.
-  Choose each new finding ID above the maximum active and resolved ID; never reuse an existing ID.
-- Protocol-history routing: PH2 is complete. Keep the three-attempt box closed. Use PH1, PH3, and
-  PH4 in `TODO.md` only. The v2 diagnostic is source-expired and authorizes no mechanism. A new
-  epoch needs a new independently authored contract under PH3.
-- Raven capability boundary: keep the exact monitor triggers in `TODO.md`. A trigger allows a free
-  cause audit only. No diagnostic or product mechanism is active.
-- `sources.locate`: log incomplete incidents. The phase-zero trigger cannot fire while no recovery
-  steering is live.
-- Friendbot, vendor short-token, and the Docs enumeration ceiling remain monitor-only until their
-  recorded bars fire.
-
-## Completed repair work
-
-The truth-maintenance round 2026-09-03 completed its review, integration, deployment verification,
-and cleanup. The items below are historical completion records.
-
-- Repair work inside the open round: `.agents/rounds/2026-09-03-truth-maintenance.md`, section
-  "Repairs after the stop (2026-09-04)", and its report directory. Key reports:
-  `post-candidate-stop-audit-sol.md`, `post-candidate-measurement-fable.md`,
-  `remote-identity-guard-review-opus.md`, `paired-collection-supervisor-review-opus.md`,
-  `scout-1.9.30-drift-terra.md`, `revised-impact-measurement-review-sol.md`,
-  `final-synthesis-review-sol.md`, `launch-contract-repair-sol.md`,
-  `paired-capacity-check-terra.md`, `final-launch-contract-repair-sol.md`.
-- Raven monitor and protocol-history PH2 decisions: `.agents/rounds/2026-09-03-owner-decisions.md`.
-- Production deployment of `0c71b99`: `.agents/rounds/2026-09-02-agent-queue-deployment.md`.
-- Earlier: ids selector guards, residual fail-closed runner flags, protocol-history free evidence,
-  A/V `created_at` contract, digest A/V date policy, QA evidence pack `p6`, queue closeout audit,
-  agent-discovery paid-run guards (#116), stale-gospel refresh (#115), release closeout (#112 to
-  #114), golden metadata remainder (#106), protocol-history attempts one to three, and the rejected
-  experiments closeout.
-
-## Evaluation ladder
-
-1. **Free evidence.** Run offline checks, stored-artifact reads, routing diagnostics, and surface
-   inventories. Record stamps and hashes.
-2. **Reviewed plan.** Pre-register the mechanism, acceptance table, stop rules, leakage guards, and
-   budget shape. Reconcile an independent review. A plan pass authorizes implementation only.
-3. **Focused diagnostic.** Require an exact owner cap and all environment, binary, revision, and
-   surface pins. One authorization permits one method run.
-4. **Headline sample.** Require a focused product-gate pass and a separate owner authorization.
-   Never transfer the diagnostic cap.
-5. **Review and closeout.** Review every result row, file findings, update the lane README, and close
-   the round ledger.
-6. **Ship.** Require the relevant product decision and deployment authorization. Verify production.
-
-## Suggested sequence
-
-Finish the active search repair, Docs index checks, and verified filing wave in the execution ledger.
-Reconcile independent review before integration. Record exact branch, issue, and deployment states separately.
-Decisions B and F have owner authority. Decisions A, C, D, G, H, I, and J retain their stated gates.
-No current item has authorization for evaluation ladder stages 3 or 4.
