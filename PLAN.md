@@ -27,7 +27,8 @@ The Playground uses the same discovery and execution system with additional requ
 ## 2. The unified catalog
 
 The generated manifest is the exposed surface.
-Search returns service operations and whole skills with TypeScript signatures.
+Search returns service operations and whole skills.
+Operations and runnable skills include TypeScript signatures.
 Whole-skill hits include available section keys; section reads use exact IDs.
 
 Recovery advice remains separate from ranked results and does not change ranking.

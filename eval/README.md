@@ -1,5 +1,8 @@
 # Search-routing eval
 
+Use [How to run](#how-to-run) for commands and `gates.json` for the accepted thresholds and source fingerprints.
+The dated result sections preserve historical evidence; they do not describe the current deployment or authorize another experiment.
+
 > **Start at [`eval/EVALS.md`](./EVALS.md)** — the one-page map of all eval instruments,
 > which numbers are gates vs diagnostics, and the rules that keep them targeted.
 

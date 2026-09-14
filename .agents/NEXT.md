@@ -27,6 +27,7 @@ No valid paired baseline or two-week causal measurement exists.
 The old `$882.50` plan is spent for P6 and the candidate, and stopped for all other methods.
 Its stored `meanContinuousCoverage` is invalid and must not be quoted.
 No current authorization permits new collection or paid rejudging.
+Never transfer a diagnostic budget to headline collection.
 Use [the evaluation map](../eval/EVALS.md) and [the eval runbook](skills/run-evals/SKILL.md) for the measurement sequence.
 
 ## Owner decisions
