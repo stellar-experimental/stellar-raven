@@ -1,6 +1,6 @@
 # Scout 1.9.52 source and routing acceptance
 
-Status: source, code, and semantic reviews accepted; CI and production verification remain open.
+Status: accepted, merged in PR #168, deployed, and verified in production.
 
 ## Scope
 
@@ -78,10 +78,10 @@ The parent completed the final request-local admission cache and repeat measurem
 
 Final semantic and code reviews passed.
 Gate evidence records the final reviewed file identities and measured totals.
-CI, a clean deployment, and production checks remain required.
-Issue #141 remains open until production verification.
+All four CI checks passed. The clean deployment and production checks passed.
+Issue #141 closed after verification.
 [Issue #167](https://github.com/stellar-experimental/stellar-raven/issues/167) owns the deferred RWA failures.
-Closing the drift issue will not claim RWA acceptance.
+The drift closure does not claim RWA acceptance.
 
 ## Final review evidence
 
@@ -98,3 +98,5 @@ The final timing review accepted both measurements after the modifier-scope repa
 
 - [Metadata review](2026-09-16-truth-maintenance/scout-final-metadata-review.md)
 - [Final timing review](2026-09-16-truth-maintenance/scout-final-timing-review.md)
+
+The [release record](2026-09-16-scout-release.md) contains production and cleanup evidence.

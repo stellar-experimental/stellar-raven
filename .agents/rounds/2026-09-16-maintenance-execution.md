@@ -211,7 +211,8 @@ The coordinator preserved the rejected drift candidate and all initial branches.
 - Completed: production catalog, pinned content, health, and canary checks passed on `bb37bc50`.
 - Completed: both reviewed external Docs patches published and passed all nine checks.
 - Completed: `.agents/TODO.md` now records the current Docs handoff and this maintenance ledger.
-- Open: issue #141 needs the remaining routing review, accepted metadata, release checks, and production verification.
+- Completed: PR #168 accepted Scout 1.9.52 and passed production verification. Issue #141 closed.
+- Open: issue #167 tracks the three RWA routing failures. RWA remains excluded.
 - Open: both Docs PRs need maintainer approval. PR #2837 also retains its author hold.
 - Record review: Sol high reviewed all 60 files in PR #166 and requested two ledger corrections.
 - Record review: Sol high confirmed both corrections at `5b75eaec`; the repair delta has no new finding.
@@ -233,3 +234,11 @@ The completed worktree removals are recorded above. These temporary worktrees re
 - `/private/tmp/stellar-raven-drift-0916.mOmBFJ/repo` — original rejected audit candidate.
 
 Reconcile these paths after the active drift review. Preserve each unique dirty experiment before any removal.
+
+## Scout release completion
+
+The [Scout release record](2026-09-16-scout-release.md) supersedes the earlier temporary-worktree state.
+Production serves `022970d5`. All 17 search checks and the full catalog projection match the reviewed files.
+All four pinned Scout files match verified local reads.
+The coordinator removed three clean detached controls after ancestry checks.
+Unique dirty experiments and all original branches remain preserved.

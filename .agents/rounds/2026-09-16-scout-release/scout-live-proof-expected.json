@@ -1,0 +1,92 @@
+{
+  "catalogHash": "273fcb88e6140a64a8be990a6ac8eb9353816e1063eb5f60cc12bbeba3ea541b",
+  "searches": [
+    {
+      "id": "broad-gated",
+      "sha256": "96596665ad1092f7a35d3eaff0fdfed846563b54ab81afce48e4b4e61f5df023",
+      "top": "stellarDocs.search_soroban_contract_docs"
+    },
+    {
+      "id": "docs-topical",
+      "sha256": "008e70526a4f6936498da32d33023b10a9b93f7ab870cc76744f06f9edfcdd38",
+      "top": "stellarDocs.search_doc_titles"
+    },
+    {
+      "id": "account-merge",
+      "sha256": "a8fb552b47bbfdd4ea5a73c3f6dfe4f543e9ce87a56f665291cdc8bda9a0c6eb",
+      "top": "lumenloop.search_content_semantic"
+    },
+    {
+      "id": "regional-enums",
+      "sha256": "d5b7337057cfecef11e96b9e710c1da891af5cfffe713f0085ac43524f3a0a48",
+      "top": "stellarDocs.search_asset_token_docs"
+    },
+    {
+      "id": "controlled-vocabulary",
+      "sha256": "62dd477f9712d946d04977d9efe49d8217390ddff50fb8a54d8f9d70ab927df7",
+      "top": "skills.lumenloop.stellar-ecosystem-scout"
+    },
+    {
+      "id": "mixed-rwa-rpc",
+      "sha256": "198b587c99cfd454b18054272d39d64fa48cce3adc7b7051461b77969a8bad98",
+      "top": "stellarDocs.search_rpc_horizon_data_docs"
+    },
+    {
+      "id": "person-advisory",
+      "sha256": "478138e31b63991cc31bba162d45dddd48c8296764007df1800e42a41fc04025",
+      "top": "lumenloop.list_documents"
+    },
+    {
+      "id": "long-all-backfill",
+      "sha256": "79730129335cbcf7a7000b34ffee1d4c1f5d88d0a8a681264237be90dc754760",
+      "top": "stellarDocs.search_anchor_sep_docs"
+    },
+    {
+      "id": "short-zk",
+      "sha256": "d72e8e265a9c0269d7ce150937877b789bde1aa2ba9c7e82b3bf842e5f9ccfb2",
+      "top": "skills.stellar-dev.zk-proofs"
+    },
+    {
+      "id": "short-rpc",
+      "sha256": "fbfa9a8f533776377886cde7baeb6164f8e47cd96b0f0d5f11514ea8e0130538",
+      "top": "stellarDocs.search_rpc_horizon_data_docs"
+    },
+    {
+      "id": "skill-passkeys",
+      "sha256": "3ecb264430a6ea26949bd54770ec5c7139249e234f03da8a2a5df1dfeebe0ab0",
+      "top": "skills.stellar-dev.dapp"
+    },
+    {
+      "id": "skill-escrow",
+      "sha256": "3ccaafa951e9613bef0a68d75283206508a01ba7de9667c15548628bdb853fca",
+      "top": "skills.trustless-work.trustless-work-dev"
+    },
+    {
+      "id": "exact-operation",
+      "sha256": "ed393c29bbd813cbe8f985f3327443b6750e15a36511d21243fc3173a709a265",
+      "top": "scout.explainRepo"
+    },
+    {
+      "id": "stablecoin-positive",
+      "sha256": "89ad5a1631651c5a7bf0a51c4640f09c9fd6f0c87c71681d85e65ee7346baaa8",
+      "top": "scout.getStablecoins"
+    },
+    {
+      "id": "rwa-bond",
+      "sha256": "198b587c99cfd454b18054272d39d64fa48cce3adc7b7051461b77969a8bad98",
+      "top": "stellarDocs.search_rpc_horizon_data_docs"
+    },
+    {
+      "id": "rwa-wallet",
+      "sha256": "080b91342e2fd0a334aed0beeac091c9036cb8f6a57f17c64646c4b0c8ba2dec",
+      "top": "stellarDocs.search_asset_token_docs"
+    },
+    {
+      "id": "trustless-work",
+      "sha256": "9469240c8138cf784901f3cf61ade21332201fd89775f6d5d0268746ff571425",
+      "top": "skills.trustless-work.trustless-work-dev"
+    }
+  ],
+  "rawManifestProjectionHash": "95349e4ba40bba449061092f1b1e57260d18f1ea36ead2f89f722512580e955e",
+  "note": "The sandbox catalog uses Zod-loaded entries. Raw manifest object-key order differs."
+}

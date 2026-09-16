@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-09-16T23:47:33.727656+00:00",
+  "actor": "root coordinator",
+  "authorization": "The user authorized remaining maintenance work. The coordinator selected only temporary checkouts created for this task. Original checkouts, branches, and dirty evidence remained excluded.",
+  "ownerDecision": "Remove the three clean detached task controls after production verification. Retain every dirty or original checkout.",
+  "checks": [
+    "git status --porcelain returned empty for each target",
+    "git merge-base --is-ancestor HEAD origin/main succeeded for each target",
+    "git worktree remove succeeded without --force",
+    "git worktree list later omitted all three targets"
+  ],
+  "removedPaths": [
+    "/tmp/raven-execution-2026-09-16/deploy",
+    "/tmp/raven-execution-2026-09-16/scout-runtime-accepted",
+    "/tmp/raven-execution-2026-09-16/scout-runtime-audit"
+  ],
+  "binding": {
+    "scope": "/private/tmp/raven-execution-2026-09-16/deploy",
+    "command": "npx wrangler auth deactivate /private/tmp/raven-execution-2026-09-16/deploy",
+    "exitCode": 0,
+    "output": "Profile \"sdf\" deactivated from \"/private/tmp/raven-execution-2026-09-16/deploy\". This directory now uses the default profile.",
+    "observationWindowUtc": {
+      "after": "2026-09-16T23:40:35Z",
+      "before": "2026-09-16T23:41:07.316187+00:00"
+    },
+    "verificationMethod": "Successful scoped CLI response, observed before worktree removal. No credential content was read.",
+    "scopeLimit": "No command deleted the profile or changed another directory binding."
+  }
+}

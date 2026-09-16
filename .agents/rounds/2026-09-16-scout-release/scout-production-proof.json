@@ -1,0 +1,186 @@
+{
+  "commit": "022970d5995e74487f69f8f985961eb5da48a978",
+  "versionId": "f3e66eed-1302-4e41-b189-2332444f1efa",
+  "result": {
+    "catalogCount": 282,
+    "catalogHash": "273fcb88e6140a64a8be990a6ac8eb9353816e1063eb5f60cc12bbeba3ea541b",
+    "rwaExposed": false,
+    "searches": [
+      {
+        "id": "broad-gated",
+        "ok": true,
+        "sha256": "96596665ad1092f7a35d3eaff0fdfed846563b54ab81afce48e4b4e61f5df023",
+        "top": "stellarDocs.search_soroban_contract_docs",
+        "rwa": false
+      },
+      {
+        "id": "docs-topical",
+        "ok": true,
+        "sha256": "008e70526a4f6936498da32d33023b10a9b93f7ab870cc76744f06f9edfcdd38",
+        "top": "stellarDocs.search_doc_titles",
+        "rwa": false
+      },
+      {
+        "id": "account-merge",
+        "ok": true,
+        "sha256": "a8fb552b47bbfdd4ea5a73c3f6dfe4f543e9ce87a56f665291cdc8bda9a0c6eb",
+        "top": "lumenloop.search_content_semantic",
+        "rwa": false
+      },
+      {
+        "id": "regional-enums",
+        "ok": true,
+        "sha256": "d5b7337057cfecef11e96b9e710c1da891af5cfffe713f0085ac43524f3a0a48",
+        "top": "stellarDocs.search_asset_token_docs",
+        "rwa": false
+      },
+      {
+        "id": "controlled-vocabulary",
+        "ok": true,
+        "sha256": "62dd477f9712d946d04977d9efe49d8217390ddff50fb8a54d8f9d70ab927df7",
+        "top": "skills.lumenloop.stellar-ecosystem-scout",
+        "rwa": false
+      },
+      {
+        "id": "mixed-rwa-rpc",
+        "ok": true,
+        "sha256": "198b587c99cfd454b18054272d39d64fa48cce3adc7b7051461b77969a8bad98",
+        "top": "stellarDocs.search_rpc_horizon_data_docs",
+        "rwa": false
+      },
+      {
+        "id": "person-advisory",
+        "ok": true,
+        "sha256": "478138e31b63991cc31bba162d45dddd48c8296764007df1800e42a41fc04025",
+        "top": "lumenloop.list_documents",
+        "rwa": false
+      },
+      {
+        "id": "long-all-backfill",
+        "ok": true,
+        "sha256": "79730129335cbcf7a7000b34ffee1d4c1f5d88d0a8a681264237be90dc754760",
+        "top": "stellarDocs.search_anchor_sep_docs",
+        "rwa": false
+      },
+      {
+        "id": "short-zk",
+        "ok": true,
+        "sha256": "d72e8e265a9c0269d7ce150937877b789bde1aa2ba9c7e82b3bf842e5f9ccfb2",
+        "top": "skills.stellar-dev.zk-proofs",
+        "rwa": false
+      },
+      {
+        "id": "short-rpc",
+        "ok": true,
+        "sha256": "fbfa9a8f533776377886cde7baeb6164f8e47cd96b0f0d5f11514ea8e0130538",
+        "top": "stellarDocs.search_rpc_horizon_data_docs",
+        "rwa": false
+      },
+      {
+        "id": "skill-passkeys",
+        "ok": true,
+        "sha256": "3ecb264430a6ea26949bd54770ec5c7139249e234f03da8a2a5df1dfeebe0ab0",
+        "top": "skills.stellar-dev.dapp",
+        "rwa": false
+      },
+      {
+        "id": "skill-escrow",
+        "ok": true,
+        "sha256": "3ccaafa951e9613bef0a68d75283206508a01ba7de9667c15548628bdb853fca",
+        "top": "skills.trustless-work.trustless-work-dev",
+        "rwa": false
+      },
+      {
+        "id": "exact-operation",
+        "ok": true,
+        "sha256": "ed393c29bbd813cbe8f985f3327443b6750e15a36511d21243fc3173a709a265",
+        "top": "scout.explainRepo",
+        "rwa": false
+      },
+      {
+        "id": "stablecoin-positive",
+        "ok": true,
+        "sha256": "89ad5a1631651c5a7bf0a51c4640f09c9fd6f0c87c71681d85e65ee7346baaa8",
+        "top": "scout.getStablecoins",
+        "rwa": false
+      },
+      {
+        "id": "rwa-bond",
+        "ok": true,
+        "sha256": "198b587c99cfd454b18054272d39d64fa48cce3adc7b7051461b77969a8bad98",
+        "top": "stellarDocs.search_rpc_horizon_data_docs",
+        "rwa": false
+      },
+      {
+        "id": "rwa-wallet",
+        "ok": true,
+        "sha256": "080b91342e2fd0a334aed0beeac091c9036cb8f6a57f17c64646c4b0c8ba2dec",
+        "top": "stellarDocs.search_asset_token_docs",
+        "rwa": false
+      },
+      {
+        "id": "trustless-work",
+        "ok": true,
+        "sha256": "9469240c8138cf784901f3cf61ade21332201fd89775f6d5d0268746ff571425",
+        "top": "skills.trustless-work.trustless-work-dev",
+        "rwa": false
+      }
+    ],
+    "skill": {
+      "ok": true,
+      "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6/SKILL.md",
+      "availableSections": [
+        "when-to-use-this-skill",
+        "two-modes",
+        "specialized-workflows",
+        "evidence-floor",
+        "output-contract",
+        "key-endpoints-quick-reference",
+        "references-load-these-on-demand",
+        "stellar-native-topic-clusters",
+        "known-integration-partners",
+        "data-freshness",
+        "limitations",
+        "companion-skills",
+        "attribution",
+        "file:README.md",
+        "file:references/api-reference.md",
+        "file:references/examples.md"
+      ],
+      "chars": 34228,
+      "sha256": "279a95a04515da44508be0f5fc287128c071e14c633e2e0176b5c79b490aab46"
+    }
+  },
+  "comparison": {
+    "catalogMatches": true,
+    "searchChecks": 17,
+    "matchingSearchChecks": 17,
+    "skillMatches": true,
+    "rwaExposed": false,
+    "companionsMatch": true
+  },
+  "observedWindowUtc": {
+    "start": "2026-09-16T23:37:32Z",
+    "end": "2026-09-16T23:38:13Z"
+  },
+  "companions": [
+    {
+      "section": "file:README.md",
+      "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6/README.md",
+      "chars": 6899,
+      "sha256": "93ee5f35e98fcd4b69aa195a7b926a55ddfdcf7e0c95e7ab3a2acf0dae606500"
+    },
+    {
+      "section": "file:references/api-reference.md",
+      "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6/references/api-reference.md",
+      "chars": 40533,
+      "sha256": "8414faf126e7dc7efd4be8b3f6278022961781a69408addf13abbd64ca59fe35"
+    },
+    {
+      "section": "file:references/examples.md",
+      "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6/references/examples.md",
+      "chars": 14078,
+      "sha256": "33843d6361f559c0e24a7d5720bac2ee22fe388f269c838ebd19ae5e50adf052"
+    }
+  ]
+}

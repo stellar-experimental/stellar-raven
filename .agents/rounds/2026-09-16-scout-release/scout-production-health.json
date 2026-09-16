@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-09-16T23:38:47.403520+00:00",
+  "checks": [
+    {
+      "path": "/health",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "service": "stellar-raven-codemode"
+      }
+    },
+    {
+      "path": "/health/skills",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "checkedAt": "2026-09-16T23:08:07.834Z",
+        "checked": 64,
+        "ms": 13336,
+        "error": null
+      }
+    },
+    {
+      "path": "/playground",
+      "status": 200,
+      "body": null
+    },
+    {
+      "path": "/mcp",
+      "status": 401,
+      "body": null
+    }
+  ],
+  "note": "Python urllib received 403; curl and the authenticated connector succeeded."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "50ad2d8e-477c-4651-b696-fdce313ca69e",
+  "created_on": "2026-09-16T23:36:35.69351Z",
+  "versions": [
+    {
+      "version_id": "f3e66eed-1302-4e41-b189-2332444f1efa",
+      "percentage": 100
+    }
+  ],
+  "commit": "022970d5995e74487f69f8f985961eb5da48a978",
+  "sourceRevisionObserved": false,
+  "note": "The deploy command supplied the source revision. The connector does not expose initialization metadata. Catalog and search hashes prove the served content."
+}
