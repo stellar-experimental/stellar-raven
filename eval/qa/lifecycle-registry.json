@@ -3,7 +3,7 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 0,
+    "proposed": 1,
     "active": 500,
     "quarantined": 0,
     "retired": 0
@@ -502,6 +502,7 @@
     "q-tool-wallets-comparison",
     "q-tool-which-sdk-comparison",
     "q-tool-zk-repo-live",
+    "q-tw-escrow-api-auth-custody",
     "q-x402-payment-verification",
     "q-zk-circuit-setup",
     "q-zk-host-functions-status",
@@ -3961,6 +3962,13 @@
       "state": "active",
       "reviewState": "none",
       "caseContentSha256": "662000f2d1536a78eccccc4b271dba8d1f911e0cc396acd5255ad1b6539433ed"
+    },
+    {
+      "id": "q-tw-escrow-api-auth-custody",
+      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-tw-escrow-api-auth-custody.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "539b8174973d4225c6399fd5f3769b28646b22df0c0ebf01dfad69d5b8b1360c"
     },
     {
       "id": "q-x402-payment-verification",
