@@ -214,7 +214,8 @@ The coordinator preserved the rejected drift candidate and all initial branches.
 - Open: issue #141 needs the remaining routing review, accepted metadata, release checks, and production verification.
 - Open: both Docs PRs need maintainer approval. PR #2837 also retains its author hold.
 - Record review: Sol high reviewed all 60 files in PR #166 and requested two ledger corrections.
-- Record review: this revision fixes the pending checklist and reconciles the 19-failure evidence conflict.
+- Record review: Sol high confirmed both corrections at `5b75eaec`; the repair delta has no new finding.
+- Record review: the [acceptance record](2026-09-16-maintenance-execution/maintenance-record-repair-review.md) preserves that completed review.
 - Retained: owned panes `w3G:pZ`, `w3G:p0`, and `w3G:p11` support the remaining work.
 
 The completed worktree removals are recorded above. These temporary worktrees remain available for the active review:
