@@ -19,7 +19,7 @@ Raven exposes two tools:
 - `execute` runs model-authored JavaScript in a fresh Dynamic Worker.
 
 The MCP handler is stateless. The sandbox has `globalOutbound: null`.
-Host adapters own service traffic, authentication, argument validation, and secrets.
+The host owns service traffic, authentication, argument validation, and secrets.
 The Playground uses the same discovery and execution system with additional request and usage limits.
 
 [ADR-0001](research/decisions/0001-search-tool-shape.md) records the two-tool design.
