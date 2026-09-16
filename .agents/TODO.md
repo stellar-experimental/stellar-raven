@@ -7,7 +7,7 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-The latest maintenance review is [the September 14 ledger](rounds/2026-09-14-truth-maintenance.md).
+The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maintenance-execution.md).
 [NEXT.md](NEXT.md) ranks the work and holds open owner decisions.
 
 ## Improvements follow-up
@@ -26,12 +26,14 @@ Done when: the source link works, sibling claims have current evidence, and the 
 
 PR https://github.com/stellar/stellar-docs/pull/2367 closed without merge on 2026-09-09.
 The maintainer named https://github.com/stellar/stellar-docs/pull/2837 as its replacement.
-The September 14 audit found passing checks but no approval on the replacement PR.
+The reviewed repair reached PR #2837 at `108ba24e0884f46e0c543996e4e94be754709840` on September 16.
+All nine checks passed. Required maintainer approval and the author’s explicit merge hold remain.
+The author must reconcile the hold with the updated template and remaining review concerns.
 
 Re-check the replacement PR on 2026-09-21, or earlier if its head changes or it closes.
 If it merges and deploys, run both original live page checks before changing either finding.
 Do not post a status comment while the maintainers are already working on the decision.
-Use `.agents/rounds/2026-09-14-truth-maintenance.md` for the current state.
+Use `.agents/rounds/2026-09-16-maintenance-execution.md` for the current state.
 
 Done when: each finding records the resulting live state, and any fixed finding completes the resolver gates.
 

@@ -1,0 +1,67 @@
+{
+  "head": "b447ff403f82734a0297b56c78a1a5515aa1f824",
+  "fixture": {
+    "tree": [
+      {
+        "type": "blob",
+        "path": "README.md",
+        "size": 1,
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "type": "blob",
+        "path": "LICENSE.md",
+        "size": 1,
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "type": "blob",
+        "path": "trustless-work-dev/SKILL.md",
+        "size": 1,
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "allowList": [],
+      "rows": [
+        {
+          "skill": "LICENSE.md",
+          "relpath": "LICENSE.md",
+          "size": 1,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "src": "LICENSE.md"
+        },
+        {
+          "skill": "README.md",
+          "relpath": "README.md",
+          "size": 1,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "src": "README.md"
+        },
+        {
+          "skill": "trustless-work-dev",
+          "relpath": "SKILL.md",
+          "size": 1,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "src": "trustless-work-dev/SKILL.md"
+        }
+      ]
+    },
+    {
+      "allowList": [
+        "trustless-work-dev"
+      ],
+      "rows": [
+        {
+          "skill": "trustless-work-dev",
+          "relpath": "SKILL.md",
+          "size": 1,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "src": "trustless-work-dev/SKILL.md"
+        }
+      ]
+    }
+  ]
+}

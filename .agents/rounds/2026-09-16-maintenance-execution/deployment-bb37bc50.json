@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-09-16T20:59:03.098Z",
+  "commit": "bb37bc502080c94c3f3b5223ffcdf584d4b0e29d",
+  "deployment": {
+    "id": "1c5546ba-73e6-4ee4-9db6-fa5b3725cb46",
+    "createdAt": "2026-09-16T20:56:23.575784Z",
+    "versions": [
+      {
+        "version_id": "06222885-f873-4164-8e99-9fc5f2b9a5f2",
+        "percentage": 100
+      }
+    ]
+  },
+  "usageWiring": "Postdeploy confirmed tail consumer and daily retention schedule.",
+  "checks": [
+    {
+      "path": "/health",
+      "status": 200,
+      "ray": "a3c2caec191c75fc-ATL",
+      "body": {
+        "status": "ok",
+        "service": "stellar-raven-codemode"
+      }
+    },
+    {
+      "path": "/health/skills",
+      "status": 200,
+      "ray": "a3c2caec0c88a6b6-ATL",
+      "body": {
+        "ok": true,
+        "checkedAt": "2026-09-16T20:07:38.408Z",
+        "checked": 42,
+        "ms": 9130,
+        "error": null
+      }
+    },
+    {
+      "path": "/playground",
+      "status": 200,
+      "ray": "a3c2caec0adeb035-ATL"
+    },
+    {
+      "path": "/mcp",
+      "status": 401,
+      "ray": "a3c2caec0fc66125-ATL"
+    }
+  ],
+  "catalogProjection": {
+    "fields": [
+      "id",
+      "service",
+      "kind",
+      "description"
+    ],
+    "entries": 282,
+    "sha256": "ef679f7158f0576e042f8514d173725c3b980098498d0080db1afb7807f45c52",
+    "matchesCommittedCatalog": true
+  },
+  "canaryNote": "The captured hourly canary predates this deployment and checked42pins. The new manifest has64pins. Authenticated direct reads verified all22newfiles independently."
+}

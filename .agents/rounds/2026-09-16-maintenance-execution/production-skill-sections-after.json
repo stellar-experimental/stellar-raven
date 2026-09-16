@@ -1,0 +1,180 @@
+{
+  "observedAt": "2026-09-16 20:58:40 UTC",
+  "endpoint": "https://raven.stellar.org/mcp",
+  "deployedCommit": "bb37bc502080c94c3f3b5223ffcdf584d4b0e29d",
+  "result": {
+    "ok": true,
+    "id": "skills.trustless-work.trustless-work-dev",
+    "count": 28,
+    "sections": [
+      {
+        "section": "api-base-urls",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 344,
+        "sha256": "a318e1ba7154047410cb97bf57471d307211eb2f2a04357d5ac63c2885861eb7"
+      },
+      {
+        "section": "common-transaction-flow",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 272,
+        "sha256": "09cc3e8281eb139f3ee6fdbdc815e2bd82bbba3b82425b9955ee21a817ccdb94"
+      },
+      {
+        "section": "gotchas",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 3810,
+        "sha256": "312e00a0baaf9c2d17e8b1e2da449fc74da6a50799b0ca796511c845e9deeabd"
+      },
+      {
+        "section": "mcp-integration",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 1368,
+        "sha256": "c967dc5b2e9637a83ed72c76b1e49dc56a6658087eb3609840c6c8c67064d6c5"
+      },
+      {
+        "section": "quick-start",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 2721,
+        "sha256": "af0a2407aa5e586e1ec500ad83f4d6ecbddf142e2a4cb763607c98c20edf8a7e"
+      },
+      {
+        "section": "reference-files",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 3686,
+        "sha256": "769a89d435c447f88ca8ce014cc39280f3a6bfb91db1a5e9e14180062f18df1f"
+      },
+      {
+        "section": "resources",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/SKILL.md",
+        "length": 363,
+        "sha256": "e8bce18188c8b66679c58ca1b33b1e333ae787c2a63cbe8b5d099b04d3610829"
+      },
+      {
+        "section": "file:constitution.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/constitution.md",
+        "length": 13837,
+        "sha256": "649785aa012e89a262ceb8a09df359833765cb75cfda0d5995acde51e5d19a74"
+      },
+      {
+        "section": "file:skills/api/core-concepts.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/core-concepts.md",
+        "length": 9488,
+        "sha256": "ab13694454e186ffa6ce08fb7c3a9ce750c8fcfa26ee82b547815cdc6d82b0ff"
+      },
+      {
+        "section": "file:skills/api/multi-release-escrow.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/multi-release-escrow.md",
+        "length": 31586,
+        "sha256": "5007ab9577ce4026cdebc25cd8133655bd3f99359fc2ba8a012d73692d776a05"
+      },
+      {
+        "section": "file:skills/api/single-release-escrow.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/single-release-escrow.md",
+        "length": 31455,
+        "sha256": "de3c6f61d3eab24377d93b08b499523fe641193e5221893061024078d90efd0f"
+      },
+      {
+        "section": "file:skills/api/trustlines.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/trustlines.md",
+        "length": 6976,
+        "sha256": "bb6ae9bc56c35bc34de75e50d305bd185d6a6049c43966d9952850dadd4d91ef"
+      },
+      {
+        "section": "file:skills/api/types.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/types.md",
+        "length": 21806,
+        "sha256": "0ee74eddbf9e1ed1d44ddd2b2032f059f53345235cd2039b58974ff492cda384"
+      },
+      {
+        "section": "file:skills/api/v2/core-concepts.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md",
+        "length": 9853,
+        "sha256": "4878589f2202dc7bb195de17663e7689d6a7d96f6fec1187d62a5c238e7fa867"
+      },
+      {
+        "section": "file:skills/api/v2/multi-release.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/multi-release.md",
+        "length": 7815,
+        "sha256": "989ca4ac07418cc1eac959812f1a9f1237d860162c7700c74676c25c8b78574b"
+      },
+      {
+        "section": "file:skills/api/v2/single-release.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/single-release.md",
+        "length": 8036,
+        "sha256": "074da6f8fc57817c32f35a934b21d7be72a3c23710d03c0cc0f715fc7b265d89"
+      },
+      {
+        "section": "file:skills/blocks/components.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/blocks/components.md",
+        "length": 18637,
+        "sha256": "7719e9b4d7aa02e5c84daff1ecf2bcab20d6355ca53d8fd5fc3e5b98fba807ee"
+      },
+      {
+        "section": "file:skills/blocks/hooks.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/blocks/hooks.md",
+        "length": 8481,
+        "sha256": "159fee86c9176a08cdcd7d0a54eb916b72771a512b5a60fe6240e7f667c72225"
+      },
+      {
+        "section": "file:skills/blocks/introduction.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/blocks/introduction.md",
+        "length": 5487,
+        "sha256": "2dea32cfa3e61f0e22ee7d8bb3cf66ad4d9f9284820c36de6c50ca3f26aac6df"
+      },
+      {
+        "section": "file:skills/blocks/providers.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/blocks/providers.md",
+        "length": 5468,
+        "sha256": "7a723119c236921d60e5802271dba207ad2235e60bf0aff9232e00679e044e68"
+      },
+      {
+        "section": "file:skills/blocks/vibe-coding.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/blocks/vibe-coding.md",
+        "length": 11791,
+        "sha256": "5fae45a3117bf18b997bbbfb85bd61533b094a7576639826a74fa614a8e81542"
+      },
+      {
+        "section": "file:skills/js-sdk/js-sdk.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/js-sdk/js-sdk.md",
+        "length": 7538,
+        "sha256": "7c9a0cdc97a20be52ec6eeb338f66b5488c648c4748de3804f5b50264bc9e830"
+      },
+      {
+        "section": "file:skills/protocol/v1.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/protocol/v1.md",
+        "length": 11421,
+        "sha256": "4598ed3afb11d21ffa9b5edd13508bb6d16a535741add02d7cd3008809acb924"
+      },
+      {
+        "section": "file:skills/protocol/v2.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/protocol/v2.md",
+        "length": 7852,
+        "sha256": "13c96a8c17140fe60195438e0506a9ce63870d8b84f96c9a76a1e5a6ff56f4f4"
+      },
+      {
+        "section": "file:skills/react-sdk/hooks-reference.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/react-sdk/hooks-reference.md",
+        "length": 22045,
+        "sha256": "be80cfc3fa9430aa1772e81e7ece197d2dd9590485694da293a220e061d58441"
+      },
+      {
+        "section": "file:skills/react-sdk/react-sdk.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/react-sdk/react-sdk.md",
+        "length": 11579,
+        "sha256": "67283d3290f82c2fa2b2842e56547e9bfb7066a6225323e44baa52b7d0a6912a"
+      },
+      {
+        "section": "file:skills/react-sdk/v2/react-sdk.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/react-sdk/v2/react-sdk.md",
+        "length": 9746,
+        "sha256": "513990c080aa2d4f48ebc58dac5d3f7605c2f39aabb18b2db816f7e79cbcad7b"
+      },
+      {
+        "section": "file:skills/react-sdk/vibe-coding.md",
+        "url": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/react-sdk/vibe-coding.md",
+        "length": 17362,
+        "sha256": "531388db75030737443c51cd47b537fe55dcdeec45dfb27131f180db77e0964a"
+      }
+    ]
+  }
+}

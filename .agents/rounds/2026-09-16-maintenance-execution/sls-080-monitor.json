@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "upstreamOk": true,
+  "repo": "stellar/stellar-horizon",
+  "answer": "Horizon's protocol ceiling: MaxSupportedProtocolVersion = 28 (a uint32 constant defined in internal/ingest/main.go) (verified 2026-09-01 at master AND at scanned ref 82660510 \u2014 https://github.com/stellar/stellar-horizon/blob/master/internal/ingest/main.go). Horizon split out of the stellar/go monorepo; the monorepo's frozen copy still carries pre-split values, so cite THIS repo for current Horizon constants.\n\n(A fuller mechanism walkthrough exists via sources.deepWikiUrl \u2014 an undated index that can LAG the dated fact above; where they disagree, the dated fact wins.)",
+  "answered": true,
+  "answerSource": "knowledge-note",
+  "answerAsOf": "2026-09-01T00:00:00Z",
+  "generatedAt": "2026-09-16T20:40:27.092Z",
+  "scannedRef": "84553bb4dc6d0c0300d052f76cb745178ede0be1",
+  "routedVia": "explicit",
+  "transport": "Authenticated production Raven MCP; no existing local server was available.",
+  "sourceUrl": "https://github.com/stellar/stellar-horizon/blob/84553bb4dc6d0c0300d052f76cb745178ede0be1/internal/ingest/main.go#L38",
+  "sourceLine": "MaxSupportedProtocolVersion uint32 = 28",
+  "verdict": "PASS: returned value equals source value at response scannedRef; one free provider request, no answering or judge model."
+}

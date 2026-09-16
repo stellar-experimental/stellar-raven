@@ -1,0 +1,125 @@
+{
+  "routingArtifact": "/private/tmp/stellar-raven-drift-0916.mOmBFJ/repo/eval/results/routing-2026-09-16T18-13-18-199Z.json",
+  "primary": {
+    "n": 495,
+    "top5": 51,
+    "top1": 11
+  },
+  "holdout": {
+    "n": 49,
+    "top5": 9,
+    "top1": 2
+  },
+  "examples": [
+    {
+      "id": "q-asset-clawback-decentralization",
+      "topHits": [
+        "scout.getRwaAssets",
+        "scout.searchResearch",
+        "lumenloop.search_content_semantic",
+        "scout.resolveProject",
+        "lumenloop.search_directory"
+      ]
+    },
+    {
+      "id": "q-asset-issue-asset-howto",
+      "topHits": [
+        "scout.getRwaAssets",
+        "scout.listAudits",
+        "scout.getHackathon",
+        "scout.vetIdea",
+        "scout.explainRepo"
+      ]
+    },
+    {
+      "id": "q-defi-rwa-overview",
+      "topHits": [
+        "scout.getRwaAssets",
+        "scout.searchProjects",
+        "skills.lumenloop.stellar-ecosystem-scout",
+        "lumenloop.search_content_semantic",
+        "lumenloop.search_directory"
+      ]
+    },
+    {
+      "id": "q-defi-rwa-scf-similar",
+      "topHits": [
+        "scout.getRwaAssets",
+        "skills.lumenloop.scf-submission-radar",
+        "scout.searchProjects",
+        "lumenloop.search_content_semantic",
+        "scout.vetIdea"
+      ]
+    },
+    {
+      "id": "q-eco-stellar-rwa-stablecoin-volume",
+      "topHits": [
+        "scout.getRwaAssets",
+        "skills.stellar-dev.cross-chain",
+        "skills.lumenloop.stellar-ecosystem-digest",
+        "scout.searchProjects",
+        "lumenloop.search_content_semantic"
+      ]
+    },
+    {
+      "id": "q-hist-franklin-templeton-benji",
+      "topHits": [
+        "scout.getRwaAssets",
+        "scout.analyzeEcosystem",
+        "stellarDocs.search_protocol_concepts_docs",
+        "skills.lumenloop.stellar-integration-finder",
+        "skills.stellar-dev.cross-chain"
+      ]
+    },
+    {
+      "id": "q-soroban-sac-balance-storage",
+      "topHits": [
+        "scout.getRwaAssets",
+        "stellarDocs.search_docs_in_category",
+        "stellarDocs.search_docs",
+        "lumenloop.search_content_semantic",
+        "scout.hackathonBrief"
+      ]
+    },
+    {
+      "id": "q-soroban-wasm-size-limit",
+      "topHits": [
+        "scout.getRwaAssets",
+        "scout.searchResearch",
+        "scout.analyzeEcosystem",
+        "stellarDocs.search_soroban_contract_docs",
+        "stellarDocs.search_sdk_cli_tools_docs"
+      ]
+    },
+    {
+      "id": "q-aas-issuer-fees-supply-cap-freeze",
+      "topHits": [
+        "scout.getRwaAssets",
+        "stellarDocs.search_doc_titles",
+        "stellarDocs.search_docs",
+        "scout.analyzeEcosystem",
+        "lumenloop.search_content_semantic"
+      ]
+    },
+    {
+      "id": "q-crp-tokenize-personal-rwa",
+      "topHits": [
+        "scout.getRwaAssets",
+        "scout.searchResearch",
+        "scout.searchHackathonBuilds",
+        "scout.hackathonBrief",
+        "skills.lumenloop.scf-submission-radar"
+      ]
+    },
+    {
+      "id": "q-ti-fetch-all-balances-classic-sac",
+      "topHits": [
+        "scout.getRwaAssets",
+        "stellarDocs.search_docs",
+        "stellarDocs.get_doc_page_sections",
+        "stellarDocs.search_doc_titles",
+        "scout.getSkill"
+      ]
+    }
+  ]
+}

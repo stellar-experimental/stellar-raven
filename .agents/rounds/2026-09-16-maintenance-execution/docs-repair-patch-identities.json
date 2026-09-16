@@ -1,0 +1,50 @@
+{
+  "2837": {
+    "base": "3855b52ed4933d3ad50fab6d546675f66f0fe76f",
+    "patchSha256": "c12a79e721f33f8807188bbf1fb812dcceaa959223daae136a2ad7cc12c510ed",
+    "files": [
+      {
+        "path": "docs/build/apps/guestbook/frontend.mdx",
+        "sha256": "17a757e545add9e028c0c18a4e6f3c4ff5f347f5b578288e4e1e370539364a1d"
+      },
+      {
+        "path": "docs/build/apps/guestbook/overview.mdx",
+        "sha256": "8d05c1515210a16cfff22bf9fa5074c19466de0307348e3da8a3aee930c8e83b"
+      },
+      {
+        "path": "docs/build/apps/guestbook/passkeys-prerequisites.mdx",
+        "sha256": "6dd06485c09d1978e4759303939f3f13ae05d829ed9bfdf27654d88cb190ee01"
+      },
+      {
+        "path": "docs/build/apps/guestbook/setup-passkeys.mdx",
+        "sha256": "b23115407064e6c43afedd60d6a832ec60a5897269ba0a426e78e3e21c590029"
+      },
+      {
+        "path": "docs/build/guides/contract-accounts/smart-wallets.mdx",
+        "sha256": "0c2c8259e95bfa0b09e66feb5164f9ab6a43a5e8b661f5da4d23eeac649b48ca"
+      }
+    ],
+    "independentReview": "accepted",
+    "publish": "authorized by user and pushed",
+    "authorHold": "retained",
+    "publishedCommit": "108ba24e0884f46e0c543996e4e94be754709840"
+  },
+  "2844": {
+    "base": "1e67426a49b7152f45c6ee559e964fc2f0cda1d9",
+    "patchSha256": "8b5947faf4d1cf76f9692475cf623a9d9afe9c9217de3138a6ac60ddcfb92822",
+    "files": [
+      {
+        "path": "docs/learn/fundamentals/lumens.mdx",
+        "sha256": "eb4d2148c580332144cd39d2e2e7a82ed5a1a94cc9637bc4b27dbd8ff266c7e7"
+      },
+      {
+        "path": "docs/learn/fundamentals/stellar-data-structures/accounts.mdx",
+        "sha256": "31ed24a401d7d1ced760f69c0e5363002ac147ec0b193e9bad2151f65c5fa2eb"
+      }
+    ],
+    "independentReview": "accepted",
+    "publish": "authorized by user and pushed",
+    "authorHold": null,
+    "publishedCommit": "581b884e20f3ec7e39f9fac64539ff1922d93f6d"
+  }
+}

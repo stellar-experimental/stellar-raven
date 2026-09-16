@@ -1,0 +1,148 @@
+[
+  {
+    "path": "SKILL.md",
+    "matches": [
+      {
+        "line": 68,
+        "text": "- **Header is `x-api-key`**: Not `Authorization: Bearer` for the V1 API-key requirement. This is the single most common auth mistake."
+      },
+      {
+        "line": 135,
+        "text": "1. Call API endpoint \u2192 Get unsigned XDR transaction"
+      }
+    ]
+  },
+  {
+    "path": "constitution.md",
+    "matches": [
+      {
+        "line": 114,
+        "text": "1. **[ENFORCED]** `x-api-key` header on **every** request \u2014 including read-only indexer queries. Verified against the deployed API: reads without a key return `401 Unauthorized`. Never `Authorization: Bearer` for the API-key requirement."
+      }
+    ]
+  },
+  {
+    "path": "skills/api/core-concepts.md",
+    "matches": [
+      {
+        "line": 76,
+        "text": "All API requests require an API key header:"
+      },
+      {
+        "line": 133,
+        "text": "1. **Call API endpoint** \u2192 Returns unsigned XDR transaction"
+      }
+    ]
+  },
+  {
+    "path": "skills/api/multi-release-escrow.md",
+    "matches": [
+      {
+        "line": 23,
+        "text": "**Note:** Use `x-api-key` header (not `Authorization: Bearer`)."
+      }
+    ]
+  },
+  {
+    "path": "skills/api/single-release-escrow.md",
+    "matches": [
+      {
+        "line": 23,
+        "text": "**Note:** Use `x-api-key` header (not `Authorization: Bearer`)."
+      }
+    ]
+  },
+  {
+    "path": "skills/api/trustlines.md",
+    "matches": []
+  },
+  {
+    "path": "skills/api/types.md",
+    "matches": []
+  },
+  {
+    "path": "skills/api/v2/core-concepts.md",
+    "matches": [
+      {
+        "line": 30,
+        "text": "`x-api-key` on **every** request, including reads. Never `Authorization: Bearer`."
+      }
+    ]
+  },
+  {
+    "path": "skills/api/v2/multi-release.md",
+    "matches": []
+  },
+  {
+    "path": "skills/api/v2/single-release.md",
+    "matches": []
+  },
+  {
+    "path": "skills/blocks/components.md",
+    "matches": []
+  },
+  {
+    "path": "skills/blocks/hooks.md",
+    "matches": []
+  },
+  {
+    "path": "skills/blocks/introduction.md",
+    "matches": [
+      {
+        "line": 58,
+        "text": "> All API calls \u2014 including read-only indexer queries \u2014 require a valid API key. The deployed API returns `401 Unauthorized` without it."
+      }
+    ]
+  },
+  {
+    "path": "skills/blocks/providers.md",
+    "matches": []
+  },
+  {
+    "path": "skills/blocks/vibe-coding.md",
+    "matches": []
+  },
+  {
+    "path": "skills/js-sdk/js-sdk.md",
+    "matches": [
+      {
+        "line": 44,
+        "text": "| `defaultHeaders` | `Record<string, string>` | Extra headers on every request. |"
+      }
+    ]
+  },
+  {
+    "path": "skills/protocol/v1.md",
+    "matches": []
+  },
+  {
+    "path": "skills/protocol/v2.md",
+    "matches": []
+  },
+  {
+    "path": "skills/react-sdk/hooks-reference.md",
+    "matches": []
+  },
+  {
+    "path": "skills/react-sdk/react-sdk.md",
+    "matches": [
+      {
+        "line": 76,
+        "text": "> All API calls \u2014 including read-only indexer queries \u2014 require a valid API key. The deployed API returns `401 Unauthorized` without it."
+      }
+    ]
+  },
+  {
+    "path": "skills/react-sdk/v2/react-sdk.md",
+    "matches": [
+      {
+        "line": 45,
+        "text": "| `defaultHeaders` | `Record<string, string>` | Extra headers on every request. |"
+      }
+    ]
+  },
+  {
+    "path": "skills/react-sdk/vibe-coding.md",
+    "matches": []
+  }
+]

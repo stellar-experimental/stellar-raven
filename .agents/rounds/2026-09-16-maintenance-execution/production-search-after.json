@@ -1,0 +1,79 @@
+{
+  "observedAt": "2026-09-16 20:58:40 UTC",
+  "endpoint": "https://raven.stellar.org/mcp",
+  "deployedCommit": "bb37bc502080c94c3f3b5223ffcdf584d4b0e29d",
+  "result": [
+    {
+      "query": "How do I integrate Trustless Work escrow?",
+      "ok": true,
+      "ids": [
+        "skills.trustless-work.trustless-work-dev",
+        "stellarDocs.search_docs",
+        "stellarDocs.search_asset_token_docs",
+        "scout.listContracts",
+        "stellarDocs.search_wallet_dapp_docs"
+      ],
+      "total": 5
+    },
+    {
+      "query": "How does the Stellar Development Foundation organize its work / spending priorities?",
+      "ok": true,
+      "ids": [
+        "stellarDocs.search_docs",
+        "scout.searchResearch",
+        "scout.getPeople",
+        "scout.searchProjects",
+        "stellarDocs.search_doc_titles"
+      ],
+      "total": 78
+    },
+    {
+      "query": "How do path payments work on Stellar and which two operations implement them?",
+      "ok": true,
+      "ids": [
+        "stellarDocs.search_protocol_concepts_docs",
+        "stellarDocs.search_docs",
+        "stellarDocs.search_docs_in_category",
+        "scout.searchHackathonBuilds",
+        "scout.searchProjects"
+      ],
+      "total": 19
+    },
+    {
+      "query": "What is StellarX and is it built by the Stellar Development Foundation?",
+      "ok": true,
+      "ids": [
+        "scout.searchHackathonBuilds",
+        "scout.listSkills",
+        "lumenloop.search_content_semantic",
+        "lumenloop.search_directory",
+        "stellarDocs.search_soroban_contract_docs"
+      ],
+      "total": 17
+    },
+    {
+      "query": "What's Blend's TVL today and how has it trended this quarter?",
+      "ok": true,
+      "ids": [
+        "scout.searchResearch",
+        "scout.searchProjects",
+        "scout.getRfps",
+        "scout.listContracts",
+        "scout.getHackathons"
+      ],
+      "total": 6
+    },
+    {
+      "query": "How do I generate a typed TypeScript or Rust client for a deployed Soroban contract?",
+      "ok": true,
+      "ids": [
+        "stellarDocs.search_soroban_contract_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "stellarDocs.search_docs",
+        "scout.listContracts",
+        "scout.getPartners"
+      ],
+      "total": 17
+    }
+  ]
+}

@@ -1,0 +1,1675 @@
+{
+  "at": "2026-09-16T21:23:54.618Z",
+  "rows": [
+    {
+      "query": "Which real estate tokens already have circulating supply on Stellar?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 163,
+          "tier": "gated",
+          "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchSdkCliToolsDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_sdk_cli_tools_docs(input: SearchSdkCliToolsDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "scout.getRwaAssets",
+          "service": "scout",
+          "kind": "operation",
+          "score": 139,
+          "tier": "gated",
+          "description": "Tokenized real-world assets verified on Stellar. Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
+          "signature": "type GetRwaAssetsInput = {\n    /** classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets). */\n    kind?: \"classic\" | \"soroban\";\n    /** Filter by verificationLevel (see methodology). */\n    level?: \"toml-bidirectional\" | \"entity-toml\" | \"contract-metadata\" | \"on-chain-home-domain\" | \"on-chain-only\";\n    /** Max rows (default 100, max 100). */\n    limit?: number;\n    /** Directory project slug — the rows that feed that project's `products`. */\n    project?: string;\n    /** Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity — a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one. */\n    state?: \"live\" | \"issued-single-holder\" | \"deployed-no-supply\" | \"not-found\";\n}\ntype GetRwaAssetsOutput = { /* 2 top-level fields: assets, meta — full shape via codemode.describe(\"scout.getRwaAssets\") */ }\nscout.getRwaAssets(input: GetRwaAssetsInput): Promise<{ ok: true, data: GetRwaAssetsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "assets",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "assets": [
+              "assetClass",
+              "basisNote",
+              "code",
+              "contract",
+              "controls",
+              "controlsBasis",
+              "decimals",
+              "evidenceUrl",
+              "horizonNote",
+              "id",
+              "issuer",
+              "issuerEntity",
+              "kind",
+              "launchedAt",
+              "measured",
+              "name",
+              "network",
+              "pairedWith",
+              "productKind",
+              "projectSlug",
+              "rwaxyzHolders",
+              "rwaxyzListed",
+              "rwaxyzValueUsd",
+              "state",
+              "symbol",
+              "tomlStatus",
+              "totalSupply",
+              "verificationLevel",
+              "verifiedAt"
+            ]
+          }
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "kind": "operation",
+          "score": 139,
+          "tier": "gated",
+          "description": "Search Stellar projects — look up a project by name, or find prior art / competitors. Search the curated directory of Stellar projects/products — what has been BUILT, by whom, with SCF funding, lifecycle status, builtBy, links, indexed repos, and verified on-chain metrics (onchain) inline. THE way to LOOK UP a specific project by its name (a named protocol/app/wallet/tool) AND to discover 'who/what already exists for X'; the type filter gives exact product-type rosters (Wallet, DEX, Oracle, Lending, Payments, Stablecoin, RWA…). Not for docs, standards, or how-to/reference knowledge → use searchResearch.\n\nCatalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
+          "signature": "type SearchProjectsInput = {\n    /** Filter by category */\n    category?: \"Infrastructure\" | \"Tooling\" | \"User-Facing App\" | \"Asset\" | \"Protocol/Contract\" | \"Anchor\" | \"Partner Integration\";\n    /** Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths). */\n    fields?: string;\n    /** Max results per page. The default and cap VARY by endpoint (e.g. projects/search 20/100, builders 50/200, leaderboard 50/300, research 8/25). A value below 1 or above the cap is clamped, not rejected. */\n    limit?: number;\n    /** Number of matching rows to skip before returning (pagination). Page until offset + meta.counts.returned >= meta.counts.total. */\n    offset?: number;\n    /** Keyword query (free text) */\n    q?: string;\n    /** Filter to SCF-funded projects only */\n    scfAwarded?: boolean;\n    /** Filter by lifecycle status (e.g. status=Inactive lists retired/defunct projects; status=Live restricts to operating ones). Compose with scfAwarded for accountability/diligence — `?scfAwarded=1&status=Inactive` is the roster of SCF-funded projects that have since gone inactive, and `meta.counts.total` is how many. Unknown values return 400 with validStatuses. */\n    status?: \"Development\" | \"Pre-Release\" | \"Live\" | \"Inactive\";\n    /** Filter to projects whose `types[]` includes this product type — server-side exact membership, e.g. `type=Wallet` enumerates Wallet-typed records (combine with `q` and/or `status` to scope further, or use alone to list a type). Distinct from `category` (a project has ONE category but can carry several types). Unknown values return 400 with validTypes. */\n    type?: \"Wallet\" | \"DEX\" | \"Lending\" | \"Bridge\" | \"Infrastructure\" | \"Payments\" | \"Anchor\" | \"SDK\" | \"Indexer\" | \"Explorer\" | \"Analytics\" | \"AI\" | \"Gaming\" | \"Education\" | \"Security\" | \"NFT\" | \"RWA\" | \"Stablecoin\" | \"Social Impact\" | \"RPC\" | \"Faucet\" | \"Card Issuing\" | \"Exchange\" | \"Oracle\" | \"Yield\";\n}\ntype SearchProjectsOutput = { /* 3 top-level fields: codeReferences, meta, projects — full shape via codemode.describe(\"scout.searchProjects\") */ }\nscout.searchProjects(input: SearchProjectsInput): Promise<{ ok: true, data: SearchProjectsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "codeReferences",
+            "meta",
+            "projects"
+          ],
+          "outputItemKeys": {
+            "codeReferences": [
+              "activitySignals",
+              "activityState",
+              "builderReputation",
+              "canonical",
+              "ciPresent",
+              "codeInUse",
+              "codeVerified",
+              "deepWikiUrl",
+              "deprecatedAt",
+              "description",
+              "fullName",
+              "hackathonWinner",
+              "homepageUrl",
+              "isArchived",
+              "isFork",
+              "judgeScore",
+              "judgedHackathon",
+              "kind",
+              "kindBasis",
+              "knowledgeNotes",
+              "lastCommitAt",
+              "name",
+              "openIssues",
+              "owner",
+              "primaryLanguage",
+              "project",
+              "repoScore",
+              "repoScoreLabel",
+              "scfAwarded",
+              "score",
+              "source",
+              "stars",
+              "stellarEvidence",
+              "successorRepo",
+              "supersededBy",
+              "supersessionKind",
+              "testsPresent",
+              "tier",
+              "tierChangedAt",
+              "tierReason",
+              "topics",
+              "url"
+            ],
+            "projects": [
+              "anchorProfile",
+              "audits",
+              "availability",
+              "builtBy",
+              "canonicalSlug",
+              "category",
+              "confidence",
+              "coverage",
+              "deployment",
+              "feedbackSignal",
+              "hackathon",
+              "hackathonPlacement",
+              "hackathonPrize",
+              "hackathonPrizeTrack",
+              "id",
+              "identity",
+              "lastActivityAt",
+              "lifecycle",
+              "links",
+              "llamaSlugs",
+              "logoUrl",
+              "name",
+              "networksBasis",
+              "onchain",
+              "placementRank",
+              "productKind",
+              "products",
+              "productsCoverage",
+              "prominence",
+              "publicGoods",
+              "repos",
+              "routes",
+              "scfAmountStatus",
+              "scfAsOf",
+              "scfAwarded",
+              "scfAwardedRounds",
+              "scfBasis",
+              "scfConfidence",
+              "scfRoundAwards",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "score",
+              "shortDescription",
+              "slug",
+              "status",
+              "statusAsOf",
+              "statusBasis",
+              "statusConfidence",
+              "statusSourceUrl",
+              "supportedNetworks",
+              "tvlAsOf",
+              "tvlMethod",
+              "tvlMethodUrl",
+              "tvlSource",
+              "tvlUSD",
+              "types",
+              "url",
+              "venueRole",
+              "verificationLevel",
+              "via"
+            ]
+          }
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "kind": "operation",
+          "score": 130,
+          "tier": "gated",
+          "description": "Search what was BUILT at Stellar hackathons (prior-art over prototypes). Topic search across every submission ('buidl') from all Stellar hackathons (DoraHacks) — the PROTOTYPE layer of prior art, most of which never becomes a directory project. Answers 'has anyone already built X at a hackathon?' with each build's name, description, event, placement/award, votes, and repo/demo links. winnersOnly=1 = prize winners; track filters by track. Absence is a real whitespace signal, not proof it was never tried. For SHIPPED products in the directory → use searchProjects.",
+          "signature": "type SearchHackathonBuildsInput = {\n    /** Max builds (default 20, max 100). */\n    limit?: number;\n    /** Topic to search build names + descriptions (prior-art lookup). */\n    q?: string;\n    /** Filter by hackathon track (substring match). */\n    track?: string;\n    /** Set to 1 to return only prize-winning builds. Accepts 1/true/yes/on (and 0/false/no/off for explicit off); any other value returns 400 with the accepted forms — never silently ignored. */\n    winnersOnly?: \"1\" | \"true\" | \"yes\" | \"on\" | \"0\" | \"false\" | \"no\" | \"off\";\n}\ntype SearchHackathonBuildsOutput = { /* 2 top-level fields: builds, meta — full shape via codemode.describe(\"scout.searchHackathonBuilds\") */ }\nscout.searchHackathonBuilds(input: SearchHackathonBuildsInput): Promise<{ ok: true, data: SearchHackathonBuildsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "builds",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "builds": [
+              "award",
+              "demoUrl",
+              "description",
+              "endedAt",
+              "githubUrl",
+              "hackathon",
+              "hackathonSlug",
+              "isWinner",
+              "matchedTerms",
+              "name",
+              "placement",
+              "track",
+              "url",
+              "votes"
+            ]
+          }
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 110,
+          "tier": "gated",
+          "description": "Search all content semantically. Embeds the query text and finds similar articles, AV, events, and tweets via pgvector cosine distance. Use this (not search_documents/list_documents) whenever the query is conceptual or phrased as a question, or when you do not know which collection holds the answer; reserve search_documents for exact title/URL keyword lookup. Supports date/source/type filters — use these for scoped research queries like \"find Stellar DeFi content from March\" or \"what did SDF post about privacy\".\n\nWhen to use: Meaning-based search across ALL published content types at once (articles, AV, events, research) — the default discovery tool for \"what has been said about X\". For exact-term lookup in one collection use search_documents; for content about one specific project use find_content_about_project. For \"latest/current\" ecosystem facts (protocol version, program/fund status, recent incidents or launches) prefer this over live web — results are dated and the corpus updates continuously; cite the date. Use web only for facts the corpus cannot hold, e.g. upstream package/registry pins (crates.io, npm, GitHub release tags).\n\nReturns: Results grouped by content type, each with AI summary, source url, date, and similarity score — never full text. Cite the returned url. response_format 'concise' (external default) omits long_summary; pass 'detailed' to include it.\n\nCatalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results.",
+          "signature": "type SearchContentSemanticInput = {\n    /** ISO date/timestamp upper bound (inclusive). */\n    date_end?: string;\n    /** For articles only: force a specific date field. Default is COALESCE(publishing_date, created_at). */\n    date_field?: \"publishing_date\" | \"created_at\";\n    /** ISO date/timestamp lower bound (inclusive). For articles, applies to COALESCE(publishing_date, created_at) by default to avoid stale re-scrape pollution. */\n    date_start?: string;\n    /** Max results per content type (default 20). Effective rows = limit × number of types — keep it small and narrow `types` instead of raising it. */\n    limit?: number;\n    /** Search query text */\n    query: string;\n    /** 'concise' omits long_summary from each row (smaller payloads); 'detailed' keeps it. Default: detailed. */\n    response_format?: \"concise\" | \"detailed\";\n    /** Filter by source. For articles: domain. For AV: channel. For events: platform. For tweets: user_screen_name. */\n    sources?: string[];\n    /** Restrict to specific content types. Default: all 9 (knowledge = internal dated notes). Narrow this for smaller, faster results — fanning out across all types multiplies the row count. */\n    types?: \"articles\" | \"av\" | \"events\" | \"research\" | \"proposals\" | \"tweets\" | \"twitter_accounts\" | \"scf_submissions\" | \"knowledge\"[];\n}\ntype SearchContentSemanticOutput = {\n    /** Upstream row count for every returned collection. */\n    counts: {\n        [key: string]: number;\n    };\n    /** All upstream candidate rows in one globally similarity-sorted list. Each row carries its original collection. */\n    items: {\n        /** The upstream result collection, for example articles, events, av, or research. */\n        collection: string;\n        /** Best available upstream item timestamp. Interpret it using dateField; it is not automatically a publication or observation date. */\n        date?: string;\n        /** Exact upstream field copied into date, such as publishing_date, start_at, or created_at. */\n        dateField?: string;\n        /** Canonical concise text selected from upstream snippet/summary/description fields when present. */\n        snippet?: string;\n        /** Canonical source label selected from upstream source/domain/channel/platform fields when present. */\n        source?: string;\n        /** Exact upstream field copied into source. */\n        sourceField?: string;\n        /** Canonical display title selected from upstream title/name fields when present. */\n        title?: string;\n        /** Canonical item URL selected from upstream url/link fields when present. */\n        url?: string;\n        [key: string]: unknown;\n    }[];\n    /** Non-collection upstream metadata preserved without reshaping. */\n    meta: {\n        [key: string]: unknown;\n    };\n}\nlumenloop.search_content_semantic(input: SearchContentSemanticInput): Promise<{ ok: true, data: SearchContentSemanticOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "counts",
+            "items",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "items": [
+              "collection",
+              "date",
+              "dateField",
+              "snippet",
+              "source",
+              "sourceField",
+              "title",
+              "url"
+            ]
+          }
+        }
+      ],
+      "total": 6,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 24,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Find issuers with live tokenized Treasury funds.",
+      "hits": [
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 183,
+          "tier": "gated",
+          "description": "Find articles, AV, events, governance proposals, and SCF submissions that mention a specific named entity. Uses LLM-extracted entities (project/person/organization/token) from content_entities. Case-insensitive match on entity_name or exact match on normalized_slug. Use this when you want exact entity grounding, not semantic similarity.\n\nWhen to use: Find content mentioning a NAMED entity (project, organization, token) by case-insensitive name match with LLM-confidence filtering — works even when the entity has no directory slug. If you have a slug, prefer find_content_about_project.\n\nReturns: Content grouped by type in articles, av, events, proposals, and scf_submissions, with matched-entity confidence and content metadata.\n\nCatalog note: entity_type \"person\" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.",
+          "signature": "type FindContentByEntityInput = {\n    /** Restrict to a specific content type */\n    content_type?: \"articles\" | \"av\" | \"events\" | \"proposals\" | \"scf_submissions\";\n    date_end?: string;\n    date_start?: string;\n    /** Entity name (case-insensitive) or normalized slug. Examples: \"Aquarius\", \"aquarius\", \"StellarOrg\". */\n    entity: string;\n    /** Restrict to a specific entity type */\n    entity_type?: \"project\" | \"person\" | \"organization\" | \"token\";\n    /** Max results per content type */\n    limit?: number;\n    /** Minimum LLM confidence to include (0.0-1.0). Default 0.5 filters out weak matches. */\n    min_confidence?: number;\n}\nlumenloop.find_content_by_entity(input: FindContentByEntityInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "scout.getRwaAssets",
+          "service": "scout",
+          "kind": "operation",
+          "score": 129,
+          "tier": "gated",
+          "description": "Tokenized real-world assets verified on Stellar. Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
+          "signature": "type GetRwaAssetsInput = {\n    /** classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets). */\n    kind?: \"classic\" | \"soroban\";\n    /** Filter by verificationLevel (see methodology). */\n    level?: \"toml-bidirectional\" | \"entity-toml\" | \"contract-metadata\" | \"on-chain-home-domain\" | \"on-chain-only\";\n    /** Max rows (default 100, max 100). */\n    limit?: number;\n    /** Directory project slug — the rows that feed that project's `products`. */\n    project?: string;\n    /** Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity — a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one. */\n    state?: \"live\" | \"issued-single-holder\" | \"deployed-no-supply\" | \"not-found\";\n}\ntype GetRwaAssetsOutput = { /* 2 top-level fields: assets, meta — full shape via codemode.describe(\"scout.getRwaAssets\") */ }\nscout.getRwaAssets(input: GetRwaAssetsInput): Promise<{ ok: true, data: GetRwaAssetsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "assets",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "assets": [
+              "assetClass",
+              "basisNote",
+              "code",
+              "contract",
+              "controls",
+              "controlsBasis",
+              "decimals",
+              "evidenceUrl",
+              "horizonNote",
+              "id",
+              "issuer",
+              "issuerEntity",
+              "kind",
+              "launchedAt",
+              "measured",
+              "name",
+              "network",
+              "pairedWith",
+              "productKind",
+              "projectSlug",
+              "rwaxyzHolders",
+              "rwaxyzListed",
+              "rwaxyzValueUsd",
+              "state",
+              "symbol",
+              "tomlStatus",
+              "totalSupply",
+              "verificationLevel",
+              "verifiedAt"
+            ]
+          }
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 99,
+          "tier": "gated",
+          "description": "Search all content semantically. Embeds the query text and finds similar articles, AV, events, and tweets via pgvector cosine distance. Use this (not search_documents/list_documents) whenever the query is conceptual or phrased as a question, or when you do not know which collection holds the answer; reserve search_documents for exact title/URL keyword lookup. Supports date/source/type filters — use these for scoped research queries like \"find Stellar DeFi content from March\" or \"what did SDF post about privacy\".\n\nWhen to use: Meaning-based search across ALL published content types at once (articles, AV, events, research) — the default discovery tool for \"what has been said about X\". For exact-term lookup in one collection use search_documents; for content about one specific project use find_content_about_project. For \"latest/current\" ecosystem facts (protocol version, program/fund status, recent incidents or launches) prefer this over live web — results are dated and the corpus updates continuously; cite the date. Use web only for facts the corpus cannot hold, e.g. upstream package/registry pins (crates.io, npm, GitHub release tags).\n\nReturns: Results grouped by content type, each with AI summary, source url, date, and similarity score — never full text. Cite the returned url. response_format 'concise' (external default) omits long_summary; pass 'detailed' to include it.\n\nCatalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results.",
+          "signature": "type SearchContentSemanticInput = {\n    /** ISO date/timestamp upper bound (inclusive). */\n    date_end?: string;\n    /** For articles only: force a specific date field. Default is COALESCE(publishing_date, created_at). */\n    date_field?: \"publishing_date\" | \"created_at\";\n    /** ISO date/timestamp lower bound (inclusive). For articles, applies to COALESCE(publishing_date, created_at) by default to avoid stale re-scrape pollution. */\n    date_start?: string;\n    /** Max results per content type (default 20). Effective rows = limit × number of types — keep it small and narrow `types` instead of raising it. */\n    limit?: number;\n    /** Search query text */\n    query: string;\n    /** 'concise' omits long_summary from each row (smaller payloads); 'detailed' keeps it. Default: detailed. */\n    response_format?: \"concise\" | \"detailed\";\n    /** Filter by source. For articles: domain. For AV: channel. For events: platform. For tweets: user_screen_name. */\n    sources?: string[];\n    /** Restrict to specific content types. Default: all 9 (knowledge = internal dated notes). Narrow this for smaller, faster results — fanning out across all types multiplies the row count. */\n    types?: \"articles\" | \"av\" | \"events\" | \"research\" | \"proposals\" | \"tweets\" | \"twitter_accounts\" | \"scf_submissions\" | \"knowledge\"[];\n}\ntype SearchContentSemanticOutput = {\n    /** Upstream row count for every returned collection. */\n    counts: {\n        [key: string]: number;\n    };\n    /** All upstream candidate rows in one globally similarity-sorted list. Each row carries its original collection. */\n    items: {\n        /** The upstream result collection, for example articles, events, av, or research. */\n        collection: string;\n        /** Best available upstream item timestamp. Interpret it using dateField; it is not automatically a publication or observation date. */\n        date?: string;\n        /** Exact upstream field copied into date, such as publishing_date, start_at, or created_at. */\n        dateField?: string;\n        /** Canonical concise text selected from upstream snippet/summary/description fields when present. */\n        snippet?: string;\n        /** Canonical source label selected from upstream source/domain/channel/platform fields when present. */\n        source?: string;\n        /** Exact upstream field copied into source. */\n        sourceField?: string;\n        /** Canonical display title selected from upstream title/name fields when present. */\n        title?: string;\n        /** Canonical item URL selected from upstream url/link fields when present. */\n        url?: string;\n        [key: string]: unknown;\n    }[];\n    /** Non-collection upstream metadata preserved without reshaping. */\n    meta: {\n        [key: string]: unknown;\n    };\n}\nlumenloop.search_content_semantic(input: SearchContentSemanticInput): Promise<{ ok: true, data: SearchContentSemanticOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "counts",
+            "items",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "items": [
+              "collection",
+              "date",
+              "dateField",
+              "snippet",
+              "source",
+              "sourceField",
+              "title",
+              "url"
+            ]
+          }
+        },
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "kind": "skill",
+          "score": 57,
+          "tier": "gated",
+          "description": "Position a Stellar Community Fund (SCF) idea against prior submissions before applying, using LumenLoop's SCF data. Use when the user is preparing an SCF application, wants to find similar past proposals, check what's been funded in an area, or sharpen their SCF positioning.",
+          "availableSections": [
+            "output-a-positioning-brief",
+            "pointers",
+            "recipe",
+            "related-skills",
+            "the-tools-you-use",
+            "when-to-use-this-skill",
+            "worked-example-on-chain-invoice-financing-for-smes",
+            "file:reference/positioning-brief-template.md"
+          ]
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 52,
+          "tier": "gated",
+          "description": "Get Stellar Community Fund submissions linked to a project, including the full application/proposal text (markdown: sections, milestones, deliverables, budget detail), funding amount, award status, round, and category. Searches by slug or project name — pass at least one.\n\nWhen to use: Get Stellar Community Fund submissions linked to a specific project. Pass slug (resolve a name via search_directory) or a fuzzy name. For topic-based exploration across all submissions use find_similar_scf_submissions.\n\nReturns: { count, submissions: [...] } — each: title, round, category, award_type, funding amounts, description, the full application/proposal text (markdown), links, linked_project_slug (the primary credited directory project) and linked_project_slugs (the full set of directory projects this submission credits).",
+          "signature": "type GetScfSubmissionsInput = {\n    /** Project name for fuzzy matching (ILIKE) */\n    name?: string;\n    /** Project slug (preferred — resolve names via search_directory first) */\n    slug?: string;\n}\ntype GetScfSubmissionsOutput = {\n    /** Number of submissions. */\n    count?: unknown;\n    /** SCF submissions: title, round, category, award_type, funding, full application/proposal text, links, linked_project_slug (primary credited project), linked_project_slugs (full credited set) */\n    submissions?: unknown[];\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.get_scf_submissions(input: GetScfSubmissionsInput): Promise<{ ok: true, data: GetScfSubmissionsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "count",
+            "submissions",
+            "text"
+          ]
+        }
+      ],
+      "total": 5,
+      "truncated": false,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 54,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Which assets does Ondo have on Stellar?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 201,
+          "tier": "gated",
+          "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+          "signature": "type SearchDocsInput = {\n    hitsPerPage?: number;\n    /** Add full `content` to attributesToRetrieve (can be multi-KB per hit). */\n    includeContent?: boolean;\n    /** Also search the /meetings meeting-notes slice (drops the docs-only facet filter). */\n    includeMeetings?: boolean;\n    /** page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo). */\n    page?: number;\n    /** Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast). */\n    query: string;\n}\nstellarDocs.search_docs(input: SearchDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 199,
+          "tier": "gated",
+          "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchAssetTokenDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_asset_token_docs(input: SearchAssetTokenDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "skills.stellar-dev.assets",
+          "service": "skills",
+          "kind": "skill",
+          "score": 191,
+          "tier": "gated",
+          "description": "Stellar Assets (classic) + trustlines + Stellar Asset Contract (SAC) bridge to smart contracts. Covers asset issuance, distribution, authorization flags, clawback, regulated assets, trustline management, and the SAC interop layer that exposes classic assets as SEP-41 contract tokens. Use when tokenizing real-world assets, issuing stablecoins, managing trustlines, or bridging classic assets to smart contracts.",
+          "availableSections": [
+            "asset-flags",
+            "best-practices",
+            "issuing-assets",
+            "overview",
+            "querying-assets",
+            "related-skills",
+            "sep-standards-for-assets",
+            "stellar-asset-contract-sac",
+            "stellar-assets-classic",
+            "trustlines",
+            "when-to-use-this-skill",
+            "when-to-use-what"
+          ]
+        },
+        {
+          "id": "scout.getRwaAssets",
+          "service": "scout",
+          "kind": "operation",
+          "score": 163,
+          "tier": "gated",
+          "description": "Tokenized real-world assets verified on Stellar. Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
+          "signature": "type GetRwaAssetsInput = {\n    /** classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets). */\n    kind?: \"classic\" | \"soroban\";\n    /** Filter by verificationLevel (see methodology). */\n    level?: \"toml-bidirectional\" | \"entity-toml\" | \"contract-metadata\" | \"on-chain-home-domain\" | \"on-chain-only\";\n    /** Max rows (default 100, max 100). */\n    limit?: number;\n    /** Directory project slug — the rows that feed that project's `products`. */\n    project?: string;\n    /** Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity — a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one. */\n    state?: \"live\" | \"issued-single-holder\" | \"deployed-no-supply\" | \"not-found\";\n}\ntype GetRwaAssetsOutput = { /* 2 top-level fields: assets, meta — full shape via codemode.describe(\"scout.getRwaAssets\") */ }\nscout.getRwaAssets(input: GetRwaAssetsInput): Promise<{ ok: true, data: GetRwaAssetsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "assets",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "assets": [
+              "assetClass",
+              "basisNote",
+              "code",
+              "contract",
+              "controls",
+              "controlsBasis",
+              "decimals",
+              "evidenceUrl",
+              "horizonNote",
+              "id",
+              "issuer",
+              "issuerEntity",
+              "kind",
+              "launchedAt",
+              "measured",
+              "name",
+              "network",
+              "pairedWith",
+              "productKind",
+              "projectSlug",
+              "rwaxyzHolders",
+              "rwaxyzListed",
+              "rwaxyzValueUsd",
+              "state",
+              "symbol",
+              "tomlStatus",
+              "totalSupply",
+              "verificationLevel",
+              "verifiedAt"
+            ]
+          }
+        },
+        {
+          "id": "skills.lumenloop.stellar-builder-quickstart",
+          "service": "skills",
+          "kind": "skill",
+          "score": 163,
+          "tier": "gated",
+          "description": "Go from a Stellar product idea to a build path: pick the right Stellar primitives, check ecosystem prior art via LumenLoop, and route to the relevant build skill (Soroban, SDK/dapp, assets, oracles). Use when the user wants to start building something on Stellar and needs orientation on approach and existing work.",
+          "availableSections": [
+            "gotchas",
+            "read-next",
+            "related-skills",
+            "the-recipe",
+            "when-to-use-this-skill",
+            "worked-example-an-rwa-tokenization-marketplace-on-stellar",
+            "file:reference/build-plan-template.md"
+          ]
+        }
+      ],
+      "total": 37,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 2,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Write a Soroban contract for a real estate token.",
+      "hits": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 211,
+          "tier": "gated",
+          "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+          "signature": "type SearchDocsInput = {\n    hitsPerPage?: number;\n    /** Add full `content` to attributesToRetrieve (can be multi-KB per hit). */\n    includeContent?: boolean;\n    /** Also search the /meetings meeting-notes slice (drops the docs-only facet filter). */\n    includeMeetings?: boolean;\n    /** page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo). */\n    page?: number;\n    /** Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast). */\n    query: string;\n}\nstellarDocs.search_docs(input: SearchDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 327,
+          "tier": "backfill",
+          "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.\n\nReturns: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchSorobanContractDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_soroban_contract_docs(input: SearchSorobanContractDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 302,
+          "tier": "backfill",
+          "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchAssetTokenDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_asset_token_docs(input: SearchAssetTokenDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 181,
+          "tier": "gated",
+          "description": "Title-only search over Stellar developer docs page and section headings (hierarchy levels 1-3). The fastest way to find the one canonical docs page for a topic when you roughly know what it is called — e.g. 'State Archival', 'Stellar Consensus Protocol', 'How to Issue an Asset', 'Stellar Asset Contract', 'Migrate from Horizon to RPC', 'Anchor Platform', 'Stellar CLI'. Skips body text so results are page-level and precise instead of content-fuzzy; follow up with get_doc_page_sections or includeContent on search_docs to read the page.\n\nReturns: Array of hits (page/heading level): { url, url_without_anchor, breadcrumb, type } plus { nbHits }.",
+          "signature": "type SearchDocTitlesInput = {\n    hitsPerPage?: number;\n    includeMeetings?: boolean;\n    /** Expected page/section title words, e.g. 'state archival' or 'issue asset'. */\n    query: string;\n}\nstellarDocs.search_doc_titles(input: SearchDocTitlesInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "service": "skills",
+          "kind": "skill",
+          "score": 204,
+          "tier": "backfill",
+          "description": "Set up a Stellar/Soroban smart contract project with OpenZeppelin Contracts for Stellar. Use when users need to: (1) install Stellar CLI and Rust toolchain for Soroban, (2) create a new Soroban project, (3) add OpenZeppelin Stellar dependencies to Cargo.toml, or (4) understand Soroban import conventions and contract patterns for OpenZeppelin.",
+          "availableSections": [
+            "build-test",
+            "code-patterns",
+            "openzeppelin-dependencies",
+            "platform-notes",
+            "soroban-stellar-development-setup"
+          ]
+        }
+      ],
+      "total": 48,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 116,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "backfill"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Show the RPC request for all ledger entries held by my treasury account.",
+      "hits": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 196,
+          "tier": "backfill",
+          "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\n\nReturns: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchRpcHorizonDataDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_rpc_horizon_data_docs(input: SearchRpcHorizonDataDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 182,
+          "tier": "backfill",
+          "description": "Find articles, AV, events, governance proposals, and SCF submissions that mention a specific named entity. Uses LLM-extracted entities (project/person/organization/token) from content_entities. Case-insensitive match on entity_name or exact match on normalized_slug. Use this when you want exact entity grounding, not semantic similarity.\n\nWhen to use: Find content mentioning a NAMED entity (project, organization, token) by case-insensitive name match with LLM-confidence filtering — works even when the entity has no directory slug. If you have a slug, prefer find_content_about_project.\n\nReturns: Content grouped by type in articles, av, events, proposals, and scf_submissions, with matched-entity confidence and content metadata.\n\nCatalog note: entity_type \"person\" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.",
+          "signature": "type FindContentByEntityInput = {\n    /** Restrict to a specific content type */\n    content_type?: \"articles\" | \"av\" | \"events\" | \"proposals\" | \"scf_submissions\";\n    date_end?: string;\n    date_start?: string;\n    /** Entity name (case-insensitive) or normalized slug. Examples: \"Aquarius\", \"aquarius\", \"StellarOrg\". */\n    entity: string;\n    /** Restrict to a specific entity type */\n    entity_type?: \"project\" | \"person\" | \"organization\" | \"token\";\n    /** Max results per content type */\n    limit?: number;\n    /** Minimum LLM confidence to include (0.0-1.0). Default 0.5 filters out weak matches. */\n    min_confidence?: number;\n}\nlumenloop.find_content_by_entity(input: FindContentByEntityInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 135,
+          "tier": "backfill",
+          "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+          "signature": "type SearchDocsInput = {\n    hitsPerPage?: number;\n    /** Add full `content` to attributesToRetrieve (can be multi-KB per hit). */\n    includeContent?: boolean;\n    /** Also search the /meetings meeting-notes slice (drops the docs-only facet filter). */\n    includeMeetings?: boolean;\n    /** page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo). */\n    page?: number;\n    /** Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast). */\n    query: string;\n}\nstellarDocs.search_docs(input: SearchDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 105,
+          "tier": "backfill",
+          "description": "Search all content semantically. Embeds the query text and finds similar articles, AV, events, and tweets via pgvector cosine distance. Use this (not search_documents/list_documents) whenever the query is conceptual or phrased as a question, or when you do not know which collection holds the answer; reserve search_documents for exact title/URL keyword lookup. Supports date/source/type filters — use these for scoped research queries like \"find Stellar DeFi content from March\" or \"what did SDF post about privacy\".\n\nWhen to use: Meaning-based search across ALL published content types at once (articles, AV, events, research) — the default discovery tool for \"what has been said about X\". For exact-term lookup in one collection use search_documents; for content about one specific project use find_content_about_project. For \"latest/current\" ecosystem facts (protocol version, program/fund status, recent incidents or launches) prefer this over live web — results are dated and the corpus updates continuously; cite the date. Use web only for facts the corpus cannot hold, e.g. upstream package/registry pins (crates.io, npm, GitHub release tags).\n\nReturns: Results grouped by content type, each with AI summary, source url, date, and similarity score — never full text. Cite the returned url. response_format 'concise' (external default) omits long_summary; pass 'detailed' to include it.\n\nCatalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results.",
+          "signature": "type SearchContentSemanticInput = {\n    /** ISO date/timestamp upper bound (inclusive). */\n    date_end?: string;\n    /** For articles only: force a specific date field. Default is COALESCE(publishing_date, created_at). */\n    date_field?: \"publishing_date\" | \"created_at\";\n    /** ISO date/timestamp lower bound (inclusive). For articles, applies to COALESCE(publishing_date, created_at) by default to avoid stale re-scrape pollution. */\n    date_start?: string;\n    /** Max results per content type (default 20). Effective rows = limit × number of types — keep it small and narrow `types` instead of raising it. */\n    limit?: number;\n    /** Search query text */\n    query: string;\n    /** 'concise' omits long_summary from each row (smaller payloads); 'detailed' keeps it. Default: detailed. */\n    response_format?: \"concise\" | \"detailed\";\n    /** Filter by source. For articles: domain. For AV: channel. For events: platform. For tweets: user_screen_name. */\n    sources?: string[];\n    /** Restrict to specific content types. Default: all 9 (knowledge = internal dated notes). Narrow this for smaller, faster results — fanning out across all types multiplies the row count. */\n    types?: \"articles\" | \"av\" | \"events\" | \"research\" | \"proposals\" | \"tweets\" | \"twitter_accounts\" | \"scf_submissions\" | \"knowledge\"[];\n}\ntype SearchContentSemanticOutput = {\n    /** Upstream row count for every returned collection. */\n    counts: {\n        [key: string]: number;\n    };\n    /** All upstream candidate rows in one globally similarity-sorted list. Each row carries its original collection. */\n    items: {\n        /** The upstream result collection, for example articles, events, av, or research. */\n        collection: string;\n        /** Best available upstream item timestamp. Interpret it using dateField; it is not automatically a publication or observation date. */\n        date?: string;\n        /** Exact upstream field copied into date, such as publishing_date, start_at, or created_at. */\n        dateField?: string;\n        /** Canonical concise text selected from upstream snippet/summary/description fields when present. */\n        snippet?: string;\n        /** Canonical source label selected from upstream source/domain/channel/platform fields when present. */\n        source?: string;\n        /** Exact upstream field copied into source. */\n        sourceField?: string;\n        /** Canonical display title selected from upstream title/name fields when present. */\n        title?: string;\n        /** Canonical item URL selected from upstream url/link fields when present. */\n        url?: string;\n        [key: string]: unknown;\n    }[];\n    /** Non-collection upstream metadata preserved without reshaping. */\n    meta: {\n        [key: string]: unknown;\n    };\n}\nlumenloop.search_content_semantic(input: SearchContentSemanticInput): Promise<{ ok: true, data: SearchContentSemanticOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "counts",
+            "items",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "items": [
+              "collection",
+              "date",
+              "dateField",
+              "snippet",
+              "source",
+              "sourceField",
+              "title",
+              "url"
+            ]
+          }
+        },
+        {
+          "id": "lumenloop.search_documents",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 95,
+          "tier": "backfill",
+          "description": "Exact keyword lookup: case-insensitive SUBSTRING match on title and URL only (NOT body text, NOT meaning) within ONE collection. Use when you already know wording that appears in a title or URL (e.g. find the article about a known announcement). For conceptual or question-phrased queries use search_content_semantic; to browse a collection by status/date/source use list_documents. The av collection accepts either \"videos\" or \"av\".\n\nWhen to use: Exact/keyword match on title or URL within one collection (e.g. find the article about a known announcement). For conceptual queries (\"content about cross-border payments\") use search_content_semantic.\n\nReturns: Array of matching document summaries (same external projection as list_documents).",
+          "signature": "type SearchDocumentsInput = {\n    /** Content collection to search (videos and av both target the av table) */\n    collection: \"articles\" | \"events\" | \"videos\" | \"av\" | \"jobs\" | \"research\" | \"proposals\";\n    /** Max results */\n    limit?: number;\n    /** Search query (matches title and URL) */\n    query: string;\n}\ntype SearchDocumentsOutput = {\n    /** Matching document summaries (same projection as list_documents). */\n    items?: unknown[];\n    /** Page info: page, limit, total. */\n    pagination?: unknown;\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.search_documents(input: SearchDocumentsInput): Promise<{ ok: true, data: SearchDocumentsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "items",
+            "pagination",
+            "text"
+          ]
+        }
+      ],
+      "total": 35,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "lane": "corpus",
+          "basis": "page-broad-hit",
+          "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\n\nReturns: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchRpcHorizonDataDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_rpc_horizon_data_docs(input: SearchRpcHorizonDataDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "lane": "semantic",
+          "basis": "page-broad-hit",
+          "description": "Search all content semantically. Embeds the query text and finds similar articles, AV, events, and tweets via pgvector cosine distance. Use this (not search_documents/list_documents) whenever the query is conceptual or phrased as a question, or when you do not know which collection holds the answer; reserve search_documents for exact title/URL keyword lookup. Supports date/source/type filters — use these for scoped research queries like \"find Stellar DeFi content from March\" or \"what did SDF post about privacy\".\n\nWhen to use: Meaning-based search across ALL published content types at once (articles, AV, events, research) — the default discovery tool for \"what has been said about X\". For exact-term lookup in one collection use search_documents; for content about one specific project use find_content_about_project. For \"latest/current\" ecosystem facts (protocol version, program/fund status, recent incidents or launches) prefer this over live web — results are dated and the corpus updates continuously; cite the date. Use web only for facts the corpus cannot hold, e.g. upstream package/registry pins (crates.io, npm, GitHub release tags).\n\nReturns: Results grouped by content type, each with AI summary, source url, date, and similarity score — never full text. Cite the returned url. response_format 'concise' (external default) omits long_summary; pass 'detailed' to include it.\n\nCatalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results.",
+          "signature": "type SearchContentSemanticInput = {\n    /** ISO date/timestamp upper bound (inclusive). */\n    date_end?: string;\n    /** For articles only: force a specific date field. Default is COALESCE(publishing_date, created_at). */\n    date_field?: \"publishing_date\" | \"created_at\";\n    /** ISO date/timestamp lower bound (inclusive). For articles, applies to COALESCE(publishing_date, created_at) by default to avoid stale re-scrape pollution. */\n    date_start?: string;\n    /** Max results per content type (default 20). Effective rows = limit × number of types — keep it small and narrow `types` instead of raising it. */\n    limit?: number;\n    /** Search query text */\n    query: string;\n    /** 'concise' omits long_summary from each row (smaller payloads); 'detailed' keeps it. Default: detailed. */\n    response_format?: \"concise\" | \"detailed\";\n    /** Filter by source. For articles: domain. For AV: channel. For events: platform. For tweets: user_screen_name. */\n    sources?: string[];\n    /** Restrict to specific content types. Default: all 9 (knowledge = internal dated notes). Narrow this for smaller, faster results — fanning out across all types multiplies the row count. */\n    types?: \"articles\" | \"av\" | \"events\" | \"research\" | \"proposals\" | \"tweets\" | \"twitter_accounts\" | \"scf_submissions\" | \"knowledge\"[];\n}\ntype SearchContentSemanticOutput = {\n    /** Upstream row count for every returned collection. */\n    counts: {\n        [key: string]: number;\n    };\n    /** All upstream candidate rows in one globally similarity-sorted list. Each row carries its original collection. */\n    items: {\n        /** The upstream result collection, for example articles, events, av, or research. */\n        collection: string;\n        /** Best available upstream item timestamp. Interpret it using dateField; it is not automatically a publication or observation date. */\n        date?: string;\n        /** Exact upstream field copied into date, such as publishing_date, start_at, or created_at. */\n        dateField?: string;\n        /** Canonical concise text selected from upstream snippet/summary/description fields when present. */\n        snippet?: string;\n        /** Canonical source label selected from upstream source/domain/channel/platform fields when present. */\n        source?: string;\n        /** Exact upstream field copied into source. */\n        sourceField?: string;\n        /** Canonical display title selected from upstream title/name fields when present. */\n        title?: string;\n        /** Canonical item URL selected from upstream url/link fields when present. */\n        url?: string;\n        [key: string]: unknown;\n    }[];\n    /** Non-collection upstream metadata preserved without reshaping. */\n    meta: {\n        [key: string]: unknown;\n    };\n}\nlumenloop.search_content_semantic(input: SearchContentSemanticInput): Promise<{ ok: true, data: SearchContentSemanticOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "counts",
+            "items",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "items": [
+              "collection",
+              "date",
+              "dateField",
+              "snippet",
+              "source",
+              "sourceField",
+              "title",
+              "url"
+            ]
+          }
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "lane": "research",
+          "basis": "catalog-anchor",
+          "description": "Vector search over the Stellar research corpus. Semantic search over the Stellar knowledge corpus — SDF blog, SCF Handbook, SEPs/standards, dev docs, papers, audits, incident reports. Returns cited text chunks with source, section, URL, confidence, and provenance dates (publishedAt = the source's own stated date; observedAt = when ingest last crawled the page; audits add auditor/severity — filterable; report-level enumeration → listAudits). THE surface for 'how does X work', 'what does the SEP/spec/audit say', and how-to/feasibility questions. Not for products and their funding/status → use searchProjects.\n\nCatalog note: this is the broad Scout cited-research recovery lane for history, standards, incidents, audits, and unknown technical topics. Treat chunks as leads: preserve their source and date, and require an exact entity match before attribution.",
+          "signature": "type SearchResearchInput = {\n    /** Audit-metadata filter: exact auditor firm (case/homoglyph-insensitive, e.g. OtterSec, Certora). Using any audit-metadata filter scopes RETRIEVAL to source=audit (an explicit contradictory source= is rejected with 400). For report-level enumeration prefer listAudits. */\n    auditor?: string;\n    /** Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths). */\n    fields?: string;\n    /** Max results (default 8, max 25) */\n    limit?: number;\n    /** Audit-metadata filter: audited protocol/codebase name (substring match). Narrows results to audit-source chunks. */\n    protocol?: string;\n    /** Natural-language search query. Required unless the `query` alias is supplied — requests with neither return 400. */\n    q?: string;\n    /** Alias of `q` (agents commonly send the term under this name; both are accepted, `q` wins when both are present). */\n    query?: string;\n    /** Audit-metadata filter, case-insensitive. CAVEAT: severity labels the MATCHED CHUNK's section (inferred from PDF-derived headings), not the report or a specific finding — an architecture chunk can carry 'high' while the findings table reads 'unknown' — do not treat a filtered result set as a complete list of findings at that severity. Unknown values are rejected with a 400. */\n    severity?: \"critical\" | \"high\" | \"medium\" | \"low\" | \"informational\" | \"unknown\";\n    /** Optional source filter. Use 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when — protocol upgrade tags). */\n    source?: \"sdf-blog\" | \"scf-handbook\" | \"sep\" | \"cap\" | \"dev-docs\" | \"paper\" | \"scf-proposal\" | \"lumenloop\" | \"lumenloop-research\" | \"repo-docs\" | \"audit\" | \"incident\" | \"security-program\" | \"sdf-org\" | \"ec-developer-report\" | \"release\";\n}\ntype SearchResearchOutput = { /* 2 top-level fields: meta, results — full shape via codemode.describe(\"scout.searchResearch\") */ }\nscout.searchResearch(input: SearchResearchInput): Promise<{ ok: true, data: SearchResearchOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "meta",
+            "results"
+          ],
+          "outputItemKeys": {
+            "results": [
+              "auditor",
+              "capProtocolVersion",
+              "capStatus",
+              "chunkIndex",
+              "confidence",
+              "content",
+              "docKind",
+              "docVersionStatus",
+              "id",
+              "observedAt",
+              "protocol",
+              "publishedAt",
+              "score",
+              "section",
+              "severity",
+              "source",
+              "title",
+              "url"
+            ]
+          }
+        }
+      ],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 14,
+        "topScoreTiers": {
+          "first": "backfill",
+          "second": "backfill"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+      "hits": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 356,
+          "tier": "gated",
+          "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\n\nReturns: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchRpcHorizonDataDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_rpc_horizon_data_docs(input: SearchRpcHorizonDataDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 280,
+          "tier": "gated",
+          "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchSdkCliToolsDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_sdk_cli_tools_docs(input: SearchSdkCliToolsDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "scout.getRwaAssets",
+          "service": "scout",
+          "kind": "operation",
+          "score": 218,
+          "tier": "gated",
+          "description": "Tokenized real-world assets verified on Stellar. Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
+          "signature": "type GetRwaAssetsInput = {\n    /** classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets). */\n    kind?: \"classic\" | \"soroban\";\n    /** Filter by verificationLevel (see methodology). */\n    level?: \"toml-bidirectional\" | \"entity-toml\" | \"contract-metadata\" | \"on-chain-home-domain\" | \"on-chain-only\";\n    /** Max rows (default 100, max 100). */\n    limit?: number;\n    /** Directory project slug — the rows that feed that project's `products`. */\n    project?: string;\n    /** Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity — a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one. */\n    state?: \"live\" | \"issued-single-holder\" | \"deployed-no-supply\" | \"not-found\";\n}\ntype GetRwaAssetsOutput = { /* 2 top-level fields: assets, meta — full shape via codemode.describe(\"scout.getRwaAssets\") */ }\nscout.getRwaAssets(input: GetRwaAssetsInput): Promise<{ ok: true, data: GetRwaAssetsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "assets",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "assets": [
+              "assetClass",
+              "basisNote",
+              "code",
+              "contract",
+              "controls",
+              "controlsBasis",
+              "decimals",
+              "evidenceUrl",
+              "horizonNote",
+              "id",
+              "issuer",
+              "issuerEntity",
+              "kind",
+              "launchedAt",
+              "measured",
+              "name",
+              "network",
+              "pairedWith",
+              "productKind",
+              "projectSlug",
+              "rwaxyzHolders",
+              "rwaxyzListed",
+              "rwaxyzValueUsd",
+              "state",
+              "symbol",
+              "tomlStatus",
+              "totalSupply",
+              "verificationLevel",
+              "verifiedAt"
+            ]
+          }
+        },
+        {
+          "id": "scout.explainRepo",
+          "service": "scout",
+          "kind": "operation",
+          "score": 159,
+          "tier": "gated",
+          "description": "Deep code answer about a Stellar repo (routing × DeepWiki). Source-grounded ANSWER to a deep code question about a Stellar internal or any indexed ecosystem repo — 'how does X implement/calculate Y in its code'. Routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls) or the graded repo index, then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+          "signature": "type ExplainRepoInput = {\n    /** The deep code question (e.g. 'where are transaction result codes defined'). */\n    q: string;\n    /** Optional owner/name to pin the repo (e.g. stellar/stellar-core). Omit to auto-route. */\n    repo?: string;\n}\ntype ExplainRepoOutput = { /* 16 top-level fields: alternateRepos, answer, answerAsOf, answerSource, answered, codeVerified, knowledgeNotes, meta, note, note2, ok, q, repo, repoMeta, routedVia, sources — full shape via codemode.describe(\"scout.explainRepo\") */ }\nscout.explainRepo(input: ExplainRepoInput): Promise<{ ok: true, data: ExplainRepoOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "alternateRepos",
+            "answer",
+            "answerAsOf",
+            "answerSource",
+            "answered",
+            "codeVerified",
+            "knowledgeNotes",
+            "meta",
+            "note",
+            "note2",
+            "ok",
+            "q",
+            "repo",
+            "repoMeta",
+            "routedVia",
+            "sources"
+          ],
+          "outputItemKeys": {
+            "knowledgeNotes": [
+              "asOf",
+              "note",
+              "source"
+            ]
+          }
+        },
+        {
+          "id": "skills.stellar-dev.agentic-payments",
+          "service": "skills",
+          "kind": "skill",
+          "score": 241,
+          "tier": "backfill",
+          "description": "Agentic and machine-to-machine payments on Stellar. Covers x402 (HTTP 402 paid APIs through a facilitator, fee-sponsored clients; the guide configures OZ Channels) and MPP (Machine Payments Protocol) in both Charge mode (per-request SAC) and Session mode (channel-backed off-chain commits, high-frequency; formerly called Channel mode). Defaults to USDC (SEP-41 SAC) on `stellar:testnet`/`stellar:pubnet` (CAIP-2). Use when selling a paid API to AI agents, building an x402 client, or designing a payment-channel architecture for high-frequency agent traffic.",
+          "availableSections": [
+            "quick-decision",
+            "read-the-file-that-matches-the-task",
+            "related-skills",
+            "testnet-setup-shared",
+            "two-usdc-addresses-don-t-confuse-them",
+            "file:mpp.md",
+            "file:x402.md"
+          ]
+        }
+      ],
+      "total": 5,
+      "truncated": false,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 76,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "How can Friendbot fund the account that issues my RWA token?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 209,
+          "tier": "gated",
+          "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchAssetTokenDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_asset_token_docs(input: SearchAssetTokenDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 116,
+          "tier": "gated",
+          "description": "Search the Stellar ecosystem directory for projects by name, description, or category (substring match). If a multi-word or conceptual query matches no substring, it automatically falls back to semantic project discovery (response carries match_mode: \"semantic\") so you still get the closest projects.\n\nWhen to use: Start here to find a Stellar ecosystem project by name, keyword, or category when you do not know its slug. Substring match, but a multi-word/conceptual query that hits no substring auto-falls back to semantic project discovery, so you can also use it for \"what RWA/wallet/oracle projects exist\" style asks. For \"projects like X\" use find_similar_projects_semantic; for content ABOUT a project use find_content_about_project.\n\nReturns: { count, projects: [...] } — each project: slug, title, description, category, tags. When the substring match is empty and the semantic fallback fires, the response also carries match_mode: \"semantic\" + a note, and rows include a similarity score. Take the slug into get_project for full details.\n\nCatalog note: use this lane plus find_content_about_project for narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
+          "signature": "type SearchDirectoryInput = {\n    /** Max results */\n    limit?: number;\n    /** Search query (substring match on title, description, other_names, and category) */\n    query: string;\n}\ntype SearchDirectoryOutput = {\n    /** Number of matching projects. */\n    count?: unknown;\n    /** project matches: slug, title, description, category, tags, website */\n    projects?: unknown[];\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.search_directory(input: SearchDirectoryInput): Promise<{ ok: true, data: SearchDirectoryOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "count",
+            "projects",
+            "text"
+          ]
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "kind": "operation",
+          "score": 67,
+          "tier": "gated",
+          "description": "Search the Stellar GitHub repo / code-reference index. Search the indexed Stellar ecosystem GitHub code repos — actual source graded by repoScore (0-100: freshness + traction + ecosystem authority), filterable by language/minScore. Use for 'show me the code/repos for X' or 'find a Rust/Soroban implementation of X' — prior-art source to read, fork, or cite. Not for products/companies and their funding/status → use searchProjects.\n\nCatalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence. Verify those claims at the repository and primary sources before reusing code.",
+          "signature": "type SearchReposInput = {\n    /** Filter by observable activity state (each row also carries it as activityState). 'archived' is the owner's own verdict; 'dormant' means a KNOWN commit older than 180 days — an observation, not a death verdict; 'unknown' means no commit date held. Unknown values return 400 with the valid list. */\n    activity?: \"active\" | \"maintained\" | \"dormant\" | \"archived\" | \"unknown\";\n    /** Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths). */\n    fields?: string;\n    /** Filter by primary language (case-insensitive substring, e.g. 'Rust', 'TypeScript') */\n    language?: string;\n    /** Max results per page. The default and cap VARY by endpoint (e.g. projects/search 20/100, builders 50/200, leaderboard 50/300, research 8/25). A value below 1 or above the cap is clamped, not rejected. */\n    limit?: number;\n    /** Only return repos with repoScore ≥ this (0–100). Use 40+ for high-signal references. */\n    minScore?: number;\n    /** Number of matching rows to skip before returning (pagination). Page until offset + meta.counts.returned >= meta.counts.total. */\n    offset?: number;\n    /** Keyword query (free text) */\n    q?: string;\n}\ntype SearchReposOutput = { /* 2 top-level fields: meta, repos — full shape via codemode.describe(\"scout.searchRepos\") */ }\nscout.searchRepos(input: SearchReposInput): Promise<{ ok: true, data: SearchReposOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "meta",
+            "repos"
+          ],
+          "outputItemKeys": {
+            "repos": [
+              "activitySignals",
+              "activityState",
+              "builderReputation",
+              "canonical",
+              "ciPresent",
+              "codeInUse",
+              "codeVerified",
+              "deepWikiUrl",
+              "deprecatedAt",
+              "description",
+              "fullName",
+              "hackathonWinner",
+              "homepageUrl",
+              "isArchived",
+              "isFork",
+              "judgeScore",
+              "judgedHackathon",
+              "kind",
+              "kindBasis",
+              "knowledgeNotes",
+              "lastCommitAt",
+              "name",
+              "openIssues",
+              "owner",
+              "primaryLanguage",
+              "project",
+              "repoScore",
+              "repoScoreLabel",
+              "scfAwarded",
+              "score",
+              "source",
+              "stars",
+              "stellarEvidence",
+              "successorRepo",
+              "supersededBy",
+              "supersessionKind",
+              "testsPresent",
+              "tier",
+              "tierChangedAt",
+              "tierReason",
+              "topics",
+              "url"
+            ]
+          }
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 57,
+          "tier": "gated",
+          "description": "Search all content semantically. Embeds the query text and finds similar articles, AV, events, and tweets via pgvector cosine distance. Use this (not search_documents/list_documents) whenever the query is conceptual or phrased as a question, or when you do not know which collection holds the answer; reserve search_documents for exact title/URL keyword lookup. Supports date/source/type filters — use these for scoped research queries like \"find Stellar DeFi content from March\" or \"what did SDF post about privacy\".\n\nWhen to use: Meaning-based search across ALL published content types at once (articles, AV, events, research) — the default discovery tool for \"what has been said about X\". For exact-term lookup in one collection use search_documents; for content about one specific project use find_content_about_project. For \"latest/current\" ecosystem facts (protocol version, program/fund status, recent incidents or launches) prefer this over live web — results are dated and the corpus updates continuously; cite the date. Use web only for facts the corpus cannot hold, e.g. upstream package/registry pins (crates.io, npm, GitHub release tags).\n\nReturns: Results grouped by content type, each with AI summary, source url, date, and similarity score — never full text. Cite the returned url. response_format 'concise' (external default) omits long_summary; pass 'detailed' to include it.\n\nCatalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results.",
+          "signature": "type SearchContentSemanticInput = {\n    /** ISO date/timestamp upper bound (inclusive). */\n    date_end?: string;\n    /** For articles only: force a specific date field. Default is COALESCE(publishing_date, created_at). */\n    date_field?: \"publishing_date\" | \"created_at\";\n    /** ISO date/timestamp lower bound (inclusive). For articles, applies to COALESCE(publishing_date, created_at) by default to avoid stale re-scrape pollution. */\n    date_start?: string;\n    /** Max results per content type (default 20). Effective rows = limit × number of types — keep it small and narrow `types` instead of raising it. */\n    limit?: number;\n    /** Search query text */\n    query: string;\n    /** 'concise' omits long_summary from each row (smaller payloads); 'detailed' keeps it. Default: detailed. */\n    response_format?: \"concise\" | \"detailed\";\n    /** Filter by source. For articles: domain. For AV: channel. For events: platform. For tweets: user_screen_name. */\n    sources?: string[];\n    /** Restrict to specific content types. Default: all 9 (knowledge = internal dated notes). Narrow this for smaller, faster results — fanning out across all types multiplies the row count. */\n    types?: \"articles\" | \"av\" | \"events\" | \"research\" | \"proposals\" | \"tweets\" | \"twitter_accounts\" | \"scf_submissions\" | \"knowledge\"[];\n}\ntype SearchContentSemanticOutput = {\n    /** Upstream row count for every returned collection. */\n    counts: {\n        [key: string]: number;\n    };\n    /** All upstream candidate rows in one globally similarity-sorted list. Each row carries its original collection. */\n    items: {\n        /** The upstream result collection, for example articles, events, av, or research. */\n        collection: string;\n        /** Best available upstream item timestamp. Interpret it using dateField; it is not automatically a publication or observation date. */\n        date?: string;\n        /** Exact upstream field copied into date, such as publishing_date, start_at, or created_at. */\n        dateField?: string;\n        /** Canonical concise text selected from upstream snippet/summary/description fields when present. */\n        snippet?: string;\n        /** Canonical source label selected from upstream source/domain/channel/platform fields when present. */\n        source?: string;\n        /** Exact upstream field copied into source. */\n        sourceField?: string;\n        /** Canonical display title selected from upstream title/name fields when present. */\n        title?: string;\n        /** Canonical item URL selected from upstream url/link fields when present. */\n        url?: string;\n        [key: string]: unknown;\n    }[];\n    /** Non-collection upstream metadata preserved without reshaping. */\n    meta: {\n        [key: string]: unknown;\n    };\n}\nlumenloop.search_content_semantic(input: SearchContentSemanticInput): Promise<{ ok: true, data: SearchContentSemanticOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "counts",
+            "items",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "items": [
+              "collection",
+              "date",
+              "dateField",
+              "snippet",
+              "source",
+              "sourceField",
+              "title",
+              "url"
+            ]
+          }
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "kind": "skill",
+          "score": 57,
+          "tier": "gated",
+          "description": "Map a sector or topic of the Stellar ecosystem into a landscape of projects, categories, regions, and related content using the LumenLoop directory and semantic search. Use when the user asks to survey, map, or get an overview of an area of Stellar (e.g. 'what RWA projects exist', 'map Stellar DeFi', 'who is building wallets').",
+          "availableSections": [
+            "further-reading",
+            "gotchas",
+            "output-the-landscape",
+            "related-skills",
+            "the-scouting-recipe",
+            "when-to-use-this-skill",
+            "worked-example-mapping-rwa-tokenization",
+            "file:reference/landscape-template.md"
+          ]
+        }
+      ],
+      "total": 5,
+      "truncated": false,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 93,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "How do I read a wallet balance for tokenized treasury assets?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 316,
+          "tier": "gated",
+          "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchAssetTokenDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_asset_token_docs(input: SearchAssetTokenDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "scout.getRwaAssets",
+          "service": "scout",
+          "kind": "operation",
+          "score": 268,
+          "tier": "gated",
+          "description": "Tokenized real-world assets verified on Stellar. Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
+          "signature": "type GetRwaAssetsInput = {\n    /** classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets). */\n    kind?: \"classic\" | \"soroban\";\n    /** Filter by verificationLevel (see methodology). */\n    level?: \"toml-bidirectional\" | \"entity-toml\" | \"contract-metadata\" | \"on-chain-home-domain\" | \"on-chain-only\";\n    /** Max rows (default 100, max 100). */\n    limit?: number;\n    /** Directory project slug — the rows that feed that project's `products`. */\n    project?: string;\n    /** Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity — a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one. */\n    state?: \"live\" | \"issued-single-holder\" | \"deployed-no-supply\" | \"not-found\";\n}\ntype GetRwaAssetsOutput = { /* 2 top-level fields: assets, meta — full shape via codemode.describe(\"scout.getRwaAssets\") */ }\nscout.getRwaAssets(input: GetRwaAssetsInput): Promise<{ ok: true, data: GetRwaAssetsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "assets",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "assets": [
+              "assetClass",
+              "basisNote",
+              "code",
+              "contract",
+              "controls",
+              "controlsBasis",
+              "decimals",
+              "evidenceUrl",
+              "horizonNote",
+              "id",
+              "issuer",
+              "issuerEntity",
+              "kind",
+              "launchedAt",
+              "measured",
+              "name",
+              "network",
+              "pairedWith",
+              "productKind",
+              "projectSlug",
+              "rwaxyzHolders",
+              "rwaxyzListed",
+              "rwaxyzValueUsd",
+              "state",
+              "symbol",
+              "tomlStatus",
+              "totalSupply",
+              "verificationLevel",
+              "verifiedAt"
+            ]
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 247,
+          "tier": "gated",
+          "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+          "signature": "type SearchDocsInput = {\n    hitsPerPage?: number;\n    /** Add full `content` to attributesToRetrieve (can be multi-KB per hit). */\n    includeContent?: boolean;\n    /** Also search the /meetings meeting-notes slice (drops the docs-only facet filter). */\n    includeMeetings?: boolean;\n    /** page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo). */\n    page?: number;\n    /** Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast). */\n    query: string;\n}\nstellarDocs.search_docs(input: SearchDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 164,
+          "tier": "gated",
+          "description": "Search the Stellar ecosystem directory for projects by name, description, or category (substring match). If a multi-word or conceptual query matches no substring, it automatically falls back to semantic project discovery (response carries match_mode: \"semantic\") so you still get the closest projects.\n\nWhen to use: Start here to find a Stellar ecosystem project by name, keyword, or category when you do not know its slug. Substring match, but a multi-word/conceptual query that hits no substring auto-falls back to semantic project discovery, so you can also use it for \"what RWA/wallet/oracle projects exist\" style asks. For \"projects like X\" use find_similar_projects_semantic; for content ABOUT a project use find_content_about_project.\n\nReturns: { count, projects: [...] } — each project: slug, title, description, category, tags. When the substring match is empty and the semantic fallback fires, the response also carries match_mode: \"semantic\" + a note, and rows include a similarity score. Take the slug into get_project for full details.\n\nCatalog note: use this lane plus find_content_about_project for narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
+          "signature": "type SearchDirectoryInput = {\n    /** Max results */\n    limit?: number;\n    /** Search query (substring match on title, description, other_names, and category) */\n    query: string;\n}\ntype SearchDirectoryOutput = {\n    /** Number of matching projects. */\n    count?: unknown;\n    /** project matches: slug, title, description, category, tags, website */\n    projects?: unknown[];\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.search_directory(input: SearchDirectoryInput): Promise<{ ok: true, data: SearchDirectoryOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "count",
+            "projects",
+            "text"
+          ]
+        },
+        {
+          "id": "lumenloop.search_documents",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 161,
+          "tier": "gated",
+          "description": "Exact keyword lookup: case-insensitive SUBSTRING match on title and URL only (NOT body text, NOT meaning) within ONE collection. Use when you already know wording that appears in a title or URL (e.g. find the article about a known announcement). For conceptual or question-phrased queries use search_content_semantic; to browse a collection by status/date/source use list_documents. The av collection accepts either \"videos\" or \"av\".\n\nWhen to use: Exact/keyword match on title or URL within one collection (e.g. find the article about a known announcement). For conceptual queries (\"content about cross-border payments\") use search_content_semantic.\n\nReturns: Array of matching document summaries (same external projection as list_documents).",
+          "signature": "type SearchDocumentsInput = {\n    /** Content collection to search (videos and av both target the av table) */\n    collection: \"articles\" | \"events\" | \"videos\" | \"av\" | \"jobs\" | \"research\" | \"proposals\";\n    /** Max results */\n    limit?: number;\n    /** Search query (matches title and URL) */\n    query: string;\n}\ntype SearchDocumentsOutput = {\n    /** Matching document summaries (same projection as list_documents). */\n    items?: unknown[];\n    /** Page info: page, limit, total. */\n    pagination?: unknown;\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.search_documents(input: SearchDocumentsInput): Promise<{ ok: true, data: SearchDocumentsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "items",
+            "pagination",
+            "text"
+          ]
+        }
+      ],
+      "total": 13,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 48,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Compile my tokenization contract to WASM.",
+      "hits": [
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 165,
+          "tier": "gated",
+          "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.\n\nReturns: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchSorobanContractDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_soroban_contract_docs(input: SearchSorobanContractDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 150,
+          "tier": "gated",
+          "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchAssetTokenDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_asset_token_docs(input: SearchAssetTokenDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "service": "skills",
+          "kind": "skill",
+          "score": 121,
+          "tier": "gated",
+          "description": "Upgrade Stellar/Soroban smart contracts using OpenZeppelin's upgradeable module. Use when users need to: (1) make Soroban contracts upgradeable via native WASM replacement, (2) use Upgradeable or UpgradeableMigratable derive macros, (3) implement atomic upgrade-and-migrate patterns with an Upgrader contract, (4) ensure storage key compatibility across upgrades, or (5) test upgrade paths for Soroban contracts.",
+          "availableSections": [
+            "access-control",
+            "contents",
+            "soroban-upgrade-model",
+            "upgrade-safety",
+            "using-the-openzeppelin-upgradeable-module"
+          ]
+        },
+        {
+          "id": "skills.stellar-dev.smart-contracts",
+          "service": "skills",
+          "kind": "skill",
+          "score": 106,
+          "tier": "gated",
+          "description": "Stellar smart contract development (Rust, soroban-sdk). Entry point with project setup, contract anatomy, and build/deploy workflow, routing to three companion files in this directory — development.md (storage/TTL, authorization, cross-contract calls, tokens, events, errors, upgrades, fees, troubleshooting), testing.md (unit, fuzz, property, fork, mutation, integration), and security.md (vulnerability classes, checklists, tooling, audits). Use when writing, testing, reviewing, securing, debugging, or shipping Stellar smart contracts, including anything the user calls \"Soroban\" — Soroban contracts, soroban-sdk, Soroban auth/storage/TTL errors, SEP-41 tokens, or SAC integration from contract code.",
+          "availableSections": [
+            "before-mainnet",
+            "build-deploy-invoke",
+            "contract-anatomy",
+            "documentation",
+            "minimal-test",
+            "platform-constraints",
+            "project-setup",
+            "related-skills",
+            "versions",
+            "when-to-use-this-skill",
+            "file:development.md",
+            "file:security.md",
+            "file:testing.md"
+          ]
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 62,
+          "tier": "gated",
+          "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories: build (smart contracts, guides, apps/dapps, security, agentic payments), data (Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (Anchor Platform, Stellar Disbursement Platform), validators (running a stellar-core validator node), tokens (issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (resource limits and fees), and meetings (protocol and developer meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.\n\nReturns: Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet } plus counts { rawNbHits, filteredCount }.",
+          "signature": "type SearchDocsInCategoryInput = {\n    /** Top-level docs area; maps to the /docs/<category> URL prefix (meetings → the docusaurus_tag blog slice). */\n    category: \"build\" | \"learn\" | \"tokens\" | \"data\" | \"tools\" | \"platforms\" | \"validators\" | \"networks\" | \"meetings\";\n    /** Number of category-filtered hits to return. */\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_docs_in_category(input: SearchDocsInCategoryInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        }
+      ],
+      "total": 5,
+      "truncated": false,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 15,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "What category values can the ecosystem directory accept?",
+      "hits": [
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 227,
+          "tier": "gated",
+          "description": "Search the Stellar ecosystem directory for projects by name, description, or category (substring match). If a multi-word or conceptual query matches no substring, it automatically falls back to semantic project discovery (response carries match_mode: \"semantic\") so you still get the closest projects.\n\nWhen to use: Start here to find a Stellar ecosystem project by name, keyword, or category when you do not know its slug. Substring match, but a multi-word/conceptual query that hits no substring auto-falls back to semantic project discovery, so you can also use it for \"what RWA/wallet/oracle projects exist\" style asks. For \"projects like X\" use find_similar_projects_semantic; for content ABOUT a project use find_content_about_project.\n\nReturns: { count, projects: [...] } — each project: slug, title, description, category, tags. When the substring match is empty and the semantic fallback fires, the response also carries match_mode: \"semantic\" + a note, and rows include a similarity score. Take the slug into get_project for full details.\n\nCatalog note: use this lane plus find_content_about_project for narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
+          "signature": "type SearchDirectoryInput = {\n    /** Max results */\n    limit?: number;\n    /** Search query (substring match on title, description, other_names, and category) */\n    query: string;\n}\ntype SearchDirectoryOutput = {\n    /** Number of matching projects. */\n    count?: unknown;\n    /** project matches: slug, title, description, category, tags, website */\n    projects?: unknown[];\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.search_directory(input: SearchDirectoryInput): Promise<{ ok: true, data: SearchDirectoryOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "count",
+            "projects",
+            "text"
+          ]
+        },
+        {
+          "id": "scout.analyzeEcosystem",
+          "service": "scout",
+          "kind": "operation",
+          "score": 196,
+          "tier": "gated",
+          "description": "Cross-event Stellar ecosystem analytics rollup. The cross-ecosystem macro rollup — totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace — what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated — never demand or a headcount.",
+          "signature": "type AnalyzeEcosystemInput = {\n    /** Which slice to return */\n    dimension?: \"all\" | \"hackathons\" | \"categories\" | \"funding\" | \"tvl\" | \"gaps\" | \"developers\" | \"toolchain\";\n}\ntype AnalyzeEcosystemOutput = { /* 8 top-level fields: categories, developers, funding, gaps, hackathons, meta, toolchain, tvl — full shape via codemode.describe(\"scout.analyzeEcosystem\") */ }\nscout.analyzeEcosystem(input: AnalyzeEcosystemInput): Promise<{ ok: true, data: AnalyzeEcosystemOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "categories",
+            "developers",
+            "funding",
+            "gaps",
+            "hackathons",
+            "meta",
+            "toolchain",
+            "tvl"
+          ]
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "kind": "skill",
+          "score": 184,
+          "tier": "gated",
+          "description": "Map a sector or topic of the Stellar ecosystem into a landscape of projects, categories, regions, and related content using the LumenLoop directory and semantic search. Use when the user asks to survey, map, or get an overview of an area of Stellar (e.g. 'what RWA projects exist', 'map Stellar DeFi', 'who is building wallets').",
+          "availableSections": [
+            "further-reading",
+            "gotchas",
+            "output-the-landscape",
+            "related-skills",
+            "the-scouting-recipe",
+            "when-to-use-this-skill",
+            "worked-example-mapping-rwa-tokenization",
+            "file:reference/landscape-template.md"
+          ]
+        },
+        {
+          "id": "scout.getClusters",
+          "service": "scout",
+          "kind": "operation",
+          "score": 108,
+          "tier": "gated",
+          "description": "Topic clusters with crowdedness scores. Groups the active Stellar project directory into topic clusters scored on crowdedness (1–10, log-scaled) — the market-map view of saturated vs underbuilt lanes, i.e. WHERE TO BUILD. Per cluster: size, SCF funding, hackathon winners, sample projects; dimension=category|types. Answers 'what's crowded / where is whitespace'. Not for looking up a named project → use searchProjects.",
+          "signature": "type GetClustersInput = {\n    /** Cluster by category (coarse 7-cat) or types (finer) */\n    dimension?: \"category\" | \"types\";\n    /** Only include clusters with at least N projects */\n    minSize?: number;\n}\ntype GetClustersOutput = { /* 2 top-level fields: clusters, meta — full shape via codemode.describe(\"scout.getClusters\") */ }\nscout.getClusters(input: GetClustersInput): Promise<{ ok: true, data: GetClustersOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "clusters",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "clusters": [
+              "crowdedness",
+              "dimension",
+              "hackathonWinnerCount",
+              "key",
+              "sampleProjects",
+              "scfFundedCount",
+              "scfTotalUSD",
+              "size"
+            ]
+          }
+        },
+        {
+          "id": "lumenloop.get_categories",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 64,
+          "tier": "backfill",
+          "description": "Get the controlled vocabulary of categories. Use these exact values when setting project categories.\n\nWhen to use: Get the exact controlled vocabulary of project categories before filtering or labeling by category. Do not invent category strings.\n\nReturns: { count, categories: [...] } — each category: { id, name, slug }.",
+          "signature": "type GetCategoriesInput = {}\ntype GetCategoriesOutput = {\n    /** category objects ({ id, name, slug }) */\n    categories?: unknown[];\n    /** Number of categories. */\n    count?: unknown;\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.get_categories(input: GetCategoriesInput): Promise<{ ok: true, data: GetCategoriesOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "categories",
+            "count",
+            "text"
+          ]
+        }
+      ],
+      "total": 13,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 31,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Find projects that build developer tools, not the list of category names.",
+      "hits": [
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "kind": "operation",
+          "score": 277,
+          "tier": "gated",
+          "description": "Search Stellar projects — look up a project by name, or find prior art / competitors. Search the curated directory of Stellar projects/products — what has been BUILT, by whom, with SCF funding, lifecycle status, builtBy, links, indexed repos, and verified on-chain metrics (onchain) inline. THE way to LOOK UP a specific project by its name (a named protocol/app/wallet/tool) AND to discover 'who/what already exists for X'; the type filter gives exact product-type rosters (Wallet, DEX, Oracle, Lending, Payments, Stablecoin, RWA…). Not for docs, standards, or how-to/reference knowledge → use searchResearch.\n\nCatalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
+          "signature": "type SearchProjectsInput = {\n    /** Filter by category */\n    category?: \"Infrastructure\" | \"Tooling\" | \"User-Facing App\" | \"Asset\" | \"Protocol/Contract\" | \"Anchor\" | \"Partner Integration\";\n    /** Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths). */\n    fields?: string;\n    /** Max results per page. The default and cap VARY by endpoint (e.g. projects/search 20/100, builders 50/200, leaderboard 50/300, research 8/25). A value below 1 or above the cap is clamped, not rejected. */\n    limit?: number;\n    /** Number of matching rows to skip before returning (pagination). Page until offset + meta.counts.returned >= meta.counts.total. */\n    offset?: number;\n    /** Keyword query (free text) */\n    q?: string;\n    /** Filter to SCF-funded projects only */\n    scfAwarded?: boolean;\n    /** Filter by lifecycle status (e.g. status=Inactive lists retired/defunct projects; status=Live restricts to operating ones). Compose with scfAwarded for accountability/diligence — `?scfAwarded=1&status=Inactive` is the roster of SCF-funded projects that have since gone inactive, and `meta.counts.total` is how many. Unknown values return 400 with validStatuses. */\n    status?: \"Development\" | \"Pre-Release\" | \"Live\" | \"Inactive\";\n    /** Filter to projects whose `types[]` includes this product type — server-side exact membership, e.g. `type=Wallet` enumerates Wallet-typed records (combine with `q` and/or `status` to scope further, or use alone to list a type). Distinct from `category` (a project has ONE category but can carry several types). Unknown values return 400 with validTypes. */\n    type?: \"Wallet\" | \"DEX\" | \"Lending\" | \"Bridge\" | \"Infrastructure\" | \"Payments\" | \"Anchor\" | \"SDK\" | \"Indexer\" | \"Explorer\" | \"Analytics\" | \"AI\" | \"Gaming\" | \"Education\" | \"Security\" | \"NFT\" | \"RWA\" | \"Stablecoin\" | \"Social Impact\" | \"RPC\" | \"Faucet\" | \"Card Issuing\" | \"Exchange\" | \"Oracle\" | \"Yield\";\n}\ntype SearchProjectsOutput = { /* 3 top-level fields: codeReferences, meta, projects — full shape via codemode.describe(\"scout.searchProjects\") */ }\nscout.searchProjects(input: SearchProjectsInput): Promise<{ ok: true, data: SearchProjectsOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "codeReferences",
+            "meta",
+            "projects"
+          ],
+          "outputItemKeys": {
+            "codeReferences": [
+              "activitySignals",
+              "activityState",
+              "builderReputation",
+              "canonical",
+              "ciPresent",
+              "codeInUse",
+              "codeVerified",
+              "deepWikiUrl",
+              "deprecatedAt",
+              "description",
+              "fullName",
+              "hackathonWinner",
+              "homepageUrl",
+              "isArchived",
+              "isFork",
+              "judgeScore",
+              "judgedHackathon",
+              "kind",
+              "kindBasis",
+              "knowledgeNotes",
+              "lastCommitAt",
+              "name",
+              "openIssues",
+              "owner",
+              "primaryLanguage",
+              "project",
+              "repoScore",
+              "repoScoreLabel",
+              "scfAwarded",
+              "score",
+              "source",
+              "stars",
+              "stellarEvidence",
+              "successorRepo",
+              "supersededBy",
+              "supersessionKind",
+              "testsPresent",
+              "tier",
+              "tierChangedAt",
+              "tierReason",
+              "topics",
+              "url"
+            ],
+            "projects": [
+              "anchorProfile",
+              "audits",
+              "availability",
+              "builtBy",
+              "canonicalSlug",
+              "category",
+              "confidence",
+              "coverage",
+              "deployment",
+              "feedbackSignal",
+              "hackathon",
+              "hackathonPlacement",
+              "hackathonPrize",
+              "hackathonPrizeTrack",
+              "id",
+              "identity",
+              "lastActivityAt",
+              "lifecycle",
+              "links",
+              "llamaSlugs",
+              "logoUrl",
+              "name",
+              "networksBasis",
+              "onchain",
+              "placementRank",
+              "productKind",
+              "products",
+              "productsCoverage",
+              "prominence",
+              "publicGoods",
+              "repos",
+              "routes",
+              "scfAmountStatus",
+              "scfAsOf",
+              "scfAwarded",
+              "scfAwardedRounds",
+              "scfBasis",
+              "scfConfidence",
+              "scfRoundAwards",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "score",
+              "shortDescription",
+              "slug",
+              "status",
+              "statusAsOf",
+              "statusBasis",
+              "statusConfidence",
+              "statusSourceUrl",
+              "supportedNetworks",
+              "tvlAsOf",
+              "tvlMethod",
+              "tvlMethodUrl",
+              "tvlSource",
+              "tvlUSD",
+              "types",
+              "url",
+              "venueRole",
+              "verificationLevel",
+              "via"
+            ]
+          }
+        },
+        {
+          "id": "lumenloop.find_content_by_entity",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 218,
+          "tier": "gated",
+          "description": "Find articles, AV, events, governance proposals, and SCF submissions that mention a specific named entity. Uses LLM-extracted entities (project/person/organization/token) from content_entities. Case-insensitive match on entity_name or exact match on normalized_slug. Use this when you want exact entity grounding, not semantic similarity.\n\nWhen to use: Find content mentioning a NAMED entity (project, organization, token) by case-insensitive name match with LLM-confidence filtering — works even when the entity has no directory slug. If you have a slug, prefer find_content_about_project.\n\nReturns: Content grouped by type in articles, av, events, proposals, and scf_submissions, with matched-entity confidence and content metadata.\n\nCatalog note: entity_type \"person\" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.",
+          "signature": "type FindContentByEntityInput = {\n    /** Restrict to a specific content type */\n    content_type?: \"articles\" | \"av\" | \"events\" | \"proposals\" | \"scf_submissions\";\n    date_end?: string;\n    date_start?: string;\n    /** Entity name (case-insensitive) or normalized slug. Examples: \"Aquarius\", \"aquarius\", \"StellarOrg\". */\n    entity: string;\n    /** Restrict to a specific entity type */\n    entity_type?: \"project\" | \"person\" | \"organization\" | \"token\";\n    /** Max results per content type */\n    limit?: number;\n    /** Minimum LLM confidence to include (0.0-1.0). Default 0.5 filters out weak matches. */\n    min_confidence?: number;\n}\nlumenloop.find_content_by_entity(input: FindContentByEntityInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "scout.getBuilders",
+          "service": "scout",
+          "kind": "operation",
+          "score": 186,
+          "tier": "gated",
+          "description": "Search Stellar builders. The Stellar PEOPLE directory — builder profiles synced from Stellar Passport (bio, role, location, shipped projects[]), searchable by q/skill and location. Use to find a person to recruit, hire, or collaborate with. Not for the company/product behind a project ('who built X') → use searchProjects. Profiles carry NO populated SCF-tier/award data.\n\nCatalog note: this is a bounded directory-membership surface, not an exhaustive biography or ecosystem-history index. An empty row set means no matching Scout builder record; for an open-world identity or history question, make one broad content or research pass before a wider negative conclusion.",
+          "signature": "type GetBuildersInput = {\n    /** Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths). */\n    fields?: string;\n    /** Max results per page. The default and cap VARY by endpoint (e.g. projects/search 20/100, builders 50/200, leaderboard 50/300, research 8/25). A value below 1 or above the cap is clamped, not rejected. */\n    limit?: number;\n    /** Filter by location substring (e.g. 'Lagos', 'Brazil') */\n    location?: string;\n    /** Number of matching rows to skip before returning (pagination). Page until offset + meta.counts.returned >= meta.counts.total. */\n    offset?: number;\n    /** Free-text filter over bio / role / projects (accepts `skill`/`tech` as aliases) */\n    q?: string;\n    /** Filter by skill/tech mentioned in bio */\n    skill?: string;\n}\ntype GetBuildersOutput = { /* 2 top-level fields: builders, meta — full shape via codemode.describe(\"scout.getBuilders\") */ }\nscout.getBuilders(input: GetBuildersInput): Promise<{ ok: true, data: GetBuildersOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "builders",
+            "meta"
+          ],
+          "outputItemKeys": {
+            "builders": [
+              "avatarUrl",
+              "bio",
+              "codeEvidence",
+              "displayName",
+              "githubUsername",
+              "isFeatured",
+              "location",
+              "match",
+              "onStellar",
+              "projectCount",
+              "projects",
+              "roleTitle",
+              "twitterHandle",
+              "url",
+              "websiteUrl"
+            ]
+          }
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 184,
+          "tier": "gated",
+          "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchSdkCliToolsDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_sdk_cli_tools_docs(input: SearchSdkCliToolsDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "lumenloop.get_categories",
+          "service": "lumenloop",
+          "kind": "operation",
+          "score": 116,
+          "tier": "backfill",
+          "description": "Get the controlled vocabulary of categories. Use these exact values when setting project categories.\n\nWhen to use: Get the exact controlled vocabulary of project categories before filtering or labeling by category. Do not invent category strings.\n\nReturns: { count, categories: [...] } — each category: { id, name, slug }.",
+          "signature": "type GetCategoriesInput = {}\ntype GetCategoriesOutput = {\n    /** category objects ({ id, name, slug }) */\n    categories?: unknown[];\n    /** Number of categories. */\n    count?: unknown;\n    /** Present instead of the data fields when the tool reports a plain-text message. */\n    text?: unknown;\n}\nlumenloop.get_categories(input: GetCategoriesInput): Promise<{ ok: true, data: GetCategoriesOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "categories",
+            "count",
+            "text"
+          ]
+        }
+      ],
+      "total": 9,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 59,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    },
+    {
+      "query": "Which repository contains Stellar account merge validation code?",
+      "hits": [
+        {
+          "id": "scout.explainRepo",
+          "service": "scout",
+          "kind": "operation",
+          "score": 130,
+          "tier": "gated",
+          "description": "Deep code answer about a Stellar repo (routing × DeepWiki). Source-grounded ANSWER to a deep code question about a Stellar internal or any indexed ecosystem repo — 'how does X implement/calculate Y in its code'. Routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls) or the graded repo index, then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+          "signature": "type ExplainRepoInput = {\n    /** The deep code question (e.g. 'where are transaction result codes defined'). */\n    q: string;\n    /** Optional owner/name to pin the repo (e.g. stellar/stellar-core). Omit to auto-route. */\n    repo?: string;\n}\ntype ExplainRepoOutput = { /* 16 top-level fields: alternateRepos, answer, answerAsOf, answerSource, answered, codeVerified, knowledgeNotes, meta, note, note2, ok, q, repo, repoMeta, routedVia, sources — full shape via codemode.describe(\"scout.explainRepo\") */ }\nscout.explainRepo(input: ExplainRepoInput): Promise<{ ok: true, data: ExplainRepoOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "alternateRepos",
+            "answer",
+            "answerAsOf",
+            "answerSource",
+            "answered",
+            "codeVerified",
+            "knowledgeNotes",
+            "meta",
+            "note",
+            "note2",
+            "ok",
+            "q",
+            "repo",
+            "repoMeta",
+            "routedVia",
+            "sources"
+          ],
+          "outputItemKeys": {
+            "knowledgeNotes": [
+              "asOf",
+              "note",
+              "source"
+            ]
+          }
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "kind": "operation",
+          "score": 130,
+          "tier": "gated",
+          "description": "Search the Stellar GitHub repo / code-reference index. Search the indexed Stellar ecosystem GitHub code repos — actual source graded by repoScore (0-100: freshness + traction + ecosystem authority), filterable by language/minScore. Use for 'show me the code/repos for X' or 'find a Rust/Soroban implementation of X' — prior-art source to read, fork, or cite. Not for products/companies and their funding/status → use searchProjects.\n\nCatalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence. Verify those claims at the repository and primary sources before reusing code.",
+          "signature": "type SearchReposInput = {\n    /** Filter by observable activity state (each row also carries it as activityState). 'archived' is the owner's own verdict; 'dormant' means a KNOWN commit older than 180 days — an observation, not a death verdict; 'unknown' means no commit date held. Unknown values return 400 with the valid list. */\n    activity?: \"active\" | \"maintained\" | \"dormant\" | \"archived\" | \"unknown\";\n    /** Comma-separated top-level field names to return per row (e.g. fields=name,slug,tvlUSD), shrinking the payload. Case-insensitive. Each row's identity keys (id/slug/fullName/githubUsername/url/source, where present) are always included; unknown names are ignored, not rejected. Applies only to the rows array — meta is unaffected. Nested objects are selected whole (no dot-paths). */\n    fields?: string;\n    /** Filter by primary language (case-insensitive substring, e.g. 'Rust', 'TypeScript') */\n    language?: string;\n    /** Max results per page. The default and cap VARY by endpoint (e.g. projects/search 20/100, builders 50/200, leaderboard 50/300, research 8/25). A value below 1 or above the cap is clamped, not rejected. */\n    limit?: number;\n    /** Only return repos with repoScore ≥ this (0–100). Use 40+ for high-signal references. */\n    minScore?: number;\n    /** Number of matching rows to skip before returning (pagination). Page until offset + meta.counts.returned >= meta.counts.total. */\n    offset?: number;\n    /** Keyword query (free text) */\n    q?: string;\n}\ntype SearchReposOutput = { /* 2 top-level fields: meta, repos — full shape via codemode.describe(\"scout.searchRepos\") */ }\nscout.searchRepos(input: SearchReposInput): Promise<{ ok: true, data: SearchReposOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>",
+          "outputKeys": [
+            "meta",
+            "repos"
+          ],
+          "outputItemKeys": {
+            "repos": [
+              "activitySignals",
+              "activityState",
+              "builderReputation",
+              "canonical",
+              "ciPresent",
+              "codeInUse",
+              "codeVerified",
+              "deepWikiUrl",
+              "deprecatedAt",
+              "description",
+              "fullName",
+              "hackathonWinner",
+              "homepageUrl",
+              "isArchived",
+              "isFork",
+              "judgeScore",
+              "judgedHackathon",
+              "kind",
+              "kindBasis",
+              "knowledgeNotes",
+              "lastCommitAt",
+              "name",
+              "openIssues",
+              "owner",
+              "primaryLanguage",
+              "project",
+              "repoScore",
+              "repoScoreLabel",
+              "scfAwarded",
+              "score",
+              "source",
+              "stars",
+              "stellarEvidence",
+              "successorRepo",
+              "supersededBy",
+              "supersessionKind",
+              "testsPresent",
+              "tier",
+              "tierChangedAt",
+              "tierReason",
+              "topics",
+              "url"
+            ]
+          }
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 144,
+          "tier": "backfill",
+          "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchAssetTokenDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_asset_token_docs(input: SearchAssetTokenDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 140,
+          "tier": "backfill",
+          "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+          "signature": "type SearchSdkCliToolsDocsInput = {\n    hitsPerPage?: number;\n    includeContent?: boolean;\n    query: string;\n}\nstellarDocs.search_sdk_cli_tools_docs(input: SearchSdkCliToolsDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "kind": "operation",
+          "score": 134,
+          "tier": "backfill",
+          "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+          "signature": "type SearchDocsInput = {\n    hitsPerPage?: number;\n    /** Add full `content` to attributesToRetrieve (can be multi-KB per hit). */\n    includeContent?: boolean;\n    /** Also search the /meetings meeting-notes slice (drops the docs-only facet filter). */\n    includeMeetings?: boolean;\n    /** page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo). */\n    page?: number;\n    /** Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast). */\n    query: string;\n}\nstellarDocs.search_docs(input: SearchDocsInput): Promise<{ ok: true, data: unknown } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
+        }
+      ],
+      "total": 49,
+      "truncated": true,
+      "effectiveLimit": 5,
+      "widerCandidates": [],
+      "confidence": {
+        "hitCount": 5,
+        "topScoreGap": 0,
+        "topScoreTiers": {
+          "first": "gated",
+          "second": "gated"
+        }
+      },
+      "recoveryMetadata": {
+        "serviceFilterExcludedSkills": []
+      }
+    }
+  ]
+}

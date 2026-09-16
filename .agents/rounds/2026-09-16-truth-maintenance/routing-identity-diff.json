@@ -1,0 +1,93 @@
+{
+  "baseRows": 495,
+  "headRows": 495,
+  "changedRows": 5,
+  "unchangedRows": 490,
+  "changed": [
+    {
+      "id": "q-asset-path-payment-ops",
+      "base": [
+        "stellarDocs.search_protocol_concepts_docs",
+        "stellarDocs.search_docs",
+        "stellarDocs.search_docs_in_category",
+        "scout.searchHackathonBuilds",
+        "scout.searchProjects"
+      ],
+      "head": [
+        "stellarDocs.search_protocol_concepts_docs",
+        "stellarDocs.search_docs",
+        "skills.trustless-work.trustless-work-dev",
+        "scout.searchHackathonBuilds",
+        "scout.searchProjects"
+      ]
+    },
+    {
+      "id": "q-defi-stellarx-what-is",
+      "base": [
+        "scout.searchHackathonBuilds",
+        "scout.listSkills",
+        "lumenloop.search_content_semantic",
+        "lumenloop.search_directory",
+        "stellarDocs.search_soroban_contract_docs"
+      ],
+      "head": [
+        "scout.searchHackathonBuilds",
+        "scout.listSkills",
+        "lumenloop.search_content_semantic",
+        "lumenloop.search_directory",
+        "skills.trustless-work.trustless-work-dev"
+      ]
+    },
+    {
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "base": [
+        "scout.searchResearch",
+        "scout.searchProjects",
+        "scout.getRfps",
+        "scout.listContracts",
+        "scout.getHackathons"
+      ],
+      "head": [
+        "scout.searchResearch",
+        "scout.searchProjects",
+        "scout.getRfps",
+        "scout.listContracts",
+        "skills.trustless-work.trustless-work-dev"
+      ]
+    },
+    {
+      "id": "q-org-sdf-mandate-buckets",
+      "base": [
+        "stellarDocs.search_docs",
+        "scout.searchResearch",
+        "scout.getPeople",
+        "scout.searchProjects",
+        "stellarDocs.search_doc_titles"
+      ],
+      "head": [
+        "stellarDocs.search_docs",
+        "scout.searchResearch",
+        "skills.trustless-work.trustless-work-dev",
+        "scout.getPeople",
+        "scout.searchProjects"
+      ]
+    },
+    {
+      "id": "q-soroban-cli-bindings",
+      "base": [
+        "stellarDocs.search_soroban_contract_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "stellarDocs.search_docs",
+        "scout.listContracts",
+        "scout.getPartners"
+      ],
+      "head": [
+        "stellarDocs.search_soroban_contract_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "scout.listContracts",
+        "scout.getPartners",
+        "skills.trustless-work.trustless-work-dev"
+      ]
+    }
+  ]
+}

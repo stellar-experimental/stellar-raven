@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-09-16T18:22:12.321Z",
+  "checks": [
+    {
+      "id": "sd-040",
+      "sourceStatus": 200,
+      "indexComplete": true,
+      "indexSections": 7,
+      "anchor": "xdr-conversions-in-smart-contracts",
+      "oldUnwrapCount": 0,
+      "conversionErrorCount": 2,
+      "panicMarkerCount": 1
+    },
+    {
+      "id": "sd-041",
+      "sourceStatus": 200,
+      "indexComplete": true,
+      "indexSections": 15,
+      "anchor": "",
+      "oldLeadCount": 0,
+      "correctedLeadCount": 1,
+      "supportBothCount": 1
+    },
+    {
+      "id": "sd-044",
+      "sourceStatuses": [200, 200, 200],
+      "pageIndexChecks": [
+        {
+          "path": "/docs/tools/quickstart/advanced-usage/operation-modes",
+          "complete": true,
+          "sections": 5,
+          "anchor": "manual-close-mode"
+        },
+        {
+          "path": "/docs/tools/quickstart/network-modes",
+          "complete": true,
+          "sections": 7,
+          "anchor": "local"
+        },
+        {
+          "path": "/docs/tools/quickstart/advanced-usage/run-command-examples",
+          "complete": false,
+          "result": "soft-empty"
+        }
+      ],
+      "searchQuery": "enable-core-manual-close quickstart manual close ledger",
+      "searchHits": 2,
+      "relevantSearchHits": 2,
+      "sourceRunExampleHasFlag": true,
+      "sourceRunExampleHasPort11626": true
+    },
+    {
+      "id": "sd-045",
+      "sourceStatus": 200,
+      "indexComplete": true,
+      "indexSections": 35,
+      "anchor": "setup-https-on-localhost",
+      "oldHttpsPhraseCount": 0,
+      "localhostCount": 1,
+      "loopbackCount": 1,
+      "w3cCount": 1
+    },
+    {
+      "id": "sd-051",
+      "sourceStatus": 200,
+      "indexComplete": true,
+      "indexSections": 159,
+      "phase0Anchor": "protocol-20-soroban-phase-0-mainnet-february-20-2024",
+      "activationMarkerCount": 1,
+      "core2024MarkerCount": 1,
+      "mainnetEditionCount": 0,
+      "oldAnchorRepositoryMatches": 0
+    }
+  ]
+}

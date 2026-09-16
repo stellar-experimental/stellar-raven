@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-09-16 19:28:03 UTC",
+  "endpoint": "https://raven.stellar.org/mcp",
+  "method": "mcp__stellar_raven__execute",
+  "code": "codemode.catalog({ compact: true }); project counts and source IDs only",
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"generatedAt\":\"2026-09-09T16:34:39Z\",\"count\":253,\"counts\":{\"lumenloop:operation\":18,\"scout:operation\":30,\"skills:skill\":19,\"skills:skill-section\":174,\"stellarDocs:operation\":12},\"trustless\":[],\"rwa\":[\"skills.lumenloop.stellar-builder-quickstart#worked-example-an-rwa-tokenization-marketplace-on-stellar\",\"skills.lumenloop.stellar-ecosystem-digest#worked-example-what-s-new-in-stellar-rwa-in-the-last-30-days\",\"skills.lumenloop.stellar-ecosystem-scout#worked-example-mapping-rwa-tokenization\"]}"
+      }
+    ]
+  }
+}

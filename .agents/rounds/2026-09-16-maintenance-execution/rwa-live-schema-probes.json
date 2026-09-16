@@ -1,0 +1,166 @@
+{
+  "observedAt": "2026-09-16T20:06:02.644082+00:00",
+  "scope": "Public read-only schema probes; no money-moving action and no source acceptance.",
+  "rows": [
+    {
+      "state": "live",
+      "url": "https://stellarlight.xyz/api/rwa?limit=1&state=live",
+      "status": 200,
+      "rootKeys": [
+        "meta",
+        "assets"
+      ],
+      "arrays": {
+        "assets": {
+          "returned": 1,
+          "fields": [
+            "assetClass",
+            "basisNote",
+            "code",
+            "contract",
+            "controls",
+            "controlsBasis",
+            "decimals",
+            "evidenceUrl",
+            "horizonNote",
+            "id",
+            "issuer",
+            "issuerEntity",
+            "kind",
+            "launchedAt",
+            "measured",
+            "name",
+            "network",
+            "pairedWith",
+            "productKind",
+            "projectSlug",
+            "rwaxyzHolders",
+            "rwaxyzListed",
+            "rwaxyzValueUsd",
+            "state",
+            "symbol",
+            "tomlStatus",
+            "totalSupply",
+            "verificationLevel",
+            "verifiedAt"
+          ],
+          "states": [
+            "live"
+          ]
+        }
+      }
+    },
+    {
+      "state": "issued-single-holder",
+      "url": "https://stellarlight.xyz/api/rwa?limit=1&state=issued-single-holder",
+      "status": 200,
+      "rootKeys": [
+        "meta",
+        "assets"
+      ],
+      "arrays": {
+        "assets": {
+          "returned": 1,
+          "fields": [
+            "assetClass",
+            "basisNote",
+            "code",
+            "contract",
+            "controls",
+            "controlsBasis",
+            "decimals",
+            "evidenceUrl",
+            "horizonNote",
+            "id",
+            "issuer",
+            "issuerEntity",
+            "kind",
+            "launchedAt",
+            "measured",
+            "name",
+            "network",
+            "pairedWith",
+            "productKind",
+            "projectSlug",
+            "rwaxyzHolders",
+            "rwaxyzListed",
+            "rwaxyzValueUsd",
+            "state",
+            "symbol",
+            "tomlStatus",
+            "totalSupply",
+            "verificationLevel",
+            "verifiedAt"
+          ],
+          "states": [
+            "issued-single-holder"
+          ]
+        }
+      }
+    },
+    {
+      "state": "deployed-no-supply",
+      "url": "https://stellarlight.xyz/api/rwa?limit=1&state=deployed-no-supply",
+      "status": 200,
+      "rootKeys": [
+        "meta",
+        "assets"
+      ],
+      "arrays": {
+        "assets": {
+          "returned": 1,
+          "fields": [
+            "assetClass",
+            "basisNote",
+            "code",
+            "contract",
+            "controls",
+            "controlsBasis",
+            "decimals",
+            "evidenceUrl",
+            "horizonNote",
+            "id",
+            "issuer",
+            "issuerEntity",
+            "kind",
+            "launchedAt",
+            "measured",
+            "name",
+            "network",
+            "pairedWith",
+            "productKind",
+            "projectSlug",
+            "rwaxyzHolders",
+            "rwaxyzListed",
+            "rwaxyzValueUsd",
+            "state",
+            "symbol",
+            "tomlStatus",
+            "totalSupply",
+            "verificationLevel",
+            "verifiedAt"
+          ],
+          "states": [
+            "deployed-no-supply"
+          ]
+        }
+      }
+    },
+    {
+      "state": "not-found",
+      "url": "https://stellarlight.xyz/api/rwa?limit=1&state=not-found",
+      "status": 200,
+      "rootKeys": [
+        "meta",
+        "assets"
+      ],
+      "arrays": {
+        "assets": {
+          "returned": 0,
+          "fields": [],
+          "states": []
+        }
+      }
+    }
+  ]
+}

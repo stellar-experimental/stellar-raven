@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://developers.stellar.org/docs/tools/cli/cookbook/contract-assets",
+    "error": "HTTP Error 403: Forbidden",
+    "curlRecheck": {
+      "userAgent": "Mozilla/5.0",
+      "status": 404,
+      "pageNotFound": true,
+      "hasAssetCommand": false
+    }
+  },
+  {
+    "url": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+    "error": "HTTP Error 403: Forbidden",
+    "curlRecheck": {
+      "userAgent": "Mozilla/5.0",
+      "status": 200,
+      "pageNotFound": false,
+      "hasAssetCommand": true
+    }
+  }
+]

@@ -1,0 +1,92 @@
+{
+  "asOf": "2026-09-16",
+  "scheduledCount": 150,
+  "overdue": [],
+  "next28Days": [
+    {
+      "id": "q-comp-yieldblox-oracle-incident",
+      "due": "2026-10-08",
+      "freshness": "scheduled",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-yieldblox-oracle-incident.json"
+    },
+    {
+      "id": "q-edge-closed-world-builder-directory-miss",
+      "due": "2026-10-09",
+      "freshness": "scheduled",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-closed-world-builder-directory-miss.json"
+    },
+    {
+      "id": "q-hist-meridian-2026-corrected-venue",
+      "due": "2026-10-08",
+      "freshness": "scheduled",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-meridian-2026-corrected-venue.json"
+    },
+    {
+      "id": "q-hist-x402-stellar-announcement",
+      "due": "2026-10-08",
+      "freshness": "scheduled",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-x402-stellar-announcement.json"
+    },
+    {
+      "id": "q-builder-content-by-person",
+      "due": "2026-10-07",
+      "freshness": "scheduled",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-content-by-person.json"
+    },
+    {
+      "id": "q-ti-stellar-lab-usage-and-new-ui",
+      "due": "2026-10-01",
+      "freshness": "scheduled",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-stellar-lab-usage-and-new-ui.json"
+    }
+  ],
+  "dateCounts": {
+    "2026-10-01": 1,
+    "2026-10-07": 1,
+    "2026-10-08": 3,
+    "2026-10-09": 1,
+    "2026-10-15": 6,
+    "2026-10-20": 1,
+    "2026-10-22": 4,
+    "2026-10-27": 1,
+    "2026-10-29": 2,
+    "2026-11-01": 5,
+    "2026-11-05": 6,
+    "2026-11-09": 1,
+    "2026-11-10": 1,
+    "2026-11-12": 5,
+    "2026-11-13": 1,
+    "2026-11-15": 3,
+    "2026-11-19": 9,
+    "2026-11-20": 1,
+    "2026-11-24": 1,
+    "2026-11-26": 7,
+    "2026-11-29": 1,
+    "2026-11-30": 1,
+    "2026-12-01": 4,
+    "2026-12-03": 5,
+    "2026-12-10": 8,
+    "2026-12-15": 1,
+    "2026-12-17": 6,
+    "2026-12-24": 6,
+    "2026-12-31": 6,
+    "2027-01-07": 5,
+    "2027-01-14": 5,
+    "2027-01-19": 1,
+    "2027-01-21": 3,
+    "2027-01-28": 4,
+    "2027-02-04": 6,
+    "2027-02-11": 4,
+    "2027-02-18": 3,
+    "2027-02-21": 1,
+    "2027-02-25": 4,
+    "2027-03-04": 4,
+    "2027-03-11": 4,
+    "2027-03-18": 3,
+    "2027-03-25": 1,
+    "2027-03-31": 1,
+    "2027-04-01": 1,
+    "2027-04-08": 1,
+    "2027-04-15": 1
+  }
+}

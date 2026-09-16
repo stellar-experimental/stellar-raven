@@ -1,0 +1,117 @@
+{
+  "id": "q-rwa-registry-state-verification",
+  "question": "Using Scout, how should I verify whether a tokenized real-world asset is live or only issued to one holder?",
+  "surface": [
+    "scout.getRwaAssets"
+  ],
+  "golden": {
+    "answer": "Call `scout.getRwaAssets` with the relevant `state` filter. A `live` row is minted with at least two holders. An `issued-single-holder` row is minted, but it has one holder and no secondary activity. Do not describe that second state as a live market. Cite each row's `evidenceUrl`, `verifiedAt`, and `verificationLevel`. Use `measured` only when present, and date it with `measuredAt`. Treat an absent registry row as untracked, not as proof that the asset does not exist. Identify a classic asset by code and issuer. Identify a Soroban token by contract ID.",
+    "keyFacts": [
+      "Calls scout.getRwaAssets with a state filter.",
+      "Treats issued-single-holder as issued, but not as a live market.",
+      "Uses evidenceUrl, verifiedAt, and verificationLevel.",
+      "Treats an absent registry row as untracked, not as proof of absence.",
+      "Uses code plus issuer, or a contract ID, instead of a ticker alone."
+    ],
+    "avoid": [
+      "Do NOT treat issued-single-holder as live distribution.",
+      "Do NOT treat an absent registry row as proof that an asset is absent from Stellar.",
+      "Do NOT quote current registry counts, asset values, or holder counts as stable facts.",
+      "Do NOT identify a classic asset by ticker alone."
+    ],
+    "notes": "This proposal grades the stable read contract. It does not grade current assets, registry size, prices, values, or holder counts. The case must remain outside the repository corpus until Scout 1.9.52 and scout.getRwaAssets pass source, routing, lifecycle, and independent review gates."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-09-16",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellarlight.xyz/api/openapi.json",
+        "note": "Public Scout 1.9.52 operation and schema contract."
+      },
+      {
+        "class": "A",
+        "ref": "https://github.com/Stellar-Light/stellarlight/blob/76dfa696b790c321a29aa271d3831735a90e3b0d/public/skills/references/api-reference.md",
+        "note": "Pinned public guide candidate. The Raven pin remains unaccepted."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Stellar-Light/stellarlight/blob/76dfa696b790c321a29aa271d3831735a90e3b0d/src/app/api/rwa/route.ts",
+        "note": "The handler imports the same state, level, and kind arrays as OpenAPI."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rwa",
+        "note": "Bounded public GET probes confirmed state filters and error behavior."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The RWA operation distinguishes live and issued-single-holder states.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/api/openapi.json",
+            "observedAt": "2026-09-16",
+            "note": "The request and response schemas carry the same four state values."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/blob/76dfa696b790c321a29aa271d3831735a90e3b0d/src/app/api/rwa/route.ts",
+            "observedAt": "2026-09-16",
+            "note": "The handler validates and filters with the shared RWA_STATES array."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rwa?state=issued-single-holder&limit=1",
+            "observedAt": "2026-09-16",
+            "note": "The public read returned the requested state without retaining asset identity."
+          }
+        ]
+      },
+      {
+        "claim": "Registry absence is untracked coverage, not proof of real-world absence.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/api/openapi.json",
+            "observedAt": "2026-09-16",
+            "note": "The operation description defines the source as a curated registry."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/blob/76dfa696b790c321a29aa271d3831735a90e3b0d/src/app/api/rwa/route.ts",
+            "observedAt": "2026-09-16",
+            "note": "The handler methodology says absence means untracked."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-09-16",
+      "by": "Sol high Scout 1.9.52 source review; independent case review pending",
+      "evidence": [
+        "/tmp/raven-execution-2026-09-16/scout-runtime-golden-impact.md",
+        "/tmp/raven-execution-2026-09-16/scout-runtime-audit-evidence/runtime-probes.json",
+        "https://github.com/Stellar-Light/stellarlight/commit/76dfa696b790c321a29aa271d3831735a90e3b0d"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Preserve structured routing intent across extraction caps and gate tiers, acceptance check 8"
+      ]
+    },
+    "origin": "Drafted during the 2026-09-16 Scout 1.9.52 runtime and golden-impact audit."
+  }
+}
