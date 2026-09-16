@@ -28,3 +28,11 @@ This isolated body check does not accept the pin.
 
 After review, the coordinator corrected one comment to name the host exposure policy.
 No executable code changed after review.
+
+## Combined verification
+
+The filter was combined with the accepted PR #157 implementation after its independent review.
+Typecheck, 2,091 unit tests, build, and the unchanged routing gate passed.
+The catalog content and its accepted fingerprint did not change.
+The merged PR #157 tree at `58954b6759b8d5a1b7a743e5d2d96893b4c6151f` exactly matches tested commit `cd87615f`.
+The filter contains no later source pin or operation exposure change.
