@@ -17,9 +17,9 @@
  * never a partial sentence.
  *
  * Scout skill bodies can also describe operations outside Raven's manifest.
- * The scrub removes a complete Markdown section, table row, or list item that
- * names any excluded path. The path set comes from the same operation records
- * that filter the manifest. Unstructured prose fails closed.
+ * The scrub removes a complete Markdown section, table row, blockquote, or list item that
+ * names any excluded path. The host exposure policy owns the path set.
+ * Unstructured prose fails closed.
  *
  * Fail-loud drift guard: if upstream introduces a non-exposed reference
  * outside a removable Markdown block, the scrub throws instead of emitting
@@ -70,8 +70,12 @@ export function scrubRetiredSkillRefs(text: string, context: string): string {
   return scrubbed;
 }
 
+const excludedScoutPathPatterns = [...EXCLUDED_SCOUT_PATHS].map(
+  (path) => new RegExp(`${path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\w/-])`)
+);
+
 function containsExcludedScoutPath(text: string): boolean {
-  return [...EXCLUDED_SCOUT_PATHS].some((path) => text.includes(path));
+  return excludedScoutPathPatterns.some((pattern) => pattern.test(text));
 }
 
 function headingDepth(line: string): number | undefined {
@@ -115,6 +119,18 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
   for (let i = 0; i < withoutSections.length; i++) {
     const line = withoutSections[i] ?? "";
     if (/^\s*\|.*\|\s*$/.test(line) && containsExcludedScoutPath(line)) continue;
+
+    if (/^\s*>/.test(line)) {
+      const quote = [line];
+      let j = i + 1;
+      while (j < withoutSections.length && /^\s*>/.test(withoutSections[j] ?? "")) {
+        quote.push(withoutSections[j] ?? "");
+        j += 1;
+      }
+      if (!containsExcludedScoutPath(quote.join("\n"))) out.push(...quote);
+      i = j - 1;
+      continue;
+    }
 
     if (!listItemStart(line)) {
       out.push(line);

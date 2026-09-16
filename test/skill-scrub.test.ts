@@ -60,6 +60,43 @@ describe("skill-body operation exposure scrub", () => {
     ).toThrow("survives outside a removable Markdown block");
   });
 
+  it("removes an unavailable collection's whole blockquote and retains exposed child paths", () => {
+    const text = [
+      "## GET /api/repos/explain",
+      "Read the explanation.",
+      "",
+      "> Two repository views.",
+      "> `/api/repos` is the stored collection.",
+      "> `/api/repos/search` is the curated view.",
+      "",
+      "## GET /api/repos/search",
+      "Keep the search documentation.",
+      "",
+      "> Keep this separate quotation."
+    ].join("\n");
+    const scrubbed = scrubExcludedScoutOperationRefs(text, "collection quotation");
+    expect(scrubbed).toContain("## GET /api/repos/explain\nRead the explanation.");
+    expect(scrubbed).toContain("## GET /api/repos/search\nKeep the search documentation.");
+    expect(scrubbed).toContain("> Keep this separate quotation.");
+    expect(scrubbed).not.toContain("Two repository views.");
+    expect(scrubbed).not.toContain("stored collection");
+    expect(scrubbed).not.toContain("curated view");
+  });
+
+  it("matches a collection path with query parameters without matching longer path names", () => {
+    const text = [
+      "- Remove `/api/repos?limit=1`.",
+      "- Keep `/api/repos/search`.",
+      "- Keep `/api/repos-extra`.",
+      "- Keep `/api/repository`."
+    ].join("\n");
+    const scrubbed = scrubExcludedScoutOperationRefs(text, "path boundaries");
+    expect(scrubbed).not.toContain("Remove");
+    expect(scrubbed).toContain("/api/repos/search");
+    expect(scrubbed).toContain("/api/repos-extra");
+    expect(scrubbed).toContain("/api/repository");
+  });
+
   it("removes excluded paths from every selected Scout file", async () => {
     const manifest = JSON.parse(
       readFileSync(join(ROOT, "ecosystem-skills", "MANIFEST.json"), "utf8")
@@ -71,8 +108,9 @@ describe("skill-body operation exposure scrub", () => {
     expect(selected.size).toBeGreaterThan(0);
     for (const [key, file] of selected) {
       const scrubbed = scrubNonExposedRefs(file.text, key);
+      const mentionedPaths = scrubbed.match(/\/api\/[\w/{}/-]+/g) ?? [];
       for (const path of EXCLUDED_SCOUT_PATHS) {
-        expect(scrubbed, `${key} retains ${path}`).not.toContain(path);
+        expect(mentionedPaths, `${key} retains ${path}`).not.toContain(path);
       }
     }
   });

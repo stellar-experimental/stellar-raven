@@ -16,12 +16,30 @@ import { fileURLToPath } from "node:url";
 import {
   attachRunnableSkills,
   assertNoNonExposedRefs,
-  assertBuildAuthorityIdsResolve
+  assertBuildAuthorityIdsResolve,
+  assertScoutExclusionsResolve
 } from "../scripts/build-catalog.mjs";
 import { RUNNERS } from "../src/skills/runners/index.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIGEST = "skills.lumenloop.stellar-ecosystem-digest";
+
+describe("Scout exposure data matches the source contract", () => {
+  const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+
+  it("accepts the current contract and still rejects a removed excluded operation", () => {
+    expect(() => assertScoutExclusionsResolve(inventory.openapi)).not.toThrow();
+    const changed = structuredClone(inventory.openapi);
+    delete changed.paths["/api/feedback"].post;
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("no longer present");
+  });
+
+  it("requires an exposure decision when a skill-only collection enters OpenAPI", () => {
+    const changed = structuredClone(inventory.openapi);
+    changed.paths["/api/repos"] = { get: { operationId: "listRepos" } };
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("Previously unlisted Scout paths");
+  });
+});
 
 /**
  * The committed manifest's entries with the runnable attachment UNDONE —

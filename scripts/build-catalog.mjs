@@ -315,7 +315,7 @@ function stellarDocsTitleExtras(entries, titlesSnapshot) {
 // Drift guard: exclusions are exact-match data, so an upstream rename/removal
 // must break the build (stale exclusion = a write endpoint may have moved),
 // not silently stop matching.
-function assertScoutExclusionsResolve(openapi) {
+export function assertScoutExclusionsResolve(openapi) {
   const present = new Set();
   for (const [path, pathItem] of Object.entries(openapi.paths)) {
     for (const method of HTTP_METHODS) {
@@ -327,6 +327,13 @@ function assertScoutExclusionsResolve(openapi) {
     throw new Error(
       `EXCLUDED_SCOUT_OPS no longer present in the scout OpenAPI: ${stale.join(", ")}. ` +
         `Upstream renamed or removed them — reconcile the exclusion list in build-catalog.mjs.`
+    );
+  }
+  const newlyListed = [...SCOUT_PATHS_ABSENT_FROM_SPEC].filter((path) => path in openapi.paths);
+  if (newlyListed.length > 0) {
+    throw new Error(
+      `Previously unlisted Scout paths appeared in OpenAPI: ${newlyListed.join(", ")}. ` +
+        `Review their exposure and reconcile SCOUT_PATHS_ABSENT_FROM_SPEC.`
     );
   }
 }
@@ -431,6 +438,7 @@ import {
 import {
   EXCLUDED_LUMENLOOP_OPS,
   EXCLUDED_SCOUT_OPS,
+  SCOUT_PATHS_ABSENT_FROM_SPEC,
   RETIRED_ONBOARDING_SKILLS,
   lumenloopOpExcluded,
   scrubNonExposedRefs

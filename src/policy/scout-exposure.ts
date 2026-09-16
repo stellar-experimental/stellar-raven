@@ -22,6 +22,12 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   "GET /api/verify"
 ]);
 
-export const EXCLUDED_SCOUT_PATHS = new Set(
-  [...EXCLUDED_SCOUT_OPS].map((operation) => operation.split(" ")[1]!)
-);
+// Public skill prose also describes this collection, but Scout's OpenAPI does
+// not list it. The catalog builder checks that absence so a future addition
+// requires a new exposure decision instead of silently changing this policy.
+export const SCOUT_PATHS_ABSENT_FROM_SPEC = new Set(["/api/repos"]);
+
+export const EXCLUDED_SCOUT_PATHS = new Set([
+  ...[...EXCLUDED_SCOUT_OPS].map((operation) => operation.split(" ")[1]!),
+  ...SCOUT_PATHS_ABSENT_FROM_SPEC
+]);
