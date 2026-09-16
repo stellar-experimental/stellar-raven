@@ -17,6 +17,7 @@
 #   openzeppelin-stellar github  OpenZeppelin/openzeppelin-skills  (3 Stellar skills, cherry-picked)
 #   stellar-dev          github  stellar/stellar-dev-skill         (7 SDF skills)
 #   stellar-light        github  Stellar-Light/stellar-scout       (1 skill, repo root)
+#   trustless-work       github  Trustless-Work/trustlesswork-skill (1 skill dir at the repo root, cherry-picked)
 #
 # Public sources ONLY, no credentials. The lumenloop-api partner source (6
 # partner skills from the private lumenloop-api-skills repo, fetched via the
@@ -76,19 +77,19 @@ NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 # pin_github <id> <owner> <repo> <src_path> <ref> [skill ...]
 #
 #   src_path  ""            -> the repo root is ONE skill (named by the 6th arg)
+#             "."           -> each child dir of the repo ROOT is a skill
 #             "skills" etc. -> each child dir under it is a skill
-#   skill...  optional allow-list of skill names to cherry-pick (subdir mode)
+#   skill...  optional allow-list of skill names to cherry-pick (subdir/"." mode)
 #             OR, when src_path is "", the single skill name for the repo root.
 # Records every *.md blob under the selected skill(s) at the pinned commit.
 # ---------------------------------------------------------------------------
 pin_github() {
   local id=$1 owner=$2 repo=$3 src_path=$4 ref=$5; shift 5
   local pick=("$@")
-  local prefix=""; [ -n "$src_path" ] && prefix="$src_path/"
   echo "Pinning ${id}: ${owner}/${repo}${src_path:+/$src_path} @ ${ref} ..."
 
   local cq="repos/${owner}/${repo}/commits?sha=${ref}&per_page=1"
-  [ -n "$src_path" ] && cq="${cq}&path=${src_path}"
+  [ -n "$src_path" ] && [ "$src_path" != "." ] && cq="${cq}&path=${src_path}"
   local commit commit_date
   commit="$(gh api "$cq" --jq '.[0].sha')"
   commit_date="$(gh api "$cq" --jq '.[0].commit.committer.date')"
@@ -99,27 +100,10 @@ pin_github() {
   # Per-file rows: { skill, relpath (within the skill), size, sha, src (raw path) }.
   local pick_json files
   pick_json="$(printf '%s\n' ${pick[@]+"${pick[@]}"} | jq -R . | jq -s 'map(select(length>0))')"
-  if [ -z "$src_path" ]; then
-    # Root mode: the whole repo is one skill; its name is the single pick entry.
-    local root_skill; root_skill="$(echo "$pick_json" | jq -r '.[0]')"
-    files="$(echo "$tree" | jq --arg s "$root_skill" '
-      [ .tree[]
-        | select(.type=="blob")
-        | select(.path|endswith(".md"))
-        | { skill: $s, relpath: .path, size: .size, sha: .sha, src: .path } ]
-      | sort_by(.relpath)')"
-  else
-    files="$(echo "$tree" | jq --arg p "$prefix" --argjson pick "$pick_json" '
-      [ .tree[]
-        | select(.type=="blob")
-        | select(.path|startswith($p))
-        | select(.path|endswith(".md"))
-        | { rel: (.path|ltrimstr($p)), size: .size, sha: .sha, src: .path }
-        | . + { skill: (.rel|split("/")[0]) }
-        | select(($pick|length)==0 or (.skill as $s | $pick|index($s)))
-        | { skill, relpath: (.rel|sub("^[^/]+/";"")), size, sha, src } ]
-      | sort_by(.skill+"/"+.relpath)')"
-  fi
+  # Directory-source modes accept Markdown only below a child skill directory.
+  # Root README/LICENSE files never become skills, including without an allow-list.
+  files="$(printf '%s' "$tree" | node "$SCRIPT_DIR/../scripts/lib/skill-source-selection.mjs" \
+    --source-path "$src_path" --picks-json "$pick_json")"
 
   # Record which upstream LICENSE/NOTICE files exist at the pinned commit.
   # Names only — nothing is downloaded (THIRD-PARTY-NOTICES.md maps each source
@@ -145,7 +129,7 @@ pin_github() {
     --argjson skills "$skills_json" --argjson license_files "$license_files" '
     { id:$id, type:"github", owner:$owner, repo:$repo, path:$path, ref:$ref,
       commit:$commit, commit_date:$commit_date,
-      url:("https://github.com/"+$owner+"/"+$repo+"/tree/"+$commit+($path|if .=="" then "" else "/"+. end)),
+      url:("https://github.com/"+$owner+"/"+$repo+"/tree/"+$commit+($path|if .=="" or .=="." then "" else "/"+. end)),
       license_files:$license_files,
       skills:$skills }' > "$SRC_DIR/$id.json"
 
@@ -188,6 +172,7 @@ pin_github openzeppelin-stellar OpenZeppelin openzeppelin-skills skills main \
             setup-stellar-contracts upgrade-stellar-contracts develop-secure-contracts
 pin_github stellar-dev          stellar     stellar-dev-skill   skills main
 pin_github stellar-light        Stellar-Light stellar-scout     ""     main stellar-scout
+pin_github trustless-work       Trustless-Work trustlesswork-skill "." main trustless-work-dev
 
 fetch_catalog
 

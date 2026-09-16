@@ -87,6 +87,9 @@ async function latestCommit(owner, repo, ref, path) {
 
 const short = (sha) => (sha ? String(sha).slice(0, 12) : "?");
 
+/** The skill-dirs parent as a GitHub API path — "" for `path: "."` (dirs at the repo root). */
+const dirPrefix = (source) => (source.path === "." ? "" : source.path);
+
 /**
  * Upstream skill directories that are neither pinned nor explicitly excluded.
  *
@@ -110,9 +113,10 @@ async function unclassifiedSkillDirs(source, unpinnedUpstream) {
   const pinned = new Set((source.skills ?? []).map((skill) => skill.name));
   const excluded = new Set(Object.keys(unpinnedUpstream[source.id] ?? {}));
   if (excluded.size === 0) return []; // not a cherry-picked source: update.sh pins every dir
+  const parent = dirPrefix(source);
   const tree = await fetchJson(
-    `https://api.github.com/repos/${source.owner}/${source.repo}/contents/${source.path}`,
-    { headers: githubHeaders(), label: `github ${source.owner}/${source.repo}/${source.path} contents` },
+    `https://api.github.com/repos/${source.owner}/${source.repo}/contents${parent ? `/${parent}` : ""}`,
+    { headers: githubHeaders(), label: `github ${source.owner}/${source.repo}${parent ? `/${parent}` : ""} contents` },
   );
   return (Array.isArray(tree) ? tree : [])
     .filter((entry) => entry.type === "dir" && !pinned.has(entry.name) && !excluded.has(entry.name))
@@ -122,7 +126,7 @@ async function unclassifiedSkillDirs(source, unpinnedUpstream) {
 
 async function checkGithubSource(source, unpinnedUpstream) {
   const [latest, unclassified] = await Promise.all([
-    latestCommit(source.owner, source.repo, source.ref, source.path),
+    latestCommit(source.owner, source.repo, source.ref, dirPrefix(source)),
     unclassifiedSkillDirs(source, unpinnedUpstream),
   ]);
 
@@ -162,7 +166,7 @@ async function checkGithubSource(source, unpinnedUpstream) {
           source.owner,
           source.repo,
           source.ref,
-          `${source.path}/${skill.name}`,
+          dirPrefix(source) ? `${dirPrefix(source)}/${skill.name}` : skill.name,
         );
         if (
           skillLatest.sha !== source.commit &&

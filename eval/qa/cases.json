@@ -1,12 +1,12 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "62fde4e69d9ad82e6fb4ccf04b5b07752230abf8be3cc670ad1a01acad1985b9",
+  "corpusContentSha256": "698629aa42735a85492c7ac264648f96e5da8d69032933cfd3f844a08f488d26",
   "counts": {
-    "total": 500,
+    "total": 501,
     "byCategory": {
       "assets-anchors-seps": 47,
-      "compliance-rwa-payments": 39,
+      "compliance-rwa-payments": 40,
       "defi-ecosystem": 58,
       "edge-behavior": 48,
       "history-org-tokenomics": 20,
@@ -20,12 +20,12 @@
       "lumenloop": 63,
       "none": 22,
       "scout": 143,
-      "skills": 33,
+      "skills": 34,
       "stellarDocs": 239
     },
     "byFreshness": {
       "live": 155,
-      "scheduled": 147,
+      "scheduled": 148,
       "stable": 198
     },
     "traps": {
@@ -40,10 +40,10 @@
       "speculation": 2
     },
     "byLifecycleState": {
-      "active": 500
+      "active": 501
     },
     "byReviewState": {
-      "none": 500
+      "none": 501
     }
   },
   "cases": [
@@ -57091,6 +57091,195 @@
           ]
         },
         "origin": "boxy sl-code-zk-xray-games-top"
+      }
+    },
+    {
+      "id": "q-tw-escrow-api-auth-custody",
+      "question": "How do requests to the Trustless Work escrow API authenticate, and who signs and submits the escrow transactions it builds?",
+      "surface": [
+        "skills.trustless-work.trustless-work-dev"
+      ],
+      "golden": {
+        "answer": "As of 2026-09-16, authentication depends on the Trustless Work API surface. The pinned skill says to send `x-api-key` on every request. The current Core API documentation and JavaScript SDK also permit a wallet-session token in `Authorization: Bearer <jwt>`. For state-changing escrow calls, the API builds an unsigned XDR. The caller's wallet signs that XDR locally. The client sends the signed XDR through the send-transaction helper for that API version. The pinned V1 skill uses `/helper/send-transaction`; the pinned V2 skill and current Core API use `/stellar/send-transaction`. The API does not sign transactions for the caller.",
+        "keyFacts": [
+          "The pinned skill uses the x-api-key header.",
+          "State-changing escrow calls return unsigned XDR.",
+          "The caller's wallet signs the XDR locally.",
+          "The client submits the signed XDR through the documented send-transaction helper for the API version."
+        ],
+        "avoid": [
+          "All current Trustless Work API requests must use x-api-key, and bearer authentication is never accepted.",
+          "The Trustless Work API signs transactions for the caller or requires the caller's Stellar secret key."
+        ],
+        "notes": "Sources disagree about universal API-key authentication. The pinned Trustless Work skill says every request uses x-api-key. The current official Core API documentation and SDK allow x-api-key or a wallet-session bearer token. Naming x-api-key as a valid documented method satisfies the authentication part unless the answer falsely claims exclusivity. Bearer support is not a required key fact. Accept either documented submit path when the answer scopes it to the applicable API version. The path itself is not a required key fact."
+      },
+      "tags": {
+        "category": "compliance-rwa-payments",
+        "service": "skills",
+        "freshness": "scheduled"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none",
+          "activation": {
+            "date": "2026-09-16",
+            "author": "Sol high",
+            "reviewer": "Grok high",
+            "ledger": ".agents/rounds/2026-09-16-trustless-work-acceptance.md",
+            "evidence": [
+              ".agents/rounds/2026-09-16-trustless-work/independent-review.md",
+              ".agents/rounds/2026-09-16-trustless-work/source-review.md",
+              "ecosystem-skills/PIN-REVIEW.md records accepted pin 634f32bd4be6769b0cae52e72db4899d5f5a069c and selection sel:7c6d71f8eef2."
+            ]
+          }
+        },
+        "domain": "real-world",
+        "status": "disputed",
+        "asOf": "2026-09-16",
+        "reverifyBy": "2026-12-16",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/4121f92593b74643fc9e16b3d7d13cdd0a620914/src/transport/http-transport.ts"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Trustless-Work/trustlesswork-backoffice/blob/83e8cddfe3473f3e4bdabdd8dfd9c506a4fb3135/src/features/escrows/hooks/useSignAndSend.ts"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/constitution.md"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/core-concepts.md"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The pinned skill requires x-api-key on every request, while the current Core API accepts either x-api-key or a wallet-session bearer token.",
+            "verdict": "disputed",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/constitution.md",
+                "observedAt": "2026-09-16",
+                "note": "The pinned skill says every request uses x-api-key."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+                "observedAt": "2026-09-16",
+                "note": "The current Core API documents x-api-key and Authorization: Bearer <jwt>."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/4121f92593b74643fc9e16b3d7d13cdd0a620914/src/transport/http-transport.ts",
+                "observedAt": "2026-09-16",
+                "note": "The SDK emits x-api-key when given an API key and Authorization: Bearer when given an access token."
+              }
+            ]
+          },
+          {
+            "claim": "State-changing escrow calls return unsigned XDR, the caller's wallet signs it locally, and the client sends the signed XDR for network submission.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
+                "observedAt": "2026-09-16",
+                "note": "The documented flow builds unsignedTransaction, signs it with the user wallet, and submits signedXdr through /stellar/send-transaction."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Trustless-Work/trustlesswork-backoffice/blob/83e8cddfe3473f3e4bdabdd8dfd9c506a4fb3135/src/features/escrows/hooks/useSignAndSend.ts",
+                "observedAt": "2026-09-16",
+                "note": "The client builds a transaction, signs buildResult.unsignedXdr through the wallet kit, and sends the signed XDR."
+              }
+            ]
+          },
+          {
+            "claim": "Bearer authentication is never accepted by the current Trustless Work Core API.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+                "observedAt": "2026-09-16"
+              }
+            ]
+          },
+          {
+            "claim": "The Trustless Work API signs state-changing transactions for the caller.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+                "observedAt": "2026-09-16",
+                "note": "The current Core API documentation states that the API never signs and the caller's wallet signs locally."
+              }
+            ]
+          },
+          {
+            "claim": "The pinned V1 skill submits through /helper/send-transaction; the pinned V2 skill and current Core API use /stellar/send-transaction.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/core-concepts.md",
+                "observedAt": "2026-09-16",
+                "note": "Build/sign/submit flow names the V1 helper path."
+              },
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md",
+                "observedAt": "2026-09-16",
+                "note": "The V2 source explicitly distinguishes its stellar route from the V1 helper route."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
+                "observedAt": "2026-09-16",
+                "note": "Current Core API documents the stellar submit path."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-09-16",
+          "by": "Sol high proposal author; Astra coordinator reconciled independent Grok high submit-path finding",
+          "evidence": [
+            "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/constitution.md",
+            "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction",
+            "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/stellar/send-transaction",
+            "https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/4121f92593b74643fc9e16b3d7d13cdd0a620914/src/transport/http-transport.ts",
+            "https://github.com/Trustless-Work/trustlesswork-backoffice/blob/83e8cddfe3473f3e4bdabdd8dfd9c506a4fb3135/src/features/escrows/hooks/useSignAndSend.ts",
+            "Sibling sweep: q-crp-partner-detail-after-discovery and q-soroban-greenfield-escrow-prior-art-preflight mention Trustless Work but make no API authentication or signing claim that conflicts with this case.",
+            "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/core-concepts.md",
+            "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md",
+            ".agents/rounds/2026-09-16-trustless-work/independent-review.md",
+            ".agents/rounds/2026-09-16-trustless-work-acceptance.md"
+          ],
+          "rootCause": [
+            "eval-authoring",
+            "improvements/skills/sk-025-trustless-work-beta-auth-scope.md"
+          ]
+        },
+        "origin": "authored 2026-09 (trustless-work source onboarding)"
       }
     },
     {

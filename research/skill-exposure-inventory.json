@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-10",
+  "generatedAt": "2026-09-15",
   "columns": [
     "id",
     "aliases",
@@ -24,7 +24,9 @@
   "entries": [
     {
       "id": "skills.lumenloop.scf-submission-radar",
-      "aliases": ["scf-submission-radar"],
+      "aliases": [
+        "scf-submission-radar"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/scf-submission-radar; local mirror ecosystem-skills/skills/lumenloop/scf-submission-radar",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -33,11 +35,18 @@
       "rejectedLessons": "Do not convert positioning-only guidance into any SCF submission/write capability.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Public, read-only LumenLoop skill maps to exposed LumenLoop read operations and improves search/execute planning without transport onboarding.",
-      "evidenceRefs": ["todo852:2254", "todo852:2255", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "todo852:2255",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "skills.lumenloop.stellar-builder-quickstart",
-      "aliases": ["stellar-builder-quickstart"],
+      "aliases": [
+        "stellar-builder-quickstart"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/stellar-builder-quickstart; local mirror ecosystem-skills/skills/lumenloop/stellar-builder-quickstart",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -46,11 +55,18 @@
       "rejectedLessons": "Do not surface upstream connector setup or non-exposed LumenLoop skill cross-links.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Public skill uses read-only discovery workflows and current exposed LumenLoop operations.",
-      "evidenceRefs": ["todo852:2254", "todo852:2255", "catalog/manifest.json", "scripts/exposure.mjs"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "todo852:2255",
+        "catalog/manifest.json",
+        "scripts/exposure.mjs"
+      ]
     },
     {
       "id": "skills.lumenloop.stellar-content-auditor",
-      "aliases": ["stellar-content-auditor"],
+      "aliases": [
+        "stellar-content-auditor"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/stellar-content-auditor; local mirror ecosystem-skills/skills/lumenloop/stellar-content-auditor",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -59,11 +75,17 @@
       "rejectedLessons": "Do not expose private source packs or partner-only research request flows.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Public skill consumes public project/content data and is useful as a user-readable playbook.",
-      "evidenceRefs": ["todo852:2254", "todo852:2255", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "todo852:2255",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.lumenloop.stellar-ecosystem-digest",
-      "aliases": ["stellar-ecosystem-digest"],
+      "aliases": [
+        "stellar-ecosystem-digest"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/stellar-ecosystem-digest; local mirror ecosystem-skills/skills/lumenloop/stellar-ecosystem-digest",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -72,11 +94,17 @@
       "rejectedLessons": "Do not mention retired onboarding skill ids or upstream connector setup from cross-links.",
       "targetSurface": "manifest,bundle,skill.read,run_skill",
       "rationale": "Public read-only workflow aligns with Raven's exposed operations and current runner contract.",
-      "evidenceRefs": ["todo852:2254", "src/skills/runners/stellar-ecosystem-digest.ts", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "src/skills/runners/stellar-ecosystem-digest.ts",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.lumenloop.stellar-ecosystem-scout",
-      "aliases": ["stellar-ecosystem-scout"],
+      "aliases": [
+        "stellar-ecosystem-scout"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/stellar-ecosystem-scout; local mirror ecosystem-skills/skills/lumenloop/stellar-ecosystem-scout",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -85,11 +113,17 @@
       "rejectedLessons": "Do not treat the legacy duplicate copies as separate resources.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Public read-only skill remains useful and has canonical current mirror coverage.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "skills.lumenloop.stellar-integration-finder",
-      "aliases": ["stellar-integration-finder"],
+      "aliases": [
+        "stellar-integration-finder"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/stellar-integration-finder; local mirror ecosystem-skills/skills/lumenloop/stellar-integration-finder",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -98,11 +132,17 @@
       "rejectedLessons": "Do not invent integrations outside returned public data.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Public read-only skill maps to project/content lookup and integration selection.",
-      "evidenceRefs": ["todo852:2254", "todo852:2255", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "todo852:2255",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.lumenloop.stellar-project-dossier",
-      "aliases": ["stellar-project-dossier"],
+      "aliases": [
+        "stellar-project-dossier"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/stellar-project-dossier; local mirror ecosystem-skills/skills/lumenloop/stellar-project-dossier",
       "sourceFamily": "lumenloop-public",
       "currentState": "exposed",
@@ -111,11 +151,16 @@
       "rejectedLessons": "Do not re-add the retired dossier runner from prior code unless a new runnable use case is proven.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "The readable playbook is public and useful; execution is handled through generic exposed operations instead of a hidden raw-skill path.",
-      "evidenceRefs": ["research/skill-run-design.md", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "research/skill-run-design.md",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "lumenloop-mcp-connect",
-      "aliases": ["skills.lumenloop.lumenloop-mcp-connect"],
+      "aliases": [
+        "skills.lumenloop.lumenloop-mcp-connect"
+      ],
       "canonicalSource": "lumenloop/lumenloop-skills skills/lumenloop-mcp-connect; local mirror ecosystem-skills/skills/lumenloop/lumenloop-mcp-connect",
       "sourceFamily": "lumenloop-public-onboarding",
       "currentState": "internal-guidance",
@@ -124,12 +169,23 @@
       "rejectedLessons": "Connector installation, MCP troubleshooting for Claude Desktop, direct MCP endpoint setup, upstream tool-map instructions, bearer/key/rate-limit/account advice.",
       "targetSurface": "none",
       "rationale": "Raw body is public but misleading inside Raven's no-network sandbox. Existing v1 classification is sufficient and remains non-emitted.",
-      "evidenceRefs": ["todo852:2284", "research/retired-skill-guidance.md", "scripts/exposure.mjs", "research/decisions/0002-skills-retirement-twin-dedup.md", "research/decisions/0003-build-time-exposure-filtering.md"],
-      "leakGuardIds": ["lumenloop-mcp-connect"]
+      "evidenceRefs": [
+        "todo852:2284",
+        "research/retired-skill-guidance.md",
+        "scripts/exposure.mjs",
+        "research/decisions/0002-skills-retirement-twin-dedup.md",
+        "research/decisions/0003-build-time-exposure-filtering.md"
+      ],
+      "leakGuardIds": [
+        "lumenloop-mcp-connect"
+      ]
     },
     {
       "id": "lumenloop-api-billing",
-      "aliases": ["skills.lumenloop-api.lumenloop-api-billing", "skills_lumenloop_api_billing"],
+      "aliases": [
+        "skills.lumenloop-api.lumenloop-api-billing",
+        "skills_lumenloop_api_billing"
+      ],
       "canonicalSource": "LumenLoop partner API name-only skill stub; legacy bodies exist only as read-only prior art",
       "sourceFamily": "lumenloop-partner-private",
       "currentState": "removed",
@@ -138,12 +194,22 @@
       "rejectedLessons": "Budget dashboards, metering, top-ups, HTTP 402 recovery, x402 top-up instructions, quota increase requests.",
       "targetSurface": "none",
       "rationale": "Partner/account/billing guidance is not suitable for the public repo or model-facing emitted surfaces.",
-      "evidenceRefs": ["todo852:2255", "todo852:2284", "eval/skills-cases.json.retiredCases", "scripts/exposure.mjs"],
-      "leakGuardIds": ["lumenloop-api-billing"]
+      "evidenceRefs": [
+        "todo852:2255",
+        "todo852:2284",
+        "eval/skills-cases.json.retiredCases",
+        "scripts/exposure.mjs"
+      ],
+      "leakGuardIds": [
+        "lumenloop-api-billing"
+      ]
     },
     {
       "id": "lumenloop-api-connect",
-      "aliases": ["skills.lumenloop-api.lumenloop-api-connect", "skills_lumenloop_api_connect"],
+      "aliases": [
+        "skills.lumenloop-api.lumenloop-api-connect",
+        "skills_lumenloop_api_connect"
+      ],
       "canonicalSource": "LumenLoop partner API name-only skill stub; legacy bodies exist only as read-only prior art",
       "sourceFamily": "lumenloop-partner-private",
       "currentState": "removed",
@@ -152,12 +218,22 @@
       "rejectedLessons": "REST onboarding, Bearer auth, tier ladder, first smoke test, direct 401/403/429 setup guidance.",
       "targetSurface": "none",
       "rationale": "Direct REST onboarding contradicts Raven's host-side secrets and sandbox globals.",
-      "evidenceRefs": ["todo852:2255", "todo852:2284", "research/retired-skill-guidance.md", "scripts/exposure.mjs"],
-      "leakGuardIds": ["lumenloop-api-connect"]
+      "evidenceRefs": [
+        "todo852:2255",
+        "todo852:2284",
+        "research/retired-skill-guidance.md",
+        "scripts/exposure.mjs"
+      ],
+      "leakGuardIds": [
+        "lumenloop-api-connect"
+      ]
     },
     {
       "id": "lumenloop-api-integrate",
-      "aliases": ["skills.lumenloop-api.lumenloop-api-integrate", "skills_lumenloop_api_integrate"],
+      "aliases": [
+        "skills.lumenloop-api.lumenloop-api-integrate",
+        "skills_lumenloop_api_integrate"
+      ],
       "canonicalSource": "LumenLoop partner API name-only skill stub; legacy bodies exist only as read-only prior art",
       "sourceFamily": "lumenloop-partner-private",
       "currentState": "removed",
@@ -166,12 +242,22 @@
       "rejectedLessons": "OpenAPI typed-client generation, direct REST clients, raw REST envelope handling, partner rate-limit instructions.",
       "targetSurface": "none",
       "rationale": "The safe lesson is already Raven-owned and the raw partner body would leak a non-Raven integration model.",
-      "evidenceRefs": ["todo852:2255", "todo852:2284", "scripts/description-notes.mjs", "scripts/exposure.mjs"],
-      "leakGuardIds": ["lumenloop-api-integrate"]
+      "evidenceRefs": [
+        "todo852:2255",
+        "todo852:2284",
+        "scripts/description-notes.mjs",
+        "scripts/exposure.mjs"
+      ],
+      "leakGuardIds": [
+        "lumenloop-api-integrate"
+      ]
     },
     {
       "id": "lumenloop-api-keys",
-      "aliases": ["skills.lumenloop-api.lumenloop-api-keys", "skills_lumenloop_api_keys"],
+      "aliases": [
+        "skills.lumenloop-api.lumenloop-api-keys",
+        "skills_lumenloop_api_keys"
+      ],
       "canonicalSource": "LumenLoop partner API name-only skill stub; legacy bodies exist only as read-only prior art",
       "sourceFamily": "lumenloop-partner-private",
       "currentState": "removed",
@@ -180,12 +266,21 @@
       "rejectedLessons": "Listing credentials, minting llmcp_ keys, labels, expiries, revocation, leaked-key workflows.",
       "targetSurface": "none",
       "rationale": "Key management is private/account-mutating and must never enter model-facing Raven surfaces.",
-      "evidenceRefs": ["todo852:2255", "todo852:2284", "scripts/exposure.mjs"],
-      "leakGuardIds": ["lumenloop-api-keys"]
+      "evidenceRefs": [
+        "todo852:2255",
+        "todo852:2284",
+        "scripts/exposure.mjs"
+      ],
+      "leakGuardIds": [
+        "lumenloop-api-keys"
+      ]
     },
     {
       "id": "lumenloop-api-query",
-      "aliases": ["skills.lumenloop-api.lumenloop-api-query", "skills_lumenloop_api_query"],
+      "aliases": [
+        "skills.lumenloop-api.lumenloop-api-query",
+        "skills_lumenloop_api_query"
+      ],
       "canonicalSource": "LumenLoop partner API name-only skill stub; legacy bodies exist only as read-only prior art",
       "sourceFamily": "lumenloop-partner-private",
       "currentState": "removed",
@@ -194,12 +289,22 @@
       "rejectedLessons": "Plain HTTP scripts, direct REST tool calling, guest-tier REST catalog wiring, upstream raw envelope names.",
       "targetSurface": "none",
       "rationale": "The potentially useful operation-selection advice is already present in Raven-owned notes; raw body remains partner/private provenance.",
-      "evidenceRefs": ["todo852:2255", "scripts/description-notes.mjs", "eval/skills-cases.json.retiredCases", "scripts/exposure.mjs"],
-      "leakGuardIds": ["lumenloop-api-query"]
+      "evidenceRefs": [
+        "todo852:2255",
+        "scripts/description-notes.mjs",
+        "eval/skills-cases.json.retiredCases",
+        "scripts/exposure.mjs"
+      ],
+      "leakGuardIds": [
+        "lumenloop-api-query"
+      ]
     },
     {
       "id": "lumenloop-api-research",
-      "aliases": ["skills.lumenloop-api.lumenloop-api-research", "skills_lumenloop_api_research"],
+      "aliases": [
+        "skills.lumenloop-api.lumenloop-api-research",
+        "skills_lumenloop_api_research"
+      ],
       "canonicalSource": "LumenLoop partner API name-only skill stub; legacy bodies exist only as read-only prior art",
       "sourceFamily": "lumenloop-partner-private",
       "currentState": "removed",
@@ -208,12 +313,20 @@
       "rejectedLessons": "Metered research commissioning, request_research polling, source packs, schema fills, paid-call recovery.",
       "targetSurface": "none",
       "rationale": "Paid partner research remains excluded until a separate budget/approval ADR deliberately enables the whole lane.",
-      "evidenceRefs": ["todo852:2255", "research/decisions/0003-build-time-exposure-filtering.md", "scripts/exposure.mjs"],
-      "leakGuardIds": ["lumenloop-api-research"]
+      "evidenceRefs": [
+        "todo852:2255",
+        "research/decisions/0003-build-time-exposure-filtering.md",
+        "scripts/exposure.mjs"
+      ],
+      "leakGuardIds": [
+        "lumenloop-api-research"
+      ]
     },
     {
       "id": "skills.stellar-dev.smart-contracts",
-      "aliases": ["smart-contracts"],
+      "aliases": [
+        "smart-contracts"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/smart-contracts; local mirror ecosystem-skills/skills/stellar-dev/smart-contracts",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -222,11 +335,18 @@
       "rejectedLessons": "Do not resurrect the retired terminal id as a separate exposed skill.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill set has eight skills and uses smart-contracts for Soroban contract development.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "legacy-soroban",
-      "aliases": ["soroban", "skills.stellar-dev.soroban"],
+      "aliases": [
+        "soroban",
+        "skills.stellar-dev.soroban"
+      ],
       "canonicalSource": "superseded by stellar/stellar-dev-skill skills/smart-contracts",
       "sourceFamily": "sdf-official-legacy",
       "currentState": "excluded-duplicate",
@@ -235,12 +355,18 @@
       "rejectedLessons": "Do not keep a parallel terminal skill id or copy stale CLI/protocol snippets from legacy repos.",
       "targetSurface": "none",
       "rationale": "Legacy trees and older marketplace cards used soroban, but the official current body is smart-contracts and is already exposed.",
-      "evidenceRefs": ["todo852:2254", "eval/skills-cases.json", "https://github.com/stellar/stellar-dev-skill/tree/125619829baf527f0f2c3059c9e03c50ddeb1963/skills/smart-contracts"],
+      "evidenceRefs": [
+        "todo852:2254",
+        "eval/skills-cases.json",
+        "https://github.com/stellar/stellar-dev-skill/tree/125619829baf527f0f2c3059c9e03c50ddeb1963/skills/smart-contracts"
+      ],
       "localOnlyEvidence": "Legacy soroban skill copy was reviewed from a local sibling tree; it has no committed public source distinct from the current smart-contracts replacement."
     },
     {
       "id": "skills.stellar-dev.agentic-payments",
-      "aliases": ["agentic-payments"],
+      "aliases": [
+        "agentic-payments"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/agentic-payments; local mirror ecosystem-skills/skills/stellar-dev/agentic-payments",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -249,11 +375,16 @@
       "rejectedLessons": "Exclude copied legacy/cf-mastra/vercel-eve duplicates.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.stellar-dev.assets",
-      "aliases": ["assets"],
+      "aliases": [
+        "assets"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/assets; local mirror ecosystem-skills/skills/stellar-dev/assets",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -262,11 +393,16 @@
       "rejectedLessons": "Exclude copied legacy/cf-mastra/vercel-eve duplicates.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.stellar-dev.cross-chain",
-      "aliases": ["cross-chain"],
+      "aliases": [
+        "cross-chain"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/cross-chain; local mirror ecosystem-skills/skills/stellar-dev/cross-chain",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -275,11 +411,16 @@
       "rejectedLessons": "Do not split companion files into parallel skill ids or revive stale copied bridge guidance.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill covers cross-chain Stellar integrations through one playbook and its companion files.",
-      "evidenceRefs": ["catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "skills.stellar-dev.dapp",
-      "aliases": ["dapp"],
+      "aliases": [
+        "dapp"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/dapp; local mirror ecosystem-skills/skills/stellar-dev/dapp",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -288,11 +429,16 @@
       "rejectedLessons": "Exclude copied legacy/cf-mastra/vercel-eve duplicates.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.stellar-dev.data",
-      "aliases": ["data"],
+      "aliases": [
+        "data"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/data; local mirror ecosystem-skills/skills/stellar-dev/data",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -301,11 +447,16 @@
       "rejectedLessons": "Exclude copied legacy/cf-mastra/vercel-eve duplicates.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.stellar-dev.standards",
-      "aliases": ["standards"],
+      "aliases": [
+        "standards"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/standards; local mirror ecosystem-skills/skills/stellar-dev/standards",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -314,11 +465,16 @@
       "rejectedLessons": "Exclude copied legacy/cf-mastra/vercel-eve duplicates.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.stellar-dev.zk-proofs",
-      "aliases": ["zk-proofs"],
+      "aliases": [
+        "zk-proofs"
+      ],
       "canonicalSource": "stellar/stellar-dev-skill skills/zk-proofs; local mirror ecosystem-skills/skills/stellar-dev/zk-proofs",
       "sourceFamily": "sdf-official",
       "currentState": "exposed",
@@ -327,11 +483,16 @@
       "rejectedLessons": "Exclude copied legacy/cf-mastra/vercel-eve duplicates.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json"
+      ]
     },
     {
       "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
-      "aliases": ["setup-stellar-contracts"],
+      "aliases": [
+        "setup-stellar-contracts"
+      ],
       "canonicalSource": "OpenZeppelin/openzeppelin-skills skills/setup-stellar-contracts; local mirror ecosystem-skills/skills/openzeppelin-stellar/setup-stellar-contracts",
       "sourceFamily": "openzeppelin-stellar",
       "currentState": "exposed",
@@ -340,11 +501,17 @@
       "rejectedLessons": "Do not expose non-Stellar OpenZeppelin Cairo/Solidity/Stylus skills in this gateway.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official OpenZeppelin Stellar subset is exactly the three Stellar contract skills.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "skills.openzeppelin-stellar.develop-secure-contracts",
-      "aliases": ["develop-secure-contracts"],
+      "aliases": [
+        "develop-secure-contracts"
+      ],
       "canonicalSource": "OpenZeppelin/openzeppelin-skills skills/develop-secure-contracts; local mirror ecosystem-skills/skills/openzeppelin-stellar/develop-secure-contracts",
       "sourceFamily": "openzeppelin-stellar",
       "currentState": "exposed",
@@ -353,11 +520,17 @@
       "rejectedLessons": "Do not duplicate legacy copies from older repos.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official OpenZeppelin Stellar subset is public and useful.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
-      "aliases": ["upgrade-stellar-contracts"],
+      "aliases": [
+        "upgrade-stellar-contracts"
+      ],
       "canonicalSource": "OpenZeppelin/openzeppelin-skills skills/upgrade-stellar-contracts; local mirror ecosystem-skills/skills/openzeppelin-stellar/upgrade-stellar-contracts",
       "sourceFamily": "openzeppelin-stellar",
       "currentState": "exposed",
@@ -366,11 +539,22 @@
       "rejectedLessons": "Do not duplicate legacy copies from older repos.",
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official OpenZeppelin Stellar subset is public and useful.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "openzeppelin-nonstellar-skills",
-      "aliases": ["setup-cairo-contracts", "setup-solidity-contracts", "setup-stylus-contracts", "upgrade-cairo-contracts", "upgrade-solidity-contracts", "upgrade-stylus-contracts"],
+      "aliases": [
+        "setup-cairo-contracts",
+        "setup-solidity-contracts",
+        "setup-stylus-contracts",
+        "upgrade-cairo-contracts",
+        "upgrade-solidity-contracts",
+        "upgrade-stylus-contracts"
+      ],
       "canonicalSource": "OpenZeppelin/openzeppelin-skills non-Stellar directories",
       "sourceFamily": "openzeppelin-nonstellar",
       "currentState": "removed",
@@ -379,11 +563,18 @@
       "rejectedLessons": "Non-Stellar setup/upgrade workflows are outside this Stellar gateway's skill surface.",
       "targetSurface": "none",
       "rationale": "Current mirror deliberately includes only the Stellar subset.",
-      "evidenceRefs": ["todo852:2254", "https://github.com/OpenZeppelin/openzeppelin-skills/tree/d72005b53b6d8c937dd1b76262a3e2ebbace2edb/skills", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "https://github.com/OpenZeppelin/openzeppelin-skills/tree/d72005b53b6d8c937dd1b76262a3e2ebbace2edb/skills",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "skills.stellar-light.stellar-scout",
-      "aliases": ["stellar-scout", "Stellar Scout"],
+      "aliases": [
+        "stellar-scout",
+        "Stellar Scout"
+      ],
       "canonicalSource": "Stellar-Light/stellar-scout SKILL.md; local mirror ecosystem-skills/skills/stellar-light/stellar-scout",
       "sourceFamily": "stellar-light",
       "currentState": "exposed",
@@ -392,11 +583,40 @@
       "rejectedLessons": "Do not use stale legacy Scout variants as separate resources; do not expose write/feedback endpoints excluded by ADR-0003.",
       "targetSurface": "orchestrator-review",
       "rationale": "Canonical Scout skill is public and exposed. Current upstream drift is Raven-safe in principle but was not emitted in this pass.",
-      "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json", "https://github.com/Stellar-Light/stellar-scout/tree/282322e29c2ebec1e83dd83dddadfe086e942e8e"]
+      "evidenceRefs": [
+        "todo852:2254",
+        "catalog/manifest.json",
+        "ecosystem-skills/MANIFEST.json",
+        "https://github.com/Stellar-Light/stellar-scout/tree/282322e29c2ebec1e83dd83dddadfe086e942e8e"
+      ]
+    },
+    {
+      "id": "skills.trustless-work.trustless-work-dev",
+      "aliases": [
+        "trustless-work-dev",
+        "Trustless Work",
+        "trustlesswork-skill"
+      ],
+      "canonicalSource": "Trustless-Work/trustlesswork-skill trustless-work-dev/SKILL.md (pinned in ecosystem-skills/MANIFEST.json)",
+      "sourceFamily": "trustless-work",
+      "currentState": "exposed",
+      "rawBodyPublic": "yes",
+      "acceptedLesson": "Exposed 2026-09-15 as the fifth pinned source via the path \".\" repo-root skill-dir mode. Serve the escrow-integration skill from the pinned commit; keep the V1-mainnet / V2-testnet-beta split intact when re-pinning.",
+      "rejectedLessons": "Do not pin the repo root as a single skill (it drags in repo tooling docs and unroots SKILL.md from the catalog builders); do not reference the pre-rename trustless-work-dev-skill repo path.",
+      "targetSurface": "catalog",
+      "rationale": "Trustless Work's own published escrow-integration agent skill; public Apache-2.0 repo, pinned and hash-verified like every other mirrored source.",
+      "evidenceRefs": [
+        "ecosystem-skills/MANIFEST.json",
+        "catalog/manifest.json",
+        "ecosystem-skills/PIN-REVIEW.md",
+        "https://github.com/Trustless-Work/trustlesswork-skill/tree/634f32bd4be6769b0cae52e72db4899d5f5a069c"
+      ]
     },
     {
       "id": "stellar-developer-activity",
-      "aliases": ["skills.stellar-developer-activity"],
+      "aliases": [
+        "skills.stellar-developer-activity"
+      ],
       "canonicalSource": "legacy local sibling skill trees only",
       "sourceFamily": "legacy-application-research",
       "currentState": "internal-guidance",
@@ -405,13 +625,27 @@
       "rejectedLessons": "Do not expose the legacy ecosystem-records adapter endpoint or its provider URL; do not add a hidden leaderboard op.",
       "targetSurface": "none",
       "rationale": "Unique legacy body contains a safe evidence-quality lesson, but its endpoint is not part of the current Raven manifest. The Scout companion-skills cross-link is scrubbed at build time so this internal-guidance id is not emitted.",
-      "evidenceRefs": ["catalog/manifest.json", "scripts/exposure.mjs", "todo852:2297"],
-      "leakGuardIds": ["stellar-developer-activity"],
+      "evidenceRefs": [
+        "catalog/manifest.json",
+        "scripts/exposure.mjs",
+        "todo852:2297"
+      ],
+      "leakGuardIds": [
+        "stellar-developer-activity"
+      ],
       "localOnlyEvidence": "Raw legacy stellar-developer-activity skill body was reviewed from a local sibling tree; no public or repo-relative source exists for that retired application skill."
     },
     {
       "id": "legacy-lumenloop-public-copies",
-      "aliases": ["legacy scf-submission-radar copies", "legacy stellar-builder-quickstart copies", "legacy stellar-content-auditor copies", "legacy stellar-ecosystem-digest copies", "legacy stellar-ecosystem-scout copies", "legacy stellar-integration-finder copies", "legacy stellar-project-dossier copies"],
+      "aliases": [
+        "legacy scf-submission-radar copies",
+        "legacy stellar-builder-quickstart copies",
+        "legacy stellar-content-auditor copies",
+        "legacy stellar-ecosystem-digest copies",
+        "legacy stellar-ecosystem-scout copies",
+        "legacy stellar-integration-finder copies",
+        "legacy stellar-project-dossier copies"
+      ],
       "canonicalSource": "current public mirror ecosystem-skills/skills/lumenloop",
       "sourceFamily": "legacy-duplicates",
       "currentState": "excluded-duplicate",
@@ -420,12 +654,17 @@
       "rejectedLessons": "Do not review or emit every legacy generated/src copy as a separate skill.",
       "targetSurface": "none",
       "rationale": "Canonical current mirror wins; legacy copies under sibling repos are provenance only.",
-      "evidenceRefs": ["ecosystem-skills/skills/lumenloop", "https://github.com/lumenloop/lumenloop-skills/tree/40cb36fa69a5629b07eca3ee7c33b0af84a52be3/skills"],
+      "evidenceRefs": [
+        "ecosystem-skills/skills/lumenloop",
+        "https://github.com/lumenloop/lumenloop-skills/tree/40cb36fa69a5629b07eca3ee7c33b0af84a52be3/skills"
+      ],
       "localOnlyEvidence": "Legacy duplicate LumenLoop copies were reviewed from local sibling trees; canonical public upstream and this repo's mirror are the portable evidence."
     },
     {
       "id": "legacy-stellar-light-copies",
-      "aliases": ["legacy stellar-scout variants"],
+      "aliases": [
+        "legacy stellar-scout variants"
+      ],
       "canonicalSource": "current public mirror ecosystem-skills/skills/stellar-light/stellar-scout and current upstream Stellar-Light/stellar-scout",
       "sourceFamily": "legacy-duplicates",
       "currentState": "excluded-duplicate",
@@ -434,12 +673,20 @@
       "rejectedLessons": "Do not expose stale legacy Scout copies or generated skill copies.",
       "targetSurface": "none",
       "rationale": "Legacy copies are superseded by the current Scout source.",
-      "evidenceRefs": ["ecosystem-skills/skills/stellar-light/stellar-scout/SKILL.md", "https://github.com/Stellar-Light/stellar-scout/tree/282322e29c2ebec1e83dd83dddadfe086e942e8e"],
+      "evidenceRefs": [
+        "ecosystem-skills/skills/stellar-light/stellar-scout/SKILL.md",
+        "https://github.com/Stellar-Light/stellar-scout/tree/282322e29c2ebec1e83dd83dddadfe086e942e8e"
+      ],
       "localOnlyEvidence": "Legacy Scout copies were reviewed from local sibling trees; canonical public upstream and this repo's mirror are the portable evidence."
     },
     {
       "id": "legacy-sdf-build-skill-copies",
-      "aliases": ["cf-mastra SDF skill copies", "stellar-raven-next SDF skill copies", "stellar-raven legacy SDF skill copies", "vercel-eve agent skill copies"],
+      "aliases": [
+        "cf-mastra SDF skill copies",
+        "stellar-raven-next SDF skill copies",
+        "stellar-raven legacy SDF skill copies",
+        "vercel-eve agent skill copies"
+      ],
       "canonicalSource": "current public mirror ecosystem-skills/skills/stellar-dev and official stellar/stellar-dev-skill",
       "sourceFamily": "legacy-duplicates",
       "currentState": "excluded-duplicate",
@@ -448,12 +695,19 @@
       "rejectedLessons": "Do not review generated/cache copies as separate current sources.",
       "targetSurface": "none",
       "rationale": "Duplicate terminal skill bodies are copied from older SDF/Soroban sources; canonical current source wins.",
-      "evidenceRefs": ["ecosystem-skills/skills/stellar-dev", "https://github.com/stellar/stellar-dev-skill/tree/125619829baf527f0f2c3059c9e03c50ddeb1963/skills"],
+      "evidenceRefs": [
+        "ecosystem-skills/skills/stellar-dev",
+        "https://github.com/stellar/stellar-dev-skill/tree/125619829baf527f0f2c3059c9e03c50ddeb1963/skills"
+      ],
       "localOnlyEvidence": "Legacy duplicate SDF skill copies were reviewed from local sibling trees; canonical public upstream and this repo's mirror are the portable evidence."
     },
     {
       "id": "legacy-openzeppelin-copies",
-      "aliases": ["legacy setup-stellar-contracts copies", "legacy develop-secure-contracts copies", "legacy upgrade-stellar-contracts copies"],
+      "aliases": [
+        "legacy setup-stellar-contracts copies",
+        "legacy develop-secure-contracts copies",
+        "legacy upgrade-stellar-contracts copies"
+      ],
       "canonicalSource": "current public mirror ecosystem-skills/skills/openzeppelin-stellar and official OpenZeppelin/openzeppelin-skills",
       "sourceFamily": "legacy-duplicates",
       "currentState": "excluded-duplicate",
@@ -462,12 +716,17 @@
       "rejectedLessons": "Do not expose duplicate legacy copies.",
       "targetSurface": "none",
       "rationale": "Canonical OpenZeppelin source wins and the local mirror already exposes the Stellar subset.",
-      "evidenceRefs": ["ecosystem-skills/skills/openzeppelin-stellar", "https://github.com/OpenZeppelin/openzeppelin-skills/tree/d72005b53b6d8c937dd1b76262a3e2ebbace2edb/skills"],
+      "evidenceRefs": [
+        "ecosystem-skills/skills/openzeppelin-stellar",
+        "https://github.com/OpenZeppelin/openzeppelin-skills/tree/d72005b53b6d8c937dd1b76262a3e2ebbace2edb/skills"
+      ],
       "localOnlyEvidence": "Legacy duplicate OpenZeppelin skill copies were reviewed from local sibling trees; canonical public upstream and this repo's mirror are the portable evidence."
     },
     {
       "id": "cloudflare-agents",
-      "aliases": ["Cloudflare Agents SDK skill"],
+      "aliases": [
+        "Cloudflare Agents SDK skill"
+      ],
       "canonicalSource": "legacy repo .agents/skills/cloudflare-agents",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -476,12 +735,16 @@
       "rejectedLessons": "Do not merge Cloudflare SDK docs into Stellar Raven's searchable skill surface.",
       "targetSurface": "none",
       "rationale": "Framework docs are operational implementation guidance for agents working on the repo, not a Stellar ecosystem capability exposed by Raven.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Repo-operational cloudflare-agents skill was reviewed from a local sibling tree; no public or repo-relative source exists for that retired operational runbook."
     },
     {
       "id": "ecosystem-skills",
-      "aliases": ["ecosystem skill updater/access skill"],
+      "aliases": [
+        "ecosystem skill updater/access skill"
+      ],
       "canonicalSource": "legacy repo .agents/skills/ecosystem-skills",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -490,12 +753,18 @@
       "rejectedLessons": "Do not expose the repo's mirror-maintenance instructions as a user skill.",
       "targetSurface": "research-doc",
       "rationale": "This is build-agent guidance for maintaining the mirror, not a runtime/public Raven capability.",
-      "evidenceRefs": ["AGENTS.md", "ecosystem-skills/update.sh", "research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "AGENTS.md",
+        "ecosystem-skills/update.sh",
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Legacy ecosystem-skills maintenance runbook was reviewed from a local sibling tree; the portable evidence is this repo's current mirror policy and update script."
     },
     {
       "id": "eval-improvement",
-      "aliases": ["eval improvement playbook"],
+      "aliases": [
+        "eval improvement playbook"
+      ],
       "canonicalSource": "legacy repo .agents/skills/eval-improvement",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -504,12 +773,16 @@
       "rejectedLessons": "Do not expose eval-fixing workflow as a user resource.",
       "targetSurface": "research-doc",
       "rationale": "The skill is about maintaining Raven, not answering Stellar ecosystem users.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Repo-operational eval-improvement skill was reviewed from a local sibling tree; no public or repo-relative source exists for that retired operational runbook."
     },
     {
       "id": "raven-golden-evals",
-      "aliases": ["golden eval playbook"],
+      "aliases": [
+        "golden eval playbook"
+      ],
       "canonicalSource": "legacy repo .agents/skills/raven-golden-evals",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -518,12 +791,16 @@
       "rejectedLessons": "Do not expose internal eval orchestration instructions to Raven users.",
       "targetSurface": "research-doc",
       "rationale": "Evaluation governance belongs in repo process, not model-facing catalog/bundle text.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Repo-operational raven-golden-evals skill was reviewed from a local sibling tree; no public or repo-relative source exists for that retired operational runbook."
     },
     {
       "id": "service-skills-updater",
-      "aliases": ["service skills updater"],
+      "aliases": [
+        "service skills updater"
+      ],
       "canonicalSource": "legacy repo .agents/skills/service-skills-updater",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -532,12 +809,17 @@
       "rejectedLessons": "Do not expose update scripts, credential sourcing, or deploy workflow as an MCP skill.",
       "targetSurface": "research-doc",
       "rationale": "Operational maintenance playbook for source syncs; not a user-facing Stellar capability.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review", "ecosystem-skills/update.sh"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review",
+        "ecosystem-skills/update.sh"
+      ],
       "localOnlyEvidence": "Repo-operational service-skills-updater skill was reviewed from a local sibling tree; no public source exists, and the portable process evidence is this repo's current updater."
     },
     {
       "id": "flue-docs-sync",
-      "aliases": ["Flue docs sync"],
+      "aliases": [
+        "Flue docs sync"
+      ],
       "canonicalSource": "legacy repo .agents/skills/flue-docs-sync",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -546,12 +828,16 @@
       "rejectedLessons": "Flue docs crawling and framework sync are unrelated to this Stellar gateway surface.",
       "targetSurface": "none",
       "rationale": "Framework-specific operational docs sync for a retired sibling repo.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Repo-operational flue-docs-sync skill was reviewed from a local sibling tree; no public or repo-relative source exists for that retired operational runbook."
     },
     {
       "id": "mastra",
-      "aliases": ["Mastra framework skill"],
+      "aliases": [
+        "Mastra framework skill"
+      ],
       "canonicalSource": "legacy cf-mastra .agents/skills/mastra",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -560,12 +846,16 @@
       "rejectedLessons": "Mastra framework API verification belongs to the retired cf-mastra project, not Raven's emitted skill surface.",
       "targetSurface": "none",
       "rationale": "Framework development guide unrelated to current Cloudflare codemode gateway.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Repo-operational mastra skill was reviewed from a local sibling tree; no public or repo-relative source exists for that retired operational runbook."
     },
     {
       "id": "flue",
-      "aliases": ["Flue framework skill"],
+      "aliases": [
+        "Flue framework skill"
+      ],
       "canonicalSource": "legacy flue-docs _repo/skills/flue",
       "sourceFamily": "repo-operational",
       "currentState": "out-of-scope-operational",
@@ -574,12 +864,21 @@
       "rejectedLessons": "Flue framework documentation routing is unrelated to Raven's emitted Stellar skill surface.",
       "targetSurface": "none",
       "rationale": "Framework-specific skill from a retired sibling repo.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Repo-operational flue skill was reviewed from a local sibling tree; no public or repo-relative source exists for that retired operational runbook."
     },
     {
       "id": "generated-cache-example-skill-copies",
-      "aliases": ["greet", "review", ".eve/compile/workspace-resources", ".eve/sandbox-cache", ".eve/dev-runtime", "src/generated-skills"],
+      "aliases": [
+        "greet",
+        "review",
+        ".eve/compile/workspace-resources",
+        ".eve/sandbox-cache",
+        ".eve/dev-runtime",
+        "src/generated-skills"
+      ],
       "canonicalSource": "none; excluded filesystem classes",
       "sourceFamily": "excluded-filesystem-class",
       "currentState": "excluded-duplicate",
@@ -588,12 +887,19 @@
       "rejectedLessons": "Example greeting/review skills, generated skill outputs, Eve workspace resources, sandbox caches, dev-runtime snapshots.",
       "targetSurface": "none",
       "rationale": "These are examples, generated outputs, or cache snapshots. Canonical source rows above cover any real skill bodies they duplicate.",
-      "evidenceRefs": ["research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Generated/cache/example skill-copy classes were reviewed from local sibling trees; no stable public or repo-relative source exists for those excluded filesystem classes."
     },
     {
       "id": "node-modules-package-skills",
-      "aliases": ["dotenv", "dotenvx", "durable-streams package skills", "Mastra package docs skills"],
+      "aliases": [
+        "dotenv",
+        "dotenvx",
+        "durable-streams package skills",
+        "Mastra package docs skills"
+      ],
       "canonicalSource": "dependency packages under node_modules",
       "sourceFamily": "excluded-filesystem-class",
       "currentState": "excluded-duplicate",
@@ -602,12 +908,30 @@
       "rejectedLessons": "Dependency package skills are unrelated to Raven's curated Stellar ecosystem source map.",
       "targetSurface": "none",
       "rationale": "node_modules is not a canonical source for this inventory and contains dependency docs/examples only.",
-      "evidenceRefs": ["package.json", "research/skill-exposure-inventory.md#source-review"],
+      "evidenceRefs": [
+        "package.json",
+        "research/skill-exposure-inventory.md#source-review"
+      ],
       "localOnlyEvidence": "Dependency package skill examples were reviewed under local sibling node_modules trees; node_modules is intentionally not a canonical portable source."
     },
     {
       "id": "stellar-ecosystem-directory-non-skill-cards",
-      "aliases": ["allbridge-sdk", "blend-sdk", "freighter-api", "mercury-indexer", "openzeppelin-stellar-contracts", "reflector-network", "rozo-intent-pay", "soroswap-sdk", "stellar-cli", "stellar-sdk", "stellar-typescript-wallet-sdk", "stellar-wallets-kit", "stellar-scout-mcp", "lumenloop-mcp"],
+      "aliases": [
+        "allbridge-sdk",
+        "blend-sdk",
+        "freighter-api",
+        "mercury-indexer",
+        "openzeppelin-stellar-contracts",
+        "reflector-network",
+        "rozo-intent-pay",
+        "soroswap-sdk",
+        "stellar-cli",
+        "stellar-sdk",
+        "stellar-typescript-wallet-sdk",
+        "stellar-wallets-kit",
+        "stellar-scout-mcp",
+        "lumenloop-mcp"
+      ],
       "canonicalSource": "ecosystem-skills/catalog.json / stellarlight.xyz API skill directory",
       "sourceFamily": "directory-card-only",
       "currentState": "out-of-scope-operational",
@@ -616,20 +940,29 @@
       "rejectedLessons": "Do not invent skill.read bodies for SDK, CLI, tool, or MCP-server cards.",
       "targetSurface": "none",
       "rationale": "Directory cards are not mirrored skill bodies and do not belong in the skill exposure classification ledger.",
-      "evidenceRefs": ["ecosystem-skills/catalog.json", "ecosystem-skills/MANIFEST.json"]
+      "evidenceRefs": [
+        "ecosystem-skills/catalog.json",
+        "ecosystem-skills/MANIFEST.json"
+      ]
     },
     {
       "id": "sdf-marketplace-community-cards",
-      "aliases": ["DeFindex", "Soroswap", "Trustless Work", "OpenZeppelin community card"],
+      "aliases": [
+        "DeFindex",
+        "Soroswap",
+        "OpenZeppelin community card"
+      ],
       "canonicalSource": "skills.stellar.org community card listing noted in Solo comment",
       "sourceFamily": "marketplace-card-only",
       "currentState": "out-of-scope-operational",
       "rawBodyPublic": "name-only",
-      "acceptedLesson": "No raw skill-body lesson accepted in this pass.",
+      "acceptedLesson": "No raw skill-body lesson accepted in this pass. Trustless Work moved to its own exposed row 2026-09-15 (pinned from the maintainer repo, not the marketplace card).",
       "rejectedLessons": "Do not use the SDF marketplace as the sole source of truth for community skill bodies.",
       "targetSurface": "none",
       "rationale": "Comment 2254 explicitly says the marketplace is not the sole source for community ecosystem/research skills; use maintainer repos/APIs instead.",
-      "evidenceRefs": ["todo852:2254"]
+      "evidenceRefs": [
+        "todo852:2254"
+      ]
     }
   ]
 }

@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-09-09T18:59:36.518Z",
+  "baselinedAt": "2026-09-16T20:21:28.462Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "0745b09421e0ad56e4398dcdabde8477a047c3852bb4c528567b8af0028abcfd"
+        "sha256": "0cff03fd280a25b53cce9cb3ce579f5ec72b5a7f7a7dff4ca977ba4681831869"
       },
       {
         "path": "eval/routing-cases.json",
@@ -49,9 +49,9 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-09-09T18-59-36-518Z.json"
+    "localTrace": "routing-2026-09-16T20-21-28-462Z.json"
   },
-  "note": "2026-09-09 structured-intent selection preserves both original issue #124 leaderboard queries within the existing service quota. Generated routingPhrases metadata changes only the catalog evidence fingerprint. Independent review confirms identical page facts and grades across all 544 frozen rows. All accepted totals, thresholds, labels, and other input fingerprints remain unchanged. Scout remains OpenAPI 1.9.1 with unchanged skill pins. Decision record: .agents/rounds/2026-09-09-outstanding-closeout.md. Independent review: .agents/rounds/2026-09-09-search-124-final-grok.md.",
+  "note": "2026-09-16 Trustless Work source acceptance adds one pinned escrow-integration skill at 634f32bd and changes only the catalog evidence fingerprint. Independent Grok 4.6 high review accepts the source, implementation, and all 15 ordered-ID movements across 544 rows. Current results meet or exceed every unchanged baseline: legacy 213/280/314, skills 16/23/23, holdout 10/22/27 with 11 forbidden captures. All acceptedTotals, numerical thresholds, labels, other input fingerprints, and Scout OpenAPI 1.9.1 remain unchanged. Decision record: .agents/rounds/2026-09-16-trustless-work-acceptance.md. Independent review: .agents/rounds/2026-09-16-trustless-work/source-review.md.",
   "legacy": {
     "n": 338,
     "top1": 213,

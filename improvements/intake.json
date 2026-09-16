@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-09-04",
+  "updated": "2026-09-16",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -13,7 +13,8 @@
           "stellar/stellar-dev-skill",
           "lumenloop/lumenloop-skills",
           "OpenZeppelin/openzeppelin-skills",
-          "Stellar-Light/stellar-scout"
+          "Stellar-Light/stellar-scout",
+          "Trustless-Work/trustlesswork-skill"
         ],
         "rule": "Target the source repository that owns the referenced skill; never file against this repo's mirror."
       },
@@ -21,7 +22,8 @@
         "stellar-dev": "stellar/stellar-dev-skill",
         "lumenloop": "lumenloop/lumenloop-skills",
         "openzeppelin-stellar": "OpenZeppelin/openzeppelin-skills",
-        "stellar-light": "Stellar-Light/stellar-scout"
+        "stellar-light": "Stellar-Light/stellar-scout",
+        "trustless-work": "Trustless-Work/trustlesswork-skill"
       }
     },
     "stellar-light-scout": {
@@ -204,6 +206,10 @@
     "sls-039": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Project TVL rows expose a point but no history/method URL or metric decomposition for current-versus-trend/peak/record questions."
+    },
+    "sk-025": {
+      "repo": "Trustless-Work/trustlesswork-skill",
+      "reason": "The upstream beta skill owns its authentication guidance and shares the existing version-profile issue."
     }
   }
 }

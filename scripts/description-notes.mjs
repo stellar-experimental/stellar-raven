@@ -20,6 +20,30 @@ export const LUMENLOOP_DESCRIPTION_NOTES = {
     "Catalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results."
 };
 
+// Whole-skill discovery descriptions are host-owned routing text. An override
+// does not modify pinned source bytes; skill.read still applies its existing
+// exposure scrub. Keep overrides exact-ID and narrow. Every generator validates
+// that each key still resolves, so a rename cannot silently drop curated text.
+export const SKILL_DESCRIPTION_OVERRIDES = Object.freeze({
+  "skills.trustless-work.trustless-work-dev":
+    "Escrow-as-a-service integration for single-release and multi-release escrows, milestone releases, dispute handling, and the provider REST API, React SDK, or Blocks UI."
+});
+
+export function skillDescription(id, upstreamDescription) {
+  return SKILL_DESCRIPTION_OVERRIDES[id] ?? upstreamDescription;
+}
+
+export function assertSkillDescriptionOverrideIdsResolve(skillIds, consumer) {
+  const known = skillIds instanceof Set ? skillIds : new Set(skillIds);
+  const stale = Object.keys(SKILL_DESCRIPTION_OVERRIDES).filter((id) => !known.has(id));
+  if (stale.length > 0) {
+    throw new Error(
+      `${consumer}: SKILL_DESCRIPTION_OVERRIDES names skills that no longer exist: ${stale.join(", ")}. ` +
+        "Reconcile scripts/description-notes.mjs with the pinned source."
+    );
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Callable-name rewrite for scout descriptions (shared, deterministic).
 //

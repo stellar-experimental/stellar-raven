@@ -25,8 +25,19 @@
   },
   "truth": {
     "lifecycle": {
-      "state": "proposed",
-      "reviewState": "none"
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-09-16",
+        "author": "Sol high",
+        "reviewer": "Grok high",
+        "ledger": ".agents/rounds/2026-09-16-trustless-work-acceptance.md",
+        "evidence": [
+          ".agents/rounds/2026-09-16-trustless-work/independent-review.md",
+          ".agents/rounds/2026-09-16-trustless-work/source-review.md",
+          "ecosystem-skills/PIN-REVIEW.md records accepted pin 634f32bd4be6769b0cae52e72db4899d5f5a069c and selection sel:7c6d71f8eef2."
+        ]
+      }
     },
     "domain": "real-world",
     "status": "disputed",
@@ -164,10 +175,13 @@
         "https://github.com/Trustless-Work/trustlesswork-backoffice/blob/83e8cddfe3473f3e4bdabdd8dfd9c506a4fb3135/src/features/escrows/hooks/useSignAndSend.ts",
         "Sibling sweep: q-crp-partner-detail-after-discovery and q-soroban-greenfield-escrow-prior-art-preflight mention Trustless Work but make no API authentication or signing claim that conflicts with this case.",
         "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/core-concepts.md",
-        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md"
+        "https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev/skills/api/v2/core-concepts.md",
+        ".agents/rounds/2026-09-16-trustless-work/independent-review.md",
+        ".agents/rounds/2026-09-16-trustless-work-acceptance.md"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        "improvements/skills/sk-025-trustless-work-beta-auth-scope.md"
       ]
     },
     "origin": "authored 2026-09 (trustless-work source onboarding)"

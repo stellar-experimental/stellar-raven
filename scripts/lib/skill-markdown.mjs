@@ -34,23 +34,66 @@ export function slugify(text) {
   );
 }
 
-/** Minimal frontmatter parser — supports the flat `key: value` blocks skills use. */
+function unquote(value) {
+  if (value.length < 2) return value;
+  const first = value[0];
+  return (first === '"' || first === "'") && value.at(-1) === first
+    ? value.slice(1, -1)
+    : value;
+}
+
+function foldScalar(lines) {
+  const paragraphs = [];
+  let words = [];
+  for (const line of lines) {
+    const text = line.trim();
+    if (text === "") {
+      if (words.length > 0) {
+        paragraphs.push(words.join(" "));
+        words = [];
+      }
+      continue;
+    }
+    words.push(text);
+  }
+  if (words.length > 0) paragraphs.push(words.join(" "));
+  return paragraphs.join("\n");
+}
+
+/** Minimal frontmatter parser for flat values and folded (`>`) text blocks. */
 export function parseFrontmatter(content) {
-  if (!content.startsWith("---")) return { attrs: {}, body: content };
-  const end = content.indexOf("\n---", 3);
-  if (end === -1) return { attrs: {}, body: content };
-  const block = content.slice(content.indexOf("\n") + 1, end);
-  const body = content.slice(content.indexOf("\n", end + 1) + 1);
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  if (!match) return { attrs: {}, body: content };
+  const block = match[1];
+  const body = content.slice(match[0].length);
   const attrs = {};
   let currentKey = null;
+  let foldedLines = null;
+
+  const finishFolded = () => {
+    if (currentKey && foldedLines) attrs[currentKey] = foldScalar(foldedLines);
+    foldedLines = null;
+  };
+
   for (const line of block.split("\n")) {
     const keyMatch = line.match(/^([A-Za-z][A-Za-z0-9_-]*):\s?(.*)$/);
     if (keyMatch) {
+      finishFolded();
       currentKey = keyMatch[1];
-      attrs[currentKey] = keyMatch[2].trim().replace(/^["']|["']$/g, "");
+      const value = keyMatch[2].trim();
+      if (/^>[+-]?$/.test(value)) {
+        attrs[currentKey] = "";
+        foldedLines = [];
+      } else {
+        attrs[currentKey] = unquote(value);
+      }
     } else if (currentKey && line.trim() !== "") {
-      attrs[currentKey] = `${attrs[currentKey]} ${line.trim()}`.trim();
+      if (foldedLines) foldedLines.push(line);
+      else attrs[currentKey] = `${attrs[currentKey]} ${line.trim()}`.trim();
+    } else if (foldedLines) {
+      foldedLines.push("");
     }
   }
+  finishFolded();
   return { attrs, body };
 }

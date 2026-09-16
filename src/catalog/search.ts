@@ -41,6 +41,7 @@ import {
 } from "./scoring.ts";
 import { tokenize } from "./vendor/search-scoring.ts";
 import { prepareAliasQuery, queryContainsAliasTrigger } from "./known-aliases.ts";
+import { admitsWholeSkill } from "./skill-search-admission.ts";
 import {
   jsonSchemaToType,
   sanitizeToolName,
@@ -507,6 +508,7 @@ function scoreCandidates(
       opts.query
     );
     if (score === null) continue;
+    if (entry.kind === "skill" && !admitsWholeSkill(entry, opts.query)) continue;
     scored.push({ entry, score });
   }
 

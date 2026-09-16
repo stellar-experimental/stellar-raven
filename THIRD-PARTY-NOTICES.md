@@ -39,6 +39,7 @@ items that name excluded paths.
 | `openzeppelin-stellar` | [OpenZeppelin/openzeppelin-skills](https://github.com/OpenZeppelin/openzeppelin-skills) | AGPL-3.0-only (© 2026 Zeppelin Group Ltd) |
 | `stellar-dev` | [stellar/stellar-dev-skill](https://github.com/stellar/stellar-dev-skill) | Apache-2.0 (SDF) |
 | `stellar-light` | [Stellar-Light/stellar-scout](https://github.com/Stellar-Light/stellar-scout) | MIT |
+| `trustless-work` | [Trustless-Work/trustlesswork-skill](https://github.com/Trustless-Work/trustlesswork-skill) | Apache-2.0 (Trustless Work) |
 
 Each source's own `LICENSE`/`NOTICE` file names are recorded in `MANIFEST.json`
 (`license_files`) at the same pinned commit, as provenance that every upstream is licensed —

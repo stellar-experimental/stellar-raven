@@ -11,6 +11,9 @@
       "upgrade-cairo-contracts": "Starknet/Cairo chain — out of scope.",
       "upgrade-solidity-contracts": "EVM/Solidity chain — out of scope.",
       "upgrade-stylus-contracts": "Arbitrum Stylus chain — out of scope."
+    },
+    "trustless-work": {
+      "scripts": "Repo tooling (docs consistency checks), not a skill."
     }
   },
   "groups": [
@@ -53,6 +56,14 @@
         "stellar-dev/cross-chain",
         "stellar-dev/standards",
         "stellar-dev/zk-proofs"
+      ]
+    },
+    {
+      "id": "ecosystem-platforms",
+      "title": "Ecosystem platform integrations",
+      "description": "Third-party Stellar platform skills — integrate hosted ecosystem services from your app. Currently: Trustless Work escrow-as-a-service (single- and multi-release USDC escrows via REST API, React SDK hooks, or pre-built Blocks UI).",
+      "members": [
+        "trustless-work/trustless-work-dev"
       ]
     }
   ]

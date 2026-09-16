@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "62fde4e69d9ad82e6fb4ccf04b5b07752230abf8be3cc670ad1a01acad1985b9",
+  "corpusContentSha256": "698629aa42735a85492c7ac264648f96e5da8d69032933cfd3f844a08f488d26",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -2840,72 +2840,6 @@
       }
     },
     {
-      "id": "q-sor-skill-openzeppelin-setup",
-      "question": "What is the best skill workflow for setting up a Soroban contract project with OpenZeppelin Contracts for Stellar?",
-      "surface": [
-        "skills.openzeppelin-stellar.setup-stellar-contracts"
-      ],
-      "golden": {
-        "answer": "Use the OpenZeppelin setup-stellar-contracts playbook. Follow its toolchain checks, initialize a Soroban project, add the documented OpenZeppelin Stellar dependencies to Cargo.toml, and use the Stellar/Soroban import and contract patterns it specifies. Validate the scaffold with the playbook's build/test steps before adding application logic.",
-        "keyFacts": [
-          "Uses the OpenZeppelin Stellar setup playbook for toolchain and project initialization.",
-          "Uses its documented dependencies and imports.",
-          "Builds or tests the scaffold before application-specific changes."
-        ],
-        "avoid": [
-          "Do NOT substitute EVM Solidity setup instructions for the Soroban Rust workflow.",
-          "Do NOT guess dependency names or import paths outside the playbook."
-        ],
-        "notes": "Best-source case for the served OpenZeppelin setup skill."
-      },
-      "tags": {
-        "category": "soroban",
-        "service": "skills",
-        "freshness": "stable"
-      },
-      "truth": {
-        "lifecycle": {
-          "state": "active",
-          "reviewState": "none"
-        },
-        "domain": "corpus-grounded",
-        "status": "confirmed",
-        "sources": [
-          {
-            "class": "B",
-            "ref": "skills.openzeppelin-stellar.setup-stellar-contracts",
-            "note": "Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."
-          },
-          {
-            "class": "C",
-            "ref": "http://localhost:8787/mcp",
-            "note": "Live localhost search→execute probe."
-          }
-        ],
-        "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
-          "evidence": [
-            "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
-            "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
-            "skills.openzeppelin-stellar.setup-stellar-contracts exists and supports the behavioral golden.",
-            "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.openzeppelin-stellar.setup-stellar-contracts'). Same bytes, re-verified by digest; only the pointer notation changed.",
-            "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Structural re-form (long-fact): Split the setup playbook coverage into two facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/setup-stellar-contracts/SKILL.md — the pinned primary playbook covers the Stellar toolchain and project initialization.",
-            "Live re-check 2026-08-29: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/setup-stellar-contracts/SKILL.md — the pinned primary playbook specifies OpenZeppelin dependencies and import conventions.",
-            "Sibling sweep 2026-08-29: grep setup-stellar-contracts|OpenZeppelin Stellar setup → q-sor-skill-openzeppelin-setup; no contradiction"
-          ],
-          "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
-          ]
-        },
-        "origin": "authored 2026-07 (coverage)"
-      }
-    },
-    {
       "id": "q-soroban-cross-contract-call",
       "question": "How does one Soroban contract call a function on another deployed contract?",
       "surface": [
@@ -2998,6 +2932,96 @@
           ]
         },
         "origin": "raven-next q-soroban-cross-contract-call"
+      }
+    },
+    {
+      "id": "q-soroban-fuzz-testing",
+      "question": "What options exist for fuzz or property-based testing of Soroban contracts?",
+      "surface": [
+        "skills.stellar-dev.smart-contracts"
+      ],
+      "golden": {
+        "answer": "Test Soroban contracts against the SDK's in-process `Env` with Rust property/fuzz tooling: `proptest` for invariants and randomized sequences, and `cargo-fuzz`/libFuzzer with `arbitrary` or SDK `SorobanArbitrary` support for structured inputs. Useful targets include boundary values, authorization sequences, storage/TTL behavior, arithmetic, and growing collections. These are testing targets, not claims that a named vendor always uses a particular tool or that a defect class is universally prevalent. Echidna/Foundry invariant tooling is EVM-focused and is not the native Soroban Rust/Wasm path.",
+        "keyFacts": [
+          "Uses `proptest` with the in-process `Env`.",
+          "Uses cargo-fuzz/libFuzzer with `arbitrary` or `SorobanArbitrary`.",
+          "Presents invariants and edge cases as test recommendations."
+        ],
+        "avoid": [
+          "Do NOT prescribe EVM-only tooling as the native Soroban workflow.",
+          "Do NOT claim a vendor's practice or finding prevalence without a source that establishes it."
+        ],
+        "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Targets scout_repos for code discovery. Echidna/Foundry is the EVM trap. Verified: Soroban fuzzing uses Rust tooling (proptest, arbitrary, cargo-fuzz/libfuzzer) against the in-process Env test host; audit roadmaps (Certora) reference fuzzers/static analyzers.\nAlso good if the answer: Property tests assert invariants (e.g., conservation of balances) across randomized call sequences. | Auditors (Certora et al.) reference fuzzers/static analyzers in the Soroban audit roadmap.\nGolden cites: A Soroban testing guide, audit-roadmap, or a graded repo demonstrating fuzz/property tests.\nGT-46 CORRECTION 2026-07-11: retain the Rust tooling; remove unsupported vendor/prevalence generalizations."
+      },
+      "tags": {
+        "category": "soroban",
+        "service": "skills",
+        "freshness": "stable"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "real-world",
+        "status": "confirmed",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v27.0.0/soroban-sdk/src/testutils/arbitrary.rs",
+            "note": "class inferred at migration"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Soroban contracts can use proptest and cargo-fuzz/libFuzzer with arbitrary/SorobanArbitrary against the in-process Env host.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "A: current Stellar fuzzing example documentation",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "B",
+                "ref": "B: rs-soroban-sdk v27 testutils/arbitrary.rs",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "D",
+                "ref": "D: independent Rust tooling documentation",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "evidence": [
+            "Solo scratchpad 575 GT-46 primary 3326 and blind 3329; blind narrowed unsupported auditor/prevalence wording while retaining the tooling.",
+            "Structural re-form (long-fact): Split two long fuzz-testing facts into four atomic facts; truth unchanged.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the official example adapts fuzz tests into reusable property tests with proptest and constructs an Env.",
+            "Live re-check 2026-08-29: https://github.com/stellar/rs-soroban-sdk/blob/v27.0.0/soroban-sdk/src/testutils/arbitrary.rs — SDK source documents cargo-fuzz, Arbitrary, SorobanArbitrary, and Env conversion.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the official example presents state assertions across generated calls as a testing strategy.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the source establishes an example workflow, not vendor practice or defect prevalence.",
+            "Sibling sweep 2026-08-29: grep SorobanArbitrary|cargo-fuzz|libFuzzer|proptest|fuzz testing → q-soroban-fuzz-testing; no contradiction.",
+            "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-3.md): deleted the presentation-shaped fact 'Avoids unsupported claims about tool use or defect prevalence'; the existing avoid item already carries that trap; truth unchanged versus HEAD."
+          ],
+          "rootCause": [
+            "Eval-side source overreach from a testing recommendation to vendor practice and finding-frequency claims.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+          ]
+        },
+        "origin": "raven-next q-soroban-fuzz-testing"
       }
     },
     {

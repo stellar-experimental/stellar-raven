@@ -348,16 +348,16 @@ describe("build-catalog.mjs", () => {
       expect(op.inputSchema).not.toBeNull();
     }
 
-    // Skills mirror: 19 whole-skill entries — the 7 retired Lumenloop
+    // Skills mirror: 20 whole-skill entries — the 7 retired Lumenloop
     // API-onboarding skills are never emitted, skill or sections (see
     // build-catalog.mjs RETIRED_ONBOARDING_SKILLS + the rename-guard).
-    expect(count((e) => e.service === "skills" && e.kind === "skill")).toBe(19);
-    expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBe(174);
+    expect(count((e) => e.service === "skills" && e.kind === "skill")).toBe(20);
+    expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBe(202);
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: 60 operations + 19 whole skills + 174 skill sections.
-    expect(catalog.entries).toHaveLength(253);
+    // Grand total: 60 operations + 20 whole skills + 202 skill sections.
+    expect(catalog.entries).toHaveLength(282);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {

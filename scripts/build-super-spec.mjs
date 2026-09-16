@@ -39,8 +39,10 @@ import { fileURLToPath } from "node:url";
 import {
   LUMENLOOP_DESCRIPTION_NOTES,
   SCOUT_DESCRIPTION_NOTES,
+  assertSkillDescriptionOverrideIdsResolve,
   scoutRefRewrites,
   rewriteScoutRefs,
+  skillDescription,
   scrubScoutDescription,
   scrubNonExposedScoutSchemaRefs
 } from "./description-notes.mjs";
@@ -505,7 +507,7 @@ function buildSkillIndex(manifest, exposed, texts) {
       index.push({
         id: skillId,
         source: source.id,
-        description: attrs.description || skill.name,
+        description: skillDescription(skillId, attrs.description || skill.name),
         sections
       });
     }
@@ -725,6 +727,10 @@ async function main() {
   const skillsManifest = readJson("ecosystem-skills/MANIFEST.json");
   const catalogManifest = readJson("catalog/manifest.json");
   const exposed = exposedIds(catalogManifest);
+  assertSkillDescriptionOverrideIdsResolve(
+    catalogManifest.entries.filter((entry) => entry.kind === "skill").map((entry) => entry.id),
+    "build-super-spec"
+  );
 
   const scout = buildScout(stellarLight, exposed, catalogManifest);
   const skillTexts = await loadSkillTexts(skillsManifest, {

@@ -272,3 +272,42 @@ The acceptance review is `.agents/rounds/2026-09-09-skill-pin-acceptance-grok.md
 The source audit is `.agents/rounds/2026-09-09-upstream-handoffs-grok.md`.
 The rejected candidate remains documented in `.agents/rounds/2026-09-09-drift-141-astra.md`.
 This entry approves the isolated pin for merge, not production deployment or finding retirement.
+
+### 2026-09-15 — trustless-work source added
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `trustless-work` | `634f32bd4be6769b0cae52e72db4899d5f5a069c` | `sel:7c6d71f8eef2` | independent Grok 4.6 high review complete |
+
+The four existing sources did not move; their selections are unchanged.
+
+**What the selection serves.** A new source: [Trustless-Work/trustlesswork-skill](https://github.com/Trustless-Work/trustlesswork-skill),
+the Trustless Work escrow-integration skill (Escrow-as-a-Service on Stellar). The repo holds one
+skill directory, `trustless-work-dev/`, at the repo ROOT — pinned with the new `path: "."` mode
+(skill dirs at the repo root, cherry-picked; the sibling `scripts/` dir is recorded under
+`unpinnedUpstream`). The selection is 22 files: the `SKILL.md` router, a constitution of protocol
+invariants, and companion files for the escrow REST API (production V1 and testnet-only beta V2),
+React SDK hooks, JS SDK, and the pre-built Blocks UI. This is a new exposed surface: the
+mirrored/pinned skill count goes 20 → 21 (`lumenloop-mcp-connect` stays retired from serving), and
+the served catalog goes 253 → 282 entries (19 → 20 searchable whole skills, 174 → 202 sections).
+It is filed into the new `ecosystem-platforms` group in `groups.json`.
+
+**Review result.** The contributing author and an independent Grok 4.6 high reviewer inspected the
+source selection. The independent reviewer differs from the author and orchestrator. The reviewer
+accepted all 22 selected files, source boundaries, hashes, external links, and authentication scope.
+The selected bodies contain no instruction override, literal credential, retired skill, or
+non-exposed Raven operation reference. The beta authentication conflict remains recorded in
+`improvements/skills/sk-025-trustless-work-beta-auth-scope.md`.
+
+The complete routing comparison covers 544 rows. Fourteen normal-dump rows and one holdout row
+change ordered identities. No movement adds Trustless Work to an unrelated query. The independent
+reviewer accepted all 15 movements without a threshold, label, or scorer change. Current totals are
+legacy `213/280/314`, skills `16/23/23`, and holdout `10/22/27` with 11 forbidden captures. Every
+committed numerical baseline and accepted total remains unchanged. The durable review is
+`.agents/rounds/2026-09-16-trustless-work/source-review.md`. The decision ledger is
+`.agents/rounds/2026-09-16-trustless-work-acceptance.md`.
+
+**Bounded risk accepted, recorded so it is not rediscovered as a surprise.** The Blocks UI files
+instruct installing and running the vendor's own published packages (`npm install
+@trustless-work/blocks`, `npx trustless-work <component>`) — a supply-chain execution prompt of the
+same class already recorded for `cctp.md` in the 2026-08-10 entry.

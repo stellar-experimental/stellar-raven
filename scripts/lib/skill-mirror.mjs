@@ -33,10 +33,12 @@ const RAW_BASE = "https://raw.githubusercontent.com";
 /**
  * Upstream path of one mirrored file, reconstructing the layout
  * ecosystem-skills/update.sh pinned: sources with a `path` hold one directory
- * per skill under it; a source with an empty `path` is a single skill at the
- * repo root, whose file paths are already repo-relative.
+ * per skill under it; a source with `path: "."` holds its skill directories at
+ * the repo root; a source with an empty `path` is a single skill at the repo
+ * root, whose file paths are already repo-relative.
  */
 export function upstreamPath(source, skillName, filePath) {
+  if (source.path === ".") return `${skillName}/${filePath}`;
   return source.path ? `${source.path}/${skillName}/${filePath}` : filePath;
 }
 

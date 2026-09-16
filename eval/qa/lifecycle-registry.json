@@ -3,8 +3,8 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 1,
-    "active": 500,
+    "proposed": 0,
+    "active": 501,
     "quarantined": 0,
     "retired": 0
   },
@@ -3965,10 +3965,10 @@
     },
     {
       "id": "q-tw-escrow-api-auth-custody",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-tw-escrow-api-auth-custody.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-tw-escrow-api-auth-custody.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "539b8174973d4225c6399fd5f3769b28646b22df0c0ebf01dfad69d5b8b1360c"
+      "caseContentSha256": "c813abef0407ef88f14f1ef5a26f67c0c2ad934458f39547dc81417fb1004527"
     },
     {
       "id": "q-x402-payment-verification",

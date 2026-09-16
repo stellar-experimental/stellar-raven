@@ -1,8 +1,8 @@
 {
-  "synced_at": "2026-09-09T16:34:39Z",
+  "synced_at": "2026-09-15T16:20:00Z",
   "status": "complete",
   "missing_sources": [],
-  "skill_count": 20,
+  "skill_count": 21,
   "sources": [
     {
       "id": "lumenloop",
@@ -384,6 +384,137 @@
               "path": "references/examples.md",
               "size": 14224,
               "sha": "352edcc9396816fb02d5f1e67a1aa5807e6560a4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trustless-work",
+      "type": "github",
+      "owner": "Trustless-Work",
+      "repo": "trustlesswork-skill",
+      "path": ".",
+      "ref": "main",
+      "commit": "634f32bd4be6769b0cae52e72db4899d5f5a069c",
+      "commit_date": "2026-09-12T04:46:13Z",
+      "url": "https://github.com/Trustless-Work/trustlesswork-skill/tree/634f32bd4be6769b0cae52e72db4899d5f5a069c",
+      "license_files": [
+        "LICENSE"
+      ],
+      "skills": [
+        {
+          "name": "trustless-work-dev",
+          "files": [
+            {
+              "path": "SKILL.md",
+              "size": 13836,
+              "sha": "c95f53e79a513dd3efb74badc70c3477d11ea052"
+            },
+            {
+              "path": "constitution.md",
+              "size": 13910,
+              "sha": "81ff369c481642c053eb017a4d4efc967c5ac3e4"
+            },
+            {
+              "path": "skills/api/core-concepts.md",
+              "size": 9513,
+              "sha": "c58ebf929feb9cee73ba18420269e314c07cb809"
+            },
+            {
+              "path": "skills/api/multi-release-escrow.md",
+              "size": 31591,
+              "sha": "78fae830425de5d78c8026f60ae9c0cb8caa0c89"
+            },
+            {
+              "path": "skills/api/single-release-escrow.md",
+              "size": 31462,
+              "sha": "19e2657df4bfc57d9e85107a516fa801b53f8d17"
+            },
+            {
+              "path": "skills/api/trustlines.md",
+              "size": 6985,
+              "sha": "cc7561007f66cb30c617bb7562e278d0ef9440a5"
+            },
+            {
+              "path": "skills/api/types.md",
+              "size": 21811,
+              "sha": "f6435c685b75223bd5da3ca8d038d3b681ce76bb"
+            },
+            {
+              "path": "skills/api/v2/core-concepts.md",
+              "size": 9913,
+              "sha": "bdcaf9059492697f803354e87543b3845ff92358"
+            },
+            {
+              "path": "skills/api/v2/multi-release.md",
+              "size": 7870,
+              "sha": "0339311553bdb89b975d4d9ba1c2da2c80f684a7"
+            },
+            {
+              "path": "skills/api/v2/single-release.md",
+              "size": 8091,
+              "sha": "e9b9afb155b991d8cfc0c17323a11e25f7baee9c"
+            },
+            {
+              "path": "skills/blocks/components.md",
+              "size": 18640,
+              "sha": "009192bfec5016161a249d3f6fb827ed1cd5c65b"
+            },
+            {
+              "path": "skills/blocks/hooks.md",
+              "size": 8484,
+              "sha": "4dd5daa072370597eefca5dc69ace0a36c364086"
+            },
+            {
+              "path": "skills/blocks/introduction.md",
+              "size": 5516,
+              "sha": "ac8a16e207829c405147468c29f66c70e2276431"
+            },
+            {
+              "path": "skills/blocks/providers.md",
+              "size": 5473,
+              "sha": "e35600b2e828f88195175859e3455b6a842c54de"
+            },
+            {
+              "path": "skills/blocks/vibe-coding.md",
+              "size": 11810,
+              "sha": "b07cc71eac9ef9ec01d99cafdac32cafc365a2c0"
+            },
+            {
+              "path": "skills/js-sdk/js-sdk.md",
+              "size": 7580,
+              "sha": "df1a280aa080a529f963539b21cccc5572071512"
+            },
+            {
+              "path": "skills/protocol/v1.md",
+              "size": 11480,
+              "sha": "07ffd9f82e219264b8c4cee81e00735de52046e6"
+            },
+            {
+              "path": "skills/protocol/v2.md",
+              "size": 7878,
+              "sha": "c790ddca6c811d37ffbd053315a91650569b30a3"
+            },
+            {
+              "path": "skills/react-sdk/hooks-reference.md",
+              "size": 22064,
+              "sha": "734a4b810df12b46be542c7b219a8bfe1e983acb"
+            },
+            {
+              "path": "skills/react-sdk/react-sdk.md",
+              "size": 11592,
+              "sha": "f8737e1737b350a8e457106fb06d891a2b6d482a"
+            },
+            {
+              "path": "skills/react-sdk/v2/react-sdk.md",
+              "size": 9785,
+              "sha": "832ab4e8c03e1e8f92427876b9a857a55850e0e9"
+            },
+            {
+              "path": "skills/react-sdk/vibe-coding.md",
+              "size": 17371,
+              "sha": "c7971194f6cd28638c1c050b207b6e8e8bee7e12"
             }
           ]
         }

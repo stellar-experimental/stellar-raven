@@ -2,7 +2,9 @@
 
 # Stellar/Soroban ecosystem skills — index
 
-Directory of **20 agent skills** across **4 sources** · pinned 2026-09-09T16:34:39Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
+Directory of **21 agent skills** across **5 sources** · pinned 2026-09-15T16:20:00Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
+
+The **What it does** column is host-owned discovery text. Exact-ID overrides in `scripts/description-notes.mjs` can narrow upstream frontmatter for routing. They do not modify pinned source bytes. `codemode.skill.read` still applies its existing exposure scrub.
 
 ## Sources (pinned)
 
@@ -12,6 +14,7 @@ Directory of **20 agent skills** across **4 sources** · pinned 2026-09-09T16:34
 | `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | [`6f215af60eb6`](https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills) | 3 |
 | `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | [`0472452a0573`](https://github.com/stellar/stellar-dev-skill/tree/0472452a05731de5e0a1e886d8aae6df24873fe2/skills) | 8 |
 | `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | [`d25b9f6bd842`](https://github.com/Stellar-Light/stellar-scout/tree/d25b9f6bd842159b5a33aa6125ecb62373c2d8b5) | 1 |
+| `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) (skill dirs at root) | [`634f32bd4be6`](https://github.com/Trustless-Work/trustlesswork-skill/tree/634f32bd4be6769b0cae52e72db4899d5f5a069c) | 1 |
 
 _Every source is public GitHub, pinned to a full commit SHA (independently verifiable); each source's upstream LICENSE/NOTICE file NAMES are recorded in `MANIFEST.json` as provenance — those files are not fetched, copied, or served (see `THIRD-PARTY-NOTICES.md` at the repo root)._
 
@@ -55,6 +58,14 @@ _SDF's developer skills for building on Stellar off-chain: dapps/wallets, chain 
 | [`cross-chain`](https://github.com/stellar/stellar-dev-skill/tree/0472452a05731de5e0a1e886d8aae6df24873fe2/skills/cross-chain) | `stellar-dev` | 64 KB | Cross-chain interoperability for Stellar. Entry point with a rail-selection decision table and shared pitfalls, routing to three companion files — cctp.md (Circle CCTP V2, native USDC burn-and-mint between Stellar and EVM/Solana chains, domain 27, the CctpForwarder requirement for Stellar recipients), axelar.md (Axelar GMP for Soroban contracts calling contracts on other chains, and the Interchain Token Service for multichain tokens), and layerzero.md (LayerZero V2 OApp messaging with configurable DVN security, OFT omnichain tokens, and USDT0 — native USDT on Stellar). Also covers NEAR Intents (intent-based cross-chain swaps into XLM or Stellar USDC) at the routing level. Use when bridging USDC or USDT to or from Stellar, sending messages between a Stellar contract and another blockchain, making a token exist on multiple chains, or adding cross-chain swaps to an app. |
 | [`standards`](https://github.com/stellar/stellar-dev-skill/tree/0472452a05731de5e0a1e886d8aae6df24873fe2/skills/standards) | `stellar-dev` | 48 KB | Stellar standards, ecosystem, and reference. Covers SEPs (Stellar Ecosystem Proposals), CAPs (Core Advancement Proposals), and a quick map for picking the right standard for wallets, anchors, payments, deposits/withdrawals, federation, deep links, and KYC. Also bundles ecosystem references (DeFi protocols, dev tools, wallets, infra, community projects), curated documentation links, and MCP servers (live tools such as Raven). Use when you need to know which SEP applies, or want a starting point for ecosystem integrations, official docs, or live MCP tooling. |
 | [`zk-proofs`](https://github.com/stellar/stellar-dev-skill/tree/0472452a05731de5e0a1e886d8aae6df24873fe2/skills/zk-proofs) | `stellar-dev` | 15 KB | Zero-knowledge proofs and privacy patterns on Stellar. Covers Groth16 verification in smart contracts via BLS12-381 host functions (CAP-59), the BN254 + Poseidon host functions (CAP-74/75), and concrete toolchain walkthroughs for Circom, Noir, and RISC Zero. Use when building privacy-preserving applications, ZK-verifier contracts, or wiring a proving toolchain to Stellar. |
+
+## Ecosystem platform integrations
+
+_Third-party Stellar platform skills — integrate hosted ecosystem services from your app. Currently: Trustless Work escrow-as-a-service (single- and multi-release USDC escrows via REST API, React SDK hooks, or pre-built Blocks UI)._
+
+| Skill | Source | Size | What it does |
+| --- | --- | --- | --- |
+| [`trustless-work-dev`](https://github.com/Trustless-Work/trustlesswork-skill/tree/634f32bd4be6769b0cae52e72db4899d5f5a069c/trustless-work-dev) | `trustless-work` | 286 KB | Escrow-as-a-service integration for single-release and multi-release escrows, milestone releases, dispute handling, and the provider REST API, React SDK, or Blocks UI. |
 
 ## Ecosystem directory (stellarlight.xyz catalog snapshot)
 

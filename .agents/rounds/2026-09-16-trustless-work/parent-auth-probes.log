@@ -1,0 +1,7 @@
+
+> stellar-raven-codemode@0.1.0 improvements:probes
+> node scripts/improvements-run-probes.mjs --service lumenloop
+
+ll-003: recurring (status 200 == 200; contains "\"africa\"": true; contains "\"Africa\"": true; contains "\"mena\"": true; contains "\"MENA\"": true)
+ll-007: recurring (status 200 == 200; contains "\"id\":\"1597\"": true; contains "\"start_at\":\"2026-06-27T05:30:00.000Z\"": true; contains "July 27 in Bhopal": true; contains "\"id\":\"1598\"": true; contains "\"start_at\":\"2026-06-27T06:30:00.000Z\"": true; contains "Jabalpur, July 27": true)
+probe summary: 2 recurring, 0 fixed-candidate, 0 inconclusive, 0 errors, 2 run

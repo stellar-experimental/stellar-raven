@@ -81,6 +81,7 @@ const REQUIRED_INVENTORY_IDS = [
   "skills.openzeppelin-stellar.upgrade-stellar-contracts",
   "openzeppelin-nonstellar-skills",
   "skills.stellar-light.stellar-scout",
+  "skills.trustless-work.trustless-work-dev",
   "stellar-developer-activity",
   "legacy-lumenloop-public-copies",
   "legacy-stellar-light-copies",

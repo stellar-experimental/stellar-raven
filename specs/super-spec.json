@@ -158,7 +158,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-09-09T16:34:39Z"
+    "x-generatedAt": "2026-09-15T16:20:00Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4703,14 +4703,14 @@
     },
     "/skills/list_skills": {
       "get": {
-        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 19 skills across 4 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light), 174 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
+        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 20 skills across 5 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light, trustless-work), 202 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
         "operationId": "skills.list_skills",
         "responses": {
           "200": {
             "description": "The x-skill-index array on this operation."
           }
         },
-        "summary": "List all 19 pinned skills (agent playbooks) with descriptions and section headings.",
+        "summary": "List all 20 pinned skills (agent playbooks) with descriptions and section headings.",
         "tags": [
           "skills"
         ],
@@ -5023,6 +5023,41 @@
               "file:references/examples.md"
             ],
             "source": "stellar-light"
+          },
+          {
+            "description": "Escrow-as-a-service integration for single-release and multi-release escrows, milestone releases, dispute handling, and the provider REST API, React SDK, or Blocks UI.",
+            "id": "skills.trustless-work.trustless-work-dev",
+            "sections": [
+              "Quick Start",
+              "Gotchas",
+              "Reference Files",
+              "API Base URLs",
+              "Common Transaction Flow",
+              "MCP Integration",
+              "Resources",
+              "file:constitution.md",
+              "file:skills/api/core-concepts.md",
+              "file:skills/api/multi-release-escrow.md",
+              "file:skills/api/single-release-escrow.md",
+              "file:skills/api/trustlines.md",
+              "file:skills/api/types.md",
+              "file:skills/api/v2/core-concepts.md",
+              "file:skills/api/v2/multi-release.md",
+              "file:skills/api/v2/single-release.md",
+              "file:skills/blocks/components.md",
+              "file:skills/blocks/hooks.md",
+              "file:skills/blocks/introduction.md",
+              "file:skills/blocks/providers.md",
+              "file:skills/blocks/vibe-coding.md",
+              "file:skills/js-sdk/js-sdk.md",
+              "file:skills/protocol/v1.md",
+              "file:skills/protocol/v2.md",
+              "file:skills/react-sdk/hooks-reference.md",
+              "file:skills/react-sdk/react-sdk.md",
+              "file:skills/react-sdk/v2/react-sdk.md",
+              "file:skills/react-sdk/vibe-coding.md"
+            ],
+            "source": "trustless-work"
           }
         ]
       }
@@ -5058,7 +5093,8 @@
                       "skills.stellar-dev.smart-contracts",
                       "skills.stellar-dev.standards",
                       "skills.stellar-dev.zk-proofs",
-                      "skills.stellar-light.stellar-scout"
+                      "skills.stellar-light.stellar-scout",
+                      "skills.trustless-work.trustless-work-dev"
                     ],
                     "type": "string"
                   },
@@ -6403,8 +6439,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 253,
-    "generatedAt": "2026-09-09T16:34:39Z"
+    "catalogEntries": 282,
+    "generatedAt": "2026-09-15T16:20:00Z"
   },
   "x-services": {
     "lumenloop": {
@@ -6424,7 +6460,7 @@
       "mirror": "ecosystem-skills/",
       "note": "Deliberately 4 operations, not one path per skill/section — the index lives in /skills/list_skills x-skill-index (design doc §3); runnable-skill contracts live in /skills/run_skill x-runnable-index (research/skill-run-design.md §5).",
       "runnableSkillCount": 1,
-      "skillCount": 19,
+      "skillCount": 20,
       "sources": [
         {
           "id": "lumenloop",
@@ -6441,9 +6477,13 @@
         {
           "id": "stellar-light",
           "skills": 1
+        },
+        {
+          "id": "trustless-work",
+          "skills": 1
         }
       ],
-      "syncedAt": "2026-09-09T16:34:39Z"
+      "syncedAt": "2026-09-15T16:20:00Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",

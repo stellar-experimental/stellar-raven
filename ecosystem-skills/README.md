@@ -2,7 +2,7 @@
 
 A version-pinned **reference** to the **Stellar/Soroban agent skills** (Claude-Code-style
 `SKILL.md` playbooks) published across the ecosystem — LumenLoop, OpenZeppelin, the Stellar
-Development Foundation (SDF), and Stellar Light — plus a snapshot of the broader
+Development Foundation (SDF), Stellar Light, and Trustless Work — plus a snapshot of the broader
 [stellarlight.xyz](https://stellarlight.xyz/skills) ecosystem **directory**.
 
 **Skill bodies are not stored here.** This directory holds their addresses: a commit SHA per
@@ -42,6 +42,7 @@ else exists, including non-`skill-md` SDKs/MCP servers/CLIs that this server doe
 | `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | 3 Stellar/Soroban contract skills (cherry-picked from a multi-chain repo) | `gh` tree listing @ pinned commit |
 | `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | 7 SDF developer skills (soroban, dapp, data, assets, agentic-payments, standards, zk-proofs) | `gh` tree listing @ pinned commit |
 | `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | 1 ecosystem-analyst skill | `gh` tree listing @ pinned commit |
+| `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) `trustless-work-dev/` (skill dir at the repo root, cherry-picked) | 1 escrow-integration skill | `gh` tree listing @ pinned commit |
 | _catalog_ | [`stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills) | 42-entry ecosystem directory (sdf / stellarlight / lumenloop / external) | `curl` snapshot → `catalog.json` (NOT downloaded as skills) |
 
 Every source is **public**, and each source's upstream `LICENSE`/`NOTICE` file names are recorded
@@ -144,7 +145,9 @@ nothing silently changes exposure":
   sync renames or removes one, the build fails instead of silently un-retiring it: retire the
   new name, or drop the entry if the skill is gone.
 - **Orphaned description notes** (`scripts/description-notes.mjs`): catalog notes are exact-match
-  data keyed on upstream tool/operation names; a rename orphans the note and fails both builders.
+  data keyed on upstream tool, operation, or skill IDs. A rename orphans the note and fails every
+  affected generator. Skill description overrides change only host discovery text and do not
+  modify pinned source bytes. `codemode.skill.read` still applies its existing exposure scrub.
 
 Eval coupling: `eval/skills-cases.json` grades skills routing. Cases whose target skill leaves
 catalog exposure move to its inert `retiredCases` array (rationale + date), and the skills-lane

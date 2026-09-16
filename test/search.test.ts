@@ -1181,9 +1181,10 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
         "stellarDocs.search_meeting_notes"
       ].sort()
     );
-    // total counts searchable candidates only — 210 sections left search at
-    // the 2026-07-13 A/B, so the candidate pool shrank from 272.
-    expect(page.total).toBe(79);
+    // total counts searchable candidates after whole-skill admission. The
+    // admission boundary removes skill backfills supported only by generic
+    // identity fragments; operations and page membership stay unchanged.
+    expect(page.total).toBe(66);
     expect(page.truncated).toBe(true);
   });
 
@@ -1269,7 +1270,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
 describe("searchCatalog — availableSections on skill hits", () => {
   it("skill hits carry availableSections matching the skills store's key set, slugs before file: keys", async () => {
     const hit = searchCatalog(catalog, {
-      query: "skills.lumenloop-api.lumenloop-api-billing"
+      query: "skills.trustless-work.trustless-work-dev"
     })[0] as SearchHit;
     expect(hit.kind).toBe("skill");
     expect(hit.availableSections!.length).toBeGreaterThan(0);
