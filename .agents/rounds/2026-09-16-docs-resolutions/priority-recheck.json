@@ -1,0 +1,202 @@
+{
+  "generatedAt": "2026-09-16T18:46:57.272Z",
+  "results": [
+    {
+      "id": "sd-040",
+      "path": "/docs/build/guides/conversions/address-conversions",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "Address::from_xdr(&env, &bytes).unwrap()": 0,
+          "ConversionError": 2,
+          "the conversion panics": 1,
+          "Result<Address, ConversionError>": 0
+        }
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 7,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "markerCounts": {
+          "Address::from_xdr(&env, &bytes).unwrap()": 0,
+          "ConversionError": 2,
+          "the conversion panics": 1,
+          "Result<Address, ConversionError>": 0
+        },
+        "matchingAnchors": [
+          "xdr-conversions-in-smart-contracts"
+        ]
+      }
+    },
+    {
+      "id": "sd-041",
+      "path": "/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "We used memos in the past": 0,
+          "Transaction memos were traditionally used": 1,
+          "many services still rely on them": 1,
+          "This guide covers both approaches": 1
+        }
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 15,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "markerCounts": {
+          "We used memos in the past": 0,
+          "Transaction memos were traditionally used": 1,
+          "many services still rely on them": 1,
+          "This guide covers both approaches": 1
+        },
+        "matchingAnchors": [
+          ""
+        ]
+      }
+    },
+    {
+      "id": "sd-044-operation",
+      "path": "/docs/tools/quickstart/advanced-usage/operation-modes",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "Manual close mode": 2,
+          "--enable-core-manual-close": 1,
+          "MANUAL_CLOSE": 1,
+          "manualclose": 4,
+          "existing persistent volume": 0
+        }
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 5,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "markerCounts": {
+          "Manual close mode": 0,
+          "--enable-core-manual-close": 1,
+          "MANUAL_CLOSE": 1,
+          "manualclose": 4,
+          "existing persistent volume": 0
+        },
+        "matchingAnchors": [
+          "manual-close-mode"
+        ]
+      }
+    },
+    {
+      "id": "sd-044-example",
+      "path": "/docs/tools/quickstart/advanced-usage/run-command-examples",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "--local --enable-core-manual-close": 0
+        }
+      },
+      "index": {
+        "ok": false,
+        "error": {
+          "service": "stellarDocs",
+          "kind": "soft-empty",
+          "message": "no indexed sections found for /docs/tools/quickstart/advanced-usage/run-command-examples — the path is not in the docs index (check url_without_anchor from a search hit; auto-generated API-reference pages are not indexed)",
+          "hint": "This is a docs-index result only. For an open-world ecosystem identity or history question, corroborate with the broad Lumenloop or Scout families before drawing a wider negative conclusion."
+        }
+      }
+    },
+    {
+      "id": "sd-044-network",
+      "path": "/docs/tools/quickstart/network-modes",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "--enable-core-manual-close": 1,
+          "Operation Modes": 1
+        }
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 7,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "markerCounts": {
+          "--enable-core-manual-close": 1,
+          "Operation Modes": 1
+        },
+        "matchingAnchors": [
+          "local"
+        ]
+      }
+    },
+    {
+      "id": "sd-045",
+      "path": "/docs/build/guides/dapps/frontend-guide",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "secure connection (HTTPS)": 0,
+          "W3C Secure Contexts": 1,
+          "http://localhost": 1,
+          "http://127.0.0.1": 1,
+          "To enable HTTPS on localhost anyway": 1
+        }
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 35,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "markerCounts": {
+          "secure connection (HTTPS)": 0,
+          "W3C Secure Contexts": 1,
+          "http://localhost": 1,
+          "http://127.0.0.1": 1,
+          "To enable HTTPS on localhost anyway": 1
+        },
+        "matchingAnchors": [
+          "setup-https-on-localhost"
+        ]
+      }
+    },
+    {
+      "id": "sd-051",
+      "path": "/docs/networks/software-versions",
+      "source": {
+        "httpStatus": 200,
+        "markerCounts": {
+          "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)": 2,
+          "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC": 1,
+          "Stellar Core v20.2.0 on February 5, 2024": 1,
+          "Protocol 20: Soroban Phase 1 (February 27, 2024)": 2,
+          "Protocol 20: Soroban Phase 2 (March 19, 2024)": 2,
+          "Mainnet Edition": 0
+        }
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 159,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "markerCounts": {
+          "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)": 0,
+          "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC": 1,
+          "Stellar Core v20.2.0 on February 5, 2024": 1,
+          "Protocol 20: Soroban Phase 1 (February 27, 2024)": 0,
+          "Protocol 20: Soroban Phase 2 (March 19, 2024)": 0,
+          "Mainnet Edition": 0
+        },
+        "matchingAnchors": [
+          "protocol-20-soroban-phase-0-mainnet-february-20-2024"
+        ]
+      }
+    }
+  ]
+}

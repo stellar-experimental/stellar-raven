@@ -1,0 +1,1121 @@
+{
+  "generatedAt": "2026-09-16T18:49:41.846Z",
+  "reviewer": "Grok high independent reviewer",
+  "pageResults": [
+    {
+      "id": "sd-040",
+      "path": "/docs/build/guides/conversions/address-conversions",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/build/guides/conversions/address-conversions",
+        "nbSections": 7,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {
+          "Address::from_xdr(&env, &bytes).unwrap()": 0,
+          ".unwrap()": 0
+        },
+        "expectedFixCounts": {
+          "ConversionError": 2,
+          "the conversion panics": 1,
+          "Result<Address, ConversionError>": 0,
+          "Address::from_xdr(&env, &bytes)": 0
+        },
+        "matchingSections": [
+          {
+            "anchor": "xdr-conversions-in-smart-contracts",
+            "breadcrumb": "Type Conversions > Convert an address to other types > XDR conversions​ > XDR Conversions in Smart Contracts​",
+            "content": "Smart contracts don't need to explicitly interact with the XDR types, as all the smart contract data types are automatically converted to XDR by the smart contract runtime. Every contract type, including Address, can be serialized to XDR bytes. This conversion is useful, for example, for performing hashing in smart contracts. It is also possible to convert the serialized XDR bytes back to contract types, which can be useful in some narrow use cases, such as custom authentication schemes.\r\nNote, that XDR conversions are an advanced feature and are not necessary for most Stellar smart contracts.\r\nDeserializing XDR bytes back into a contract type can fail in two ways. If the bytes hold valid XDR for a value of a different type, the conversion returns an error that the contract can handle. If the bytes are not valid XDR for any value at all, the conversion panics, and the SDK offers no in-contract recovery for that case. Contracts that receive XDR bytes from untrusted sources, such as a custom authentication scheme, should handle the error case and validate the input before relying on it: prefer typed arguments such as Address where possible, or verify the byte format in the client that submits the transaction.\r\nuse soroban_sdk::{ xdr::{FromXdr, ToXdr}, Address, Bytes, ConversionError, Env,};pub fn address_to_xdr_bytes(env: Env, address: Address) -&gt; Bytes { address.to_xdr(&amp;env)}pub fn address_from_xdr_bytes(env: Env, bytes: Bytes) -&gt; Result&lt;Address, ConversionError&gt; { Address::from_xdr(&amp;env, &amp;bytes)}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sd-041",
+      "path": "/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+        "nbSections": 15,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {
+          "We used memos in the past": 0
+        },
+        "expectedFixCounts": {
+          "Transaction memos were traditionally used": 1,
+          "many services still rely on them": 1,
+          "This guide covers both approaches": 1,
+          "you may want to support both memos": 2
+        },
+        "matchingSections": [
+          {
+            "anchor": "",
+            "breadcrumb": "Transactions > Pooled accounts: muxed accounts and memos",
+            "content": "When building an application or service on Stellar, one of the first things you have to decide is how to handle user accounts.\r\nYou can create a Stellar account for each user, but most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account to handle transactions on behalf of their users. In these cases, an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos.\r\nTransaction memos were traditionally used for this purpose, and many services still rely on them. Muxed accounts are better in the long term, but they aren't yet supported by all wallets, exchanges, and anchors, so you may want to support both memos and muxed accounts, at least for a while. This guide covers both approaches."
+          },
+          {
+            "anchor": "memo---differentiated-accounts",
+            "breadcrumb": "Transactions > Pooled accounts: muxed accounts and memos > Memo - differentiated accounts​",
+            "content": "Prior to the introduction of muxed accounts, products and services that relied on pooled accounts often used transaction memos to differentiate between users. Supporting muxed accounts is better in the long term, but for now you may want to support both memos and muxed accounts as all exchanges, anchors, and wallets may not support muxed accounts.\r\nTo learn about what other purposes memos can be used for, see our Memos section."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sd-044-operation-modes",
+      "path": "/docs/tools/quickstart/advanced-usage/operation-modes",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+        "nbSections": 5,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {},
+        "expectedFixCounts": {
+          "Manual close mode": 0,
+          "--enable-core-manual-close": 1,
+          "MANUAL_CLOSE": 1,
+          "manualclose": 4,
+          "NODE_IS_VALIDATOR": 1,
+          "persistent volume": 1
+        },
+        "matchingSections": [
+          {
+            "anchor": "manual-close-mode",
+            "breadcrumb": "Advanced Usage > Operation Modes > Manual close mode​",
+            "content": "By default, ledgers close automatically. (In local network mode, that's once every second.) For deterministic local testing, you can disable automatic closing by passing the --enable-core-manual-close flag when starting the container. The flag sets the MANUAL_CLOSE setting in the etc/stellar-core.cfg file that the container generates when it initializes, and defaults to false when not specified.\r\nManual close is only usable in local network mode. Stellar Core requires NODE_IS_VALIDATOR=true to service a manual close request, and the local network is the only Quickstart configuration that sets it. The flag is accepted on the other networks and the container will start normally, but the manualclose request itself will fail.\r\nThe core configuration is only generated the first time a container initializes. Adding this flag to a container that already has a configuration (on a persistent volume, for example) has no effect. To pick up the change, start a fresh ephemeral container or clear the mounted volume.\r\nWith manual close enabled, ledgers only advance when you explicitly trigger a close by sending the manualclose command to stellar-core's HTTP endpoint on port 11626:\r\ncurl \"http://localhost:11626/manualclose\"\r\nEach manualclose invocation advances the ledger by one. For a complete example of starting a local network with the flag enabled, see Run Commands."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sd-044-run-command-examples",
+      "path": "/docs/tools/quickstart/advanced-usage/run-command-examples",
+      "index": {
+        "ok": false,
+        "kind": "soft-empty",
+        "message": "no indexed sections found for /docs/tools/quickstart/advanced-usage/run-command-examples — the path is not in the docs index (check url_without_anchor from a search hit; auto-generated API-reference pages are not indexed)",
+        "status": null
+      }
+    },
+    {
+      "id": "sd-044-network-modes",
+      "path": "/docs/tools/quickstart/network-modes",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/tools/quickstart/network-modes",
+        "nbSections": 7,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {},
+        "expectedFixCounts": {
+          "--enable-core-manual-close": 1,
+          "Operation Modes": 1
+        },
+        "matchingSections": [
+          {
+            "anchor": "local",
+            "breadcrumb": "Quickstart > Network Modes > Local​",
+            "content": "The local network mode allows you to customize Quickstart by adding parameters to the container start command. The available parameters are:\r\n--protocol-version {version} to run a specific protocol version (defaults to latest version)\r\n--limits {limits} to configure specific Soroban resource limits to one of: default leaves limits set extremely low which is stellar-core's default configuration\ntestnet sets limits to match those used on testnet (the default quickstart configuration)\nunlimited sets limits to the maximum resources that can be configured\r\ndefault leaves limits set extremely low which is stellar-core's default configuration\r\ntestnet sets limits to match those used on testnet (the default quickstart configuration)\r\nunlimited sets limits to the maximum resources that can be configured\r\n--enable-core-manual-close to turn off automatic ledger closing, so ledgers advance only when you trigger them yourself (defaults to false). See Operation Modes.\r\nSome settings and values are specific to the local network mode, which you must be aware of when running Quickstart in local network mode."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sd-044-container",
+      "path": "/docs/tools/quickstart/advanced-usage/container",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/container",
+        "nbSections": 1,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {
+          "--enable-core-manual-close": 0
+        },
+        "expectedFixCounts": {},
+        "matchingSections": []
+      }
+    },
+    {
+      "id": "sd-045",
+      "path": "/docs/build/guides/dapps/frontend-guide",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide",
+        "nbSections": 35,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {
+          "Freighter wallet requires a secure connection (HTTPS) to interact with your dapp.": 0,
+          "secure connection (HTTPS)": 0
+        },
+        "expectedFixCounts": {
+          "Freighter wallet requires a secure connection": 1,
+          "W3C Secure Contexts": 1,
+          "http://localhost": 1,
+          "http://127.0.0.1": 1,
+          "To enable HTTPS on localhost anyway": 1
+        },
+        "matchingSections": [
+          {
+            "anchor": "setup-https-on-localhost",
+            "breadcrumb": "Dapp Development > Comprehensive frontend guide for Stellar dapps > 2. Setting up the development environment​ > Setup HTTPS on Localhost​",
+            "content": "Freighter wallet requires a secure connection to interact with your dapp. Browsers treat http://localhost and http://127.0.0.1 as secure contexts per the W3C Secure Contexts specification, so local development over plain HTTP works without extra setup. To enable HTTPS on localhost anyway, you can use a tool like mkcert. Fortunately, Next.js provides built-in support for HTTPS.\r\nTo enable HTTPS in your Next.js project, open the package.json file and edit the scripts section as follows:\r\n\"scripts\": { \"dev\": \"next dev --experimental-https\",}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sd-051",
+      "path": "/docs/networks/software-versions",
+      "index": {
+        "ok": true,
+        "page": "https://developers.stellar.org/docs/networks/software-versions",
+        "nbSections": 159,
+        "complete": true,
+        "truncated": false,
+        "truncationReason": null,
+        "originalDefectCounts": {
+          "Protocol 20: Soroban Phase 1 (Mainnet Edition)": 0,
+          "Mainnet Edition": 0,
+          "protocol-20-soroban-phase-1-mainnet-edition-february-5-2024": 0
+        },
+        "expectedFixCounts": {
+          "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)": 0,
+          "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC": 1,
+          "Stellar Core v20.2.0 on February 5, 2024": 1,
+          "Protocol 20: Soroban Phase 1 (February 27, 2024)": 0,
+          "Protocol 20: Soroban Phase 2 (March 19, 2024)": 0,
+          "protocol-20-soroban-phase-0-mainnet-february-20-2024": 0
+        },
+        "matchingSections": [
+          {
+            "anchor": "protocol-20-soroban-phase-0-mainnet-february-20-2024",
+            "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​",
+            "content": "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits and fees listed below. The software in this snapshot released earlier: Stellar Core v20.2.0 on February 5, 2024, and the remaining components through February 14. Read more in the Protocol 20 Upgrade Guide."
+          }
+        ]
+      }
+    }
+  ],
+  "searchResults": [
+    {
+      "id": "sd-040-search",
+      "query": "Address::from_xdr malformed XDR unwrap",
+      "ok": true,
+      "nbHits": 937,
+      "hits": [
+        {
+          "url": "https://developers.stellar.org/docs/data/analytics/hubble/developer-guide/backfill/JS-UDF#step-3-wrapping-the-javascript-function-as-a-udf",
+          "breadcrumb": "Backfill > Backfill using JS UDF > Step 3: Wrapping the JavaScript Function as a UDF​",
+          "anchor": "step-3-wrapping-the-javascript-function-as-a-udf",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "CREATE TEMP FUNCTION getFeeBumpAccountIfExists(tx_meta STRING)RETURNS STRINGLANGUAGE jsOPTIONS ( library=[\"gs://stellar-test-js-udf/stellar-base.min.js\"] -- Path to JS library in GCS)AS r\"\"\" return StellarBase.encodeMuxedAccountToAddress( StellarBase.xdr.TransactionEnvelope.fromXDR(tx_meta, 'base64') .feeBump() .tx() .feeSource() );\"\"\";WITH fee_bump_transactions AS ( SELECT batch_run_date, transac"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/conversions/address-conversions#xdr-conversions-in-smart-contracts",
+          "breadcrumb": "Type Conversions > Convert an address to other types > XDR conversions​ > XDR Conversions in Smart Contracts​",
+          "anchor": "xdr-conversions-in-smart-contracts",
+          "relevant": [
+            "from_xdr",
+            "ConversionError",
+            "address-conversions"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Smart contracts don't need to explicitly interact with the XDR types, as all the smart contract data types are automatically converted to XDR by the smart contract runtime. Every contract type, including Address, can be serialized to XDR bytes. This conversion is useful, for example, for performing hashing in smart contracts. It is also possible to convert the serialized XDR bytes back to contract"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/learn/fundamentals/data-format/xdr#unions",
+          "breadcrumb": "Data Format > XDR > Digging into XDR structures​ > XDR's Common Forms​ > Unions​",
+          "anchor": "unions",
+          "relevant": [
+            "from_xdr"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "This is where things get a little more complicated. A union type is a generic type that switches between different \"arms\", each of which is a different internal type. When parsing an XDR union type, it's important to determine which arm is being used before you try parsing what's inside.\r\nLet's take an SCAddress, for example. From the type definition, we can see that it's either an account (i.e. S"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-rust-sdk-11",
+          "breadcrumb": "Documentation > Software Versions > Preview 8 (April 4th, 2023)​ > Changelog​ > Soroban Rust SDK​",
+          "anchor": "soroban-rust-sdk-11",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Add docs in specs for types.\r\nRename Serialize/Deserialize to To/FromXdr.\r\nUse the updated source_account() interface.\r\nUpdate storage docs.\r\nExpose reset budget functions to testutils.\r\nAdapt storage and snapshot interface to env changes.\r\nAdd utils for converting from/to contract/account ids.\r\nValue and object representation overhaul.\r\nAdd a getter for address of a generated contract client.\r\nUs"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/data/analytics/hubble/developer-guide/backfill/JS-UDF#step-4-updating-column-values-using-udf",
+          "breadcrumb": "Backfill > Backfill using JS UDF > Step 4: Updating Column Values Using UDF​",
+          "anchor": "step-4-updating-column-values-using-udf",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "You can also use this UDF to update values in a BigQuery table. Here’s an example of how to do this:\r\nCREATE TEMP FUNCTION getFeeBumpAccountIfExists(tx_meta STRING)RETURNS STRINGLANGUAGE jsOPTIONS ( library=[\"gs://stellar-test-js-udf/stellar-base.min.js\"])AS r\"\"\" let txe = StellarBase.xdr.TransactionEnvelope.fromXDR(tx_meta, 'base64'); let tx = txe.feeBump(); let sourceAccount = StellarBase.encode"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/dapps/state-archival#step-2-create-a-helper-function-for-restoration",
+          "breadcrumb": "Dapp Development > Implement state archival in dapps > Methods of implementing state archival on the client side​ > 2. Restoring archived data​ > Step 2: Create a helper function for restoration​",
+          "anchor": "step-2-create-a-helper-function-for-restoration",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Let's create a helper function that attempts to submit a transaction, and if it fails due to archived data, it will restore the data and retry:\r\nasync function submitOrRestoreAndRetry(contractId, method, ...args) { try { let hasFreighter = await isConnected(); if (!hasFreighter) { return alert(\"Freighter wallet is required for transactions\"); } const isAllowed = await setAllowed(); if (!isAllowed)"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/dapps/state-archival#step-4-handling-contract-instance-restoration",
+          "breadcrumb": "Dapp Development > Implement state archival in dapps > Methods of implementing state archival on the client side​ > 2. Restoring archived data​ > Step 4: Handling contract instance restoration​",
+          "anchor": "step-4-handling-contract-instance-restoration",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "For restoring an entire contract instance, you might need a separate function:\r\nHere we will be using the getLedgerEntries method to get the WASM code of the contract and also the restoreFootprint operation to restore the contract instance.\r\nasync function restoreContractInstance(contractId) { try { let hasFreighter = await isConnected(); if (!hasFreighter) { return alert(\"Freighter wallet is requ"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#interacting-with-smart-contracts",
+          "breadcrumb": "Dapp Development > Comprehensive frontend guide for Stellar dapps > 5. Integrating with Stellar blockchain​ > Interacting with smart contracts​",
+          "anchor": "interacting-with-smart-contracts",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "In the above example, we sent a simple payment transaction using the StellarSdk.Operation.payment operation. However, Stellar also supports many other operations, one of which is invokeHostFunction operation which is used to interact with smart contracts on the Stellar network.\r\nWe will be working with a deployed version of the counter smart contract on the Stellar Testnet. The smart contract has "
+        },
+        {
+          "url": "https://developers.stellar.org/docs/data/analytics/hubble/developer-guide/backfill/JS-UDF#step-2-writing-the-javascript-function",
+          "breadcrumb": "Backfill > Backfill using JS UDF > Step 2: Writing the JavaScript Function​",
+          "anchor": "step-2-writing-the-javascript-function",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Here is an example JavaScript function to extract the fee_account_muxed field from the transaction envelope (tx_meta):\r\nlet tx_meta = \"AAAABQAAAQAAABYMYQ4r9W/uB9X6q6VU6feQhS2kQoRy9CjvwtYXdPRSih2hZeSSAAAAAAAAAZAAAAACAAAAAJwLL0Ul/CyRZdXuenmdXrzVyX9X56m4kYPYmgppVIj8AAAAZAAF9PwAAAABAAAAAAAAAAAAAAABAAAAAQAAAQAAAFj7+8N85JwLL0Ul/CyRZdXuenmdXrzVyX9X56m4kYPYmgppVIj8AAAAAAAAAADN5igtu93OKhkj2NrSHuPEJktU+0gJ0"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#interacting-with-the-stellar-network",
+          "breadcrumb": "Dapp Development > Comprehensive frontend guide for Stellar dapps > 5. Integrating with Stellar blockchain​ > Interacting with the Stellar network​",
+          "anchor": "interacting-with-the-stellar-network",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "If you are coding along this guide at this point, you should have a minimal web application with a form to send payments. Now, let's integrate this form with the Stellar SDK to send actual payments on the Stellar network.\r\nBefore we proceed, please ensure that you have setup the Freighter wallet extension on your browser. You can download it here. Also, ensure that you have lumens on the Testnet a"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/archival/create-restoration-footprint-js",
+          "breadcrumb": "State Archival > Create a restoration footprint manually to restore archived data using the JavaScript SDK > Unlimited amount of storage",
+          "anchor": "",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Unlimited amount of storage\r\nAs seen above, all contract data is automatically archived when TTL reaches 0, except for Temporary entries, which are deleted permanently from the ledger.\r\nBoth types Instance and Persistent are suitable for storing data that cannot be easily recreated, with the nuance that Instance shares the same TTL as the contract instance while Persistent does not and, if the con"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/transactions/signing-soroban-invocations#step-2-fee-payer-rebuilds-and-submits",
+          "breadcrumb": "Transactions > Signing Soroban contract invocations > Method 2: Auth-entry signing​ > Code example: Using AssembledTransaction​ > Step 2: Fee-payer rebuilds and submits​",
+          "anchor": "step-2-fee-payer-rebuilds-and-submits",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "import { Keypair, Networks, Operation, Transaction, TransactionBuilder, xdr,} from \"@stellar/stellar-sdk\";import { Api, assembleTransaction, Server } from \"@stellar/stellar-sdk/rpc\";const rpcUrl = \"https://soroban-testnet.stellar.org\";const networkPassphrase = Networks.TESTNET;const server = new Server(rpcUrl);const feePayerKeypair = Keypair.fromSecret(\"S...\");async function submitWithSignedAuth( "
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/confirmation-modal#creating-a-reusable-modal-svelte-component",
+          "breadcrumb": "Build a Payment App with the JS SDK > Confirmation Modal > Code implementation​ > Creating a reusable modal Svelte component​",
+          "anchor": "creating-a-reusable-modal-svelte-component",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "To avoid reinventing the wheel every time we need a modal, we will create a reusable component that can accomodate most of our needs. Then, when we need the confirmation modal, we can pass an object of props to customize the modal's behavior.\r\nIn our *.svelte component files, we will not dive into the HTML markup outside of the &lt;script&gt; tags. The Svelte syntax used in HTML is primarily used "
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/apps/guestbook/frontend#sign-the-guestbook",
+          "breadcrumb": "Build a Passkey Powered Guestbook Dapp > Dapp Frontend Walkthrough > Sign the guestbook​",
+          "anchor": "sign-the-guestbook",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "First, we'll need a page that allows us to actually sign the guestbook. We'll have a form that takes a title and message field, and then we'll submit the transaction with the send helper function, just like we did with the XLM transfer previously.\r\nThe form is pretty simple, and it's barely worth mentioning. We have a text input, a textarea input, and a button. Some checks are performed to see if "
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/rpc/retrieve-contract-code-js",
+          "breadcrumb": "RPC > Retrieve a contract code ledger entry using the JavaScript SDK",
+          "anchor": "",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "When you deploy a contract, first the code is \"installed\" (i.e., it is uploaded onto the blockchain). This creates a LedgerEntry containing the Wasm byte-code, which is uniquely identified by its hash (that is, the hash of the uploaded code itself). Then, when the contract is \"deployed,\" we create a LedgerEntry with a reference to that code's hash. So fetching the contract code is a two-step proce"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/account-creation#creating-the-walletstore-store",
+          "breadcrumb": "Build a Payment App with the JS SDK > Account Creation > Code implementation​ > Creating the walletStore store​",
+          "anchor": "creating-the-walletstore-store",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Our walletStore will make a few things possible throughout our application.\r\nWe can \"register\" a keypair, which encrypts the keypair, stores it in the browser's storage, and keeps track of that keypair's keyId.\r\nWe can \"sign\" transactions by providing the pincode to decrypt the keypair.\r\nWe can \"confirm\" the pincode is valid for the stored keypair (or that it matches for signups).\r\nimport { persis"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling#request-adjustments",
+          "breadcrumb": "Errors > Error Handling > Error Handling for Transaction Submissions​ > Request Adjustments​",
+          "anchor": "request-adjustments",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Certain transaction submission failures also need adjustments to succeed.\r\nIf the XDR is malformed, or the transaction is otherwise invalid, you’ll encounter a 400 Bad Request (for example, an invalid source account). Both transactions and their operations can be easily malformed or invalid: look at the extras.result_codes field for details and cross-reference them with the appropriate result code"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+          "breadcrumb": "Errors > Error Handling",
+          "anchor": "",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "It’s important to anticipate errors your users may encounter as you develop on Stellar. In many tutorials throughout our developer documentation, we leave out error handling code to focus on the example. In this section, we will do the opposite and talk specifically about the errors. By the end of this section, you should be able to categorize errors and understand the best way to handle them in y"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/payment#the-dashboardsend-page",
+          "breadcrumb": "Build a Payment App with the JS SDK > Payment > Code implementation​ > The /dashboard/send page​",
+          "anchor": "the-dashboardsend-page",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "The /dashboard/send page allows the user to send payments to other Stellar addresses. They can select from a dropdown containing their contact list names, or they can enter their own \"Other...\" public key.\r\nThe following additional features have been implemented:\r\nIf the destination address is not a funded account, the user is informed they will be using a createAccount operation, and must send at"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events#tests",
+          "breadcrumb": "Example Contracts > Events > Tests​",
+          "anchor": "tests",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Open the events/src/test.rs file to follow along.\r\n#[test]fn test() { let env = Env::default(); let contract_id = env.register(IncrementContract, ()); let client = IncrementContractClient::new(&amp;env, &amp;contract_id); // Assert on the events emitted by the last contract invocation using // the contract's event struct defined with #[contractevent] macro to // construct the expected event in xdr"
+        }
+      ]
+    },
+    {
+      "id": "sd-044-original-search",
+      "query": "enable-core-manual-close quickstart manual close ledger",
+      "ok": true,
+      "nbHits": 2,
+      "hits": [
+        {
+          "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode",
+          "breadcrumb": "Advanced Usage > Operation Modes > Manual close mode​",
+          "anchor": "manual-close-mode",
+          "relevant": [
+            "enable-core-manual-close",
+            "manualclose",
+            "MANUAL_CLOSE"
+          ],
+          "hasFlag": true,
+          "hasManualclose": true,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "By default, ledgers close automatically. (In local network mode, that's once every second.) For deterministic local testing, you can disable automatic closing by passing the --enable-core-manual-close flag when starting the container. The flag sets the MANUAL_CLOSE setting in the etc/stellar-core.cfg file that the container generates when it initializes, and defaults to false when not specified.\r\n"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/tools/quickstart/network-modes#local",
+          "breadcrumb": "Quickstart > Network Modes > Local​",
+          "anchor": "local",
+          "relevant": [
+            "enable-core-manual-close"
+          ],
+          "hasFlag": true,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "The local network mode allows you to customize Quickstart by adding parameters to the container start command. The available parameters are:\r\n--protocol-version {version} to run a specific protocol version (defaults to latest version)\r\n--limits {limits} to configure specific Soroban resource limits to one of: default leaves limits set extremely low which is stellar-core's default configuration\ntes"
+        }
+      ]
+    },
+    {
+      "id": "sd-044-flag-search",
+      "query": "enable-core-manual-close",
+      "ok": true,
+      "nbHits": 2,
+      "hits": [
+        {
+          "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode",
+          "breadcrumb": "Advanced Usage > Operation Modes > Manual close mode​",
+          "anchor": "manual-close-mode",
+          "relevant": [
+            "enable-core-manual-close",
+            "manualclose"
+          ],
+          "hasFlag": true,
+          "hasManualclose": true,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "By default, ledgers close automatically. (In local network mode, that's once every second.) For deterministic local testing, you can disable automatic closing by passing the --enable-core-manual-close flag when starting the container. The flag sets the MANUAL_CLOSE setting in the etc/stellar-core.cfg file that the container generates when it initializes, and defaults to false when not specified.\r\n"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/tools/quickstart/network-modes#local",
+          "breadcrumb": "Quickstart > Network Modes > Local​",
+          "anchor": "local",
+          "relevant": [
+            "enable-core-manual-close"
+          ],
+          "hasFlag": true,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "The local network mode allows you to customize Quickstart by adding parameters to the container start command. The available parameters are:\r\n--protocol-version {version} to run a specific protocol version (defaults to latest version)\r\n--limits {limits} to configure specific Soroban resource limits to one of: default leaves limits set extremely low which is stellar-core's default configuration\ntes"
+        }
+      ]
+    },
+    {
+      "id": "sd-045-original-search",
+      "query": "Freighter not detected localhost https",
+      "ok": true,
+      "nbHits": 896,
+      "hits": [
+        {
+          "url": "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/getting-started#testing-with-stellar-demo-wallet",
+          "breadcrumb": "Admin Guide > Getting Started > Testing with Stellar Demo Wallet​",
+          "anchor": "testing-with-stellar-demo-wallet",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "You can test the Anchor Platform using the Stellar Demo Wallet:\r\nOpen the Stellar Demo Wallet in your browser.\r\nClick on \"Generate keypair for new account (testnet only)\" button.\r\nClick on the \"Create Account\" button next to the PUBLIC key.\r\nYou should now see XLM available under the Balances section, indicating your account is loaded.\r\nClick on \"Add home domain\" and enter the following URL:\nhttp:"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/freighter/prompt-to-sign-tx",
+          "breadcrumb": "Freighter Wallet > Prompt Freighter to sign transactions as a JS dapp developer",
+          "anchor": "",
+          "relevant": [
+            "Freighter",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "If you're building a JS dapp, easily sign Soroban transactions using the Freighter browser extension and its corresponding client library @stellar/freighter-api:\r\nFollow the setup instructions to connect to the Testnet, if required during development.\r\nFollow the setup instructions to connect to the Testnet, if required during development.\r\nNow, you can use the signTransaction method from @stellar"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion-filtering#steps",
+          "breadcrumb": "Admin Guide > Ingestion Filtering > Sample Use Case:​ > Steps:​",
+          "anchor": "steps",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Configure a filter rule with 4 white-listed Assets by POST'ing the request to Horizon ADMIN API &lt;horizon_host&gt;:&lt;ADMIN_PORT&gt;/ingestion/filters/asset.\r\ncurl -X 'PUT' \\ 'http://localhost:4200/ingestion/filters/asset' \\ -H 'accept: application/json' \\ -H 'Content-Type: application/json' \\ -d '{ \"whitelist\": [ \"USDC:GAFRNZHK4DGH6CSF4HB5EBKK6KARUOVWEI2Y2OIC5NSQ4UBSN4DR456U\", \"DOTT:GAFRNZHK4D"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/development#standalone",
+          "breadcrumb": "Admin Guide > Development > Standalone​",
+          "anchor": "standalone",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "To run a local standalone network with the Stellar Quickstart Docker image, run the following command:\r\ndocker run --rm -it \\ -p 8000:8000 \\ --name stellar \\ stellar/quickstart:testing \\ --local \\ --enable-stellar-rpc\r\nOnce the image is started, you can check RPC's status by querying the health check endpoint:\r\ncurl --location 'http://localhost:8000/rpc' \\--header 'Content-Type: application/json' "
+        },
+        {
+          "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode",
+          "breadcrumb": "Advanced Usage > Operation Modes > Manual close mode​",
+          "anchor": "manual-close-mode",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": true,
+          "hasManualclose": true,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "By default, ledgers close automatically. (In local network mode, that's once every second.) For deterministic local testing, you can disable automatic closing by passing the --enable-core-manual-close flag when starting the container. The flag sets the MANUAL_CLOSE setting in the etc/stellar-core.cfg file that the container generates when it initializes, and defaults to false when not specified.\r\n"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/configuring-sdp#operational-configuration",
+          "breadcrumb": "Admin Guide > Configuration > SDP Core Service​ > Operational Configuration​",
+          "anchor": "operational-configuration",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Operational Configuration allows controlling metrics, logging, and other operational aspects of the SDP Core Service.\r\nPORT - The port on which the SDP Core Service will listen for incoming HTTP requests. Default: 8000.\r\nLOG_LEVEL - Determines the verbosity level of logs. Options: \"TRACE\", \"DEBUG\", \"INFO\", \"WARN\", \"ERROR\", \"FATAL\", or \"PANIC\". Default: \"INFO\".\r\nLOG_SHIPPING_URL - A Loki-compatible"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/dapps/soroban-contract-init-template#5-try-it",
+          "breadcrumb": "Dapp Development > Develop contract with frontend templates > Make your own template​ > 5. Try it!​",
+          "anchor": "5-try-it",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "That's it! You have an NPM project with an initialize.js script (and its supporting cast). That's all you really need!\r\nLet's try it. First, make sure you're running a local Stellar network. Start Docker Desktop or whatever alternative you prefer, then:\r\nstellar container start local\r\nLet's include one extra contract. Go to the increment example and copy increment files into the root directory.\r\nT"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep10#how-to-test-the-authentication-flow",
+          "breadcrumb": "SEP Guides > Stellar Authentication (SEP-10) > How to Test the Authentication Flow​",
+          "anchor": "how-to-test-the-authentication-flow",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "The SEP-10 authentication flow consists of two steps:\r\nGET /auth - Request a challenge transaction Parameters: account (required), memo (optional), home_domain (optional), client_domain (optional)\nReturns: A challenge transaction in XDR format\r\nGET /auth - Request a challenge transaction\r\nParameters: account (required), memo (optional), home_domain (optional), client_domain (optional)\r\nReturns: A "
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/apps/dapp-frontend#6-try-it-out",
+          "breadcrumb": "Build Applications > Develop a Contract with Frontend Templates > Make your own template​ > 6. Try it out​",
+          "anchor": "6-try-it-out",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "We can now run the code with this command:\r\nnpm run dev\r\nThe URL for the dapp will be shown in the terminal, typically it’s http://localhost:3000 unless the port 3000 is already in use."
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp/charge-guide#push-mode-server",
+          "breadcrumb": "MPP on Stellar > MPP Charge Guide > Push mode​ > Push mode server​",
+          "anchor": "push-mode-server",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "The server accepts both pull and push credentials automatically — no extra configuration needed. The only change from the pull mode server is moving store into stellar.charge():\r\nimport express from \"express\";import { Mppx, Store } from \"mppx/server\";import { stellar } from \"@stellar/mpp/charge/server\";import { USDC_SAC_TESTNET } from \"@stellar/mpp\";const PORT = 3001;const RECIPIENT = process.env."
+        },
+        {
+          "url": "https://developers.stellar.org/docs/tools/lab/quickstart-with-lab#configure-stellar-lab-to-use-local-horizon-and-local-rpc",
+          "breadcrumb": "Lab > Using Lab with Quickstart > Configure Stellar Lab to use Local Horizon and Local RPC​",
+          "anchor": "configure-stellar-lab-to-use-local-horizon-and-local-rpc",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "\r\nOpen Stellar Lab network selector on the upper right hand corner.\r\nSelect Custom network in the dropdown.\r\nFor the RPC URL, input http://localhost:8000/rpc.\r\nFor the Horizon URL, input http://localhost:8000..\r\nFor the network passphrase, input Test SDF Network ; September 2015\r\nClick the button Switch to Custom Network and switched to using your Quickstart.\r\nYou should be able to use Horizon end"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp/charge-guide#push-mode-client",
+          "breadcrumb": "MPP on Stellar > MPP Charge Guide > Push mode​ > Push mode client​",
+          "anchor": "push-mode-client",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "To use push mode, set mode: \"push\" in the client configuration and provide the keypair of the from account (the account funding the transfer). The SDK handles signedHash credential generation automatically — no manual signing code required:\r\nimport { Keypair } from \"@stellar/stellar-sdk\";import { Mppx } from \"mppx/client\";import { stellar } from \"@stellar/mpp/charge/client\";import { readFileSync }"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/tools/lab/quickstart-with-lab#start-quickstart",
+          "breadcrumb": "Lab > Using Lab with Quickstart > Start Quickstart​",
+          "anchor": "start-quickstart",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Quickstart can be started for different networks. In this example, we will start Quickstart for testnet. Start Quickstart with the Stellar CLI using the following command:\r\nstellar container start testnet\r\nQuickstart will usually start on http://localhost:8000. With this information, we can now configure Stellar Lab to use the local network."
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp/charge-guide#client-code",
+          "breadcrumb": "MPP on Stellar > MPP Charge Guide > Create client.js​ > Client code​",
+          "anchor": "client-code",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "With your server running, create a file named client.js and paste in the following code:\r\nimport { Keypair } from \"@stellar/stellar-sdk\";import { Mppx } from \"mppx/client\";import { stellar } from \"@stellar/mpp/charge/client\";import { readFileSync } from \"node:fs\";// Load .env manually (no dotenv package needed)const env = Object.fromEntries( readFileSync(\".env\", \"utf-8\") .split(\"\\n\") .filter((l) ="
+        },
+        {
+          "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/getting-started#run-the-wizard",
+          "breadcrumb": "Admin Guide > Getting Started > Run the wizard​",
+          "anchor": "run-the-wizard",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "make setup\r\nAt the prompts, choose according to below. The wizard generates and funds the SEP-10 signer and distribution accounts (testnet), starts Docker, and prints tenant credentials.\r\n? Select an existing run configuration or create new:▸ Create new configuration✔ Setup name (optional): &lt;sdp-setup-name&gt;? Select network:▸ testnet? Select tenant mode:▸ single-tenant? Account setup:▸ Genera"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide#session-client",
+          "breadcrumb": "MPP on Stellar > MPP Session Guide > Session client​",
+          "anchor": "session-client",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Create channel-client.js:\r\nimport { Keypair } from \"@stellar/stellar-sdk\";import { Mppx } from \"mppx/client\";import { stellar } from \"@stellar/mpp/channel/client\";import { readFileSync } from \"node:fs\";// Load commitment secret key from .envconst env = Object.fromEntries( readFileSync(\".env\", \"utf-8\") .split(\"\\n\") .filter((l) =&gt; l.includes(\"=\")) .map((l) =&gt; l.split(\"=\")),);const COMMITMENT_S"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp/charge-guide#create-serverjs",
+          "breadcrumb": "MPP on Stellar > MPP Charge Guide > Create server.js​",
+          "anchor": "create-serverjs",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Create a file named server.js and paste in the following code:\r\nimport express from \"express\";import { Mppx, Store } from \"mppx/server\";import { stellar } from \"@stellar/mpp/charge/server\";import { USDC_SAC_TESTNET } from \"@stellar/mpp\";const PORT = 3001;const RECIPIENT = process.env.STELLAR_RECIPIENT; // Your Stellar public key (G...)const MPP_SECRET_KEY = process.env.MPP_SECRET_KEY; // Shared se"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/getting-started#log-into-the-sdp",
+          "breadcrumb": "Admin Guide > Getting Started > Log into the SDP​",
+          "anchor": "log-into-the-sdp",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Open http://localhost:3000 and log in using the admin credentials generated by the setup wizard (organization: default)."
+        },
+        {
+          "url": "https://developers.stellar.org/docs/tools/quickstart/explorer#urls",
+          "breadcrumb": "Quickstart > Explorer > URLs​",
+          "anchor": "urls",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Lab (home): http://localhost:8000/lab\r\nExplorer: http://localhost:8000/lab/transactions-explorer\r\nIf you’re using a custom port or host when starting Quickstart, replace localhost:8000 with your chosen address."
+        },
+        {
+          "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/monitoring#load-the-sdp-grafana-dashboard",
+          "breadcrumb": "Admin Guide > Monitoring > Load the SDP Grafana Dashboard​",
+          "anchor": "load-the-sdp-grafana-dashboard",
+          "relevant": [
+            "localhost",
+            "HTTPS"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Navigate to http://localhost:3002 and sign in with the default admin / admin credentials.\r\nNavigate to http://localhost:3002 and sign in with the default admin / admin credentials.\r\nClick the + icon in the top navigation bar (next to the search input), choose Import dashboard, and paste the contents of Grafana Dashboard Json.\r\nClick the + icon in the top navigation bar (next to the search input), "
+        }
+      ]
+    },
+    {
+      "id": "sd-051-heading-search",
+      "query": "Protocol 20 Soroban Phase Mainnet Edition February 5",
+      "ok": true,
+      "nbHits": 835,
+      "hits": [
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#protocol-20-soroban-phase-0-mainnet-february-20-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​",
+          "anchor": "protocol-20-soroban-phase-0-mainnet-february-20-2024",
+          "relevant": [
+            "February 20, 2024",
+            "February 5, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits and fees listed below. The software in this snapshot released earlier: Stellar Core v20.2.0 on February 5, 2024, and the remaining components through February 14. Read more in the Protocol 20 Upgrade Guide."
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#software-18",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Software​",
+          "anchor": "software-18",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#changelog-2",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Changelog​",
+          "anchor": "changelog-2",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#xdr",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Changelog​ > XDR​",
+          "anchor": "xdr",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-environment",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Changelog​ > Soroban Environment​",
+          "anchor": "soroban-environment",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-rust-sdk-5",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Changelog​ > Soroban Rust SDK​",
+          "anchor": "soroban-rust-sdk-5",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-rpc-1",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Changelog​ > Soroban RPC​",
+          "anchor": "soroban-rpc-1",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-cli-1",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​ > Changelog​ > Soroban CLI​",
+          "anchor": "soroban-cli-1",
+          "relevant": [
+            "February 20, 2024",
+            "Phase 0"
+          ],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#protocol-20-soroban-phase-1-february-27-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 1 (February 27, 2024)​",
+          "anchor": "protocol-20-soroban-phase-1-february-27-2024",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#software-17",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 1 (February 27, 2024)​ > Software​",
+          "anchor": "software-17",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#changelog-1",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 1 (February 27, 2024)​ > Changelog​",
+          "anchor": "changelog-1",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-rpc",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 1 (February 27, 2024)​ > Changelog​ > Soroban RPC​",
+          "anchor": "soroban-rpc",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-cli",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 1 (February 27, 2024)​ > Changelog​ > Soroban CLI​",
+          "anchor": "soroban-cli",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#core-4",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 2 (March 19, 2024)​ > Changelog​ > Core​",
+          "anchor": "core-4",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": "Remove use of C99 that looks like Cxx20 designated initializers\r\nReduce scan size in phase1\r\nAdd simulate subcommand to network survey script\r\nContinue to capture SCP messages for previous ledger in database\r\nRewrite state loading path on startup\r\nAdd support for debug-tx-set in dump-xdr\r\nBucket cleanup\r\nUpdate phase1 settings\r\nFix compile error (Visual C++)\r\nUpdate soroban settings files and util"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#protocol-20-soroban-phase-2-march-19-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 2 (March 19, 2024)​",
+          "anchor": "protocol-20-soroban-phase-2-march-19-2024",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#software-16",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 2 (March 19, 2024)​ > Software​",
+          "anchor": "software-16",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#changelog",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 2 (March 19, 2024)​ > Changelog​",
+          "anchor": "changelog",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#soroban-rust-sdk-4",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 2 (March 19, 2024)​ > Changelog​ > Soroban Rust SDK​",
+          "anchor": "soroban-rust-sdk-4",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#protocol-22-mainnet-december-5-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 22 (Mainnet, December 5, 2024)​",
+          "anchor": "protocol-22-mainnet-december-5-2024",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        },
+        {
+          "url": "https://developers.stellar.org/docs/networks/software-versions#software-12",
+          "breadcrumb": "Documentation > Software Versions > Protocol 22 (Mainnet, December 5, 2024)​ > Software​",
+          "anchor": "software-12",
+          "relevant": [],
+          "hasFlag": false,
+          "hasManualclose": false,
+          "hasUnwrap": false,
+          "hasHttpsParen": false,
+          "hasMainnetEdition": false,
+          "contentPreview": ""
+        }
+      ]
+    }
+  ]
+}

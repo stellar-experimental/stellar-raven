@@ -1,0 +1,13 @@
+{
+  "input": "eval/qa/results/2026-08-30T03-43-11-variantA.json",
+  "beforeRevision": "d4a6cefb3db52702e8f3b605d7693e83974e10fd",
+  "allRowsIdentical": true,
+  "summaryIdentical": true,
+  "rulesAndOpClassesByteIdentical": true,
+  "onlyMetadataDifferences": [
+    "rulesPath checkout location",
+    "opClassesPath checkout location",
+    "gradedAt"
+  ],
+  "rowsAndSummarySha256": "2aeb0b7e970d7fd50efbe1cd6326046c1c42b258f3587e9b40a7d83d5900a5e1"
+}

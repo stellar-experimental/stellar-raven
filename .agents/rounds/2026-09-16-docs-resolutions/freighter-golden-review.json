@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-09-16T19:08:24Z",
+  "reviewer": "Grok high independent reviewer",
+  "ownedCaseEdited": false,
+  "snapshot": "be7c780c7c7d6d1d2900515531b549fdce9a5ef3",
+  "proposal": "/tmp/raven-execution-2026-09-16/freighter-golden-proposal.json",
+  "parentLandingWorktree": "/tmp/raven-execution-2026-09-16/docs",
+  "pr156": {
+    "testedPreMergeHead": "e4c34d18eb0553a8976c63ee6b2d78dc9abd62db",
+    "mergeCommit": "d4a6cefb3db52702e8f3b605d7693e83974e10fd",
+    "state": "MERGED",
+    "checks": ["secrets", "test", "Analyze (actions)", "CodeQL"]
+  },
+  "independentMatrix": {
+    "oldHttpsSentencePresent": false,
+    "manifestMatches": ["<all_urls>"],
+    "runAt": "document_start",
+    "allFrames": "absent",
+    "manifestVersionAtSnapshot": "5.45.0",
+    "apisDistinct": true
+  },
+  "verdict": {
+    "judgeFacingGospel": "approve",
+    "provenanceInDocsWorktreeLanding": "approve",
+    "withdrawnFindings": [
+      "missing-evidence-file: .agents/rounds/2026-09-16-docs-resolutions.md exists in /tmp/raven-execution-2026-09-16/docs",
+      "false-resolved-pointer: parent will include the sd-045 receipt in the same landing diff before commit",
+      "reviewer-stamp-pending: stamp now records completed review"
+    ]
+  },
+  "doNotChange": [
+    "question",
+    "golden.avoid",
+    "Freighter snapshot commit be7c780c7c7d6d1d2900515531b549fdce9a5ef3"
+  ],
+  "requiredFindings": []
+}

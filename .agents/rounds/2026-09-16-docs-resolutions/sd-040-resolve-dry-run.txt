@@ -1,0 +1,26 @@
+{
+  "id": "sd-040",
+  "title": "The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()",
+  "service": "stellar-docs",
+  "discovered": "2026-08-11",
+  "resolved": "2026-09-16",
+  "repo": "stellar/stellar-docs",
+  "upstreamRefs": [
+    "https://github.com/stellar/stellar-docs/issues/2768"
+  ],
+  "resolvingRefs": [
+    "https://github.com/stellar/stellar-docs/pull/2849"
+  ],
+  "liveRecheck": "2026-09-16: The rendered page and the affected indexed section contain the fallible conversion example without unwrap. The complete index read returned 7 sections. The text distinguishes conversion errors from malformed-XDR panics.",
+  "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+  "sourceCommit": "81ba59a695f45f413e0a7b8dd1c444bfb56ed051",
+  "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/81ba59a695f45f413e0a7b8dd1c444bfb56ed051/improvements/stellar-docs/sd-040-address-from-xdr-unwrap-malformed-input.md"
+}
+
+--- suggested upstream resolution comment ---
+
+Raven independently rechecked sd-040 on 2026-09-16 and confirmed the original trigger is resolved live.
+
+Live recheck: 2026-09-16: The rendered page and the affected indexed section contain the fallible conversion example without unwrap. The complete index read returned 7 sections. The text distinguishes conversion errors from malformed-XDR panics.
+
+The active finding is being retired under the ephemeral improvements lifecycle. Immutable source snapshot: https://github.com/stellar-experimental/stellar-raven/blob/81ba59a695f45f413e0a7b8dd1c444bfb56ed051/improvements/stellar-docs/sd-040-address-from-xdr-unwrap-malformed-input.md

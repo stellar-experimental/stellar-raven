@@ -22,17 +22,6 @@ Preserve historical observations and scheduled dates unless new verification sup
 
 Done when: the source link works, sibling claims have current evidence, and the corpus gates pass.
 
-### Finish authenticated production acceptance for playground #40
-
-The owner chose the existing 8000-character limit and declined persistent history for the demonstration.
-The copy action shipped previously. All 51 local playground tests passed on 2026-09-08.
-The unauthenticated production page requires sign-in, so authenticated copying remains unverified.
-Decision and boundary: https://github.com/stellar-experimental/stellar-raven/issues/40#issuecomment-5595065793.
-When an authorized authenticated session is available, verify copying an existing answer without a new paid chat request.
-Close #40 after that acceptance check. Use `rounds/2026-09-08-maintenance-execution.md` for the local evidence.
-
-Done when: the production copy check passes and #40 records its closure.
-
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
 
 PR https://github.com/stellar/stellar-docs/pull/2367 closed without merge on 2026-09-09.

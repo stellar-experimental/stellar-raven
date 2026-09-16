@@ -1,0 +1,26 @@
+{
+  "id": "sd-051",
+  "title": "The software-versions page labels a February 5 entry as Mainnet Edition. Sibling headings on the same page use the Mainnet token for a…",
+  "service": "stellar-docs",
+  "discovered": "2026-09-04",
+  "resolved": "2026-09-16",
+  "repo": "stellar/stellar-docs",
+  "upstreamRefs": [
+    "https://github.com/stellar/stellar-docs/issues/2843"
+  ],
+  "resolvingRefs": [
+    "https://github.com/stellar/stellar-docs/pull/2845"
+  ],
+  "liveRecheck": "2026-09-16: The rendered page and the indexed Phase 0 section distinguish Mainnet activation from the software release. Mainnet activation occurred on February 20, 2024. The Core release date was February 5, 2024. The complete index read returned 159 sections. The incorrect Mainnet Edition heading is absent.",
+  "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+  "sourceCommit": "8ab7b88f95177022cd24c0d0acb6e619b19ea23c",
+  "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-051-protocol-20-mainnet-heading-date.md"
+}
+
+--- suggested upstream resolution comment ---
+
+Raven independently rechecked sd-051 on 2026-09-16 and confirmed the original trigger is resolved live.
+
+Live recheck: 2026-09-16: The rendered page and the indexed Phase 0 section distinguish Mainnet activation from the software release. Mainnet activation occurred on February 20, 2024. The Core release date was February 5, 2024. The complete index read returned 159 sections. The incorrect Mainnet Edition heading is absent.
+
+The active finding is being retired under the ephemeral improvements lifecycle. Immutable source snapshot: https://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-051-protocol-20-mainnet-heading-date.md

@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-09-16T19:08:24Z",
+  "reviewer": {
+    "identity": "Grok high (Grok 4.6)",
+    "distinctFromAuthor": "Sol high rv-findings-0916",
+    "distinctFromOrchestrator": "Astra",
+    "childAgents": 0
+  },
+  "scope": {
+    "ravenIssues": [158, 159, 160, 161, 162],
+    "findings": ["sd-040", "sd-041", "sd-044", "sd-045", "sd-051"],
+    "mutations": false,
+    "paidEvals": false,
+    "reliedOnAuthorTranscript": false
+  },
+  "sourceIndexConvergence": {
+    "sd-040": { "source": "fixed", "index": "fixed", "deployed": true },
+    "sd-041": { "source": "fixed", "index": "fixed", "deployed": true },
+    "sd-044": {
+      "source": "fixed",
+      "indexOriginalSearch": "fixed",
+      "indexRunCommandExamplesPage": "soft-empty",
+      "deployed": true
+    },
+    "sd-045": { "source": "fixed", "index": "fixed", "deployed": true },
+    "sd-051": { "source": "fixed", "index": "fixed", "deployed": true }
+  },
+  "verdicts": {
+    "sd-040": {
+      "ravenIssue": 158,
+      "verdict": "retire",
+      "followups": [
+        "Parent lifecycle: fixed-upstream, resolver comment on stellar-docs#2768 and PR#2849, then resolve and close Raven#158",
+        "Optional: no malformed-byte test snippet shipped; do not stretch sd-040"
+      ]
+    },
+    "sd-041": {
+      "ravenIssue": 159,
+      "verdict": "retire",
+      "followups": [
+        "Parent lifecycle: fixed-upstream, resolver comment on stellar-docs#2769 and PR#2853, then resolve and close Raven#159"
+      ]
+    },
+    "sd-044": {
+      "ravenIssue": 160,
+      "verdict": "retire",
+      "followups": [
+        "Parent lifecycle: fixed-upstream, resolver comment on stellar-docs#2772 and PRs#2850/#2859, then resolve and close Raven#160",
+        "Adjacent residual: run-command-examples is live in source but get_doc_page_sections returns soft-empty. Optional successor docs-search finding. Do not keep sd-044 for this."
+      ]
+    },
+    "sd-045": {
+      "ravenIssue": 161,
+      "verdict": "retire",
+      "followups": [
+        "Parent lifecycle: fixed-upstream, resolver comment on stellar-docs#2773 and PR#2851, then resolve and close Raven#161",
+        "Required: golden-truth update of eval/qa/corpus/battery/tooling-infra/q-ti-freighter-localhost-not-detected.json before deleting the finding file"
+      ]
+    },
+    "sd-051": {
+      "ravenIssue": 162,
+      "verdict": "retire",
+      "followups": [
+        "Parent lifecycle: fixed-upstream, resolver comment on stellar-docs#2843 and PR#2845, then resolve and close Raven#162",
+        "Correct Raven#162 handoff typo 2026-02-05; live surfaces use February 5, 2024"
+      ]
+    }
+  },
+  "github": {
+    "stellarDocsMain": "0efbb0559b4851fdc2bff83beb1b03a851641630",
+    "refs": {
+      "sd-040": {
+        "issue": "https://github.com/stellar/stellar-docs/issues/2768",
+        "pr": "https://github.com/stellar/stellar-docs/pull/2849",
+        "sha": "41919839b9cfc38ebf80a393d461f5644169de98",
+        "deployRun": "https://github.com/stellar/stellar-docs/actions/runs/34893615637"
+      },
+      "sd-041": {
+        "issue": "https://github.com/stellar/stellar-docs/issues/2769",
+        "pr": "https://github.com/stellar/stellar-docs/pull/2853",
+        "sha": "525c722ceaeb4b839f46d03c2503cb61a019f4d9",
+        "deployRun": "https://github.com/stellar/stellar-docs/actions/runs/34891807895"
+      },
+      "sd-044": {
+        "issue": "https://github.com/stellar/stellar-docs/issues/2772",
+        "prs": [
+          "https://github.com/stellar/stellar-docs/pull/2850",
+          "https://github.com/stellar/stellar-docs/pull/2859"
+        ],
+        "shas": [
+          "6a8bea6a253a74ab646023b82459a007072f1baf",
+          "6aafb49f59522b399f0a60642dd815d730cd6904"
+        ],
+        "deployRuns": [
+          "https://github.com/stellar/stellar-docs/actions/runs/34984769468",
+          "https://github.com/stellar/stellar-docs/actions/runs/34992371097"
+        ]
+      },
+      "sd-045": {
+        "issue": "https://github.com/stellar/stellar-docs/issues/2773",
+        "pr": "https://github.com/stellar/stellar-docs/pull/2851",
+        "sha": "29728e1f15890151859d340ba5c8a8fad24ec6b1",
+        "deployRun": "https://github.com/stellar/stellar-docs/actions/runs/34891414642"
+      },
+      "sd-051": {
+        "issue": "https://github.com/stellar/stellar-docs/issues/2843",
+        "pr": "https://github.com/stellar/stellar-docs/pull/2845",
+        "sha": "0efbb0559b4851fdc2bff83beb1b03a851641630",
+        "deployRun": "https://github.com/stellar/stellar-docs/actions/runs/35014808562"
+      }
+    },
+    "ravenIssuesOpen": [158, 159, 160, 161, 162],
+    "ravenResolutionCommentsPosted": false,
+    "pr156": {
+      "testedPreMergeHead": "e4c34d18eb0553a8976c63ee6b2d78dc9abd62db",
+      "mergeCommit": "d4a6cefb3db52702e8f3b605d7693e83974e10fd",
+      "state": "MERGED"
+    }
+  },
+  "probes": {
+    "pageSections": [
+      "/docs/build/guides/conversions/address-conversions",
+      "/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+      "/docs/tools/quickstart/advanced-usage/operation-modes",
+      "/docs/tools/quickstart/advanced-usage/run-command-examples",
+      "/docs/tools/quickstart/network-modes",
+      "/docs/build/guides/dapps/frontend-guide",
+      "/docs/networks/software-versions"
+    ],
+    "originalSearch": "enable-core-manual-close quickstart manual close ledger",
+    "independentProbe": "node /tmp/raven-execution-2026-09-16/independent-docs-index-probe.mjs"
+  }
+}

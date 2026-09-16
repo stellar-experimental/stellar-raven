@@ -1,0 +1,141 @@
+{
+  "generatedAt": "2026-09-16T19:06:14Z",
+  "reviewer": "Grok high independent reviewer",
+  "caseId": "q-ti-freighter-localhost-not-detected",
+  "skill": "golden-truth",
+  "editsApplied": false,
+  "cautionRemoval": {
+    "liveGuideOldHttpsSentence": false,
+    "sd045IndependentVerdict": "retire",
+    "adr0008AcceptedCautionSet": [
+      "q-protocol-base-reserve-min-balance",
+      "Horizon lifecycle",
+      "RPC pagination"
+    ],
+    "doNotClaimAllLocalhostSetupsWork": true
+  },
+  "claims": [
+    {
+      "claim": "Official frontend guide still says Freighter requires HTTPS to interact with a dapp",
+      "verdict": "contradicted",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#setup-https-on-localhost",
+          "quote": "Freighter wallet requires a secure connection to interact with your dapp. Browsers treat http://localhost and http://127.0.0.1 as secure contexts per the W3C Secure Contexts specification, so local development over plain HTTP works without extra setup. To enable HTTPS on localhost anyway",
+          "asOf": "2026-09-16"
+        }
+      ],
+      "notes": "Old sentence count 0. Remove canonical-page caution."
+    },
+    {
+      "claim": "http://localhost and http://127.0.0.1 can be potentially trustworthy origins",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.w3.org/TR/secure-contexts/#is-origin-trustworthy",
+          "quote": "If origin's host matches one of the CIDR notations 127.0.0.0/8 or ::1/128, return Potentially Trustworthy. If the user agent conforms to let-localhost-be-localhost and host is localhost / localhost. / .localhost, return Potentially Trustworthy. Section 5.2: user agents MAY treat localhost names that way only if localhost never resolves to a non-loopback address.",
+          "asOf": "2026-09-16"
+        }
+      ],
+      "notes": "Keep the user-agent and resolver condition. Do not claim every localhost hostname is trustworthy."
+    },
+    {
+      "claim": "Freighter manifest uses a scheme-restricted origin allowlist that blocks HTTP localhost",
+      "verdict": "contradicted",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/freighter/0f08d9ee973f6f79582d8c6003a8cc75f8a473a2/extension/public/static/manifest/v3.json",
+          "quote": "content_scripts matches <all_urls>, run_at document_start, all_frames absent, version 5.43.0",
+          "asOf": "2026-09-16"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/freighter/5.48.0/extension/public/static/manifest/v3.json",
+          "quote": "same matches and run_at; all_frames absent; version 5.48.0",
+          "asOf": "2026-09-16"
+        }
+      ],
+      "notes": "Keep not-categorically-blocked. Latest release 5.48.0 published 2026-09-03. Master file version string is 5.45.0."
+    },
+    {
+      "claim": "Every HTTP localhost setup detects Freighter",
+      "verdict": "unverifiable",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.w3.org/TR/secure-contexts/#localhost",
+          "quote": "resolvers often ignore RFC6761 suggestions; user agents MAY treat localhost names as potentially trustworthy iff they adhere to let-localhost-be-localhost",
+          "asOf": "2026-09-16"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/freighter/0f08d9ee973f6f79582d8c6003a8cc75f8a473a2/%40stellar/freighter-api/src/isConnected.ts",
+          "quote": "structured { isConnected, error? }; node path returns FreighterApiNodeError; all_frames omitted in manifest",
+          "asOf": "2026-09-16"
+        }
+      ],
+      "notes": "Keep avoid traps: HTTP always works, HTTPS always fixes detection."
+    },
+    {
+      "claim": "isConnected, isAllowed, and requestAccess are distinct client-side APIs",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://docs.freighter.app/extension-freighter-api/connecting.md",
+          "quote": "isConnected checks installation; isAllowed checks prior authorization; requestAccess is the recommended one-call allow-list plus public key; check isConnected before requestAccess",
+          "asOf": "2026-09-16"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/freighter/blob/0f08d9ee973f6f79582d8c6003a8cc75f8a473a2/%40stellar/freighter-api/src/isConnected.ts",
+          "quote": "separate isConnected.ts, isAllowed.ts, requestAccess.ts structured return types",
+          "asOf": "2026-09-16"
+        }
+      ],
+      "notes": "Preserve original unrelated API claims."
+    },
+    {
+      "claim": "Official HTTPS guidance and the manifest still disagree on a universal localhost HTTPS rule",
+      "verdict": "contradicted",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#setup-https-on-localhost",
+          "quote": "plain HTTP works without extra setup; HTTPS framed as optional",
+          "asOf": "2026-09-16"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/freighter/5.48.0/extension/public/static/manifest/v3.json",
+          "quote": "<all_urls> with no scheme restriction",
+          "asOf": "2026-09-16"
+        }
+      ],
+      "notes": "The former disputed row is obsolete. Remaining gap is detection reliability, not an HTTPS requirement conflict."
+    }
+  ],
+  "siblings": {
+    "checked": [
+      "q-ti-connect-wallet-button-code",
+      "q-ti-bindings-to-nextjs-integration",
+      "q-tool-freighter-wallet",
+      "q-eco-freighter-wallet",
+      "q-ti-find-export-secret-key"
+    ],
+    "contradiction": false
+  },
+  "consistencyRegister": {
+    "clusterMember": false,
+    "numericInvariantMember": false,
+    "dateContingentTrapMember": false,
+    "stillRun": [
+      "npm run eval:qa:register",
+      "npm run eval:qa:lint -- --since origin/main",
+      "npm run eval:qa:compile"
+    ]
+  }
+}

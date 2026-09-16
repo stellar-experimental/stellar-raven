@@ -1,0 +1,26 @@
+{
+  "id": "sd-045",
+  "title": "The dapp frontend guide states one unqualified requirement: \"Freighter wallet requires a secure connection (HTTPS) to interact with your…",
+  "service": "stellar-docs",
+  "discovered": "2026-08-14",
+  "resolved": "2026-09-16",
+  "repo": "stellar/stellar-docs",
+  "upstreamRefs": [
+    "https://github.com/stellar/stellar-docs/issues/2773"
+  ],
+  "resolvingRefs": [
+    "https://github.com/stellar/stellar-docs/pull/2851"
+  ],
+  "liveRecheck": "2026-09-16: The rendered frontend guide and its indexed HTTPS section qualify HTTP localhost and 127.0.0.1 as secure contexts. The complete index read returned 35 sections. The old unqualified HTTPS requirement is absent. HTTPS is now an optional local setup.",
+  "reviewEvidence": "Grok 4.6 high, independent source/index recheck and golden claim matrix; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+  "sourceCommit": "b53f62d3e6370231103b221e5474ecb6cbfd5627",
+  "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b53f62d3e6370231103b221e5474ecb6cbfd5627/improvements/stellar-docs/sd-045-freighter-https-requirement-unqualified.md"
+}
+
+--- suggested upstream resolution comment ---
+
+Raven independently rechecked sd-045 on 2026-09-16 and confirmed the original trigger is resolved live.
+
+Live recheck: 2026-09-16: The rendered frontend guide and its indexed HTTPS section qualify HTTP localhost and 127.0.0.1 as secure contexts. The complete index read returned 35 sections. The old unqualified HTTPS requirement is absent. HTTPS is now an optional local setup.
+
+The active finding is being retired under the ephemeral improvements lifecycle. Immutable source snapshot: https://github.com/stellar-experimental/stellar-raven/blob/b53f62d3e6370231103b221e5474ecb6cbfd5627/improvements/stellar-docs/sd-045-freighter-https-requirement-unqualified.md

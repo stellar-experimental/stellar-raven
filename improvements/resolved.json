@@ -573,6 +573,42 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/176513cc5e058fa12ad81f607ea4ca0d514a659a/improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md"
     },
     {
+      "id": "sd-040",
+      "title": "The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()",
+      "service": "stellar-docs",
+      "discovered": "2026-08-11",
+      "resolved": "2026-09-16",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2768"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2849"
+      ],
+      "liveRecheck": "2026-09-16: The rendered page and the affected indexed section contain the fallible conversion example without unwrap. The complete index read returned 7 sections. The text distinguishes conversion errors from malformed-XDR panics.",
+      "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+      "sourceCommit": "81ba59a695f45f413e0a7b8dd1c444bfb56ed051",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/81ba59a695f45f413e0a7b8dd1c444bfb56ed051/improvements/stellar-docs/sd-040-address-from-xdr-unwrap-malformed-input.md"
+    },
+    {
+      "id": "sd-041",
+      "title": "The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos",
+      "service": "stellar-docs",
+      "discovered": "2026-08-14",
+      "resolved": "2026-09-16",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2769"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2853"
+      ],
+      "liveRecheck": "2026-09-16: The rendered page and the indexed lead retain current memo support. The complete index read returned 15 sections. The old past-tense lead is absent.",
+      "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+      "sourceCommit": "81ba59a695f45f413e0a7b8dd1c444bfb56ed051",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/81ba59a695f45f413e0a7b8dd1c444bfb56ed051/improvements/stellar-docs/sd-041-pooled-accounts-memo-past-tense-lead.md"
+    },
+    {
       "id": "sd-042",
       "title": "The September 9 crawl ingested the EVM guide correction from PR #2806. The current source, rendered guide, and original production search…",
       "service": "stellar-docs",
@@ -613,6 +649,43 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/767c981a9304bd74b167357ffdf9a39dd017cce4/improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md"
     },
     {
+      "id": "sd-044",
+      "title": "The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…",
+      "service": "stellar-docs",
+      "discovered": "2026-08-14",
+      "resolved": "2026-09-16",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2772"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2850",
+        "https://github.com/stellar/stellar-docs/pull/2859"
+      ],
+      "liveRecheck": "2026-09-16: The original search returns two Quickstart records with the flag. Operation Modes documents its default, setting, and limits. The rendered Run Commands example contains the flag and Core port mapping. That example page remains unindexed.",
+      "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+      "sourceCommit": "50bf5518860584ec1e5d352acbe11033515a0b7f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/50bf5518860584ec1e5d352acbe11033515a0b7f/improvements/stellar-docs/sd-044-quickstart-manual-close-flag-undocumented.md"
+    },
+    {
+      "id": "sd-045",
+      "title": "The dapp frontend guide states one unqualified requirement: \"Freighter wallet requires a secure connection (HTTPS) to interact with your…",
+      "service": "stellar-docs",
+      "discovered": "2026-08-14",
+      "resolved": "2026-09-16",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2773"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2851"
+      ],
+      "liveRecheck": "2026-09-16: The rendered frontend guide and its indexed HTTPS section qualify HTTP localhost and 127.0.0.1 as secure contexts. The complete index read returned 35 sections. The old unqualified HTTPS requirement is absent. HTTPS is now an optional local setup.",
+      "reviewEvidence": "Grok 4.6 high, independent source/index recheck and golden claim matrix; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+      "sourceCommit": "b53f62d3e6370231103b221e5474ecb6cbfd5627",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b53f62d3e6370231103b221e5474ecb6cbfd5627/improvements/stellar-docs/sd-045-freighter-https-requirement-unqualified.md"
+    },
+    {
       "id": "sd-047",
       "title": "The September 9 crawl ingested the Validators correction from PR #2806. Both canonical pages and their positive production search records…",
       "service": "stellar-docs",
@@ -646,6 +719,24 @@
       "reviewEvidence": "Independent Grok 4.6 high re-derived source, served bundle, Docs and public UI; final golden/retirement PASS 2026-09-09T03:24:18Z and wording PASS 03:26:25Z in .agents/rounds/2026-09-08-maintenance-independent-review-grok.md. Root reconciled both cases, clusters 023/137, and active queue references. Never filed; no upstream comment applies.",
       "sourceCommit": "8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/8af90c173d8f41a7d2fdc6cf32b7a0b1d83c9e7d/improvements/stellar-docs/sd-049-lab-saved-keypairs-obfuscation-conflict.md"
+    },
+    {
+      "id": "sd-051",
+      "title": "The software-versions page labels a February 5 entry as Mainnet Edition. Sibling headings on the same page use the Mainnet token for a…",
+      "service": "stellar-docs",
+      "discovered": "2026-09-04",
+      "resolved": "2026-09-16",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2843"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2845"
+      ],
+      "liveRecheck": "2026-09-16: The rendered page and the indexed Phase 0 section distinguish Mainnet activation from the software release. Mainnet activation occurred on February 20, 2024. The Core release date was February 5, 2024. The complete index read returned 159 sections. The incorrect Mainnet Edition heading is absent.",
+      "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+      "sourceCommit": "8ab7b88f95177022cd24c0d0acb6e619b19ea23c",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-051-protocol-20-mainnet-heading-date.md"
     },
     {
       "id": "sk-001",

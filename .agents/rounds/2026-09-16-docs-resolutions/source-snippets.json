@@ -1,0 +1,156 @@
+{
+  "sd-040": {
+    "url": "https://developers.stellar.org/docs/build/guides/conversions/address-conversions",
+    "len": 97592,
+    "hits": [
+      {
+        "needle": "from_xdr",
+        "pos": 79820,
+        "snippet": " </span><span class=\"token keyword\" style=\"color:#00009f\">fn</span><span class=\"token plain\"> </span><span class=\"token function-definition function\" style=\"color:#d73a49\">address_from_xdr_bytes</span><span class=\"token punctuation\" style=\"color:#393A34\">(</span><span class=\"token plain\">env</span><span class=\"token punctuation\" style=\"color:#393A34\">:</span><span class=\"token plain\"> </span><span class=\""
+      },
+      {
+        "needle": "from_xdr",
+        "pos": 81255,
+        "snippet": "en plain\">    </span><span class=\"token class-name\">Address</span><span class=\"token punctuation\" style=\"color:#393A34\">::</span><span class=\"token function\" style=\"color:#d73a49\">from_xdr</span><span class=\"token punctuation\" style=\"color:#393A34\">(</span><span class=\"token operator\" style=\"color:#393A34\">&amp;</span><span class=\"token plain\">env</span><span class=\"token punctuation\" style=\"color:#393A34"
+      },
+      {
+        "needle": "ConversionError",
+        "pos": 76842,
+        "snippet": "\"> </span><span class=\"token class-name\">Bytes</span><span class=\"token punctuation\" style=\"color:#393A34\">,</span><span class=\"token plain\"> </span><span class=\"token class-name\">ConversionError</span><span class=\"token punctuation\" style=\"color:#393A34\">,</span><span class=\"token plain\"> </span><span class=\"token class-name\">Env</span><span class=\"token punctuation\" style=\"color:#393A34\">,</span><span class=\"t"
+      },
+      {
+        "needle": "ConversionError",
+        "pos": 80790,
+        "snippet": ";</span><span class=\"token class-name\">Address</span><span class=\"token punctuation\" style=\"color:#393A34\">,</span><span class=\"token plain\"> </span><span class=\"token class-name\">ConversionError</span><span class=\"token operator\" style=\"color:#393A34\">&gt;</span><span class=\"token plain\"> </span><span class=\"token punctuation\" style=\"color:#393A34\">{</span><span class=\"token plain\"></span><br></div><div class=\""
+      },
+      {
+        "needle": "address_from_xdr",
+        "pos": 79812,
+        "snippet": " plain\"> </span><span class=\"token keyword\" style=\"color:#00009f\">fn</span><span class=\"token plain\"> </span><span class=\"token function-definition function\" style=\"color:#d73a49\">address_from_xdr_bytes</span><span class=\"token punctuation\" style=\"color:#393A34\">(</span><span class=\"token plain\">env</span><span class=\"token punctuation\" style=\"color:#393A34\">:</span><span class=\"token plain\"> </span><span class=\""
+      }
+    ]
+  },
+  "sd-044-op": {
+    "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+    "len": 71471,
+    "hits": [
+      {
+        "needle": "enable-core-manual-close",
+        "pos": 54906,
+        "snippet": "ult, ledgers close automatically. (In local network mode, that&#x27;s once every second.) For deterministic local testing, you can disable automatic closing by passing the <code>--enable-core-manual-close</code> flag when starting the container. The flag sets the <code>MANUAL_CLOSE</code> setting in the <code>etc/stellar-core.cfg</code> file that the container generates when it initializes, and defaults to <code>false</c"
+      },
+      {
+        "needle": "persistent",
+        "pos": 50414,
+        "snippet": " out. You may use this password (provided you have exposed the postgresql port) to access the running postgresql database.</p> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"persistent-mode\">Persistent mode<a href=\"#persistent-mode\" class=\"hash-link\" aria-label=\"Direct link to Persistent mode\" title=\"Direct link to Persistent mode\" translate=\"no\">\u200b</a></h2> <p>In comparison to ephemeral mode, persiste"
+      },
+      {
+        "needle": "persistent",
+        "pos": 50431,
+        "snippet": " this password (provided you have exposed the postgresql port) to access the running postgresql database.</p> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"persistent-mode\">Persistent mode<a href=\"#persistent-mode\" class=\"hash-link\" aria-label=\"Direct link to Persistent mode\" title=\"Direct link to Persistent mode\" translate=\"no\">\u200b</a></h2> <p>In comparison to ephemeral mode, persistent mode is more c"
+      },
+      {
+        "needle": "persistent",
+        "pos": 50456,
+        "snippet": "you have exposed the postgresql port) to access the running postgresql database.</p> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"persistent-mode\">Persistent mode<a href=\"#persistent-mode\" class=\"hash-link\" aria-label=\"Direct link to Persistent mode\" title=\"Direct link to Persistent mode\" translate=\"no\">\u200b</a></h2> <p>In comparison to ephemeral mode, persistent mode is more complicated to operate, bu"
+      },
+      {
+        "needle": "manualclose",
+        "pos": 55495,
+        "snippet": "e request, and the local network is the only Quickstart configuration that sets it. The flag is accepted on the other networks and the container will start normally, but the <code>manualclose</code> request itself will fail.</p> <div class=\"theme-admonition theme-admonition-note admonition_J2Sg alert alert--secondary\"><div class=\"admonitionHeading_Htan\"><span class=\"admonitionIcon_K0ZO\"><svg viewBox=\"0 0 14 "
+      },
+      {
+        "needle": "manualclose",
+        "pos": 56750,
+        "snippet": " fresh ephemeral container or clear the mounted volume.</p></div></div> <p>With manual close enabled, ledgers only advance when you explicitly trigger a close by sending the <code>manualclose</code> command to stellar-core&#x27;s HTTP endpoint on port <code>11626</code>:</p> <div class=\"language-sh codeBlockContainer_Ydfl theme-code-block\" style=\"--prism-color:#393A34;--prism-background-color:#f6f8fa\"><div c"
+      },
+      {
+        "needle": "manualclose",
+        "pos": 57390,
+        "snippet": "3A34\"><span class=\"token function\" style=\"color:#d73a49\">curl</span><span class=\"token plain\"> </span><span class=\"token string\" style=\"color:#e3116c\">&quot;http://localhost:11626/manualclose&quot;</span><br></div></code></pre></div></div> <p>Each <code>manualclose</code> invocation advances the ledger by one. For a complete example of starting a local network with the flag enabled, see <a class=\"\" href=\"/do"
+      },
+      {
+        "needle": "MANUAL_CLOSE",
+        "pos": 54996,
+        "snippet": "For deterministic local testing, you can disable automatic closing by passing the <code>--enable-core-manual-close</code> flag when starting the container. The flag sets the <code>MANUAL_CLOSE</code> setting in the <code>etc/stellar-core.cfg</code> file that the container generates when it initializes, and defaults to <code>false</code> when not specified.</p> <p>Manual close is only usable in local network m"
+      }
+    ]
+  },
+  "sd-044-run": {
+    "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/run-command-examples",
+    "len": 77958,
+    "hits": [
+      {
+        "needle": "enable-core-manual-close",
+        "pos": 62687,
+        "snippet": "span class=\"token punctuation\" style=\"color:#393A34\">\\</span><span class=\"token plain\"></span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"token plain\">  --enable-core-manual-close</span><br></div></code></pre></div></div></div><div role=\"tabpanel\" class=\"tabItem_L4OK\" hidden=\"\"><div class=\"language-powershell codeBlockContainer_Ydfl theme-code-block\" style=\"--prism-color:#393A34;--prism-backgroun"
+      },
+      {
+        "needle": "11626",
+        "pos": 61646,
+        "snippet": "\">  </span><span class=\"token parameter variable\" style=\"color:#36acaa\">-p</span><span class=\"token plain\"> </span><span class=\"token string\" style=\"color:#e3116c\">&quot;127.0.0.1:11626:11626&quot;</span><span class=\"token plain\"> </span><span class=\"token punctuation\" style=\"color:#393A34\">\\</span><span class=\"token plain\"></span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"tok"
+      },
+      {
+        "needle": "11626",
+        "pos": 61652,
+        "snippet": "span><span class=\"token parameter variable\" style=\"color:#36acaa\">-p</span><span class=\"token plain\"> </span><span class=\"token string\" style=\"color:#e3116c\">&quot;127.0.0.1:11626:11626&quot;</span><span class=\"token plain\"> </span><span class=\"token punctuation\" style=\"color:#393A34\">\\</span><span class=\"token plain\"></span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"token pla"
+      },
+      {
+        "needle": "11626",
+        "pos": 63883,
+        "snippet": "oken plain\">  </span><span class=\"token operator\" style=\"color:#393A34\">-</span><span class=\"token plain\">p </span><span class=\"token string\" style=\"color:#e3116c\">&quot;127.0.0.1:11626:11626&quot;</span><span class=\"token plain\"> `</span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"token plain\">  </span><span class=\"token operator\" style=\"color:#393A34\">--</span><span class=\"to"
+      },
+      {
+        "needle": "--local",
+        "pos": 49474,
+        "snippet": " class=\"token plain\"></span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"token plain\">  </span><span class=\"token parameter variable\" style=\"color:#36acaa\">--local</span><br></div></code></pre></div></div></div><div role=\"tabpanel\" class=\"tabItem_L4OK\" hidden=\"\"><div class=\"language-powershell codeBlockContainer_Ydfl theme-code-block\" style=\"--prism-color:#393A34;--prism-backgroun"
+      },
+      {
+        "needle": "--local",
+        "pos": 62458,
+        "snippet": " class=\"token plain\"></span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"token plain\">  </span><span class=\"token parameter variable\" style=\"color:#36acaa\">--local</span><span class=\"token plain\"> </span><span class=\"token punctuation\" style=\"color:#393A34\">\\</span><span class=\"token plain\"></span><br></div><div class=\"token-line\" style=\"color:#393A34\"><span class=\"token plain\">  "
+      }
+    ]
+  },
+  "sd-051": {
+    "url": "https://developers.stellar.org/docs/networks/software-versions",
+    "len": 226369,
+    "hits": [
+      {
+        "needle": "protocol-20-soroban",
+        "pos": 86448,
+        "snippet": "ure verification</li> <li class=\"\">Support for extending TTL of contract instance and code separate from each other</li> </ul> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"protocol-20-soroban-phase-2-march-19-2024\">Protocol 20: Soroban Phase 2 (March 19, 2024)<a href=\"#protocol-20-soroban-phase-2-march-19-2024\" class=\"hash-link\" aria-label=\"Direct link to Protocol 20: Soroban Phase 2 (March 19, 2024)\" title="
+      },
+      {
+        "needle": "protocol-20-soroban",
+        "pos": 86546,
+        "snippet": "e from each other</li> </ul> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"protocol-20-soroban-phase-2-march-19-2024\">Protocol 20: Soroban Phase 2 (March 19, 2024)<a href=\"#protocol-20-soroban-phase-2-march-19-2024\" class=\"hash-link\" aria-label=\"Direct link to Protocol 20: Soroban Phase 2 (March 19, 2024)\" title=\"Direct link to Protocol 20: Soroban Phase 2 (March 19, 2024)\" translate=\"no\">\u200b</a></h2> <h3 class"
+      },
+      {
+        "needle": "protocol-20-soroban",
+        "pos": 91284,
+        "snippet": " single type</li> <li class=\"\">Add option to disable test snapshots on Env</li> <li class=\"\">Bump version to 20.4.0</li> </ul> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"protocol-20-soroban-phase-1-february-27-2024\">Protocol 20: Soroban Phase 1 (February 27, 2024)<a href=\"#protocol-20-soroban-phase-1-february-27-2024\" class=\"hash-link\" aria-label=\"Direct link to Protocol 20: Soroban Phase 1 (February 27, 2"
+      },
+      {
+        "needle": "February 20, 2024",
+        "pos": 96601,
+        "snippet": "repare for repo change</li> </ul> <h2 class=\"anchor anchorTargetStickyNavbar_CXV1\" id=\"protocol-20-soroban-phase-0-mainnet-february-20-2024\">Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)<a href=\"#protocol-20-soroban-phase-0-mainnet-february-20-2024\" class=\"hash-link\" aria-label=\"Direct link to Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)\" title=\"Direct link to Protocol 20: Soroban Phase 0 "
+      },
+      {
+        "needle": "February 20, 2024",
+        "pos": 96767,
+        "snippet": "e 0 (Mainnet, February 20, 2024)<a href=\"#protocol-20-soroban-phase-0-mainnet-february-20-2024\" class=\"hash-link\" aria-label=\"Direct link to Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)\" title=\"Direct link to Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)\" translate=\"no\">\u200b</a></h2> <p>Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits and fees listed b"
+      },
+      {
+        "needle": "February 20, 2024",
+        "pos": 96848,
+        "snippet": "ruary-20-2024\" class=\"hash-link\" aria-label=\"Direct link to Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)\" title=\"Direct link to Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)\" translate=\"no\">\u200b</a></h2> <p>Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits and fees listed below. The software in this snapshot released earlier: Stellar Core <code>v20.2.0<"
+      },
+      {
+        "needle": "February 5, 2024",
+        "pos": 97095,
+        "snippet": "Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits and fees listed below. The software in this snapshot released earlier: Stellar Core <code>v20.2.0</code> on February 5, 2024, and the remaining components through February 14. Read more in the <a href=\"https://stellar.org/blog/developers/protocol-20-upgrade-guide\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"\">Protocol 20 Upgrade Guide</a"
+      }
+    ]
+  }
+}

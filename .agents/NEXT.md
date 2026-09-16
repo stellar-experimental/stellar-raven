@@ -1,6 +1,6 @@
 # NEXT — current handoff
 
-Updated 2026-09-14 after the [maintenance audit](rounds/2026-09-14-truth-maintenance.md).
+Updated 2026-09-16 after the [Docs and Playground checks](rounds/2026-09-16-docs-resolutions.md).
 Use [TODO.md](TODO.md) for task requirements and completion criteria.
 This file ranks the work and retains unresolved owner decisions, not deployment history.
 
@@ -8,13 +8,10 @@ This file ranks the work and retains unresolved owner decisions, not deployment 
 
 1. Resolve the rejected Scout drift candidate through isolated source comparisons and the existing routing acceptance checks.
    Keep Scout `1.9.1` and the reviewed skill pins until a candidate passes.
-2. Recheck the original Docs index triggers for `sd-040`, `sd-041`, and `sd-045` after ingestion.
-   Rendered-page fixes do not prove an indexed fix.
-3. Follow Docs PR #2837 for `sd-027` / `sd-034`.
+2. Follow Docs PR #2837 for `sd-027` / `sd-034`.
    Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
-4. Complete source-metadata follow-up before October 1 and review dependency upgrades.
-5. Verify authenticated copying for Playground #40 without creating a paid chat request.
-6. Complete the private usage checks and coordinate the separately gated history cleanup.
+3. Complete source-metadata follow-up before October 1 and review dependency upgrades.
+4. Complete the private usage checks and coordinate the separately gated history cleanup.
 
 The [September 14 improvements review](../research/audits/2026-09-14-improvements-review.md) records upstream blockers.
 Keep monitor-only programs at their triggers in TODO.md.

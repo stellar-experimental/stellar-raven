@@ -1,0 +1,131 @@
+{
+  "generatedAt": "2026-09-16T18:46:39.164591Z",
+  "pages": [
+    {
+      "id": "sd-040",
+      "url": "https://developers.stellar.org/docs/build/guides/conversions/address-conversions",
+      "finalUrl": "https://developers.stellar.org/docs/build/guides/conversions/address-conversions",
+      "httpStatus": 200,
+      "rawChars": 97592,
+      "textChars": 9753,
+      "markerCounts": {
+        "Address::from_xdr(&env, &bytes).unwrap()": 0,
+        "Address::from_xdr(&env, &bytes)": 0,
+        "ConversionError": 2,
+        "the conversion panics": 1,
+        "Result<Address, ConversionError>": 0,
+        ".unwrap()": 0
+      }
+    },
+    {
+      "id": "sd-041",
+      "url": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+      "finalUrl": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+      "httpStatus": 200,
+      "rawChars": 259639,
+      "textChars": 26692,
+      "markerCounts": {
+        "We used memos in the past": 0,
+        "Transaction memos were traditionally used": 1,
+        "many services still rely on them": 1,
+        "This guide covers both approaches": 1,
+        "using muxed accounts is better in the long term": 0,
+        "you may want to support both memos": 2
+      }
+    },
+    {
+      "id": "sd-044-op",
+      "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+      "finalUrl": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes",
+      "httpStatus": 200,
+      "rawChars": 71471,
+      "textChars": 9569,
+      "markerCounts": {
+        "Manual close mode": 2,
+        "--enable-core-manual-close": 1,
+        "MANUAL_CLOSE": 1,
+        "manualclose": 4,
+        "existing persistent volume": 0,
+        "NODE_IS_VALIDATOR": 1,
+        "localhost:11626/manualclose": 1
+      }
+    },
+    {
+      "id": "sd-044-run",
+      "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/run-command-examples",
+      "finalUrl": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/run-command-examples",
+      "httpStatus": 200,
+      "rawChars": 77958,
+      "textChars": 5740,
+      "markerCounts": {
+        "--enable-core-manual-close": 1,
+        "--local --enable-core-manual-close": 0,
+        "127.0.0.1:11626:11626": 2,
+        "manualclose": 1
+      }
+    },
+    {
+      "id": "sd-044-net",
+      "url": "https://developers.stellar.org/docs/tools/quickstart/network-modes",
+      "finalUrl": "https://developers.stellar.org/docs/tools/quickstart/network-modes",
+      "httpStatus": 200,
+      "rawChars": 66219,
+      "textChars": 7486,
+      "markerCounts": {
+        "--enable-core-manual-close": 1,
+        "Operation Modes": 1,
+        "manualclose": 0
+      }
+    },
+    {
+      "id": "sd-044-container",
+      "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/container",
+      "finalUrl": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/container",
+      "httpStatus": 200,
+      "rawChars": 61681,
+      "textChars": 4856,
+      "markerCounts": {
+        "--enable-core-manual-close": 0,
+        "manualclose": 0
+      }
+    },
+    {
+      "id": "sd-045",
+      "url": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide",
+      "finalUrl": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide",
+      "httpStatus": 200,
+      "rawChars": 318449,
+      "textChars": 37577,
+      "markerCounts": {
+        "Freighter wallet requires a secure connection (HTTPS) to interact with your dapp.": 0,
+        "secure connection (HTTPS)": 0,
+        "Freighter wallet requires a secure connection": 1,
+        "W3C Secure Contexts": 1,
+        "http://localhost": 1,
+        "http://127.0.0.1": 1,
+        "To enable HTTPS on localhost anyway": 1,
+        "--experimental-https": 1
+      }
+    },
+    {
+      "id": "sd-051",
+      "url": "https://developers.stellar.org/docs/networks/software-versions",
+      "finalUrl": "https://developers.stellar.org/docs/networks/software-versions",
+      "httpStatus": 200,
+      "rawChars": 226369,
+      "textChars": 79811,
+      "markerCounts": {
+        "Protocol 20: Soroban Phase 1 (Mainnet Edition)": 0,
+        "Mainnet Edition": 0,
+        "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)": 2,
+        "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC": 1,
+        "Stellar Core v20.2.0 on February 5, 2024": 1,
+        "Protocol 20: Soroban Phase 1 (February 27, 2024)": 2,
+        "Protocol 20: Soroban Phase 2 (March 19, 2024)": 2,
+        "protocol-20-soroban-phase-1-mainnet-edition-february-5-2024": 0,
+        "protocol-20-soroban-phase-0-mainnet-february-20-2024": 0,
+        "2026-02-05": 0
+      }
+    }
+  ]
+}

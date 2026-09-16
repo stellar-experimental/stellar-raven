@@ -1,0 +1,27 @@
+{
+  "id": "sd-044",
+  "title": "The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…",
+  "service": "stellar-docs",
+  "discovered": "2026-08-14",
+  "resolved": "2026-09-16",
+  "repo": "stellar/stellar-docs",
+  "upstreamRefs": [
+    "https://github.com/stellar/stellar-docs/issues/2772"
+  ],
+  "resolvingRefs": [
+    "https://github.com/stellar/stellar-docs/pull/2850",
+    "https://github.com/stellar/stellar-docs/pull/2859"
+  ],
+  "liveRecheck": "2026-09-16: The original search returns two Quickstart records with the flag. Operation Modes documents its default, setting, and limits. The rendered Run Commands example contains the flag and Core port mapping. That example page remains unindexed.",
+  "reviewEvidence": "Grok 4.6 high, independent from Sol author and Astra coordinator; .agents/rounds/2026-09-16-docs-resolutions/docs-review.md",
+  "sourceCommit": "50bf5518860584ec1e5d352acbe11033515a0b7f",
+  "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/50bf5518860584ec1e5d352acbe11033515a0b7f/improvements/stellar-docs/sd-044-quickstart-manual-close-flag-undocumented.md"
+}
+
+--- suggested upstream resolution comment ---
+
+Raven independently rechecked sd-044 on 2026-09-16 and confirmed the original trigger is resolved live.
+
+Live recheck: 2026-09-16: The original search returns two Quickstart records with the flag. Operation Modes documents its default, setting, and limits. The rendered Run Commands example contains the flag and Core port mapping. That example page remains unindexed.
+
+The active finding is being retired under the ephemeral improvements lifecycle. Immutable source snapshot: https://github.com/stellar-experimental/stellar-raven/blob/50bf5518860584ec1e5d352acbe11033515a0b7f/improvements/stellar-docs/sd-044-quickstart-manual-close-flag-undocumented.md

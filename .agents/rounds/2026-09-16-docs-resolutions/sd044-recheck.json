@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-09-16T18:47:41.569Z",
+  "query": "enable-core-manual-close quickstart manual close ledger",
+  "ok": true,
+  "nbHits": 2,
+  "relevant": [
+    {
+      "url": "https://developers.stellar.org/docs/tools/quickstart/advanced-usage/operation-modes#manual-close-mode",
+      "breadcrumb": "Advanced Usage > Operation Modes > Manual close mode​",
+      "hasFlag": true,
+      "hasManualclose": true
+    },
+    {
+      "url": "https://developers.stellar.org/docs/tools/quickstart/network-modes#local",
+      "breadcrumb": "Quickstart > Network Modes > Local​",
+      "hasFlag": true,
+      "hasManualclose": false
+    }
+  ],
+  "sourceStatus": 200,
+  "sourceHasFlag": true,
+  "sourceHasPort": true
+}

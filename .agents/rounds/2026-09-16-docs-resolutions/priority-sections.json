@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-09-16T18:47:41.091Z",
+  "results": [
+    {
+      "id": "sd-040",
+      "path": "/docs/build/guides/conversions/address-conversions",
+      "ok": true,
+      "complete": true,
+      "nbSections": 7,
+      "sections": [
+        {
+          "anchor": "xdr-conversions-in-smart-contracts",
+          "breadcrumb": "Type Conversions > Convert an address to other types > XDR conversions​ > XDR Conversions in Smart Contracts​",
+          "content": "Smart contracts don't need to explicitly interact with the XDR types, as all the smart contract data types are automatically converted to XDR by the smart contract runtime. Every contract type, including Address, can be serialized to XDR bytes. This conversion is useful, for example, for performing hashing in smart contracts. It is also possible to convert the serialized XDR bytes back to contract types, which can be useful in some narrow use cases, such as custom authentication schemes.\r\nNote, that XDR conversions are an advanced feature and are not necessary for most Stellar smart contracts.\r\nDeserializing XDR bytes back into a contract type can fail in two ways. If the bytes hold valid XDR for a value of a different type, the conversion returns an error that the contract can handle. If the bytes are not valid XDR for any value at all, the conversion panics, and the SDK offers no in-contract recovery for that case. Contracts that receive XDR bytes from untrusted sources, such as a custom authentication scheme, should handle the error case and validate the input before relying on it: prefer typed arguments such as Address where possible, or verify the byte format in the client that submits the transaction.\r\nuse soroban_sdk::{ xdr::{FromXdr, ToXdr}, Address, Bytes, ConversionError, Env,};pub fn address_to_xdr_bytes(env: Env, address: Address) -&gt; Bytes { address.to_xdr(&amp;env)}pub fn address_from_xdr_bytes(env: Env, bytes: Bytes) -&gt; Result&lt;Address, ConversionError&gt; { Address::from_xdr(&amp;env, &amp;bytes)}"
+        }
+      ]
+    },
+    {
+      "id": "sd-041",
+      "path": "/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
+      "ok": true,
+      "complete": true,
+      "nbSections": 15,
+      "sections": [
+        {
+          "anchor": "",
+          "breadcrumb": "Transactions > Pooled accounts: muxed accounts and memos",
+          "content": "When building an application or service on Stellar, one of the first things you have to decide is how to handle user accounts.\r\nYou can create a Stellar account for each user, but most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account to handle transactions on behalf of their users. In these cases, an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos.\r\nTransaction memos were traditionally used for this purpose, and many services still rely on them. Muxed accounts are better in the long term, but they aren't yet supported by all wallets, exchanges, and anchors, so you may want to support both memos and muxed accounts, at least for a while. This guide covers both approaches."
+        }
+      ]
+    },
+    {
+      "id": "sd-044",
+      "path": "/docs/tools/quickstart/advanced-usage/operation-modes",
+      "ok": true,
+      "complete": true,
+      "nbSections": 5,
+      "sections": [
+        {
+          "anchor": "manual-close-mode",
+          "breadcrumb": "Advanced Usage > Operation Modes > Manual close mode​",
+          "content": "By default, ledgers close automatically. (In local network mode, that's once every second.) For deterministic local testing, you can disable automatic closing by passing the --enable-core-manual-close flag when starting the container. The flag sets the MANUAL_CLOSE setting in the etc/stellar-core.cfg file that the container generates when it initializes, and defaults to false when not specified.\r\nManual close is only usable in local network mode. Stellar Core requires NODE_IS_VALIDATOR=true to service a manual close request, and the local network is the only Quickstart configuration that sets it. The flag is accepted on the other networks and the container will start normally, but the manualclose request itself will fail.\r\nThe core configuration is only generated the first time a container initializes. Adding this flag to a container that already has a configuration (on a persistent volume, for example) has no effect. To pick up the change, start a fresh ephemeral container or clear the mounted volume.\r\nWith manual close enabled, ledgers only advance when you explicitly trigger a close by sending the manualclose command to stellar-core's HTTP endpoint on port 11626:\r\ncurl \"http://localhost:11626/manualclose\"\r\nEach manualclose invocation advances the ledger by one. For a complete example of starting a local network with the flag enabled, see Run Commands."
+        }
+      ]
+    },
+    {
+      "id": "sd-044",
+      "path": "/docs/tools/quickstart/network-modes",
+      "ok": true,
+      "complete": true,
+      "nbSections": 7,
+      "sections": [
+        {
+          "anchor": "local",
+          "breadcrumb": "Quickstart > Network Modes > Local​",
+          "content": "The local network mode allows you to customize Quickstart by adding parameters to the container start command. The available parameters are:\r\n--protocol-version {version} to run a specific protocol version (defaults to latest version)\r\n--limits {limits} to configure specific Soroban resource limits to one of: default leaves limits set extremely low which is stellar-core's default configuration\ntestnet sets limits to match those used on testnet (the default quickstart configuration)\nunlimited sets limits to the maximum resources that can be configured\r\ndefault leaves limits set extremely low which is stellar-core's default configuration\r\ntestnet sets limits to match those used on testnet (the default quickstart configuration)\r\nunlimited sets limits to the maximum resources that can be configured\r\n--enable-core-manual-close to turn off automatic ledger closing, so ledgers advance only when you trigger them yourself (defaults to false). See Operation Modes.\r\nSome settings and values are specific to the local network mode, which you must be aware of when running Quickstart in local network mode."
+        }
+      ]
+    },
+    {
+      "id": "sd-045",
+      "path": "/docs/build/guides/dapps/frontend-guide",
+      "ok": true,
+      "complete": true,
+      "nbSections": 35,
+      "sections": [
+        {
+          "anchor": "setup-https-on-localhost",
+          "breadcrumb": "Dapp Development > Comprehensive frontend guide for Stellar dapps > 2. Setting up the development environment​ > Setup HTTPS on Localhost​",
+          "content": "Freighter wallet requires a secure connection to interact with your dapp. Browsers treat http://localhost and http://127.0.0.1 as secure contexts per the W3C Secure Contexts specification, so local development over plain HTTP works without extra setup. To enable HTTPS on localhost anyway, you can use a tool like mkcert. Fortunately, Next.js provides built-in support for HTTPS.\r\nTo enable HTTPS in your Next.js project, open the package.json file and edit the scripts section as follows:\r\n\"scripts\": { \"dev\": \"next dev --experimental-https\",}"
+        }
+      ]
+    },
+    {
+      "id": "sd-051",
+      "path": "/docs/networks/software-versions",
+      "ok": true,
+      "complete": true,
+      "nbSections": 159,
+      "sections": [
+        {
+          "anchor": "protocol-20-soroban-phase-2-march-19-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 2 (March 19, 2024)​",
+          "content": ""
+        },
+        {
+          "anchor": "protocol-20-soroban-phase-1-february-27-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 1 (February 27, 2024)​",
+          "content": ""
+        },
+        {
+          "anchor": "protocol-20-soroban-phase-0-mainnet-february-20-2024",
+          "breadcrumb": "Documentation > Software Versions > Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)​",
+          "content": "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits and fees listed below. The software in this snapshot released earlier: Stellar Core v20.2.0 on February 5, 2024, and the remaining components through February 14. Read more in the Protocol 20 Upgrade Guide."
+        }
+      ]
+    }
+  ]
+}
