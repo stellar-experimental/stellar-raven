@@ -22,7 +22,8 @@ The coordinator owns finding mutations and GitHub closure actions.
 ## Drift verdict
 
 Implementation is in progress. The rejected audit candidate remains intact.
-The current RWA-inclusive measurement passes the eleven original focused checks.
+The current RWA-inclusive measurement passes the focused intent checks.
+Its aggregate scores improve, but the unchanged full routing gate still fails.
 The changed fingerprint and old upper bands still reject the unchanged routing gate.
 Independent review found additional mixed-intent captures and a person-advisory defect.
 The author repairs those defects without changing labels or acceptance thresholds.
@@ -63,6 +64,13 @@ The author restored those accepted contracts. All nine focused Trustless Work te
 The corrected independent review uses the RWA-inclusive measurement and confirms 345 ordered-list changes.
 The [test diagnosis](2026-09-16-maintenance-execution/scout-test-contract-review.md) separates behavior defects from changed contracts.
 The copied interim reports are not acceptance records.
+
+The copied test diagnosis incorrectly says no full suite proves 19 failures.
+The pre-person-fix result records 2,126 tests: 2,104 passed, 19 failed, and three pending.
+Its SHA-256 is `5671911af615e385a20072d66d2ee418d0627622e8f47224669080d315fdf0e9`.
+The result file is `/tmp/raven-execution-2026-09-16/scout-unit-results-final.json`.
+This correction does not accept Scout 1.9.52. Later repairs require a newer full run before final acceptance.
+The dated diagnosis remains unchanged so the correction stays explicit.
 
 ## Eval verdict
 
@@ -198,6 +206,29 @@ The coordinator preserved the rejected drift candidate and all initial branches.
 
 ## Final checklist
 
-- Pending: implementation and independent review results.
-- Pending: required checks, GitHub read-back, deployment evidence where applicable.
-- Pending: owned pane and worktree reconciliation.
+- Completed: PRs #156, #157, and #163–#165 merged after the required checks and independent reviews.
+- Completed: issue #40 passed its authenticated copy check; issues #158–#162 have verified closure evidence.
+- Completed: production catalog, pinned content, health, and canary checks passed on `bb37bc50`.
+- Completed: both reviewed external Docs patches published and passed all nine checks.
+- Completed: `.agents/TODO.md` now records the current Docs handoff and this maintenance ledger.
+- Open: issue #141 needs the remaining routing review, accepted metadata, release checks, and production verification.
+- Open: both Docs PRs need maintainer approval. PR #2837 also retains its author hold.
+- Record review: Sol high reviewed all 60 files in PR #166 and requested two ledger corrections.
+- Record review: this revision fixes the pending checklist and reconciles the 19-failure evidence conflict.
+- Retained: owned panes `w3G:pZ`, `w3G:p0`, and `w3G:p11` support the remaining work.
+
+The completed worktree removals are recorded above. These temporary worktrees remain available for the active review:
+
+- `/tmp/raven-execution-2026-09-16/deploy` — clean release checkout; retain its scoped profile binding for the next release.
+- `/tmp/raven-execution-2026-09-16/docs-title-drift` — reviewed generated Docs candidate.
+- `/tmp/raven-execution-2026-09-16/drift` — preserved rejected experiment.
+- `/tmp/raven-execution-2026-09-16/drift-combined` — preserved intermediate experiment.
+- `/tmp/raven-execution-2026-09-16/drift-combined-main` — preserved source-only control.
+- `/tmp/raven-execution-2026-09-16/drift-combined-accepted` — active implementation.
+- `/tmp/raven-execution-2026-09-16/pr157` — preserved contributor-based experiment.
+- `/tmp/raven-execution-2026-09-16/pr157-integrated` — accepted routing control.
+- `/tmp/raven-execution-2026-09-16/routing-ablation` — preserved attribution experiment.
+- `/tmp/raven-execution-2026-09-16/scout-runtime-audit` — clean schema-audit checkout.
+- `/private/tmp/stellar-raven-drift-0916.mOmBFJ/repo` — original rejected audit candidate.
+
+Reconcile these paths after the active drift review. Preserve each unique dirty experiment before any removal.
