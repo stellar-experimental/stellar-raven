@@ -25,13 +25,14 @@ describe("extractRoutingPhrases", () => {
     ]);
   });
 
-  it("does not emit a chopped phrase when the next source phrase exceeds the cap", () => {
+  it("skips an oversized phrase and continues fairly across source fields", () => {
     expect(extractRoutingPhrases({
       purpose: ["alpha beta"],
       useWhen: ["gamma delta epsilon"],
       exampleQuestions: ["zeta eta"]
     }, 4)).toEqual([
-      { field: "purpose", tokens: ["alpha", "beta"] }
+      { field: "purpose", tokens: ["alpha", "beta"] },
+      { field: "exampleQuestions", tokens: ["zeta", "eta"] }
     ]);
   });
 

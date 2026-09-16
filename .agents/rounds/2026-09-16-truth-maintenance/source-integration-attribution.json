@@ -1,0 +1,146 @@
+{
+  "before": "/tmp/raven-execution-2026-09-16/drift-combined-accepted/eval/results/routing-2026-09-16T22-54-12-494Z.json",
+  "after": "/tmp/raven-execution-2026-09-16/source-integration/eval/results/routing-2026-09-16T22-56-43-112Z.json",
+  "beforeSha256": "7bc73bdcc20e0081c0d4049f73afd29ae7368b54e30b57d5b2dd2635947448b6",
+  "afterSha256": "bdcdb8f7e725212bb4d7a49f297100302e9b8587445abd7c476a2c68137d0057",
+  "lanes": {
+    "cases": {
+      "count": 338,
+      "identityAndGradesIdentical": true
+    },
+    "extendedCases": {
+      "count": 122,
+      "identityAndGradesIdentical": true
+    },
+    "skillsCases": {
+      "count": 23,
+      "identityAndGradesIdentical": true
+    },
+    "holdoutCases": {
+      "count": 49,
+      "identityAndGradesIdentical": true
+    },
+    "protocolHistoryCases": {
+      "count": 12,
+      "identityAndGradesIdentical": true
+    }
+  },
+  "scoreChanges": [
+    {
+      "lane": "cases",
+      "id": "q-infra-rpc-providers-list",
+      "before": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 600
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 401
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 385
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "score": 363
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "score": 198
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 608
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 401
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 385
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "service": "stellarDocs",
+          "score": 363
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "score": 198
+        }
+      ]
+    },
+    {
+      "lane": "extendedCases",
+      "id": "q-ti-parse-raw-ledger-data",
+      "before": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 586
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 486
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 440
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "score": 431
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 413
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 594
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 486
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 440
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "score": 431
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 413
+        }
+      ]
+    }
+  ]
+}

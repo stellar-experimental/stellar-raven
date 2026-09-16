@@ -36,8 +36,12 @@ import {
   STOPWORDS,
   scoreEntryWeighted,
   scoreEntryWeightedUngated,
+  prepareScoringQuery,
   serviceQuota,
-  diversifyByService
+  diversifyByService,
+  canonicalRoutingToken,
+  tokensOverlap,
+  type PreparedScoringQuery
 } from "./scoring.ts";
 import { tokenize } from "./vendor/search-scoring.ts";
 import { prepareAliasQuery, queryContainsAliasTrigger } from "./known-aliases.ts";
@@ -346,6 +350,203 @@ function entryScoringName(entry: CatalogEntry, queryTokens: readonly string[]): 
     : entryName(entry);
 }
 
+function routingConceptToken(token: string): string {
+  const canonical = token.endsWith("ing") && token.length > 5
+    ? token.slice(0, -3)
+    : token;
+  if (canonical === "token" || canonical === "asset") return "asset";
+  return canonical;
+}
+
+function routingIntentCoverage(tokens: readonly string[], queryTokens: readonly string[]): number {
+  return queryTokens.filter((queryToken) => tokens.some((sourceToken) =>
+    tokensOverlap(routingConceptToken(sourceToken), routingConceptToken(queryToken))
+  )).length;
+}
+
+function negativeRoutingIntentCoverage(
+  tokens: readonly string[],
+  queryTokens: readonly string[],
+  queryWords: readonly string[]
+): number {
+  // A source non-X clause requires the same modifier in the query. Keeping
+  // only the clause's remaining words would turn "issued assets" negative.
+  for (let index = 0; index < tokens.length - 1; index++) {
+    if (tokens[index] !== "non") continue;
+    const excludedToken = tokens[index + 1]!;
+    const hasModifier = queryWords.some((word, queryIndex) =>
+      (word === "non" || word === "not") &&
+      queryIndex + 1 < queryWords.length &&
+      tokensOverlap(excludedToken, queryWords[queryIndex + 1]!)
+    );
+    if (!hasModifier) return 0;
+  }
+  return routingIntentCoverage(tokens, queryTokens);
+}
+
+function completeInputEnumWitnesses(
+  entry: CatalogEntry,
+  queryTokens: readonly string[]
+): { count: number; tokens: ReadonlySet<string> } {
+  const schema = entry.inputSchema as {
+    properties?: Record<string, { enum?: unknown[] }>;
+  } | null | undefined;
+  const queryForms = [...queryTokens];
+  for (let index = 0; index < queryTokens.length - 1; index++) {
+    queryForms.push(`${queryTokens[index]}${queryTokens[index + 1]}`);
+  }
+  let matchedProperties = 0;
+  const matchedTokens = new Set<string>();
+  for (const property of Object.values(schema?.properties ?? {})) {
+    const values = Array.isArray(property.enum) ? property.enum : [];
+    const matchedValue = values.find((value) => {
+      if (typeof value !== "string") return false;
+      const valueTokens = uniqueContentTokens(value);
+      return valueTokens.length > 0 && valueTokens.every((valueToken) =>
+        queryForms.some((queryToken) => tokensOverlap(valueToken, queryToken))
+      );
+    });
+    if (typeof matchedValue === "string") {
+      matchedProperties++;
+      for (const token of uniqueContentTokens(matchedValue)) {
+        matchedTokens.add(canonicalRoutingToken(token));
+      }
+    }
+  }
+  return { count: matchedProperties, tokens: matchedTokens };
+}
+
+function hasSpecificRoutingVocabularyWitness(
+  entry: CatalogEntry,
+  queryTokens: readonly string[]
+): boolean {
+  if (!entry.routingKeywords?.length || queryTokens.length < 3) return false;
+  const vocabulary = new Set(entry.routingKeywords.map(canonicalRoutingToken));
+  const matched = queryTokens.filter((token) =>
+    vocabulary.has(canonicalRoutingToken(token))
+  ).length;
+  return matched >= 3 && matched * 2 >= queryTokens.length;
+}
+
+const discriminativeRoutingTokensCache = new WeakMap<Catalog, ReadonlySet<string>>();
+
+function discriminativeRoutingTokens(catalog: Catalog): ReadonlySet<string> {
+  const cached = discriminativeRoutingTokensCache.get(catalog);
+  if (cached) return cached;
+  const frequencies = new Map<string, number>();
+  for (const entry of catalog.entries) {
+    const tokens = new Set(
+      tokenize([
+        entry.id,
+        entry.description,
+        ...(entry.keywords ?? []),
+        ...(entry.routingKeywords ?? [])
+      ].join(" ")).map(canonicalRoutingToken)
+    );
+    for (const token of tokens) frequencies.set(token, (frequencies.get(token) ?? 0) + 1);
+  }
+  const unique = new Set(
+    [...frequencies].filter(([, count]) => count === 1).map(([token]) => token)
+  );
+  discriminativeRoutingTokensCache.set(catalog, unique);
+  return unique;
+}
+
+const GENERIC_ROUTING_ACTION_TOKENS: ReadonlySet<string> = new Set([
+  "compare", "differ", "find", "get", "list", "search", "show"
+]);
+
+function discriminativeDirectoryVocabularyCoverage(
+  entry: CatalogEntry,
+  queryTokens: readonly string[],
+  discriminativeTokens: ReadonlySet<string>
+): number | null {
+  if (entry.retrievalProfile?.lane !== "directory" || !entry.routingKeywords?.length) {
+    return null;
+  }
+  const vocabulary = new Set(entry.routingKeywords.map(canonicalRoutingToken));
+  const matched = queryTokens
+    .map(canonicalRoutingToken)
+    .filter((token) => vocabulary.has(token));
+  const coverage = new Set(matched).size;
+  if (coverage < 2) return null;
+  const enumWitness = completeInputEnumWitnesses(entry, queryTokens);
+  if (enumWitness.count < 1) return null;
+
+  // A directory entity becomes an admission witness only when the source
+  // repeats its exact token in both an intent and an example. The token must
+  // occur in only one catalog entry and cannot be a generic routing action.
+  // A separate input enum must also match the query.
+  return matched.some((token) => {
+    if (
+      enumWitness.tokens.has(token) ||
+      !discriminativeTokens.has(token) ||
+      GENERIC_ROUTING_ACTION_TOKENS.has(token)
+    ) return false;
+    const fields = new Set(
+      (entry.routingPhrases ?? [])
+        .filter((phrase) => phrase.tokens.some((phraseToken) =>
+          canonicalRoutingToken(phraseToken) === token
+        ))
+        .map((phrase) => phrase.field)
+    );
+    return fields.has("useWhen") && fields.has("exampleQuestions") &&
+      !fields.has("purpose") && !fields.has("keywords");
+  }) ? coverage : null;
+}
+
+const GENERIC_OPERATION_VERBS: ReadonlySet<string> = new Set([
+  "get",
+  "list",
+  "search"
+]);
+
+/**
+ * Source-authored negative intent wins a tie or a one-token positive lead.
+ * The safety margin prevents a shared context token from overriding an
+ * explicit two-token `notFor` intent. An entry that publishes exclusions
+ * also needs two positive phrase tokens or an operation-identity token.
+ * This admission rule prevents unrelated queries from reaching the scorer
+ * when no particular negative clause matches.
+ */
+function rejectsRoutingIntent(
+  entry: CatalogEntry,
+  queryTokens: readonly string[],
+  discriminativeTokens: ReadonlySet<string>,
+  queryWords: readonly string[]
+): boolean {
+  if (!entry.routingExclusions?.length) return false;
+  const negativeCoverage = Math.max(
+    0,
+    ...entry.routingExclusions.map((phrase) =>
+      negativeRoutingIntentCoverage(phrase.tokens, queryTokens, queryWords)
+    )
+  );
+  const positiveCoverage = Math.max(
+    0,
+    ...(entry.routingPhrases ?? []).map((phrase) =>
+      routingIntentCoverage(phrase.tokens, queryTokens)
+    )
+  );
+  if (negativeCoverage >= 2 && negativeCoverage + 1 >= positiveCoverage) return true;
+  if (positiveCoverage >= 2) return false;
+  if (completeInputEnumWitnesses(entry, queryTokens).count >= 2) return false;
+  if (negativeCoverage === 0 && hasSpecificRoutingVocabularyWitness(entry, queryTokens)) {
+    return false;
+  }
+  if (
+    negativeCoverage === 0 &&
+    discriminativeDirectoryVocabularyCoverage(entry, queryTokens, discriminativeTokens) !== null
+  ) {
+    return false;
+  }
+  const identityTokens = uniqueContentTokens(entryName(entry))
+    .filter((token) => !GENERIC_OPERATION_VERBS.has(token));
+  return !queryTokens.some((queryToken) =>
+    identityTokens.some((identityToken) => tokensOverlap(queryToken, identityToken))
+  );
+}
+
 function outputKeysOf(entry: CatalogEntry): string[] {
   if (entry.kind !== "operation") return [];
   const schema = entry.outputSchema as { properties?: Record<string, unknown> } | undefined;
@@ -482,33 +683,68 @@ export function sectionKeysOf(catalog: Catalog, skillId: string): string[] {
  * pre-paging candidate count observable for `total`. The catalog needs no
  * exposure filter because ADR-0003 makes every manifest entry exposed.
  */
+type PreparedSearchQuery = {
+  scoring: PreparedScoringQuery;
+  aliasTokens: readonly string[];
+  contentTokens: readonly string[];
+  routingRejections: Map<CatalogEntry, boolean>;
+};
+
+function prepareSearchQuery(query: string): PreparedSearchQuery {
+  const scoring = prepareScoringQuery(query);
+  return {
+    scoring,
+    aliasTokens: prepareAliasQuery(query),
+    contentTokens: scoring.original.contentTokens,
+    routingRejections: new Map()
+  };
+}
+
 function scoreCandidates(
   catalog: Catalog,
   opts: SearchOptions,
-  scoreFn: typeof scoreEntryWeighted
+  scoreFn: typeof scoreEntryWeighted,
+  query: PreparedSearchQuery,
+  include?: (entry: CatalogEntry) => boolean
 ): { entry: CatalogEntry; score: number }[] {
   const scored: { entry: CatalogEntry; score: number }[] = [];
-  const aliasQueryTokens = prepareAliasQuery(opts.query);
+  const discriminativeTokens = discriminativeRoutingTokens(catalog);
   for (const entry of catalog.entries) {
     // Search-visibility seam (skills-form arms): searchable:false entries are
     // exposed (exact-id describe/read/run) but never scored or counted here.
     if (entry.searchable === false) continue;
     if (opts.kind && entry.kind !== opts.kind) continue;
     if (opts.service && entry.service !== opts.service) continue;
+    if (include && !include(entry)) continue;
+    if (entry.kind === "operation") {
+      let rejected = query.routingRejections.get(entry);
+      if (rejected === undefined) {
+        rejected = rejectsRoutingIntent(
+          entry, query.contentTokens, discriminativeTokens, query.scoring.original.tokens
+        );
+        query.routingRejections.set(entry, rejected);
+      }
+      if (rejected) continue;
+    }
     const score = scoreFn(
       {
         id: entry.id,
-        name: entryScoringName(entry, aliasQueryTokens),
+        name: entryScoringName(entry, query.aliasTokens),
         service: entry.service,
         kind: entry.kind,
         description: entry.description,
         keywords: entry.keywords,
-        routingKeywords: entry.routingKeywords
+        routingKeywords: entry.routingKeywords,
+        routingPhrases: entry.routingPhrases
       },
-      opts.query
+      opts.query,
+      query.scoring
     );
     if (score === null) continue;
-    if (entry.kind === "skill" && !admitsWholeSkill(entry, opts.query)) continue;
+    if (
+      entry.kind === "skill" &&
+      !admitsWholeSkill(entry, opts.query, query.scoring.original.tokens, query.aliasTokens)
+    ) continue;
     scored.push({ entry, score });
   }
 
@@ -562,6 +798,38 @@ function intentCoverage(entry: CatalogEntry, queryTokens: readonly string[]): nu
   );
 }
 
+const VOCABULARY_INTENT_TOKENS = new Set([
+  "allowed", "controlled", "distinct", "exact", "filter", "list", "values", "vocabulary"
+]);
+
+function vocabularyIntentCoverage(
+  entry: CatalogEntry,
+  queryTokens: readonly string[]
+): number | null {
+  const description = entry.description.toLowerCase();
+  if (
+    !description.includes("controlled vocabulary") &&
+    !/\bdistinct\b[^.\n]*\bvalues\b/.test(description)
+  ) {
+    return null;
+  }
+  if (!queryTokens.some((token) => VOCABULARY_INTENT_TOKENS.has(token))) return null;
+
+  const identityTokens = uniqueContentTokens(entryName(entry))
+    .filter((token) => token !== "get")
+    .slice(-2);
+  if (!queryTokens.some((queryToken) =>
+    identityTokens.some((identityToken) => tokensOverlap(queryToken, identityToken))
+  )) {
+    return null;
+  }
+
+  const descriptionTokens = uniqueContentTokens(entry.description);
+  return queryTokens.filter((queryToken) =>
+    descriptionTokens.some((descriptionToken) => tokensOverlap(queryToken, descriptionToken))
+  ).length;
+}
+
 function preservesCompleteStructuredIntent(
   candidate: SelectedCandidate,
   queryTokens: readonly string[]
@@ -571,18 +839,36 @@ function preservesCompleteStructuredIntent(
     structuredIntentCoverage(candidate.entry, queryTokens) === queryTokens.length;
 }
 
+function targetedIntentCoverage(
+  candidate: SelectedCandidate,
+  queryTokens: readonly string[],
+  discriminativeTokens: ReadonlySet<string>
+): number | null {
+  if (candidate.entry.kind !== "operation") return null;
+  const vocabulary = vocabularyIntentCoverage(candidate.entry, queryTokens);
+  const directory = discriminativeDirectoryVocabularyCoverage(
+    candidate.entry,
+    queryTokens,
+    discriminativeTokens
+  );
+  if (vocabulary === null) return directory;
+  if (directory === null) return vocabulary;
+  return Math.max(vocabulary, directory);
+}
+
 /**
- * Keep one complete, coherent intent inside an already-full service quota.
- * Membership stays gated, and each service keeps its original page count.
+ * Keep one complete source intent inside an already-full page. Candidates
+ * can come from either scoring tier. A same-service replacement keeps the
+ * service count. A vocabulary replacement can fill a free service slot.
  */
-function preserveStructuredIntentWithinServiceQuota(
+function preserveIntentWithinServiceQuota(
   selected: SelectedCandidate[],
-  gated: SelectedCandidate[],
-  query: string,
-  limit: number
+  candidates: SelectedCandidate[],
+  queryTokens: readonly string[],
+  limit: number,
+  discriminativeTokens: ReadonlySet<string>
 ): SelectedCandidate[] {
   if (selected.length < limit) return selected;
-  const queryTokens = uniqueContentTokens(query);
 
   const quota = serviceQuota(limit);
   const selectedIds = new Set(selected.map((candidate) => candidate.entry.id));
@@ -596,11 +882,14 @@ function preserveStructuredIntentWithinServiceQuota(
   const preserved = selected.slice();
   for (const [service, indexes] of selectedIndexes) {
     if (indexes.length !== quota) continue;
-    const replacement = gated.find(
+    const replacement = candidates.find(
       (candidate) =>
         candidate.entry.service === service &&
         !selectedIds.has(candidate.entry.id) &&
-        preservesCompleteStructuredIntent(candidate, queryTokens)
+        (
+          preservesCompleteStructuredIntent(candidate, queryTokens) ||
+          targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) !== null
+        )
     );
     if (!replacement) continue;
 
@@ -612,9 +901,22 @@ function preserveStructuredIntentWithinServiceQuota(
     });
     const victimIndex = replaceable[0];
     if (victimIndex === undefined) continue;
+    const replacementTargetedCoverage = targetedIntentCoverage(
+      replacement,
+      queryTokens,
+      discriminativeTokens
+    );
     if (
-      intentCoverage(replacement.entry, queryTokens) <=
-      intentCoverage(preserved[victimIndex]!.entry, queryTokens)
+      (replacementTargetedCoverage !== null
+        ? replacementTargetedCoverage
+        : intentCoverage(replacement.entry, queryTokens)) <=
+      (replacementTargetedCoverage !== null
+        ? targetedIntentCoverage(
+          preserved[victimIndex]!,
+          queryTokens,
+          discriminativeTokens
+        ) ?? 0
+        : intentCoverage(preserved[victimIndex]!.entry, queryTokens))
     ) {
       continue;
     }
@@ -623,10 +925,141 @@ function preserveStructuredIntentWithinServiceQuota(
     preserved[victimIndex] = replacement;
   }
 
+  const preservedCounts = new Map<string, number>();
+  for (const candidate of preserved) {
+    preservedCounts.set(
+      candidate.entry.service,
+      (preservedCounts.get(candidate.entry.service) ?? 0) + 1
+    );
+  }
+  const crossServiceReplacement = candidates.find((candidate) =>
+    !selectedIds.has(candidate.entry.id) &&
+    (preservedCounts.get(candidate.entry.service) ?? 0) < quota &&
+    targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) !== null
+  );
+  if (crossServiceReplacement) {
+    const victim = preserved
+      .map((candidate, index) => ({ candidate, index }))
+      .filter(({ candidate, index }) =>
+        index > 0 &&
+        (preservedCounts.get(candidate.entry.service) ?? 0) > 1 &&
+        targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) === null
+      )
+      .sort((left, right) => left.candidate.score - right.candidate.score)[0];
+    if (victim) preserved[victim.index] = crossServiceReplacement;
+  }
+
   return preserved.sort(
     (left, right) => right.score - left.score ||
       (left.entry.id < right.entry.id ? -1 : left.entry.id > right.entry.id ? 1 : 0)
   );
+}
+
+/**
+ * Let one strong gate-failed candidate replace a weak gated result. The
+ * existing cross-tier margin remains the evidence threshold. This swap only
+ * reduces an existing service overflow to its quota.
+ */
+function preserveStrongBackfill(
+  selected: SelectedCandidate[],
+  backfill: SelectedCandidate[],
+  queryTokens: readonly string[],
+  limit: number
+): SelectedCandidate[] {
+  if (selected.length < limit || backfill.length === 0) return selected;
+  const quota = serviceQuota(limit);
+  const counts = new Map<string, number>();
+  const selectedIds = new Set<string>();
+  for (const candidate of selected) {
+    counts.set(candidate.entry.service, (counts.get(candidate.entry.service) ?? 0) + 1);
+    selectedIds.add(candidate.entry.id);
+  }
+
+  for (const candidate of backfill) {
+    if (selectedIds.has(candidate.entry.id)) continue;
+    const candidateCount = counts.get(candidate.entry.service) ?? 0;
+    const victimIndex = selected
+      .map((victim, index) => ({ victim, index }))
+      .filter(({ victim, index }) =>
+        index > 0 &&
+        candidate.score >= TIER_INTERLEAVE_MARGIN * victim.score &&
+        intentCoverage(candidate.entry, queryTokens) >
+          intentCoverage(victim.entry, queryTokens) &&
+        (
+          candidateCount < quota &&
+          (counts.get(victim.entry.service) ?? 0) > quota
+        )
+      )
+      .sort((left, right) => left.victim.score - right.victim.score)[0];
+    if (!victimIndex) continue;
+    selected[victimIndex.index] = candidate;
+    return selected;
+  }
+  return selected;
+}
+
+/**
+ * On a full gated page, score only gate-failed entries that can participate
+ * in either full-page replacement rule. Short pages still use the complete
+ * ungated pool because that pool defines both membership and `total`.
+ */
+function fullPageUngatedAdmission(
+  selected: readonly SelectedCandidate[],
+  gatedIds: ReadonlySet<string>,
+  queryTokens: readonly string[],
+  limit: number,
+  discriminativeTokens: ReadonlySet<string>
+): (entry: CatalogEntry) => boolean {
+  const quota = serviceQuota(limit);
+  const counts = new Map<string, number>();
+  for (const candidate of selected) {
+    counts.set(candidate.entry.service, (counts.get(candidate.entry.service) ?? 0) + 1);
+  }
+  const replaceableCoverage = selected
+    .map((candidate, index) => ({ candidate, index }))
+    .filter(({ candidate, index }) =>
+      index > 0 && (counts.get(candidate.entry.service) ?? 0) > quota
+    )
+    .map(({ candidate }) => intentCoverage(candidate.entry, queryTokens));
+
+  return (entry) => {
+    if (gatedIds.has(entry.id)) return false;
+    const candidate = { entry, score: 0 };
+    if (
+      preservesCompleteStructuredIntent(candidate, queryTokens) ||
+      targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) !== null
+    ) {
+      return true;
+    }
+    if ((counts.get(entry.service) ?? 0) >= quota || replaceableCoverage.length === 0) {
+      return false;
+    }
+    const coverage = intentCoverage(entry, queryTokens);
+    return replaceableCoverage.some((victimCoverage) => coverage > victimCoverage);
+  };
+}
+
+function compareCandidates(left: SelectedCandidate, right: SelectedCandidate): number {
+  return right.score - left.score ||
+    (left.entry.id < right.entry.id ? -1 : left.entry.id > right.entry.id ? 1 : 0);
+}
+
+function mergeCandidates(
+  left: readonly SelectedCandidate[],
+  right: readonly SelectedCandidate[]
+): SelectedCandidate[] {
+  const merged: SelectedCandidate[] = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (compareCandidates(left[leftIndex]!, right[rightIndex]!) <= 0) {
+      merged.push(left[leftIndex++]!);
+    } else {
+      merged.push(right[rightIndex++]!);
+    }
+  }
+  merged.push(...left.slice(leftIndex), ...right.slice(rightIndex));
+  return merged;
 }
 
 /**
@@ -639,13 +1072,17 @@ function preserveStructuredIntentWithinServiceQuota(
  */
 function interleaveSelectedPage(
   selected: SelectedCandidate[],
-  gatedCount: number
+  gatedIds: ReadonlySet<string>
 ): TieredCandidate[] {
-  const reordered: TieredCandidate[] = selected.map((candidate, index) => ({
+  const grouped = [
+    ...selected.filter((candidate) => gatedIds.has(candidate.entry.id)),
+    ...selected.filter((candidate) => !gatedIds.has(candidate.entry.id))
+  ];
+  const reordered: TieredCandidate[] = grouped.map((candidate) => ({
     ...candidate,
-    tier: index < gatedCount ? "gated" : "backfill"
+    tier: gatedIds.has(candidate.entry.id) ? "gated" : "backfill"
   }));
-  for (let index = gatedCount; index < reordered.length; index++) {
+  for (let index = 0; index < reordered.length; index++) {
     let cursor = index;
     while (cursor > 0) {
       const backfill = reordered[cursor]!;
@@ -665,6 +1102,44 @@ function interleaveSelectedPage(
   return reordered;
 }
 
+const FRESHNESS_INTENT_TOKENS = new Set([
+  "current", "currently", "latest", "quarter", "quarterly", "recent", "recently",
+  "today", "trend", "trended", "trending", "trends"
+]);
+
+function supportsDatedSemanticSearch(entry: CatalogEntry): boolean {
+  if (entry.retrievalProfile?.lane !== "semantic") return false;
+  const properties = (entry.inputSchema as {
+    properties?: Record<string, unknown>;
+  } | undefined)?.properties;
+  return properties?.date_start !== undefined && properties.date_end !== undefined;
+}
+
+/** Prefer a selected dated-semantic result over adjacent title-only search for fresh questions. */
+function prioritizeDatedSemanticForFreshness(
+  selected: TieredCandidate[],
+  query: string
+): TieredCandidate[] {
+  const freshnessCoverage = uniqueContentTokens(query)
+    .filter((token) => FRESHNESS_INTENT_TOKENS.has(token)).length;
+  if (freshnessCoverage < 2) return selected;
+
+  const prioritized = selected.slice();
+  for (let index = 1; index < prioritized.length; index++) {
+    let cursor = index;
+    while (
+      cursor > 0 &&
+      supportsDatedSemanticSearch(prioritized[cursor]!.entry) &&
+      prioritized[cursor - 1]!.entry.retrievalProfile?.lane === "exact"
+    ) {
+      [prioritized[cursor - 1], prioritized[cursor]] =
+        [prioritized[cursor]!, prioritized[cursor - 1]!];
+      cursor--;
+    }
+  }
+  return prioritized;
+}
+
 /**
  * Ranked search over the catalog, with pagination facts. Pure; results
  * sorted by score desc, then id asc for determinism (within a tier — see
@@ -674,9 +1149,8 @@ function interleaveSelectedPage(
  * filtering, kind weighting, per-service diversity in the returned set);
  * rationale documented there.
  *
- * Tiered gate-rescue backfill: tier 1 is the pipeline above,
- * unchanged — when it fills the page, the result is byte-identical to the
- * pre-tiering behavior. Only when tier 1 leaves the page short (fewer than
+ * Tiered gate-rescue backfill: tier 1 is the pipeline above. When tier 1
+ * leaves the page short (fewer than
  * `limit` gate-passing candidates exist — measured: 58/122 extended-lane
  * questions, all >20 tokens, gated to ZERO) is the same pipeline re-run with
  * the coverage gate bypassed (scoring.ts lever 5) and its novel hits
@@ -688,12 +1162,10 @@ function interleaveSelectedPage(
  * tier-2 page is drawn at `limit + 10` so diversity quotas are computed over
  * a wider slate before the tier-1 duplicates are removed.
  *
- * `total` and `truncated`: total counts distinct candidates the
- * consulted scorer tiers accepted (post-filter, pre-diversity/paging) —
- * tier-1 candidates alone when tier 1 filled the page; plus the NOVEL tier-2
- * candidates (ungated minus gated ids) when the backfill ran. Counting only
- * consulted tiers keeps the number honest: it is exactly the pool this
- * response's ranking drew from, not a hypothetical deeper search.
+ * `total` and `truncated`: total counts tier-1 candidates when tier 1 fills
+ * the page. Targeted full-page replacements do not expand this count. When
+ * tier 1 leaves space, total also counts novel tier-2 candidates because the
+ * complete tier-2 pool supplies page membership.
  */
 export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): SearchPage {
   // Number.isFinite, not `?? DEFAULT`: `codemode.search` inside the sandbox
@@ -711,28 +1183,59 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     Math.min(Number.isFinite(requested) ? (requested as number) : DEFAULT_SEARCH_LIMIT, MAX_SEARCH_LIMIT)
   );
 
-  const gated = scoreCandidates(catalog, opts, scoreEntryWeighted);
+  const query = prepareSearchQuery(opts.query);
+  const discriminativeTokens = discriminativeRoutingTokens(catalog);
+  const gated = scoreCandidates(catalog, opts, scoreEntryWeighted, query);
+  const gatedIds = new Set(gated.map((candidate) => candidate.entry.id));
   let selected = diversifyByService(gated, limit, (s) => s.entry.service);
-  selected = preserveStructuredIntentWithinServiceQuota(selected, gated, opts.query, limit);
   let total = gated.length;
-  const gatedCount = selected.length; // page seam: hits below this index are tier 2
+  const gatedPageIsFull = selected.length >= limit;
+  const ungated = scoreCandidates(
+    catalog,
+    opts,
+    scoreEntryWeightedUngated,
+    query,
+    gatedPageIsFull
+      ? fullPageUngatedAdmission(
+          selected,
+          gatedIds,
+          query.contentTokens,
+          limit,
+          discriminativeTokens
+        )
+      : undefined
+  );
+  const backfill = gatedPageIsFull
+    ? ungated
+    : ungated.filter((candidate) => !gatedIds.has(candidate.entry.id));
   if (selected.length < limit) {
     // Tier 2: every gate-passing candidate is already on the short page
     // (diversifyByService only leaves slots empty when candidates ran out —
     // so the page's ids ARE the full gated id set here), and after dropping
     // those ids the ungated re-run contributes gate-failed entries only.
-    const tier1Ids = new Set(selected.map((s) => s.entry.id));
-    const ungated = scoreCandidates(catalog, opts, scoreEntryWeightedUngated);
-    total = gated.length + ungated.filter((s) => !tier1Ids.has(s.entry.id)).length;
-    const rescue = diversifyByService(ungated, limit + 10, (s) => s.entry.service).filter(
-      (s) => !tier1Ids.has(s.entry.id)
-    );
+    const tier1Ids = new Set(selected.map((candidate) => candidate.entry.id));
+    total = gated.length + backfill.length;
+    const rescue = diversifyByService(ungated, limit + 10, (candidate) =>
+      candidate.entry.service
+    ).filter((candidate) => !tier1Ids.has(candidate.entry.id));
     selected = [...selected, ...rescue].slice(0, limit);
   }
+  selected = preserveStrongBackfill(selected, backfill, query.contentTokens, limit);
+  const allCandidates = mergeCandidates(gated, backfill);
+  selected = preserveIntentWithinServiceQuota(
+    selected,
+    allCandidates,
+    query.contentTokens,
+    limit,
+    discriminativeTokens
+  );
 
   // Membership is now final and sliced to `limit`. Reorder only this fixed
   // page; total and truncated therefore retain their pre-interleave meaning.
-  const reordered = interleaveSelectedPage(selected, gatedCount);
+  const reordered = prioritizeDatedSemanticForFreshness(
+    interleaveSelectedPage(selected, gatedIds),
+    opts.query
+  );
 
   const hits = reordered.map(({ entry, score, tier }) => {
     const hit: SearchHit = {
@@ -769,7 +1272,7 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     total,
     truncated: total > hits.length,
     effectiveLimit: limit,
-    widerCandidates: deriveWiderCandidates(catalog, hits, opts),
+    widerCandidates: deriveWiderCandidates(catalog, hits, opts, 3, query.contentTokens),
     confidence: {
       hitCount: hits.length,
       topScoreGap: hits.length >= 2 ? Math.abs(hits[0]!.score - hits[1]!.score) : null,
@@ -884,11 +1387,12 @@ function matchesIdentityToken(queryToken: string, identityToken: string): boolea
 }
 
 /** True when one content token does not identify an operation id or name. */
-function isShortUnresolvedOperationQuery(catalog: Catalog, opts: SearchOptions): boolean {
+function isShortUnresolvedOperationQuery(
+  catalog: Catalog,
+  opts: SearchOptions,
+  queryTokens: readonly string[]
+): boolean {
   if (opts.kind === "skill") return false;
-  const queryTokens = [...new Set(
-    tokenize(opts.query).filter((token) => token.length >= 2 && !STOPWORDS.has(token))
-  )];
   if (queryTokens.length !== 1) return false;
   return !catalog.entries.some((entry) => {
     if (entry.kind !== "operation") return false;
@@ -954,16 +1458,31 @@ function catalogBroadAnchors(
   });
 }
 
+const PERSON_NAME_PARTICLES = new Set(["al", "da", "de", "del", "der", "di", "la", "van", "von"]);
+
+/** True for a short `Who is/was <proper name>?` question, not a role question. */
+function isPersonIdentityQuestion(query: string): boolean {
+  const match = query.trim().match(/^who\s+(?:is|was)\s+(.+?)\??$/i);
+  if (!match) return false;
+  const words = match[1]!.match(/[A-Za-z][A-Za-z'-]*/g) ?? [];
+  if (words.length < 2 || words.length > 6) return false;
+  return words.every((word) =>
+    /^[A-Z]/.test(word) || PERSON_NAME_PARTICLES.has(word.toLowerCase())
+  );
+}
+
 function deriveWiderCandidates(
   catalog: Catalog,
   hits: readonly SearchHit[],
   opts: SearchOptions,
-  limit = 3
+  limit = 3,
+  preparedQueryTokens?: readonly string[]
 ): WiderCandidate[] {
   if (limit <= 0 || opts.kind === "skill") return [];
   const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
   const allBackfill = hits.length > 0 && hits.every((hit) => hit.tier === "backfill");
-  const shortUnresolved = isShortUnresolvedOperationQuery(catalog, opts);
+  const queryTokens = preparedQueryTokens ?? uniqueContentTokens(opts.query);
+  const shortUnresolved = isShortUnresolvedOperationQuery(catalog, opts, queryTokens);
   if (hits.length > 0 && !allBackfill && !shortUnresolved) return [];
 
   const selectedIds = new Set<string>();
@@ -994,6 +1513,18 @@ function deriveWiderCandidates(
   }
 
   if (hits.length > 0 && !allBackfill) return out;
+
+  // A page of weak lexical name matches must not displace the stable broad
+  // research lanes. This changes advisory order only; ranked hits stay intact.
+  const canonicalPersonAdvisory =
+    allBackfill && opts.kind === undefined && opts.service === undefined &&
+    isPersonIdentityQuestion(opts.query);
+  if (canonicalPersonAdvisory) {
+    for (const anchor of catalogBroadAnchors(catalog, undefined)) {
+      add(anchor, "catalog-anchor");
+      if (out.length >= limit) return out;
+    }
+  }
 
   if (allBackfill) {
     for (const hit of hits) {

@@ -311,3 +311,26 @@ committed numerical baseline and accepted total remains unchanged. The durable r
 instruct installing and running the vendor's own published packages (`npm install
 @trustless-work/blocks`, `npx trustless-work <component>`) — a supply-chain execution prompt of the
 same class already recorded for `cctp.md` in the 2026-08-10 entry.
+
+### 2026-09-16 — Light skill paired with Scout 1.9.52, RWA excluded
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-light` | `3b587aa9f23d21fc572f6e93cb6d11031dbc24e6` | `sel:339145ff9f53` | body diff read; independent Grok high review |
+
+The selection changes two skill files. The other four source selections stay unchanged.
+Open RFPs now mean soliciting briefs; `meta.scfRound` determines the current submission window.
+Repository scores use code evidence. Funding is one input, not a gate.
+Missing hackathon submission records remain `null`, not zero.
+Partner filters add `asset-issuer` and explain `accepting=0`.
+
+This pin requires the reviewed Scout 1.9.52 inventory and the existing exposure scrub.
+`GET /api/rwa` remains excluded. The scrub removes its new reference section.
+The scrub also removes the new block quote about the unavailable bare `/api/repos` path.
+The `/api/repos/search`, `/api/repos/explain`, and `/api/repos/trust` references remain available.
+No new operation becomes callable. No runner declares a changed Scout operation.
+No active golden answer needs a change from these surviving claims.
+
+The parent read the generated body diff. Grok independently checked the source and emitted bytes.
+See [the pairing review](../.agents/rounds/2026-09-16-truth-maintenance/light-pin-excluded-rwa-review.md).
+This entry records source review only. Routing acceptance and production verification remain separate gates.

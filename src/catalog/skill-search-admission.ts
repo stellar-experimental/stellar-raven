@@ -64,8 +64,13 @@ function descriptionDomainCodeSequences(description: string): string[][] {
  * remain valid discovery evidence. Domain codes also retain their case-folded
  * whole form, so DeFi and defi have the same admission behavior.
  */
-export function admitsWholeSkill(entry: WholeSkillAdmissionEntry, query: string): boolean {
-  const queryTokens = tokenize(query);
+export function admitsWholeSkill(
+  entry: WholeSkillAdmissionEntry,
+  query: string,
+  preparedQueryTokens?: readonly string[],
+  preparedAliasTokens?: readonly string[]
+): boolean {
+  const queryTokens = preparedQueryTokens ?? tokenize(query);
   if (queryTokens.length === 0) return false;
 
   const name = lastIdSegment(entry.id);
@@ -80,7 +85,7 @@ export function admitsWholeSkill(entry: WholeSkillAdmissionEntry, query: string)
   const nameTokens = tokenize(name);
   if (containsSequence(queryTokens, nameTokens)) return true;
 
-  const aliasQueryTokens = prepareAliasQuery(query);
+  const aliasQueryTokens = preparedAliasTokens ?? prepareAliasQuery(query);
   if (
     entry.knownAliases?.length &&
     entry.knownAliasTriggers?.some((trigger) =>

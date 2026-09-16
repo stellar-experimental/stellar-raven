@@ -19,7 +19,11 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   // The accepted 1.9.1 surface keeps this excluded by a separate routing
   // decision. Upstream 1.9.13 completed the issued response enum. Expose it
   // only with an accepted current-surface routing review.
-  "GET /api/verify"
+  "GET /api/verify",
+  // The operation is useful for RWA discovery, but its first source candidate
+  // captured unrelated implementation queries. Keep it outside the accepted
+  // surface until the general routing repair and operation review both pass.
+  "GET /api/rwa"
 ]);
 
 // Public skill prose also describes this collection, but Scout's OpenAPI does

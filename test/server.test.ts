@@ -834,10 +834,9 @@ describe("search behavior (host-side ranked)", () => {
     };
     expect(structured.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
       { id: "skills.stellar-dev.dapp", score: 75, tier: "gated" },
-      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" },
-      { id: "stellarDocs.search_soroban_contract_docs", score: 30, tier: "gated" }
+      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" }
     ]);
-    expect(structured.total).toBe(3);
+    expect(structured.total).toBe(2);
     expect(structured.truncated).toBe(false);
     expect(structured.widerCandidates).toEqual(
       expect.arrayContaining([

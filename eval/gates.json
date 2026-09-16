@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-09-16T20:21:28.462Z",
+  "baselinedAt": "2026-09-16T23:20:09.940Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "0cff03fd280a25b53cce9cb3ce579f5ec72b5a7f7a7dff4ca977ba4681831869"
+        "sha256": "da21ab9ab7859bb36ef0c2f5443c48cafef69c6c545c6397f7f741cc9fb47210"
       },
       {
         "path": "eval/routing-cases.json",
@@ -24,15 +24,15 @@
     "acceptedTotals": {
       "legacy": {
         "n": 338,
-        "top1": 213,
-        "top3": 279,
-        "top5": 312,
+        "top1": 219,
+        "top3": 298,
+        "top5": 326,
         "cardN": 182,
-        "cardHit5": 95
+        "cardHit5": 112
       },
       "skills": {
         "n": 23,
-        "top1": 16,
+        "top1": 17,
         "top3": 23,
         "top5": 23,
         "cardN": 23,
@@ -40,35 +40,35 @@
       },
       "holdout": {
         "n": 49,
-        "top1": 10,
-        "top3": 22,
-        "top5": 26,
+        "top1": 12,
+        "top3": 26,
+        "top5": 29,
         "cardN": 49,
-        "cardHit5": 26,
-        "forbiddenCaptures": 11,
-        "passed": 21
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
       }
     },
-    "localTrace": "routing-2026-09-16T20-21-28-462Z.json"
+    "localTrace": "routing-2026-09-16T23-20-09-940Z.json"
   },
-  "note": "2026-09-16 Trustless Work source acceptance adds one pinned escrow-integration skill at 634f32bd and changes only the catalog evidence fingerprint. Independent Grok 4.6 high review accepts the source, implementation, and all 15 ordered-ID movements across 544 rows. Current results meet or exceed every unchanged baseline: legacy 213/280/314, skills 16/23/23, holdout 10/22/27 with 11 forbidden captures. All acceptedTotals, numerical thresholds, labels, other input fingerprints, and Scout OpenAPI 1.9.1 remain unchanged. Decision record: .agents/rounds/2026-09-16-trustless-work-acceptance.md. Independent review: .agents/rounds/2026-09-16-trustless-work/source-review.md.",
+  "note": "2026-09-16 Scout 1.9.52 source acceptance retains 30 Scout operations and excludes RWA. Source routing text changes require general phrase, evidence, and negative-intent repairs. Independent Grok high review accepts the semantic movements, including the final modifier-scope correction; Terra high accepts the code repairs. Legacy baselines and skills/holdout floors increase; the forbidden-capture ceiling decreases. Labels and other input hashes stay unchanged. Decision: .agents/rounds/2026-09-16-scout-acceptance.md. Final semantic review: .agents/rounds/2026-09-16-truth-maintenance/scout-clause-repair-independent-review.md. RWA remains deferred in issue #167.",
   "legacy": {
     "n": 338,
-    "top1": 213,
-    "top3": 279,
-    "top5": 312,
+    "top1": 219,
+    "top3": 298,
+    "top5": 326,
     "bandPct": 1
   },
   "skills": {
     "n": 23,
-    "minTop1": 16
+    "minTop1": 17
   },
-  "holdoutNote": "eval/holdout-cases.json is a frozen, blind-authored no-regression set. Its current contract is 49 cases, floors of 10/22/26, and at most 11 forbidden captures. Do not tune against it or edit failed cases. Historical movements and rationale remain in eval/README.md.",
+  "holdoutNote": "eval/holdout-cases.json remains a frozen, blind-authored set. The reviewed source acceptance tightens its floors to 12/26/29 and its forbidden-capture ceiling to 10. Do not tune against it or edit failed cases. Historical movements remain in eval/README.md and the acceptance ledger.",
   "holdout": {
     "n": 49,
-    "minTop1": 10,
-    "minTop3": 22,
-    "minTop5": 26,
-    "maxForbiddenCaptures": 11
+    "minTop1": 12,
+    "minTop3": 26,
+    "minTop5": 29,
+    "maxForbiddenCaptures": 10
   }
 }

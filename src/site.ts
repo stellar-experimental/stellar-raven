@@ -1259,12 +1259,12 @@ export const DOC_CODEMODE_HELPERS = [
  * displayed shortlist. Update this constant together with docTrace().
  */
 export const DOC_TRACE_EXAMPLE = {
-  query: "soroswap liquidity",
+  query: "find Soroswap project and research its liquidity",
   limit: 3,
   hitIds: [
-    "scout.searchProjects",
+    "lumenloop.find_content_about_project",
     "scout.searchResearch",
-    "stellarDocs.search_protocol_concepts_docs"
+    "scout.searchProjects"
   ],
   executeOperationIds: ["scout.searchProjects", "scout.searchResearch"]
 };

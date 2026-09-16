@@ -52,6 +52,10 @@ export const routingPhraseSchema = z.object({
   tokens: z.array(z.string().min(1)).min(1)
 });
 export type RoutingPhrase = z.infer<typeof routingPhraseSchema>;
+export const routingExclusionSchema = z.object({
+  tokens: z.array(z.string().min(1)).min(2)
+});
+export type RoutingExclusion = z.infer<typeof routingExclusionSchema>;
 
 /** A JSON Schema fragment — kept opaque; only the TS renderer walks it. */
 const jsonSchemaShape = z.record(z.string(), z.unknown());
@@ -181,6 +185,11 @@ const catalogEntryBaseSchema = z.object({
    * service selection. They never affect scorer admission or score values.
    */
   routingPhrases: z.array(routingPhraseSchema).optional(),
+  /**
+   * Scout x-routing notFor clauses before any `->` target label. These
+   * clauses can reject a stronger negative intent, but never add score.
+   */
+  routingExclusions: z.array(routingExclusionSchema).optional(),
   /** Receipt-backed entity identities, activated only by a complete trigger. */
   knownAliases: z.array(z.string().trim().min(1)).min(2).optional(),
   /** Distinctive complete sequences that activate knownAliases during search. */

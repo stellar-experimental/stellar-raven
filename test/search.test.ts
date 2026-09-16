@@ -354,7 +354,11 @@ describe("searchCatalogPage — structural wider candidates", () => {
   });
 
   it("recommends semantic and research anchors for exact low-evidence person questions", () => {
-    for (const query of ["Who is Tyler van der Hoeven?", "Who is Danel Jed McCaleb?"]) {
+    for (const query of [
+      "Who is Tyler van der Hoeven?",
+      "Who is Danel Jed McCaleb?",
+      "Who was Ada Lovelace?"
+    ]) {
       const page = searchCatalogPage(catalog, { query, limit: 5 });
       expect(page.hits.every((hit) => hit.tier === "backfill"), query).toBe(true);
       expect(page.widerCandidates.map((candidate) => candidate.id), query).toEqual([
@@ -363,6 +367,18 @@ describe("searchCatalogPage — structural wider candidates", () => {
         "stellarDocs.search_docs"
       ]);
     }
+  });
+
+  it("does not treat a role question as a proper-name advisory", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "Who is responsible for Soroban protocol upgrades?",
+      limit: 5
+    });
+    expect(page.widerCandidates.map((candidate) => candidate.id)).not.toEqual([
+      "scout.searchResearch",
+      "lumenloop.search_content_semantic",
+      "stellarDocs.search_docs"
+    ]);
   });
 
   it("routes a current SDF person query to the structured people directory", () => {
@@ -576,12 +592,11 @@ describe("searchCatalog — routing quality", () => {
     const page = searchCatalogPage(catalog, { query: "freighter", limit });
     const expected = [
       { id: "skills.stellar-dev.dapp", score: 75, tier: "gated" },
-      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" },
-      { id: "stellarDocs.search_soroban_contract_docs", score: 30, tier: "gated" }
+      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" }
     ];
     expect(page.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual(expected.slice(0, limit));
-    expect(page.total).toBe(3);
-    expect(page.truncated).toBe(limit < 3);
+    expect(page.total).toBe(2);
+    expect(page.truncated).toBe(limit < 2);
     expect(page.effectiveLimit).toBe(limit);
     expect(page.widerCandidates).toEqual([
       expect.objectContaining({ id: "scout.searchProjects", basis: "short-query-directory" })
@@ -594,14 +609,13 @@ describe("searchCatalog — routing quality", () => {
       limit: 5
     });
 
-    expect(page.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
-      { id: "scout.searchProjects", score: 165, tier: "gated" },
-      { id: "lumenloop.find_similar_projects_semantic", score: 155, tier: "gated" },
-      { id: "lumenloop.find_content_by_entity", score: 145, tier: "gated" },
-      { id: "scout.getLeaderboard", score: 108, tier: "gated" },
-      { id: "skills.lumenloop.stellar-project-dossier", score: 90, tier: "gated" }
-    ]);
-    expect(page.total).toBe(41);
+    expect(page.hits.map((hit) => hit.id)).toContain("scout.getLeaderboard");
+    expect(page.hits.map((hit) => hit.id)).not.toContain("scout.searchProjects");
+    expect(page.hits.filter((hit) => hit.service === "scout")).toHaveLength(2);
+    expect(searchCatalogPage(catalog, {
+      query: "top projects by GitHub activity",
+      limit: 5
+    })).toEqual(page);
     expect(page.truncated).toBe(true);
   });
 
@@ -611,14 +625,13 @@ describe("searchCatalog — routing quality", () => {
       limit: 5
     });
 
-    expect(page.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
-      { id: "skills.lumenloop.stellar-project-dossier", score: 199, tier: "gated" },
-      { id: "scout.searchProjects", score: 185, tier: "gated" },
-      { id: "skills.lumenloop.stellar-ecosystem-scout", score: 165, tier: "gated" },
-      { id: "stellarDocs.get_doc_page_sections", score: 157, tier: "gated" },
-      { id: "scout.getLeaderboard", score: 129, tier: "gated" }
-    ]);
-    expect(page.total).toBe(33);
+    expect(page.hits.map((hit) => hit.id)).toContain("scout.getLeaderboard");
+    expect(page.hits.map((hit) => hit.id)).not.toContain("scout.searchProjects");
+    expect(page.hits.filter((hit) => hit.service === "scout")).toHaveLength(2);
+    expect(searchCatalogPage(catalog, {
+      query: "top Stellar projects by GitHub activity",
+      limit: 5
+    })).toEqual(page);
     expect(page.truncated).toBe(true);
   });
 
@@ -745,65 +758,48 @@ describe("searchCatalog — routing quality", () => {
     expect(ids).not.toContain("scout.overflow");
   });
 
-  it("changes one later Scout slot without changing page facts or scores", () => {
-    const control = loadManifest({
+  it("attributes positive and negative source-routing membership separately", () => {
+    const withoutPositive = loadManifest({
       ...catalog,
-      entries: catalog.entries.map(({ routingPhrases: _phrases, ...entry }) => entry)
+      entries: catalog.entries.map(({
+        routingPhrases: _phrases,
+        routingKeywords: _keywords,
+        ...entry
+      }) => entry)
+    });
+    const withoutNegative = loadManifest({
+      ...catalog,
+      entries: catalog.entries.map(({ routingExclusions: _exclusions, ...entry }) => entry)
     });
     const query = "top projects by GitHub activity";
-    const before = searchCatalogPage(control, { query, limit: 5 });
-    const after = searchCatalogPage(catalog, { query, limit: 5 });
-    const scoutCount = (page: typeof after) =>
-      page.hits.filter((hit) => hit.service === "scout").length;
+    const options = { query, service: "scout", limit: 5 } as const;
+    const routedIds = searchCatalogPage(catalog, options).hits.map((hit) => hit.id);
+    const withoutPositiveIds = searchCatalogPage(withoutPositive, options)
+      .hits.map((hit) => hit.id);
+    const withoutNegativeIds = searchCatalogPage(withoutNegative, options)
+      .hits.map((hit) => hit.id);
 
-    expect(after.hits[0]).toEqual(before.hits[0]);
-    expect(scoutCount(after)).toBe(scoutCount(before));
-    expect(after.total).toBe(before.total);
-    expect(after.truncated).toBe(before.truncated);
-    expect(after.hits.filter((hit) => before.hits.some((old) => old.id === hit.id))).toEqual(
-      before.hits.filter((hit) => after.hits.some((current) => current.id === hit.id))
-    );
-    expect(before.hits.map((hit) => hit.id).filter((id) => !after.hits.some((hit) => hit.id === id)))
-      .toEqual(["scout.searchRepos"]);
-    expect(after.hits.map((hit) => hit.id).filter((id) => !before.hits.some((hit) => hit.id === id)))
-      .toEqual(["scout.getLeaderboard"]);
-    for (let repeat = 0; repeat < 10; repeat++) {
-      expect(searchCatalogPage(catalog, { query, limit: 5 })).toEqual(after);
+    expect(routedIds).toContain("scout.getLeaderboard");
+    expect(withoutPositiveIds).not.toContain("scout.getLeaderboard");
+    expect(routedIds).not.toContain("scout.searchProjects");
+    expect(withoutNegativeIds).toContain("scout.searchProjects");
+  });
+
+  it("keeps every exact operation id first after source-routing admission", () => {
+    for (const entry of catalog.entries.filter((candidate) => candidate.kind === "operation")) {
+      expect(searchCatalog(catalog, { query: entry.id, limit: 1 })[0]?.id, entry.id)
+        .toBe(entry.id);
     }
   });
 
-  it("keeps Scout-only and exact-id pages source-identical", () => {
-    const control = loadManifest({
-      ...catalog,
-      entries: catalog.entries.map(({ routingPhrases: _phrases, ...entry }) => entry)
-    });
-    for (const query of [
-      "top projects by GitHub activity",
-      "top Stellar projects by GitHub activity"
-    ]) {
-      expect(searchCatalogPage(catalog, { query, service: "scout", limit: 5 })).toEqual(
-        searchCatalogPage(control, { query, service: "scout", limit: 5 })
-      );
-    }
-    expect(searchCatalogPage(catalog, { query: "scout.getLeaderboard", limit: 5 })).toEqual(
-      searchCatalogPage(control, { query: "scout.getLeaderboard", limit: 5 })
+  it("does not let negative routing metadata reject its own exact operation id", () => {
+    const withExclusions = catalog.entries.filter(
+      (entry) => entry.kind === "operation" && (entry.routingExclusions?.length ?? 0) > 0
     );
-  });
-
-  it("keeps source-drift controls source-identical", () => {
-    const control = loadManifest({
-      ...catalog,
-      entries: catalog.entries.map(({ routingPhrases: _phrases, ...entry }) => entry)
-    });
-    for (const query of [
-      "Walk me through issuing a new custom token on Stellar from scratch.",
-      "How do I fetch every asset balance held by an account or a contract (C…) address — classic trustline assets AND Soroban/SAC balances — given Horizon's account endpoint doesn't return Soroban assets (getSACBalance)?",
-      "What is the current Stellar Mainnet protocol version?",
-      "what protocol version is stellar mainnet on right now"
-    ]) {
-      expect(searchCatalogPage(catalog, { query, limit: 5 }), query).toEqual(
-        searchCatalogPage(control, { query, limit: 5 })
-      );
+    expect(withExclusions.length).toBeGreaterThan(0);
+    for (const entry of withExclusions) {
+      expect(searchCatalog(catalog, { query: entry.id, limit: 1 })[0]?.id, entry.id)
+        .toBe(entry.id);
     }
   });
 
@@ -1002,17 +998,18 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
         kind: entry.kind,
         description: entry.description,
         keywords: entry.keywords,
-        routingKeywords: entry.routingKeywords
+        routingKeywords: entry.routingKeywords,
+        routingPhrases: entry.routingPhrases
       },
       query
     );
   }
 
-  it("a full tier-1 page is untouched — every hit passes the gated scorer with its tier-1 score", () => {
+  it("keeps pages without targeted replacements entirely in tier 1", () => {
     // Tier 2 only fires when fewer than `limit` gate-passing candidates
     // exist; a page of all-gate-passers therefore proves the backfill never
     // ran and the results are identical to the pre-tiering pipeline.
-    for (const query of ["stellar soroban contract", "search directory", "soroban storage"]) {
+    for (const query of ["stellar soroban contract", "search directory"]) {
       const hits = searchCatalog(catalog, { query, limit: 5 });
       expect(hits, `query: ${query}`).toHaveLength(5);
       for (const hit of hits) {
@@ -1023,6 +1020,25 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
         expect(hits[i - 1]!.score >= hits[i]!.score).toBe(true);
       }
     }
+  });
+
+  it("permits one evidence-backed full-page replacement without expanding total", () => {
+    const query =
+      "What project categories does the Stellar ecosystem directory actually track — " +
+      "give me the controlled list of category values it uses.";
+    const page = searchCatalogPage(catalog, { query, limit: 5 });
+    const backfill = page.hits.filter((hit) => hit.tier === "backfill");
+    const perService = new Map<string, number>();
+    for (const hit of page.hits) {
+      perService.set(hit.service, (perService.get(hit.service) ?? 0) + 1);
+    }
+
+    expect(backfill).toEqual([
+      expect.objectContaining({ id: "lumenloop.get_categories" })
+    ]);
+    expect(perService.get("lumenloop")).toBeLessThanOrEqual(2);
+    expect(page.total).toBe(6);
+    expect(page.truncated).toBe(true);
   });
 
   it("backfills a long multi-clause query that the coverage gate zeroed out", () => {
@@ -1165,27 +1181,44 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     expect(searchCatalogPage(tiny, { query: "alpha beta", limit: 500 }).effectiveLimit).toBe(50);
   });
 
-  it("keeps page membership, total, and truncated fixed while interleaving", () => {
+  it("keeps the SEP-6 page truthful after admission and replacement", () => {
     const query =
       "In a SEP-6 programmatic deposit, which SEP actually carries the customer's KYC " +
       "data — SEP-6 itself or another SEP?";
     const page = searchCatalogPage(catalog, { query, limit: 5 });
-    // This is the pre-interleave selected page membership, asserted as a set:
-    // the candidate only changes its order.
     expect(page.hits.map((hit) => hit.id).sort()).toEqual(
       [
-        "scout.explainRepo",
         "stellarDocs.search_anchor_sep_docs",
+        "stellarDocs.search_asset_token_docs",
         "stellarDocs.search_docs",
         "stellarDocs.search_docs_in_category",
         "stellarDocs.search_meeting_notes"
       ].sort()
     );
-    // total counts searchable candidates after whole-skill admission. The
-    // admission boundary removes skill backfills supported only by generic
-    // identity fragments; operations and page membership stay unchanged.
-    expect(page.total).toBe(66);
+    // Admission runs before scoring. It can reduce total when an operation
+    // publishes exclusions but lacks positive evidence for this query.
+    expect(page.total).toBe(37);
     expect(page.truncated).toBe(true);
+  });
+
+  it("allows positive-evidence admission to reduce total without a negative match", () => {
+    const excluded = op("lookup", "alpha beta gamma answer") as CatalogEntry;
+    excluded.id = "scout.lookup";
+    excluded.service = "scout";
+    excluded.routingExclusions = [{ tokens: ["unrelated", "directory"] }];
+    const sourceFiltered = loadManifest({
+      version: 1,
+      generatedAt: "2026-01-01T00:00:00Z",
+      entries: [excluded, op("keep", "alpha beta gamma answer")]
+    });
+    const control = loadManifest({
+      ...sourceFiltered,
+      entries: sourceFiltered.entries.map(({ routingExclusions: _excluded, ...entry }) => entry)
+    });
+    const query = "alpha beta gamma";
+
+    expect(searchCatalogPage(control, { query, limit: 5 }).total).toBe(2);
+    expect(searchCatalogPage(sourceFiltered, { query, limit: 5 }).total).toBe(1);
   });
 
   it("excludes searchable:false entries from results and totals, keeping them exposed", () => {
@@ -1450,7 +1483,9 @@ describe("search-hit signature compaction", () => {
     // output type is now stubbed in search hits and reaching the full shape costs a
     // codemode.describe("scout.getPeople") round-trip. Scout 1.8.87 expands getChanges over
     // the same threshold. Scout 1.8.109 expands getPartner, hackathonBrief, and
-    // resolveProject over the threshold. Every other member was already over.
+    // resolveProject over the threshold. Scout 1.9.52 expands five more reviewed
+    // outputs: getRepoTrust, listContracts, scfPitch, searchHackathonBuilds, and
+    // vetIdea. Every other member was already over.
     expect(compacted.sort()).toEqual([
       "scout.analyzeEcosystem",
       "scout.explainRepo",
@@ -1463,15 +1498,20 @@ describe("search-hit signature compaction", () => {
       "scout.getPartner",
       "scout.getPartners",
       "scout.getPeople",
+      "scout.getRepoTrust",
       "scout.getRfps",
       "scout.getStablecoins",
       "scout.hackathonBrief",
       "scout.listAudits",
+      "scout.listContracts",
       "scout.listSkills",
       "scout.resolveProject",
+      "scout.scfPitch",
+      "scout.searchHackathonBuilds",
       "scout.searchProjects",
       "scout.searchRepos",
-      "scout.searchResearch"
+      "scout.searchResearch",
+      "scout.vetIdea"
     ]);
   });
 

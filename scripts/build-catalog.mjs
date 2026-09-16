@@ -25,7 +25,10 @@ import { execFileSync } from "node:child_process";
 // Loaded via native type stripping (Node >= 23.6) — the same way
 // eval/run-routing.mjs imports src/catalog/search.ts. Still zero deps.
 import { extractKeywords } from "../src/catalog/extract-keywords.ts";
-import { extractRoutingPhrases } from "../src/catalog/extract-routing-phrases.ts";
+import {
+  extractRoutingExclusions,
+  extractRoutingPhrases
+} from "../src/catalog/extract-routing-phrases.ts";
 import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
 import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §2/§5):
@@ -174,7 +177,14 @@ function attachRoutingPhrases(entries, sourcesById) {
     const source = sourcesById.get(entry.id);
     if (!source) return entry;
     const routingPhrases = extractRoutingPhrases(source);
-    return routingPhrases.length > 0 ? { ...entry, routingPhrases } : entry;
+    const routingExclusions = extractRoutingExclusions(source.notFor ?? []);
+    return routingPhrases.length > 0 || routingExclusions.length > 0
+      ? {
+          ...entry,
+          ...(routingPhrases.length > 0 ? { routingPhrases } : {}),
+          ...(routingExclusions.length > 0 ? { routingExclusions } : {})
+        }
+      : entry;
   });
 }
 
@@ -618,14 +628,12 @@ function buildScout(inv) {
   // weighted fields, never concatenated into the description. Collected
   // here (purpose/useWhen/exampleQuestions/keywords) and attached as the
   // `routingKeywords` field via attachRoutingKeywords (scoring.ts lever 7).
-  // `notFor` is deliberately dropped — its clauses carry OTHER operations'
-  // vocabulary ("a funded project → searchProjects" on getBuilders), which
-  // as this op's keywords would recreate the cross-capture the upstream fix
-  // removed.
+  // Keep `notFor` outside positive routing vocabulary. Its left-hand clauses
+  // become separate negative evidence. Route labels after `->` stay excluded.
   const routingExtras = new Map();
   // Phrase metadata preserves the same positive fields as source strings.
   // Multiword keywords such as "top projects" are real published phrases.
-  // Separate keyword items never join, and `notFor` remains excluded.
+  // Separate keyword items never join. `notFor` never enters positive phrases.
   const routingPhraseExtras = new Map();
   const openapi = inv.openapi;
   const base = openapi.servers?.[0]?.url ?? "https://stellarlight.xyz";
@@ -665,7 +673,8 @@ function buildScout(inv) {
           purpose: typeof routing.purpose === "string" ? [routing.purpose] : [],
           useWhen: asStrings(routing.useWhen),
           exampleQuestions: asStrings(routing.exampleQuestions),
-          keywords: asStrings(routing.keywords)
+          keywords: asStrings(routing.keywords),
+          notFor: asStrings(routing.notFor)
         };
         const parts = [
           ...source.purpose,

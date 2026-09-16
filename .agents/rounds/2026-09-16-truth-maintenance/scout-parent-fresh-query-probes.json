@@ -1,0 +1,152 @@
+[
+  {
+    "query": "What is Soroswap?",
+    "accepted": {
+      "hits": [
+        "scout.listSkills",
+        "lumenloop.search_directory",
+        "scout.getClusters",
+        "stellarDocs.search_doc_titles",
+        "lumenloop.search_content_semantic"
+      ],
+      "wider": [
+        "scout.searchProjects"
+      ]
+    },
+    "candidate": {
+      "hits": [
+        "lumenloop.search_directory",
+        "stellarDocs.search_doc_titles",
+        "lumenloop.search_content_semantic",
+        "scout.resolveProject",
+        "stellarDocs.search_anchor_sep_docs"
+      ],
+      "wider": [
+        "scout.searchProjects"
+      ]
+    }
+  },
+  {
+    "query": "Tell me about Soroswap",
+    "accepted": {
+      "hits": [
+        "lumenloop.find_content_about_project",
+        "stellarDocs.search_meeting_notes",
+        "lumenloop.search_directory",
+        "scout.searchProjects",
+        "scout.explainRepo"
+      ],
+      "wider": []
+    },
+    "candidate": {
+      "hits": [
+        "lumenloop.find_content_about_project",
+        "stellarDocs.search_meeting_notes",
+        "lumenloop.search_directory",
+        "lumenloop.search_content_semantic",
+        "stellarDocs.search_rpc_horizon_data_docs"
+      ],
+      "wider": []
+    }
+  },
+  {
+    "query": "What does Soroswap do?",
+    "accepted": {
+      "hits": [
+        "stellarDocs.search_doc_titles",
+        "lumenloop.search_directory",
+        "scout.searchResearch",
+        "scout.getPeople",
+        "lumenloop.search_content_semantic"
+      ],
+      "wider": [
+        "scout.searchProjects"
+      ]
+    },
+    "candidate": {
+      "hits": [
+        "stellarDocs.search_doc_titles",
+        "lumenloop.search_directory",
+        "lumenloop.search_content_semantic",
+        "lumenloop.find_content_about_project",
+        "lumenloop.list_research"
+      ],
+      "wider": [
+        "scout.searchProjects"
+      ]
+    }
+  },
+  {
+    "query": "Which stablecoins exist?",
+    "accepted": {
+      "hits": [
+        "scout.explainRepo",
+        "scout.getSkill",
+        "scout.searchProjects",
+        "lumenloop.search_content_semantic",
+        "stellarDocs.search_asset_token_docs"
+      ],
+      "wider": []
+    },
+    "candidate": {
+      "hits": [
+        "scout.getStablecoins",
+        "lumenloop.search_content_semantic",
+        "stellarDocs.search_asset_token_docs",
+        "lumenloop.get_related_projects",
+        "lumenloop.list_documents"
+      ],
+      "wider": []
+    }
+  },
+  {
+    "query": "What is Blend?",
+    "accepted": {
+      "hits": [
+        "scout.listAudits",
+        "scout.listSkills",
+        "lumenloop.search_content_semantic",
+        "lumenloop.search_directory",
+        "stellarDocs.search_anchor_sep_docs"
+      ],
+      "wider": [
+        "scout.searchProjects"
+      ]
+    },
+    "candidate": {
+      "hits": [
+        "lumenloop.search_content_semantic",
+        "lumenloop.search_directory",
+        "scout.resolveProject",
+        "stellarDocs.search_anchor_sep_docs",
+        "stellarDocs.search_doc_titles"
+      ],
+      "wider": [
+        "scout.searchProjects"
+      ]
+    }
+  },
+  {
+    "query": "Who built Soroswap?",
+    "accepted": {
+      "hits": [
+        "scout.searchProjects",
+        "scout.getBuilders",
+        "scout.getHackathon",
+        "scout.getPeople",
+        "scout.hackathonBrief"
+      ],
+      "wider": []
+    },
+    "candidate": {
+      "hits": [
+        "scout.searchProjects",
+        "lumenloop.find_content_about_project",
+        "lumenloop.list_research",
+        "lumenloop.search_directory",
+        "stellarDocs.get_doc_page_sections"
+      ],
+      "wider": []
+    }
+  }
+]

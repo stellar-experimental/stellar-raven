@@ -525,10 +525,65 @@ describe("build-catalog.mjs", () => {
 });
 
 describe("x-routing ingestion — routingKeywords and routingPhrases fields", () => {
+  const expectedExposedRoutingIds = [
+    "scout.analyzeEcosystem",
+    "scout.compareHackathons",
+    "scout.explainRepo",
+    "scout.getBuilders",
+    "scout.getChangelog",
+    "scout.getChanges",
+    "scout.getClusters",
+    "scout.getHackathon",
+    "scout.getHackathons",
+    "scout.getLeaderboard",
+    "scout.getPartner",
+    "scout.getPartners",
+    "scout.getPeople",
+    "scout.getRepoTrust",
+    "scout.getRfps",
+    "scout.getSkill",
+    "scout.getStablecoins",
+    "scout.getStatus",
+    "scout.hackathonBrief",
+    "scout.listAudits",
+    "scout.listContracts",
+    "scout.listSkills",
+    "scout.matchPartners",
+    "scout.resolveProject",
+    "scout.scfPitch",
+    "scout.searchHackathonBuilds",
+    "scout.searchProjects",
+    "scout.searchRepos",
+    "scout.searchResearch",
+    "scout.vetIdea"
+  ];
+
+  function sourceExposedRoutingIds(): string[] {
+    const inventory = JSON.parse(
+      readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8")
+    ) as {
+      openapi: {
+        paths: Record<string, Record<string, {
+          operationId?: string;
+          "x-routing"?: unknown;
+        }>>;
+      };
+    };
+    const ids: string[] = [];
+    for (const [path, pathItem] of Object.entries(inventory.openapi.paths)) {
+      for (const [method, operation] of Object.entries(pathItem)) {
+        if (!operation.operationId || operation["x-routing"] === undefined) continue;
+        if (EXCLUDED_SCOUT_OPS.has(`${method.toUpperCase()} ${path}`)) continue;
+        ids.push(`scout.${operation.operationId}`);
+      }
+    }
+    return ids.sort();
+  }
+
   it("attaches routingKeywords to exactly the exposed scout ops that publish x-routing", () => {
-    const withField = catalog.entries.filter((e) => (e.routingKeywords ?? []).length > 0);
-    // 29 upstream ops carry x-routing; partnerAssistant, getQualityReport, and verifyClaim are excluded.
-    expect(withField).toHaveLength(26);
+    const withField = catalog.entries.filter((entry) => (entry.routingKeywords ?? []).length > 0);
+    expect(sourceExposedRoutingIds()).toEqual(expectedExposedRoutingIds);
+    expect(withField.map((entry) => entry.id).sort()).toEqual(expectedExposedRoutingIds);
     for (const entry of withField) {
       expect(entry.service, entry.id).toBe("scout");
       expect(entry.kind, entry.id).toBe("operation");
@@ -549,7 +604,7 @@ describe("x-routing ingestion — routingKeywords and routingPhrases fields", ()
 
   it("preserves bounded positive source phrases only on exposed Scout operations", () => {
     const withPhrases = catalog.entries.filter((entry) => (entry.routingPhrases ?? []).length > 0);
-    expect(withPhrases).toHaveLength(26);
+    expect(withPhrases.map((entry) => entry.id).sort()).toEqual(expectedExposedRoutingIds);
     for (const entry of withPhrases) {
       expect(entry.service, entry.id).toBe("scout");
       expect(entry.kind, entry.id).toBe("operation");

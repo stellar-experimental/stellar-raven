@@ -60,10 +60,9 @@ describe("demo tools at the worker boundary", () => {
     };
     expect(result.hits.map(({ id, score, tier }) => ({ id, score, tier }))).toEqual([
       { id: "skills.stellar-dev.dapp", score: 75, tier: "gated" },
-      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" },
-      { id: "stellarDocs.search_soroban_contract_docs", score: 30, tier: "gated" }
+      { id: "stellarDocs.search_wallet_dapp_docs", score: 75, tier: "gated" }
     ]);
-    expect(result.total).toBe(3);
+    expect(result.total).toBe(2);
     expect(result.truncated).toBe(false);
     expect(result.widerCandidates).toEqual(
       expect.arrayContaining([

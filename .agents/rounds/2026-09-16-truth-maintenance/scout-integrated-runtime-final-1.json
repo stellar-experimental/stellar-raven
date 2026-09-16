@@ -1,0 +1,1040 @@
+{
+  "config": {
+    "warmupRounds": 12,
+    "measureRounds": 20,
+    "inner": 2,
+    "repeat": 2,
+    "queryCount": 13
+  },
+  "entries": {
+    "accepted": 282,
+    "integrated-before": 282,
+    "integrated-after": 282
+  },
+  "queries": [
+    {
+      "id": "broad-gated",
+      "opts": {
+        "query": "stellar soroban contract",
+        "limit": 5
+      }
+    },
+    {
+      "id": "docs-topical",
+      "opts": {
+        "query": "how do I extend TTL state archival",
+        "limit": 5
+      }
+    },
+    {
+      "id": "account-merge",
+      "opts": {
+        "query": "How does account merge work, what must I clear first, and can I use it to reclaim locked base-reserve XLM?",
+        "limit": 5
+      }
+    },
+    {
+      "id": "regional-enums",
+      "opts": {
+        "query": "LatAm asset issuers services",
+        "kind": "operation",
+        "limit": 5
+      }
+    },
+    {
+      "id": "controlled-vocabulary",
+      "opts": {
+        "query": "What project categories does the Stellar ecosystem directory actually track — give me the controlled list of category values it uses.",
+        "limit": 5
+      }
+    },
+    {
+      "id": "mixed-rwa-rpc",
+      "opts": {
+        "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+        "limit": 5
+      }
+    },
+    {
+      "id": "person-advisory",
+      "opts": {
+        "query": "Who is Tyler van der Hoeven?",
+        "limit": 5
+      }
+    },
+    {
+      "id": "long-all-backfill",
+      "opts": {
+        "query": "design a cross chain remittance corridor that quotes fees checks anchor deposit limits verifies trustline flags and streams payment status webhooks to a dashboard",
+        "kind": "operation",
+        "limit": 10
+      }
+    },
+    {
+      "id": "short-zk",
+      "opts": {
+        "query": "zk",
+        "limit": 5
+      }
+    },
+    {
+      "id": "short-rpc",
+      "opts": {
+        "query": "RPC",
+        "limit": 5
+      }
+    },
+    {
+      "id": "skill-passkeys",
+      "opts": {
+        "query": "passkeys",
+        "kind": "skill",
+        "limit": 5
+      }
+    },
+    {
+      "id": "skill-escrow",
+      "opts": {
+        "query": "Trustless Work escrow integration",
+        "kind": "skill",
+        "limit": 5
+      }
+    },
+    {
+      "id": "exact-operation",
+      "opts": {
+        "query": "scout.explainRepo",
+        "limit": 5
+      }
+    }
+  ],
+  "results": {
+    "accepted": {
+      "overall": {
+        "samples": 520,
+        "medianMs": 3.6893335000002025,
+        "p95Ms": 12.918708500000093,
+        "minMs": 0.3031664999998611,
+        "maxMs": 13.438187499999913
+      },
+      "byQuery": {
+        "broad-gated": {
+          "samples": 40,
+          "medianMs": 2.3425834999998187,
+          "p95Ms": 2.385958500000015,
+          "minMs": 2.2416455000002316,
+          "maxMs": 2.391020500000195
+        },
+        "docs-topical": {
+          "samples": 40,
+          "medianMs": 4.423521000000164,
+          "p95Ms": 4.515999999999622,
+          "minMs": 4.286812499999542,
+          "maxMs": 4.568624999999884
+        },
+        "account-merge": {
+          "samples": 40,
+          "medianMs": 11.877375000000029,
+          "p95Ms": 12.281687499999862,
+          "minMs": 11.541375000000244,
+          "maxMs": 12.338729000000058
+        },
+        "regional-enums": {
+          "samples": 40,
+          "medianMs": 2.9309375000002547,
+          "p95Ms": 3.0098540000008143,
+          "minMs": 2.789583499999935,
+          "maxMs": 3.1353330000001733
+        },
+        "controlled-vocabulary": {
+          "samples": 40,
+          "medianMs": 6.966562500000009,
+          "p95Ms": 7.0928954999999405,
+          "minMs": 6.652146000000357,
+          "maxMs": 7.229478999999628
+        },
+        "mixed-rwa-rpc": {
+          "samples": 40,
+          "medianMs": 5.117937499999925,
+          "p95Ms": 5.274458500000037,
+          "minMs": 4.890229499999805,
+          "maxMs": 5.28899999999976
+        },
+        "person-advisory": {
+          "samples": 40,
+          "medianMs": 7.785624999999527,
+          "p95Ms": 7.894520499999999,
+          "minMs": 7.542062499999702,
+          "maxMs": 8.01635449999958
+        },
+        "long-all-backfill": {
+          "samples": 40,
+          "medianMs": 12.947645499999908,
+          "p95Ms": 13.210520999999972,
+          "minMs": 12.525708500000292,
+          "maxMs": 13.438187499999913
+        },
+        "short-zk": {
+          "samples": 40,
+          "medianMs": 3.642708000000084,
+          "p95Ms": 3.759541499999841,
+          "minMs": 3.5276459999995495,
+          "maxMs": 3.8015000000004875
+        },
+        "short-rpc": {
+          "samples": 40,
+          "medianMs": 3.407604499999252,
+          "p95Ms": 3.4716040000002977,
+          "minMs": 3.29408350000017,
+          "maxMs": 3.7520210000000134
+        },
+        "skill-passkeys": {
+          "samples": 40,
+          "medianMs": 0.3130204999997659,
+          "p95Ms": 0.3415210000002844,
+          "minMs": 0.3031664999998611,
+          "maxMs": 0.38477100000000064
+        },
+        "skill-escrow": {
+          "samples": 40,
+          "medianMs": 0.8030419999995502,
+          "p95Ms": 0.8427080000001297,
+          "minMs": 0.7703125000007276,
+          "maxMs": 0.95904149999933
+        },
+        "exact-operation": {
+          "samples": 40,
+          "medianMs": 3.660270500000479,
+          "p95Ms": 3.703125,
+          "minMs": 3.610916999999972,
+          "maxMs": 3.80291649999981
+        }
+      }
+    },
+    "integrated-before": {
+      "overall": {
+        "samples": 520,
+        "medianMs": 3.9244790000002467,
+        "p95Ms": 10.688208499999746,
+        "minMs": 0.2932920000002923,
+        "maxMs": 11.145666500000516
+      },
+      "byQuery": {
+        "broad-gated": {
+          "samples": 40,
+          "medianMs": 3.0460000000002765,
+          "p95Ms": 3.197624999999789,
+          "minMs": 2.980229000000236,
+          "maxMs": 3.2648124999998345
+        },
+        "docs-topical": {
+          "samples": 40,
+          "medianMs": 4.645708499999955,
+          "p95Ms": 4.8557084999999915,
+          "minMs": 4.536291500000061,
+          "maxMs": 5.36462500000016
+        },
+        "account-merge": {
+          "samples": 40,
+          "medianMs": 7.921542000000045,
+          "p95Ms": 8.230375000000095,
+          "minMs": 7.699562499999956,
+          "maxMs": 8.488271000000168
+        },
+        "regional-enums": {
+          "samples": 40,
+          "medianMs": 3.355312500000764,
+          "p95Ms": 3.462728999999854,
+          "minMs": 3.2497709999997824,
+          "maxMs": 3.63360399999965
+        },
+        "controlled-vocabulary": {
+          "samples": 40,
+          "medianMs": 10.692375000000084,
+          "p95Ms": 11.11610399999995,
+          "minMs": 10.377104000000145,
+          "maxMs": 11.145666500000516
+        },
+        "mixed-rwa-rpc": {
+          "samples": 40,
+          "medianMs": 5.983874999999898,
+          "p95Ms": 6.08829199999991,
+          "minMs": 5.645333499999651,
+          "maxMs": 6.5878334999997605
+        },
+        "person-advisory": {
+          "samples": 40,
+          "medianMs": 3.957604000000174,
+          "p95Ms": 4.08416649999981,
+          "minMs": 3.7720210000006773,
+          "maxMs": 4.51410450000003
+        },
+        "long-all-backfill": {
+          "samples": 40,
+          "medianMs": 10.53814599999987,
+          "p95Ms": 10.869187499999498,
+          "minMs": 10.139187499999935,
+          "maxMs": 11.009333500000139
+        },
+        "short-zk": {
+          "samples": 40,
+          "medianMs": 1.659541999999874,
+          "p95Ms": 1.7590000000000146,
+          "minMs": 1.5574999999998909,
+          "maxMs": 1.9026249999997162
+        },
+        "short-rpc": {
+          "samples": 40,
+          "medianMs": 2.3492710000000443,
+          "p95Ms": 2.409958500000357,
+          "minMs": 2.2915210000001025,
+          "maxMs": 2.4205415000005814
+        },
+        "skill-passkeys": {
+          "samples": 40,
+          "medianMs": 0.31214600000021164,
+          "p95Ms": 0.3234585000000152,
+          "minMs": 0.2932920000002923,
+          "maxMs": 0.33333349999998063
+        },
+        "skill-escrow": {
+          "samples": 40,
+          "medianMs": 0.7969789999997374,
+          "p95Ms": 0.825812500000211,
+          "minMs": 0.7781249999998181,
+          "maxMs": 0.8459375000002183
+        },
+        "exact-operation": {
+          "samples": 40,
+          "medianMs": 3.943750000000364,
+          "p95Ms": 3.9792914999998175,
+          "minMs": 3.8593540000001667,
+          "maxMs": 4.06664550000005
+        }
+      }
+    },
+    "integrated-after": {
+      "overall": {
+        "samples": 520,
+        "medianMs": 3.3315624999995634,
+        "p95Ms": 7.997708499999817,
+        "minMs": 0.2934170000003178,
+        "maxMs": 8.532083000000057
+      },
+      "byQuery": {
+        "broad-gated": {
+          "samples": 40,
+          "medianMs": 2.118458500000088,
+          "p95Ms": 2.1607500000000073,
+          "minMs": 2.0529374999996435,
+          "maxMs": 2.3376040000000557
+        },
+        "docs-topical": {
+          "samples": 40,
+          "medianMs": 4.011270500000137,
+          "p95Ms": 4.100292000000081,
+          "minMs": 3.8339789999999994,
+          "maxMs": 4.3435204999998405
+        },
+        "account-merge": {
+          "samples": 40,
+          "medianMs": 6.28112499999952,
+          "p95Ms": 6.494478999999956,
+          "minMs": 5.9699164999997265,
+          "maxMs": 6.84972899999957
+        },
+        "regional-enums": {
+          "samples": 40,
+          "medianMs": 2.3303539999997156,
+          "p95Ms": 2.4476039999999557,
+          "minMs": 2.1254374999998618,
+          "maxMs": 2.7370624999994106
+        },
+        "controlled-vocabulary": {
+          "samples": 40,
+          "medianMs": 5.726958000000195,
+          "p95Ms": 5.8556039999998575,
+          "minMs": 5.501645499999995,
+          "maxMs": 6.143729500000518
+        },
+        "mixed-rwa-rpc": {
+          "samples": 40,
+          "medianMs": 5.00439599999936,
+          "p95Ms": 5.157708000000639,
+          "minMs": 4.788125000000036,
+          "maxMs": 5.592499999999745
+        },
+        "person-advisory": {
+          "samples": 40,
+          "medianMs": 3.3315624999995634,
+          "p95Ms": 3.3837704999996276,
+          "minMs": 3.216895999999906,
+          "maxMs": 3.387666999999965
+        },
+        "long-all-backfill": {
+          "samples": 40,
+          "medianMs": 8.051478999999745,
+          "p95Ms": 8.253520999999637,
+          "minMs": 7.780187500000011,
+          "maxMs": 8.532083000000057
+        },
+        "short-zk": {
+          "samples": 40,
+          "medianMs": 1.4760420000002341,
+          "p95Ms": 1.571708000000399,
+          "minMs": 1.3876250000002983,
+          "maxMs": 1.6997085000002699
+        },
+        "short-rpc": {
+          "samples": 40,
+          "medianMs": 3.2356040000004214,
+          "p95Ms": 3.2878124999997453,
+          "minMs": 3.099583000000166,
+          "maxMs": 3.4915835000001607
+        },
+        "skill-passkeys": {
+          "samples": 40,
+          "medianMs": 0.3031250000003638,
+          "p95Ms": 0.32606250000026193,
+          "minMs": 0.2934170000003178,
+          "maxMs": 0.36579150000011396
+        },
+        "skill-escrow": {
+          "samples": 40,
+          "medianMs": 0.7688960000004954,
+          "p95Ms": 0.8217290000002322,
+          "minMs": 0.7292084999999133,
+          "maxMs": 0.8474584999994477
+        },
+        "exact-operation": {
+          "samples": 40,
+          "medianMs": 3.4111039999997956,
+          "p95Ms": 3.50525000000016,
+          "minMs": 3.3116250000002765,
+          "maxMs": 3.6802920000000086
+        }
+      }
+    }
+  },
+  "outputs": {
+    "accepted": {
+      "broad-gated": {
+        "total": 48,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_soroban_contract_docs",
+          "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+        ]
+      },
+      "docs-topical": {
+        "total": 11,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_doc_titles",
+          "stellarDocs.search_soroban_contract_docs",
+          "scout.vetIdea"
+        ]
+      },
+      "account-merge": {
+        "total": 63,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      "regional-enums": {
+        "total": 44,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_asset_token_docs",
+          "scout.getPartners",
+          "scout.searchResearch"
+        ]
+      },
+      "controlled-vocabulary": {
+        "total": 9,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "skills.lumenloop.stellar-ecosystem-scout",
+          "lumenloop.search_directory",
+          "lumenloop.get_project"
+        ]
+      },
+      "mixed-rwa-rpc": {
+        "total": 6,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "scout.listContracts"
+        ]
+      },
+      "person-advisory": {
+        "total": 55,
+        "hitCount": 5,
+        "tiers": [
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "scout.getBuilders",
+          "scout.listContracts",
+          "scout.getPeople"
+        ]
+      },
+      "long-all-backfill": {
+        "total": 60,
+        "hitCount": 10,
+        "tiers": [
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "scout.getStatus"
+        ]
+      },
+      "short-zk": {
+        "total": 4,
+        "hitCount": 4,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "skills.stellar-dev.zk-proofs",
+          "scout.searchHackathonBuilds",
+          "scout.searchRepos"
+        ]
+      },
+      "short-rpc": {
+        "total": 10,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "scout.explainRepo",
+          "skills.stellar-dev.data"
+        ]
+      },
+      "skill-passkeys": {
+        "total": 1,
+        "hitCount": 1,
+        "tiers": [
+          "gated"
+        ],
+        "topIds": [
+          "skills.stellar-dev.dapp"
+        ]
+      },
+      "skill-escrow": {
+        "total": 5,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "skills.trustless-work.trustless-work-dev",
+          "skills.lumenloop.stellar-integration-finder",
+          "skills.stellar-dev.smart-contracts"
+        ]
+      },
+      "exact-operation": {
+        "total": 21,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "scout.explainRepo",
+          "scout.getRepoTrust",
+          "scout.searchRepos"
+        ]
+      }
+    },
+    "integrated-before": {
+      "broad-gated": {
+        "total": 28,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_soroban_contract_docs",
+          "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+        ]
+      },
+      "docs-topical": {
+        "total": 33,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "backfill",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_doc_titles",
+          "stellarDocs.search_soroban_contract_docs",
+          "scout.searchResearch"
+        ]
+      },
+      "account-merge": {
+        "total": 34,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      "regional-enums": {
+        "total": 18,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_asset_token_docs",
+          "scout.getPartners",
+          "scout.getBuilders"
+        ]
+      },
+      "controlled-vocabulary": {
+        "total": 6,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "backfill",
+          "gated"
+        ],
+        "topIds": [
+          "skills.lumenloop.stellar-ecosystem-scout",
+          "lumenloop.search_directory",
+          "scout.searchProjects"
+        ]
+      },
+      "mixed-rwa-rpc": {
+        "total": 52,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "backfill",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      "person-advisory": {
+        "total": 26,
+        "hitCount": 5,
+        "tiers": [
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "lumenloop.list_documents",
+          "lumenloop.search_content_semantic",
+          "lumenloop.find_similar_scf_submissions"
+        ]
+      },
+      "long-all-backfill": {
+        "total": 35,
+        "hitCount": 10,
+        "tiers": [
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "scout.getStatus"
+        ]
+      },
+      "short-zk": {
+        "total": 2,
+        "hitCount": 2,
+        "tiers": [
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "skills.stellar-dev.zk-proofs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      "short-rpc": {
+        "total": 7,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "skills.stellar-dev.data",
+          "stellarDocs.search_doc_titles"
+        ]
+      },
+      "skill-passkeys": {
+        "total": 1,
+        "hitCount": 1,
+        "tiers": [
+          "gated"
+        ],
+        "topIds": [
+          "skills.stellar-dev.dapp"
+        ]
+      },
+      "skill-escrow": {
+        "total": 5,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "skills.trustless-work.trustless-work-dev",
+          "skills.lumenloop.stellar-integration-finder",
+          "skills.stellar-dev.smart-contracts"
+        ]
+      },
+      "exact-operation": {
+        "total": 12,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "backfill"
+        ],
+        "topIds": [
+          "scout.explainRepo",
+          "scout.getRepoTrust",
+          "scout.searchRepos"
+        ]
+      }
+    },
+    "integrated-after": {
+      "broad-gated": {
+        "total": 28,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_soroban_contract_docs",
+          "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+        ]
+      },
+      "docs-topical": {
+        "total": 33,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "backfill",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_doc_titles",
+          "stellarDocs.search_soroban_contract_docs",
+          "scout.searchResearch"
+        ]
+      },
+      "account-merge": {
+        "total": 34,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      "regional-enums": {
+        "total": 18,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_asset_token_docs",
+          "scout.getPartners",
+          "scout.getBuilders"
+        ]
+      },
+      "controlled-vocabulary": {
+        "total": 6,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "backfill",
+          "gated"
+        ],
+        "topIds": [
+          "skills.lumenloop.stellar-ecosystem-scout",
+          "lumenloop.search_directory",
+          "scout.searchProjects"
+        ]
+      },
+      "mixed-rwa-rpc": {
+        "total": 52,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "backfill",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      "person-advisory": {
+        "total": 26,
+        "hitCount": 5,
+        "tiers": [
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "lumenloop.list_documents",
+          "lumenloop.search_content_semantic",
+          "lumenloop.find_similar_scf_submissions"
+        ]
+      },
+      "long-all-backfill": {
+        "total": 35,
+        "hitCount": 10,
+        "tiers": [
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "scout.getStatus"
+        ]
+      },
+      "short-zk": {
+        "total": 2,
+        "hitCount": 2,
+        "tiers": [
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "skills.stellar-dev.zk-proofs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      "short-rpc": {
+        "total": 7,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "gated"
+        ],
+        "topIds": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "skills.stellar-dev.data",
+          "stellarDocs.search_doc_titles"
+        ]
+      },
+      "skill-passkeys": {
+        "total": 1,
+        "hitCount": 1,
+        "tiers": [
+          "gated"
+        ],
+        "topIds": [
+          "skills.stellar-dev.dapp"
+        ]
+      },
+      "skill-escrow": {
+        "total": 5,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "backfill",
+          "backfill",
+          "backfill",
+          "backfill"
+        ],
+        "topIds": [
+          "skills.trustless-work.trustless-work-dev",
+          "skills.lumenloop.stellar-integration-finder",
+          "skills.stellar-dev.smart-contracts"
+        ]
+      },
+      "exact-operation": {
+        "total": 12,
+        "hitCount": 5,
+        "tiers": [
+          "gated",
+          "gated",
+          "gated",
+          "gated",
+          "backfill"
+        ],
+        "topIds": [
+          "scout.explainRepo",
+          "scout.getRepoTrust",
+          "scout.searchRepos"
+        ]
+      }
+    }
+  },
+  "checksum": 214644
+}

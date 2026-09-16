@@ -168,7 +168,9 @@ so PH1 has not fired on the accepted surface.
 The rejected Scout 1.9.48 candidate also fired PH1 on 2026-09-08.
 Both v2 contracts stopped as `source-expired` before scoring.
 The result authorizes no new epoch, mechanism, or baseline change.
-The committed Scout inventory remains 1.9.1.
+That dated rejection retained Scout 1.9.1.
+The 2026-09-16 accepted source is Scout 1.9.52. Both v2 contracts still stop as `source-expired`.
+No question was scored and no contract was repinned. See `rounds/2026-09-16-scout-acceptance.md`.
 
 This queue calls the dated brief's T1 to T4 triggers `PH1` to `PH4`. This avoids collision with
 the five-track T1 to T5 contract.
@@ -238,7 +240,22 @@ The upstream request and response state enums must also match the live handler.
 Scout 1.9.49 fixes those upstream enums, but the full source candidate still fails the intent checks.
 It introduces 61 RWA top-five captures across the routing and holdout cases, including unrelated implementation questions.
 The independent rejection is `rounds/2026-09-09-scout-drift-terra.md`.
-Accepted Scout remains 1.9.1. Issue #141 now needs Raven routing acceptance, not another upstream enum correction.
+That dated rejection retained Scout 1.9.1. The 2026-09-16 acceptance advances to Scout 1.9.52.
+Issue #167 owns the remaining RWA routing work. No new upstream enum correction is established.
+The 2026-09-16 experimental Scout 1.9.52 candidate keeps `GET /api/rwa` excluded from the
+release manifest. Its direct discovery checks pass, but three added controls remain open. The
+operation captures a tokenized-bond RPC simulation, a tokenized-treasury wallet-balance question,
+and the existing issuer fee, supply-cap, and holder-freeze question. These are Raven structured
+routing defects. They are not established upstream schema defects. Keep the controls in the round
+evidence and require a reviewed general intent mechanism before any RWA exposure decision.
+The same round repaired stablecoin discovery, Soroswap lookup, and dated Blend research routing.
+Independent semantic and code reviews accepted the final existing-operation candidate.
+The runtime repair improves all 13 query medians in both measurements against the accepted control.
+The pooled median improves about 10%, and the pooled p95 improves about 38%.
+These are local search measurements, not network or model response times.
+See `rounds/2026-09-16-scout-acceptance.md` for source, gate, and review evidence.
+[Issue #167](https://github.com/stellar-experimental/stellar-raven/issues/167) tracks the three deferred RWA controls.
+The original eleven-check program remains incomplete while RWA exposure stays deferred.
 This item also owns the `sls-078` residual. Scout fixed its quality `x-routing`
 contract in 1.9.13. The reviewed 1.9.23 candidate still caused 90 unrelated
 `scout.getQualityReport` captures through Raven response-schema keywords. Keep
@@ -478,7 +495,7 @@ this work.
 
 Before an exposure candidate, rebuild the catalog and generated surfaces. Run the focused exposure
 tests and `npm run eval:routing -- --gate` without changing `eval/gates.json`. Compare the candidate
-against the committed 1.9.1 surface. Record the manifest hash and all routing lane totals.
+against the current accepted 1.9.52 surface. Record the manifest hash and all routing lane totals.
 
 Two candidates were rejected with records. Scout 1.9.23 on 2026-09-03:
 `.agents/rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md`. Scout 1.9.30 on

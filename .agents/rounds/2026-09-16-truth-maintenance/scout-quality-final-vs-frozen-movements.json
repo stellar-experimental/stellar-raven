@@ -1,0 +1,303 @@
+{
+  "before": "/tmp/raven-execution-2026-09-16/drift-combined-accepted/eval/results/routing-2026-09-16T22-22-22-400Z.json",
+  "after": "/tmp/raven-execution-2026-09-16/drift-combined-accepted/eval/results/routing-2026-09-16T22-54-12-494Z.json",
+  "beforeSha256": "d5cce761e7f588e9b98b2abb5608849329692b9dae88ff44fdc0e75b0bf265b0",
+  "afterSha256": "7bc73bdcc20e0081c0d4049f73afd29ae7368b54e30b57d5b2dd2635947448b6",
+  "summary": {
+    "cases": {
+      "n": 338,
+      "identityChanges": 4,
+      "gradeRegressions": {
+        "top5": 1,
+        "cardHit5": 1
+      },
+      "gradeImprovements": {
+        "top1": 1
+      }
+    },
+    "extendedCases": {
+      "n": 122,
+      "identityChanges": 0,
+      "gradeRegressions": {},
+      "gradeImprovements": {}
+    },
+    "skillsCases": {
+      "n": 23,
+      "identityChanges": 0,
+      "gradeRegressions": {},
+      "gradeImprovements": {}
+    },
+    "holdoutCases": {
+      "n": 49,
+      "identityChanges": 0,
+      "gradeRegressions": {},
+      "gradeImprovements": {}
+    },
+    "protocolHistoryCases": {
+      "n": 12,
+      "identityChanges": 0,
+      "gradeRegressions": {},
+      "gradeImprovements": {}
+    }
+  },
+  "changedRows": [
+    {
+      "lane": "cases",
+      "id": "q-defi-soroswap-what-is",
+      "question": "What is Soroswap and what makes it different from other Stellar DEXes?",
+      "expectedService": "lumenloop",
+      "gradeChanges": {},
+      "before": [
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 258
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-digest",
+          "service": "skills",
+          "score": 214
+        },
+        {
+          "id": "skills.lumenloop.stellar-integration-finder",
+          "service": "skills",
+          "score": 203
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "score": 202
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 195
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 258
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-digest",
+          "service": "skills",
+          "score": 214
+        },
+        {
+          "id": "skills.lumenloop.stellar-integration-finder",
+          "service": "skills",
+          "score": 203
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "score": 202
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 157
+        }
+      ]
+    },
+    {
+      "lane": "cases",
+      "id": "q-eco-dex-saturation",
+      "question": "How saturated is the Stellar DEX/AMM space \u2014 how many serious players are there?",
+      "expectedService": "scout",
+      "gradeChanges": {},
+      "before": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-digest",
+          "service": "skills",
+          "score": 199
+        },
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "score": 148
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 142
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 226
+        },
+        {
+          "id": "scout.analyzeEcosystem",
+          "service": "scout",
+          "score": 131
+        }
+      ],
+      "after": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-digest",
+          "service": "skills",
+          "score": 199
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 186
+        },
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "service": "skills",
+          "score": 148
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 142
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 226
+        }
+      ]
+    },
+    {
+      "lane": "cases",
+      "id": "q-eco-stablecoins-on-stellar",
+      "question": "Which stablecoins are issued or live on Stellar?",
+      "expectedService": "lumenloop",
+      "gradeChanges": {
+        "top5": [
+          true,
+          false
+        ],
+        "cardHit5": [
+          true,
+          false
+        ]
+      },
+      "before": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 190
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 178
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-digest",
+          "service": "skills",
+          "score": 174
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "score": 159
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 153
+        }
+      ],
+      "after": [
+        {
+          "id": "scout.getStablecoins",
+          "service": "scout",
+          "score": 194
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 190
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 178
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-digest",
+          "service": "skills",
+          "score": 174
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "score": 159
+        }
+      ]
+    },
+    {
+      "lane": "cases",
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "question": "What's Blend's TVL today and how has it trended this quarter?",
+      "expectedService": "lumenloop",
+      "gradeChanges": {
+        "top1": [
+          false,
+          true
+        ]
+      },
+      "before": [
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 257
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 223
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 209
+        },
+        {
+          "id": "stellarDocs.get_doc_page_sections",
+          "service": "stellarDocs",
+          "score": 204
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 203
+        }
+      ],
+      "after": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 223
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 257
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 209
+        },
+        {
+          "id": "stellarDocs.get_doc_page_sections",
+          "service": "stellarDocs",
+          "score": 204
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 203
+        }
+      ]
+    }
+  ]
+}

@@ -158,7 +158,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-09-15T16:20:00Z"
+    "x-generatedAt": "2026-09-16T22:35:44Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1664,6 +1664,7 @@
                     "gaps": {},
                     "hackathons": {},
                     "meta": {},
+                    "toolchain": {},
                     "tvl": {}
                   },
                   "type": "object",
@@ -1742,6 +1743,11 @@
                           "name": {
                             "type": "string"
                           },
+                          "prizePoolUSD": {
+                            "description": "null when the source publishes none: unknown, never zero.",
+                            "nullable": true,
+                            "type": "number"
+                          },
                           "slug": {
                             "type": "string"
                           },
@@ -1763,8 +1769,18 @@
                     "meta": {
                       "properties": {
                         "counts": {
-                          "additionalProperties": true,
                           "description": "How many of the requested slugs resolved.",
+                          "properties": {
+                            "notFound": {
+                              "type": "integer"
+                            },
+                            "requested": {
+                              "type": "integer"
+                            },
+                            "returned": {
+                              "type": "integer"
+                            }
+                          },
                           "type": "object"
                         },
                         "generatedAt": {
@@ -1800,7 +1816,7 @@
     },
     "/scout/explainRepo": {
       "get": {
-        "description": "Source-grounded ANSWER to a deep code question about a Stellar internal — routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls), then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+        "description": "Source-grounded ANSWER to a deep code question about a Stellar internal or any indexed ecosystem repo — 'how does X implement/calculate Y in its code'. Routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls) or the graded repo index, then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
         "operationId": "scout.explainRepo",
         "parameters": [
           {
@@ -1831,9 +1847,11 @@
                   "properties": {
                     "alternateRepos": {},
                     "answer": {},
+                    "answerAsOf": {},
                     "answerSource": {},
                     "answered": {},
                     "codeVerified": {},
+                    "knowledgeNotes": {},
                     "meta": {},
                     "note": {},
                     "note2": {},
@@ -2018,7 +2036,52 @@
                       "type": "string"
                     },
                     "meta": {
-                      "additionalProperties": true,
+                      "properties": {
+                        "counts": {
+                          "properties": {
+                            "returned": {
+                              "type": "integer"
+                            },
+                            "total": {
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "filters": {
+                          "properties": {
+                            "limit": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "since": {
+                              "format": "date",
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "latest": {
+                          "description": "Date of the newest entry.",
+                          "format": "date",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "returned": {
+                          "deprecated": true,
+                          "description": "Deprecated flat copy — read meta.counts.returned.",
+                          "type": "integer"
+                        },
+                        "total": {
+                          "deprecated": true,
+                          "description": "Deprecated flat copy — read meta.counts.total.",
+                          "type": "integer"
+                        }
+                      },
                       "type": "object"
                     },
                     "ok": {
@@ -2326,7 +2389,7 @@
     },
     "/scout/getLeaderboard": {
       "get": {
-        "description": "Ranked list of active Stellar projects (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric — activity = latest-commit recency (NOT commit volume); issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = untracked, never zero). Ranks PROJECTS, not people → use getBuilders.",
+        "description": "Ranked list of the top / most active Stellar projects by GitHub activity (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric — activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = untracked, never zero). Ranks PROJECTS, not people → use getBuilders.",
         "operationId": "scout.getLeaderboard",
         "parameters": [
           {
@@ -2400,7 +2463,8 @@
                   "Faucet",
                   "Card Issuing",
                   "Exchange",
-                  "Oracle"
+                  "Oracle",
+                  "Yield"
                 ],
                 "type": "string"
               },
@@ -2515,7 +2579,7 @@
     },
     "/scout/getPartners": {
       "get": {
-        "description": "Published ecosystem partner directory — service providers a builder hires or integrates: anchors, on/off-ramps, infrastructure, tooling, protocols, wallets, audit firms. Partner-claimed facts ride WITH system-verified signals + freshness (down-rank/skip excludeFromMatching). Filter by type/sector/region/ramps/accepting/q. Not for built products/projects → use searchProjects.\n\nCatalog note: this is the partner and service-provider DIRECTORY for anchors, asset issuers, on/off ramps, stablecoin and RWA providers, audit firms, infrastructure, tooling, protocols, wallets, and integration providers; filter by region, type, sector, accepting, or q. Use for regional partner listings including common region names and aliases such as Latin America/LatAm, MENA, Africa, Europe, and Asia-Pacific. Use searchProjects for built products, apps, protocols, and projects rather than service-provider listings.",
+        "description": "Published Stellar ecosystem partner directory — service providers a builder hires or integrates: anchors, on and off ramps (fiat on-ramp/off-ramp providers), KYC, infrastructure, tooling, protocols, wallets, audit firms. Partner-claimed facts ride WITH system-verified signals + freshness (down-rank/skip excludeFromMatching). Filter by type/sector/region/ramps/accepting/q. Not for built products/projects → use searchProjects.\n\nCatalog note: this is the partner and service-provider DIRECTORY for anchors, asset issuers, on/off ramps, stablecoin and RWA providers, audit firms, infrastructure, tooling, protocols, wallets, and integration providers; filter by region, type, sector, accepting, or q. Use for regional partner listings including common region names and aliases such as Latin America/LatAm, MENA, Africa, Europe, and Asia-Pacific. Use searchProjects for built products, apps, protocols, and projects rather than service-provider listings.",
         "operationId": "scout.getPartners",
         "parameters": [
           {
@@ -2533,6 +2597,7 @@
                 "audit-firm",
                 "legal",
                 "agency",
+                "asset-issuer",
                 "other"
               ],
               "type": "string"
@@ -2547,10 +2612,20 @@
             }
           },
           {
-            "description": "Filter by region served (global, latam, africa, …)",
+            "description": "Filter by region served — a closed vocabulary of continents/blocs. Labels and case normalise (\"North America\" → north-america); values outside the vocabulary return 400 with `validRegions`. A country or currency is NOT a region: put it in q (e.g. ?q=nigeria) — coverage.countries is matched from query text.",
             "in": "query",
             "name": "region",
             "schema": {
+              "enum": [
+                "global",
+                "north-america",
+                "latam",
+                "europe",
+                "africa",
+                "mena",
+                "asia",
+                "oceania"
+              ],
               "type": "string"
             }
           },
@@ -2564,12 +2639,13 @@
             }
           },
           {
-            "description": "Set to 1 to return only partners currently accepting new clients",
+            "description": "1 = only partners currently accepting new clients; 0 = only partners NOT accepting (an empty page here is the honest answer when every published partner accepts). Omit for no filter. `meta.filters.accepting` echoes the applied value, null when omitted.",
             "in": "query",
             "name": "accepting",
             "schema": {
               "enum": [
-                "1"
+                "1",
+                "0"
               ],
               "type": "string"
             }
@@ -2708,168 +2784,13 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.getRepoTrust\") for the full output schema.",
                   "properties": {
-                    "meta": {
-                      "additionalProperties": true,
-                      "type": "object"
-                    },
-                    "report": {
-                      "properties": {
-                        "auditDrift": {
-                          "description": "Present when commits landed AFTER the latest audit — audited code is not necessarily the code running today.",
-                          "nullable": true,
-                          "properties": {
-                            "daysOfDrift": {
-                              "type": "integer"
-                            },
-                            "lastCommitAt": {
-                              "type": "string"
-                            },
-                            "latestAuditAt": {
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "audits": {
-                          "additionalProperties": true,
-                          "nullable": true,
-                          "type": "object"
-                        },
-                        "codeTruth": {
-                          "properties": {
-                            "codeDepth": {
-                              "nullable": true,
-                              "type": "number"
-                            },
-                            "codeDomains": {
-                              "items": {
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "contractInterface": {
-                              "description": "Scanned public fn signatures (up to 60) — verify generated calls against these.",
-                              "items": {
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "interfaceSize": {
-                              "type": "integer"
-                            },
-                            "mainnetContractId": {
-                              "nullable": true,
-                              "type": "string"
-                            },
-                            "scanState": {
-                              "nullable": true,
-                              "type": "string"
-                            },
-                            "scannedAt": {
-                              "nullable": true,
-                              "type": "string"
-                            },
-                            "sdkCapabilities": {
-                              "items": {
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "stellarProof": {
-                              "nullable": true,
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "project": {
-                          "nullable": true,
-                          "properties": {
-                            "name": {
-                              "nullable": true,
-                              "type": "string"
-                            },
-                            "slug": {
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "repo": {
-                          "properties": {
-                            "activityState": {
-                              "type": "string"
-                            },
-                            "fullName": {
-                              "type": "string"
-                            },
-                            "isArchived": {
-                              "type": "boolean"
-                            },
-                            "lastCommitAt": {
-                              "nullable": true,
-                              "type": "string"
-                            },
-                            "stars": {
-                              "nullable": true,
-                              "type": "integer"
-                            },
-                            "tier": {
-                              "nullable": true,
-                              "type": "string"
-                            },
-                            "url": {
-                              "nullable": true,
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "signals": {
-                          "description": "Closed deterministic vocabulary; absence of a signal means the evidence doesn't hold, not that the opposite is proven.",
-                          "items": {
-                            "enum": [
-                              "scanned",
-                              "deep-code",
-                              "live-on-mainnet",
-                              "verified-contract-id",
-                              "audited",
-                              "multi-audited",
-                              "code-changed-since-audit",
-                              "actively-maintained",
-                              "archived",
-                              "superseded"
-                            ],
-                            "type": "string"
-                          },
-                          "type": "array"
-                        },
-                        "succession": {
-                          "properties": {
-                            "predecessors": {
-                              "items": {
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "successorRepo": {
-                              "nullable": true,
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "usage": {
-                          "additionalProperties": true,
-                          "nullable": true,
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
+                    "meta": {},
+                    "report": {}
                   },
-                  "type": "object"
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.getRepoTrust\")"
                 }
               }
             },
@@ -2897,7 +2818,7 @@
     },
     "/scout/getRfps": {
       "get": {
-        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today (check meta.scfRound.submissionWindow + currentPhase for that). Closed briefs are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
+        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today (check meta.scfRound.submissionWindow + currentPhase for that). Closed briefs are past rounds. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built' and where the paid work is: jobs, bounties, freelance briefs for Stellar contributors. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
         "operationId": "scout.getRfps",
         "parameters": [
           {
@@ -3059,6 +2980,27 @@
                         },
                         "slug": {
                           "type": "string"
+                        },
+                        "source": {
+                          "description": "Which catalog the skill comes from (e.g. sdf-official, stellarlight).",
+                          "type": "string"
+                        },
+                        "tagline": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "tags": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "targetUser": {
+                          "description": "Audiences it serves: dev / founder / agent.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
                         }
                       },
                       "type": "object"
@@ -3507,14 +3449,14 @@
             "name": "domain",
             "schema": {
               "enum": [
-                "anchor-ramp",
-                "defi-amm",
                 "defi-lending",
+                "defi-amm",
                 "defi-yield",
-                "indexer",
                 "oracle",
                 "payments-x402",
-                "wallet-infra"
+                "wallet-infra",
+                "anchor-ramp",
+                "indexer"
               ],
               "type": "string"
             }
@@ -3542,107 +3484,13 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.listContracts\") for the full output schema.",
                   "properties": {
-                    "contracts": {
-                      "items": {
-                        "properties": {
-                          "audits": {
-                            "additionalProperties": true,
-                            "description": "Per-project audit rollup: count + latest auditor/date. Null = none on record at our source, NOT 'unaudited'.",
-                            "nullable": true,
-                            "type": "object"
-                          },
-                          "codeDepth": {
-                            "nullable": true,
-                            "type": "number"
-                          },
-                          "codeDomains": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "codeInUse": {
-                            "additionalProperties": true,
-                            "description": "Live on-chain usage attributed to this repo's contract(s) — the strongest evidence tier.",
-                            "nullable": true,
-                            "type": "object"
-                          },
-                          "contractId": {
-                            "description": "Verified mainnet contract id (C…); null when membership came via usage attribution without a specific id.",
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "interfacePreview": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "interfaceSize": {
-                            "type": "integer"
-                          },
-                          "project": {
-                            "nullable": true,
-                            "properties": {
-                              "name": {
-                                "nullable": true,
-                                "type": "string"
-                              },
-                              "slug": {
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "repo": {
-                            "properties": {
-                              "fullName": {
-                                "type": "string"
-                              },
-                              "url": {
-                                "nullable": true,
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "scannedAt": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "stellarProof": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "successorRepo": {
-                            "nullable": true,
-                            "type": "string"
-                          }
-                        },
-                        "type": "object"
-                      },
-                      "type": "array"
-                    },
-                    "meta": {
-                      "additionalProperties": true,
-                      "properties": {
-                        "matchMode": {
-                          "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
-                          "enum": [
-                            "all",
-                            "filtered"
-                          ],
-                          "type": "string"
-                        },
-                        "matchModeLabel": {
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
-                    }
+                    "contracts": {},
+                    "meta": {}
                   },
-                  "type": "object"
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.listContracts\")"
                 }
               }
             },
@@ -3772,8 +3620,54 @@
                       "items": {
                         "properties": {
                           "partner": {
-                            "additionalProperties": true,
                             "description": "The matched partner row.",
+                            "properties": {
+                              "acceptingClients": {
+                                "nullable": true,
+                                "type": "boolean"
+                              },
+                              "freshness": {
+                                "properties": {
+                                  "status": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "partnerType": {
+                                "type": "string"
+                              },
+                              "regions": {
+                                "items": {
+                                  "type": "string"
+                                },
+                                "type": "array"
+                              },
+                              "sectors": {
+                                "items": {
+                                  "type": "string"
+                                },
+                                "type": "array"
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "tagline": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "url": {
+                                "description": "Public profile page.",
+                                "type": "string"
+                              },
+                              "websiteUrl": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
                             "type": "object"
                           },
                           "reason": {
@@ -3953,69 +3847,13 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.scfPitch\") for the full output schema.",
                   "properties": {
-                    "meta": {
-                      "additionalProperties": true,
-                      "type": "object"
-                    },
-                    "report": {
-                      "properties": {
-                        "angles": {
-                          "description": "Deterministic derivations from served facts — each names its evidence; not judgments.",
-                          "items": {
-                            "type": "string"
-                          },
-                          "type": "array"
-                        },
-                        "fundedPeers": {
-                          "items": {
-                            "additionalProperties": true,
-                            "type": "object"
-                          },
-                          "type": "array"
-                        },
-                        "fundingBar": {
-                          "additionalProperties": true,
-                          "type": "object"
-                        },
-                        "idea": {
-                          "type": "string"
-                        },
-                        "round": {
-                          "properties": {
-                            "note": {
-                              "type": "string"
-                            },
-                            "open": {
-                              "items": {
-                                "additionalProperties": true,
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "source": {
-                              "enum": [
-                                "live",
-                                "unavailable"
-                              ],
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "vertical": {
-                          "nullable": true,
-                          "type": "string"
-                        },
-                        "vet": {
-                          "additionalProperties": true,
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
+                    "meta": {},
+                    "report": {}
                   },
-                  "type": "object"
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.scfPitch\")"
                 }
               }
             },
@@ -4097,114 +3935,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "Hackathon build submissions (previously opaque).",
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.searchHackathonBuilds\") for the full output schema.",
                   "properties": {
-                    "builds": {
-                      "items": {
-                        "properties": {
-                          "award": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "demoUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "description": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "endedAt": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "githubUrl": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "hackathon": {
-                            "type": "string"
-                          },
-                          "hackathonSlug": {
-                            "type": "string"
-                          },
-                          "isWinner": {
-                            "description": "Placed in the event; absence of a win is not a quality judgement.",
-                            "type": "boolean"
-                          },
-                          "matchedTerms": {
-                            "description": "Which query terms this build matched — the evidence behind its inclusion.",
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "placement": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "track": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "url": {
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "votes": {
-                            "nullable": true,
-                            "type": "integer"
-                          }
-                        },
-                        "type": "object"
-                      },
-                      "type": "array"
-                    },
-                    "meta": {
-                      "properties": {
-                        "counts": {
-                          "additionalProperties": true,
-                          "description": "returned vs total — how much the filters narrowed.",
-                          "type": "object"
-                        },
-                        "filters": {
-                          "additionalProperties": true,
-                          "description": "The filters as applied — an echo, so a caller can see what was honoured.",
-                          "type": "object"
-                        },
-                        "generatedAt": {
-                          "format": "date-time",
-                          "type": "string"
-                        },
-                        "matchMode": {
-                          "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
-                          "enum": [
-                            "all",
-                            "filtered"
-                          ],
-                          "type": "string"
-                        },
-                        "matchModeLabel": {
-                          "type": "string"
-                        },
-                        "note": {
-                          "type": "string"
-                        },
-                        "source": {
-                          "type": "string"
-                        },
-                        "upstream": {
-                          "description": "Where the raw builds came from (DoraHacks).",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
-                    }
+                    "builds": {},
+                    "meta": {}
                   },
-                  "type": "object"
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.searchHackathonBuilds\")"
                 }
               }
             },
@@ -4226,7 +3963,7 @@
     },
     "/scout/searchProjects": {
       "get": {
-        "description": "Search the curated directory of Stellar projects/products — what has been BUILT, by whom, with SCF funding, lifecycle status, builtBy, links, indexed repos, and verified on-chain metrics (onchain) inline. THE way to LOOK UP a specific project by its name (a named protocol/app/wallet/tool) AND to discover 'who/what already exists for X'; the type filter gives exact product-type rosters. Not for docs, standards, or how-to/reference knowledge → use searchResearch.\n\nCatalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
+        "description": "Search the curated directory of Stellar projects/products — what has been BUILT, by whom, with SCF funding, lifecycle status, builtBy, links, indexed repos, and verified on-chain metrics (onchain) inline. THE way to LOOK UP a specific project by its name (a named protocol/app/wallet/tool) AND to discover 'who/what already exists for X'; the type filter gives exact product-type rosters (Wallet, DEX, Oracle, Lending, Payments, Stablecoin, RWA…). Not for docs, standards, or how-to/reference knowledge → use searchResearch.\n\nCatalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
         "operationId": "scout.searchProjects",
         "parameters": [
           {
@@ -4278,7 +4015,8 @@
                 "Faucet",
                 "Card Issuing",
                 "Exchange",
-                "Oracle"
+                "Oracle",
+                "Yield"
               ],
               "type": "string"
             }
@@ -4297,11 +4035,10 @@
             "name": "status",
             "schema": {
               "enum": [
-                "Live",
-                "Inactive",
                 "Development",
                 "Pre-Release",
-                "Pre-Development"
+                "Live",
+                "Inactive"
               ],
               "type": "string"
             }
@@ -4588,97 +4325,13 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.vetIdea\") for the full output schema.",
                   "properties": {
-                    "meta": {
-                      "additionalProperties": true,
-                      "type": "object"
-                    },
-                    "report": {
-                      "properties": {
-                        "competitors": {
-                          "properties": {
-                            "matchMode": {
-                              "description": "How relevance was established. vertical = typed members of the idea's vertical; scored = the idea's own (non-generic) terms matched; weak = only generic words matched — the rows are nearest NEIGHBOURS, not evidence a competitor exists. Weigh a weak block as 'we found nothing close', never as a competitive landscape.",
-                              "enum": [
-                                "vertical",
-                                "scored",
-                                "weak"
-                              ],
-                              "type": "string"
-                            },
-                            "matchModeLabel": {
-                              "type": "string"
-                            },
-                            "projects": {
-                              "items": {
-                                "additionalProperties": true,
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "repos": {
-                              "items": {
-                                "additionalProperties": true,
-                                "type": "object"
-                              },
-                              "type": "array"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "funding": {
-                          "additionalProperties": true,
-                          "nullable": true,
-                          "type": "object"
-                        },
-                        "gap": {
-                          "additionalProperties": true,
-                          "description": "Supply-side coverage of the detected vertical (same computation as analyze?dimension=gaps).",
-                          "nullable": true,
-                          "type": "object"
-                        },
-                        "idea": {
-                          "type": "string"
-                        },
-                        "maturity": {
-                          "properties": {
-                            "auditedProjects": {
-                              "type": "integer"
-                            },
-                            "basis": {
-                              "type": "string"
-                            },
-                            "liveOnMainnetRepos": {
-                              "type": "integer"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "priorArt": {
-                          "properties": {
-                            "note": {
-                              "type": "string"
-                            },
-                            "repos": {
-                              "items": {
-                                "additionalProperties": true,
-                                "type": "object"
-                              },
-                              "type": "array"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "vertical": {
-                          "description": "Detected buildable vertical (closed set from the gaps axis); null = unmapped, not marketless.",
-                          "nullable": true,
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
-                    }
+                    "meta": {},
+                    "report": {}
                   },
-                  "type": "object"
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.vetIdea\")"
                 }
               }
             },
@@ -6440,7 +6093,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 282,
-    "generatedAt": "2026-09-15T16:20:00Z"
+    "generatedAt": "2026-09-16T22:35:44Z"
   },
   "x-services": {
     "lumenloop": {
@@ -6452,7 +6105,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-28T12:50:57.417Z",
+      "fetchedAt": "2026-09-16T20:54:12.079Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -6483,7 +6136,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-09-15T16:20:00Z"
+      "syncedAt": "2026-09-16T22:35:44Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",
