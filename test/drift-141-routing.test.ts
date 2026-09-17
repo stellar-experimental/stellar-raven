@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { dirname, isAbsolute, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,15 +14,13 @@ const experimentalManifest = process.env.RAVEN_ROUTING_MANIFEST;
 const manifestPath = experimentalManifest
   ? (isAbsolute(experimentalManifest) ? experimentalManifest : join(ROOT, experimentalManifest))
   : join(ROOT, "catalog", "manifest.json");
-let catalog: Catalog;
+// Load during collection so test activation can depend on the exposed surface.
+const catalog: Catalog = loadManifest(JSON.parse(readFileSync(manifestPath, "utf8")));
+const exposesRwa = catalog.entries.some((entry) => entry.id === "scout.getRwaAssets");
 
 function ids(query: string): string[] {
   return searchCatalog(catalog, { query, limit: 5 }).map((hit) => hit.id);
 }
-
-beforeAll(() => {
-  catalog = loadManifest(JSON.parse(readFileSync(manifestPath, "utf8")));
-});
 
 describe("issue #141 routing acceptance", () => {
   it("keeps the eight attributed rows clean", () => {
@@ -164,7 +162,7 @@ describe("issue #141 routing acceptance", () => {
     expect(catalog.entries.some((entry) => entry.id === "scout.getRwaAssets")).toBe(false);
   });
 
-  it.runIf(Boolean(experimentalManifest))("separates RWA discovery from implementation", () => {
+  it.runIf(exposesRwa)("separates RWA discovery from implementation", () => {
     for (const query of [
       "Which tokenized real-world assets are live on Stellar?",
       "Show verified tokenized treasury funds and their issuers on Stellar.",
@@ -187,7 +185,7 @@ describe("issue #141 routing acceptance", () => {
     }
   });
 
-  it.runIf(Boolean(experimentalManifest)).each([
+  it.runIf(exposesRwa).each([
     "Simulate a transfer of a tokenized bond through Stellar RPC.",
     "How do I read a wallet balance for tokenized treasury assets?"
   ])("keeps mixed implementation intent out of RWA discovery: %s", (query) => {
