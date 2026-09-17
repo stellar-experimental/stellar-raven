@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-09-16
 upstreamTitle: Beta API skill excludes bearer authentication documented by the Core API
 evidence:
+  - 2026-09-17 routing-audit baseline artifact 2026-09-17T01-33-03-variantA.json, row q-tw-escrow-api-auth-custody, repeats the V1 API-key rule without identifying the separate Core API profile. Live beta skill still requires x-api-key and forbids Authorization Bearer; SHA-256 959e697c7188c0adb48fe6218a78e813d395e645602c315c3146dc5cf861dc24. Issue 6 remains open.
   - The active golden case records the disputed authentication scope and caller-custody boundary at eval/qa/corpus/battery/compliance-rwa-payments/q-tw-escrow-api-auth-custody.json.
   - New beta authentication evidence posted by kalepail on 2026-09-16 and read back at https://github.com/Trustless-Work/trustlesswork-skill/issues/6#issuecomment-5703275444. The existing issue owns the version and authentication scope.
   - 2026-09-16 live main is 634f32bd4be6769b0cae52e72db4899d5f5a069c. Its trustless-work-dev/skills/api/v2/core-concepts.md identifies beta.api.trustlesswork.com, requires x-api-key on every request, and forbids Authorization Bearer.

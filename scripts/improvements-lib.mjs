@@ -7,13 +7,21 @@ export const IMPROVEMENTS_DIR = path.join(ROOT, "improvements");
 export const INDEX_PATH = path.join(IMPROVEMENTS_DIR, "INDEX.md");
 export const INTAKE_PATH = path.join(IMPROVEMENTS_DIR, "intake.json");
 export const RESOLVED_PATH = path.join(IMPROVEMENTS_DIR, "resolved.json");
-export const SERVICE_ORDER = ["skills", "stellar-light-scout", "stellar-docs", "lumenloop", "workers-ai-provider"];
+export const SERVICE_ORDER = [
+  "skills",
+  "stellar-light-scout",
+  "stellar-docs",
+  "lumenloop",
+  "workers-ai-provider",
+  "canonical-source",
+];
 export const ALLOWED_SERVICES = new Set([
   "lumenloop",
   "stellar-light-scout",
   "stellar-docs",
   "skills",
   "workers-ai-provider",
+  "canonical-source",
 ]);
 export const ALLOWED_STATUSES = new Set([
   "proposed",

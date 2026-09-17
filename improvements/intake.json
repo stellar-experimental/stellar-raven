@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-09-16",
+  "updated": "2026-09-17",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -47,6 +47,10 @@
       "type": "github-issues",
       "repo": "cloudflare/ai",
       "rule": "The package metadata identifies cloudflare/ai as the issue owner for workers-ai-provider."
+    },
+    "canonical-source": {
+      "type": "mixed",
+      "rule": "A canonical-source finding names the dependency or product repository that owns the defective fact or code. Set a per-finding repo override after owner verification."
     }
   },
   "findings": {
@@ -210,6 +214,14 @@
     "sk-025": {
       "repo": "Trustless-Work/trustlesswork-skill",
       "reason": "The upstream beta skill owns its authentication guidance and shares the existing version-profile issue."
+    },
+    "cs-001": {
+      "repo": "cloudflare/agents",
+      "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; searchConnectors lives in packages/codemode."
+    },
+    "cs-002": {
+      "repo": "soroswap/docs",
+      "reason": "soroswap/docs publishes docs.soroswap.finance and owns concepts/aggregator.mdx and aggregator/supported-amms.mdx."
     }
   }
 }

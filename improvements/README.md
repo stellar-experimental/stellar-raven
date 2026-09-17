@@ -28,10 +28,14 @@ that collection.
   local copy to patch — and re-pinning to a fork or a patched branch is not a fix either.
 - `workers-ai-provider/` — findings about Cloudflare's `workers-ai-provider` package and its
   AI Gateway delegate surface. Recommendations target `cloudflare/ai`.
+- `canonical-source/` — findings about a primary dependency or product source that no service
+  collection above owns, such as a package Raven vendors or a product repository's own docs.
+  Recommendations target the repository that owns the defective fact or code.
 
 Web findings are classified before filing as `docs-content`, `docs-search`, `site-content`,
 `site-search`, or `canonical-source`. The two search categories include the corresponding Algolia
-or crawler layer. These are routing categories, not automatic directories: a missing search result
+or crawler layer. Only `canonical-source` has its own collection. The other categories are routing
+categories, not automatic directories: a missing search result
 does not establish that Docs or `stellar.org` should own the content, and empty collections are not
 created without a verified finding and identified owner. Facts owned by a SEP, CAP, implementation,
 or product repository are corrected there. A dedicated site collection should be added only when a
@@ -44,7 +48,7 @@ One file per finding. YAML-ish frontmatter, then three short sections.
 ```
 ---
 id: <collection>-NNN
-service: lumenloop | stellar-light-scout | stellar-docs | skills | workers-ai-provider
+service: lumenloop | stellar-light-scout | stellar-docs | skills | workers-ai-provider | canonical-source
 status: proposed | verified | reported-upstream | declined-upstream | fixed-upstream
 discovered: YYYY-MM-DD
 upstreamTitle: <reader-first issue title; required before filing>
@@ -100,6 +104,9 @@ Known channels (issue access confirmed 2026-07-09):
   <https://github.com/lumenloop/stellar-ecosystem-db>; skill-content findings remain in
   <https://github.com/lumenloop/lumenloop-skills>. Record the exact issue URL in the finding.
 - `workers-ai-provider/` findings → <https://github.com/cloudflare/ai>.
+- `canonical-source/` findings → the owning repository, set as a per-finding override in
+  `improvements/intake.json` after the owner is verified. The service rule is `mixed`, so the filer
+  refuses a finding without an override.
 
 Use `npm run improvements:file -- --file improvements/<collection>/<finding>.md --dry-run` to
 review the resolved owner and standardized body, then omit `--dry-run` to file it. The generated

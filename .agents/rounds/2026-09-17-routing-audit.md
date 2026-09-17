@@ -1,6 +1,6 @@
 # Routing and direction audit — 2026-09-17
 
-Status: in progress. D3 and measurement repairs passed independent review. Paid spend remains $0.
+Status: in progress. D3 and measurement repairs passed independent review. Paid collection is paused for verified golden corrections.
 
 ## Authority and scope
 
@@ -50,7 +50,7 @@ The coordinator owns implementation, spending, Git, deployment, and external fin
 
 ## Paid evaluation accounting
 
-Approved cap: **$250**. Evaluation spend: **$0**. Planned methods: $178 maximum; $72 remains unallocated.
+Approved cap: **$250**. Evaluation spend: **$5.8820244**. Revised methods: $182 maximum; $68 remains unallocated.
 Audit agent sessions are orchestration work, separate from the evaluation runner receipts.
 
 ## Candidate and review
@@ -73,7 +73,7 @@ The read-only production inventory covered 58 of 60 operations and all 20 whole 
 Two generation operations were excluded from the read-only inventory.
 All successful operation probes met their top-level required-field projection.
 This check does not establish full semantic or nested schema correctness.
-See `surface-ledger.json` for each operation, its profile, coverage, and probe evidence.
+See `research/audits/2026-09-17-routing-audit/surface-ledger.json` for each operation, its profile, coverage, and probe evidence.
 
 Discovery contained 29 section references that search cannot return.
 The repair maps supported tasks to whole skills and removes unsupported routes.
@@ -95,3 +95,47 @@ Fresh questions and results remain sealed from the implementation agent.
 
 The protocol-history diagnostic remains FAIL on the baseline and candidate.
 Its existing source-contract expiry requires separate reconciliation; this round does not repin it.
+
+## Evidence and pilot collection
+
+The dated evidence lives in [research/audits/2026-09-17-routing-audit](../../../research/audits/2026-09-17-routing-audit/).
+The final code review passed runtime and measurement changes. Its evidence placement and review-status findings are resolved.
+
+M1-B1 produced `2026-09-17T01-33-03-variantA.json`: 16 answers, 48 accounted calls, cost $5.8820244.
+The runner reported complete, comparable collection with no execution failure or missing cost.
+Its grades are preliminary: three correct, seven partial, six wrong under the original goldens.
+Independent source verification found stale LOBSTR SCF framing, Aquarius context, and a Soroswap provenance caution.
+Later paid methods are paused until these corrections and symmetric regrading receive review.
+The questions and denominator remain frozen. The original answer artifact will not be rewritten.
+
+The published dependency finding is [Cloudflare #2296](https://github.com/cloudflare/agents/issues/2296).
+[Raven #167](https://github.com/stellar-experimental/stellar-raven/issues/167#issuecomment-5706841109) records the unchanged RWA block.
+Reverse-prefix deletion and Porter stemming failed coverage checks; neither will ship.
+The test table now includes all three original RWA controls. Runtime routing remains unchanged from D3.
+
+The recorded pilot contains 36 public search calls. D3 changes none of their ranked results.
+This checks observed queries only; it does not establish identical future answers or internal execute searches.
+The RWA-inclusive control run fails all three original questions; the default excluded surface passes.
+
+## Golden correction review and resumption
+
+Opus verification and Fable high independent review accepted three source-based corrections.
+Affected IDs: `q-eco-lobstr-wallet`, `q-defi-aquarius-what-is`, and `q-defi-soroswap-what-is`.
+Questions and required facts remain unchanged. No case leaves the frozen 16-case denominator.
+LOBSTR now requires an awarded-versus-paid basis when funding is mentioned; no amount becomes a required fact.
+Aquarius distinguishes governance voting from liquidity incentives and removes stale TVL context.
+Soroswap drops a caution that confused operation prose with project text.
+The verified adapter configuration remains authoritative; no new ADR-0008 canonical-page grading exception is added.
+
+The independent resumption review requires matching three-judge regrades for the three corrected B1 and C1 rows.
+These overlays take precedence. M5 must not regrade those B1/C1 rows again.
+The revised method ceiling is $182, leaving $68 unallocated under the $250 cap.
+M0-C1 and M5 require exact artifact paths and separate command review before launch.
+The coordinator accepts the conservative stop: one verified fact loss blocks D3, even if answer variance contributes.
+A fresh three-capture upstream identity check matched the original pin before resumption.
+The answer instrument remains diagnostic; B1/C1 has changed case-input identity and fewer than 100 cases.
+
+The final Fable high completion gate passes golden and pipeline changes.
+All eleven consistency groups pass. The corpus lint reports zero errors and 62 existing warnings.
+The final unit run passes 2,179 tests with four skips. Type checking, build, and secret scanning pass.
+An earlier unit run caught a stale generated improvements index after recurrence evidence changed; regeneration resolved it.

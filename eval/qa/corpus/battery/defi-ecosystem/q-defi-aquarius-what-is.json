@@ -16,10 +16,10 @@
     ],
     "avoid": [
       "Do NOT call ICE-family tokens transferable or collapse ICE, upvoteICE, and governICE into one governance/reward token.",
-      "Do NOT claim that merely holding ICE or voting guarantees AQUA emissions.",
+      "Do NOT claim that merely holding ICE or casting governance votes earns AQUA emissions.",
       "Do NOT describe Aquarius as a lender, oracle, or bridge."
     ],
-    "notes": "Per-project identity + tokenomics. AQUA/ICE lock mechanic is the precision trap. Grounded on Scout: Aquarius (AQUA) = DeFi liquidity layer + AMM on Soroban, stable/volatile pools with multihop swaps; LPs earn fees + AQUA yield; AQUA locks into ICE for on-chain DAO governance directing rewards. TVL is freshness-sensitive (DeFiLlama ~$48M in mid-2026) — gate on 'cite a current source,' not a frozen number.\nAlso good if the answer: Aquarius is the largest DEX on Stellar by TVL (roughly ~20% of DeFiLlama-listed Stellar TVL). | Integrates with wallets such as LOBSTR, StellarX, Freighter, StellarTerm.\nGolden cites: A source on Aquarius and the AQUA/ICE token mechanics (Lumenloop record, aqua.network, or DeFiLlama).\nCorrected 2026-07-10 by GT-13 independent agreement. Grade current token-role distinctions and conditional boost mechanics; do not require stale downvoteICE or a blanket emissions claim."
+    "notes": "Per-project identity + tokenomics. AQUA/ICE lock mechanic is the precision trap. Grounded on Scout: Aquarius (AQUA) = DeFi liquidity layer + AMM on Soroban, stable/volatile pools with multihop swaps; LPs earn fees + AQUA yield. Current Aquarius docs separate upvoteICE market voting, which directs AQUA rewards, from governICE proposal voting, which they document as unrewarded; Scout's one-line summary merges the two.\nVoters on markets that carry voting incentives can receive incentive payouts in the incentive assets, often AQUA. Current Aquarius docs also describe a monthly AQUA pool for whitelisted delegates. Those docs compute delegate voting power from dICE plus gdICE, including governance-delegated ICE; an attributed delegate-program statement does not claim that casting governance votes earns emissions. Stating either dated, attributed program is not a claim that ICE holding or governance voting earns emissions.\nAlso good if the answer: Integrates with wallets such as LOBSTR, StellarX, Freighter, StellarTerm.\nGolden cites: A source on Aquarius and the AQUA/ICE token mechanics (Lumenloop record, aqua.network, or DeFiLlama).\nCorrected 2026-07-10 by GT-13 independent agreement. Grade current token-role distinctions and conditional boost mechanics; do not require stale downvoteICE or a blanket emissions claim."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -35,19 +35,32 @@
     "status": "confirmed",
     "sources": [
       {
-        "class": "D",
-        "ref": "https://docs.aqua.network/aqua-and-ice/what-are-aqua-tokens",
-        "note": "class inferred at migration"
+        "class": "A",
+        "ref": "https://docs.aqua.network/aqua-and-ice/what-are-aqua-tokens"
       },
       {
-        "class": "D",
-        "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits",
-        "note": "class inferred at migration"
+        "class": "A",
+        "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits"
       },
       {
-        "class": "D",
-        "ref": "https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards",
-        "note": "class inferred at migration"
+        "class": "A",
+        "ref": "https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.aqua.network/for-projects/what-are-voting-incentives"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/AquariusDeFi/aqua-bribes/tree/b714c86ace11bda511392311fcfb1c89f76ae814/aquarius_bribes/rewards"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/AquariusDeFi/aqua-governance/tree/c937680a0326c591f16c229adfa431baf32a4b36"
       }
     ],
     "corroboration": [
@@ -80,24 +93,57 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Voters on markets with voting incentives receive payouts pro rata to their market votes; the governance-proposal service is documented as unrewarded and its public source contains no voter-payout logic",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.aqua.network/for-projects/what-are-voting-incentives",
+            "observedAt": "2026-09-17",
+            "note": "'Voters on markets with voting incentives receive daily payouts'; protocol voting incentives are funded from AMM trading fees"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/AquariusDeFi/aqua-bribes/blob/b714c86ace11bda511392311fcfb1c89f76ae814/aquarius_bribes/rewards/reward_payer.py",
+            "observedAt": "2026-09-17",
+            "note": "BaseRewardPayer.pay_reward sums votes_value, excludes dust votes, and appends Stellar payment operations per voting account; rewards/votes_loader.py loads votes per market_key from voting-tracker.aqua.network into VoteSnapshot(market_key, voting_account, votes_value); rewards/models.py Payout links each payment to a VoteSnapshot"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making",
+            "observedAt": "2026-09-17",
+            "note": "'Governance voting does not offer rewards — it's purely for protocol decision-making.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/AquariusDeFi/aqua-governance/tree/c937680a0326c591f16c229adfa431baf32a4b36",
+            "observedAt": "2026-09-17",
+            "note": "qualified negative evidence: the public governance service signs only asset-registry on-chain actions (onchain_hooks/asset_registry.py) and checks proposal-fee payments (payment_statuses.py); no voter reward or payout code was found. Absence in public source does not prove the absence of an off-repository payout."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-09-17",
+      "by": ".agents/rounds/2026-09-17-routing-audit.md — Opus verification, Fable high independent review, coordinator reconciliation",
       "evidence": [
-        "Solo scratchpad 575: GT-13 primary 3238 and blind 3240",
-        "Current Aquarius docs rechecked 2026-07-10; downvoteICE was deprecated in June 2026",
-        "Structural re-form 2026-08-27: split two long or negative key facts into four positive atomic forms; truth unchanged.",
-        "Live re-check 2026-08-27: https://docs.aqua.network/aquarius-aqua-rewards — current Aquarius documentation still describes liquidity voting and AMM reward activity.",
-        "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — AQUA remains the transferable utility and reward asset for the locking system.",
-        "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — ICE-family tokens remain non-transferable and role-specific.",
-        "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — reward boosts remain conditional on eligible markets and activity.",
-        "Sibling sweep 2026-08-27: grep Aquarius|AQUA|upvoteICE|governICE across the QA battery; no contradiction found."
+        "Live re-check 2026-09-17: https://docs.aqua.network/welcome-to-aquarius.md — 'the liquidity layer of the Stellar network — an AMM protocol governed by AQUA holders'.",
+        "Live re-check 2026-09-17: https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits.md — ICE family non-transferable; ICE/upvoteICE/governICE roles; downvoteICE deprecated June 2026; lock multiplier up to 10x.",
+        "Live re-check 2026-09-17: https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards.md — reward boost up to x2.5 for liquidity providers.",
+        "Source read 2026-09-17: AquariusDeFi/aqua-bribes@b714c86ace11bda511392311fcfb1c89f76ae814 rewards/reward_payer.py, votes_loader.py, and models.py — market-vote snapshots drive pro-rata payouts to voting accounts.",
+        "Source read 2026-09-17: AquariusDeFi/aqua-governance@c937680a0326c591f16c229adfa431baf32a4b36 — no voter reward or payout code; signing limited to asset-registry actions. Qualified: public source only.",
+        "Docs-only, not corroborated by a second class: https://docs.aqua.network/aqua-and-ice/overview/reward-program-for-delegates.md — 10M AQUA monthly to the top 20 whitelisted delegates, paid manually by the Signers Guild; kept docs-attributed in golden.notes.",
+        "Volatile TVL and DEX-rank grader text removed rather than refreshed; the golden answer already treats TVL and market rank as live, dated metrics.",
+        "Class check 2026-09-17: Scout aquarius shortDescription says 'AQUA locks into ICE for on-chain DAO governance votes directing rewards' (merges governICE and upvoteICE roles); monitor-only, no finding filed.",
+        "Sibling sweep 2026-09-17: grep Aquarius|AQUA|ICE|TVL → q-eco-dex-saturation, q-eco-defi-projects-discovery, q-eco-most-active-defi-projects, q-eco-defi-tvl-current; none pins Aquarius TVL share or ICE reward rules; no contradiction."
       ],
       "rootCause": [
-        "eval-side token-model compression and documentation drift: specialized ICE derivatives and conditional boost mechanics were flattened into one guaranteed-emissions claim",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift",
+        "eval-side avoid ambiguity: 'voting' did not separate unrewarded governance votes from market voting that can receive voting-incentive payouts",
+        "eval-side grader-note compression: a Scout summary merging governICE governance with reward-directing upvoteICE voting was quoted as grounding",
+        ".agents/TODO.md — Complete the September 17 golden corrections and pilot regrading"
       ]
     },
     "origin": "raven-next q-defi-aquarius-what-is"

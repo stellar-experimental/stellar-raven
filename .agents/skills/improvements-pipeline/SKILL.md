@@ -44,6 +44,8 @@ stranger can reproduce. Use the next id in the service prefix sequence:
 - `stellar-light-scout` -> `sls-NNN`
 - `stellar-docs` -> `sd-NNN`
 - `skills` -> `sk-NNN`
+- `workers-ai-provider` -> `wai-NNN`
+- `canonical-source` -> `cs-NNN`
 
 For a web-surface finding, classify the failing surface before choosing a collection or owner:
 
@@ -57,7 +59,10 @@ For a web-surface finding, classify the failing surface before choosing a collec
 - `canonical-source` — the defect belongs in the specification, implementation, product, or other
   authority that owns the fact, not in Docs or the marketing site.
 
-Keep these as routing categories, not speculative empty directories. Create a new service collection
+A `canonical-source` finding goes in `improvements/canonical-source/` when no service collection owns
+the source. Its intake rule is `mixed`: add a per-finding `repo` override in `intake.json` after
+verifying the owner. The other categories stay routing categories, not speculative empty directories.
+Create a new service collection
 only when the first verified finding has an identified owner, reproducible evidence, and a lifecycle
 that cannot be represented by an existing collection. Search absence alone is not a content defect:
 identify the canonical source, show why the selected surface undertakes to expose that truth, and
@@ -313,7 +318,7 @@ after finding/frontmatter/status changes.
 `npm run improvements:lint` is the gate. It fails when finding frontmatter is malformed, status/service
 values are invalid, declined disposition/evidence is missing, resolved-ledger receipts are malformed
 or collide with active IDs, evidence or recurrence fields are missing, the generated index bytes differ from
-the committed file, intake services do not cover the four collections exactly, an override points to a
+the committed file, intake services do not cover every collection exactly, an override points to a
 missing finding id, a repo string is not `owner/repo`, or a finding cannot resolve to a repo, mixed
 rule, or explicit unclear marker. `npm run improvements:lint -- --live` additionally checks each
 distinct intake repo and every recorded GitHub issue/PR/comment evidence URL. The base lint also

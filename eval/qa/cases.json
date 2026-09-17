@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "698629aa42735a85492c7ac264648f96e5da8d69032933cfd3f844a08f488d26",
+  "corpusContentSha256": "8914bbfdd1996ffb57d87abc1849fca0a288fc45e61f68a0bc5362fbd3a19f93",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -8809,10 +8809,10 @@
         ],
         "avoid": [
           "Do NOT call ICE-family tokens transferable or collapse ICE, upvoteICE, and governICE into one governance/reward token.",
-          "Do NOT claim that merely holding ICE or voting guarantees AQUA emissions.",
+          "Do NOT claim that merely holding ICE or casting governance votes earns AQUA emissions.",
           "Do NOT describe Aquarius as a lender, oracle, or bridge."
         ],
-        "notes": "Per-project identity + tokenomics. AQUA/ICE lock mechanic is the precision trap. Grounded on Scout: Aquarius (AQUA) = DeFi liquidity layer + AMM on Soroban, stable/volatile pools with multihop swaps; LPs earn fees + AQUA yield; AQUA locks into ICE for on-chain DAO governance directing rewards. TVL is freshness-sensitive (DeFiLlama ~$48M in mid-2026) — gate on 'cite a current source,' not a frozen number.\nAlso good if the answer: Aquarius is the largest DEX on Stellar by TVL (roughly ~20% of DeFiLlama-listed Stellar TVL). | Integrates with wallets such as LOBSTR, StellarX, Freighter, StellarTerm.\nGolden cites: A source on Aquarius and the AQUA/ICE token mechanics (Lumenloop record, aqua.network, or DeFiLlama).\nCorrected 2026-07-10 by GT-13 independent agreement. Grade current token-role distinctions and conditional boost mechanics; do not require stale downvoteICE or a blanket emissions claim."
+        "notes": "Per-project identity + tokenomics. AQUA/ICE lock mechanic is the precision trap. Grounded on Scout: Aquarius (AQUA) = DeFi liquidity layer + AMM on Soroban, stable/volatile pools with multihop swaps; LPs earn fees + AQUA yield. Current Aquarius docs separate upvoteICE market voting, which directs AQUA rewards, from governICE proposal voting, which they document as unrewarded; Scout's one-line summary merges the two.\nVoters on markets that carry voting incentives can receive incentive payouts in the incentive assets, often AQUA. Current Aquarius docs also describe a monthly AQUA pool for whitelisted delegates. Those docs compute delegate voting power from dICE plus gdICE, including governance-delegated ICE; an attributed delegate-program statement does not claim that casting governance votes earns emissions. Stating either dated, attributed program is not a claim that ICE holding or governance voting earns emissions.\nAlso good if the answer: Integrates with wallets such as LOBSTR, StellarX, Freighter, StellarTerm.\nGolden cites: A source on Aquarius and the AQUA/ICE token mechanics (Lumenloop record, aqua.network, or DeFiLlama).\nCorrected 2026-07-10 by GT-13 independent agreement. Grade current token-role distinctions and conditional boost mechanics; do not require stale downvoteICE or a blanket emissions claim."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -8828,19 +8828,32 @@
         "status": "confirmed",
         "sources": [
           {
-            "class": "D",
-            "ref": "https://docs.aqua.network/aqua-and-ice/what-are-aqua-tokens",
-            "note": "class inferred at migration"
+            "class": "A",
+            "ref": "https://docs.aqua.network/aqua-and-ice/what-are-aqua-tokens"
           },
           {
-            "class": "D",
-            "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits",
-            "note": "class inferred at migration"
+            "class": "A",
+            "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits"
           },
           {
-            "class": "D",
-            "ref": "https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards",
-            "note": "class inferred at migration"
+            "class": "A",
+            "ref": "https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.aqua.network/for-projects/what-are-voting-incentives"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/AquariusDeFi/aqua-bribes/tree/b714c86ace11bda511392311fcfb1c89f76ae814/aquarius_bribes/rewards"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/AquariusDeFi/aqua-governance/tree/c937680a0326c591f16c229adfa431baf32a4b36"
           }
         ],
         "corroboration": [
@@ -8873,24 +8886,57 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "Voters on markets with voting incentives receive payouts pro rata to their market votes; the governance-proposal service is documented as unrewarded and its public source contains no voter-payout logic",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://docs.aqua.network/for-projects/what-are-voting-incentives",
+                "observedAt": "2026-09-17",
+                "note": "'Voters on markets with voting incentives receive daily payouts'; protocol voting incentives are funded from AMM trading fees"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/AquariusDeFi/aqua-bribes/blob/b714c86ace11bda511392311fcfb1c89f76ae814/aquarius_bribes/rewards/reward_payer.py",
+                "observedAt": "2026-09-17",
+                "note": "BaseRewardPayer.pay_reward sums votes_value, excludes dust votes, and appends Stellar payment operations per voting account; rewards/votes_loader.py loads votes per market_key from voting-tracker.aqua.network into VoteSnapshot(market_key, voting_account, votes_value); rewards/models.py Payout links each payment to a VoteSnapshot"
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making",
+                "observedAt": "2026-09-17",
+                "note": "'Governance voting does not offer rewards — it's purely for protocol decision-making.'"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/AquariusDeFi/aqua-governance/tree/c937680a0326c591f16c229adfa431baf32a4b36",
+                "observedAt": "2026-09-17",
+                "note": "qualified negative evidence: the public governance service signs only asset-registry on-chain actions (onchain_hooks/asset_registry.py) and checks proposal-fee payments (payment_statuses.py); no voter reward or payout code was found. Absence in public source does not prove the absence of an off-repository payout."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-09-17",
+          "by": ".agents/rounds/2026-09-17-routing-audit.md — Opus verification, Fable high independent review, coordinator reconciliation",
           "evidence": [
-            "Solo scratchpad 575: GT-13 primary 3238 and blind 3240",
-            "Current Aquarius docs rechecked 2026-07-10; downvoteICE was deprecated in June 2026",
-            "Structural re-form 2026-08-27: split two long or negative key facts into four positive atomic forms; truth unchanged.",
-            "Live re-check 2026-08-27: https://docs.aqua.network/aquarius-aqua-rewards — current Aquarius documentation still describes liquidity voting and AMM reward activity.",
-            "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — AQUA remains the transferable utility and reward asset for the locking system.",
-            "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — ICE-family tokens remain non-transferable and role-specific.",
-            "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — reward boosts remain conditional on eligible markets and activity.",
-            "Sibling sweep 2026-08-27: grep Aquarius|AQUA|upvoteICE|governICE across the QA battery; no contradiction found."
+            "Live re-check 2026-09-17: https://docs.aqua.network/welcome-to-aquarius.md — 'the liquidity layer of the Stellar network — an AMM protocol governed by AQUA holders'.",
+            "Live re-check 2026-09-17: https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits.md — ICE family non-transferable; ICE/upvoteICE/governICE roles; downvoteICE deprecated June 2026; lock multiplier up to 10x.",
+            "Live re-check 2026-09-17: https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards.md — reward boost up to x2.5 for liquidity providers.",
+            "Source read 2026-09-17: AquariusDeFi/aqua-bribes@b714c86ace11bda511392311fcfb1c89f76ae814 rewards/reward_payer.py, votes_loader.py, and models.py — market-vote snapshots drive pro-rata payouts to voting accounts.",
+            "Source read 2026-09-17: AquariusDeFi/aqua-governance@c937680a0326c591f16c229adfa431baf32a4b36 — no voter reward or payout code; signing limited to asset-registry actions. Qualified: public source only.",
+            "Docs-only, not corroborated by a second class: https://docs.aqua.network/aqua-and-ice/overview/reward-program-for-delegates.md — 10M AQUA monthly to the top 20 whitelisted delegates, paid manually by the Signers Guild; kept docs-attributed in golden.notes.",
+            "Volatile TVL and DEX-rank grader text removed rather than refreshed; the golden answer already treats TVL and market rank as live, dated metrics.",
+            "Class check 2026-09-17: Scout aquarius shortDescription says 'AQUA locks into ICE for on-chain DAO governance votes directing rewards' (merges governICE and upvoteICE roles); monitor-only, no finding filed.",
+            "Sibling sweep 2026-09-17: grep Aquarius|AQUA|ICE|TVL → q-eco-dex-saturation, q-eco-defi-projects-discovery, q-eco-most-active-defi-projects, q-eco-defi-tvl-current; none pins Aquarius TVL share or ICE reward rules; no contradiction."
           ],
           "rootCause": [
-            "eval-side token-model compression and documentation drift: specialized ICE derivatives and conditional boost mechanics were flattened into one guaranteed-emissions claim",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift",
+            "eval-side avoid ambiguity: 'voting' did not separate unrewarded governance votes from market voting that can receive voting-incentive payouts",
+            "eval-side grader-note compression: a Scout summary merging governICE governance with reward-directing upvoteICE voting was quoted as grounding",
+            ".agents/TODO.md — Complete the September 17 golden corrections and pilot regrading"
           ]
         },
         "origin": "raven-next q-defi-aquarius-what-is"
@@ -12474,7 +12520,7 @@
           "Do NOT state first/best marketing as independently proven history.",
           "Do NOT claim classic SDEX is directly executed by the on-chain Soroban aggregator or that code presence proves an active adapter."
         ],
-        "notes": "GROUNDED 2026-06-22 (re-verified 2026-06-29): live Scout confirms Soroswap (Live, DEX, SCF $346,750, by Palta Labs, soroswap.finance): 'the first DEX and DEX aggregator on Stellar Soroban... routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius)... Route API returns quotes and optimal routing across Stellar DEXs including the Stellar classic DEX (SDEX).' This is the IDENTITY + differentiation lane → lumenloop_get_project — DISTINCT from q-defi-soroswap-resolve (lumenloop_search_directory; strict website+category field lookup). Confusable trap: Soroswap (aggregator) vs StellarX (UI).\nAlso good if the answer: Built by Palta Labs; product surface includes a swap App, a Soroswap REST API, and Soroswap Earn (yield via Defindex).\nGolden cites: A source identifying Soroswap as the Stellar DEX aggregator (Lumenloop record, soroswap.finance, or Stellar ecosystem source).\nGT-18 CORRECTION 2026-07-10: the inherited first/best and routing composite is non-gating; reward layer separation, attribution, and dated deployment evidence.\nAccurately quoting the canonical Scout source on Soroswap's first/best and routing description is not a wrong claim while a cached or older copy still shows the pre-2026-07-14 editorial text fixed by sls-015; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GROUNDED 2026-06-22 (re-verified 2026-06-29): live Scout confirms Soroswap (Live, DEX, SCF $346,750, by Palta Labs, soroswap.finance): 'the first DEX and DEX aggregator on Stellar Soroban... routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius)... Route API returns quotes and optimal routing across Stellar DEXs including the Stellar classic DEX (SDEX).' This is the IDENTITY + differentiation lane → lumenloop_get_project — DISTINCT from q-defi-soroswap-resolve (lumenloop_search_directory; strict website+category field lookup). Confusable trap: Soroswap (aggregator) vs StellarX (UI).\nAlso good if the answer: Built by Palta Labs; product surface includes a swap App, a Soroswap REST API, and Soroswap Earn (yield via Defindex).\nGolden cites: A source identifying Soroswap as the Stellar DEX aggregator (Lumenloop record, soroswap.finance, or Stellar ecosystem source).\nGT-18 CORRECTION 2026-07-10: the inherited first/best and routing composite is non-gating; reward layer separation, attribution, and dated deployment evidence.\nSOURCE NOTE 2026-09-17: the live Scout Soroswap project record still describes Soroswap as 'the first decentralized exchange (DEX) and DEX aggregator on Stellar Soroban'. Quoting it, or Soroswap's own docs, with attribution satisfies the chronology-attribution key fact; only presenting it as independently proven history is the avoid item.\nSOURCE STATUS 2026-09-17: concepts/aggregator.mdx labels Phoenix and Aqua as testnet sources; supported-amms.mdx labels Aquarius as coming soon. cs-002 records that these labels conflict with the deployed mainnet adapter configuration. Use the verified configuration to reconcile the stale pages. The verified adapter configuration remains the grading authority for this case."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -12529,29 +12575,47 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "On 2026-09-17 the pubnet aggregator returned unpaused Soroswap, Phoenix, and Aqua adapters, and Soroswap's API quotes include classic SDEX while the on-chain aggregator does not",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "F",
+                "ref": "simulateTransaction get_adapters on CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO via https://mainnet.sorobanrpc.com",
+                "observedAt": "2026-09-17",
+                "note": "ledger 64464442: protocol_id 0, 1, 2 unpaused; enum Soroswap=0, Phoenix=1, Aqua=2, Comet=3 absent"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/soroswap/aggregator/blob/main/public/mainnet.contracts.json",
+                "observedAt": "2026-09-17",
+                "note": "aggregator id matches; soroswap, phoenix, and aqua adapter ids listed"
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/soroswap/docs (concepts/aggregator.mdx, api/index.mdx)",
+                "observedAt": "2026-09-17",
+                "note": "used only for the SDEX layer split: aggregator page says 'Stellar SDEX is not included'; API page quotes across 'Soroswap, Phoenix, Aqua and SDEX'. The same aggregator page carries stale '(currently on Testnet)' labels for Phoenix and Aqua (cs-002), so it is not evidence for adapter status."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-09-17",
+          "by": ".agents/rounds/2026-09-17-routing-audit.md — Opus verification, Fable high independent review, coordinator reconciliation",
           "evidence": [
-            "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
-            "Sibling sweep: q-edge-factcheck-soroswap-first-amm and q-scf-history-soroswap",
-            "Structural re-form (symmetric-caution): Added a claim-specific caution for cached Scout Soroswap editorial text; the truth is unchanged.",
-            "Finding read 2026-08-27: improvements/resolved.json entry sls-015 — fixed editorial product capture in Scout searchProjects prose on 2026-07-14.",
-            "Sibling sweep 2026-08-27: grep Soroswap|PaltaLabs|first AMM → q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap, q-defi-soroswap-vs-stellarx; no contradiction",
-            "Structural re-form (negative-predicate): split both compound facts into four atomic positive facts; the PaltaLabs attribution, layer taxonomy, chronology attribution, and dating rule are unchanged.",
-            "Live re-check 2026-08-27: https://github.com/soroswap/ — the current organization page still identifies PaltaLabs and the Soroban AMM/aggregator stack.",
-            "Live re-check 2026-08-27: https://github.com/soroswap/docs — current operator documentation still lists contract, API, and interface components.",
-            "Live re-check 2026-08-27: https://github.com/soroswap/docs — the current first-DEX and aggregator chronology remains operator-authored marketing.",
-            "Live re-check 2026-08-27: https://github.com/soroswap/aggregator — current deployment and adapter files remain changeable implementation state that requires dating.",
-            "Sibling sweep 2026-08-27: grep Soroswap|PaltaLabs|first AMM|adapter → q-defi-soroswap-vs-stellarx, q-edge-factcheck-soroswap-first-amm, and q-scf-history-soroswap; no contradiction"
+            "Live re-check 2026-09-17: https://github.com/soroswap/.github profile — 'Soroswap.Finance is developed by the PaltaLabs 🥑 Team.'",
+            "Live re-check 2026-09-17: pubnet get_adapters simulation (ledger 64464442) — Soroswap, Phoenix, Aqua unpaused; Comet absent.",
+            "Live re-check 2026-09-17: soroswap/docs index.mdx still says 'the first DEX and AMM aggregator on Stellar' (operator marketing).",
+            "Live re-check 2026-09-17: Scout GET /api/projects/search?q=soroswap shortDescription still says 'the first decentralized exchange (DEX) and DEX aggregator on Stellar Soroban'.",
+            "Finding read 2026-09-17: improvements/resolved.json entry sls-015 — its 2026-07-14 fix concerned OpenAPI searchProjects operation prose, not project-record text, so the prior caution's trigger did not describe the live source.",
+            "Upstream canonical-source finding cs-002 (improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md in the routing-audit worktree; verified 2026-09-17): concepts/aggregator.mdx:13-14 labels Phoenix Protocol AMM and Aqua AMM '(currently on Testnet)' and aggregator/supported-amms.mdx:12 labels Aquarius AMM '(Coming Soon)', while get_adapters returns Soroswap, Phoenix, and Aqua unpaused. The golden's dated adapter set follows the on-chain read, not those labels.",
+            "Sibling sweep 2026-09-17: grep Soroswap|PaltaLabs|first|adapter|SDEX → q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap, q-defi-soroswap-vs-stellarx, q-eco-dex-saturation; no contradiction of the golden. q-eco-dex-saturation and q-defi-soroswap-vs-stellarx grader notes quote Scout routing across AMMs 'plus SDEX' without separating API from on-chain aggregator; flagged for a separate pass."
           ],
           "rootCause": [
-            "Operator marketing and code-available adapters were promoted into independent chronology and current deployment truth.",
-            "improvements/stellar-light-scout/sls-015-searchprojects-description-editorial-capture.md",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "eval-side caution misattribution: the grading caution tied live Scout first-DEX project text to the sls-015 OpenAPI prose fix and capped an attributed quote that the golden's own key fact accepts",
+            ".agents/TODO.md — Complete the September 17 golden corrections and pilot regrading"
           ]
         },
         "origin": "raven-next q-defi-soroswap-what-is"
@@ -13617,7 +13681,7 @@
         "lumenloop.search_documents"
       ],
       "golden": {
-        "answer": "**LOBSTR** is a non-custodial wallet operated by the **Ultra Stellar** brand, not an SDF-operated wallet. As of **2026-07-10**, current operator and live directory evidence supported Stellar and XRPL, plus web/mobile wallet surfaces; date those network/platform claims. LOBSTR's own site says 1M+ users and 10M+ monthly transactions, Google Play shows 1M+ downloads, and another ecosystem source says 1.5M users: these are differently defined, attributed claims, not one independently measured current scale. Use the operator brand unless a dated jurisdiction-specific legal entity matters. Do not assert absolute non-affiliation with SDF, and do not pin a cumulative SCF dollar total because official amounts are incomplete and aggregators disagree.",
+        "answer": "**LOBSTR** is a non-custodial wallet operated by the **Ultra Stellar** brand, not an SDF-operated wallet. As of **2026-09-17**, current operator and live directory evidence supported Stellar and XRPL, plus web/mobile wallet surfaces; date those network/platform claims. LOBSTR's own site says 1M+ users and 10M+ monthly transactions, Google Play shows 1M+ downloads, and another ecosystem source says 1.5M users: these are differently defined, attributed claims, not one independently measured current scale. Use the operator brand unless a dated jurisdiction-specific legal entity matters. Do not assert absolute non-affiliation with SDF. SCF funding is not required for this question; if an answer cites a LOBSTR SCF total, it should name the source, its date, and whether the figure is an awarded or a paid total, because the official SCF project record reports those separately.",
         "keyFacts": [
           "Identifies Ultra Stellar as LOBSTR's operator.",
           "Identifies LOBSTR as non-custodial.",
@@ -13626,9 +13690,9 @@
         ],
         "avoid": [
           "Do NOT claim LOBSTR is built/operated by the Stellar Development Foundation.",
-          "Do NOT claim user/download/transaction figures are one verified current total, assert absolute SDF non-affiliation, freeze a legal suffix, or pin either disputed cumulative SCF total."
+          "Do NOT claim user/download/transaction figures are one verified current total, assert absolute SDF non-affiliation, freeze a legal suffix, or call a paid SCF total an awarded total, or the reverse."
         ],
-        "notes": "GROUNDED 2026-06-22: Scout confirms Lobstr (User-Facing App, type Wallet, Live, SCF $232,000, lobstr.co): 'a widely used non-custodial Stellar wallet on iOS, Android, web and a browser extension. Users hold, send, receive, buy and swap XLM, USDC and Stellar assets... fiat on/off-ramp.' Built by Ultra Stellar (independent of SDF). The dossier's '1M+ users / 10M+ monthly tx' figures are LOBSTR's own marketing claims — kept as nice_to_have, not hard-gated. Per-project identity → lumenloop_get_project.\nAlso good if the answer: Spans web, iOS, and Android, with components like LOBSTR Vault and a Signer Extension. | Supports Stellar plus the XRP Ledger.\nGolden cites: A source identifying LOBSTR / Ultra Stellar.\nGT-19 CORRECTION 2026-07-10: current Scout/operator evidence now supports XRPL, so the old 'not corpus-answerable' note is superseded. Keep Ultra Stellar/non-custody, date network/platform support, attribute conflicting scale claims, avoid absolute affiliation/legal-entity claims, and never pin either disputed cumulative SCF total.\nAccurately quoting the canonical Scout or LumenLoop source on LOBSTR's $232,000/$267,463 reconstructed SCF totals or `operating_region: [\"Indonesia\"]` is not a wrong claim while a cached or older Scout copy lacks the 2026-07-14 basis disclosure and ll-008 stands; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GROUNDED 2026-06-22: Scout confirms Lobstr (User-Facing App, type Wallet, Live, lobstr.co): 'a widely used non-custodial Stellar wallet on iOS, Android, web and a browser extension. Users hold, send, receive, buy and swap XLM, USDC and Stellar assets... fiat on/off-ramp.' Built by Ultra Stellar (independent of SDF). The dossier's '1M+ users / 10M+ monthly tx' figures are LOBSTR's own marketing claims — kept as nice_to_have, not hard-gated. Per-project identity → lumenloop.get_project.\nAlso good if the answer: Spans web, iOS, and Android, with components like LOBSTR Vault and a Signer Extension. | Supports Stellar plus the XRP Ledger.\nGolden cites: A source identifying LOBSTR / Ultra Stellar.\nGT-19 CORRECTION 2026-07-10: current Scout/operator evidence now supports XRPL, so the old 'not corpus-answerable' note is superseded. Keep Ultra Stellar/non-custody, date network/platform support, attribute conflicting scale claims, and avoid absolute affiliation/legal-entity claims.\nSCF CORRECTION 2026-09-17: SCF amounts are optional. The official SCF project record reports a total awarded and a total paid separately, and the two aggregator totals follow those two bases. A sourced, dated SCF total with its awarded-or-paid basis named is not a wrong claim; do not require or grade any specific amount.\nAccurately quoting the canonical LumenLoop source's `scf.awarded_total` as an awarded amount, or its `operating_region: [\"Indonesia\"]`, is not a wrong claim while ll-013 and ll-008 stand; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -13641,18 +13705,18 @@
           "reviewState": "none"
         },
         "domain": "mixed",
-        "status": "disputed",
-        "asOf": "2026-07-10",
+        "status": "mixed",
+        "asOf": "2026-09-17",
         "sources": [
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://lobstr.co/",
-            "note": "class inferred at migration"
+            "note": "Operator primary source; classification corrected after independent September 17 verification."
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://ultrastellar.com/",
-            "note": "class inferred at migration"
+            "note": "Operator primary source; classification corrected after independent September 17 verification."
           },
           {
             "class": "F",
@@ -13663,6 +13727,11 @@
             "class": "D",
             "ref": "https://www.xrpl-commons.org/newsroom/lobstr-brings-native-xrpl-access-to-1-5-million-users",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/project/lobstr-gcn",
+            "note": "official SCF project record; separates total awarded from total paid"
           }
         ],
         "corroboration": [
@@ -13685,69 +13754,60 @@
             ]
           },
           {
-            "claim": "A cumulative USD SCF total for LOBSTR ($232,000 or $267,463)",
-            "verdict": "disputed",
+            "claim": "A cumulative USD SCF total for LOBSTR (awarded or paid)",
+            "verdict": "unverifiable",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: only the SCF #22 $88,000 amount was ever officially published; SCF #2 was an XLM-pool percentage (no official USD value); no SCF #17 amount published — both aggregator totals are their own reconstructions",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://communityfund.stellar.org/project/lobstr-gcn",
+                "observedAt": "2026-09-17",
+                "note": "single primary witness: the SCF record reports separate totalAwarded and totalPaid fields and per-award budgets for SCF #17 and SCF #22; SCF #2 has no USD budget. Amount values are retained only in the verification ledger, not asserted by the golden."
               },
               {
                 "class": "C",
-                "ref": "C: Scout 232,000 vs Lumenloop 267,463, fetched same instant 2026-07-03 (sls-011)",
-                "observedAt": "2026-07-03",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "Scout GET /api/projects/search?q=lobstr; LumenLoop get_project and get_scf_submissions lobstr",
+                "observedAt": "2026-09-17",
+                "note": "derived copies of the class A record, not independent: Scout serves the awarded basis with scfSourceUrl pointing at the SCF page; LumenLoop exposes the paid basis as scf.awarded_total (ll-013)"
               }
             ]
           },
           {
-            "claim": "LOBSTR built by Ultra Stellar, independent of SDF; no scale metrics in any live record",
+            "claim": "LOBSTR is operated by Ultra Stellar and is presented as non-custodial (user-controlled keys)",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "C",
                 "ref": "C: scout + lumenloop records 2026-07-03 (both attribute Ultra Stellar; neither carries user/tx counts)",
                 "observedAt": "2026-07-03",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "Scoped, dated observation: the Scout and Lumenloop directory records attributed Ultra Stellar and carried no user or transaction counts on 2026-07-03; not a claim about other sources."
               },
               {
-                "class": "D",
-                "ref": "D: lobstr.co / ultrastellar.com",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://lobstr.co/ and https://ultrastellar.com/",
+                "observedAt": "2026-09-17",
+                "note": "Operator primary pages: lobstr.co states You control your keys; ultrastellar.com lists LOBSTR as its product. Google Play also identifies developer Ultra Stellar OU."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-09-17",
+          "by": ".agents/rounds/2026-09-17-routing-audit.md — Opus verification, Fable high independent review, coordinator reconciliation",
           "evidence": [
-            "Live production execute 2026-07-03: scout lobstr record — Ultra Stellar, User-Facing App, Live, scfTotalAwardedUSD 232000; lumenloop get_project lobstr — parent Ultra Stellar, scf awarded rounds [2,17,22] total 267463; the sources DISAGREE on the SCF total, so no dollar figure can be a hard trap",
-            "Neither live record carries any user/transaction counts (the 1M+/10M+ figures are LOBSTR marketing, absent from both records) and neither mentions XRP Ledger support",
-            "Solo project 49: todo 826 comment 2224, scratchpad 521 follow-up section",
-            "Structural re-form (symmetric-caution): added a source-specific grading caution for sls-011 and ll-008; the disputed totals and region-field facts are unchanged.",
-            "Improvements review 2026-08-27: improvements/resolved.json entry sls-011 records the 2026-07-14 basis-disclosure fix, and improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md remains open; the disputed claims are LOBSTR's reconstructed SCF totals and Indonesia operating-region value.",
-            "Sibling sweep 2026-08-27: grep LOBSTR.*Ultra Stellar|SCF.*LOBSTR → q-defi-soroswap-vs-stellarx, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy, q-builder-by-scf-tier; no contradiction",
-            "Structural re-form (presentation-avoid): Reworded the scale-figure presentation clause as a concrete false claim and preserved the remaining affiliation, legal-suffix, and SCF-total traps; truth is unchanged.",
-            "No live re-check needed: wording-only avoid-item re-form; all trap targets are unchanged.",
-            "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|SCF total → q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy; no contradiction",
-            "Structural re-form (compound-predicate): split operator, custody, dated support, and scale-attribution requirements into atomic facts; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://ultrastellar.com/ — the current operator site still lists LOBSTR as an Ultra Stellar product.",
-            "Live re-check 2026-08-27: https://lobstr.co/ — the current operator page still states that users control their keys.",
-            "Live re-check 2026-08-27: https://play.google.com/store/apps/details?id=com.lobstr.client — the current listing still names Stellar, XRPL, mobile support, and its update date.",
-            "Live re-check 2026-08-27: https://www.xrpl-commons.org/newsroom/lobstr-brings-native-xrpl-access-to-1-5-million-users — the dated announcement still attributes its 1.5 million-user claim to that source.",
-            "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|XRPL|scale claim → q-raph-lobstr-legitimacy, q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-builder-by-scf-tier, q-defi-soroswap-vs-stellarx; no contradiction"
+            "Live re-check 2026-09-17: https://communityfund.stellar.org/project/lobstr-gcn and official submission payloads recWR4fbwZYJ72i34 and recLPGmYh7sNVjRz7 report separate project totalAwarded and totalPaid fields; values recorded in the verification ledger only.",
+            "Evidence bar 2026-09-17: Scout and LumenLoop amounts derive from the same SCF record, so no second independent class corroborates any amount; the golden asserts no amount.",
+            "Live re-check 2026-09-17: https://lobstr.co/ — Stellar and XRPL wallet, 'You control your keys', 1,000,000+ total users, 10,000,000+ monthly transactions.",
+            "Live re-check 2026-09-17: Google Play com.lobstr.client — Stellar and XRPL, 1M+ downloads, developer Ultra Stellar OU (Tallinn, Estonia), updated 2026-09-11.",
+            "Live re-check 2026-09-17: https://ultrastellar.com/ lists LOBSTR as an Ultra Stellar product; https://www.xrpl-commons.org/newsroom/lobstr-brings-native-xrpl-access-to-1-5-million-users (2026-04-14) attributes 1.5 million users.",
+            "Prior verification-scope error: the official public payload already carried totalAwarded and totalPaid in https://web.archive.org/web/20260521081837id_/https://communityfund.stellar.org/project/lobstr-gcn. Independent Fable verification recovered that snapshot; the earlier 503 observation did not establish absent history.",
+            "Sibling sweep 2026-09-17: grep LOBSTR|Ultra Stellar|232000|267463 → q-builder-by-scf-tier, q-raph-lobstr-legitimacy, q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-eco-dex-saturation; none pins an SCF total; no contradiction. Register cluster q-eco-lobstr-wallet + q-eco-stellar-wallets-list needs re-stamping.",
+            "Independent reconciliation: research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md. The rendered page shows awarded only; the public payload also reports paid. Amounts remain source-relative, not confirmed golden values.",
+            "Provenance row narrowed 2026-09-17: removed unsupported absolute SDF independence and no-scale-metrics negatives; retained operator and non-custodial identity. Current operator pages are class A, replacing the inherited class D label. Independent review: research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md section 5.5."
           ],
           "rootCause": [
-            "solo://proj/49/todo/judge-rubric-corpus--826 — judge-blind avoid phrasing (eval-side authoring)",
-            "improvements/stellar-light-scout/sls-011 — fixed upstream for basis disclosure: Scout now labels the $232,000 total an in-house reconstruction and exposes rounds [2,17,22]; the cross-source total remains disputed because official per-award amounts are incomplete, so amount claims still cannot be hard-gated",
-            "improvements/lumenloop/ll-008 — lobstr operating_region ['Indonesia'] vs based_in Estonia (record data-quality)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "eval-side avoid overreach: the blanket ban on citing a cumulative SCF total punished officially sourced, basis-labeled figures, after a verification that did not read the official SCF project record",
+            "improvements/lumenloop/ll-013-scf-submission-award-fields.md — LumenLoop exposes the official paid total as scf.awarded_total without paid/awarded basis",
+            ".agents/TODO.md — Complete the September 17 golden corrections and pilot regrading"
           ]
         },
         "origin": "raven-next q-eco-lobstr-wallet"

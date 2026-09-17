@@ -13,6 +13,8 @@ evidence:
   - GT-38 recurrence: Aquarius submissions exposed four bare budgets totaling $391K without statuses while the project summary returned the three-Awarded-row $291K basis; Blend and Soroswap still required official status/paid fields
   - GT-37 recurrence: oracle/passkey/payroll rows exposed populated budgets without awarded/paid status, including partial-payment and non-awarded fixtures
 recurrences:
+  - date: 2026-09-17
+    evidence: "Independent live LOBSTR check: get_project({slug:lobstr}) returns scf.awarded_total 267463, matching the rounded public SCF totalPaid 267462.64, while totalAwarded is 232000. The public project payload and the 2026-05-21 archive expose both bases. See research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md."
   - date: 2026-07-10
     evidence: GT-38 primary/blind probes reproduced bare-budget ambiguity across Aquarius, Blend, and Soroswap, including a Pending Aquarius row with a populated budget
   - date: 2026-07-10

@@ -1,3 +1,6 @@
+Status: the coordinator removed the reported real-query absence assertion before commit `181d5b0f`.
+The independent reviewer verified the removal. Paid answer comparison remains pending.
+
 # D3 review: remove the directory field-placement exception
 
 Reviewer: Fable high (route-audit-direction). Author: Opus code lane. Coordinator: root Astra.

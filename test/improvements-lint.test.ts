@@ -3,7 +3,7 @@ import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
 // @ts-expect-error — plain .mjs script, no type declarations
-import { parseFinding, renderIndex, UPSTREAM_TITLE_MAX, UPSTREAM_TITLE_MIN, upstreamTitleError } from "../scripts/improvements-lib.mjs";
+import { parseFinding, renderIndex, resolveIntake, UPSTREAM_TITLE_MAX, UPSTREAM_TITLE_MIN, upstreamTitleError } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const FIXTURE_ROOT = path.join(ROOT, "tmp");
@@ -67,8 +67,12 @@ describe("upstreamTitle contract (unit)", () => {
 
 // The lint script derives its tree from its own location and runs at import, so the wiring is
 // proven by spawning a COPY of it over a fixture tree: copied scripts, one fixture finding, an
-// intake that covers all five services, and an INDEX.md rendered from the same lib.
-function withLintTree<T>(finding: string, body: (run: () => ReturnType<typeof spawnSync>) => T): T {
+// intake that covers every service, and an INDEX.md rendered from the same lib.
+function withLintTree<T>(
+  finding: string,
+  body: (run: () => ReturnType<typeof spawnSync>) => T,
+  relFinding = "improvements/stellar-docs/sd-998-lint-fixture.md",
+): T {
   const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvements-lint-test-"));
   try {
     mkdirSync(path.join(dir, "scripts", "lib"), { recursive: true });
@@ -76,8 +80,7 @@ function withLintTree<T>(finding: string, body: (run: () => ReturnType<typeof sp
       cpSync(path.join(ROOT, "scripts", rel), path.join(dir, "scripts", rel));
     }
     cpSync(path.join(ROOT, "scripts", "lib", "shared.mjs"), path.join(dir, "scripts", "lib", "shared.mjs"));
-    mkdirSync(path.join(dir, "improvements", "stellar-docs"), { recursive: true });
-    const relFinding = "improvements/stellar-docs/sd-998-lint-fixture.md";
+    mkdirSync(path.join(dir, path.dirname(relFinding)), { recursive: true });
     writeFileSync(path.join(dir, relFinding), finding);
     writeFileSync(
       path.join(dir, "improvements", "intake.json"),
@@ -88,6 +91,7 @@ function withLintTree<T>(finding: string, body: (run: () => ReturnType<typeof sp
           "stellar-docs": { repo: "stellar/stellar-docs" },
           lumenloop: { repo: "lumenloop/lumenloop-backend" },
           "workers-ai-provider": { repo: "cloudflare/ai" },
+          "canonical-source": { type: "mixed", rule: "Set a per-finding repo override after owner verification." },
         },
         findings: {},
       }),
@@ -165,5 +169,64 @@ evidence:
         expect(result.stderr).not.toContain("upstreamTitle");
       },
     );
+  });
+});
+
+describe("canonical-source collection", { timeout: 30_000 }, () => {
+  const csFinding = (id: string) => `---
+id: ${id}
+service: canonical-source
+status: proposed
+discovered: 2026-09-17
+evidence:
+  - live re-check note
+---
+
+## Finding
+
+A fixture record for a primary dependency or product source.
+
+## Recommendation
+
+Fix the owning repository.
+`;
+
+  test("accepts a cs- record in canonical-source/", () => {
+    withLintTree(
+      csFinding("cs-998"),
+      (run) => {
+        const result = run();
+        expect(result.stderr).toBe("");
+        expect(result.status).toBe(0);
+      },
+      "improvements/canonical-source/cs-998-lint-fixture.md",
+    );
+  });
+
+  test("rejects a canonical-source record without the cs- prefix", () => {
+    withLintTree(
+      csFinding("sd-998"),
+      (run) => {
+        const result = run();
+        expect(result.status).toBe(1);
+        expect(result.stderr).toContain("id 'sd-998' does not match service 'canonical-source'");
+      },
+      "improvements/canonical-source/sd-998-lint-fixture.md",
+    );
+  });
+
+  test("resolves only per-finding overrides to a filing repository", () => {
+    const intake = {
+      services: { "canonical-source": { type: "mixed", rule: "Verify each source owner." } },
+      findings: {
+        "cs-901": { repo: "example/library" },
+        "cs-902": { repo: "example/product-docs" },
+      },
+    };
+    const resolve = (id: string) => resolveIntake({ frontmatter: { id, service: "canonical-source" } }, intake);
+    expect(resolve("cs-901")).toMatchObject({ kind: "repo", repo: "example/library" });
+    expect(resolve("cs-902")).toMatchObject({ kind: "repo", repo: "example/product-docs" });
+    // Without a verified owner override, the mixed rule makes the filer refuse the record.
+    expect(resolve("cs-999")).toMatchObject({ kind: "mixed", repos: [] });
   });
 });

@@ -187,7 +187,8 @@ describe("issue #141 routing acceptance", () => {
 
   it.runIf(exposesRwa).each([
     "Simulate a transfer of a tokenized bond through Stellar RPC.",
-    "How do I read a wallet balance for tokenized treasury assets?"
+    "How do I read a wallet balance for tokenized treasury assets?",
+    "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?"
   ])("keeps mixed implementation intent out of RWA discovery: %s", (query) => {
     expect(ids(query)).not.toContain("scout.getRwaAssets");
   });
@@ -274,7 +275,7 @@ describe("directory admission is independent of source field placement", () => {
   type Placement = "examples" | "purpose" | "keywords";
   const provenance = { source: "test://synthetic", fetchedAt: "2026-01-01T00:00:00Z" };
 
-  // Each domain repeats a catalog-unique entity token in useWhen and
+  // Each domain places an entity token found only in that entry in useWhen and
   // exampleQuestions. The purpose and keywords placements add the same token
   // as a separate phrase with no other query token, so phrase coverage stays
   // equal. Only the source field that carries the entity changes.

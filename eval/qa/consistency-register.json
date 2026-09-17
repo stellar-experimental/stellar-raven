@@ -111,15 +111,15 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this pair: wallet rosters are dated and source-attributed and Lobstr is a named first-page wallet; q-eco-lobstr-wallet re-read, no count or roster pinned, both still true together. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read both members after the LOBSTR correction. q-eco-lobstr-wallet now dates Stellar/XRPL/platform support to 2026-09-17, keeps attributed scale claims, and makes SCF amounts optional with a named awarded-or-paid basis; q-eco-stellar-wallets-list keeps its dated 2026-08-30 illustrative roster with Lobstr on the first page and pins no LOBSTR scale, network, or SCF figure. The shared rule (wallet rosters and wallet facts are dated and source-attributed) still holds for both. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
-          "q-eco-lobstr-wallet": "744ec07eab8a0e47ddb59ade2b439a5fad40e06538369e7b8e749fea20de7ca3",
+          "q-eco-lobstr-wallet": "fe79ce3898b0b63ee88db1e729b63e9e9c29b5ec6bc92d41885e62477336197b",
           "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db"
         }
       },
@@ -351,21 +351,21 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: per-project SCF funding figures; the wallet-count sentence touches no funding figure and no member repeats a wallet count; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 12 members. No changed member asserts a different per-project SCF total: q-defi-aquarius-what-is carries no SCF amount before or after the correction; q-defi-soroswap-what-is keeps its unchanged grounding note 'SCF $346,750', matching q-scf-history-soroswap ($57,600 + $139,150 + $100,000 + $50,000 = $346,750); q-eco-lobstr-wallet is not a member. q-defi-rwa-scf-similar's Awarded/budget/totalPaid distinction agrees with the new LOBSTR awarded-versus-paid rule. Every repeated figure in the cluster note is untouched. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, OrbitCDP $280K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster.",
         "memberContentSha256": {
-          "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
+          "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-blend-alternatives": "fa5c7874546202997dca523b5713e53973e00e618fe5e12d73df29e8b59d1e03",
           "q-defi-blend-what-is": "da1ae28620d18520661347a38a48cc0c75a68ab282c6e09c82648d8b476748c0",
           "q-defi-phoenix-what-is": "f7c95f962aca218baa03abb8685ae2522eeefae10075761f12b953dc73059ec5",
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
           "q-defi-rwa-scf-similar": "6188b68c9d4b7bd55ca639d82de7e5fa20a3cca24293f487b95ebfbb83031fc8",
-          "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
+          "q-defi-soroswap-what-is": "85a819dfd79c3c03706a91fb88b5c41eeaa69863c33ce4027ef4b26acbde5b58",
           "q-defi-x402-on-stellar-what": "74b1a618eb34b80415b5c94ae086110b1a02d035e8de61b55c73c187ba50dbdf",
           "q-eco-hana-wallet-scf": "e14915f7762da07e0fab8ca483c83cecc6fac4efa688bad7748521547ea3bb8d",
           "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
@@ -411,16 +411,16 @@
           "q-protocol-amm-cap-0038"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the dated Soroswap TVL evidence; the first-AMM correction remains consistent.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 4 members. The Soroswap SOURCE NOTE accepts attributed quotes of the live Scout 'first DEX and DEX aggregator on Stellar Soroban' wording and keeps presenting it as independently proven history as the avoid item, which matches q-edge-factcheck-soroswap-first-amm (operator firstness attributed; SDEX older order book; CAP-0038/Protocol 18 pools the direct AMM counterexample) and q-protocol-amm-cap-0038. q-defi-soroswap-vs-stellarx still separates API routing, on-chain aggregation, and UI layers. No member now asserts broad-Stellar firstness. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "Soroswap firstness remains attributed operator/Soroban scope, never independent broad-Stellar chronology. The classic SDEX is an older order-book venue; Protocol-18/CAP-0038 constant-product pools are the direct pre-Soroswap AMM counterexample. TVL, routed volume, and cumulative trading volume remain distinct; dated Soroswap current/max examples are non-gating. Re-swept 2026-07-28: re-read Soroswap chronology after the dated-TVL refresh; firstness attribution, the native P18 counterexample, and metric boundaries remain consistent.",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "c07671a9458ab5a5dfa6b61f54de8945d735ac9b32a3d0cc9d003f0e3b1191a6",
-          "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
+          "q-defi-soroswap-what-is": "85a819dfd79c3c03706a91fb88b5c41eeaa69863c33ce4027ef4b26acbde5b58",
           "q-edge-factcheck-soroswap-first-amm": "97a8b7d6968e18a7292c4b3cb68ae612ca2cad1ec5e84ca2ea888c996f503ee7",
           "q-protocol-amm-cap-0038": "16e8a737e4385d99cdd253882d18e0d94c4ec300cd3d957e3ac05a1670acc478"
         }
@@ -634,15 +634,15 @@
           "q-edge-noinfo-exact-tvl-figure"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 5 members. q-defi-aquarius-what-is removed its frozen DeFiLlama '~$48M' and '~20%' grader text; its answer still treats TVL and market rank as live, dated metrics and pins no figure. The other members still gate on provider, endpoint, definition, and as-of discipline (DeFindex dated multi-source values, chain TVL, Blend quarter trend, exact-figure no-info). No member now contradicts the no-frozen-number rule. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "All gate on provider/endpoint/definition/as-of discipline rather than frozen numbers. Blend additionally requires a same-provider declared-quarter start/end trend; current, quarter peak, record, borrowed, pool/backstop, fees, and volume are distinct. DeFiLlama's Stellar history reports a June 19 point above May 30, so May 30 is not an all-time-high gate. Chain, protocol, RWA, asset, and CEX measures must not be summed.",
         "memberContentSha256": {
-          "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
+          "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-defindex-honest": "4bd9d33d8edf75271d7fccd18912c01e78a986de9f9d5105fa77808d132fccf6",
           "q-eco-defi-tvl-current": "736ab0f241ad07145525068a3f463b9fe7442f781be8415eb368603ccd018a19",
           "q-edge-fresh-latest-blend-tvl": "30a9eb5591212312a551158bb1afc4ac754e642b6867783a97dd73eee3257267",
@@ -661,17 +661,17 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Rechecked source-bound wallet repository discovery; no product-family contradiction.",
-          "verdict": "consistent"
+          "date": "2026-09-17",
+          "verdict": "consistent",
+          "reason": "The independent member review found no contradiction. The coordinator corrected the register note from disputed SCF totals to optional source/date/basis-qualified totals. Operator identity, dated Stellar/XRPL support, the illustrative roster, and both smart-wallet cases remain consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md."
         },
-        "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed and its SCF totals disputed. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
+        "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "c07671a9458ab5a5dfa6b61f54de8945d735ac9b32a3d0cc9d003f0e3b1191a6",
           "q-eco-dex-saturation": "07fa859fc42f5fb3369cc5d6065ab8bd111b04abd2b0befebbeab35cd4f68634",
-          "q-eco-lobstr-wallet": "744ec07eab8a0e47ddb59ade2b439a5fad40e06538369e7b8e749fea20de7ca3",
+          "q-eco-lobstr-wallet": "fe79ce3898b0b63ee88db1e729b63e9e9c29b5ec6bc92d41885e62477336197b",
           "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
           "q-tool-passkeykit-smart-wallet": "7ae74c0c752ab19fe534326e7c51b303887aa1400c12425891409ea620356375",
           "q-tool-smart-wallet-repos-discovery": "97a2e5fd78f311fcf4c289774c4587ef09781b83a97c95ba080a2d1f4fe486f9"
@@ -879,16 +879,16 @@
           "q-sep-catalog-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-sep-8-regulated-assets, q-sep-catalog-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 4 members. The cluster rule (retain grader cautions and accept accurately dated, source-scoped answers) still holds: q-eco-lobstr-wallet keeps a canonical-source caution, now scoped to LumenLoop's scf.awarded_total label and operating_region while ll-013 and ll-008 stand, capped at partial, and dates its network claims; q-crp-anchors-by-corridor, q-sep-8-regulated-assets, and q-sep-catalog-list are unchanged and still require dated or source-attributed wording. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "retain grader caution and accept accurately dated/source-scoped answers",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "b7f9777315356c542658f344079117939844d14935189a3f2d9487a98122699a",
-          "q-eco-lobstr-wallet": "744ec07eab8a0e47ddb59ade2b439a5fad40e06538369e7b8e749fea20de7ca3",
+          "q-eco-lobstr-wallet": "fe79ce3898b0b63ee88db1e729b63e9e9c29b5ec6bc92d41885e62477336197b",
           "q-sep-8-regulated-assets": "4fa5830b53d06e504fc30131625928945cc1329990f4fe1c20b8c73f4e289b2a",
           "q-sep-catalog-list": "134e5738e918a77c496c770bdca32d114e689c1d11d2cf3616abdf55ce426542"
         }
@@ -1052,16 +1052,16 @@
           "q-edge-fresh-most-recent-news"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 3 members. The corrections changed no date-field, chronology, or recent-window claim: q-defi-soroswap-what-is keeps its dated 2026-07-10 adapter example, q-defi-blend-what-is is unchanged, and q-edge-fresh-most-recent-news keeps window/asOf, date-field validation, and chronological post-sort requirements. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "Semantic relevance rank is not chronology. Recent-window answers declare window/asOf, validate and label publication versus event date, exclude undated rows, post-sort chronologically, explain editorial significance, and remain non-exhaustive. Ingestion/scrape timestamps do not silently become publication dates.",
         "memberContentSha256": {
           "q-defi-blend-what-is": "da1ae28620d18520661347a38a48cc0c75a68ab282c6e09c82648d8b476748c0",
-          "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
+          "q-defi-soroswap-what-is": "85a819dfd79c3c03706a91fb88b5c41eeaa69863c33ce4027ef4b26acbde5b58",
           "q-edge-fresh-most-recent-news": "8670e27683d28aeec11cb67f90c4a1a6a402e2b90ddae0d0ffe287631c365283"
         }
       },
@@ -1216,15 +1216,15 @@
           "q-edge-noinfo-exact-tvl-figure"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 5 members. q-defi-aquarius-what-is no longer carries any TVL scalar or range; the remaining members still treat provider TVL as a provider/endpoint/as-of snapshot without an approximate range or block-by-block claim. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "A live provider may expose a many-decimal scalar, but it remains a provider/endpoint/as-of/inclusion/pricing snapshot rather than an objective protocol fact. The corpus no longer requires an approximate range or claims TVL necessarily moves block-by-block.",
         "memberContentSha256": {
-          "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
+          "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-defindex-honest": "4bd9d33d8edf75271d7fccd18912c01e78a986de9f9d5105fa77808d132fccf6",
           "q-eco-defi-tvl-current": "736ab0f241ad07145525068a3f463b9fe7442f781be8415eb368603ccd018a19",
           "q-edge-fresh-latest-blend-tvl": "30a9eb5591212312a551158bb1afc4ac754e642b6867783a97dd73eee3257267",
@@ -1241,15 +1241,15 @@
           "q-infra-which-indexer"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): a later same-day owner fix changed only keyFact wording on q-infra-rpc-provider-archive-tier to satisfy a pinned wording test (claims unchanged); prior same-day re-sweep verdict stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 4 members. q-defi-soroswap-what-is still identifies Soroswap as the PaltaLabs Soroban AMM and aggregation stack, distinct from QuasarSwap and from Lightsail/Quasar data infrastructure; q-edge-noinfo-sep-9999, q-infra-rpc-provider-archive-tier, and q-infra-which-indexer are unchanged. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "QuasarSwap exists as a Nova Network DEX but was not verified as a Stellar project in the dated broad sweep. equilibriumco/quasar and lightsail-network/Quasar are unrelated Stellar data infrastructure, and Soroswap is a distinct DEX. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
+          "q-defi-soroswap-what-is": "85a819dfd79c3c03706a91fb88b5c41eeaa69863c33ce4027ef4b26acbde5b58",
           "q-edge-noinfo-sep-9999": "8ccff4aa275a4d27f41c28ca3ae4ddf03414fcb074aa68bd3bd7b27d2ae8b4ac",
           "q-infra-rpc-provider-archive-tier": "9f97c25d3c228d790b8ed146ff4fda969b8d97cf33e8541c312e2d881ad1c78b",
           "q-infra-which-indexer": "dc8035aa02206b2ec496c27e2a2526909f0988cf2cb6f3117141b590a5aa2307"
@@ -1894,15 +1894,15 @@
           "q-scf-history-soroswap"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-history-soroswap changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 3 members. q-defi-aquarius-what-is asserts no SCF award history before or after the correction, so the cluster's Aquarius $291K/$391K basis conflict is untouched; q-defi-blend-what-is and q-scf-history-soroswap ($346,750 across four awarded submissions in three numbered rounds plus the Liquidity Award) are unchanged. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "Aquarius preserves the $291K row/paid basis and $391K display conflict. Blend has one $50K project award; SCF #7 / Seed Fund #1 is one predecessor award under two labels. Soroswap has four awarded submissions across three numbered rounds plus one Liquidity Award, totaling $346,750.",
         "memberContentSha256": {
-          "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
+          "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-blend-what-is": "da1ae28620d18520661347a38a48cc0c75a68ab282c6e09c82648d8b476748c0",
           "q-scf-history-soroswap": "f06b47f25de8eda43c207d88f6db3f466f321ac74427d5e46343a45056031a58"
         }
@@ -2069,15 +2069,15 @@
           "q-scf-history-soroswap"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-17",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-build-award-cap, q-scf-history-soroswap changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-17",
+          "reason": "September 17 routing audit: Re-read all 4 members. q-defi-aquarius-what-is asserts no liquidity-award amount or Pending status before or after the correction; q-defi-blend-what-is, q-scf-build-award-cap ($150K Build cap paid in XLM tranches), and q-scf-history-soroswap (Liquidity Award '24 Q1 $50,000) are unchanged. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
           "verdict": "consistent"
         },
         "note": "$50K base plus optional $50K supplemental means a $100K maximum; recipient rows do not prove supplemental payment, and Aquarius remains Pending.",
         "memberContentSha256": {
-          "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
+          "q-defi-aquarius-what-is": "d78fb98ad5d3d3fe98b3048bd96a53c2174d3aa889a2e1e2d26e1ad05ea3fa3f",
           "q-defi-blend-what-is": "da1ae28620d18520661347a38a48cc0c75a68ab282c6e09c82648d8b476748c0",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
           "q-scf-history-soroswap": "f06b47f25de8eda43c207d88f6db3f466f321ac74427d5e46343a45056031a58"

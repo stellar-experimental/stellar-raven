@@ -295,18 +295,57 @@ Done when: reviewed upgrades pass the repository gates and a new audit records e
 
 ## Eval instruments
 
-### Monitor vendor short-token prefix matching
+### Complete the September 17 golden corrections and pilot regrading
 
-The 2026-09-01 token audit found no minimum length in the vendored scorer prefix rule.
-The tokenizer keeps one-character tokens.
-A description containing `a` therefore prefix-matches each query token that starts with `a`.
-This is a single-source observation. Do not edit the vendor file from this observation.
-The record is `.agents/rounds/2026-09-01-protocol-history-attempt-three.md`.
-The rule lives in `src/catalog/vendor/search-scoring.ts`. Its current SHA-256 is
-`718924d10533ea49d472602f600ece0e4d7a0aae3e9e0ca5a95d9a8c6e611b14`.
+The source audit found a false LOBSTR funding prohibition, ambiguous Aquarius voting notes, and misattributed Soroswap source guidance.
+Three independently reviewed corrections preserve questions, required facts, and the 16-case measurement denominator.
+Source evidence and review are in `research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md`.
 
-Done when: a case from a different question family and primary service shows short-token coverage
-inflation, or a re-vendor changes the file hash.
+Done when: the corpus and consistency checks pass, three stored pilot answers receive symmetric regrading, and the ledger records differences.
+
+
+### Re-check the upstream codemode short-token repair
+
+The September 17 audit reproduced false routing across unrelated weather and billing operations.
+The defect exists in codemode 0.4.2, 0.5.1, 0.5.2, and the tested upstream main revision.
+[Cloudflare #2296](https://github.com/cloudflare/agents/issues/2296) owns the upstream repair.
+The source record is `improvements/canonical-source/cs-001-codemode-search-short-token-prefix.md`.
+Raven also has an ungated copy of the same prefix rule.
+
+Reverse-prefix deletion lost valid word-form matches and failed routing coverage.
+Standard Porter stemming also failed coverage and doubled local search time in the measured implementation.
+Neither experiment ships. Do not replace them with query exceptions or a tuned token-length threshold.
+
+Done when: an upstream or general local repair passes the original triggers, positive controls, and Raven routing gates.
+Keep the RWA exclusion until its three technical controls also pass.
+
+### Reconcile source-authority guidance for full-description clients
+
+The September 17 audit found conflicting instructions in `EXECUTE_DESCRIPTION` and `AUTHORITY_RULES`.
+The former says all factual questions use Docs first. The latter assigns ecosystem facts to Scout or Lumenloop.
+The conflicting clause falls beyond Claude's 2,048-character tool-description clip.
+A clipped-client QA run cannot measure its correction.
+
+Use the existing source-family rule when removing the contradictory clause.
+Measure a full-description client or Playground against protocol and ecosystem controls before release.
+Do not add operation lists, entity examples, or a new routing field.
+Evidence: `research/audits/2026-09-17-routing-audit/direction-review.md`, section 8.
+
+The existing Playground runner lacks answer-cost accounting and a judge dollar cap.
+Its call-count controls cannot certify the proposed $20 comparison limit.
+Keep that comparison unlaunched until existing budget enforcement covers both costs.
+Do not add a parallel evaluation runner or treat an estimated cost as an enforced limit.
+
+Done when: one consistent authority rule reaches the relevant client, with no verified answer regression.
+
+### Reconcile Soroswap API and contract scope in sibling grader notes
+
+The September 17 golden audit found ambiguous SDEX routing notes in two sibling cases.
+Review `q-eco-dex-saturation` and `q-defi-soroswap-vs-stellarx` through the golden-truth workflow.
+Soroswap API quotes can include SDEX. Its deployed aggregator currently lists three AMM adapters.
+Do not treat those surfaces as identical.
+
+Done when: independently verified notes preserve this distinction, and the corpus and sibling checks pass.
 
 ### Monitor Raven capability-boundary offers
 

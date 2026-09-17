@@ -438,7 +438,7 @@ Known judge failure modes (from `eval/qa/README.md`):
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed
   noise floor live in `eval/qa/README.md` ("Judging rubric and score comparability").
-- **Denominator:** read current membership from the generated registry and selected case IDs.
+- **Denominator:** read current membership from `eval/qa/lifecycle-registry.json` and selected case IDs.
   `eval/EVALS.md` records corpus membership history. Historical runs and frozen plans retain their original denominators.
   Compare common IDs under the same model, rubric, and evidence-pack tuple.
 - **Deterministic sample-membership note:** sample-30 is proportional by service and uses
