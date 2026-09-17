@@ -1,6 +1,6 @@
 # Routing and direction audit — 2026-09-17
 
-Status: collection closed. D3 failed the predeclared answer gate and was withdrawn. Accepted repairs await final release checks.
+Status: collection closed. D3 failed the predeclared answer gate and was withdrawn. Final independent code and source review passed.
 
 ## Authority and scope
 
@@ -43,6 +43,7 @@ The coordinator owns implementation, spending, Git, deployment, and external fin
 D3 is rejected. The candidate omitted the required no-transcript warning from the A/V answer.
 The baseline stated the warning. Stored results and independent live reads confirm the service returns summaries only.
 Both arms reached the same operation. This decision makes no causal claim about D3.
+The full 16-row review also confirmed a lost Aquarius boost fact and an incorrect stablecoin peg count.
 The predeclared one-loss rule applies despite higher aggregate candidate grades.
 The runtime scorer and its original Soroswap control are restored to `848edec4`.
 RWA remains excluded. Its three inclusive controls still fail.
@@ -83,7 +84,7 @@ The discovery baseline alone cannot support a candidate improvement claim.
 ## Remaining work
 
 - Complete final independent delta review and repository checks, then publish the accepted scope.
-- File reviewed `cs-002` and `sls-085` after their source records become public.
+- File reviewed `cs-002`, `sls-085`, and `sls-086` after their source records become public.
 - Keep issue #167 open for a general RWA routing repair.
 - Track the full-description authority conflict and supported dependency migration in `.agents/TODO.md`.
 
@@ -149,7 +150,7 @@ The questions and denominator remain frozen. The original answer artifact will n
 The published dependency finding is [Cloudflare #2296](https://github.com/cloudflare/agents/issues/2296).
 [Raven #167](https://github.com/stellar-experimental/stellar-raven/issues/167#issuecomment-5706841109) records the unchanged RWA block.
 Reverse-prefix deletion and Porter stemming failed coverage checks; neither will ship.
-The test table now includes all three original RWA controls. Runtime routing remains unchanged from D3.
+The test table now includes all three original RWA controls. At that experiment stage, runtime routing still contained D3. The final change restores the baseline.
 
 The recorded pilot contains 36 public search calls. D3 changes none of their ranked results.
 This checks observed queries only; it does not establish identical future answers or internal execute searches.
@@ -177,3 +178,15 @@ The final Fable high completion gate passes golden and pipeline changes.
 All eleven consistency groups pass. The corpus lint reports zero errors and 62 existing warnings.
 The final unit run passes 2,179 tests with four skips. Type checking, build, and secret scanning pass.
 An earlier unit run caught a stale generated improvements index after recurrence evidence changed; regeneration resolved it.
+
+## Final accepted-scope checks
+
+Fable high passed the final delta review and the corrected-golden overlays.
+The coordinator corrected the A/V evidence count and added missing artifact hashes to the skill recurrences.
+Type checking, build, routing acceptance, and all 2,160 unit tests pass; four tests skip because RWA is excluded.
+The source tree and catalog match the production baseline. No runtime routing change remains.
+
+All 16 candidate answers received fact-level review. The final matrix records three losses and separates judge disagreements.
+The Veridise source-gap proposal was rejected after live queries recovered every required fact.
+The Aquarius wording moved from monitor-only to verified after independent source review.
+The evaluation self-test and live improvements lint pass. Corpus lint has zero errors and 62 existing warnings.

@@ -20,7 +20,7 @@
 
 | keyFact | B1 (answerSha 820ebed0…) | C1 (answerSha 87e488fa…) |
 |---|---|---|
-| 1 exposed op + summary/source provenance | present in substance: "via LumenLoop AV-passage search"; five rows with title, channel, URL; execute used `lumenloop.find_av_passages`. The dotted id is not named in prose. | present in substance: "from LumenLoop's AV index"; five rows with title, channel, URL; execute used `lumenloop.find_av_passages`. The dotted id is not named in prose. **No difference.** |
+| 1 exposed op + summary/source provenance | present in substance: "via LumenLoop AV-passage search"; four recordings listed with title, channel, URL; execute used `lumenloop.find_av_passages`. The dotted id is not named in prose. | present in substance: "from LumenLoop's AV index"; five recordings listed with title, channel, URL; execute used `lumenloop.find_av_passages`. The dotted id is not named in prose. **No difference** on the fact (the row count differs: 4 vs 5, both from returned rows). |
 | 2 transcript text absent | **present**: "Note: these are AI-generated summaries of the recordings with links, not verbatim transcripts" | **absent**: the only precision note says "these are semantic-similarity passage matches from LumenLoop's AV index …; the `start_offset` values returned are opaque transcript-ordering offsets, not real playback timestamps … use the title/summary above". No sentence says the summaries are AI-generated or that transcript text is not returned. Not contradicted, but not stated. |
 | 3 `start_offset` opaque | present: "the underlying passage-offset data isn't a clickable timestamp" | present: "opaque transcript-ordering offsets, not real playback timestamps". **No difference.** |
 
@@ -38,6 +38,11 @@
 - B1: search "passkeys smart wallet signing podcast talk" → `lumenloop.find_av_passages` at rank 6; search "find audio video passages passkey" → rank 1; execute: 4 × `find_av_passages` (limit 5). Stored result rows carry `summary`, `long_summary`, `start_offset`; no `transcript`/`text`/`passage`/`speaker` field.
 - C1: search "passkeys smart wallet signing talk" → `find_av_passages` at rank 9; search "find audio video passages speech" → rank 1 (its description text, returned to the agent, reads: "Transcript text itself is never returned — cite the link + the passage summary"); execute: 3 × `find_av_passages` (limit 8) + `search_content_semantic({types:["av"]})`. Stored result rows carry the same fields; no transcript-like field.
 - Both arms reached the fact-bearing source (the operation description and the response shape). The candidate's omission is answer-side, not a retrieval miss.
+
+## Correction and evidence note (2026-09-17)
+
+- Corrected: the baseline answer lists **four** recordings, not five; the candidate lists five (its fifth, SEP-30, is a real returned row).
+- Richer evidence than the criteria assume: §2.4 of the criteria says execute result bodies are not stored, only `resultChars`. In both artifacts the execute transcript entry carries a `result` string (B1: 25,811 chars; C1: 25,915 chars). Those stored bodies show the returned rows with `summary`, `long_summary`, `start_offset`, and no `transcript`/`text`/`passage`/`speaker` field, and they contain the SEP-30 row (`wpB6ZT2aOFs`). The live re-execution below confirms the same shape; the stored bodies are primary evidence for what each agent saw.
 
 ## liveRecheck (free, read-only)
 

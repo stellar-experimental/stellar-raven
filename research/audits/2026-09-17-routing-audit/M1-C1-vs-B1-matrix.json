@@ -1,0 +1,263 @@
+{
+  "schema": "m1-paired-fact-matrix-v3",
+  "status": "final; D3 rejected under frozen stop (root + Fable verified AV K1 loss)",
+  "criteria": "paid-comparison-review-criteria.md (sha f5da7484…)",
+  "artifacts": {
+    "B1": {
+      "path": "repo/eval/qa/results/2026-09-17T01-33-03-variantA.json",
+      "sha256": "ef988d64c2070f98196f2981d7028d66158492a85745be558c1c4e0bbf08afa0",
+      "serverRev": "848edec4"
+    },
+    "C1": {
+      "path": "repo/eval/qa/results/2026-09-17T03-21-24-variantA.json",
+      "sha256": "9f5fdab852d5c7e7ab872f238491df818fcd2b33dce411f6a8992d5f1c105308",
+      "serverRev": "c6968e74",
+      "costUSD": 5.9831158
+    }
+  },
+  "validity": "both comparable, cost-complete, 16 rows same order; tuple/register/binary/env/surface identical; 13 caseInputSha256 equal, 3 corrected IDs differ as expected; no agent failure; raven connected. QA implementation hash not found in meta under an obvious key (root/runner gate). M0 overlays not merged; M0-C1 still running.",
+  "summary": {
+    "verifiedLoss": 3,
+    "monitorOnly": 3,
+    "noDifferenceOrCandidateBetter": 10
+  },
+  "rows": [
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "grade": "correct->partial",
+      "verdict": "verified-loss",
+      "type": "keyFact",
+      "fact": "K1 transcript text absent",
+      "b1": "'AI-generated summaries of the recordings with links, not verbatim transcripts'",
+      "c1": "K1 absent. K0 present in both (lumenloop.find_av_passages used in transcript; prose naming not required, Fable confirmed). K2 present in both",
+      "evidence": "C1 execute result shows summary/long_summary rows only; av-live-recheck.json description 'Transcript text itself is never returned'",
+      "rootCause": "answer omitted a host-described output limit (agent behavior). D3 effect not established either way: differing queries do not prove internal rankings unchanged",
+      "upstream": null,
+      "ownRepo": null,
+      "originalReviewerJudgment": {
+        "c1": "absent; K2 opaque start_offset kept; K0 op not named in both",
+        "rootCause": "answer-craft omission of a host-described output limit (agent variance); no D3 ranking change for this query",
+        "ownRepo": "candidate for answer-honesty guidance: surface 'no transcript text' in A/V results, not only in op description"
+      }
+    },
+    {
+      "id": "q-defi-aquarius-what-is",
+      "corrected": true,
+      "grade": "wrong->wrong",
+      "verdict": "verified-loss",
+      "type": "keyFact",
+      "fact": "K3 AQUA reward boosts limited to eligible LP/SDEX activity",
+      "b1": "'boosts a holder's liquidity-reward multiplier (up to 2.5x…)'",
+      "c1": "absent; C1 transcript has 0 'boost' mentions",
+      "evidence": "B1 reached ICE Stage 3 boost proposal via semantic content; C1 never reached a boost-bearing source; Aquarius docs 2026-09-17 confirm boost",
+      "rootCause": "C1 did not reach a boost-bearing source (0 transcript mentions of 'boost'); B1 reached aqua governance proposal 'ICE Stage 3 - liquidity rewards boost formula'. Mechanism (query variance or D3 ranking) not established",
+      "upstream": "Scout Aquarius description merges governICE/upvoteICE (monitor)",
+      "ownRepo": null,
+      "originalReviewerJudgment": {
+        "rootCause": "retrieval-path divergence (different agent query/source family); both arms collapse ICE variants (V0 both, not new)"
+      },
+      "m0": {
+        "B1": "wrong/correct avoid[1]; K3 not listed missing",
+        "C1": "wrong/correct avoid[1] 3/3 agree; lists 'Does not state that AQUA reward boosts are limited to eligible LP/SDEX activity via ICE' missing"
+      },
+      "liveEvidence": [
+        "https://docs.aqua.network/aqua-and-ice/ice-boosts-how-to-maximize-lp-rewards.md (read 2026-09-17; golden-corrections/evidence/aq_aqua-and-ice_ice-boosts-how-to-maximize-lp-rewards.md): 'Liquidity providers who hold ICE receive a **reward boost** on their AQUA rewards, up to x2.5.'",
+        "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits.md (read 2026-09-17): 'non-transferable ICE tokens that carry liquidity-voting power, governance-voting power, and a reward boost for liquidity providers'"
+      ],
+      "verificationGaps": [
+        "SDEX half of K3 ('LP/SDEX activity') not re-verified in this lane; the loss rests on the LP boost scope, which B1 states and C1 omits",
+        "evidence is class A docs only for the boost; no class B code check in this lane"
+      ]
+    },
+    {
+      "id": "q-eco-stablecoins-on-stellar",
+      "grade": "correct->correct",
+      "verdict": "verified-loss",
+      "type": "newWrongClaim",
+      "fact": "'41 stablecoins … spanning 10 fiat pegs'",
+      "b1": "no peg-count error. B1 execute 1: scout.getStablecoins({limit:100}) returned a truncated result with artifact 1a11069b… (12 pegs visible). Execute 2: codemode.artifact.read(same id) then full.stablecoins; the host envelope guard failed it ('.stablecoins is on the data payload … use r.data.stablecoins'). Execute 3: codemode.artifact.read(same id) then full.data.stablecoins; succeeded with count 41 and all 16 pegs. No narrower upstream call",
+      "c1": "'41 stablecoins are actively tracked as live on Stellar, spanning 10 fiat pegs' (wrong: 16). 'USDZ … (already listed above under USD …)' (false: USDZ appears once). One execute only; its truncated result showed 12 pegs, so 10 matches neither visible nor live data",
+      "evidence": "live registry dataAsOf 2026-09-16T21:26: 41 rows, 16 pegs (live-stablecoins-2026-09-17.json); C1 result truncated (35 rows, 12 pegs visible)",
+      "rootCause": "observed boundary: first execute result truncated with an artifact pointer. Host recovery works: B1 recovered all 41 rows from the same artifact after the envelope correction. Agent behavior: C1 made no artifact read and stated an invented count (10). No host defect established",
+      "upstream": null,
+      "ownRepo": null,
+      "originalReviewerJudgment": {
+        "b1": "no peg-count error (result had 16 pegs)",
+        "evidence": "live registry dataAsOf 2026-09-16T21:26: 41 rows, 16 pegs (live-stablecoins-2026-09-17.json); C1 result truncated (35 rows, 12 pegs visible)",
+        "rootCause": "Raven host result truncation + agent counted from truncated projection instead of reading artifact",
+        "ownRepo": "truncation-aware aggregate counts (host block/metadata or guidance to read artifact before counting)",
+        "v2": {
+          "b1": "no peg-count error. B1 first execute got the same truncated result (12 pegs visible, artifact pointer), codemode.artifact.read failed, then a narrower execute returned all 16 pegs",
+          "rootCause": "observed boundary: first execute result truncated with an artifact pointer. Agent behavior: C1 did not recover and stated an invented count. No host defect established"
+        }
+      },
+      "liveEvidence": [
+        "paired-review/M1-C1-vs-B1/live-stablecoins-2026-09-17.json: https://stellarlight.xyz/api/stablecoins generatedAt 2026-09-17T03:28:52.984Z, dataAsOf 2026-09-16T21:26:19.752Z; counts tracked 41, byBasis live 40 / curated-static 1 / unmeasured 0; 16 pegs AED,ARS,AUD,BRL,CAD,CHF,CLP,EUR,GBP,JPY,MXN,NGN,PEN,SGD,USD,ZAR",
+        "root: stablecoins-root-recheck.json, scout.getStablecoins compact projection 03:35Z: 41 rows, 16 pegs, dataAsOf 21:26; in-sandbox aggregation returns the full correct count"
+      ],
+      "sharedImprecision": "both arms call 41 rows 'live'; registry is 40 live + 1 curated-static (present in B1 too, not a new C1 claim)"
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "grade": "wrong->wrong (core correct->incorrect)",
+      "verdict": "monitor-only",
+      "reason": "same skill read (11177 chars), near-identical retired derive-macro API in both; judge-variance core flip, no fact difference",
+      "rootCause": "shared baseline defect: skill content presents retired #[derive(Upgradeable)] API",
+      "upstream": "OpenZeppelin stellar skill staleness (check existing finding before filing)",
+      "verificationGaps": [
+        "retired-API staleness of the OpenZeppelin skill not re-verified against current OZ stellar-contracts in this lane"
+      ]
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "corrected": true,
+      "grade": "wrong->wrong",
+      "verdict": "monitor-only",
+      "reason": "both mislabel CAG5 as aggregator, K1 weak, K3 absent, V1 both; C1 attributes 'first' better; C1 unattributed 'LumAgg/StellarBroker emerged after Soroswap' unverified chronology",
+      "rootCause": "Scout onchain label defect (sls-085 draft, outside repo); stale Soroswap docs (cs-002)",
+      "upstream": "sls-085 (draft), cs-002",
+      "m0": {
+        "B1": "wrong/correct avoid[2]; no wrongClaims listed",
+        "C1": "wrong; core incorrect 2/3; avoid[2] 3/3; wrongClaims: on-chain aggregator routes across SDEX, and CAG5 address"
+      },
+      "reconcile": "both M0-C1 wrong claims also appear in B1 text (B1: 'even the classic Stellar order-book DEX (SDEX)'; 'Aggregator router contract: CAG5…'). Judge-listing asymmetry, not a new C1 claim",
+      "verificationGaps": [
+        "C1 'LumAgg/StellarBroker emerged after Soroswap' chronology not verified"
+      ]
+    },
+    {
+      "id": "q-defi-blend-what-is",
+      "grade": "partial->partial",
+      "verdict": "monitor-only",
+      "reason": "K4 absent both; C1 new 'Liquidity Award $50,000 Q1 2024' is faithful to Scout scfRoundAwards 'Liquidity Award - \\'24 Q1' (source-faithful, not independently re-verified on communityfund page)",
+      "verificationGaps": [
+        "Liquidity Award label and quarter not checked on communityfund.stellar.org; source-faithful to Scout scfRoundAwards only"
+      ]
+    },
+    {
+      "id": "q-aas-issuer-fees-supply-cap-freeze",
+      "grade": "partial->correct",
+      "verdict": "no-difference",
+      "note": "candidate better: C1 K0-K4 all present; B1 lacked K4"
+    },
+    {
+      "id": "q-asset-rwa-tokenized-freshness",
+      "grade": "correct->correct",
+      "verdict": "no-difference",
+      "note": "C1 new claims source-faithful: DTCC H1 2027 (Lumenloop article snippet), Spiko tvlUSD 1653789314 asOf 2026-09-14 DefiLlama (Scout)",
+      "verificationGaps": [
+        "DTCC H1 2027 and Spiko tvlUSD checked against tool output only, not independent primary sources"
+      ]
+    },
+    {
+      "id": "q-eco-lobstr-wallet",
+      "corrected": true,
+      "grade": "partial->correct",
+      "verdict": "no-difference",
+      "note": "candidate better; B1 called $267,463 a reconciled round-award total (V1)",
+      "upstream": "ll-013 LumenLoop awarded_total = paid",
+      "m0": {
+        "B1": "correct/correct, no avoid (nonIdentical cases)",
+        "C1": "correct/correct 3/3"
+      },
+      "reconcile": "original reviewer judged B1 '$267,463 reconciled round-award total' a basis error; M0-B1 panel did not flag it. Both views kept; no C1 loss in either view"
+    },
+    {
+      "id": "q-gap-rpc-horizon-unindexed-reference",
+      "grade": "partial->correct",
+      "verdict": "no-difference"
+    },
+    {
+      "id": "q-org-sdf-board-directors",
+      "grade": "partial->correct",
+      "verdict": "no-difference"
+    },
+    {
+      "id": "q-protocol-parallel-execution",
+      "grade": "wrong->wrong",
+      "verdict": "no-difference",
+      "note": "K1 absent both; V1 both"
+    },
+    {
+      "id": "q-rwa-projects-tokenizing-stellar",
+      "grade": "partial->partial",
+      "verdict": "no-difference",
+      "note": "K2 absent both"
+    },
+    {
+      "id": "q-scf-hackathon-compare-live",
+      "grade": "partial->correct",
+      "verdict": "no-difference",
+      "note": "identical data"
+    },
+    {
+      "id": "q-tool-soroban-auth-audit-live",
+      "grade": "wrong->wrong",
+      "verdict": "no-difference",
+      "note": "K1-K3 absent both; both say Critical 'still open/no confirmed fix' (V1 both); neither reached the invalid disposition or appendix relocation",
+      "rootCause": "agent projection/query failure in both arms. Execute code clipped chunk text (B1 .slice(0,500), .slice(0,1500); C1 .slice(0,600) x3, .slice(0,1200) x2) and no query targeted the vulnerability summary; no execute result in either arm contains 'Why Invalid', 'Critical-Severity Issues 0', or 'V2.1'. Agents then read 'Investigated'/no fix as open",
+      "upstream": null,
+      "originalReviewerJudgment": {
+        "rootCause": "shared: agents read 'Investigated'/no-fix-hash as open; Scout research chunks do not surface the V2 inline invalid judgment or zero valid-Critical summary",
+        "upstream": "possible Scout searchResearch coverage gap for the Veridise disposition (unverified; not filed)"
+      },
+      "upstreamAudit": "../upstream-two-candidates-review.md: Scout searchResearch returns report 28 chunk 7 ('Why Invalid'), report 42 chunk 16 (V-SOR-APP-VUL-003 'Why Invalid', A.2 Invalid Issues), report 28 chunk 1 (Table 2.3 Critical-Severity Issues 0), report 42 chunk 0 (V2.1 relocation). Gap rejected. Exact-ID path stays covered by resolved sls-074 (#1031). Observation only, not filed: summary chunk carries severity 'critical' metadata",
+      "ownRepoFollowUp": "agent composition guidance: read full audit rows and summary tables before projecting (not an upstream item)"
+    },
+    {
+      "id": "q-tw-escrow-api-auth-custody",
+      "grade": "wrong->wrong",
+      "verdict": "no-difference",
+      "note": "K0-K3 present both; both claim x-api-key exclusivity (V0 both) from pinned skill gotcha; C1 scopes to V1",
+      "rootCause": "pinned Trustless Work skill states universal x-api-key vs current Core API bearer support",
+      "upstream": "Trustless Work skill auth wording (golden notes already record the dispute)"
+    }
+  ],
+  "reconciliation": [
+    "Aggregate grade gain (6 rows up, 1 down) does not excuse any verified loss.",
+    "Grade-only changes without fact changes: OZ (core flip), AV grade drop is backed by fact loss K1.",
+    "Stablecoin row keeps grade 'correct' in C1 yet carries a verified new wrong claim; the judge missed it."
+  ],
+  "revision": {
+    "v": 3,
+    "date": "2026-09-17",
+    "prior": [
+      "M1-C1-vs-B1-matrix.v1.json",
+      "M1-C1-vs-B1-matrix.v2.json"
+    ],
+    "changes": [
+      "auth-audit root cause corrected: Veridise upstream coverage gap rejected by ../upstream-two-candidates-review.md; cause is agent projection/query failure",
+      "stablecoin B1 trace corrected: artifact recovery succeeded after envelope correction; no narrower upstream call"
+    ],
+    "previous": {
+      "v": 2,
+      "date": "2026-09-17",
+      "prior": "M1-C1-vs-B1-matrix.v1.json",
+      "changes": [
+        "AV K0 corrected to present in both (operation use in transcript satisfies 'Uses')",
+        "cause assertions narrowed; no host defect claimed",
+        "stablecoin evidence corrected: B1 saw the same truncated first result and recovered",
+        "M0 overlays added as separate columns",
+        "source verification gaps listed"
+      ]
+    }
+  },
+  "overlays": {
+    "note": "separate grading view; never merged into M1 verdicts or the loss decision",
+    "M0B1": {
+      "path": "repo/eval/qa/results/2026-09-17T02-24-27-rejudge.json",
+      "sourceSha": "ef988d64…",
+      "nonIdentical": true,
+      "costUSD": 0.6172996
+    },
+    "M0C1": {
+      "path": "repo/eval/qa/results/2026-09-17T03-28-28-rejudge.json",
+      "sourceSha": "9f5fdab8…",
+      "casesRev": "c6968e74",
+      "casesSha": "94ac7f19…",
+      "nonIdentical": false,
+      "costUSD": 0.5692046,
+      "calls": 9
+    }
+  }
+}
