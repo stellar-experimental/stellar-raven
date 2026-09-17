@@ -1,7 +1,7 @@
 ---
 id: sls-086
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-17
 upstreamTitle: Aquarius project description credits reward direction to ICE governance votes
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "Prevalence: one project row (aquarius). Other Scout descriptions were not surveyed."
   - "Dedupe 2026-09-17: no active or resolved Raven finding covers this description; resolved sls-026 concerns Aquarius SCF totals. GitHub search repo:Stellar-Light/stellarlight for \"aquarius ICE\", governICE, and upvoteICE returned 0 results."
   - "Raw evidence: research/audits/2026-09-17-routing-audit/aquarius-description-roles.md."
+  - upstream issue filed 2026-09-17: https://github.com/Stellar-Light/stellarlight/issues/1674
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: cs-002
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-09-17
 upstreamTitle: "Aggregator docs say Phoenix and Aqua are on Testnet or coming soon; mainnet adapters are configured and unpaused"
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - An independent coordinator reproduction through both RPC providers at ledger 64464708 returned the same three unpaused adapters.
   - "No swap was simulated or submitted. This evidence shows adapter configuration and pause state, not swap success or liquidity."
   - "Dedupe 2026-09-17: no soroswap/docs or soroswap/aggregator issue or PR covers Phoenix, Aqua, testnet status, or supported AMMs. Open soroswap/docs #39 (generic upgrade checklist) and #42 (deployed contracts, empty body) do not cover adapter status."
+  - upstream issue filed 2026-09-17: https://github.com/soroswap/docs/issues/47
 ---
 
 ## Finding

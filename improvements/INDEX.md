@@ -25,8 +25,8 @@ Total findings: 61
 | sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 5           |
 | sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 7           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
-| sls-085 | The Soroswap project record labels contract CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH as aggregator router. That address is… | verified          | 2026-09-17 | 0           |
-| sls-086 | The Aquarius project description says: "AQUA locks into ICE for on-chain DAO governance votes directing rewards across DEX/AMM markets."…   | verified          | 2026-09-17 | 0           |
+| sls-085 | The Soroswap project record labels contract CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH as aggregator router. That address is… | reported-upstream | 2026-09-17 | 0           |
+| sls-086 | The Aquarius project description says: "AQUA locks into ICE for on-chain DAO governance votes directing rewards across DEX/AMM markets."…   | reported-upstream | 2026-09-17 | 0           |
 
 ## stellar-docs
 
@@ -93,4 +93,4 @@ Total findings: 61
 | id     | title                                                                                                                                    | status            | discovered | recurrences |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | cs-001 | searchConnectors in @cloudflare/codemode returns connector methods that share no real word with the query. scoreField accepts a prefix…  | reported-upstream | 2026-09-17 | 0           |
-| cs-002 | Two published Soroswap docs pages give a stale status for aggregator liquidity sources. concepts/aggregator.mdx labels Phoenix Protocol… | verified          | 2026-09-17 | 0           |
+| cs-002 | Two published Soroswap docs pages give a stale status for aggregator liquidity sources. concepts/aggregator.mdx labels Phoenix Protocol… | reported-upstream | 2026-09-17 | 0           |

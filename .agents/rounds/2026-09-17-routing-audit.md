@@ -1,6 +1,6 @@
 # Routing and direction audit — 2026-09-17
 
-Status: collection closed. D3 failed the predeclared answer gate and was withdrawn. Final independent code and source review passed.
+Status: audit complete. D3 was withdrawn. Accepted repairs passed independent review; deployment follows the release checks.
 
 ## Authority and scope
 
@@ -81,12 +81,33 @@ M2 candidate, M3/M4 candidate, second replicates, and M5 stopped after the verif
 They are unrun, not passed. The reserve remains unused.
 The discovery baseline alone cannot support a candidate improvement claim.
 
-## Remaining work
+## Published outcome and retained work
 
-- Complete final independent delta review and repository checks, then publish the accepted scope.
-- File reviewed `cs-002`, `sls-085`, and `sls-086` after their source records become public.
-- Keep issue #167 open for a general RWA routing repair.
-- Track the full-description authority conflict and supported dependency migration in `.agents/TODO.md`.
+[PR #170](https://github.com/stellar-experimental/stellar-raven/pull/170) merged the reviewed measurement and source repairs.
+All four CI checks passed on its final head. The accepted runtime and catalog match the baseline.
+
+| Finding | Owner report | Result |
+| --- | --- | --- |
+| cs-001 | [cloudflare/agents#2296](https://github.com/cloudflare/agents/issues/2296) | Short-token prefix defect; standardized source and handoff body verified |
+| cs-002 | [soroswap/docs#47](https://github.com/soroswap/docs/issues/47) | Stale adapter-status labels |
+| sls-085 | [Stellar-Light/stellarlight#1673](https://github.com/Stellar-Light/stellarlight/issues/1673) | AMM router mislabeled as aggregator |
+| sls-086 | [Stellar-Light/stellarlight#1674](https://github.com/Stellar-Light/stellarlight/issues/1674) | Governance votes conflated with market votes |
+| ll-013 | [lumenloop/lumenloop-backend#26](https://github.com/lumenloop/lumenloop-backend/issues/26#issuecomment-5707452339) | New awarded-versus-paid evidence added to the existing report |
+
+The coordinator read every published body back from GitHub. No upstream fix is claimed.
+[Raven #167](https://github.com/stellar-experimental/stellar-raven/issues/167#issuecomment-5708132727) retains the RWA block and release follow-up.
+The full-description authority conflict and the Vectorize runtime migration remain in `.agents/TODO.md`.
+Both need separate measured changes; this round introduces no local workaround for them.
+
+The dependency change updates supported Worker tools and Hono while preserving Transformers 4.2.0.
+Seven high development-tool findings remain with documented dependency paths and migration requirements.
+Its independent review, smoke tests, and bundle inspection pass. The production bundle contains no Hono code.
+
+The worktree audit found 15 checkouts. Eleven older checkouts contain changes and remain untouched.
+The primary checkout and both owned audit branches were clean at the audit checkpoint.
+The owned worktrees retain ignored evaluation artifacts and are preserved for reproduction.
+Docs PRs #2837 and #2844 retain the published reviewed commits and await maintainer review.
+The author hold on #2837 remains active.
 
 ## Experiment history
 

@@ -1,7 +1,7 @@
 ---
 id: sls-085
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-17
 upstreamTitle: Soroswap onchain contract label calls the AMM router an aggregator router
 evidence:
@@ -15,6 +15,7 @@ evidence:
   - "Dedupe 2026-09-17: no active or resolved Raven finding covers onchain.contracts labels (resolved sls-035 concerns DEX taxonomy; sls-046 concerns isDeployableContract). GitHub search repo:Stellar-Light/stellarlight CAG5LRYQ returned 0 results; \"aggregator router\" results are unrelated data-wave and taxonomy PRs."
   - "Independent coordinator reproduction at 2026-09-17T02:36Z, ledger 64465357: Scout repeats the aggregator-router label; the AMM router exposes get_factory, and the aggregator exposes get_adapters with that AMM router under protocol 0. Both on-chain WASM hashes match the owner deployment records."
   - "Raw evidence: research/audits/2026-09-17-routing-audit/soroswap-contract-role.md."
+  - upstream issue filed 2026-09-17: https://github.com/Stellar-Light/stellarlight/issues/1673
 ---
 
 ## Finding
