@@ -40,7 +40,8 @@ D1 recovery copies follow Cloudflare's Time Travel window; repeat requested dele
 node scripts/usage-report.mjs --from 2026-09 --to 2026-10
 ```
 
-`--to` is exclusive. The command uses the SDF Wrangler profile and the account in this directory's config.
+`--to` is exclusive. The command uses the account in this directory's config. Set `WRANGLER_PROFILE` to pick a
+named Wrangler profile; without it Wrangler uses your default login.
 Add `--local` to query the local test database.
 The JSON output contains MCP, playground, and combined monthly rows.
 The combined account count deduplicates users across both surfaces.
@@ -64,9 +65,11 @@ The database and collector use the same SDF account as Raven.
 Apply migrations before deploying the collector:
 
 ```sh
-npx wrangler d1 migrations apply stellar-raven-usage --config usage/wrangler.jsonc --profile sdf --remote
-npx wrangler deploy --config usage/wrangler.jsonc --profile sdf
+npx wrangler d1 migrations apply stellar-raven-usage --config usage/wrangler.jsonc --remote
+npx wrangler deploy --config usage/wrangler.jsonc
 ```
+
+Add `--profile <name>` when your Wrangler login for this account is a named profile.
 
 Attach the collector with `tail_consumers: [{ service: "stellar-raven-usage" }]` in Raven's Wrangler config.
 Publish the matching usage disclosure before starting collection.
@@ -83,7 +86,7 @@ The report source is maintained under [`report-site/`](report-site/README.md) an
 After merging a report change, sync the reviewed main branch to the separate Sites publication checkout:
 
 ```sh
-node scripts/sync-usage-site.mjs /Users/kalepail/Desktop/stellar-raven-report
+node scripts/sync-usage-site.mjs ~/Desktop/stellar-raven-aux-priv-report
 ```
 
 Build, validate, and publish that exact copy through Sites. Its `.raven-source.json` records the Raven commit.
@@ -95,6 +98,41 @@ The archive cannot recreate expired July or August tool events.
 Historical log aggregates and individual-event queries differ slightly, even with ABR level 1.
 Do not import these estimates as exact response rows.
 Historical results and query evidence remain in private storage. Do not commit production counts or request identifiers.
+
+The hourly `usage-health` workflow and the `postdeploy` check skip with a notice when the report token or a
+Cloudflare credential is absent. They never fail a fork that has not configured its own archive.
+
+## Run your own usage archive on a fork
+
+The public service is operated by the repo owner. A fork gets the full collection and reporting stack and
+needs none of the owner's data. Set it up in this order:
+
+1. Put your Cloudflare `account_id` in `usage/wrangler.jsonc` and `usage/report-site/cloudflare/wrangler.jsonc`.
+   Create a D1 database named `stellar-raven-usage` and put its `database_id` in both files.
+2. Apply the migrations and deploy the collector as shown above. Add `tail_consumers` to your producer config.
+3. Deploy the report Worker: `npx wrangler deploy --config usage/report-site/cloudflare/wrangler.jsonc`.
+   Set its `REPORT_TOKEN` secret to a fresh random value.
+4. Optional dashboard: create your own Sites project and replace `usage/report-site/.openai/hosting.json`
+   with its project id. Configure `USAGE_REPORT_URL` and secret `USAGE_REPORT_TOKEN` in Sites.
+5. Optional monitoring: set the repository secret `USAGE_REPORT_TOKEN` and the variable `USAGE_REPORT_URL`
+   so the hourly health workflow runs. Until then it skips with a notice.
+6. Historical snapshots are optional. Skip migration 0003 imports and the `/launch` page shows 404.
+
+## Owner directories outside this repo
+
+The owner keeps two private sibling directories. They are auxiliary; this repo works without them.
+
+| Directory | Holds |
+|---|---|
+| `stellar-raven-aux-priv-report` (local git, no remote) | The owner's Sites publication checkout. `scripts/sync-usage-site.mjs` refreshes it from clean `main`; it is never edited directly. |
+| `stellar-raven-aux-priv-evidence` (local git, no remote) | Production snapshots, audit exports, reviewer verdicts with figures, and the record of the abandoned history rewrite. |
+
+Never commit production counts, request identifiers, or account hashes here. File them in the evidence
+directory. `scripts/check-private-usage.mjs` runs in the pre-commit hook and CI and refuses known
+snapshot and export shapes; prose still needs review.
+
+Public Git history and PRs #151 through #155 still show earlier copies and figures. The owner decided
+on 2026-09-17 not to rewrite that history.
 
 Cloudflare references:
 

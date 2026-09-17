@@ -14,6 +14,11 @@ in a networkless Dynamic Worker; host adapters own all service traffic, policy, 
   request, catalog, scoring, sandbox, and auth design.
 - Use `README.md` for connection and operator setup.
 - Use `research/` for dated evidence and design context; it is not an instruction layer.
+- This repo is self-contained, including usage collection and reporting under `usage/`. Two private
+  sibling directories are auxiliary only: `~/Desktop/stellar-raven-aux-priv-report` (the owner's Sites
+  publication checkout, refreshed by `scripts/sync-usage-site.mjs`) and
+  `~/Desktop/stellar-raven-aux-priv-evidence` (production snapshots and figures). Never commit
+  production counts here; never make this repo depend on either directory. See `usage/README.md`.
 - Use `.agents/skills/<name>/SKILL.md` for repeatable task workflows. `.claude/skills` is the
   committed symlink to the same canonical directory.
 - Use `.agents/TODO.md` for the own-repo work queue and `.agents/rounds/` for round ledgers.

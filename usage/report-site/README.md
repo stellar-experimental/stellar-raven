@@ -27,6 +27,8 @@ Sites uses `USAGE_REPORT_URL` and secret `USAGE_REPORT_TOKEN`; configure them th
 The report Worker uses secret `REPORT_TOKEN`. Never use a Cloudflare or MCP token for this connection.
 
 Change source through a Raven PR. After merge, sync clean main with `scripts/sync-usage-site.mjs`.
-The separate Sites checkout is a publication copy. Build and publish its exact reviewed source through Sites.
+The owner's separate Sites checkout (`stellar-raven-aux-priv-report`) is a publication copy. Build and publish
+its exact reviewed source through Sites. A fork creates its own Sites project and replaces `.openai/hosting.json`.
+See `usage/README.md` for the full fork setup.
 Confirm the owner-only access policy, authenticated dashboard refresh, launch report, and unauthenticated API rejection.
 The hourly health workflow checks canary freshness and possible collection gaps. Tail delivery remains best effort.

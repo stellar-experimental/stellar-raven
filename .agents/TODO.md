@@ -619,13 +619,11 @@ Keep production counts and request identifiers out of this public task queue.
 
 Done when: private operational checks confirm the scheduled canary and cleanup succeeded.
 
-### Coordinate removal of previously published usage evidence from Git history
+### Public history rewrite: closed without rewriting
 
-The forward privacy correction removes production snapshots and request identifiers from the current source tree.
-Older commits, merged feature branches, PR diffs, and the private Sites source history retain earlier copies.
-Before rewriting published refs, obtain explicit user approval and coordinate affected checkouts.
-Use exact remote-tip leases, preserve current source content, and verify the rewritten history before pushing.
-GitHub controls cached PR references; Support decides whether cleanup requests qualify.
-Never reproduce private figures or request identifiers in public cleanup notes.
+Decided 2026-09-17: the public Git history is not rewritten. GitHub organization ruleset 13736865
+blocked the reviewed force-push, and the owner chose to move on with a clean current tree instead.
+Older commits and PRs #151 through #155 still show the removed files. The plan, ref maps, and
+reviewer verdicts are kept in the private `stellar-raven-aux-priv-evidence` directory under `history-rewrite/`.
 
-Done when: the approved history cleanup finishes and remaining cache, fork, and clone limits are recorded accurately.
+Done.

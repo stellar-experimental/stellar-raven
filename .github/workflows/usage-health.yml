@@ -17,4 +17,10 @@ jobs:
       - name: Check archive canary and collection gaps
         env:
           USAGE_REPORT_TOKEN: ${{ secrets.USAGE_REPORT_TOKEN }}
-        run: node scripts/check-usage-health.mjs
+          USAGE_REPORT_URL: ${{ vars.USAGE_REPORT_URL }}
+        run: |
+          if [ -z "$USAGE_REPORT_TOKEN" ]; then
+            echo "::notice::USAGE_REPORT_TOKEN is not set for this repository, so the usage health check was skipped. See usage/README.md to run your own usage archive."
+            exit 0
+          fi
+          node scripts/check-usage-health.mjs

@@ -41,7 +41,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const data = sql.split(";").map(query => query.trim()).filter(Boolean).map(query => {
       const result = spawnSync("npx", [
         "wrangler", "d1", "execute", "stellar-raven-usage",
-        "--config", "usage/wrangler.jsonc", "--profile", "sdf",
+        "--config", "usage/wrangler.jsonc",
+        ...(process.env.WRANGLER_PROFILE ? ["--profile", process.env.WRANGLER_PROFILE] : []),
         local ? "--local" : "--remote", "--json", "--command", query
       ], { cwd: fileURLToPath(new URL("../", import.meta.url)), encoding: "utf8" });
       if (result.status !== 0) throw new Error(result.stderr || "Wrangler query failed");
