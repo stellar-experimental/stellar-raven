@@ -197,13 +197,6 @@ untouched.
    move above adjacent gated hits only when it dominates by at least 1.6×. A page the gated tier
    fills remains unchanged by backfill.
 
-**Routing admission** — `rejectsRoutingIntent` in `src/catalog/search.ts` checks operations
-with source-authored `routingExclusions` before scoring. Scout currently supplies these exclusions.
-A negative phrase covering at least two query tokens rejects the entry unless positive phrase
-coverage exceeds it by more than one token. Otherwise, admission requires two positive phrase
-tokens, two complete input-enum witnesses, a specific routing-vocabulary witness with no negative
-coverage, or an operation-identity token. Entries without exclusions bypass this check.
-
 **Set shaping** — `src/catalog/search.ts`. `loadManifest` enforces structural invariants at
 load: globally unique entry ids, and unique operation terminal names per service (those
 segments become sandbox function names in `src/executor/providers.ts`, so a collision would

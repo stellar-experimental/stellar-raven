@@ -1,6 +1,6 @@
 # Routing and direction audit — 2026-09-17
 
-Status: in progress. D3 and measurement repairs passed independent review. Paid collection is paused for verified golden corrections.
+Status: collection closed. D3 failed the predeclared answer gate and was withdrawn. Accepted repairs await final release checks.
 
 ## Authority and scope
 
@@ -38,20 +38,58 @@ The code agent implemented D3. The evaluation agent repaired discovery labels an
 The direction agent reviewed both changes. Agents cannot launch paid evaluations or modify the holdout.
 The coordinator owns implementation, spending, Git, deployment, and external findings.
 
-## Pending work
+## Current outcome and release scope
 
-- Reconcile audit findings and fresh controls.
-- Pin the manifest, corpus, runner, environment, and live surface.
-- Inventory every exposed operation and whole skill.
-- Review the experiment brief before paid collection.
-- Test general repairs against unrelated targets and symmetric controls.
-- Review every consequential verdict change and account for all spend.
-- Complete independent code review, required checks, and production verification before release.
+D3 is rejected. The candidate omitted the required no-transcript warning from the A/V answer.
+The baseline stated the warning. Stored results and independent live reads confirm the service returns summaries only.
+Both arms reached the same operation. This decision makes no causal claim about D3.
+The predeclared one-loss rule applies despite higher aggregate candidate grades.
+The runtime scorer and its original Soroswap control are restored to `848edec4`.
+RWA remains excluded. Its three inclusive controls still fail.
+
+Accepted scope: exposure-triggered RWA controls, discovery measurement repairs, three golden corrections, and upstream finding records.
+Canonical-source intake now records defects owned by an implementation or product outside the four service collections.
+No token threshold, entity exception, profile, or routing prompt was added.
+Dependency upgrades use a separate change and evidence record.
 
 ## Paid evaluation accounting
 
-Approved cap: **$250**. Evaluation spend: **$5.8820244**. Revised methods: $182 maximum; $68 remains unallocated.
+Approved cap: **$250**. Completed evaluation spend: **$24.7944578**. No further method will run in this round.
 Audit agent sessions are orchestration work, separate from the evaluation runner receipts.
+The machine-readable accounting is `research/audits/2026-09-17-routing-audit/paid-receipts.json`.
+
+| Method | Rows | Cost USD | Result |
+| --- | ---: | ---: | --- |
+| M1-B1 | 16 | 5.8820244 | Complete baseline; original goldens |
+| M0-B1 | 3 | 0.6172996 | Nine judge calls; corrected golden overlay |
+| M2-B1a | 1 | 0.4686228 | Complete baseline Soroswap answer |
+| M2-B1b | 1 | 0.4990802 | Complete baseline Soroswap answer |
+| M3-B1 | 43 | 4.7252672 | Complete historical discovery baseline |
+| M4-B1 | 57 | 6.0498432 | Complete fresh and known-control discovery baseline |
+| M1-C1 | 16 | 5.9831158 | Complete candidate; verified required-fact loss |
+| M0-C1 | 3 | 0.5692046 | Nine judge calls; symmetric corrected golden overlay |
+
+M0 overlays both report Aquarius wrong, Soroswap wrong, and LOBSTR correct.
+The independent reviewer rates baseline LOBSTR partial because it does not distinguish awarded and paid totals.
+Record this disagreement; do not rewrite the stored judge result.
+The three corrected cases have changed input identity. Formal paired inference remains INDETERMINATE.
+No score or source correction establishes a routing gain.
+M1-C1's free plan regrade covers 14/16 required plans, compared with 15/16 for M1-B1.
+
+M2 candidate, M3/M4 candidate, second replicates, and M5 stopped after the verified loss.
+They are unrun, not passed. The reserve remains unused.
+The discovery baseline alone cannot support a candidate improvement claim.
+
+## Remaining work
+
+- Complete final independent delta review and repository checks, then publish the accepted scope.
+- File reviewed `cs-002` and `sls-085` after their source records become public.
+- Keep issue #167 open for a general RWA routing repair.
+- Track the full-description authority conflict and supported dependency migration in `.agents/TODO.md`.
+
+## Experiment history
+
+The following sections record the experiment before its rejection. They do not describe the released scorer.
 
 ## Candidate and review
 

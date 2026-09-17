@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "Coordinator published the new LOBSTR awarded-versus-paid evidence and verified the posted body: https://github.com/lumenloop/lumenloop-backend/issues/26#issuecomment-5707452339"
   - https://github.com/lumenloop/lumenloop-backend/issues/26
   - live lumenloop.get_scf_submissions({slug:"blend"}) response asOf 2026-07-10
   - current official SCF Blend submission/project payload fetched independently the same day

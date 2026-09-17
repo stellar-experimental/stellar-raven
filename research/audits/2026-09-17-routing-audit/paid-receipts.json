@@ -1,0 +1,135 @@
+{
+  "capUsd": 250,
+  "spentUsd": 24.794457800000004,
+  "methods": [
+    {
+      "method": "M0-B1",
+      "costUsd": 0.6172996,
+      "rows": 3,
+      "comparable": null,
+      "nonIdentical": true,
+      "costAccounting": {
+        "expectedAgentCalls": 0,
+        "reportedAgentCosts": 0,
+        "missingAgentCosts": 0,
+        "expectedJudgeCalls": 9,
+        "reportedJudgeCosts": 9,
+        "missingJudgeCosts": 0,
+        "complete": true
+      },
+      "artifacts": [
+        {
+          "path": "eval/qa/results/2026-09-17T02-24-27-rejudge.json",
+          "sha256": "88a4ec0a2c1a3dc530e5afa8515b1311a0040e9d8713f370d6af6050b29dd030"
+        }
+      ]
+    },
+    {
+      "method": "M0-C1",
+      "costUsd": 0.5692046,
+      "rows": 3,
+      "comparable": null,
+      "nonIdentical": false,
+      "costAccounting": {
+        "expectedAgentCalls": 0,
+        "reportedAgentCosts": 0,
+        "missingAgentCosts": 0,
+        "expectedJudgeCalls": 9,
+        "reportedJudgeCosts": 9,
+        "missingJudgeCosts": 0,
+        "complete": true
+      },
+      "artifacts": [
+        {
+          "path": "eval/qa/results/2026-09-17T03-28-28-rejudge.json",
+          "sha256": "8c69ce56111a803fc0d5747130d4ad68d5f35cd8b3c23b58906f5fc46623a85a"
+        }
+      ]
+    },
+    {
+      "method": "M1-B1",
+      "costUsd": 5.8820244,
+      "rows": 16,
+      "comparable": true,
+      "nonIdentical": null,
+      "costAccounting": null,
+      "artifacts": [
+        {
+          "path": "eval/qa/results/2026-09-17T01-33-03-variantA.json",
+          "sha256": "ef988d64c2070f98196f2981d7028d66158492a85745be558c1c4e0bbf08afa0"
+        }
+      ]
+    },
+    {
+      "method": "M1-C1",
+      "costUsd": 5.9831158,
+      "rows": 16,
+      "comparable": true,
+      "nonIdentical": null,
+      "costAccounting": null,
+      "artifacts": [
+        {
+          "path": "eval/qa/results/2026-09-17T03-21-24-variantA.json",
+          "sha256": "9f5fdab852d5c7e7ab872f238491df818fcd2b33dce411f6a8992d5f1c105308"
+        }
+      ]
+    },
+    {
+      "method": "M2-B1a",
+      "costUsd": 0.4686228,
+      "rows": 1,
+      "comparable": true,
+      "nonIdentical": null,
+      "costAccounting": null,
+      "artifacts": [
+        {
+          "path": "eval/qa/results/2026-09-17T02-31-40-variantA.json",
+          "sha256": "7ee79dd9a76b313f3ba6c2110fbeda6176daabcfd459bbf01cb36c61ccc8e0a7"
+        }
+      ]
+    },
+    {
+      "method": "M2-B1b",
+      "costUsd": 0.4990802,
+      "rows": 1,
+      "comparable": true,
+      "nonIdentical": null,
+      "costAccounting": null,
+      "artifacts": [
+        {
+          "path": "eval/qa/results/2026-09-17T02-34-22-variantA.json",
+          "sha256": "951c2e4b17f97cd08bd5c2318374f927485c1d0d72f7c1409fe496d45c02d5b3"
+        }
+      ]
+    },
+    {
+      "method": "M3-B1",
+      "costUsd": 4.7252672,
+      "rows": 43,
+      "comparable": true,
+      "nonIdentical": null,
+      "costAccounting": null,
+      "artifacts": [
+        {
+          "path": "eval/discovery/results/2026-09-17T02-42-57-169Z-routing-audit-M3-B1-agent.json",
+          "sha256": "ddc8d9b6b3df574865a5bbc3eec59c57a2346938cb4138969488649a00546f5e"
+        }
+      ]
+    },
+    {
+      "method": "M4-B1",
+      "costUsd": 6.0498432,
+      "rows": 57,
+      "comparable": true,
+      "nonIdentical": null,
+      "costAccounting": null,
+      "artifacts": [
+        {
+          "path": "eval/discovery/results/2026-09-17T02-53-35-211Z-routing-audit-M4-B1-agent.json",
+          "sha256": "449a88f2f1060fe45bfdb48f8023bea117c300f56cf9813a568953792539e292"
+        }
+      ]
+    }
+  ],
+  "status": "closed; remaining methods stopped, not passed"
+}

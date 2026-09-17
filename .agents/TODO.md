@@ -295,15 +295,6 @@ Done when: reviewed upgrades pass the repository gates and a new audit records e
 
 ## Eval instruments
 
-### Complete the September 17 golden corrections and pilot regrading
-
-The source audit found a false LOBSTR funding prohibition, ambiguous Aquarius voting notes, and misattributed Soroswap source guidance.
-Three independently reviewed corrections preserve questions, required facts, and the 16-case measurement denominator.
-Source evidence and review are in `research/audits/2026-09-17-routing-audit/golden-and-pipeline-review.md`.
-
-Done when: the corpus and consistency checks pass, three stored pilot answers receive symmetric regrading, and the ledger records differences.
-
-
 ### Re-check the upstream codemode short-token repair
 
 The September 17 audit reproduced false routing across unrelated weather and billing operations.
@@ -318,6 +309,17 @@ Neither experiment ships. Do not replace them with query exceptions or a tuned t
 
 Done when: an upstream or general local repair passes the original triggers, positive controls, and Raven routing gates.
 Keep the RWA exclusion until its three technical controls also pass.
+
+### Revisit general directory admission after the rejected D3 experiment
+
+The September 17 D3 deletion failed the predeclared answer gate and did not ship.
+The candidate omitted the no-transcript warning present in the baseline A/V answer.
+Both arms reached the same source. The experiment does not establish a causal routing regression.
+The current directory field-placement exception remains a known design risk.
+Do not repeat D3 or add entity-specific exceptions to make its examples pass.
+
+Done when: a general mechanism passes frozen routing controls and independently reviewed answer checks.
+Evidence: `research/audits/2026-09-17-routing-audit/m1-c1-passkeys-loss-review.md` and the September 17 round ledger.
 
 ### Reconcile source-authority guidance for full-description clients
 

@@ -220,10 +220,11 @@ describe("issue #141 routing acceptance", () => {
   });
 
   it.each([
+    "What is Soroswap and what makes it different from other Stellar DEXes?",
     "soroswap compared with other stellar dexes",
     "SOROSWAP compared with other Stellar DEXes",
     "Soroswap: how does this Stellar DEX differ?"
-  ])("admits directory lookup from positive phrase evidence without case dependence: %s", (query) => {
+  ])("uses repeated directory examples without case or word-order dependence: %s", (query) => {
     expect(ids(query)).toContain("scout.searchProjects");
   });
 
@@ -268,159 +269,5 @@ describe("issue #141 routing acceptance", () => {
     }));
     expect(page.total).toBe(6);
     expect(page.truncated).toBe(true);
-  });
-});
-
-describe("directory admission is independent of source field placement", () => {
-  type Placement = "examples" | "purpose" | "keywords";
-  const provenance = { source: "test://synthetic", fetchedAt: "2026-01-01T00:00:00Z" };
-
-  // Each domain places an entity token found only in that entry in useWhen and
-  // exampleQuestions. The purpose and keywords placements add the same token
-  // as a separate phrase with no other query token, so phrase coverage stays
-  // equal. Only the source field that carries the entity changes.
-  const domains = [
-    {
-      id: "scout.findProjectListings",
-      entity: "quillbridge",
-      description: "Overview of listed projects by dex or lending type.",
-      property: "type",
-      values: ["dex", "lending"],
-      positive: "quillbridge listing overview",
-      unrelated: "zephyrine dex overview",
-      enumOnly: "dex overview",
-      context: "overview",
-      phraseTokens: ["listing", "summary"]
-    },
-    {
-      id: "scout.findBuilderProfiles",
-      entity: "marisol",
-      description: "Mentor profiles for latam and europe builders.",
-      property: "region",
-      values: ["latam", "europe"],
-      positive: "marisol cohort mentor",
-      unrelated: "oksana latam mentor",
-      enumOnly: "latam mentor",
-      context: "mentor",
-      phraseTokens: ["cohort", "alumni"]
-    }
-  ] as const;
-
-  function manifest(placement: Placement): Catalog {
-    const directories = domains.map((domain) => {
-      const phrases: { field: "purpose" | "useWhen" | "exampleQuestions" | "keywords"; tokens: string[] }[] = [
-        { field: "useWhen", tokens: [domain.entity, domain.phraseTokens[0]] },
-        { field: "exampleQuestions", tokens: [domain.entity, domain.phraseTokens[1]] }
-      ];
-      if (placement !== "examples") {
-        phrases.push({ field: placement, tokens: [domain.entity, "registry"] });
-      }
-      return {
-        id: domain.id,
-        service: "scout" as const,
-        kind: "operation" as const,
-        description: domain.description,
-        routingKeywords: [domain.entity, domain.context, ...domain.phraseTokens, "registry"],
-        routingPhrases: phrases,
-        routingExclusions: [{ tokens: ["deploy", "contract"] }],
-        retrievalProfile: {
-          lane: "directory" as const,
-          emptyScope: "inconclusive" as const,
-          recoverWith: [{ id: "scout.searchArchive", relation: "broader-semantic" as const, on: ["empty" as const] }]
-        },
-        inputSchema: {
-          type: "object",
-          properties: { [domain.property]: { type: "string", enum: [...domain.values] } }
-        },
-        outputSchema: null,
-        transport: null,
-        provenance
-      };
-    });
-    return loadManifest({
-      version: 1,
-      generatedAt: provenance.fetchedAt,
-      entries: [
-        ...directories,
-        {
-          id: "scout.searchArchive",
-          service: "scout",
-          kind: "operation",
-          description: "Search archived directory notes and mentor overview records.",
-          inputSchema: null,
-          outputSchema: null,
-          transport: null,
-          provenance
-        },
-        {
-          id: "lumenloop.search_mentions",
-          service: "lumenloop",
-          kind: "operation",
-          description: "Search mentions of dex projects and latam mentor programs.",
-          inputSchema: null,
-          outputSchema: null,
-          transport: null,
-          provenance
-        },
-        {
-          id: "skills.test.directory-guide",
-          service: "skills",
-          kind: "skill",
-          description: "Guide to dex listing overview and latam mentor directories.",
-          inputSchema: null,
-          outputSchema: null,
-          transport: null,
-          provenance
-        }
-      ]
-    });
-  }
-
-  const catalogs = {
-    examples: manifest("examples"),
-    purpose: manifest("purpose"),
-    keywords: manifest("keywords")
-  };
-
-  function projection(placement: Placement, options: Omit<Parameters<typeof searchCatalogPage>[1], "limit">) {
-    const page = searchCatalogPage(catalogs[placement], { ...options, limit: 5 });
-    return {
-      hits: page.hits.map(({ id, score, tier }) => ({ id, score, tier })),
-      total: page.total
-    };
-  }
-
-  const controls = domains.flatMap((domain) => [
-    [`${domain.id} entity with enum`, { query: `${domain.entity} ${domain.enumOnly}` }],
-    [`${domain.id} positive phrase`, { query: domain.positive }],
-    [`${domain.id} exact ID`, { query: domain.id }],
-    [`${domain.id} exact service filter`, { query: `${domain.entity} ${domain.enumOnly}`, service: "scout" }],
-    [`${domain.id} operation kind`, { query: `${domain.entity} ${domain.enumOnly}`, kind: "operation" }],
-    [`${domain.id} skill kind`, { query: `${domain.entity} ${domain.enumOnly}`, kind: "skill" }],
-    [`${domain.id} unrelated entity`, { query: domain.unrelated }],
-    [`${domain.id} enum only`, { query: domain.enumOnly }]
-  ] as const);
-
-  it.each(controls)("keeps the same page for every entity placement: %s", (_label, options) => {
-    const expected = projection("examples", options);
-    expect(projection("purpose", options)).toEqual(expected);
-    expect(projection("keywords", options)).toEqual(expected);
-  });
-
-  it.each(domains)("admits positive phrase evidence and exact IDs in every placement: $id", (domain) => {
-    for (const placement of ["examples", "purpose", "keywords"] as const) {
-      expect(projection(placement, { query: domain.positive }).hits.map((hit) => hit.id), placement)
-        .toContain(domain.id);
-      expect(projection(placement, { query: domain.id }).hits[0]?.id, placement).toBe(domain.id);
-    }
-  });
-
-  it.each(domains)("does not admit an entity and enum without positive phrase evidence: $id", (domain) => {
-    for (const placement of ["examples", "purpose", "keywords"] as const) {
-      expect(
-        projection(placement, { query: `${domain.entity} ${domain.enumOnly}` }).hits.map((hit) => hit.id),
-        placement
-      ).not.toContain(domain.id);
-    }
   });
 });

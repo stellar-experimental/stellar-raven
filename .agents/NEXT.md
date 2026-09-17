@@ -6,9 +6,9 @@ This file ranks the work and retains unresolved owner decisions, not deployment 
 
 ## Next work
 
-1. Complete the routing audit and its reviewed evaluations.
+1. Resolve the remaining general routing and source-authority work from the September 17 audit.
    Production uses Scout `1.9.52`; RWA stays excluded under issue #167.
-   Remove proven routing exceptions only when source access and answer quality survive the change.
+   D3 failed its answer gate and was withdrawn. Keep the current scorer until a general repair passes.
 2. Follow Docs PR #2837 for `sd-027` / `sd-034`.
    Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
 3. Complete source-metadata follow-up before October 1 and review dependency upgrades.
@@ -25,7 +25,8 @@ No valid paired baseline or two-week causal measurement exists.
 The old `$882.50` plan is spent for P6 and the candidate, and stopped for all other methods.
 Its stored `meanContinuousCoverage` is invalid and must not be quoted.
 The user approved a separate $250 evaluation cap for the September 17 routing audit.
-Use that round's reviewed method limits and pins. This approval does not resume the historical plan.
+The round spent $24.7944578 and closed collection after a verified loss. No remaining method is active.
+This approval does not resume the historical plan.
 Never transfer a diagnostic budget to headline collection.
 Use [the evaluation map](../eval/EVALS.md) and [the eval runbook](skills/run-evals/SKILL.md) for the measurement sequence.
 

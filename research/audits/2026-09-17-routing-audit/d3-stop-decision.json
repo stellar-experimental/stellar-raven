@@ -1,0 +1,21 @@
+{
+  "decision": "reject D3",
+  "decidedAt": "2026-09-17T03:29:12.206068+00:00",
+  "reason": "Verified required-fact loss: q-soroban-av-passkeys-talk omits the no-transcript/AI-summary warning present in baseline. Both reach the same operation. No causal claim.",
+  "independentReview": "m1-c1-passkeys-loss-review.md",
+  "continued": "M0-C1 symmetric corrected-golden overlay only; already launched.",
+  "stoppedMethods": [
+    "M2-C1a",
+    "M2-C1b",
+    "M3-C1",
+    "M4-C1",
+    "M1-C2",
+    "M2-C2a",
+    "M2-C2b",
+    "M1-B2",
+    "M2-B2a",
+    "M2-B2b",
+    "M5"
+  ],
+  "status": "No unrun method counts as a pass."
+}
