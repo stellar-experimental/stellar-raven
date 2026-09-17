@@ -387,7 +387,7 @@ function negativeRoutingIntentCoverage(
 function completeInputEnumWitnesses(
   entry: CatalogEntry,
   queryTokens: readonly string[]
-): { count: number; tokens: ReadonlySet<string> } {
+): number {
   const schema = entry.inputSchema as {
     properties?: Record<string, { enum?: unknown[] }>;
   } | null | undefined;
@@ -396,24 +396,18 @@ function completeInputEnumWitnesses(
     queryForms.push(`${queryTokens[index]}${queryTokens[index + 1]}`);
   }
   let matchedProperties = 0;
-  const matchedTokens = new Set<string>();
   for (const property of Object.values(schema?.properties ?? {})) {
     const values = Array.isArray(property.enum) ? property.enum : [];
-    const matchedValue = values.find((value) => {
+    const matched = values.some((value) => {
       if (typeof value !== "string") return false;
       const valueTokens = uniqueContentTokens(value);
       return valueTokens.length > 0 && valueTokens.every((valueToken) =>
         queryForms.some((queryToken) => tokensOverlap(valueToken, queryToken))
       );
     });
-    if (typeof matchedValue === "string") {
-      matchedProperties++;
-      for (const token of uniqueContentTokens(matchedValue)) {
-        matchedTokens.add(canonicalRoutingToken(token));
-      }
-    }
+    if (matched) matchedProperties++;
   }
-  return { count: matchedProperties, tokens: matchedTokens };
+  return matchedProperties;
 }
 
 function hasSpecificRoutingVocabularyWitness(
@@ -426,73 +420,6 @@ function hasSpecificRoutingVocabularyWitness(
     vocabulary.has(canonicalRoutingToken(token))
   ).length;
   return matched >= 3 && matched * 2 >= queryTokens.length;
-}
-
-const discriminativeRoutingTokensCache = new WeakMap<Catalog, ReadonlySet<string>>();
-
-function discriminativeRoutingTokens(catalog: Catalog): ReadonlySet<string> {
-  const cached = discriminativeRoutingTokensCache.get(catalog);
-  if (cached) return cached;
-  const frequencies = new Map<string, number>();
-  for (const entry of catalog.entries) {
-    const tokens = new Set(
-      tokenize([
-        entry.id,
-        entry.description,
-        ...(entry.keywords ?? []),
-        ...(entry.routingKeywords ?? [])
-      ].join(" ")).map(canonicalRoutingToken)
-    );
-    for (const token of tokens) frequencies.set(token, (frequencies.get(token) ?? 0) + 1);
-  }
-  const unique = new Set(
-    [...frequencies].filter(([, count]) => count === 1).map(([token]) => token)
-  );
-  discriminativeRoutingTokensCache.set(catalog, unique);
-  return unique;
-}
-
-const GENERIC_ROUTING_ACTION_TOKENS: ReadonlySet<string> = new Set([
-  "compare", "differ", "find", "get", "list", "search", "show"
-]);
-
-function discriminativeDirectoryVocabularyCoverage(
-  entry: CatalogEntry,
-  queryTokens: readonly string[],
-  discriminativeTokens: ReadonlySet<string>
-): number | null {
-  if (entry.retrievalProfile?.lane !== "directory" || !entry.routingKeywords?.length) {
-    return null;
-  }
-  const vocabulary = new Set(entry.routingKeywords.map(canonicalRoutingToken));
-  const matched = queryTokens
-    .map(canonicalRoutingToken)
-    .filter((token) => vocabulary.has(token));
-  const coverage = new Set(matched).size;
-  if (coverage < 2) return null;
-  const enumWitness = completeInputEnumWitnesses(entry, queryTokens);
-  if (enumWitness.count < 1) return null;
-
-  // A directory entity becomes an admission witness only when the source
-  // repeats its exact token in both an intent and an example. The token must
-  // occur in only one catalog entry and cannot be a generic routing action.
-  // A separate input enum must also match the query.
-  return matched.some((token) => {
-    if (
-      enumWitness.tokens.has(token) ||
-      !discriminativeTokens.has(token) ||
-      GENERIC_ROUTING_ACTION_TOKENS.has(token)
-    ) return false;
-    const fields = new Set(
-      (entry.routingPhrases ?? [])
-        .filter((phrase) => phrase.tokens.some((phraseToken) =>
-          canonicalRoutingToken(phraseToken) === token
-        ))
-        .map((phrase) => phrase.field)
-    );
-    return fields.has("useWhen") && fields.has("exampleQuestions") &&
-      !fields.has("purpose") && !fields.has("keywords");
-  }) ? coverage : null;
 }
 
 const GENERIC_OPERATION_VERBS: ReadonlySet<string> = new Set([
@@ -512,7 +439,6 @@ const GENERIC_OPERATION_VERBS: ReadonlySet<string> = new Set([
 function rejectsRoutingIntent(
   entry: CatalogEntry,
   queryTokens: readonly string[],
-  discriminativeTokens: ReadonlySet<string>,
   queryWords: readonly string[]
 ): boolean {
   if (!entry.routingExclusions?.length) return false;
@@ -530,14 +456,8 @@ function rejectsRoutingIntent(
   );
   if (negativeCoverage >= 2 && negativeCoverage + 1 >= positiveCoverage) return true;
   if (positiveCoverage >= 2) return false;
-  if (completeInputEnumWitnesses(entry, queryTokens).count >= 2) return false;
+  if (completeInputEnumWitnesses(entry, queryTokens) >= 2) return false;
   if (negativeCoverage === 0 && hasSpecificRoutingVocabularyWitness(entry, queryTokens)) {
-    return false;
-  }
-  if (
-    negativeCoverage === 0 &&
-    discriminativeDirectoryVocabularyCoverage(entry, queryTokens, discriminativeTokens) !== null
-  ) {
     return false;
   }
   const identityTokens = uniqueContentTokens(entryName(entry))
@@ -708,7 +628,6 @@ function scoreCandidates(
   include?: (entry: CatalogEntry) => boolean
 ): { entry: CatalogEntry; score: number }[] {
   const scored: { entry: CatalogEntry; score: number }[] = [];
-  const discriminativeTokens = discriminativeRoutingTokens(catalog);
   for (const entry of catalog.entries) {
     // Search-visibility seam (skills-form arms): searchable:false entries are
     // exposed (exact-id describe/read/run) but never scored or counted here.
@@ -720,7 +639,7 @@ function scoreCandidates(
       let rejected = query.routingRejections.get(entry);
       if (rejected === undefined) {
         rejected = rejectsRoutingIntent(
-          entry, query.contentTokens, discriminativeTokens, query.scoring.original.tokens
+          entry, query.contentTokens, query.scoring.original.tokens
         );
         query.routingRejections.set(entry, rejected);
       }
@@ -841,19 +760,10 @@ function preservesCompleteStructuredIntent(
 
 function targetedIntentCoverage(
   candidate: SelectedCandidate,
-  queryTokens: readonly string[],
-  discriminativeTokens: ReadonlySet<string>
+  queryTokens: readonly string[]
 ): number | null {
   if (candidate.entry.kind !== "operation") return null;
-  const vocabulary = vocabularyIntentCoverage(candidate.entry, queryTokens);
-  const directory = discriminativeDirectoryVocabularyCoverage(
-    candidate.entry,
-    queryTokens,
-    discriminativeTokens
-  );
-  if (vocabulary === null) return directory;
-  if (directory === null) return vocabulary;
-  return Math.max(vocabulary, directory);
+  return vocabularyIntentCoverage(candidate.entry, queryTokens);
 }
 
 /**
@@ -865,8 +775,7 @@ function preserveIntentWithinServiceQuota(
   selected: SelectedCandidate[],
   candidates: SelectedCandidate[],
   queryTokens: readonly string[],
-  limit: number,
-  discriminativeTokens: ReadonlySet<string>
+  limit: number
 ): SelectedCandidate[] {
   if (selected.length < limit) return selected;
 
@@ -888,7 +797,7 @@ function preserveIntentWithinServiceQuota(
         !selectedIds.has(candidate.entry.id) &&
         (
           preservesCompleteStructuredIntent(candidate, queryTokens) ||
-          targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) !== null
+          targetedIntentCoverage(candidate, queryTokens) !== null
         )
     );
     if (!replacement) continue;
@@ -901,21 +810,13 @@ function preserveIntentWithinServiceQuota(
     });
     const victimIndex = replaceable[0];
     if (victimIndex === undefined) continue;
-    const replacementTargetedCoverage = targetedIntentCoverage(
-      replacement,
-      queryTokens,
-      discriminativeTokens
-    );
+    const replacementTargetedCoverage = targetedIntentCoverage(replacement, queryTokens);
     if (
       (replacementTargetedCoverage !== null
         ? replacementTargetedCoverage
         : intentCoverage(replacement.entry, queryTokens)) <=
       (replacementTargetedCoverage !== null
-        ? targetedIntentCoverage(
-          preserved[victimIndex]!,
-          queryTokens,
-          discriminativeTokens
-        ) ?? 0
+        ? targetedIntentCoverage(preserved[victimIndex]!, queryTokens) ?? 0
         : intentCoverage(preserved[victimIndex]!.entry, queryTokens))
     ) {
       continue;
@@ -935,7 +836,7 @@ function preserveIntentWithinServiceQuota(
   const crossServiceReplacement = candidates.find((candidate) =>
     !selectedIds.has(candidate.entry.id) &&
     (preservedCounts.get(candidate.entry.service) ?? 0) < quota &&
-    targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) !== null
+    targetedIntentCoverage(candidate, queryTokens) !== null
   );
   if (crossServiceReplacement) {
     const victim = preserved
@@ -943,7 +844,7 @@ function preserveIntentWithinServiceQuota(
       .filter(({ candidate, index }) =>
         index > 0 &&
         (preservedCounts.get(candidate.entry.service) ?? 0) > 1 &&
-        targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) === null
+        targetedIntentCoverage(candidate, queryTokens) === null
       )
       .sort((left, right) => left.candidate.score - right.candidate.score)[0];
     if (victim) preserved[victim.index] = crossServiceReplacement;
@@ -1007,8 +908,7 @@ function fullPageUngatedAdmission(
   selected: readonly SelectedCandidate[],
   gatedIds: ReadonlySet<string>,
   queryTokens: readonly string[],
-  limit: number,
-  discriminativeTokens: ReadonlySet<string>
+  limit: number
 ): (entry: CatalogEntry) => boolean {
   const quota = serviceQuota(limit);
   const counts = new Map<string, number>();
@@ -1027,7 +927,7 @@ function fullPageUngatedAdmission(
     const candidate = { entry, score: 0 };
     if (
       preservesCompleteStructuredIntent(candidate, queryTokens) ||
-      targetedIntentCoverage(candidate, queryTokens, discriminativeTokens) !== null
+      targetedIntentCoverage(candidate, queryTokens) !== null
     ) {
       return true;
     }
@@ -1184,7 +1084,6 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
   );
 
   const query = prepareSearchQuery(opts.query);
-  const discriminativeTokens = discriminativeRoutingTokens(catalog);
   const gated = scoreCandidates(catalog, opts, scoreEntryWeighted, query);
   const gatedIds = new Set(gated.map((candidate) => candidate.entry.id));
   let selected = diversifyByService(gated, limit, (s) => s.entry.service);
@@ -1196,13 +1095,7 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     scoreEntryWeightedUngated,
     query,
     gatedPageIsFull
-      ? fullPageUngatedAdmission(
-          selected,
-          gatedIds,
-          query.contentTokens,
-          limit,
-          discriminativeTokens
-        )
+      ? fullPageUngatedAdmission(selected, gatedIds, query.contentTokens, limit)
       : undefined
   );
   const backfill = gatedPageIsFull
@@ -1226,8 +1119,7 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     selected,
     allCandidates,
     query.contentTokens,
-    limit,
-    discriminativeTokens
+    limit
   );
 
   // Membership is now final and sliced to `limit`. Reorder only this fixed
