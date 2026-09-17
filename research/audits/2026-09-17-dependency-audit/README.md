@@ -60,10 +60,10 @@ Tool versions: Node v24.13.0, npm 11.11.0, Wrangler 4.133.0, gitleaks 8.30.1.
 |---|---|
 | `npm ci` into a dedicated `node_modules` | exit 0; 320 packages |
 | `npx vitest run test/eval-discovery-vectorize.test.mjs test/eval-vectorize-{clause,rerank,support}-fit.test.mjs` | 4 files, 77 tests passed |
-| `npx vitest run` | 120 files; 2,179 passed, 4 skipped |
+| `npx vitest run` | 120 files; 2,160 passed, 4 skipped (after the PR #170 rebase) |
 | `npm run typegen` with the CI placeholder `.dev.vars` names | exit 0 |
 | `npx tsc --noEmit` on the regenerated `env.d.ts` | exit 0 |
-| `npm run build` | exit 0; total upload 7,143.89 KiB (gzip 1,414.01 KiB) |
+| `npm run build` | exit 0; total upload 7,147.33 KiB (gzip 1,414.83 KiB; after the PR #170 rebase) |
 | Hono in the bundle | absent: 0 of 1,120 `dist/server.js.map` sources; no `@hono/` or `hono` module specifier in `dist/server.js` |
 | `npm run test:smoke` (pool 0.22.0, nested wrangler 4.124.0) | 5 files, 94 tests passed |
 | `wrangler dev --host localhost --port 8793` | ready in 4 s; `GET /` 200; unauthenticated `POST /mcp` 401; `GET /health/skills` 503 (no recorded verdict in fresh local KV); process stopped and port released |
