@@ -1,0 +1,564 @@
+{
+  "revision": "848edec4c9a156ef16f71dc0605409aa59c0be5c",
+  "plannedBeforeCalls": true,
+  "operations": [
+    {
+      "id": "lumenloop.find_av_passages",
+      "safety": "read-only",
+      "args": {
+        "query": "Soroban",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.find_content_about_project",
+      "safety": "read-only",
+      "args": {
+        "slug": "blend",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.find_content_by_entity",
+      "safety": "read-only",
+      "args": {
+        "entity": "Stellar",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.find_similar_projects_semantic",
+      "safety": "read-only",
+      "args": {
+        "slug": "blend",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.find_similar_scf_submissions",
+      "safety": "read-only",
+      "args": {
+        "query": "wallet",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_categories",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_document",
+      "safety": "read-only",
+      "args": null,
+      "dependency": "First article ID from lumenloop.list_documents",
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_project",
+      "safety": "read-only",
+      "args": {
+        "slug": "blend",
+        "compact": true
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_project_tags_vocabulary",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_regions",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_related_projects",
+      "safety": "read-only",
+      "args": null,
+      "dependency": "Same article ID from lumenloop.list_documents",
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_scf_submissions",
+      "safety": "read-only",
+      "args": {
+        "slug": "blend"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.get_tags_vocabulary",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.list_documents",
+      "safety": "read-only",
+      "args": {
+        "collection": "articles",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.list_research",
+      "safety": "read-only",
+      "args": {
+        "format": "long-form",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.search_content_semantic",
+      "safety": "read-only",
+      "args": {
+        "query": "Soroban",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.search_directory",
+      "safety": "read-only",
+      "args": {
+        "query": "blend",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "lumenloop.search_documents",
+      "safety": "read-only",
+      "args": {
+        "collection": "articles",
+        "query": "Soroban",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.analyzeEcosystem",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.compareHackathons",
+      "safety": "read-only",
+      "args": null,
+      "dependency": "Two slugs from scout.getHackathons",
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.explainRepo",
+      "safety": "generation excluded from read-only inventory",
+      "args": null,
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getBuilders",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getChangelog",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getChanges",
+      "safety": "read-only",
+      "args": {
+        "since": "2026-09-01",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getClusters",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getHackathon",
+      "safety": "read-only",
+      "args": null,
+      "dependency": "First slug from scout.getHackathons",
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getHackathons",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getLeaderboard",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getPartner",
+      "safety": "read-only",
+      "args": null,
+      "dependency": "First slug from scout.getPartners",
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getPartners",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getPeople",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getRepoTrust",
+      "safety": "read-only",
+      "args": {
+        "repo": "stellar/stellar-core"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getRfps",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getSkill",
+      "safety": "read-only",
+      "args": {
+        "name": "stellar-scout"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getStablecoins",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.getStatus",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.hackathonBrief",
+      "safety": "read-only",
+      "args": {
+        "q": "payment wallet"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.listAudits",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.listContracts",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.listSkills",
+      "safety": "read-only",
+      "args": {},
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.matchPartners",
+      "safety": "generation excluded from read-only inventory",
+      "args": null,
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.resolveProject",
+      "safety": "read-only",
+      "args": {
+        "q": "Blend"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.scfPitch",
+      "safety": "read-only",
+      "args": {
+        "q": "payment wallet"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.searchHackathonBuilds",
+      "safety": "read-only",
+      "args": {
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.searchProjects",
+      "safety": "read-only",
+      "args": {
+        "q": "blend",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.searchRepos",
+      "safety": "read-only",
+      "args": {
+        "q": "wallet",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.searchResearch",
+      "safety": "read-only",
+      "args": {
+        "q": "Soroban",
+        "limit": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "scout.vetIdea",
+      "safety": "read-only",
+      "args": {
+        "q": "payment wallet"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.get_doc_page_sections",
+      "safety": "read-only",
+      "args": null,
+      "dependency": "First page path from stellarDocs.search_doc_titles",
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_anchor_sep_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "SEP-24",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_asset_token_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "trustline",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_doc_titles",
+      "safety": "read-only",
+      "args": {
+        "query": "state archival",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "Soroban",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_docs_in_category",
+      "safety": "read-only",
+      "args": {
+        "query": "storage",
+        "hitsPerPage": 2,
+        "category": "build"
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_meeting_notes",
+      "safety": "read-only",
+      "args": {
+        "query": "protocol",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_protocol_concepts_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "consensus",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_rpc_horizon_data_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "simulateTransaction",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_sdk_cli_tools_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "stellar CLI",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_soroban_contract_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "storage",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    },
+    {
+      "id": "stellarDocs.search_wallet_dapp_docs",
+      "safety": "read-only",
+      "args": {
+        "query": "wallet",
+        "hitsPerPage": 2
+      },
+      "dependency": null,
+      "expected": "data, source-scoped soft-empty, or explicit error; preserve upstream inner status"
+    }
+  ],
+  "skills": "Read all 20 exposed whole skills; preserve metadata, length, section keys, and body SHA256 only.",
+  "negativeControls": [
+    {
+      "id": "scout.getHackathon",
+      "args": {
+        "slug": "raven-audit-absent-20260917"
+      }
+    },
+    {
+      "id": "scout.getStablecoins",
+      "args": {
+        "sort": "raven-invalid"
+      }
+    },
+    {
+      "id": "stellarDocs.search_docs",
+      "args": {
+        "query": "raven-audit-absent-20260917",
+        "hitsPerPage": 1
+      }
+    }
+  ]
+}

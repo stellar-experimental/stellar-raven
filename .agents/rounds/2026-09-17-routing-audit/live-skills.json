@@ -1,0 +1,369 @@
+{
+  "observedAt": "2026-09-17T00:33:51.377Z",
+  "catalogCount": 282,
+  "catalogSha256": "273fcb88e6140a64a8be990a6ac8eb9353816e1063eb5f60cc12bbeba3ea541b",
+  "skills": [
+    {
+      "id": "skills.lumenloop.scf-submission-radar",
+      "ok": true,
+      "chars": 8387,
+      "sha256": "27b653c1c866ea6942e2ff1f39f921282d9d84a1c65ea01f2a0e732bf8a90ea7",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "the-tools-you-use",
+        "recipe",
+        "worked-example-on-chain-invoice-financing-for-smes",
+        "output-a-positioning-brief",
+        "pointers",
+        "file:reference/positioning-brief-template.md"
+      ]
+    },
+    {
+      "id": "skills.lumenloop.stellar-builder-quickstart",
+      "ok": true,
+      "chars": 10513,
+      "sha256": "12c5f9923d005d63da5274b2e2958409f7bba18c12651baa5811f34b1194f768",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "the-recipe",
+        "worked-example-an-rwa-tokenization-marketplace-on-stellar",
+        "gotchas",
+        "read-next",
+        "file:reference/build-plan-template.md"
+      ]
+    },
+    {
+      "id": "skills.lumenloop.stellar-content-auditor",
+      "ok": true,
+      "chars": 6386,
+      "sha256": "756b14484cfcc68e7acfb24f37800cc53b110370cfe2db8ce01c13d56aa65706",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "the-audit-workflow",
+        "worked-example",
+        "gotchas",
+        "pointers",
+        "file:reference/audit-report-template.md"
+      ]
+    },
+    {
+      "id": "skills.lumenloop.stellar-ecosystem-digest",
+      "ok": true,
+      "chars": 10476,
+      "sha256": "fb6c51aa60ae86e305f414f03b704123e23b2b9f793cb0bca3e00ef8563ee92b",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "the-pipeline",
+        "pass-1-newest-items-per-collection",
+        "pass-2-theme-filter-semantic-dated",
+        "pass-3-entity-focus",
+        "pass-4-quotes-from-talks",
+        "pass-5-research-library",
+        "pass-6-expand-a-flagged-item",
+        "worked-example-what-s-new-in-stellar-rwa-in-the-last-30-days",
+        "news",
+        "talks-video",
+        "events",
+        "research",
+        "entities-to-watch",
+        "quality-rules",
+        "pointers",
+        "file:reference/digest-template.md"
+      ]
+    },
+    {
+      "id": "skills.lumenloop.stellar-ecosystem-scout",
+      "ok": true,
+      "chars": 10289,
+      "sha256": "4176f2b6c0254237a0fa8425b03b8d93595338084a53fbc3a50b13135a856ea0",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "the-scouting-recipe",
+        "worked-example-mapping-rwa-tokenization",
+        "output-the-landscape",
+        "gotchas",
+        "further-reading",
+        "file:reference/landscape-template.md"
+      ]
+    },
+    {
+      "id": "skills.lumenloop.stellar-integration-finder",
+      "ok": true,
+      "chars": 10164,
+      "sha256": "b4b3369e65672cdde8ee14b4b9d5a8eae9426bf741741d86a158a7e3e0649d1b",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "recipe",
+        "worked-example-what-oracle-should-i-use-to-read-prices-on-stellar",
+        "gotchas"
+      ]
+    },
+    {
+      "id": "skills.lumenloop.stellar-project-dossier",
+      "ok": true,
+      "chars": 10331,
+      "sha256": "1dc21fd9d6ac4c93622f0c69121518b085ec9b49796ad2339154800fc189e3bc",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "the-dossier-pipeline-run-in-order",
+        "worked-example-the-lobstr-dossier",
+        "output-the-dossier",
+        "gotchas",
+        "further-reading",
+        "file:reference/dossier-template.md"
+      ]
+    },
+    {
+      "id": "skills.openzeppelin-stellar.develop-secure-contracts",
+      "ok": true,
+      "chars": 14453,
+      "sha256": "87bcd6a2c6c907ae97c4c9d279b4d6d3633999a774452549761823fab3a06504",
+      "sections": [
+        "core-workflow",
+        "pattern-discovery-and-integration",
+        "cli-generators"
+      ]
+    },
+    {
+      "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+      "ok": true,
+      "chars": 3615,
+      "sha256": "1954d06222af32a12711cbf4622cd6d6cfeda395ba2edf2d6aaf1da3e13ca9c0",
+      "sections": [
+        "soroban-stellar-development-setup",
+        "openzeppelin-dependencies",
+        "code-patterns",
+        "platform-notes",
+        "build-test"
+      ]
+    },
+    {
+      "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+      "ok": true,
+      "chars": 8346,
+      "sha256": "f5ec6e19aa654e9b6cb926c3692ff379d4f6d2be94f0a833a98585d1c482ee26",
+      "sections": [
+        "contents",
+        "soroban-upgrade-model",
+        "using-the-openzeppelin-upgradeable-module",
+        "access-control",
+        "upgrade-safety"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.agentic-payments",
+      "ok": true,
+      "chars": 6716,
+      "sha256": "2846aca3d82323ffede86c5a69d64d2003361dbeb91e647240b0818b583d0e2c",
+      "sections": [
+        "quick-decision",
+        "read-the-file-that-matches-the-task",
+        "related-skills",
+        "testnet-setup-shared",
+        "two-usdc-addresses-don-t-confuse-them",
+        "file:mpp.md",
+        "file:x402.md"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.assets",
+      "ok": true,
+      "chars": 17855,
+      "sha256": "eaf44dee0afd023422dc4f5eafacd69435afb2931572cdb7082411de587a8af4",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "overview",
+        "stellar-assets-classic",
+        "issuing-assets",
+        "asset-flags",
+        "trustlines",
+        "stellar-asset-contract-sac",
+        "when-to-use-what",
+        "querying-assets",
+        "sep-standards-for-assets",
+        "best-practices"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.cross-chain",
+      "ok": true,
+      "chars": 9269,
+      "sha256": "4d9160dea104d4dddbb283d2116255e6553fab45225f99ea743031d8e2c1757b",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "pitfalls-shared-by-every-rail",
+        "near-intents-intent-based-swaps",
+        "file:axelar.md",
+        "file:cctp.md",
+        "file:layerzero.md"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.dapp",
+      "ok": true,
+      "chars": 17915,
+      "sha256": "032d91d3c5a29e19b37d9ca4da10d37c2ddfe3b799b14d4b9055d506ea1f5603",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "goals",
+        "read-the-file-that-matches-the-task",
+        "recommended-dependencies",
+        "sdk-initialization",
+        "wallet-integration",
+        "transaction-building",
+        "transaction-submission",
+        "transaction-ux-checklist",
+        "file:data-fetching.md",
+        "file:react.md",
+        "file:smart-accounts.md"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.data",
+      "ok": true,
+      "chars": 13069,
+      "sha256": "1ebbf3d37bc8e7d673369f1ff43b30fbdc4c43e6e26ffe559378a949e2a5e48b",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "overview",
+        "read-the-file-that-matches-the-task",
+        "stellar-rpc",
+        "migration-horizon-to-rpc",
+        "historical-data-access",
+        "network-configuration",
+        "best-practices",
+        "file:horizon.md"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.smart-contracts",
+      "ok": true,
+      "chars": 9056,
+      "sha256": "fde84e2e775f1d3c82113cadfec885d3635ff20eb9b7f842076ecc42b5e173a1",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "versions",
+        "platform-constraints",
+        "project-setup",
+        "contract-anatomy",
+        "build-deploy-invoke",
+        "minimal-test",
+        "before-mainnet",
+        "documentation",
+        "file:development.md",
+        "file:security.md",
+        "file:testing.md"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.standards",
+      "ok": true,
+      "chars": 8020,
+      "sha256": "51880b1871ea441ab56545d14bcc78800621fa851e1be4026292dd1ab0f9638d",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "when-to-use-this-guide",
+        "maintenance-note",
+        "high-value-seps-for-app-developers",
+        "high-value-caps-for-smart-contract-developers",
+        "quick-mapping-by-use-case",
+        "practical-workflow-for-ai-agents",
+        "related-docs",
+        "file:ecosystem.md",
+        "file:resources.md"
+      ]
+    },
+    {
+      "id": "skills.stellar-dev.zk-proofs",
+      "ok": true,
+      "chars": 15467,
+      "sha256": "6b70ce70612d29564c3070a68649966d49efccae8fe7b45a4309f7dda97faff9",
+      "sections": [
+        "when-to-use-this-skill",
+        "related-skills",
+        "what-s-available-verify-before-building",
+        "the-on-chain-verifier-groth16-over-bls12-381",
+        "walkthrough-circom-on-chain-verification",
+        "walkthrough-noir-ultrahonk-on-chain-verifiable-since-protocol-26",
+        "walkthrough-risc-zero-groth16-wrap-on-chain-verifiable-since-protocol-25",
+        "architecture-patterns",
+        "pitfalls",
+        "testing",
+        "references"
+      ]
+    },
+    {
+      "id": "skills.stellar-light.stellar-scout",
+      "ok": true,
+      "chars": 34228,
+      "sha256": "279a95a04515da44508be0f5fc287128c071e14c633e2e0176b5c79b490aab46",
+      "sections": [
+        "when-to-use-this-skill",
+        "two-modes",
+        "specialized-workflows",
+        "evidence-floor",
+        "output-contract",
+        "key-endpoints-quick-reference",
+        "references-load-these-on-demand",
+        "stellar-native-topic-clusters",
+        "known-integration-partners",
+        "data-freshness",
+        "limitations",
+        "companion-skills",
+        "attribution",
+        "file:README.md",
+        "file:references/api-reference.md",
+        "file:references/examples.md"
+      ]
+    },
+    {
+      "id": "skills.trustless-work.trustless-work-dev",
+      "ok": true,
+      "chars": 13770,
+      "sha256": "02640920a2bf6e3325b6232b1ea80890d02e1ad420ccdcad370ccbf5f2f99476",
+      "sections": [
+        "quick-start",
+        "gotchas",
+        "reference-files",
+        "api-base-urls",
+        "common-transaction-flow",
+        "mcp-integration",
+        "resources",
+        "file:constitution.md",
+        "file:skills/api/core-concepts.md",
+        "file:skills/api/multi-release-escrow.md",
+        "file:skills/api/single-release-escrow.md",
+        "file:skills/api/trustlines.md",
+        "file:skills/api/types.md",
+        "file:skills/api/v2/core-concepts.md",
+        "file:skills/api/v2/multi-release.md",
+        "file:skills/api/v2/single-release.md",
+        "file:skills/blocks/components.md",
+        "file:skills/blocks/hooks.md",
+        "file:skills/blocks/introduction.md",
+        "file:skills/blocks/providers.md",
+        "file:skills/blocks/vibe-coding.md",
+        "file:skills/js-sdk/js-sdk.md",
+        "file:skills/protocol/v1.md",
+        "file:skills/protocol/v2.md",
+        "file:skills/react-sdk/hooks-reference.md",
+        "file:skills/react-sdk/react-sdk.md",
+        "file:skills/react-sdk/v2/react-sdk.md",
+        "file:skills/react-sdk/vibe-coding.md"
+      ]
+    }
+  ]
+}

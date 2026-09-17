@@ -1,13 +1,14 @@
 # NEXT — current handoff
 
-Updated 2026-09-16 after the [Docs and Playground checks](rounds/2026-09-16-docs-resolutions.md).
+Updated 2026-09-17 during the [routing audit](rounds/2026-09-17-routing-audit.md).
 Use [TODO.md](TODO.md) for task requirements and completion criteria.
 This file ranks the work and retains unresolved owner decisions, not deployment history.
 
 ## Next work
 
-1. Resolve the rejected Scout drift candidate through isolated source comparisons and the existing routing acceptance checks.
-   Keep Scout `1.9.1` and the reviewed skill pins until a candidate passes.
+1. Complete the routing audit and its reviewed evaluations.
+   Production uses Scout `1.9.52`; RWA stays excluded under issue #167.
+   Remove proven routing exceptions only when source access and answer quality survive the change.
 2. Follow Docs PR #2837 for `sd-027` / `sd-034`.
    Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
 3. Complete source-metadata follow-up before October 1 and review dependency upgrades.
@@ -23,15 +24,15 @@ The September 4 candidate run remains diagnostic and non-comparable.
 No valid paired baseline or two-week causal measurement exists.
 The old `$882.50` plan is spent for P6 and the candidate, and stopped for all other methods.
 Its stored `meanContinuousCoverage` is invalid and must not be quoted.
-No current authorization permits new collection or paid rejudging.
+The user approved a separate $250 evaluation cap for the September 17 routing audit.
+Use that round's reviewed method limits and pins. This approval does not resume the historical plan.
 Never transfer a diagnostic budget to headline collection.
 Use [the evaluation map](../eval/EVALS.md) and [the eval runbook](skills/run-evals/SKILL.md) for the measurement sequence.
 
 ## Owner decisions
 
 Each decision names the question and the evidence it needs. Record each answer in a round ledger,
-`eval/qa/README.md`, or a decision record. Safe default for every paid or external item: no spend,
-no filing, no deployment.
+`eval/qa/README.md`, or a decision record. The historical decisions below remain separate from the current routing audit.
 
 ### A. Authorize the supervised paired subset measurement
 

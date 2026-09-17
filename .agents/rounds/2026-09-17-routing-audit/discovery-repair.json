@@ -1,0 +1,819 @@
+[
+ {
+  "id": "ext-strict-miss-q-defi-build-staking-for-own-token",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_soroban_contract_docs",
+    "stellarDocs.search_asset_token_docs",
+    "skills.stellar-dev.smart-contracts",
+    "skills.stellar-dev.assets#stellar-asset-contract-sac",
+    "scout.searchResearch"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_soroban_contract_docs",
+    "stellarDocs.search_asset_token_docs",
+    "skills.stellar-dev.smart-contracts",
+    "scout.searchResearch"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.assets#stellar-asset-contract-sac",
+    "action": "remove",
+    "reason": "Pinned assets body has no staking, yield, or reward coverage."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-defi-sdex-offer-lifecycle",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_docs",
+    "skills.stellar-dev.data#horizon-api-legacy"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.data#horizon-api-legacy",
+    "action": "remove",
+    "reason": "Pinned data body (SKILL.md, horizon.md) has no offer, trade, or order-book coverage."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-edge-exchange-memo-lost-funds",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_docs",
+    "stellarDocs.search_wallet_dapp_docs",
+    "skills.stellar-dev.standards#wallets"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_docs",
+    "stellarDocs.search_wallet_dapp_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.standards#wallets",
+    "action": "remove",
+    "reason": "Pinned standards body has no memo or exchange-deposit recovery coverage."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-edge-metamask-evm-mental-model",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_wallet_dapp_docs",
+    "stellarDocs.search_asset_token_docs",
+    "skills.stellar-dev.dapp#wallet-integration",
+    "scout.searchProjects"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_wallet_dapp_docs",
+    "stellarDocs.search_asset_token_docs",
+    "scout.searchProjects"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#wallet-integration",
+    "action": "remove",
+    "reason": "Pinned dapp body covers developer wallet connection (Freighter, Wallets Kit), not MetaMask or holding XLM."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-pc-practical-fee-setting",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "skills.stellar-dev.dapp#transaction-building"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "stellarDocs.search_rpc_horizon_data_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#transaction-building",
+    "action": "remove",
+    "reason": "Pinned dapp body uses BASE_FEE only; no surge pricing or fee estimation."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-pc-sequence-numbers-ordering-replace",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "skills.stellar-dev.dapp#transaction-building"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "stellarDocs.search_rpc_horizon_data_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#transaction-building",
+    "action": "remove",
+    "reason": "Pinned dapp body has no sequence-number semantics."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-sor-msg-sender-equivalent",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_soroban_contract_docs",
+    "skills.stellar-dev.smart-contracts#contract-anatomy",
+    "scout.explainRepo"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_soroban_contract_docs",
+    "skills.stellar-dev.smart-contracts",
+    "scout.explainRepo"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.smart-contracts#contract-anatomy",
+    "action": "map-to-parent",
+    "reason": "Pinned smart-contracts security.md explains opt-in require_auth() on the right address."
+   }
+  ]
+ },
+ {
+  "id": "ext-strict-miss-q-ti-friendbot-ratelimit-alternatives",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "stellarDocs.search_docs",
+    "skills.stellar-dev.dapp#transaction-submission"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "stellarDocs.search_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#transaction-submission",
+    "action": "remove",
+    "reason": "Pinned dapp body only configures friendbotUrl; no rate-limit alternatives."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-protocol-zipper-landed",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "scout",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_docs",
+    "scout.searchResearch",
+    "scout.getChangelog",
+    "skills.stellar-dev.standards#maintenance-note"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_docs",
+    "scout.searchResearch",
+    "scout.getChangelog"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.standards#maintenance-note",
+    "action": "remove",
+    "reason": "Pinned standards body says it is not a source of final governance or status truth."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-cap-62-implemented",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "scout",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_docs",
+    "scout.searchResearch",
+    "scout.getChangelog",
+    "skills.stellar-dev.standards#protocol-governance"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_docs",
+    "scout.searchResearch",
+    "scout.getChangelog"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.standards#protocol-governance",
+    "action": "remove",
+    "reason": "Pinned standards body says it is not a source of final governance or status truth."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-passkey-smart-wallet-recommendation",
+  "before": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.dapp#smart-accounts-passkey-wallets",
+    "stellarDocs.search_wallet_dapp_docs",
+    "scout.searchResearch",
+    "scout.searchRepos"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.dapp",
+    "stellarDocs.search_wallet_dapp_docs",
+    "scout.searchResearch",
+    "scout.searchRepos"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#smart-accounts-passkey-wallets",
+    "action": "map-to-parent",
+    "reason": "Pinned dapp smart-accounts.md covers passkey smart accounts."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-x402-facilitator-status",
+  "before": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.agentic-payments#how-x402-works-on-stellar",
+    "skills.stellar-dev.agentic-payments#when-to-use-x402",
+    "stellarDocs.search_docs",
+    "scout.searchProjects",
+    "scout.searchResearch"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.agentic-payments",
+    "stellarDocs.search_docs",
+    "scout.searchProjects",
+    "scout.searchResearch"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.agentic-payments#how-x402-works-on-stellar",
+    "action": "map-to-parent",
+    "reason": "Pinned agentic-payments body covers x402 facilitator options."
+   },
+   {
+    "ref": "skills.stellar-dev.agentic-payments#when-to-use-x402",
+    "action": "map-to-parent",
+    "reason": "Pinned agentic-payments body covers x402 facilitator options."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-bn254-poseidon-status",
+  "before": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.zk-proofs#what-s-available-verify-before-building",
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_soroban_contract_docs",
+    "scout.searchResearch"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.zk-proofs",
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_soroban_contract_docs",
+    "scout.searchResearch"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.zk-proofs#what-s-available-verify-before-building",
+    "action": "map-to-parent",
+    "reason": "Pinned zk-proofs body has a dated CAP-0074/0075/0080 status table."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-cap-46-6-token-standard",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "skills.stellar-dev.assets#sep-standards-for-assets",
+    "skills.stellar-dev.standards#high-value-caps-for-smart-contract-developers"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "skills.stellar-dev.assets"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.assets#sep-standards-for-assets",
+    "action": "map-to-parent",
+    "reason": "Pinned assets body covers the SEP-41 token interface and SAC vs custom tokens."
+   },
+   {
+    "ref": "skills.stellar-dev.standards#high-value-caps-for-smart-contract-developers",
+    "action": "remove",
+    "reason": "Pinned standards body only routes SEP-41 work to other skills; no CAP-46-6 content."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-horizon-vs-rpc-latest",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_docs",
+    "skills.stellar-dev.data#migration-horizon-to-rpc",
+    "skills.stellar-dev.data#stellar-rpc"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_docs",
+    "skills.stellar-dev.data"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.data#migration-horizon-to-rpc",
+    "action": "map-to-parent",
+    "reason": "Pinned data body recommends RPC for new projects and has a migration section."
+   },
+   {
+    "ref": "skills.stellar-dev.data#stellar-rpc",
+    "action": "map-to-parent",
+    "reason": "Pinned data body recommends RPC for new projects and has a migration section."
+   }
+  ]
+ },
+ {
+  "id": "issue-9-erc3643-rwa-stack",
+  "before": {
+   "expectedFamilies": [
+    "scout",
+    "lumenloop",
+    "skills"
+   ],
+   "acceptableOps": [
+    "scout.searchProjects",
+    "scout.searchResearch",
+    "lumenloop.search_directory",
+    "lumenloop.search_content_semantic",
+    "skills.stellar-dev.assets#asset-flags"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "scout",
+    "lumenloop"
+   ],
+   "acceptableOps": [
+    "scout.searchProjects",
+    "scout.searchResearch",
+    "lumenloop.search_directory",
+    "lumenloop.search_content_semantic"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.assets#asset-flags",
+    "action": "remove",
+    "reason": "The case asks whether a project exists; pinned assets flag guidance is not existence evidence."
+   }
+  ]
+ },
+ {
+  "id": "round844-q-ti-channel-accounts-throughput",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_protocol_concepts_docs",
+    "skills.stellar-dev.data#stellar-rpc",
+    "scout.explainRepo"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "scout"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_protocol_concepts_docs",
+    "scout.explainRepo"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.data#stellar-rpc",
+    "action": "remove",
+    "reason": "Pinned data body has sendTransaction and generic retry only; no channel accounts, TRY_AGAIN_LATER, or multi-provider guidance."
+   }
+  ]
+ },
+ {
+  "id": "round844-q-ti-classic-submission-errors",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_protocol_concepts_docs",
+    "skills.stellar-dev.data#horizon-api-legacy"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_protocol_concepts_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.data#horizon-api-legacy",
+    "action": "remove",
+    "reason": "Pinned data body logs result codes generically; no result-code taxonomy."
+   }
+  ]
+ },
+ {
+  "id": "round844-q-ti-tx-too-late-resubmit",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_protocol_concepts_docs",
+    "skills.stellar-dev.dapp#transaction-building"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "stellarDocs.search_protocol_concepts_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#transaction-building",
+    "action": "remove",
+    "reason": "Pinned dapp body sets setTimeout(180) and lists an expired error; no timebounds, sequence refresh, or resubmission guidance."
+   }
+  ]
+ },
+ {
+  "id": "round844-q-sor-native-xlm-sac-address",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_soroban_contract_docs",
+    "skills.stellar-dev.assets#stellar-asset-contract-sac"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_soroban_contract_docs",
+    "skills.stellar-dev.assets"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.assets#stellar-asset-contract-sac",
+    "action": "map-to-parent",
+    "reason": "Pinned assets body covers Asset.native(), SAC deployment, and per-network contractId derivation."
+   }
+  ]
+ },
+ {
+  "id": "round844-q-ti-testnet-usdc-faucet",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "skills.stellar-dev.assets#trustlines"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "skills.stellar-dev.assets"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.assets#trustlines",
+    "action": "map-to-parent",
+    "reason": "Pinned assets body walks through issuing a test asset on testnet with trustlines (borderline: no USDC faucet)."
+   }
+  ]
+ },
+ {
+  "id": "round844-q-ti-secret-key-vs-mnemonic-derivation",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "skills"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_wallet_dapp_docs",
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "skills.stellar-dev.dapp#wallet-integration",
+    "skills.stellar-dev.standards#wallets"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_wallet_dapp_docs",
+    "stellarDocs.search_sdk_cli_tools_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.dapp#wallet-integration",
+    "action": "remove",
+    "reason": "Pinned dapp body has no mnemonic, SEP-5, or seed derivation coverage."
+   },
+   {
+    "ref": "skills.stellar-dev.standards#wallets",
+    "action": "remove",
+    "reason": "Pinned standards body has no SEP-5 or mnemonic coverage."
+   }
+  ]
+ },
+ {
+  "id": "pr17-protocol-24-bare",
+  "before": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "lumenloop"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "lumenloop.search_content_semantic",
+    "skills.stellar-dev.standards#protocol-governance"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "stellarDocs",
+    "lumenloop"
+   ],
+   "acceptableOps": [
+    "stellarDocs.search_protocol_concepts_docs",
+    "lumenloop.search_content_semantic"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.standards#protocol-governance",
+    "action": "remove",
+    "reason": "Pinned standards body says it is not a source of final governance or status truth."
+   }
+  ]
+ },
+ {
+  "id": "pr17-ap2-acp",
+  "before": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.agentic-payments",
+    "skills.stellar-dev.agentic-payments#when-to-use-x402",
+    "skills.stellar-dev.agentic-payments#when-to-use-mpp",
+    "stellarDocs.search_doc_titles",
+    "stellarDocs.search_docs"
+   ]
+  },
+  "after": {
+   "expectedFamilies": [
+    "skills",
+    "stellarDocs"
+   ],
+   "acceptableOps": [
+    "skills.stellar-dev.agentic-payments",
+    "stellarDocs.search_doc_titles",
+    "stellarDocs.search_docs"
+   ]
+  },
+  "dispositions": [
+   {
+    "ref": "skills.stellar-dev.agentic-payments#when-to-use-x402",
+    "action": "map-to-parent",
+    "reason": "The parent skill id is already acceptable; pinned body covers x402 and MPP."
+   },
+   {
+    "ref": "skills.stellar-dev.agentic-payments#when-to-use-mpp",
+    "action": "map-to-parent",
+    "reason": "The parent skill id is already acceptable; pinned body covers x402 and MPP."
+   }
+  ]
+ }
+]

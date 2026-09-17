@@ -2,13 +2,12 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { compactHit, normalizeUrl, parseSearchPayload, postMcp } from "./lib.mjs";
+import { compactHit, loadDiscoveryCases, normalizeUrl, parseSearchPayload, postMcp } from "./lib.mjs";
 
 const DISCOVERY_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(DISCOVERY_DIR, "../..");
 const DEFAULT_CASES = path.join(DISCOVERY_DIR, "cases.json");
 const DEFAULT_URL = "http://localhost:8788";
-const FAMILIES = new Set(["lumenloop", "scout", "stellarDocs", "skills"]);
 
 const argValue = (flag) => {
   const i = process.argv.indexOf(flag);
@@ -23,31 +22,19 @@ async function preflight(url) {
 }
 
 function loadCases(casesPath) {
-  const data = JSON.parse(readFileSync(casesPath, "utf8"));
-  const cases = Array.isArray(data) ? data : data.cases;
-  if (!Array.isArray(cases)) throw new Error(`${casesPath} must contain an array or { cases: [] }`);
-  const seen = new Set();
+  const { meta, cases } = loadDiscoveryCases(casesPath);
   for (const c of cases) {
     for (const field of ["id", "question", "expectedFamilies", "acceptableOps", "seed", "groundTruth", "notes"]) if (c[field] === undefined) throw new Error(`case ${c.id ?? "<unknown>"} missing ${field}`);
-    if (seen.has(c.id)) throw new Error(`duplicate case id ${c.id}`);
-    seen.add(c.id);
-    if (!Array.isArray(c.expectedFamilies) || !c.expectedFamilies.length) throw new Error(`case ${c.id} expectedFamilies must be a non-empty array`);
-    for (const family of c.expectedFamilies) if (!FAMILIES.has(family)) throw new Error(`case ${c.id} has invalid expected family ${family}`);
-    if (!Array.isArray(c.acceptableOps) || !c.acceptableOps.length) throw new Error(`case ${c.id} acceptableOps must be a non-empty array`);
     if (!c.seed?.pool || !c.seed?.ref) throw new Error(`case ${c.id} seed must include pool and ref`);
     if (!["authored", "provisional"].includes(c.groundTruth)) throw new Error(`case ${c.id} groundTruth must be authored or provisional`);
     if (c.groundTruth === "provisional" && !c.groundTruthNote) throw new Error(`case ${c.id} provisional ground truth needs groundTruthNote`);
   }
-  return { meta: Array.isArray(data) ? null : { schemaVersion: data.schemaVersion, authoredAt: data.authoredAt }, cases };
+  return { meta, cases };
 }
 
-function validateManifestIds(cases) {
+function manifestSummary() {
   const manifest = JSON.parse(readFileSync(path.join(REPO, "catalog", "manifest.json"), "utf8"));
-  const ids = new Set((manifest.entries ?? []).map((e) => e.id));
-  const missing = [];
-  for (const c of cases) for (const id of c.acceptableOps) if (!ids.has(id)) missing.push(`${c.id}: ${id}`);
-  if (missing.length) throw new Error(`acceptableOps not present in catalog/manifest.json:\n${missing.join("\n")}`);
-  return { generatedAt: manifest.generatedAt, version: manifest.version, entryCount: ids.size };
+  return { generatedAt: manifest.generatedAt, version: manifest.version, entryCount: manifest.entries.length };
 }
 
 async function runCase(url, c, index) {
@@ -79,7 +66,7 @@ async function main() {
   const url = normalizeUrl(argValue("--url") ?? DEFAULT_URL);
   const casesPath = path.resolve(argValue("--cases") ?? DEFAULT_CASES);
   const { meta, cases } = loadCases(casesPath);
-  const manifest = validateManifestIds(cases);
+  const manifest = manifestSummary();
   await preflight(url);
   const rows = [];
   for (const [i, c] of cases.entries()) {

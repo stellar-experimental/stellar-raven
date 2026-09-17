@@ -1,0 +1,334 @@
+[
+  {
+    "id": "lumenloop.get_document",
+    "input": {
+      "collection": "articles",
+      "id": 11513
+    },
+    "ok": true,
+    "shape": {
+      "id": "string",
+      "title": "string",
+      "url": "string",
+      "domain": "string",
+      "source": "string",
+      "author": "string",
+      "summary": "string",
+      "long_summary": "string",
+      "tags": {
+        "array": 3,
+        "item": "string"
+      },
+      "content_type": "string",
+      "publishing_date": "string",
+      "processed_at": "string",
+      "created_at": "string",
+      "slug": "string",
+      "status": "string"
+    },
+    "sha256": "584fda208b3370e23104c43372182ae738e21aa1d7383245bc9e5e02b6bda848",
+    "ms": 84,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.get_related_projects",
+    "input": {
+      "content_type": "article",
+      "content_id": 11513
+    },
+    "ok": true,
+    "shape": {
+      "content": {
+        "array": 2,
+        "item": [
+          "type",
+          "text"
+        ]
+      }
+    },
+    "sha256": "21a1c6774e3d24c37897645243526085f04f5fabcb28b5263a4eff00d6f1886b",
+    "ms": 42,
+    "followup": null
+  },
+  {
+    "id": "scout.getHackathon",
+    "input": {
+      "slug": "hackmeridian-2026"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "note": "string"
+      },
+      "hackathon": {
+        "id": "string",
+        "name": "string",
+        "slug": "string",
+        "description": "string",
+        "startDate": "string",
+        "endDate": "string",
+        "status": "string",
+        "externalUrl": "string",
+        "organizer": [
+          "id",
+          "name",
+          "slug"
+        ],
+        "prizePoolUSD": "null",
+        "prizeTiers": {
+          "array": 0,
+          "item": null
+        },
+        "hackersCount": "null",
+        "source": "string",
+        "stats": [
+          "totalSubmissions",
+          "totalPrizeUSD",
+          "winners",
+          "outcomes"
+        ],
+        "tracks": {
+          "array": 0,
+          "item": null
+        }
+      },
+      "winners": {
+        "array": 0,
+        "item": null
+      },
+      "winnersRanked": "null",
+      "submissions": {
+        "array": 0,
+        "item": null
+      },
+      "tracks": {
+        "array": 0,
+        "item": null
+      }
+    },
+    "sha256": "00b6bbf9b0fb13229a942be455ea990dd74aeb63008b9ad7cc089bd8fe349d7c",
+    "ms": 1101,
+    "followup": null
+  },
+  {
+    "id": "scout.compareHackathons",
+    "input": {
+      "slugs": [
+        "hackmeridian-2026",
+        "stellar-builders-camp-jaipur-2026"
+      ]
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "counts": [
+          "requested",
+          "returned",
+          "notFound"
+        ]
+      },
+      "hackathons": {
+        "array": 2,
+        "item": [
+          "slug",
+          "source",
+          "name",
+          "startDate",
+          "endDate",
+          "status",
+          "externalUrl"
+        ]
+      },
+      "deltas": {
+        "notes": {
+          "array": 0,
+          "item": null
+        }
+      }
+    },
+    "sha256": "4ae0575a7941dd64a50efc81319dada31922ad2aab5fd5cbc3f1c01090c8bef5",
+    "ms": 981,
+    "followup": null
+  },
+  {
+    "id": "scout.getPartner",
+    "input": {
+      "slug": "trustless-work"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string"
+      },
+      "partner": {
+        "slug": "string",
+        "name": "string",
+        "partnerType": "string",
+        "tagline": "string",
+        "description": "string",
+        "logoUrl": "string",
+        "websiteUrl": "string",
+        "foundedYear": "null",
+        "services": {
+          "array": 0,
+          "item": null
+        },
+        "sectors": {
+          "array": 2,
+          "item": "string"
+        },
+        "regions": {
+          "array": 2,
+          "item": "string"
+        },
+        "assets": {
+          "array": 0,
+          "item": null
+        },
+        "seps": {
+          "array": 0,
+          "item": null
+        },
+        "tomlSourceUrl": "null",
+        "tomlFetchedAt": "null",
+        "rampTypes": "null",
+        "country": "null",
+        "acceptingClients": "boolean",
+        "typicalEngagement": "null",
+        "leadTime": "null",
+        "pricingModel": "null",
+        "pricingNotes": "null",
+        "docsUrl": "null",
+        "githubOrg": "null",
+        "contactEmail": "null",
+        "contactChannel": "null",
+        "responseSla": "null",
+        "caseStudies": {
+          "array": 0,
+          "item": null
+        },
+        "verified": [
+          "githubLastCommitAt",
+          "githubCommits90d",
+          "onchainActive",
+          "onchainNote",
+          "scfInvolvement",
+          "lastAutoVerifyAt"
+        ],
+        "freshness": [
+          "status",
+          "lastPartnerUpdateAt",
+          "isCurrent",
+          "excludeFromMatching"
+        ],
+        "url": "string"
+      }
+    },
+    "sha256": "4a07ee9a3697a3e7c0269b44cc98f2310c34d793d16b0419255d682482621653",
+    "ms": 69,
+    "followup": null
+  },
+  {
+    "id": "stellarDocs.get_doc_page_sections",
+    "input": {
+      "path": "/docs/learn/fundamentals/contract-development/storage/state-archival"
+    },
+    "ok": true,
+    "shape": {
+      "page": "string",
+      "sections": {
+        "array": 25,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb",
+          "snippet",
+          "content"
+        ]
+      },
+      "nbSections": "number",
+      "complete": "boolean",
+      "truncated": "boolean",
+      "usedFallbackQuery": "string"
+    },
+    "sha256": "89a34b73cc96f779cbb2fd98f0e93836bdc05513214f6263ac14ed3bbfe8810f",
+    "ms": 462,
+    "followup": null
+  },
+  {
+    "id": "scout.getHackathon",
+    "input": {
+      "slug": "raven-audit-absent-20260917"
+    },
+    "ok": false,
+    "shape": {
+      "error": {
+        "service": "scout",
+        "kind": "soft-empty",
+        "message": "hackathon not found: raven-audit-absent-20260917",
+        "status": 404,
+        "hint": "Scope this miss to the requested Scout record. For an open-world identity or history question, make one broader pass: use scout.searchResearch for cited research/history, scout.searchProjects for project identity, scout.getPeople for SDF staff/leadership/board, or scout.getBuilders for ecosystem builder membership; validate any semantic candidate before attribution."
+      }
+    },
+    "sha256": "f989332057944bf822019fd45253783cf45f3d93c9f289a8dfe0b32b79955ee0",
+    "ms": 599,
+    "followup": null
+  },
+  {
+    "id": "scout.getStablecoins",
+    "input": {
+      "sort": "raven-invalid"
+    },
+    "ok": false,
+    "shape": {
+      "error": {
+        "service": "scout",
+        "kind": "error",
+        "message": "invalid arguments for scout.getStablecoins — no call was made",
+        "details": [
+          {
+            "path": "sort",
+            "message": "must be one of: \"marketcap\", \"supply\", \"holders\", \"volume\""
+          }
+        ],
+        "hint": "Fix the listed fields and retry; the operation's exact input schema is in its `search` hit signature."
+      }
+    },
+    "sha256": "b82c1ad33dbfb59d2560999a595b68e52bae42091a3f2b54e06bc764a7f54b0d",
+    "ms": 0,
+    "followup": null
+  },
+  {
+    "id": "stellarDocs.search_docs",
+    "input": {
+      "query": "raven-audit-absent-20260917",
+      "hitsPerPage": 1
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 1,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number"
+    },
+    "sha256": "2e20da541049bda9b4015404d2cefc9656c1d2d2c236f497d4441b7fcf07c47a",
+    "ms": 62,
+    "followup": null
+  }
+]

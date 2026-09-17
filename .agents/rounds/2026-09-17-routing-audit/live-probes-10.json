@@ -1,0 +1,511 @@
+[
+  {
+    "id": "lumenloop.get_tags_vocabulary",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "array": 33,
+      "item": {
+        "id": "number",
+        "name": "string",
+        "slug": "string",
+        "created_at": "string",
+        "article_count": "number",
+        "av_count": "number",
+        "total_count": "number"
+      }
+    },
+    "sha256": "d5df0626bd6734b287cdd0387f5c8077d5684d2090a61990bb1ff282d1ebae8f",
+    "ms": 62,
+    "followup": {}
+  },
+  {
+    "id": "lumenloop.list_documents",
+    "input": {
+      "collection": "articles",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "items": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "status",
+          "source",
+          "created_at"
+        ]
+      },
+      "pagination": {
+        "total": "number",
+        "page": "number",
+        "limit": "number",
+        "hasMore": "boolean"
+      }
+    },
+    "sha256": "eec9a6471d54d52b84229a79c0d7f2f76a24b6e4cacefd4056e15877d2100b1d",
+    "ms": 47,
+    "followup": {
+      "articles": [
+        {
+          "id": "11513"
+        },
+        {
+          "id": "11510"
+        }
+      ]
+    }
+  },
+  {
+    "id": "lumenloop.list_research",
+    "input": {
+      "format": "long-form",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "count": "number",
+      "research": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "body_preview",
+          "format",
+          "status",
+          "source",
+          "editorial_style_slug",
+          "tags",
+          "created_at"
+        ]
+      }
+    },
+    "sha256": "f362c86e9ddd73cecea7afe99f920f739ff1b6dd2357c525e59e1d94826a229c",
+    "ms": 39,
+    "followup": {}
+  },
+  {
+    "id": "lumenloop.search_content_semantic",
+    "input": {
+      "query": "Soroban",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "items": {
+        "array": 12,
+        "item": [
+          "slug",
+          "title",
+          "description",
+          "category",
+          "round",
+          "award_type",
+          "linked_project_slug",
+          "linked_project_slugs",
+          "similarity",
+          "snippet",
+          "collection"
+        ]
+      },
+      "counts": {
+        "proposals": "number",
+        "research": "number",
+        "articles": "number",
+        "events": "number",
+        "av": "number",
+        "scf_submissions": "number"
+      },
+      "meta": {}
+    },
+    "sha256": "aab287314ede4c52862f21e59b3a177d0c7664ede2e63501169d2b5d346a0b62",
+    "ms": 301,
+    "followup": {}
+  },
+  {
+    "id": "lumenloop.search_directory",
+    "input": {
+      "query": "blend",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "count": "number",
+      "projects": {
+        "array": 2,
+        "item": [
+          "slug",
+          "title",
+          "description",
+          "category",
+          "tags",
+          "website"
+        ]
+      }
+    },
+    "sha256": "b6fd66eebb87d05c3adca374ef8ddc96d3545f0d5a0745f964bff41317b22754",
+    "ms": 37,
+    "followup": {}
+  },
+  {
+    "id": "lumenloop.search_documents",
+    "input": {
+      "collection": "articles",
+      "query": "Soroban",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "items": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "status",
+          "source"
+        ]
+      },
+      "pagination": {
+        "total": "number",
+        "page": "number",
+        "limit": "number",
+        "hasMore": "boolean"
+      }
+    },
+    "sha256": "31bd9bb06d0cf6cd98c2b960ea6895af64466d4d424f51d29bacb5c60c99ad61",
+    "ms": 45,
+    "followup": {}
+  },
+  {
+    "id": "scout.analyzeEcosystem",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "dimension": "string",
+        "validDimensions": {
+          "array": 8,
+          "item": "string"
+        },
+        "population": [
+          "id",
+          "basis",
+          "statusScope",
+          "totalAvailable",
+          "included",
+          "truncated",
+          "generatedAt"
+        ]
+      },
+      "hackathons": {
+        "totalEvents": "number",
+        "byStatus": [
+          "upcoming",
+          "active",
+          "completed"
+        ],
+        "totalPrizePoolUSD": "number",
+        "totalRegisteredHackers": "number"
+      },
+      "categories": {
+        "totalProjects": "number",
+        "scope": "string",
+        "distribution": {
+          "array": 7,
+          "item": [
+            "category",
+            "projectCount",
+            "scfFundedCount",
+            "scfTotalUSD",
+            "hackathonWinnerCount"
+          ]
+        }
+      },
+      "funding": {
+        "scfAwardedProjects": "number",
+        "scfTotalDistributedUSD": "number",
+        "meanAwardUSD": "number",
+        "computedAt": "string",
+        "methodologyVersion": "string",
+        "projectSetHash": "string",
+        "snapshotAsOf": "string",
+        "previousSnapshot": [
+          "projectSetHash",
+          "computedAt",
+          "scfAwardedProjects",
+          "scfTotalDistributedUSD"
+        ],
+        "snapshotDelta": [
+          "addedProjects",
+          "removedProjects",
+          "addedCount",
+          "removedCount",
+          "totalUSDDelta",
+          "removedReasons"
+        ],
+        "deltaUnavailable": "null",
+        "deltaBasis": "string",
+        "countBasis": "string",
+        "postHackathonStatusFunnel": [
+          "scope",
+          "Built",
+          "In Progress",
+          "Abandoned",
+          "Unknown"
+        ],
+        "byRound": {
+          "array": 45,
+          "item": [
+            "round",
+            "count",
+            "totalUSD"
+          ]
+        }
+      },
+      "tvl": {
+        "totalTvlUSD": "number",
+        "trackedProjects": "number",
+        "asOf": "string",
+        "provider": "string",
+        "top10": {
+          "array": 10,
+          "item": [
+            "slug",
+            "name",
+            "tvlUSD",
+            "tvlAsOf"
+          ]
+        },
+        "basis": "string"
+      },
+      "gaps": {
+        "scope": "string",
+        "basis": "string",
+        "byType": {
+          "array": 25,
+          "item": [
+            "type",
+            "total",
+            "live",
+            "inProgress",
+            "scfFunded",
+            "hackathonWinners"
+          ]
+        },
+        "signals": [
+          "unproven",
+          "underbuilt",
+          "absent"
+        ],
+        "thresholds": [
+          "underbuiltMax"
+        ]
+      },
+      "developers": {
+        "asOf": "string",
+        "source": "string",
+        "sourceUrl": "string",
+        "monthlyActiveDevs": [
+          "total",
+          "exclusive",
+          "multichain",
+          "allTimePeak",
+          "allTimePeakDay",
+          "trend"
+        ],
+        "commits28d": "number",
+        "tenure": [
+          "fullTime",
+          "partTime",
+          "oneTime"
+        ],
+        "geography": [
+          "located",
+          "unknown",
+          "topCountries"
+        ],
+        "peerChains": {
+          "array": 6,
+          "item": [
+            "chain",
+            "monthlyActiveDevs"
+          ]
+        },
+        "basis": "string"
+      },
+      "toolchain": {
+        "scannedRepos": "number",
+        "measuredRepos": "number",
+        "measurementComplete": "boolean",
+        "byVersionStatus": [
+          "current",
+          "deprecated",
+          "supported",
+          "unknown"
+        ],
+        "deprecatedRepos": {
+          "array": 50,
+          "item": [
+            "fullName",
+            "projectSlug",
+            "sorobanSdkVersion"
+          ]
+        },
+        "deprecatedTotal": "number",
+        "deprecatedListTruncated": "boolean",
+        "engineeringPractice": [
+          "reposWithPracticeFacts",
+          "ciPresent",
+          "testsPresent"
+        ],
+        "basis": "string"
+      }
+    },
+    "sha256": "daf80742ab418692d8ddb7b09fb354607fd89781c7d5459a4df566515c124b9f",
+    "ms": 2131,
+    "followup": {}
+  },
+  {
+    "id": "scout.getBuilders",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "location",
+          "limit",
+          "offset"
+        ],
+        "counts": [
+          "returned",
+          "total"
+        ],
+        "matchBasis": "string"
+      },
+      "builders": {
+        "array": 2,
+        "item": [
+          "githubUsername",
+          "displayName",
+          "bio",
+          "roleTitle",
+          "location",
+          "websiteUrl",
+          "twitterHandle",
+          "avatarUrl",
+          "isFeatured",
+          "projectCount",
+          "projects",
+          "url",
+          "match",
+          "codeEvidence",
+          "onStellar"
+        ]
+      }
+    },
+    "sha256": "aab19fd6b4d9446b9155c79c0a01799baf63484488fdc05ef6621af572f9a656",
+    "ms": 270,
+    "followup": {}
+  },
+  {
+    "id": "scout.getChangelog",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "ok": "boolean",
+      "service": "string",
+      "version": "string",
+      "generatedAt": "string",
+      "meta": {
+        "counts": [
+          "returned",
+          "total"
+        ],
+        "returned": "number",
+        "total": "number",
+        "latest": "string",
+        "filters": [
+          "since",
+          "limit"
+        ],
+        "note": "string"
+      },
+      "entries": {
+        "array": 2,
+        "item": [
+          "date",
+          "surfaces",
+          "version",
+          "type",
+          "summary",
+          "detail"
+        ]
+      }
+    },
+    "sha256": "d54ec8f5ea5dcfb4b394555c1272b2ab855955587edfb1f003965255ec8215e0",
+    "ms": 121,
+    "followup": {}
+  },
+  {
+    "id": "scout.getChanges",
+    "input": {
+      "since": "2026-09-01",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "changes": {
+        "array": 6,
+        "item": [
+          "surface",
+          "slug",
+          "changedAt",
+          "facets"
+        ]
+      },
+      "meta": {
+        "since": "string",
+        "asOf": "string",
+        "generatedAt": "string",
+        "surfaces": {
+          "array": 3,
+          "item": "string"
+        },
+        "limitPerSurface": "number",
+        "counts": [
+          "projects",
+          "repos",
+          "partners",
+          "total"
+        ],
+        "truncated": [
+          "projects",
+          "repos",
+          "partners"
+        ],
+        "byFacet": [
+          "projects",
+          "repos",
+          "partners"
+        ],
+        "note": "string"
+      }
+    },
+    "sha256": "c90557cd56dfec02203333ea652ca247eee0d99f813d80da88b024f90c7be825",
+    "ms": 1049,
+    "followup": {}
+  }
+]

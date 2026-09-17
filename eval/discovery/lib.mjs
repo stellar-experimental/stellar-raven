@@ -1,8 +1,10 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const FAMILIES = new Set(["lumenloop", "scout", "stellarDocs", "skills"]);
+const MANIFEST_PATH = fileURLToPath(new URL("../../catalog/manifest.json", import.meta.url));
 
 export function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -86,10 +88,15 @@ export function compactHit(hit, rank) {
   return out;
 }
 
-export function loadDiscoveryCases(casesPath) {
+export function loadDiscoveryCases(casesPath, { manifestPath = MANIFEST_PATH } = {}) {
   const data = JSON.parse(readFileSync(casesPath, "utf8"));
   const cases = Array.isArray(data) ? data : data.cases;
   if (!Array.isArray(cases)) throw new Error(`${casesPath} must contain an array or { cases: [] }`);
+  // Search never ranks searchable:false entries (skill sections), so only searchable ids can be graded hits.
+  const searchableIds = new Set(
+    JSON.parse(readFileSync(manifestPath, "utf8")).entries.filter((e) => e.searchable !== false).map((e) => e.id)
+  );
+  const unsearchable = [];
   const seen = new Set();
   for (const c of cases) {
     if (!c.id || !c.question) throw new Error(`case ${c.id ?? "<unknown>"} needs id and question`);
@@ -105,9 +112,13 @@ export function loadDiscoveryCases(casesPath) {
       if (!Array.isArray(c.acceptableOps) || !c.acceptableOps.length) {
         throw new Error(`case ${c.id} acceptableOps must be a non-empty array`);
       }
+      for (const id of c.acceptableOps) if (!searchableIds.has(id)) unsearchable.push(`${c.id}: ${id}`);
     } else if (!FAMILIES.has(c.expected_service)) {
       throw new Error(`case ${c.id} needs discovery labels or a valid expected_service`);
     }
+  }
+  if (unsearchable.length) {
+    throw new Error(`acceptableOps must be searchable manifest entries:\n${unsearchable.join("\n")}`);
   }
   return {
     meta: Array.isArray(data)

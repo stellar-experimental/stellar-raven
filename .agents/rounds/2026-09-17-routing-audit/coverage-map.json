@@ -1,0 +1,2196 @@
+{
+ "holdoutInspected": false,
+ "views": {
+  "exact": {
+   "operation": {
+    "total": 60,
+    "legacy": 12,
+    "extended": 2,
+    "skills": 0,
+    "agentic": 4,
+    "anyRouting": 12,
+    "noRouting": [
+     "lumenloop.get_project_tags_vocabulary",
+     "lumenloop.get_related_projects",
+     "lumenloop.get_tags_vocabulary",
+     "lumenloop.list_documents",
+     "lumenloop.list_research",
+     "lumenloop.search_documents",
+     "scout.analyzeEcosystem",
+     "scout.compareHackathons",
+     "scout.explainRepo",
+     "scout.getBuilders",
+     "scout.getChangelog",
+     "scout.getChanges",
+     "scout.getClusters",
+     "scout.getHackathon",
+     "scout.getHackathons",
+     "scout.getLeaderboard",
+     "scout.getPartner",
+     "scout.getPartners",
+     "scout.getPeople",
+     "scout.getRepoTrust",
+     "scout.getRfps",
+     "scout.getSkill",
+     "scout.getStablecoins",
+     "scout.getStatus",
+     "scout.hackathonBrief",
+     "scout.listAudits",
+     "scout.listContracts",
+     "scout.listSkills",
+     "scout.matchPartners",
+     "scout.resolveProject",
+     "scout.scfPitch",
+     "scout.searchHackathonBuilds",
+     "scout.searchProjects",
+     "scout.searchRepos",
+     "scout.searchResearch",
+     "scout.vetIdea",
+     "stellarDocs.get_doc_page_sections",
+     "stellarDocs.search_anchor_sep_docs",
+     "stellarDocs.search_asset_token_docs",
+     "stellarDocs.search_doc_titles",
+     "stellarDocs.search_docs",
+     "stellarDocs.search_docs_in_category",
+     "stellarDocs.search_meeting_notes",
+     "stellarDocs.search_protocol_concepts_docs",
+     "stellarDocs.search_rpc_horizon_data_docs",
+     "stellarDocs.search_sdk_cli_tools_docs",
+     "stellarDocs.search_soroban_contract_docs",
+     "stellarDocs.search_wallet_dapp_docs"
+    ]
+   },
+   "skill": {
+    "total": 20,
+    "legacy": 0,
+    "extended": 0,
+    "skills": 18,
+    "agentic": 0,
+    "anyRouting": 18,
+    "noRouting": [
+     "skills.stellar-dev.cross-chain",
+     "skills.trustless-work.trustless-work-dev"
+    ]
+   },
+   "unresolvedCards": {
+    "scout_projects": 29,
+    "scout_repos": 18,
+    "scout_builders": 3,
+    "scout_research": 90,
+    "scout_clusters": 4,
+    "scout_leaderboard": 2,
+    "scout_analyze": 9,
+    "scout_rfps": 6,
+    "perplexity_search": 1,
+    "scout_hackathon_detail": 1,
+    "scout_hackathons": 2,
+    "scout_skills": 2,
+    "scout_skill_detail": 1
+   },
+   "perUnit": {
+    "lumenloop.find_av_passages": {
+     "legacy": 2,
+     "extended": 1,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_content_about_project": {
+     "legacy": 7,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "lumenloop.find_content_by_entity": {
+     "legacy": 5,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_similar_projects_semantic": {
+     "legacy": 6,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_similar_scf_submissions": {
+     "legacy": 4,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_categories": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_document": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_project": {
+     "legacy": 13,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 3
+    },
+    "lumenloop.get_project_tags_vocabulary": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_regions": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_related_projects": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_scf_submissions": {
+     "legacy": 9,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "lumenloop.get_tags_vocabulary": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.list_documents": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.list_research": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.search_content_semantic": {
+     "legacy": 15,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 4
+    },
+    "lumenloop.search_directory": {
+     "legacy": 3,
+     "extended": 2,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.search_documents": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.analyzeEcosystem": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.compareHackathons": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.explainRepo": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getBuilders": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getChangelog": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getChanges": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getClusters": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getHackathon": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getHackathons": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getLeaderboard": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPartner": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPartners": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPeople": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getRepoTrust": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getRfps": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getSkill": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getStablecoins": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getStatus": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.hackathonBrief": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listAudits": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listContracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listSkills": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.matchPartners": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.resolveProject": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.scfPitch": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchHackathonBuilds": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchProjects": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchRepos": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchResearch": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.vetIdea": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "skills.lumenloop.scf-submission-radar": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-builder-quickstart": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-content-auditor": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-ecosystem-digest": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-ecosystem-scout": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-integration-finder": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-project-dossier": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.develop-secure-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.setup-stellar-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.upgrade-stellar-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.agentic-payments": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.assets": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.cross-chain": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "skills.stellar-dev.dapp": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 2,
+     "agentic": 0
+    },
+    "skills.stellar-dev.data": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 2,
+     "agentic": 0
+    },
+    "skills.stellar-dev.smart-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 4,
+     "agentic": 0
+    },
+    "skills.stellar-dev.standards": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.zk-proofs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-light.stellar-scout": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.trustless-work.trustless-work-dev": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.get_doc_page_sections": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_anchor_sep_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_asset_token_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_doc_titles": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_docs_in_category": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_meeting_notes": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_protocol_concepts_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_rpc_horizon_data_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_sdk_cli_tools_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_soroban_contract_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_wallet_dapp_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    }
+   }
+  },
+  "normalizer": {
+   "operation": {
+    "total": 60,
+    "legacy": 24,
+    "extended": 6,
+    "skills": 0,
+    "agentic": 10,
+    "anyRouting": 24,
+    "noRouting": [
+     "lumenloop.get_related_projects",
+     "lumenloop.get_tags_vocabulary",
+     "lumenloop.list_documents",
+     "lumenloop.list_research",
+     "lumenloop.search_documents",
+     "scout.explainRepo",
+     "scout.getChangelog",
+     "scout.getChanges",
+     "scout.getHackathon",
+     "scout.getPartner",
+     "scout.getPartners",
+     "scout.getPeople",
+     "scout.getRepoTrust",
+     "scout.getSkill",
+     "scout.getStablecoins",
+     "scout.getStatus",
+     "scout.hackathonBrief",
+     "scout.listAudits",
+     "scout.listContracts",
+     "scout.matchPartners",
+     "scout.resolveProject",
+     "scout.scfPitch",
+     "scout.searchHackathonBuilds",
+     "scout.vetIdea",
+     "stellarDocs.get_doc_page_sections",
+     "stellarDocs.search_anchor_sep_docs",
+     "stellarDocs.search_asset_token_docs",
+     "stellarDocs.search_doc_titles",
+     "stellarDocs.search_docs",
+     "stellarDocs.search_docs_in_category",
+     "stellarDocs.search_meeting_notes",
+     "stellarDocs.search_protocol_concepts_docs",
+     "stellarDocs.search_rpc_horizon_data_docs",
+     "stellarDocs.search_sdk_cli_tools_docs",
+     "stellarDocs.search_soroban_contract_docs",
+     "stellarDocs.search_wallet_dapp_docs"
+    ]
+   },
+   "skill": {
+    "total": 20,
+    "legacy": 0,
+    "extended": 0,
+    "skills": 18,
+    "agentic": 0,
+    "anyRouting": 18,
+    "noRouting": [
+     "skills.stellar-dev.cross-chain",
+     "skills.trustless-work.trustless-work-dev"
+    ]
+   },
+   "unresolvedCards": {
+    "perplexity_search": 1,
+    "scout_hackathon_detail": 1,
+    "scout_skill_detail": 1
+   },
+   "perUnit": {
+    "lumenloop.find_av_passages": {
+     "legacy": 2,
+     "extended": 1,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_content_about_project": {
+     "legacy": 7,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "lumenloop.find_content_by_entity": {
+     "legacy": 5,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_similar_projects_semantic": {
+     "legacy": 6,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_similar_scf_submissions": {
+     "legacy": 4,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_categories": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_document": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_project": {
+     "legacy": 13,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 3
+    },
+    "lumenloop.get_project_tags_vocabulary": {
+     "legacy": 13,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 3
+    },
+    "lumenloop.get_regions": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_related_projects": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_scf_submissions": {
+     "legacy": 9,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "lumenloop.get_tags_vocabulary": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.list_documents": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.list_research": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.search_content_semantic": {
+     "legacy": 15,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 4
+    },
+    "lumenloop.search_directory": {
+     "legacy": 3,
+     "extended": 2,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.search_documents": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.analyzeEcosystem": {
+     "legacy": 7,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 2
+    },
+    "scout.compareHackathons": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.explainRepo": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getBuilders": {
+     "legacy": 3,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getChangelog": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getChanges": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getClusters": {
+     "legacy": 3,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "scout.getHackathon": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getHackathons": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getLeaderboard": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPartner": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPartners": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPeople": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getRepoTrust": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getRfps": {
+     "legacy": 5,
+     "extended": 1,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getSkill": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getStablecoins": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getStatus": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.hackathonBrief": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listAudits": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listContracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listSkills": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.matchPartners": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.resolveProject": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.scfPitch": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchHackathonBuilds": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchProjects": {
+     "legacy": 17,
+     "extended": 10,
+     "skills": 0,
+     "agentic": 2
+    },
+    "scout.searchRepos": {
+     "legacy": 13,
+     "extended": 3,
+     "skills": 0,
+     "agentic": 2
+    },
+    "scout.searchResearch": {
+     "legacy": 73,
+     "extended": 12,
+     "skills": 0,
+     "agentic": 5
+    },
+    "scout.vetIdea": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "skills.lumenloop.scf-submission-radar": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-builder-quickstart": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-content-auditor": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-ecosystem-digest": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-ecosystem-scout": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-integration-finder": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-project-dossier": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.develop-secure-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.setup-stellar-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.upgrade-stellar-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.agentic-payments": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.assets": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.cross-chain": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "skills.stellar-dev.dapp": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 2,
+     "agentic": 0
+    },
+    "skills.stellar-dev.data": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 2,
+     "agentic": 0
+    },
+    "skills.stellar-dev.smart-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 4,
+     "agentic": 0
+    },
+    "skills.stellar-dev.standards": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.zk-proofs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-light.stellar-scout": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.trustless-work.trustless-work-dev": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.get_doc_page_sections": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_anchor_sep_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_asset_token_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_doc_titles": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_docs_in_category": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_meeting_notes": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_protocol_concepts_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_rpc_horizon_data_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_sdk_cli_tools_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_soroban_contract_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_wallet_dapp_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    }
+   }
+  },
+  "alias": {
+   "operation": {
+    "total": 60,
+    "legacy": 24,
+    "extended": 6,
+    "skills": 0,
+    "agentic": 9,
+    "anyRouting": 24,
+    "noRouting": [
+     "lumenloop.get_project_tags_vocabulary",
+     "lumenloop.get_related_projects",
+     "lumenloop.get_tags_vocabulary",
+     "lumenloop.list_documents",
+     "lumenloop.list_research",
+     "lumenloop.search_documents",
+     "scout.compareHackathons",
+     "scout.explainRepo",
+     "scout.getChangelog",
+     "scout.getChanges",
+     "scout.getPartner",
+     "scout.getPartners",
+     "scout.getPeople",
+     "scout.getRepoTrust",
+     "scout.getStablecoins",
+     "scout.getStatus",
+     "scout.hackathonBrief",
+     "scout.listAudits",
+     "scout.listContracts",
+     "scout.matchPartners",
+     "scout.resolveProject",
+     "scout.scfPitch",
+     "scout.searchHackathonBuilds",
+     "scout.vetIdea",
+     "stellarDocs.get_doc_page_sections",
+     "stellarDocs.search_anchor_sep_docs",
+     "stellarDocs.search_asset_token_docs",
+     "stellarDocs.search_doc_titles",
+     "stellarDocs.search_docs",
+     "stellarDocs.search_docs_in_category",
+     "stellarDocs.search_meeting_notes",
+     "stellarDocs.search_protocol_concepts_docs",
+     "stellarDocs.search_rpc_horizon_data_docs",
+     "stellarDocs.search_sdk_cli_tools_docs",
+     "stellarDocs.search_soroban_contract_docs",
+     "stellarDocs.search_wallet_dapp_docs"
+    ]
+   },
+   "skill": {
+    "total": 20,
+    "legacy": 0,
+    "extended": 0,
+    "skills": 18,
+    "agentic": 0,
+    "anyRouting": 18,
+    "noRouting": [
+     "skills.stellar-dev.cross-chain",
+     "skills.trustless-work.trustless-work-dev"
+    ]
+   },
+   "unresolvedCards": {
+    "perplexity_search": 1
+   },
+   "perUnit": {
+    "lumenloop.find_av_passages": {
+     "legacy": 2,
+     "extended": 1,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_content_about_project": {
+     "legacy": 7,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "lumenloop.find_content_by_entity": {
+     "legacy": 5,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_similar_projects_semantic": {
+     "legacy": 6,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.find_similar_scf_submissions": {
+     "legacy": 4,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_categories": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_document": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_project": {
+     "legacy": 13,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 3
+    },
+    "lumenloop.get_project_tags_vocabulary": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_regions": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_related_projects": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.get_scf_submissions": {
+     "legacy": 9,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "lumenloop.get_tags_vocabulary": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.list_documents": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.list_research": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.search_content_semantic": {
+     "legacy": 15,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 4
+    },
+    "lumenloop.search_directory": {
+     "legacy": 3,
+     "extended": 2,
+     "skills": 0,
+     "agentic": 0
+    },
+    "lumenloop.search_documents": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.analyzeEcosystem": {
+     "legacy": 7,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 2
+    },
+    "scout.compareHackathons": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.explainRepo": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getBuilders": {
+     "legacy": 3,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getChangelog": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getChanges": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getClusters": {
+     "legacy": 3,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 1
+    },
+    "scout.getHackathon": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getHackathons": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getLeaderboard": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPartner": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPartners": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getPeople": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getRepoTrust": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getRfps": {
+     "legacy": 5,
+     "extended": 1,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getSkill": {
+     "legacy": 1,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getStablecoins": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.getStatus": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.hackathonBrief": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listAudits": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listContracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.listSkills": {
+     "legacy": 2,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.matchPartners": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.resolveProject": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.scfPitch": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchHackathonBuilds": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "scout.searchProjects": {
+     "legacy": 17,
+     "extended": 10,
+     "skills": 0,
+     "agentic": 2
+    },
+    "scout.searchRepos": {
+     "legacy": 13,
+     "extended": 3,
+     "skills": 0,
+     "agentic": 2
+    },
+    "scout.searchResearch": {
+     "legacy": 73,
+     "extended": 12,
+     "skills": 0,
+     "agentic": 5
+    },
+    "scout.vetIdea": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "skills.lumenloop.scf-submission-radar": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-builder-quickstart": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-content-auditor": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-ecosystem-digest": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-ecosystem-scout": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-integration-finder": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.lumenloop.stellar-project-dossier": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.develop-secure-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.setup-stellar-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.openzeppelin-stellar.upgrade-stellar-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.agentic-payments": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.assets": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.cross-chain": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "skills.stellar-dev.dapp": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 2,
+     "agentic": 0
+    },
+    "skills.stellar-dev.data": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 2,
+     "agentic": 0
+    },
+    "skills.stellar-dev.smart-contracts": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 4,
+     "agentic": 0
+    },
+    "skills.stellar-dev.standards": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-dev.zk-proofs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.stellar-light.stellar-scout": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 1,
+     "agentic": 0
+    },
+    "skills.trustless-work.trustless-work-dev": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.get_doc_page_sections": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_anchor_sep_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_asset_token_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_doc_titles": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_docs_in_category": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_meeting_notes": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_protocol_concepts_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_rpc_horizon_data_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_sdk_cli_tools_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_soroban_contract_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    },
+    "stellarDocs.search_wallet_dapp_docs": {
+     "legacy": 0,
+     "extended": 0,
+     "skills": 0,
+     "agentic": 0
+    }
+   }
+  }
+ },
+ "cardResolution": {
+  "lumenloop_find_av_passages": {
+   "occurrences": 3,
+   "exact": [
+    "lumenloop.find_av_passages"
+   ],
+   "normalizer": [
+    "lumenloop.find_av_passages"
+   ],
+   "alias": [
+    "lumenloop.find_av_passages"
+   ]
+  },
+  "lumenloop_find_content_about_project": {
+   "occurrences": 8,
+   "exact": [
+    "lumenloop.find_content_about_project"
+   ],
+   "normalizer": [
+    "lumenloop.find_content_about_project"
+   ],
+   "alias": [
+    "lumenloop.find_content_about_project"
+   ]
+  },
+  "lumenloop_find_content_by_entity": {
+   "occurrences": 5,
+   "exact": [
+    "lumenloop.find_content_by_entity"
+   ],
+   "normalizer": [
+    "lumenloop.find_content_by_entity"
+   ],
+   "alias": [
+    "lumenloop.find_content_by_entity"
+   ]
+  },
+  "lumenloop_find_similar_projects_semantic": {
+   "occurrences": 6,
+   "exact": [
+    "lumenloop.find_similar_projects_semantic"
+   ],
+   "normalizer": [
+    "lumenloop.find_similar_projects_semantic"
+   ],
+   "alias": [
+    "lumenloop.find_similar_projects_semantic"
+   ]
+  },
+  "lumenloop_find_similar_scf_submissions": {
+   "occurrences": 4,
+   "exact": [
+    "lumenloop.find_similar_scf_submissions"
+   ],
+   "normalizer": [
+    "lumenloop.find_similar_scf_submissions"
+   ],
+   "alias": [
+    "lumenloop.find_similar_scf_submissions"
+   ]
+  },
+  "lumenloop_get_categories": {
+   "occurrences": 1,
+   "exact": [
+    "lumenloop.get_categories"
+   ],
+   "normalizer": [
+    "lumenloop.get_categories"
+   ],
+   "alias": [
+    "lumenloop.get_categories"
+   ]
+  },
+  "lumenloop_get_document": {
+   "occurrences": 1,
+   "exact": [
+    "lumenloop.get_document"
+   ],
+   "normalizer": [
+    "lumenloop.get_document"
+   ],
+   "alias": [
+    "lumenloop.get_document"
+   ]
+  },
+  "lumenloop_get_project": {
+   "occurrences": 16,
+   "exact": [
+    "lumenloop.get_project"
+   ],
+   "normalizer": [
+    "lumenloop.get_project",
+    "lumenloop.get_project_tags_vocabulary"
+   ],
+   "alias": [
+    "lumenloop.get_project"
+   ]
+  },
+  "lumenloop_get_regions": {
+   "occurrences": 1,
+   "exact": [
+    "lumenloop.get_regions"
+   ],
+   "normalizer": [
+    "lumenloop.get_regions"
+   ],
+   "alias": [
+    "lumenloop.get_regions"
+   ]
+  },
+  "lumenloop_get_scf_submissions": {
+   "occurrences": 10,
+   "exact": [
+    "lumenloop.get_scf_submissions"
+   ],
+   "normalizer": [
+    "lumenloop.get_scf_submissions"
+   ],
+   "alias": [
+    "lumenloop.get_scf_submissions"
+   ]
+  },
+  "lumenloop_search_content_semantic": {
+   "occurrences": 19,
+   "exact": [
+    "lumenloop.search_content_semantic"
+   ],
+   "normalizer": [
+    "lumenloop.search_content_semantic"
+   ],
+   "alias": [
+    "lumenloop.search_content_semantic"
+   ]
+  },
+  "lumenloop_search_directory": {
+   "occurrences": 5,
+   "exact": [
+    "lumenloop.search_directory"
+   ],
+   "normalizer": [
+    "lumenloop.search_directory"
+   ],
+   "alias": [
+    "lumenloop.search_directory"
+   ]
+  },
+  "perplexity_search": {
+   "occurrences": 1,
+   "exact": [],
+   "normalizer": [],
+   "alias": []
+  },
+  "scout_analyze": {
+   "occurrences": 9,
+   "exact": [],
+   "normalizer": [
+    "scout.analyzeEcosystem"
+   ],
+   "alias": [
+    "scout.analyzeEcosystem"
+   ]
+  },
+  "scout_builders": {
+   "occurrences": 3,
+   "exact": [],
+   "normalizer": [
+    "scout.getBuilders"
+   ],
+   "alias": [
+    "scout.getBuilders"
+   ]
+  },
+  "scout_clusters": {
+   "occurrences": 4,
+   "exact": [],
+   "normalizer": [
+    "scout.getClusters"
+   ],
+   "alias": [
+    "scout.getClusters"
+   ]
+  },
+  "scout_hackathon_detail": {
+   "occurrences": 1,
+   "exact": [],
+   "normalizer": [],
+   "alias": [
+    "scout.getHackathon"
+   ]
+  },
+  "scout_hackathons": {
+   "occurrences": 2,
+   "exact": [],
+   "normalizer": [
+    "scout.compareHackathons",
+    "scout.getHackathons"
+   ],
+   "alias": [
+    "scout.getHackathons"
+   ]
+  },
+  "scout_leaderboard": {
+   "occurrences": 2,
+   "exact": [],
+   "normalizer": [
+    "scout.getLeaderboard"
+   ],
+   "alias": [
+    "scout.getLeaderboard"
+   ]
+  },
+  "scout_projects": {
+   "occurrences": 29,
+   "exact": [],
+   "normalizer": [
+    "scout.searchProjects"
+   ],
+   "alias": [
+    "scout.searchProjects"
+   ]
+  },
+  "scout_repos": {
+   "occurrences": 18,
+   "exact": [],
+   "normalizer": [
+    "scout.searchRepos"
+   ],
+   "alias": [
+    "scout.searchRepos"
+   ]
+  },
+  "scout_research": {
+   "occurrences": 90,
+   "exact": [],
+   "normalizer": [
+    "scout.searchResearch"
+   ],
+   "alias": [
+    "scout.searchResearch"
+   ]
+  },
+  "scout_rfps": {
+   "occurrences": 6,
+   "exact": [],
+   "normalizer": [
+    "scout.getRfps"
+   ],
+   "alias": [
+    "scout.getRfps"
+   ]
+  },
+  "scout_skill_detail": {
+   "occurrences": 1,
+   "exact": [],
+   "normalizer": [],
+   "alias": [
+    "scout.getSkill"
+   ]
+  },
+  "scout_skills": {
+   "occurrences": 2,
+   "exact": [],
+   "normalizer": [
+    "scout.listSkills"
+   ],
+   "alias": [
+    "scout.listSkills"
+   ]
+  },
+  "skills_agentic_payments": {
+   "occurrences": 1,
+   "exact": [
+    "skills.stellar-dev.agentic-payments"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.agentic-payments"
+   ],
+   "alias": [
+    "skills.stellar-dev.agentic-payments"
+   ]
+  },
+  "skills_assets": {
+   "occurrences": 1,
+   "exact": [
+    "skills.stellar-dev.assets"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.assets"
+   ],
+   "alias": [
+    "skills.stellar-dev.assets"
+   ]
+  },
+  "skills_dapp": {
+   "occurrences": 2,
+   "exact": [
+    "skills.stellar-dev.dapp"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.dapp"
+   ],
+   "alias": [
+    "skills.stellar-dev.dapp"
+   ]
+  },
+  "skills_data": {
+   "occurrences": 2,
+   "exact": [
+    "skills.stellar-dev.data"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.data"
+   ],
+   "alias": [
+    "skills.stellar-dev.data"
+   ]
+  },
+  "skills_develop_secure_contracts": {
+   "occurrences": 1,
+   "exact": [
+    "skills.openzeppelin-stellar.develop-secure-contracts"
+   ],
+   "normalizer": [
+    "skills.openzeppelin-stellar.develop-secure-contracts"
+   ],
+   "alias": [
+    "skills.openzeppelin-stellar.develop-secure-contracts"
+   ]
+  },
+  "skills_scf_submission_radar": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.scf-submission-radar"
+   ],
+   "normalizer": [
+    "skills.lumenloop.scf-submission-radar"
+   ],
+   "alias": [
+    "skills.lumenloop.scf-submission-radar"
+   ]
+  },
+  "skills_setup_stellar_contracts": {
+   "occurrences": 1,
+   "exact": [
+    "skills.openzeppelin-stellar.setup-stellar-contracts"
+   ],
+   "normalizer": [
+    "skills.openzeppelin-stellar.setup-stellar-contracts"
+   ],
+   "alias": [
+    "skills.openzeppelin-stellar.setup-stellar-contracts"
+   ]
+  },
+  "skills_smart_contracts": {
+   "occurrences": 4,
+   "exact": [
+    "skills.stellar-dev.smart-contracts"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.smart-contracts"
+   ],
+   "alias": [
+    "skills.stellar-dev.smart-contracts"
+   ]
+  },
+  "skills_standards": {
+   "occurrences": 1,
+   "exact": [
+    "skills.stellar-dev.standards"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.standards"
+   ],
+   "alias": [
+    "skills.stellar-dev.standards"
+   ]
+  },
+  "skills_stellar_builder_quickstart": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.stellar-builder-quickstart"
+   ],
+   "normalizer": [
+    "skills.lumenloop.stellar-builder-quickstart"
+   ],
+   "alias": [
+    "skills.lumenloop.stellar-builder-quickstart"
+   ]
+  },
+  "skills_stellar_content_auditor": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.stellar-content-auditor"
+   ],
+   "normalizer": [
+    "skills.lumenloop.stellar-content-auditor"
+   ],
+   "alias": [
+    "skills.lumenloop.stellar-content-auditor"
+   ]
+  },
+  "skills_stellar_ecosystem_digest": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.stellar-ecosystem-digest"
+   ],
+   "normalizer": [
+    "skills.lumenloop.stellar-ecosystem-digest"
+   ],
+   "alias": [
+    "skills.lumenloop.stellar-ecosystem-digest"
+   ]
+  },
+  "skills_stellar_ecosystem_scout": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.stellar-ecosystem-scout"
+   ],
+   "normalizer": [
+    "skills.lumenloop.stellar-ecosystem-scout"
+   ],
+   "alias": [
+    "skills.lumenloop.stellar-ecosystem-scout"
+   ]
+  },
+  "skills_stellar_integration_finder": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.stellar-integration-finder"
+   ],
+   "normalizer": [
+    "skills.lumenloop.stellar-integration-finder"
+   ],
+   "alias": [
+    "skills.lumenloop.stellar-integration-finder"
+   ]
+  },
+  "skills_stellar_project_dossier": {
+   "occurrences": 1,
+   "exact": [
+    "skills.lumenloop.stellar-project-dossier"
+   ],
+   "normalizer": [
+    "skills.lumenloop.stellar-project-dossier"
+   ],
+   "alias": [
+    "skills.lumenloop.stellar-project-dossier"
+   ]
+  },
+  "skills_stellar_scout": {
+   "occurrences": 1,
+   "exact": [
+    "skills.stellar-light.stellar-scout"
+   ],
+   "normalizer": [
+    "skills.stellar-light.stellar-scout"
+   ],
+   "alias": [
+    "skills.stellar-light.stellar-scout"
+   ]
+  },
+  "skills_upgrade_stellar_contracts": {
+   "occurrences": 1,
+   "exact": [
+    "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+   ],
+   "normalizer": [
+    "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+   ],
+   "alias": [
+    "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+   ]
+  },
+  "skills_zk_proofs": {
+   "occurrences": 1,
+   "exact": [
+    "skills.stellar-dev.zk-proofs"
+   ],
+   "normalizer": [
+    "skills.stellar-dev.zk-proofs"
+   ],
+   "alias": [
+    "skills.stellar-dev.zk-proofs"
+   ]
+  },
+  "stellar_docs_mcp": {
+   "occurrences": 290,
+   "serviceLevel": true
+  }
+ },
+ "normalizerAmbiguity": [
+  {
+   "card": "lumenloop_get_project",
+   "occurrences": 16,
+   "normalizer": [
+    "lumenloop.get_project",
+    "lumenloop.get_project_tags_vocabulary"
+   ],
+   "alias": [
+    "lumenloop.get_project"
+   ]
+  },
+  {
+   "card": "scout_hackathon_detail",
+   "occurrences": 1,
+   "normalizer": [],
+   "alias": [
+    "scout.getHackathon"
+   ]
+  },
+  {
+   "card": "scout_hackathons",
+   "occurrences": 2,
+   "normalizer": [
+    "scout.compareHackathons",
+    "scout.getHackathons"
+   ],
+   "alias": [
+    "scout.getHackathons"
+   ]
+  },
+  {
+   "card": "scout_skill_detail",
+   "occurrences": 1,
+   "normalizer": [],
+   "alias": [
+    "scout.getSkill"
+   ]
+  }
+ ]
+}

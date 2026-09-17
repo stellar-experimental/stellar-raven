@@ -1,0 +1,654 @@
+[
+  {
+    "id": "scout.hackathonBrief",
+    "input": {
+      "q": "payment wallet"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "note": "string"
+      },
+      "report": {
+        "idea": "string",
+        "vertical": "string",
+        "vet": [
+          "competitors",
+          "maturity",
+          "priorArt",
+          "gap"
+        ],
+        "builds": {
+          "array": 5,
+          "item": [
+            "name",
+            "hackathon",
+            "endedAt",
+            "isWinner",
+            "placement",
+            "githubUrl",
+            "url"
+          ]
+        },
+        "startFrom": {
+          "array": 2,
+          "item": [
+            "repo",
+            "project",
+            "codeTruth",
+            "usage",
+            "audits",
+            "auditDrift",
+            "succession",
+            "signals",
+            "fullReport"
+          ]
+        },
+        "liveContracts": [
+          "domain",
+          "basis",
+          "contracts",
+          "note"
+        ],
+        "funding": [
+          "round",
+          "fundedPeers",
+          "fundingBar"
+        ],
+        "whatNotToClaim": {
+          "array": 2,
+          "item": "string"
+        }
+      }
+    },
+    "sha256": "f5c6bb1d1e7eeb9d518a57b22165e05f246eee9ee5617eb0af37ac1d56dabba1",
+    "ms": 2304,
+    "followup": {}
+  },
+  {
+    "id": "scout.listAudits",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "project",
+          "auditor",
+          "q",
+          "since",
+          "limit",
+          "offset"
+        ],
+        "counts": [
+          "total",
+          "matched",
+          "returned"
+        ],
+        "note": "string"
+      },
+      "audits": {
+        "array": 2,
+        "item": [
+          "reportId",
+          "title",
+          "reportUrl",
+          "auditor",
+          "protocol",
+          "projectSlug",
+          "projectName",
+          "linkBasis",
+          "publishedAt",
+          "dateBasis",
+          "observedAt",
+          "findingsTotal",
+          "severityCounts",
+          "engagementId",
+          "reportVersion",
+          "supersededByReportId",
+          "engagementStart",
+          "engagementEnd",
+          "findingsExtraction",
+          "chunksIndexed"
+        ]
+      }
+    },
+    "sha256": "3fe4324927590276f991a0f4a1a7c0cfc67d61041c9f36e8f65bfc76e754feee",
+    "ms": 75,
+    "followup": {}
+  },
+  {
+    "id": "scout.listContracts",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "q",
+          "domain",
+          "limit",
+          "offset"
+        ],
+        "counts": [
+          "returned",
+          "total"
+        ],
+        "note": "string"
+      },
+      "contracts": {
+        "array": 2,
+        "item": [
+          "contractId",
+          "contractBasis",
+          "verifiedContracts",
+          "repo",
+          "project",
+          "stellarProof",
+          "codeDepth",
+          "codeDomains",
+          "interfaceSize",
+          "interfacePreview",
+          "codeInUse",
+          "audits",
+          "successorRepo",
+          "scannedAt"
+        ]
+      }
+    },
+    "sha256": "8db48d10e3a6638bb4827bd9928fe38fbe2b52630ec59dbab14011d38e0baaa6",
+    "ms": 181,
+    "followup": {}
+  },
+  {
+    "id": "scout.listSkills",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "source",
+          "kind",
+          "q"
+        ],
+        "counts": [
+          "returned",
+          "total",
+          "bySource"
+        ],
+        "validSources": {
+          "array": 5,
+          "item": "string"
+        },
+        "validKinds": {
+          "array": 6,
+          "item": "string"
+        }
+      },
+      "skills": {
+        "array": 43,
+        "item": [
+          "slug",
+          "name",
+          "tagline",
+          "description",
+          "source",
+          "kind",
+          "install",
+          "installAlt",
+          "repository",
+          "homepage",
+          "docs",
+          "compatibility",
+          "targetUser",
+          "tags",
+          "featured"
+        ]
+      }
+    },
+    "sha256": "edc9fc225c0b5ef1ceefc2155f2c045c7b582e31df68e7d1c83e154beeeff0cb",
+    "ms": 264,
+    "followup": {}
+  },
+  {
+    "id": "scout.resolveProject",
+    "input": {
+      "q": "Blend"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "searched": "number",
+        "methodology": "string"
+      },
+      "query": "string",
+      "found": "boolean",
+      "matchedOn": "string",
+      "subject": {
+        "slug": "string",
+        "name": "string",
+        "status": "string"
+      },
+      "current": {
+        "slug": "string",
+        "name": "string",
+        "status": "string",
+        "url": "string"
+      },
+      "superseded": "boolean",
+      "evidence": {
+        "statusAsOf": "string",
+        "statusBasis": "string",
+        "statusSourceUrl": "string",
+        "unsourced": "boolean"
+      },
+      "note": "string"
+    },
+    "sha256": "b98f3aee22c29b51f3c9e707ba5c9127708015e04648cad182d1720305846e70",
+    "ms": 306,
+    "followup": {}
+  },
+  {
+    "id": "scout.scfPitch",
+    "input": {
+      "q": "payment wallet"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "note": "string"
+      },
+      "report": {
+        "idea": "string",
+        "vertical": "string",
+        "round": [
+          "source",
+          "open",
+          "note"
+        ],
+        "fundedPeers": {
+          "array": 8,
+          "item": [
+            "slug",
+            "name",
+            "totalAwardedUSD",
+            "lastAwardedRound"
+          ]
+        },
+        "fundingBar": [
+          "fundedProjects",
+          "totalAwardedUSD",
+          "basis"
+        ],
+        "vet": [
+          "competitors",
+          "maturity",
+          "priorArt",
+          "gap"
+        ],
+        "angles": {
+          "array": 2,
+          "item": "string"
+        }
+      }
+    },
+    "sha256": "9911dbdc5b0f93a34a19eded8e80ce4384a1d91c4792d9a2b1744bf8aca1fbf7",
+    "ms": 1627,
+    "followup": {}
+  },
+  {
+    "id": "scout.searchHackathonBuilds",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "upstream": "string",
+        "generatedAt": "string",
+        "filters": [
+          "q",
+          "winnersOnly",
+          "track",
+          "limit"
+        ],
+        "counts": [
+          "indexedBuilds",
+          "matched",
+          "returned"
+        ],
+        "note": "string"
+      },
+      "builds": {
+        "array": 2,
+        "item": [
+          "name",
+          "description",
+          "hackathon",
+          "hackathonSlug",
+          "endedAt",
+          "track",
+          "placement",
+          "award",
+          "prizeUsd",
+          "isWinner",
+          "votes",
+          "url",
+          "githubUrl",
+          "demoUrl"
+        ]
+      }
+    },
+    "sha256": "196c4f155c8685ba504de4ecc7adaecb08593f5c487b94c064b7676e2241695c",
+    "ms": 94,
+    "followup": {}
+  },
+  {
+    "id": "scout.searchProjects",
+    "input": {
+      "q": "blend",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "q",
+          "category",
+          "type",
+          "status",
+          "scfAwarded",
+          "scfAwardedOnly",
+          "limit",
+          "offset"
+        ],
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "counts": [
+          "returned",
+          "total",
+          "semantic"
+        ],
+        "semantic": "boolean",
+        "scfCountBasis": "string"
+      },
+      "projects": {
+        "array": 2,
+        "item": [
+          "id",
+          "name",
+          "slug",
+          "category",
+          "shortDescription",
+          "status",
+          "statusAsOf",
+          "statusSourceUrl",
+          "statusBasis",
+          "statusConfidence",
+          "deployment",
+          "onchain",
+          "publicGoods",
+          "tvlUSD",
+          "tvlAsOf",
+          "tvlSource",
+          "tvlMethod",
+          "llamaSlugs",
+          "tvlMethodUrl",
+          "routes",
+          "venueRole",
+          "productKind",
+          "availability",
+          "canonicalSlug",
+          "identity",
+          "lifecycle",
+          "logoUrl",
+          "scfAwarded",
+          "feedbackSignal",
+          "scfBasis",
+          "scfConfidence",
+          "scfAsOf",
+          "scfSourceUrl",
+          "scfTotalAwardedUSD",
+          "scfAmountStatus",
+          "scfAwardedRounds",
+          "scfRoundAwards",
+          "products",
+          "productsCoverage",
+          "hackathon",
+          "hackathonPlacement",
+          "hackathonPrize",
+          "hackathonPrizeTrack",
+          "prominence",
+          "verificationLevel",
+          "types",
+          "coverage",
+          "supportedNetworks",
+          "networksBasis",
+          "links",
+          "score",
+          "url",
+          "via",
+          "confidence",
+          "repos",
+          "lastActivityAt",
+          "builtBy",
+          "anchorProfile",
+          "audits"
+        ]
+      },
+      "codeReferences": {
+        "array": 5,
+        "item": [
+          "fullName",
+          "owner",
+          "name",
+          "url",
+          "description",
+          "topics",
+          "primaryLanguage",
+          "stars",
+          "openIssues",
+          "lastCommitAt",
+          "homepageUrl",
+          "isFork",
+          "isArchived",
+          "activityState",
+          "activitySignals",
+          "successorRepo",
+          "supersededBy",
+          "deprecatedAt",
+          "supersessionKind",
+          "codeInUse",
+          "knowledgeNotes",
+          "project",
+          "hackathonWinner",
+          "scfAwarded",
+          "builderReputation",
+          "judgeScore",
+          "judgedHackathon",
+          "repoScore",
+          "repoScoreLabel",
+          "tier",
+          "tierReason",
+          "tierChangedAt",
+          "source",
+          "score",
+          "deepWikiUrl",
+          "canonical",
+          "stellarEvidence",
+          "codeVerified",
+          "kind",
+          "kindBasis"
+        ]
+      }
+    },
+    "sha256": "c970e688a51b0f25e889b9c789d52e909730f02405534137dfb9a2e651f788da",
+    "ms": 372,
+    "followup": {}
+  },
+  {
+    "id": "scout.searchRepos",
+    "input": {
+      "q": "wallet",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "q",
+          "language",
+          "minScore",
+          "activity",
+          "limit",
+          "offset"
+        ],
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "note": "string",
+        "canonical": "null",
+        "counts": [
+          "returned",
+          "total"
+        ]
+      },
+      "repos": {
+        "array": 2,
+        "item": [
+          "fullName",
+          "owner",
+          "name",
+          "url",
+          "description",
+          "topics",
+          "primaryLanguage",
+          "stars",
+          "openIssues",
+          "lastCommitAt",
+          "homepageUrl",
+          "isFork",
+          "isArchived",
+          "activityState",
+          "activitySignals",
+          "successorRepo",
+          "supersededBy",
+          "deprecatedAt",
+          "supersessionKind",
+          "codeInUse",
+          "knowledgeNotes",
+          "project",
+          "hackathonWinner",
+          "scfAwarded",
+          "builderReputation",
+          "judgeScore",
+          "judgedHackathon",
+          "repoScore",
+          "repoScoreLabel",
+          "tier",
+          "tierReason",
+          "tierChangedAt",
+          "source",
+          "score",
+          "deepWikiUrl",
+          "canonical",
+          "stellarEvidence",
+          "codeVerified",
+          "kind",
+          "kindBasis"
+        ]
+      }
+    },
+    "sha256": "ef86c14bb91fb3611f87784775523dc0da48bf30d7d5deb449f04bdb554ee782",
+    "ms": 918,
+    "followup": {}
+  },
+  {
+    "id": "scout.searchResearch",
+    "input": {
+      "q": "Soroban",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "generatedAt": "string",
+        "query": "string",
+        "mode": "string",
+        "model": "string",
+        "filters": [
+          "source",
+          "auditor",
+          "protocol",
+          "severity",
+          "limit"
+        ],
+        "counts": [
+          "returned",
+          "total",
+          "totalBasis"
+        ],
+        "scoreModel": [
+          "version",
+          "fields",
+          "note"
+        ]
+      },
+      "results": {
+        "array": 2,
+        "item": [
+          "id",
+          "source",
+          "title",
+          "section",
+          "url",
+          "content",
+          "chunkIndex",
+          "publishedAt",
+          "observedAt",
+          "docKind",
+          "docVersionStatus",
+          "auditor",
+          "protocol",
+          "severity",
+          "capStatus",
+          "capProtocolVersion",
+          "score",
+          "confidence"
+        ]
+      }
+    },
+    "sha256": "b107e66a94f7ae45e2bc899b2e97f97ee462e5222b091aac124389519f33cf6a",
+    "ms": 202,
+    "followup": {}
+  }
+]

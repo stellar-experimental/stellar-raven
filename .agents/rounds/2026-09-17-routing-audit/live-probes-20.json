@@ -1,0 +1,607 @@
+[
+  {
+    "id": "scout.getClusters",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "dimension",
+          "minSize"
+        ],
+        "counts": [
+          "returned",
+          "total"
+        ],
+        "population": [
+          "id",
+          "basis",
+          "statusScope",
+          "totalAvailable",
+          "included",
+          "truncated",
+          "generatedAt"
+        ],
+        "dimensions": {
+          "array": 2,
+          "item": "string"
+        },
+        "notes": [
+          "crowdedness"
+        ]
+      },
+      "clusters": {
+        "array": 7,
+        "item": [
+          "key",
+          "dimension",
+          "size",
+          "scfFundedCount",
+          "scfTotalUSD",
+          "hackathonWinnerCount",
+          "crowdedness",
+          "sampleProjects"
+        ]
+      }
+    },
+    "sha256": "84abad3a1fd79c99ea3a0958090cecdfa3c002318e81cce2be02fc9969d13124",
+    "ms": 308,
+    "followup": {}
+  },
+  {
+    "id": "scout.getHackathons",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "status",
+          "organizer",
+          "source",
+          "limit"
+        ],
+        "counts": [
+          "curated",
+          "dorahacks",
+          "returned",
+          "total"
+        ]
+      },
+      "hackathons": {
+        "array": 2,
+        "item": [
+          "id",
+          "name",
+          "slug",
+          "description",
+          "startDate",
+          "endDate",
+          "status",
+          "externalUrl",
+          "organizer",
+          "url",
+          "source"
+        ]
+      }
+    },
+    "sha256": "c1f13cb83d5f31a8c439865ea2807f5760bf1abcb4c2533e4aa19d55d38d3303",
+    "ms": 202,
+    "followup": {
+      "hackathons": [
+        {
+          "slug": "hackmeridian-2026"
+        },
+        {
+          "slug": "stellar-builders-camp-jaipur-2026"
+        }
+      ]
+    }
+  },
+  {
+    "id": "scout.getLeaderboard",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "dataAsOf": "string",
+        "counts": [
+          "returned",
+          "total"
+        ],
+        "filters": [
+          "sort",
+          "range",
+          "category",
+          "limit",
+          "type"
+        ],
+        "docs": "string",
+        "metricDefinitions": [
+          "activity",
+          "stars",
+          "issues",
+          "repoCount",
+          "lastActivityAt",
+          "range",
+          "dataAsOf",
+          "tvl",
+          "supply"
+        ]
+      },
+      "ecosystem": {
+        "asOf": "string",
+        "activeDevs28d": "number",
+        "stellarOnlyDevs28d": "number",
+        "multichainDevs28d": "number",
+        "commits28d": "number",
+        "fullTimeDevs": "number",
+        "partTimeDevs": "number",
+        "oneTimeDevs": "number"
+      },
+      "projects": {
+        "array": 2,
+        "item": [
+          "rank",
+          "id",
+          "name",
+          "slug",
+          "category",
+          "types",
+          "shortDescription",
+          "scfAwarded",
+          "tvlUSD",
+          "tvlAsOf",
+          "assetCode",
+          "assetSupply",
+          "assetHolders",
+          "github"
+        ]
+      }
+    },
+    "sha256": "afc77caadf9e252f3f15237cad59dffe9332e891b0e95ccbfb8225ec7008e692",
+    "ms": 922,
+    "followup": {}
+  },
+  {
+    "id": "scout.getPartners",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "type",
+          "sector",
+          "region",
+          "ramps",
+          "accepting",
+          "all",
+          "q",
+          "limit",
+          "offset"
+        ],
+        "counts": [
+          "returned",
+          "total",
+          "filteredOut"
+        ],
+        "validTypes": {
+          "array": 11,
+          "item": "string"
+        },
+        "validRamps": {
+          "array": 2,
+          "item": "string"
+        },
+        "note": "string"
+      },
+      "partners": {
+        "array": 2,
+        "item": [
+          "slug",
+          "name",
+          "partnerType",
+          "pilot",
+          "tagline",
+          "description",
+          "logoUrl",
+          "websiteUrl",
+          "foundedYear",
+          "services",
+          "sectors",
+          "regions",
+          "assets",
+          "seps",
+          "tomlSourceUrl",
+          "tomlFetchedAt",
+          "tomlConfidence",
+          "rampTypes",
+          "country",
+          "acceptingClients",
+          "typicalEngagement",
+          "leadTime",
+          "pricingModel",
+          "pricingNotes",
+          "docsUrl",
+          "githubOrg",
+          "contactEmail",
+          "contactChannel",
+          "responseSla",
+          "caseStudies",
+          "verified",
+          "freshness",
+          "trust",
+          "url"
+        ]
+      }
+    },
+    "sha256": "ee2135ccb582ae228959b0a3a7f68db28b9be97c2092881ea3371625c0b8d835",
+    "ms": 175,
+    "followup": {
+      "partners": [
+        {
+          "slug": "trustless-work"
+        },
+        {
+          "slug": "etherfuse"
+        }
+      ]
+    }
+  },
+  {
+    "id": "scout.getPeople",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "matchMode": "string",
+        "matchModeLabel": "string",
+        "source": "string",
+        "observedAt": "string",
+        "generatedAt": "string",
+        "filters": [
+          "q",
+          "section",
+          "limit",
+          "offset"
+        ],
+        "counts": [
+          "returned",
+          "total"
+        ],
+        "sections": {
+          "array": 3,
+          "item": "string"
+        },
+        "matchBasis": "string"
+      },
+      "people": {
+        "array": 2,
+        "item": [
+          "name",
+          "role",
+          "section",
+          "org",
+          "sourceUrl",
+          "observedAt"
+        ]
+      }
+    },
+    "sha256": "77a85e8234b347f768d784ae401a5c912f01152f26c9b9a24b48aa4f2a809748",
+    "ms": 110,
+    "followup": {}
+  },
+  {
+    "id": "scout.getRepoTrust",
+    "input": {
+      "repo": "stellar/stellar-core"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "note": "string"
+      },
+      "report": {
+        "repo": [
+          "fullName",
+          "url",
+          "stars",
+          "lastCommitAt",
+          "isArchived",
+          "tier",
+          "activityState"
+        ],
+        "project": [
+          "slug",
+          "name"
+        ],
+        "codeTruth": [
+          "scanState",
+          "scannedAt",
+          "stellarProof",
+          "codeDepth",
+          "codeDomains",
+          "sdkCapabilities",
+          "interfaceSize",
+          "contractInterface",
+          "mainnetContractId"
+        ],
+        "usage": "null",
+        "audits": "null",
+        "auditDrift": "null",
+        "succession": [
+          "successorRepo",
+          "predecessors"
+        ],
+        "signals": {
+          "array": 2,
+          "item": "string"
+        }
+      }
+    },
+    "sha256": "e742e127135147ad627beee19f25917e037813c1bcd5e1245e347acb31067ace",
+    "ms": 68,
+    "followup": {}
+  },
+  {
+    "id": "scout.getRfps",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "filters": [
+          "q",
+          "category",
+          "quarter",
+          "status",
+          "limit",
+          "offset"
+        ],
+        "counts": [
+          "total",
+          "open",
+          "closed",
+          "matched",
+          "returned",
+          "syntheticRounds"
+        ],
+        "countBasis": "string",
+        "activeQuarter": "string",
+        "activeQuarterLabel": "string",
+        "scfRound": [
+          "currentRound",
+          "currentPhase",
+          "lastConfirmedRound",
+          "lastConfirmedRoundNote",
+          "submissionWindow",
+          "roundsInProgress",
+          "asOf",
+          "source",
+          "verifyAt"
+        ],
+        "categories": {
+          "array": 10,
+          "item": [
+            "value",
+            "label"
+          ]
+        },
+        "quarters": {
+          "array": 3,
+          "item": [
+            "value",
+            "label"
+          ]
+        },
+        "submitNewBriefAt": "string"
+      },
+      "funding": "string",
+      "rfps": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "description",
+          "technicalRequirements",
+          "category",
+          "authorName",
+          "quarter",
+          "categoryLabel",
+          "quarterLabel",
+          "status",
+          "url",
+          "rowType",
+          "synthetic"
+        ]
+      }
+    },
+    "sha256": "a8fe9769c46a3242c018d4b4263a467f5d0b49244fe788db1cd768952de88371",
+    "ms": 100,
+    "followup": {}
+  },
+  {
+    "id": "scout.getSkill",
+    "input": {
+      "name": "stellar-scout"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "operator": "string",
+        "generatedAt": "string"
+      },
+      "skill": {
+        "slug": "string",
+        "name": "string",
+        "tagline": "string",
+        "description": "string",
+        "source": "string",
+        "kind": "string",
+        "install": "string",
+        "installAlt": {
+          "array": 2,
+          "item": [
+            "label",
+            "command"
+          ]
+        },
+        "repository": "string",
+        "homepage": "string",
+        "docs": "string",
+        "compatibility": {
+          "array": 7,
+          "item": "string"
+        },
+        "targetUser": {
+          "array": 3,
+          "item": "string"
+        },
+        "tags": {
+          "array": 5,
+          "item": "string"
+        },
+        "featured": "boolean",
+        "content": "string"
+      }
+    },
+    "sha256": "ae7a6a5eebed41715766569ea1d22d5bf758188072541abc7d87e8043ac7cb73",
+    "ms": 131,
+    "followup": {}
+  },
+  {
+    "id": "scout.getStablecoins",
+    "input": {
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "dataAsOf": "string",
+        "multiIssuerTickers": {
+          "array": 1,
+          "item": [
+            "ticker",
+            "companies",
+            "note"
+          ]
+        },
+        "filters": [
+          "peg",
+          "sort",
+          "limit"
+        ],
+        "counts": [
+          "tracked",
+          "total",
+          "returned",
+          "byBasis"
+        ],
+        "coverage": [
+          "basis",
+          "note"
+        ],
+        "methodology": "string"
+      },
+      "stablecoins": {
+        "array": 2,
+        "item": [
+          "assetId",
+          "ticker",
+          "name",
+          "issuer",
+          "issuerDomain",
+          "company",
+          "website",
+          "peg",
+          "country",
+          "assetType",
+          "supply",
+          "marketCapUSD",
+          "priceUSD",
+          "priceBasis",
+          "holders",
+          "volume24hUSD",
+          "paymentsCount24h",
+          "supplyChange7d",
+          "logoUrl",
+          "logoSource",
+          "basis",
+          "note",
+          "verified",
+          "updatedAt"
+        ]
+      }
+    },
+    "sha256": "3836cce0272e7f8ef7ab0169969d57b52087ed7cda20ddb11ba0fd45119931ec",
+    "ms": 61,
+    "followup": {}
+  },
+  {
+    "id": "scout.getStatus",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "ok": "boolean",
+      "service": "string",
+      "version": "string",
+      "apiVersion": "string",
+      "generatedAt": "string",
+      "sources": {
+        "array": 9,
+        "item": [
+          "name",
+          "count",
+          "lastUpdatedAt",
+          "populationId"
+        ]
+      },
+      "usage": {
+        "total": "number",
+        "last24h": "number",
+        "last7d": "number",
+        "byEndpoint": {
+          "array": 30,
+          "item": [
+            "endpoint",
+            "count"
+          ]
+        }
+      },
+      "endpoints": {
+        "array": 37,
+        "item": "string"
+      },
+      "docs": "string",
+      "skill": "string"
+    },
+    "sha256": "c08da9dd421388eb2f7e57173c53ceb9788f304f5f33f1425bbb36dd685a2e16",
+    "ms": 669,
+    "followup": {}
+  }
+]

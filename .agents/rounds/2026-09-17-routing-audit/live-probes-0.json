@@ -1,0 +1,415 @@
+[
+  {
+    "id": "lumenloop.find_av_passages",
+    "input": {
+      "query": "Soroban",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "array": 2,
+      "item": {
+        "av_id": "string",
+        "title": "string",
+        "url": "string",
+        "channel": "string",
+        "summary": "string",
+        "long_summary": "string",
+        "slug": "string",
+        "created_at": "string",
+        "start_offset": "number",
+        "similarity": "number"
+      }
+    },
+    "sha256": "34cf7f4fa80b74809151ada8ae11c6b608d05d2f04d8f3cdc4e9da00ff800bfa",
+    "ms": 605,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.find_content_about_project",
+    "input": {
+      "slug": "blend",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "articles": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "domain",
+          "publishing_date",
+          "summary",
+          "long_summary",
+          "slug",
+          "similarity"
+        ]
+      },
+      "av": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "channel",
+          "created_at",
+          "summary",
+          "long_summary",
+          "slug",
+          "similarity"
+        ]
+      },
+      "events": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "start_at",
+          "platform",
+          "summary",
+          "slug",
+          "similarity"
+        ]
+      },
+      "research": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "format",
+          "summary",
+          "long_summary",
+          "slug",
+          "created_at",
+          "similarity"
+        ]
+      },
+      "proposals": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "slug",
+          "source",
+          "summary",
+          "long_summary",
+          "created_at",
+          "governance_status",
+          "voting_start",
+          "voting_end",
+          "votes_for",
+          "votes_against",
+          "votes_abstain",
+          "discussion_url",
+          "similarity"
+        ]
+      },
+      "scf_submissions": {
+        "array": 2,
+        "item": [
+          "slug",
+          "title",
+          "description",
+          "category",
+          "round",
+          "award_type",
+          "linked_project_slug",
+          "linked_project_slugs",
+          "similarity"
+        ]
+      }
+    },
+    "sha256": "124e0532dd6a7ac85c05ebe73f655840943f4f38bf8b57264b2f4a28cdcab93e",
+    "ms": 538,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.find_content_by_entity",
+    "input": {
+      "entity": "Stellar",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "articles": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "domain",
+          "publishing_date",
+          "entity_type",
+          "entity_name"
+        ]
+      },
+      "av": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "channel",
+          "entity_type",
+          "entity_name"
+        ]
+      },
+      "events": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "start_at",
+          "platform",
+          "entity_type",
+          "entity_name"
+        ]
+      },
+      "proposals": {
+        "array": 2,
+        "item": [
+          "id",
+          "title",
+          "url",
+          "governance_status",
+          "created_at",
+          "entity_type",
+          "entity_name"
+        ]
+      },
+      "scf_submissions": {
+        "array": 2,
+        "item": [
+          "slug",
+          "title",
+          "category",
+          "round",
+          "entity_type",
+          "entity_name"
+        ]
+      }
+    },
+    "sha256": "aff47a28d77d2f71c51a2e6cae2f527a3e573fb6ed309ab574f33544d4e8ceeb",
+    "ms": 82,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.find_similar_projects_semantic",
+    "input": {
+      "slug": "blend",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "array": 2,
+      "item": {
+        "slug": "string",
+        "title": "string",
+        "category": "string",
+        "tags": {
+          "array": 3,
+          "item": "string"
+        },
+        "similarity": "number"
+      }
+    },
+    "sha256": "63eef8638636d95e7b995c7a4f715c7faa3c11d574d26df94345151757b3b38b",
+    "ms": 54,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.find_similar_scf_submissions",
+    "input": {
+      "query": "wallet",
+      "limit": 2
+    },
+    "ok": true,
+    "shape": {
+      "array": 2,
+      "item": {
+        "slug": "string",
+        "title": "string",
+        "description": "string",
+        "category": "string",
+        "round": "string",
+        "award_type": "string",
+        "budget": "string",
+        "linked_project_slug": "null",
+        "linked_project_slugs": {
+          "array": 1,
+          "item": "string"
+        },
+        "similarity": "number"
+      }
+    },
+    "sha256": "5d2049746cae87f98c9cfc9db491da4d09c3ded241b95245c5c26d045db9084d",
+    "ms": 140,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.get_categories",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "count": "number",
+      "categories": {
+        "array": 5,
+        "item": [
+          "id",
+          "name",
+          "slug"
+        ]
+      }
+    },
+    "sha256": "165551f10cf05a2351a6aef75c568af11302bb483fd3dde446c8241182111167",
+    "ms": 32,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.get_project",
+    "input": {
+      "slug": "blend",
+      "compact": true
+    },
+    "ok": true,
+    "shape": {
+      "slug": "string",
+      "title": "string",
+      "description": "string",
+      "category": "string",
+      "tags": {
+        "array": 3,
+        "item": "string"
+      },
+      "operating_region": {
+        "array": 1,
+        "item": "string"
+      },
+      "based_in": "string",
+      "other_names": {
+        "array": 1,
+        "item": "string"
+      },
+      "parent": "string",
+      "links": {
+        "website": {
+          "array": 1,
+          "item": "string"
+        },
+        "x": {
+          "array": 1,
+          "item": "string"
+        },
+        "discord": {
+          "array": 1,
+          "item": "string"
+        },
+        "youtube": {
+          "array": 1,
+          "item": "string"
+        },
+        "github": {
+          "array": 1,
+          "item": "string"
+        }
+      },
+      "scf": {
+        "awarded_round": {
+          "array": 1,
+          "item": "string"
+        },
+        "awarded_total": "number",
+        "submission_urls": {
+          "array": 1,
+          "item": "string"
+        }
+      },
+      "mainnet": {
+        "tokens": {
+          "array": 0,
+          "item": null
+        },
+        "audits": {
+          "array": 0,
+          "item": null
+        }
+      }
+    },
+    "sha256": "0cf49f678e97cb066e59484117eb3dfa7f109d95d4f979e1fff9dbe7c5e27baa",
+    "ms": 38,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.get_project_tags_vocabulary",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "count": "number",
+      "tags": {
+        "array": 85,
+        "item": [
+          "id",
+          "name",
+          "slug"
+        ]
+      }
+    },
+    "sha256": "6000b07840ff965c90daf752d31da250cd59cca9c4ad07ea6e2a75ae9b52bdaa",
+    "ms": 26,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.get_regions",
+    "input": {},
+    "ok": true,
+    "shape": {
+      "count": "number",
+      "regions": {
+        "array": 97,
+        "item": "string"
+      }
+    },
+    "sha256": "7e1d4239cb3cbb99c814910f039eebb087e7533e4704d31f13b7611dbc970c34",
+    "ms": 32,
+    "followup": null
+  },
+  {
+    "id": "lumenloop.get_scf_submissions",
+    "input": {
+      "slug": "blend"
+    },
+    "ok": true,
+    "shape": {
+      "count": "number",
+      "submissions": {
+        "array": 1,
+        "item": [
+          "slug",
+          "linked_project_slug",
+          "linked_project_slugs",
+          "title",
+          "project",
+          "submission_url",
+          "round",
+          "round_number",
+          "award_type",
+          "category",
+          "budget",
+          "description",
+          "application",
+          "website",
+          "github_url",
+          "architecture_url"
+        ]
+      }
+    },
+    "sha256": "6a766480f94af7ceadfbf54ab3d84fddeb53b55de3330e3e56340aadfc856c4a",
+    "ms": 91,
+    "followup": null
+  }
+]

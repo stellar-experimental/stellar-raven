@@ -438,14 +438,9 @@ Known judge failure modes (from `eval/qa/README.md`):
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed
   noise floor live in `eval/qa/README.md` ("Judging rubric and score comparability").
-- **Denominator note:** the owned battery is 500 cases as of 2026-08-28. The 499→500 compile added
-  `q-scf-resolve-passport-superseded-slug`. The retrieval audit added five service-semantics cases
-  to the 492-case corpus. The 2026-08-19 maintenance change added two
-  broad `scout.hackathonBrief` cases to the 497-case corpus. Commit `6e1f979` previously added two Soroban
-  cases to the 490-case corpus. The 2026-07-11 baseline remains historically 484-denominated, and
-  the 2026-07-13 corpus remains historically 490-denominated. Pre-rebuild aggregates remain archival
-  (`research/audits/2026-07-qa-history.md`). Historical aggregates are not directly comparable to a
-  current 500-case aggregate. Per-id comparisons remain valid for continuing ids under the same tuple.
+- **Denominator:** read current membership from the generated registry and selected case IDs.
+  `eval/EVALS.md` records corpus membership history. Historical runs and frozen plans retain their original denominators.
+  Compare common IDs under the same model, rubric, and evidence-pack tuple.
 - **Deterministic sample-membership note:** sample-30 is proportional by service and uses
   even-spaced picks over id-sorted strata. Adding cases can therefore change sampled ids without
   changing sampler code. The 484→490 expansion retained 25 ids and replaced five (full list in

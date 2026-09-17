@@ -22,7 +22,7 @@ the headline wins.
 | — accept-either views (corpus `acceptable_cards` ∪ overlay) | label-tolerance context | free, same run | Diagnostic only; never the headline |
 | `eval/discovery/` | one-search, agent-allowed-≤3-search, and mined-query replay source-family / usable-route discovery | one-shot/replay free; agent arm paid; after discovery guidance or retrieval-shape work | Diagnostic: 43 adjudicated cases; `familyHit@3` + `usableOp@5`; paired miss classification; 91-query LumenLoop replay lane |
 | `eval/agentic/` | agent-driven `search`, live server | ~$, minutes — after major search-behavior changes | Diagnostic (label-ambiguity analysis) |
-| `eval/qa/run-qa.mjs` — main battery (500) | **end-to-end search → execute → answer** | ~$0.2–0.7/case, ~30 min per 30-case sample — before/after big changes, A/Bs | **HEADLINE** (correct / partial / wrong) |
+| `eval/qa/run-qa.mjs` — main battery (501) | **end-to-end search → execute → answer** | ~$0.2–0.7/case, ~30 min per 30-case sample — before/after big changes, A/Bs | **HEADLINE** (correct / partial / wrong) |
 | `npm run eval:playground` — actual `/playground/chat` SSE over existing QA cases | public playground model loop → tools → answer | paid; seeded 5-case default, max 30 per run-scoped subject — after playground prompt/model/loop changes; model-backed runs require an operator-matched server/tree generation and machine-readable round-cap context | Diagnostic, scored by the same QA judge/evidence pack; v2 artifacts self-pin answering/judge/cap/source provenance; never merge its denominator with the main MCP headline |
 | — canonical live-data contract `live-data-canonical-v3` (`--cases eval/qa/corpus/live/live-cases.json`, 15 = the carried v2 ten (7 Scout / 2 Lumenloop / 1 cant-do, byte-identical under an independent projection digest) + 5 behavioral additions: lifecycle-label provenance, jobs recency, cross-service reconciliation, guessed-slug soft-empty, artifact-read continuation) | `execute` **grounding** where priors fail | ~$3.30–10 full at the documented ~$0.22–0.67/case — after executor/adapter changes | Diagnostic for the execute path; membership/order stays the frozen 15 while full case content is pinned by the contract's `caseContentDigest`; graded on behavior, never exact values. History: `live-data-canonical-v2` (10 cases) was the contract through 2026-07-12 and saturated at 10/10; v2 aggregates stay v2-denominated, per-id comparison remains valid for the carried ten |
 | — opt-in digest contract `live-digest-supplement-v2` (`--cases eval/qa/corpus/live/live-digest-supplement-cases.json`, 2 Lumenloop) | `execute` recency-digest grounding | ~$0.44–1.34 full at the same per-case estimate — only for digest/skill-run questions | Diagnostic supplement; report separately from the canonical live-data lane and main battery |
@@ -36,8 +36,10 @@ file per case; `eval/qa/README.md`); `eval/corpus/` is the **archival** vendored
 the routing eval's committed label source (`eval/corpus/PROVENANCE.md`) — the raven sibling
 repos are retired; growth happens in this repo's own formats.
 
-**Owned-battery and sample history.** The authoritative current denominator is **500 cases as of
-2026-08-28**. The 499→500 compile added `q-scf-resolve-passport-superseded-slug`. The 497→499
+**Owned-battery and sample history.** The current battery has **501 active cases as of 2026-09-17**.
+The 500→501 compile added `q-tw-escrow-api-auth-custody`.
+Use the generated registry and selected case IDs to establish each run's denominator.
+The 499→500 compile added `q-scf-resolve-passport-superseded-slug`. The 497→499
 compile added two `scout.hackathonBrief` cases to the 497-case corpus. The retrieval audit
 previously added five service-semantics cases to the 492-case corpus. Commit
 `6e1f979` before that added two Soroban cases to the 490-case corpus. The 490-case corpus was created

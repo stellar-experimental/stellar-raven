@@ -1,0 +1,304 @@
+[
+  {
+    "id": "scout.vetIdea",
+    "input": {
+      "q": "payment wallet"
+    },
+    "ok": true,
+    "shape": {
+      "meta": {
+        "source": "string",
+        "generatedAt": "string",
+        "note": "string"
+      },
+      "report": {
+        "idea": "string",
+        "vertical": "string",
+        "competitors": [
+          "repos",
+          "projects",
+          "matchMode",
+          "matchModeLabel"
+        ],
+        "maturity": [
+          "auditedProjects",
+          "liveOnMainnetRepos",
+          "basis"
+        ],
+        "priorArt": [
+          "repos",
+          "note"
+        ],
+        "gap": [
+          "type",
+          "total",
+          "live",
+          "inProgress",
+          "scfFunded",
+          "hackathonWinners",
+          "basis"
+        ],
+        "funding": [
+          "scfAwardedProjects",
+          "basis"
+        ]
+      }
+    },
+    "sha256": "8e4ed4265114fcaf1fa0f7a9abe1a087495c6c3d592313d962a10c0f9ab2bb3c",
+    "ms": 1522,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_anchor_sep_docs",
+    "input": {
+      "query": "SEP-24",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 198,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_asset_token_docs",
+    "input": {
+      "query": "trustline",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 80,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_doc_titles",
+    "input": {
+      "query": "state archival",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number"
+    },
+    "sha256": "3b89af4efaa40e6eb979870f58b08a780966e455b0ee09eadb3ee6626da6182a",
+    "ms": 66,
+    "followup": {
+      "docs": [
+        {
+          "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+          "url_without_anchor": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival"
+        },
+        {
+          "url": "https://developers.stellar.org/docs/build/guides/dapps/state-archival",
+          "url_without_anchor": "https://developers.stellar.org/docs/build/guides/dapps/state-archival"
+        }
+      ]
+    }
+  },
+  {
+    "id": "stellarDocs.search_docs",
+    "input": {
+      "query": "Soroban",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number"
+    },
+    "sha256": "3b89af4efaa40e6eb979870f58b08a780966e455b0ee09eadb3ee6626da6182a",
+    "ms": 65,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_docs_in_category",
+    "input": {
+      "query": "storage",
+      "hitsPerPage": 2,
+      "category": "build"
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 69,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_meeting_notes",
+    "input": {
+      "query": "protocol",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number"
+    },
+    "sha256": "3b89af4efaa40e6eb979870f58b08a780966e455b0ee09eadb3ee6626da6182a",
+    "ms": 64,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_protocol_concepts_docs",
+    "input": {
+      "query": "consensus",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 81,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_rpc_horizon_data_docs",
+    "input": {
+      "query": "simulateTransaction",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 1,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb",
+          "snippet"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "5bee427452d3e13f0fddc548a131237ca0ab2941dc3cdbeae515157e1105728b",
+    "ms": 86,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_sdk_cli_tools_docs",
+    "input": {
+      "query": "stellar CLI",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 68,
+    "followup": {}
+  }
+]

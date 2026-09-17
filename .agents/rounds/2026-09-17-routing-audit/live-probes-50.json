@@ -1,0 +1,56 @@
+[
+  {
+    "id": "stellarDocs.search_soroban_contract_docs",
+    "input": {
+      "query": "storage",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 64,
+    "followup": {}
+  },
+  {
+    "id": "stellarDocs.search_wallet_dapp_docs",
+    "input": {
+      "query": "wallet",
+      "hitsPerPage": 2
+    },
+    "ok": true,
+    "shape": {
+      "hits": {
+        "array": 2,
+        "item": [
+          "url",
+          "url_without_anchor",
+          "anchor",
+          "type",
+          "breadcrumb"
+        ]
+      },
+      "nbHits": "number",
+      "nbPages": "number",
+      "page": "number",
+      "clientFiltered": "boolean"
+    },
+    "sha256": "afb6961baf46f5d21ced3f04138866885aab74b234124e89b148e5060af5449f",
+    "ms": 65,
+    "followup": {}
+  }
+]
