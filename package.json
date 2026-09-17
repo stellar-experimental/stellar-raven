@@ -84,13 +84,13 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.22.0",
-    "@cloudflare/workers-types": "^5.20260825.1",
+    "@cloudflare/workers-types": "^5.20260916.1",
     "@huggingface/transformers": "4.2.0",
     "@modelcontextprotocol/client": "2.0.0",
     "@modelcontextprotocol/sdk": "1.30.0",
     "@types/node": "^26.3.0",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11",
-    "wrangler": "4.124.0"
+    "wrangler": "4.133.0"
   }
 }

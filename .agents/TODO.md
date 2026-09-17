@@ -282,16 +282,57 @@ protocol-history diagnostic stays source-expired until a separate accepted Scout
 
 ## Dependencies
 
-### Resolve the existing dependency audit findings
+### Re-check the seven remaining dependency audit findings
 
-The 2026-09-10 OAuth installation reported eight npm audit findings: one moderate and seven high.
-The lockfile includes indirect Hono 4.13.1, sharp, and adm-zip dependencies through SDK and development tools.
-The OAuth change updates no packages. Source inspection found no Hono import or call in `src/`.
-Evidence and dependency boundaries are in [the OAuth research report](rounds/2026-09-10-oauth-consent/research-terra.md#dependency-audit-boundary).
+The 2026-09-17 toolchain update cleared the Hono finding and the root Wrangler finding.
+It pins Wrangler 4.133.0 and Hono 4.13.8, and it raises the `@cloudflare/workers-types` floor to Wrangler's peer requirement.
+Seven high findings remain. They come from two exact pins.
 
-Refresh `npm audit --json`, verify dependency paths, and select the smallest supported upgrades.
-Do not use a forced audit fix without reviewing its dependency changes.
-Done when: reviewed upgrades pass the repository gates and a new audit records each finding's disposition.
+`@cloudflare/vitest-pool-workers` 0.22.0 pins its own test tools:
+
+- `@cloudflare/vitest-pool-workers` 0.22.0;
+- nested `wrangler` 4.124.0;
+- `miniflare` 5.20260815.0-alpha;
+- `sharp` 0.35.2 under miniflare (GHSA-rgj7-g3m4-5g8c, also reported for root `sharp` 0.34.5).
+
+`@huggingface/transformers` stays at 4.2.0, which holds its runtime chain:
+
+- `@huggingface/transformers` 4.2.0;
+- `onnxruntime-node` 1.24.3;
+- `adm-zip` 0.5.18 (GHSA-xcpc-8h2w-3j85 and GHSA-vwc7-r8mq-g2x9);
+- root `sharp` 0.34.5 (GHSA-f88m-g3jw-g9cj and GHSA-rgj7-g3m4-5g8c).
+
+Both groups are development tools only. The pool serves the `test:smoke` lane. Transformers serves the eval Vectorize tools.
+npm offers only a pool downgrade to 0.8.30, which breaks the vitest 4 smoke config. Do not use it or an override.
+Transformers 4.3.0 clears its chain, but it waits for the Vectorize runtime migration below.
+
+Two local workerd runtimes coexist.
+`wrangler dev` and `npm run build` use `workerd` 1.20260916.1.
+The smoke pool and `@cloudflare/unenv-preset` use `workerd` 1.20260815.1.
+Evidence is in `research/audits/2026-09-17-dependency-audit/`.
+
+Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`, and the runtime migration lands Transformers 4.3.0 or later.
+
+### Plan the Vectorize Transformers runtime migration
+
+The Vectorize models are registered on `@huggingface/transformers@4.2.0` (`eval/vectorize/frontier-config.mjs` and `eval/vectorize/rerank-config.mjs`).
+The loaders require each banked artifact's `model` to equal that registration exactly.
+
+The preflights cannot compare a candidate runtime today, for three reasons:
+
+- `preflight-clause-model.mjs` and `preflight-rerank-model.mjs` print a probe hash, but they compare it with no committed expected value.
+- Neither preflight output nor the score-cache environment records the Transformers version. They record `onnxruntimeNode` only.
+- One tree installs one Transformers version. A preflight therefore cannot run the registered runtime and a candidate runtime side by side.
+
+The accepted rerank probe hash exists only in a round ledger (`.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`).
+The run supplies it through `RAVEN_RERANK_PROBE_SCORE_SHA256`.
+
+Define a comparison before any upgrade.
+Record the Transformers version and the probe outputs in committed form.
+Run the preflights on 4.2.0 and on the candidate runtime in separate trees.
+Decide from the result whether to re-register the runtime and rebuild the artifacts.
+
+Done when: a reviewed comparison accepts or rejects the candidate runtime, and the registrations and artifacts match the installed runtime.
 
 ## Eval instruments
 

@@ -1,0 +1,288 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@cloudflare/vitest-pool-workers": {
+      "name": "@cloudflare/vitest-pool-workers",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "miniflare",
+        "wrangler"
+      ],
+      "effects": [],
+      "range": "0.2.1 || >=0.8.31",
+      "nodes": [
+        "node_modules/@cloudflare/vitest-pool-workers"
+      ],
+      "fixAvailable": {
+        "name": "@cloudflare/vitest-pool-workers",
+        "version": "0.8.30",
+        "isSemVerMajor": true
+      }
+    },
+    "@huggingface/transformers": {
+      "name": "@huggingface/transformers",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "onnxruntime-node",
+        "sharp"
+      ],
+      "effects": [],
+      "range": "<=4.2.0",
+      "nodes": [
+        "node_modules/@huggingface/transformers"
+      ],
+      "fixAvailable": {
+        "name": "@huggingface/transformers",
+        "version": "4.3.0",
+        "isSemVerMajor": false
+      }
+    },
+    "adm-zip": {
+      "name": "adm-zip",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1123686,
+          "name": "adm-zip",
+          "dependency": "adm-zip",
+          "title": "adm-zip: Crafted ZIP file triggers 4GB memory allocation",
+          "url": "https://github.com/advisories/GHSA-xcpc-8h2w-3j85",
+          "severity": "high",
+          "cwe": [
+            "CWE-400",
+            "CWE-789"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<0.6.0"
+        },
+        {
+          "source": 1193734,
+          "name": "adm-zip",
+          "dependency": "adm-zip",
+          "title": "adm-zip extraction follows destination symlinks, allowing arbitrary file overwrite",
+          "url": "https://github.com/advisories/GHSA-vwc7-r8mq-g2x9",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-59"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N"
+          },
+          "range": ">=0.5.9 <=0.6.0"
+        }
+      ],
+      "effects": [
+        "onnxruntime-node"
+      ],
+      "range": "<=0.6.0",
+      "nodes": [
+        "node_modules/adm-zip"
+      ],
+      "fixAvailable": {
+        "name": "@huggingface/transformers",
+        "version": "4.3.0",
+        "isSemVerMajor": false
+      }
+    },
+    "hono": {
+      "name": "hono",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1193729,
+          "name": "hono",
+          "dependency": "hono",
+          "title": "Hono: Incomplete fix for CVE-2026-39408: `toSSG()` still writes files outside the output directory",
+          "url": "https://github.com/advisories/GHSA-gqvv-2mrq-wpjv",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N"
+          },
+          "range": "<4.13.5"
+        },
+        {
+          "source": 1193730,
+          "name": "hono",
+          "dependency": "hono",
+          "title": "Hono: Unbounded dot-notation nesting in `parseBody()` can cause memory exhaustion",
+          "url": "https://github.com/advisories/GHSA-g6gw-c38x-mqfc",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<4.13.5"
+        },
+        {
+          "source": 1193731,
+          "name": "hono",
+          "dependency": "hono",
+          "title": "Hono: Query parser reads parameters after the URL fragment, causing cache-key and proxy interpretation differentials",
+          "url": "https://github.com/advisories/GHSA-crvj-82cr-hjcx",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-444"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<4.13.5"
+        }
+      ],
+      "effects": [],
+      "range": "<=4.13.4",
+      "nodes": [
+        "node_modules/hono"
+      ],
+      "fixAvailable": true
+    },
+    "miniflare": {
+      "name": "miniflare",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "sharp"
+      ],
+      "effects": [
+        "@cloudflare/vitest-pool-workers",
+        "wrangler"
+      ],
+      "range": "<=0.0.0-fec45ed61 || 4.20250508.3 - 5.20260908.0-alpha",
+      "nodes": [
+        "node_modules/miniflare"
+      ],
+      "fixAvailable": {
+        "name": "@cloudflare/vitest-pool-workers",
+        "version": "0.8.30",
+        "isSemVerMajor": true
+      }
+    },
+    "onnxruntime-node": {
+      "name": "onnxruntime-node",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "adm-zip"
+      ],
+      "effects": [
+        "@huggingface/transformers"
+      ],
+      "range": "1.22.0-dev.20250415-c18e06d5e3 - 1.29.0-dev.20260811-e415ef9afd",
+      "nodes": [
+        "node_modules/onnxruntime-node"
+      ],
+      "fixAvailable": {
+        "name": "@huggingface/transformers",
+        "version": "4.3.0",
+        "isSemVerMajor": false
+      }
+    },
+    "sharp": {
+      "name": "sharp",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1124066,
+          "name": "sharp",
+          "dependency": "sharp",
+          "title": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591",
+          "url": "https://github.com/advisories/GHSA-f88m-g3jw-g9cj",
+          "severity": "high",
+          "cwe": [
+            "CWE-1395"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.35.0"
+        },
+        {
+          "source": 1193725,
+          "name": "sharp",
+          "dependency": "sharp",
+          "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+          "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+          "severity": "high",
+          "cwe": [
+            "CWE-122"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.35.4"
+        }
+      ],
+      "effects": [
+        "@huggingface/transformers",
+        "miniflare"
+      ],
+      "range": "<=0.35.4-rc.0",
+      "nodes": [
+        "node_modules/miniflare/node_modules/sharp",
+        "node_modules/sharp"
+      ],
+      "fixAvailable": {
+        "name": "@cloudflare/vitest-pool-workers",
+        "version": "0.8.30",
+        "isSemVerMajor": true
+      }
+    },
+    "wrangler": {
+      "name": "wrangler",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "miniflare"
+      ],
+      "effects": [
+        "@cloudflare/vitest-pool-workers"
+      ],
+      "range": "<=0.0.0-7ae5dd357 || 4.16.0 - 4.130.0",
+      "nodes": [
+        "node_modules/wrangler"
+      ],
+      "fixAvailable": {
+        "name": "@cloudflare/vitest-pool-workers",
+        "version": "0.8.30",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 1,
+      "high": 7,
+      "critical": 0,
+      "total": 8
+    },
+    "dependencies": {
+      "prod": 187,
+      "dev": 169,
+      "optional": 135,
+      "peer": 19,
+      "peerOptional": 0,
+      "total": 433
+    }
+  }
+}

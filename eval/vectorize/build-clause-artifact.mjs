@@ -50,7 +50,7 @@ export async function buildClauseArtifact({
     schemaVersion: 1,
     experiment: EXPERIMENT,
     model: MODEL,
-    runtime: { package: "@huggingface/transformers", version: "4.2.0" },
+    runtime: { package: "@huggingface/transformers", version: MODEL.runtime.slice("@huggingface/transformers@".length) },
     queryTask: QUERY_TASK,
     queryTaskNote: "The pinned card-level wording is reused unchanged for clause scoring.",
     policy: CLAUSE_POLICY,
