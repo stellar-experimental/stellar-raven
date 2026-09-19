@@ -6,7 +6,7 @@
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "da21ab9ab7859bb36ef0c2f5443c48cafef69c6c545c6397f7f741cc9fb47210"
+        "sha256": "8c412aa4ea27dd1bd60e0bf82f0ea9e9bf09e9a60ce57b820b63bdbb6636783e"
       },
       {
         "path": "eval/routing-cases.json",
@@ -51,7 +51,7 @@
     },
     "localTrace": "routing-2026-09-16T23-20-09-940Z.json"
   },
-  "note": "2026-09-16 Scout 1.9.52 source acceptance retains 30 Scout operations and excludes RWA. Source routing text changes require general phrase, evidence, and negative-intent repairs. Independent Grok high review accepts the semantic movements, including the final modifier-scope correction; Terra high accepts the code repairs. Legacy baselines and skills/holdout floors increase; the forbidden-capture ceiling decreases. Labels and other input hashes stay unchanged. Decision: .agents/rounds/2026-09-16-scout-acceptance.md. Final semantic review: .agents/rounds/2026-09-16-truth-maintenance/scout-clause-repair-independent-review.md. RWA remains deferred in issue #167.",
+  "note": "2026-09-19 manifest fingerprint refreshed for the stellarDocs includeContent wiring fix (transport conditionalParams and returns text only). Every lane total and every per-case routing result is identical to the 2026-09-16 baseline; no accepted total moved. 2026-09-16 Scout 1.9.52 source acceptance retains 30 Scout operations and excludes RWA. Source routing text changes require general phrase, evidence, and negative-intent repairs. Independent Grok high review accepts the semantic movements, including the final modifier-scope correction; Terra high accepts the code repairs. Legacy baselines and skills/holdout floors increase; the forbidden-capture ceiling decreases. Labels and other input hashes stay unchanged. Decision: .agents/rounds/2026-09-16-scout-acceptance.md. Final semantic review: .agents/rounds/2026-09-16-truth-maintenance/scout-clause-repair-independent-review.md. RWA remains deferred in issue #167.",
   "legacy": {
     "n": 338,
     "top1": 219,

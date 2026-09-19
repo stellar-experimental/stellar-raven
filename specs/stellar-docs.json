@@ -244,12 +244,13 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet } plus counts { rawNbHits, filteredCount }.",
+      "returns": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? } plus counts { rawNbHits, filteredCount }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
         "conditionalParams": {
-          "category=meetings": { "facetFilters": [["docusaurus_tag:-docs-default-current"]], "clientFilter": null }
+          "category=meetings": { "facetFilters": [["docusaurus_tag:-docs-default-current"]], "clientFilter": null },
+          "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] }
         },
         "clientFilter": {
           "field": "url_without_anchor",
@@ -345,10 +346,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -381,10 +383,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -415,10 +418,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -449,10 +453,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -484,10 +489,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -519,10 +525,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": ["https://developers.stellar.org/docs/tools"]
@@ -551,10 +558,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -586,10 +594,11 @@
           "includeContent": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query", "hitsPerPage": "hitsPerPage" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:-docs-default-current"]] },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "note": "facet negation verified: every hit is under /meetings."
       },
       "verified": {

@@ -651,4 +651,73 @@ describe("stellarDocs adapter", () => {
       expect(params.attributesToRetrieve).not.toContain("content");
     }
   });
+
+  // Every search op that advertises `includeContent` must honor it. Nine of the
+  // ten ops declared the param without a conditionalParams mapping, so
+  // `includeContent: true` was accepted and silently returned snippets only.
+  const contentOps = catalog.entries.filter(
+    (e) =>
+      e.service === "stellarDocs" &&
+      "includeContent" in ((e.inputSchema as { properties?: object } | undefined)?.properties ?? {}) &&
+      e.id !== "stellarDocs.get_doc_page_sections"
+  );
+
+  it("finds every content-capable search op in the manifest", () => {
+    expect(contentOps.map((e) => e.id).sort()).toEqual([
+      "stellarDocs.search_anchor_sep_docs",
+      "stellarDocs.search_asset_token_docs",
+      "stellarDocs.search_docs",
+      "stellarDocs.search_docs_in_category",
+      "stellarDocs.search_meeting_notes",
+      "stellarDocs.search_protocol_concepts_docs",
+      "stellarDocs.search_rpc_horizon_data_docs",
+      "stellarDocs.search_sdk_cli_tools_docs",
+      "stellarDocs.search_soroban_contract_docs",
+      "stellarDocs.search_wallet_dapp_docs"
+    ]);
+  });
+
+  for (const op of contentOps) {
+    it(`${op.id} retrieves and returns section content only when includeContent is true`, async () => {
+      const mapping = (op.transport as { algolia?: { clientFilter?: { prefixesAnyOf?: string[] } } }).algolia;
+      const prefix = (mapping?.clientFilter?.prefixesAnyOf?.[0] ?? "https://developers.stellar.org/docs/build").replace(
+        "{category}",
+        "build"
+      );
+      const page = `${prefix.replace(/\/$/, "")}/example-page`;
+      const body = JSON.stringify({
+        hits: [
+          {
+            url: `${page}#section`,
+            url_without_anchor: page,
+            anchor: "section",
+            type: "content",
+            hierarchy: { lvl0: "Docs", lvl1: "Example page" },
+            content: "Full section text that a 20-word snippet cannot carry.",
+            _snippetResult: { content: { value: "Full **section** text" } }
+          }
+        ],
+        nbHits: 1,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 100
+      });
+      const args = op.id === "stellarDocs.search_docs_in_category" ? { query: "section", category: "build" } : { query: "section" };
+
+      const off = stubFetch(body, 200);
+      const plain = await callStellarDocs(op, args, docsEnv, off.fetchImpl);
+      expect(plain.ok).toBe(true);
+      expect(JSON.parse(String(off.calls[0]?.init?.body)).attributesToRetrieve).not.toContain("content");
+
+      const on = stubFetch(body, 200);
+      const full = await callStellarDocs(op, { ...args, includeContent: true }, docsEnv, on.fetchImpl);
+      expect(JSON.parse(String(on.calls[0]?.init?.body)).attributesToRetrieve).toContain("content");
+      expect(full.ok).toBe(true);
+      if (!full.ok) return;
+      const hits = (full.data as { hits: { snippet?: string; content?: string }[] }).hits;
+      expect(hits).toHaveLength(1);
+      expect(hits[0]?.snippet).toBe("Full **section** text");
+      expect(hits[0]?.content).toBe("Full section text that a 20-word snippet cannot carry.");
+    });
+  }
 });
