@@ -704,14 +704,27 @@ describe("stellarDocs adapter", () => {
       });
       const args = op.id === "stellarDocs.search_docs_in_category" ? { query: "section", category: "build" } : { query: "section" };
 
-      const off = stubFetch(body, 200);
-      const plain = await callStellarDocs(op, args, docsEnv, off.fetchImpl);
-      expect(plain.ok).toBe(true);
-      expect(JSON.parse(String(off.calls[0]?.init?.body)).attributesToRetrieve).not.toContain("content");
+      // Algolia returns only the attributes a request names, so the stub does too.
+      const calls: Record<string, unknown>[] = [];
+      const fetchImpl: FetchLike = async (_url, init) => {
+        const params = JSON.parse(String(init?.body)) as { attributesToRetrieve?: string[] };
+        calls.push(params);
+        const parsed = JSON.parse(body) as { hits: Record<string, unknown>[] };
+        if (!params.attributesToRetrieve?.includes("content")) for (const hit of parsed.hits) delete hit.content;
+        return new Response(JSON.stringify(parsed), { status: 200, headers: { "content-type": "application/json" } });
+      };
 
-      const on = stubFetch(body, 200);
-      const full = await callStellarDocs(op, { ...args, includeContent: true }, docsEnv, on.fetchImpl);
-      expect(JSON.parse(String(on.calls[0]?.init?.body)).attributesToRetrieve).toContain("content");
+      const plain = await callStellarDocs(op, args, docsEnv, fetchImpl);
+      expect(calls[0]?.attributesToRetrieve).not.toContain("content");
+      expect(plain.ok).toBe(true);
+      if (!plain.ok) return;
+      const plainHits = (plain.data as { hits: { snippet?: string; content?: string }[] }).hits;
+      expect(plainHits).toHaveLength(1);
+      expect(plainHits[0]?.snippet).toBe("Full **section** text");
+      expect(plainHits[0]).not.toHaveProperty("content");
+
+      const full = await callStellarDocs(op, { ...args, includeContent: true }, docsEnv, fetchImpl);
+      expect(calls[1]?.attributesToRetrieve).toContain("content");
       expect(full.ok).toBe(true);
       if (!full.ok) return;
       const hits = (full.data as { hits: { snippet?: string; content?: string }[] }).hits;

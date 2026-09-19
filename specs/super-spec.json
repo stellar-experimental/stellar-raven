@@ -5264,6 +5264,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5343,6 +5344,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5595,6 +5597,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5683,6 +5686,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5755,6 +5759,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5833,6 +5838,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5911,6 +5917,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5988,6 +5995,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -6068,6 +6076,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
