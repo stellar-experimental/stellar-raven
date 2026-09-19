@@ -677,6 +677,29 @@ describe("stellarDocs adapter", () => {
     ]);
   });
 
+  it("search_docs_in_category honors hitsPerPage on the meetings path, where the client filter is off", async () => {
+    const hits = Array.from({ length: 30 }, (_, i) => ({
+      url: `https://developers.stellar.org/meetings/2026/01/${i}#notes`,
+      url_without_anchor: `https://developers.stellar.org/meetings/2026/01/${i}`,
+      anchor: "notes",
+      type: "content",
+      hierarchy: { lvl0: "Meetings", lvl1: `Meeting ${i}` },
+      content: "Meeting notes section text.",
+      _snippetResult: { content: { value: "Meeting **notes**" } }
+    }));
+    const { fetchImpl, calls } = stubFetch(JSON.stringify({ hits, nbHits: 30, page: 0, nbPages: 1, hitsPerPage: 100 }), 200);
+    const r = await callStellarDocs(
+      entry("stellarDocs.search_docs_in_category"),
+      { query: "notes", category: "meetings", hitsPerPage: 3, includeContent: true },
+      docsEnv,
+      fetchImpl
+    );
+    expect(JSON.parse(String(calls[0]?.init?.body)).hitsPerPage).toBe(100);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect((r.data as { hits: unknown[] }).hits).toHaveLength(3);
+  });
+
   for (const op of contentOps) {
     it(`${op.id} retrieves and returns section content only when includeContent is true`, async () => {
       const mapping = (op.transport as { algolia?: { clientFilter?: { prefixesAnyOf?: string[] } } }).algolia;

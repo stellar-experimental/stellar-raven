@@ -173,7 +173,7 @@
           "query": { "type": "string", "description": "Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast)." },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
           "page": { "type": "integer", "minimum": 0, "default": 0, "description": "page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo)." },
-          "includeContent": { "type": "boolean", "default": false, "description": "Add full `content` to attributesToRetrieve (can be multi-KB per hit)." },
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." },
           "includeMeetings": { "type": "boolean", "default": false, "description": "Also search the /meetings meeting-notes slice (drops the docs-only facet filter)." }
         }
       },

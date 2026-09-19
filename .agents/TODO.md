@@ -10,6 +10,19 @@ archive. Each item states what is wrong, how it was found, and what "done" means
 The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maintenance-execution.md).
 [NEXT.md](NEXT.md) ranks the work and holds open owner decisions.
 
+## Adapters
+
+### Fetch stellarDocs `content` only for the hits that are returned
+
+Found on 2026-09-19 while wiring `includeContent` (`rounds/2026-09-19-stellardocs-include-content.md`).
+The eight client-filtered stellarDocs operations over-fetch 100 hits and keep at most 20. With
+`includeContent: true` the adapter now retrieves `content` for all 100. Live latency did not change in a
+nine-operation probe, so this is an upstream payload cost, not a correctness defect. A two-pass design
+(filter without `content`, then fetch `content` for the kept hits) removes the waste.
+
+Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
+single-pass payload is acceptable and this item is closed with that evidence.
+
 ## Improvements follow-up
 
 ### Complete the September 14 source-metadata follow-up before 2026-10-01
