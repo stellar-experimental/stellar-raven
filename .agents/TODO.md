@@ -10,6 +10,32 @@ archive. Each item states what is wrong, how it was found, and what "done" means
 The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maintenance-execution.md).
 [NEXT.md](NEXT.md) ranks the work and holds open owner decisions.
 
+## Adapters
+
+### Fetch stellarDocs `content` only for the hits that are returned
+
+Found on 2026-09-19 while wiring `includeContent` (`rounds/2026-09-19-stellardocs-include-content.md`).
+The eight client-filtered stellarDocs operations over-fetch 100 hits and keep at most 20. With
+`includeContent: true` the adapter now retrieves `content` for all 100. Live latency did not change in a
+nine-operation probe, so this is an upstream payload cost, not a correctness defect. A two-pass design
+(filter without `content`, then fetch `content` for the kept hits) removes the waste.
+
+Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
+single-pass payload is acceptable and this item is closed with that evidence.
+
+### State the real result shape of the stellarDocs search operations
+
+Found on 2026-09-19 (`rounds/2026-09-19-stellardocs-include-content.md`). The stellarDocs search
+operations say `returns: "Array of ... hits"` and carry no `outputSchema`. The result is an object:
+`{ hits, nbHits, nbPages, page, clientFiltered? }`. Agents write `r.data.map(...)` and the script fails
+with `r.data.map is not a function`, which costs one `execute` call. In 1,272 logged external-harness
+runs, 52 of 53 attributable errors of this kind came from stellarDocs operations. In the A/B for the
+`includeContent` fix, the error rate per `execute` call rose from 3.1% to 7.2% on the fixed build,
+probably because agents now read `content` from search hits instead of `get_doc_page_sections`.
+
+Done when: the `returns` text or an `outputSchema` states the object shape for every stellarDocs search
+operation, and a test pins the documented shape to what the adapter returns.
+
 ## Improvements follow-up
 
 ### Complete the September 14 source-metadata follow-up before 2026-10-01

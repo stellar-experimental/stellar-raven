@@ -5264,6 +5264,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5281,7 +5282,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to b",
@@ -5296,6 +5297,18 @@
               "https://developers.stellar.org/docs/learn/fundamentals/anchors",
               "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [
@@ -5331,6 +5344,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5348,7 +5362,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account,",
@@ -5362,6 +5376,18 @@
               "https://developers.stellar.org/docs/tokens",
               "https://developers.stellar.org/docs/build/guides/tokens/"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [
@@ -5467,7 +5493,7 @@
                   },
                   "includeContent": {
                     "default": false,
-                    "description": "Add full `content` to attributesToRetrieve (can be multi-KB per hit).",
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "includeMeetings": {
@@ -5571,6 +5597,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5589,7 +5616,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet } plus counts { rawNbHits, filteredCount }."
+            "description": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? } plus counts { rawNbHits, filteredCount }."
           }
         },
         "summary": "Keyword search restricted to ONE top-level category of the Stellar developer docs.",
@@ -5612,6 +5639,16 @@
                 [
                   "docusaurus_tag:-docs-default-current"
                 ]
+              ]
+            },
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
               ]
             }
           },
@@ -5649,6 +5686,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5666,7 +5704,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search the Stellar protocol & developers meeting notes published at developers.stellar.org/meetings (2024–2026): CAP (Co",
@@ -5674,6 +5712,18 @@
           "stellarDocs"
         ],
         "x-algolia": {
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
+          },
           "fixedParams": {
             "facetFilters": [
               [
@@ -5709,6 +5759,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5726,7 +5777,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserv",
@@ -5740,6 +5791,18 @@
               "https://developers.stellar.org/docs/learn/",
               "https://developers.stellar.org/docs/networks"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [
@@ -5775,6 +5838,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5792,7 +5856,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running yo",
@@ -5806,6 +5870,18 @@
               "https://developers.stellar.org/docs/data",
               "https://developers.stellar.org/docs/build/guides/rpc/"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [
@@ -5841,6 +5917,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5858,7 +5935,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm",
@@ -5871,6 +5948,18 @@
             "prefixesAnyOf": [
               "https://developers.stellar.org/docs/tools"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [
@@ -5906,6 +5995,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5923,7 +6013,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data,",
@@ -5939,6 +6029,18 @@
               "https://developers.stellar.org/docs/learn/fundamentals/contract-development/",
               "https://developers.stellar.org/docs/tools/cli/"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [
@@ -5974,6 +6076,7 @@
                   },
                   "includeContent": {
                     "default": false,
+                    "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
                     "type": "boolean"
                   },
                   "query": {
@@ -5991,7 +6094,7 @@
         },
         "responses": {
           "200": {
-            "description": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }."
+            "description": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
           }
         },
         "summary": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial seri",
@@ -6006,6 +6109,18 @@
               "https://developers.stellar.org/docs/build/guides/dapps",
               "https://developers.stellar.org/docs/build/guides/freighter"
             ]
+          },
+          "conditionalParams": {
+            "includeContent=true": {
+              "attributesToRetrieve": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "hierarchy",
+                "type",
+                "content"
+              ]
+            }
           },
           "fixedParams": {
             "facetFilters": [

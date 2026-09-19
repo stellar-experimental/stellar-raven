@@ -173,7 +173,7 @@
           "query": { "type": "string", "description": "Keyword query. advancedSyntax is on: quoted \"exact phrases\" and -exclusions work directly. The final word is prefix-matched (queryType prefixLast)." },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
           "page": { "type": "integer", "minimum": 0, "default": 0, "description": "page * hitsPerPage beyond 1000 records is unreachable (paginationLimitedTo)." },
-          "includeContent": { "type": "boolean", "default": false, "description": "Add full `content` to attributesToRetrieve (can be multi-KB per hit)." },
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." },
           "includeMeetings": { "type": "boolean", "default": false, "description": "Also search the /meetings meeting-notes slice (drops the docs-only facet filter)." }
         }
       },
@@ -241,15 +241,16 @@
             "description": "Top-level docs area; maps to the /docs/<category> URL prefix (meetings → the docusaurus_tag blog slice)."
           },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5, "description": "Number of category-filtered hits to return." },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet } plus counts { rawNbHits, filteredCount }.",
+      "returns": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? } plus counts { rawNbHits, filteredCount }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
         "conditionalParams": {
-          "category=meetings": { "facetFilters": [["docusaurus_tag:-docs-default-current"]], "clientFilter": null }
+          "category=meetings": { "facetFilters": [["docusaurus_tag:-docs-default-current"]], "clientFilter": null },
+          "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] }
         },
         "clientFilter": {
           "field": "url_without_anchor",
@@ -342,13 +343,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -378,13 +380,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -412,13 +415,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -446,13 +450,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -481,13 +486,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -516,13 +522,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": ["https://developers.stellar.org/docs/tools"]
@@ -548,13 +555,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
           "prefixesAnyOf": [
@@ -583,13 +591,14 @@
         "properties": {
           "query": { "type": "string" },
           "hitsPerPage": { "type": "integer", "minimum": 1, "maximum": 20, "default": 5 },
-          "includeContent": { "type": "boolean", "default": false }
+          "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet }.",
+      "returns": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
       "algolia": {
         "paramMap": { "query": "query", "hitsPerPage": "hitsPerPage" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:-docs-default-current"]] },
+        "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "note": "facet negation verified: every hit is under /meetings."
       },
       "verified": {
