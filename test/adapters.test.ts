@@ -697,7 +697,9 @@ describe("stellarDocs adapter", () => {
     expect(JSON.parse(String(calls[0]?.init?.body)).hitsPerPage).toBe(100);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect((r.data as { hits: unknown[] }).hits).toHaveLength(3);
+    const meetingHits = (r.data as { hits: { content?: string }[] }).hits;
+    expect(meetingHits).toHaveLength(3);
+    expect(meetingHits.every((h) => h.content === "Meeting notes section text.")).toBe(true);
   });
 
   for (const op of contentOps) {

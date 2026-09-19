@@ -1,6 +1,6 @@
 # stellarDocs `includeContent` wiring — 2026-09-19
 
-Status: fix implemented and gated. End-to-end answer-quality check in progress (external harness, see below).
+Status: fix implemented, gated, and checked end to end with an external harness. Reviews reconciled.
 
 ## Authority and scope
 
@@ -67,4 +67,28 @@ unchanged. This is a byte-change refresh, not a movement of any routing number.
 - Delta review of the revised code and plan: GLM-5.3, high effort. Verdict LAUNCH-WITH-FIXES.
   Reconciled: the meetings path hit limit (adapter change and test); one parameter wording on all ten
   operations; the TODO item for the two-pass follow-up; corrected "at most 20" wording.
-- The end-to-end result and the post-result reviews are recorded in the pull request.
+- Post-result adversarial review: Grok 4.6 and GLM-5.3, both OPEN-PR-WITH-FIXES. Both reproduced every
+  number from the per-run data and the logs. Reconciled: "no harm" is scoped to the pre-registered
+  answer-score tests; the rise in array-shape script errors is stated as a measured harm on a
+  deterministic metric; the guard-set losses are not attributed away; the meetings test also asserts
+  `content`; the result-shape defect is recorded in `.agents/TODO.md`.
+
+## End-to-end check (external harness; not this repository's instrument)
+
+A pre-registered A/B: `544e5d9d` against `a8563912`, 275 QA-battery questions (215 stellarDocs-service,
+60 guard), one Sonnet agent per question and arm, two judges with hidden arm labels (Opus and Sonnet,
+rubric v2.10, panel = the worse verdict), 550 runs. No paid instrument of this repository ran. The
+numbers are not comparable with any stored QA baseline.
+
+- Answer scores, docs set: 1.028 to 1.056 (32 better, 27 worse, p = 0.60, 95% interval -0.05 to +0.10).
+  No material change. This work claims no accuracy gain.
+- Four pre-registered one-sided harm tests on answer scores: docs p = 0.78, guard p = 0.21, all 275
+  p = 0.59, questions where the fixed run used the flag p = 0.76. None fires. The design sees a loss of
+  about 0.10 on the docs set and about 0.20 on the guard set.
+- Mechanism, docs set: clean scripts that asked for content and got section text 0 of 55 to 57 of 67;
+  `get_doc_page_sections` calls 235 to 104; `execute` calls per question 2.38 to 2.14; median time 35.2 s
+  to 31.9 s; truncated runs 21 to 23.
+- Measured harm: script errors where the agent treats the result as an array rose from 16 of 512
+  `execute` calls to 33 of 461. See the result-shape item in `.agents/TODO.md`.
+- The meetings path was not exercised on the fixed build. One control run called it and got 32 hits
+  for `hitsPerPage: 10`.
