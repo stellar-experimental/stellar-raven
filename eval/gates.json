@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-09-19T14:47:06.009Z",
+  "baselinedAt": "2026-09-19T16:08:38.372Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "37dda817745b579f068926b1c05c2e1a44941637deb8ccc5fe8588caecf59f3b"
+        "sha256": "a557938f247e1c35ff5f3ca80ef5429296f5c19007977fc6133fd8f4c8e5f9d6"
       },
       {
         "path": "eval/routing-cases.json",
@@ -49,9 +49,9 @@
         "passed": 24
       }
     },
-    "localTrace": "routing-2026-09-19T14-47-06-009Z.json"
+    "localTrace": "routing-2026-09-19T16-08-38-372Z.json"
   },
-  "note": "2026-09-19 byte-change refresh for the stellarDocs includeContent wiring fix (transport conditionalParams, returns text, and the includeContent parameter description on ten operations). Every lane total and every per-case routing result is identical to the 2026-09-16 baseline; no accepted total or threshold moved. Decision: .agents/rounds/2026-09-19-stellardocs-include-content.md. Prior baseline note follows. 2026-09-16 Scout 1.9.52 source acceptance retains 30 Scout operations and excludes RWA. Source routing text changes require general phrase, evidence, and negative-intent repairs. Independent Grok high review accepts the semantic movements, including the final modifier-scope correction; Terra high accepts the code repairs. Legacy baselines and skills/holdout floors increase; the forbidden-capture ceiling decreases. Labels and other input hashes stay unchanged. Decision: .agents/rounds/2026-09-16-scout-acceptance.md. Final semantic review: .agents/rounds/2026-09-16-truth-maintenance/scout-clause-repair-independent-review.md. RWA remains deferred in issue #167.",
+  "note": "2026-09-19 second byte-change refresh for the stellarDocs result-shape fix (output schemas on the eleven search operations and corrected returns text). No accepted total, threshold, or graded per-case result moved; stellarDocs.search_docs_in_category scores about 10 points lower in 7 of 544 cases because two key names that never existed left its returns text, and two extended-lane cases reorder stellarDocs operations among themselves. Decision: .agents/rounds/2026-09-19-stellardocs-result-shape.md. Earlier same-day note: 2026-09-19 byte-change refresh for the stellarDocs includeContent wiring fix (transport conditionalParams, returns text, and the includeContent parameter description on ten operations). Every lane total and every per-case routing result is identical to the 2026-09-16 baseline; no accepted total or threshold moved. Decision: .agents/rounds/2026-09-19-stellardocs-include-content.md. Prior baseline note follows. 2026-09-16 Scout 1.9.52 source acceptance retains 30 Scout operations and excludes RWA. Source routing text changes require general phrase, evidence, and negative-intent repairs. Independent Grok high review accepts the semantic movements, including the final modifier-scope correction; Terra high accepts the code repairs. Legacy baselines and skills/holdout floors increase; the forbidden-capture ceiling decreases. Labels and other input hashes stay unchanged. Decision: .agents/rounds/2026-09-16-scout-acceptance.md. Final semantic review: .agents/rounds/2026-09-16-truth-maintenance/scout-clause-repair-independent-review.md. RWA remains deferred in issue #167.",
   "legacy": {
     "n": 338,
     "top1": 219,

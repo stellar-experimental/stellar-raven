@@ -25369,7 +25369,7 @@
       }
     },
     {
-      "description": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to banking rails and fiat), the Anchor Platform admin guide and SEP guides — hosted deposits and withdrawals (SEP-24 interactive flow), programmatic deposits and withdrawals (SEP-6), cross-border payments (SEP-31), web authentication (SEP-10), KYC customer info (SEP-12), quotes (SEP-38), the stellar.toml info file (SEP-1) — plus event handling/callbacks, and the Stellar Disbursement Platform (SDP) for bulk payouts and disbursements (admin guide, user interface). Covers /docs/platforms/anchor-platform, /docs/platforms/stellar-disbursement-platform and the anchors fundamentals page.\n\nReturns: Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to banking rails and fiat), the Anchor Platform admin guide and SEP guides — hosted deposits and withdrawals (SEP-24 interactive flow), programmatic deposits and withdrawals (SEP-6), cross-border payments (SEP-31), web authentication (SEP-10), KYC customer info (SEP-12), quotes (SEP-38), the stellar.toml info file (SEP-1) — plus event handling/callbacks, and the Stellar Disbursement Platform (SDP) for bulk payouts and disbursements (admin guide, user interface). Covers /docs/platforms/anchor-platform, /docs/platforms/stellar-disbursement-platform and the anchors fundamentals page.\n\nReturns: { hits: Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_anchor_sep_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -25429,7 +25429,74 @@
         "receivers"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -25557,7 +25624,7 @@
       }
     },
     {
-      "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account, distribution account), anatomy of an asset (asset code + issuer, classic Stellar assets), trustlines and changeTrust, controlling asset access with authorization flags (auth required, auth revocable, auth immutable, clawback enabled — regulated assets and compliance), publishing asset info in stellar.toml (SEP-1), the Stellar Asset Contract (SAC) that exposes classic assets like USDC to Soroban smart contracts, deploying the SAC for an existing asset, the token interface standard (SEP-41 / CAP-46-6) for custom contract tokens, stablecoins, and cross-chain transfers. Covers /docs/tokens and /docs/build/guides/tokens.\n\nReturns: { hits: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_asset_token_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -25599,7 +25666,74 @@
         "zero"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -25726,7 +25860,7 @@
       }
     },
     {
-      "description": "Title-only search over Stellar developer docs page and section headings (hierarchy levels 1-3). The fastest way to find the one canonical docs page for a topic when you roughly know what it is called — e.g. 'State Archival', 'Stellar Consensus Protocol', 'How to Issue an Asset', 'Stellar Asset Contract', 'Migrate from Horizon to RPC', 'Anchor Platform', 'Stellar CLI'. Skips body text so results are page-level and precise instead of content-fuzzy; follow up with get_doc_page_sections or includeContent on search_docs to read the page.\n\nReturns: Array of hits (page/heading level): { url, url_without_anchor, breadcrumb, type } plus { nbHits }.",
+      "description": "Title-only search over Stellar developer docs page and section headings (hierarchy levels 1-3). The fastest way to find the one canonical docs page for a topic when you roughly know what it is called — e.g. 'State Archival', 'Stellar Consensus Protocol', 'How to Issue an Asset', 'Stellar Asset Contract', 'Migrate from Horizon to RPC', 'Anchor Platform', 'Stellar CLI'. Skips body text so results are page-level and precise instead of content-fuzzy; follow up with get_doc_page_sections or includeContent on search_docs to read the page.\n\nReturns: { hits: Array of hits (page/heading level): { url, url_without_anchor, anchor, breadcrumb, type, snippet? } } plus { nbHits }.",
       "id": "stellarDocs.search_doc_titles",
       "inputSchema": {
         "additionalProperties": false,
@@ -25755,7 +25889,71 @@
         "meetings"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "snippet": {
+                  "description": "Present when the matched record has body text.",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -25863,7 +26061,7 @@
       }
     },
     {
-      "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+      "description": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page under /docs/build, /docs/learn, /docs/tokens, /docs/data, /docs/tools, /docs/platforms, /docs/validators and /docs/networks. Use for any question about Stellar or Soroban: how do I write, test and deploy a smart contract; how do I issue an asset or create a token, add a trustline, use clawback or authorization flags for regulated assets; how does the protocol work (ledger, accounts, transactions, operations, fees, consensus); which SEP or CAP defines a standard; Stellar RPC and Horizon APIs; the Stellar CLI, Lab, Quickstart and official SDKs; anchor deposits, withdrawals and KYC; building wallets and dapps; testnet, futurenet and mainnet networks; stellar-core and protocol versions. Returns doc sections with URL, breadcrumb hierarchy (lvl0 > lvl1 > ...) and a highlighted content snippet. Zero hits = topic not in the docs corpus; nonzero hits still need judging by snippet.\n\nReturns: { hits: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet?, content? } } plus { nbHits, nbPages, page }.",
       "id": "stellarDocs.search_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -25904,7 +26102,74 @@
         "meetings"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -26026,7 +26291,7 @@
       }
     },
     {
-      "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories: build (smart contracts, guides, apps/dapps, security, agentic payments), data (Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (Anchor Platform, Stellar Disbursement Platform), validators (running a stellar-core validator node), tokens (issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (resource limits and fees), and meetings (protocol and developer meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.\n\nReturns: Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? } plus counts { rawNbHits, filteredCount }.",
+      "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories: build (smart contracts, guides, apps/dapps, security, agentic payments), data (Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (Anchor Platform, Stellar Disbursement Platform), validators (running a stellar-core validator node), tokens (issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (resource limits and fees), and meetings (protocol and developer meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.\n\nReturns: { hits: Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } } plus counts { nbHits }.",
       "id": "stellarDocs.search_docs_in_category",
       "inputSchema": {
         "additionalProperties": false,
@@ -26069,7 +26334,74 @@
         "type": "object"
       },
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -26205,7 +26537,7 @@
       }
     },
     {
-      "description": "Search the Stellar protocol & developers meeting notes published at developers.stellar.org/meetings (2024–2026): CAP (Core Advancement Proposal) discussions, protocol upgrade votes and release planning for stellar-core, SEP proposals and ecosystem standards debates, validator coordination. This is the non-docs slice of the index, selected server-side via the docusaurus_tag facet. Useful for history questions — when or why something was decided, which protocol version introduced a change — that regular docs pages do not answer.\n\nReturns: Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search the Stellar protocol & developers meeting notes published at developers.stellar.org/meetings (2024–2026): CAP (Core Advancement Proposal) discussions, protocol upgrade votes and release planning for stellar-core, SEP proposals and ecosystem standards debates, validator coordination. This is the non-docs slice of the index, selected server-side via the docusaurus_tag facet. Useful for history questions — when or why something was decided, which protocol version introduced a change — that regular docs pages do not answer.\n\nReturns: { hits: Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_meeting_notes",
       "inputSchema": {
         "additionalProperties": false,
@@ -26231,7 +26563,74 @@
         "type": "object"
       },
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -26352,7 +26751,7 @@
       }
     },
     {
-      "description": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserve, sequence numbers, signers, thresholds, multisig), transactions and operations (every classic operation type, path payments, claimable balances, sponsored reserves), fees, resource limits and metering, lumens (XLM), the Stellar Consensus Protocol (SCP), Stellar data structures and the XDR data format, liquidity on Stellar (SDEX order books vs AMM liquidity pools), what anchors are, the Stellar Ecosystem Proposals (SEPs) overview, the Stellar stack (stellar-core, Horizon, Stellar RPC and how protocol versions relate), networks (mainnet/pubnet, testnet, futurenet) and network resource limits, migrating from EVM chains like Ethereum, plus interactive learning and the glossary. Covers /docs/learn and /docs/networks.\n\nReturns: Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserve, sequence numbers, signers, thresholds, multisig), transactions and operations (every classic operation type, path payments, claimable balances, sponsored reserves), fees, resource limits and metering, lumens (XLM), the Stellar Consensus Protocol (SCP), Stellar data structures and the XDR data format, liquidity on Stellar (SDEX order books vs AMM liquidity pools), what anchors are, the Stellar Ecosystem Proposals (SEPs) overview, the Stellar stack (stellar-core, Horizon, Stellar RPC and how protocol versions relate), networks (mainnet/pubnet, testnet, futurenet) and network resource limits, migrating from EVM chains like Ethereum, plus interactive learning and the glossary. Covers /docs/learn and /docs/networks.\n\nReturns: { hits: Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_protocol_concepts_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -26424,7 +26823,74 @@
         "software"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -26551,7 +27017,7 @@
       }
     },
     {
-      "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\n\nReturns: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.\n\nReturns: { hits: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_rpc_horizon_data_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -26669,7 +27135,74 @@
         "oracle"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -26796,7 +27329,7 @@
       }
     },
     {
-      "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.\n\nReturns: { hits: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_sdk_cli_tools_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -26895,7 +27428,74 @@
         "own"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -27011,7 +27611,7 @@
       }
     },
     {
-      "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.\n\nReturns: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.\n\nReturns: { hits: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_soroban_contract_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -27205,7 +27805,74 @@
         "manual"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
@@ -27324,7 +27991,7 @@
       }
     },
     {
-      "description": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial series (including anchor SEP-24 deposit/withdrawal integration), Build a Payment App with the JS SDK tutorial, the passkey-powered guestbook dapp (smart wallets, WebAuthn passkeys, secp256r1 signature verification), dapp frontend guide and dapp development guides (initialization, state archival handling in dapps, working with deployed contracts), Freighter browser-extension wallet integration guides, the Swift payment app, payment tracking with the ingest SDK, ZK (zero-knowledge) apps, privacy considerations and application design considerations. Covers /docs/build/apps, /docs/build/guides/dapps and /docs/build/guides/freighter.\n\nReturns: Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "description": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial series (including anchor SEP-24 deposit/withdrawal integration), Build a Payment App with the JS SDK tutorial, the passkey-powered guestbook dapp (smart wallets, WebAuthn passkeys, secp256r1 signature verification), dapp frontend guide and dapp development guides (initialization, state archival handling in dapps, working with deployed contracts), Freighter browser-extension wallet integration guides, the Swift payment app, payment tracking with the ingest SDK, ZK (zero-knowledge) apps, privacy considerations and application design considerations. Covers /docs/build/apps, /docs/build/guides/dapps and /docs/build/guides/freighter.\n\nReturns: { hits: Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
       "id": "stellarDocs.search_wallet_dapp_docs",
       "inputSchema": {
         "additionalProperties": false,
@@ -27407,7 +28074,74 @@
         "xdrs"
       ],
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientFiltered": {
+            "description": "True when the operation kept only hits under its docs category.",
+            "type": "boolean"
+          },
+          "hits": {
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "description": "Present only with includeContent: true, and only on `content` records.",
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "nbHits": {
+            "description": "Index-wide match count before any category filter.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "nbPages": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hits",
+          "nbHits"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",

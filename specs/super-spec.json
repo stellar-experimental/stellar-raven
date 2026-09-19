@@ -5282,7 +5282,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to b",
@@ -5362,7 +5434,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs about issuing and managing assets and tokens on the network: how to issue an asset (issuer account,",
@@ -5441,7 +5585,76 @@
         },
         "responses": {
           "200": {
-            "description": "Array of hits (page/heading level): { url, url_without_anchor, breadcrumb, type } plus { nbHits }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "description": "Present when the matched record has body text.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of hits (page/heading level): { url, url_without_anchor, anchor, breadcrumb, type, snippet? } } plus { nbHits }."
           }
         },
         "summary": "Title-only search over Stellar developer docs page and section headings (hierarchy levels 1-3).",
@@ -5523,7 +5736,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet?, content? } } plus { nbHits, nbPages, page }."
           }
         },
         "summary": "Full-text keyword search across ALL official Stellar developer documentation on developers.stellar.org — every docs page",
@@ -5616,7 +5901,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? } plus counts { rawNbHits, filteredCount }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } } plus counts { nbHits }."
           }
         },
         "summary": "Keyword search restricted to ONE top-level category of the Stellar developer docs.",
@@ -5704,7 +6061,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search the Stellar protocol & developers meeting notes published at developers.stellar.org/meetings (2024–2026): CAP (Co",
@@ -5777,7 +6206,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserv",
@@ -5856,7 +6357,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running yo",
@@ -5935,7 +6508,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm",
@@ -6013,7 +6658,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data,",
@@ -6094,7 +6811,79 @@
         },
         "responses": {
           "200": {
-            "description": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "clientFiltered": {
+                      "description": "True when the operation kept only hits under its docs category.",
+                      "type": "boolean"
+                    },
+                    "hits": {
+                      "description": "The hits live under `data.hits`; `data` itself is not an array.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "description": "Present only with includeContent: true, and only on `content` records.",
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "nbHits": {
+                      "description": "Index-wide match count before any category filter.",
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "nbPages": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "nbHits"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }."
           }
         },
         "summary": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial seri",

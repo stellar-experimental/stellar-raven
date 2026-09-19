@@ -758,4 +758,88 @@ describe("stellarDocs adapter", () => {
       expect(hits[0]?.content).toBe("Full section text that a 20-word snippet cannot carry.");
     });
   }
+
+  // The documented result shape must be the shape the adapter returns. The search ops used to say
+  // "Returns: Array of hits" with no outputSchema, so callers wrote `r.data.map(...)` and the script
+  // failed with "r.data.map is not a function".
+  type Shape = { type?: string; required?: string[]; properties?: Record<string, Shape>; items?: Shape; additionalProperties?: boolean };
+  function shapeErrors(value: unknown, schema: Shape, path = "data"): string[] {
+    if (schema.type === "array") {
+      if (!Array.isArray(value)) return [`${path} is not an array`];
+      return value.flatMap((v, i) => shapeErrors(v, schema.items ?? {}, `${path}[${i}]`));
+    }
+    if (schema.type === "object") {
+      if (value === null || typeof value !== "object" || Array.isArray(value)) return [`${path} is not an object`];
+      const obj = value as Record<string, unknown>;
+      const errors = (schema.required ?? []).filter((k) => !(k in obj)).map((k) => `${path}.${k} is missing`);
+      for (const [k, v] of Object.entries(obj)) {
+        const child = schema.properties?.[k];
+        if (!child) {
+          if (schema.additionalProperties === false) errors.push(`${path}.${k} is not documented`);
+        } else errors.push(...shapeErrors(v, child, `${path}.${k}`));
+      }
+      return errors;
+    }
+    if (schema.type === "integer") return Number.isInteger(value) ? [] : [`${path} is not an integer`];
+    if (schema.type === "string" || schema.type === "boolean") return typeof value === schema.type ? [] : [`${path} is not a ${schema.type}`];
+    return [];
+  }
+
+  const searchOps = catalog.entries.filter(
+    (e) => e.service === "stellarDocs" && e.kind === "operation" && e.id !== "stellarDocs.get_doc_page_sections"
+  );
+
+  it("documents an object result, never a bare array, on every stellarDocs search op", () => {
+    expect(searchOps).toHaveLength(11);
+    for (const op of searchOps) {
+      const schema = op.outputSchema as Shape | null;
+      expect(schema, op.id).not.toBeNull();
+      expect(schema?.type, op.id).toBe("object");
+      expect(schema?.properties?.hits?.type, op.id).toBe("array");
+      expect(op.description, op.id).not.toMatch(/Returns: Array of/);
+      expect(op.description, op.id).toContain("Returns: { hits: Array of");
+    }
+  });
+
+  for (const op of searchOps) {
+    it(`${op.id} returns exactly the shape its outputSchema documents`, async () => {
+      const mapping = (op.transport as { algolia?: { clientFilter?: { prefixesAnyOf?: string[] } } }).algolia;
+      const prefix = (mapping?.clientFilter?.prefixesAnyOf?.[0] ?? "https://developers.stellar.org/docs/build").replace("{category}", "build");
+      const page = `${prefix.replace(/\/$/, "")}/example-page`;
+      const record = (type: string, extra: Record<string, unknown>) => ({
+        url: `${page}#section`,
+        url_without_anchor: page,
+        anchor: "section",
+        type,
+        hierarchy: { lvl0: "Docs", lvl1: "Example page" },
+        ...extra
+      });
+      const body = JSON.stringify({
+        hits: [
+          record("content", { content: "Section text.", _snippetResult: { content: { value: "Section **text**" } } }),
+          record("lvl2", { content: null })
+        ],
+        nbHits: 2,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 100
+      });
+      const hasCategory = "category" in ((op.inputSchema as { properties?: object } | undefined)?.properties ?? {});
+      const hasContentFlag = "includeContent" in ((op.inputSchema as { properties?: object } | undefined)?.properties ?? {});
+      const args = { query: "section", ...(hasCategory ? { category: "build" } : {}), ...(hasContentFlag ? { includeContent: true } : {}) };
+      // Algolia returns only the attributes a request names, so the stub does too.
+      const fetchImpl: FetchLike = async (_url, init) => {
+        const params = JSON.parse(String(init?.body)) as { attributesToRetrieve?: string[] };
+        const parsed = JSON.parse(body) as { hits: Record<string, unknown>[] };
+        if (!params.attributesToRetrieve?.includes("content")) for (const hit of parsed.hits) delete hit.content;
+        return new Response(JSON.stringify(parsed), { status: 200, headers: { "content-type": "application/json" } });
+      };
+      const r = await callStellarDocs(op, args, docsEnv, fetchImpl);
+      expect(r.ok).toBe(true);
+      if (!r.ok) return;
+      expect(Array.isArray(r.data)).toBe(false);
+      expect(shapeErrors(r.data, op.outputSchema as Shape)).toEqual([]);
+      expect((r.data as { hits: unknown[] }).hits).toHaveLength(2);
+    });
+  }
 });
