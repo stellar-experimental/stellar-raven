@@ -5338,10 +5338,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -5490,10 +5492,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -5590,10 +5594,6 @@
                 "schema": {
                   "additionalProperties": false,
                   "properties": {
-                    "clientFiltered": {
-                      "description": "True when the operation kept only hits under its docs category.",
-                      "type": "boolean"
-                    },
                     "hits": {
                       "description": "The hits live under `data.hits`; `data` itself is not an array.",
                       "items": {
@@ -5610,7 +5610,7 @@
                             "type": "string"
                           },
                           "type": {
-                            "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+                            "description": "`lvl1` to `lvl6` for a heading record; `content` for a body record matched through its headings.",
                             "type": "string"
                           },
                           "url": {
@@ -5633,7 +5633,7 @@
                       "type": "array"
                     },
                     "nbHits": {
-                      "description": "Index-wide match count before any category filter.",
+                      "description": "Total matches in the index for this query.",
                       "minimum": 0,
                       "type": "integer"
                     },
@@ -5642,6 +5642,7 @@
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: this operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -5741,10 +5742,6 @@
                 "schema": {
                   "additionalProperties": false,
                   "properties": {
-                    "clientFiltered": {
-                      "description": "True when the operation kept only hits under its docs category.",
-                      "type": "boolean"
-                    },
                     "hits": {
                       "description": "The hits live under `data.hits`; `data` itself is not an array.",
                       "items": {
@@ -5787,15 +5784,17 @@
                       "type": "array"
                     },
                     "nbHits": {
-                      "description": "Index-wide match count before any category filter.",
+                      "description": "Total matches in the index for this query.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages available at the requested hitsPerPage.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "The page returned (the `page` argument).",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -5907,7 +5906,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "clientFiltered": {
-                      "description": "True when the operation kept only hits under its docs category.",
+                      "description": "True when the operation kept only hits under its docs category. Absent for category=meetings, which filters in the index.",
                       "type": "boolean"
                     },
                     "hits": {
@@ -5957,10 +5956,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -6066,10 +6067,6 @@
                 "schema": {
                   "additionalProperties": false,
                   "properties": {
-                    "clientFiltered": {
-                      "description": "True when the operation kept only hits under its docs category.",
-                      "type": "boolean"
-                    },
                     "hits": {
                       "description": "The hits live under `data.hits`; `data` itself is not an array.",
                       "items": {
@@ -6112,7 +6109,7 @@
                       "type": "array"
                     },
                     "nbHits": {
-                      "description": "Index-wide match count before any category filter.",
+                      "description": "Total matches in the index for this query.",
                       "minimum": 0,
                       "type": "integer"
                     },
@@ -6121,6 +6118,7 @@
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: this operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -6262,10 +6260,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -6413,10 +6413,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -6564,10 +6566,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -6714,10 +6718,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }
@@ -6867,10 +6873,12 @@
                       "type": "integer"
                     },
                     "nbPages": {
+                      "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
                       "minimum": 0,
                       "type": "integer"
                     },
                     "page": {
+                      "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
                       "minimum": 0,
                       "type": "integer"
                     }

@@ -201,10 +201,9 @@
               }
             }
           },
-          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
-          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages available at the requested hitsPerPage." },
+          "page": { "type": "integer", "minimum": 0, "description": "The page returned (the `page` argument)." }
         }
       },
       "algolia": {
@@ -254,16 +253,15 @@
                 "url": { "type": "string", "format": "uri" },
                 "url_without_anchor": { "type": "string", "format": "uri" },
                 "anchor": { "type": "string" },
-                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "type": { "type": "string", "description": "`lvl1` to `lvl6` for a heading record; `content` for a body record matched through its headings." },
                 "breadcrumb": { "type": "string" },
           "snippet": { "type": "string", "description": "Present when the matched record has body text." }
               }
             }
           },
-          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
           "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
-          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: this operation takes no `page` argument." }
         }
       },
       "algolia": {
@@ -326,9 +324,9 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
-          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category. Absent for category=meetings, which filters in the index." }
         }
       },
       "algolia": {
@@ -457,8 +455,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -523,8 +521,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -587,8 +585,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -651,8 +649,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -716,8 +714,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -781,8 +779,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -843,8 +841,8 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
-          "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
           "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
         }
       },
@@ -907,10 +905,9 @@
               }
             }
           },
-          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
           "nbPages": { "type": "integer", "minimum": 0 },
-          "page": { "type": "integer", "minimum": 0 },
-          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: this operation takes no `page` argument." }
         }
       },
       "algolia": {

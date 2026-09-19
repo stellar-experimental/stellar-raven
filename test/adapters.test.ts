@@ -782,7 +782,7 @@ describe("stellarDocs adapter", () => {
     }
     if (schema.type === "integer") return Number.isInteger(value) ? [] : [`${path} is not an integer`];
     if (schema.type === "string" || schema.type === "boolean") return typeof value === schema.type ? [] : [`${path} is not a ${schema.type}`];
-    return [];
+    return [`${path} has a schema type this test cannot check: ${String(schema.type)}`];
   }
 
   const searchOps = catalog.entries.filter(
@@ -799,6 +799,26 @@ describe("stellarDocs adapter", () => {
       expect(op.description, op.id).not.toMatch(/Returns: Array of/);
       expect(op.description, op.id).toContain("Returns: { hits: Array of");
     }
+  });
+
+  it("search_docs_in_category on the meetings path still returns the documented shape, without clientFiltered", async () => {
+    const op = entry("stellarDocs.search_docs_in_category");
+    const hit = {
+      url: "https://developers.stellar.org/meetings/2026/01/15#notes",
+      url_without_anchor: "https://developers.stellar.org/meetings/2026/01/15",
+      anchor: "notes",
+      type: "content",
+      hierarchy: { lvl0: "Meetings", lvl1: "Protocol meeting" },
+      content: "Meeting notes section text.",
+      _snippetResult: { content: { value: "Meeting **notes**" } }
+    };
+    const { fetchImpl } = stubFetch(JSON.stringify({ hits: [hit], nbHits: 1, page: 0, nbPages: 1, hitsPerPage: 100 }), 200);
+    const r = await callStellarDocs(op, { query: "notes", category: "meetings", includeContent: true }, docsEnv, fetchImpl);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const wire = JSON.parse(JSON.stringify(r.data)) as Record<string, unknown>;
+    expect(shapeErrors(wire, op.outputSchema as Shape)).toEqual([]);
+    expect("clientFiltered" in wire).toBe(false);
   });
 
   for (const op of searchOps) {
@@ -837,9 +857,14 @@ describe("stellarDocs adapter", () => {
       const r = await callStellarDocs(op, args, docsEnv, fetchImpl);
       expect(r.ok).toBe(true);
       if (!r.ok) return;
-      expect(Array.isArray(r.data)).toBe(false);
-      expect(shapeErrors(r.data, op.outputSchema as Shape)).toEqual([]);
-      expect((r.data as { hits: unknown[] }).hits).toHaveLength(2);
+      // Validate what crosses the sandbox boundary: the serialized payload, where `undefined` keys vanish.
+      const wire = JSON.parse(JSON.stringify(r.data)) as { hits: unknown[] };
+      expect(Array.isArray(wire)).toBe(false);
+      expect(shapeErrors(wire, op.outputSchema as Shape)).toEqual([]);
+      expect(wire.hits).toHaveLength(2);
+      const filtersOnClient = Boolean(mapping?.clientFilter);
+      expect("clientFiltered" in wire, op.id).toBe(filtersOnClient);
+      expect("clientFiltered" in ((op.outputSchema as Shape).properties ?? {}), op.id).toBe(filtersOnClient);
     });
   }
 });
