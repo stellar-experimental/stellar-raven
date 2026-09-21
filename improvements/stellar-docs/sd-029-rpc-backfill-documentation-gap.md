@@ -1,7 +1,7 @@
 ---
 id: sd-029
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-11
 upstreamTitle: Document Stellar RPC BACKFILL startup behavior
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - scope-narrowing reply posted and read back 2026-07-27: https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5091976539
   - partial fix deployed, live check 2026-09-21T16:33:42Z: https://github.com/stellar/stellar-docs/pull/2789 merged as 9d71821f8405c262dec974da53da834604fd63ca on 2026-09-14. The live configuring page now has the section "Backfilling History on Startup". It states the flag, v25.1.0, the default false, the synchronous order, the 120960-ledger target, the coverage limits, the SERVE_LEDGERS_FROM_DATASTORE prerequisite, and the exact startup error. The sample config contains "# BACKFILL = false" and "# SERVE_LEDGERS_FROM_DATASTORE = false". Docs search for "RPC BACKFILL startup history" returns the new section first. The narrowed 2026-07-27 scope no longer reproduces
   - the PR body asks maintainers to keep issue #2602 open for the startup-behavior wording, and #2602 is open on 2026-09-21. sd-053 holds the two verified residuals. This record retires through the resolver after the #2602 verification comment is posted; see .agents/rounds/2026-09-21-improvements-followup.md
+  - status moved to fixed-upstream on 2026-09-21 for the narrowed 2026-07-27 scope; the golden caution in eval/qa/corpus/battery/tooling-infra/q-ti-self-host-retention-backfill.json now names the 2026-09-14 fix date
   - independent review 2026-09-21, Sol high (gpt-5.6-sol) plus a second author-side pass: narrowed scope FIXED-AND-DEPLOYED, full recommendation PARTIALLY-FIXED; every live BACKFILL claim matches stellar-rpc v28.0.1 options.go
 recurrences:
   - date: 2026-08-11
