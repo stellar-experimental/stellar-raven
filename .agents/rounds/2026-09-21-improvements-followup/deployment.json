@@ -1,0 +1,15 @@
+{
+  "id": "80d232f5-9139-4df5-9929-aac1a8b9a673",
+  "created_on": "2026-09-21T17:09:47.21443Z",
+  "versions": [
+    {
+      "version_id": "5e7c88fe-5774-4c92-bdb2-46515ab8ea28",
+      "percentage": 100
+    }
+  ],
+  "commit": "72e4341525822512789232c8fa7637464cd09ddd",
+  "previousVersion": "4766dcd0-b28d-42e6-8bca-921ba69d29fd",
+  "previousCommit": "c44737e98662cc93a6fadce04d380b121ae49b48",
+  "sourceRevisionObserved": false,
+  "note": "The deploy command supplied the source revision through --define. The connector does not expose initialization metadata. The served operation signatures and results prove that PRs #173 and #174 are live."
+}
