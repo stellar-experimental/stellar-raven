@@ -12,6 +12,19 @@ The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maint
 
 ## Adapters
 
+### Apply the documented `hitsPerPage` default on the three stellarDocs operations that pass it through
+
+Found on 2026-09-21 by validating every stellarDocs operation against live responses (531 calls, 3,634
+hits, no schema violation). `search_docs`, `search_doc_titles`, and `search_meeting_notes` map
+`hitsPerPage` straight to Algolia and document `default: 5`. When the caller omits it, the adapter sends no
+value and the index default applies, so the call returns 20 hits. The eight over-fetching operations are
+not affected; they slice to the documented default. Impact in 1,373 logged external-harness calls is low:
+agents omitted `hitsPerPage` in 2 of 1,187 `search_docs` calls, 32 of 113 `search_doc_titles` calls, and 0
+of 73 `search_meeting_notes` calls, never together with `includeContent: true`.
+
+Done when: the adapter sends the documented default, or the schema states the real default, and a test
+pins the behavior. Either choice changes what an agent sees, so measure it before shipping.
+
 ### Fetch stellarDocs `content` only for the hits that are returned
 
 Found on 2026-09-19 while wiring `includeContent` (`rounds/2026-09-19-stellardocs-include-content.md`).

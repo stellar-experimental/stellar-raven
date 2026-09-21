@@ -823,7 +823,7 @@ describe("stellarDocs adapter", () => {
       content: "Meeting notes section text.",
       _snippetResult: { content: { value: "Meeting **notes**" } }
     };
-    const { fetchImpl } = stubFetch(JSON.stringify({ hits: [hit], nbHits: 1, page: 0, nbPages: 1, hitsPerPage: 100 }), 200);
+    const { fetchImpl } = algoliaStub(JSON.stringify({ hits: [hit], nbHits: 1, page: 0, nbPages: 1, hitsPerPage: 100 }));
     const r = await callStellarDocs(op, { query: "notes", category: "meetings", includeContent: true }, docsEnv, fetchImpl);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
@@ -858,13 +858,7 @@ describe("stellarDocs adapter", () => {
       const hasCategory = "category" in ((op.inputSchema as { properties?: object } | undefined)?.properties ?? {});
       const hasContentFlag = "includeContent" in ((op.inputSchema as { properties?: object } | undefined)?.properties ?? {});
       const args = { query: "section", ...(hasCategory ? { category: "build" } : {}), ...(hasContentFlag ? { includeContent: true } : {}) };
-      // Algolia returns only the attributes a request names, so the stub does too.
-      const fetchImpl: FetchLike = async (_url, init) => {
-        const params = JSON.parse(String(init?.body)) as { attributesToRetrieve?: string[] };
-        const parsed = JSON.parse(body) as { hits: Record<string, unknown>[] };
-        if (!params.attributesToRetrieve?.includes("content")) for (const hit of parsed.hits) delete hit.content;
-        return new Response(JSON.stringify(parsed), { status: 200, headers: { "content-type": "application/json" } });
-      };
+      const { fetchImpl } = algoliaStub(body);
       const r = await callStellarDocs(op, args, docsEnv, fetchImpl);
       expect(r.ok).toBe(true);
       if (!r.ok) return;
