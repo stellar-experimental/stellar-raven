@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "8914bbfdd1996ffb57d87abc1849fca0a288fc45e61f68a0bc5362fbd3a19f93",
+  "corpusContentSha256": "e601201e44d87a02d7bda3940179e08d184745801b171425c98676eab0bf93ae",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -52206,7 +52206,7 @@
           "Do NOT call 518400 the Horizon executable default or expect reingested rows outside a nonzero trailing window to remain.",
           "Do NOT conflate RPC BACKFILL, Horizon reingestion, Core catchup, schema migration/state rebuild, Galexie export or provider policy, and do not gate on a fixed GB/day figure."
         ],
-        "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is conflicting official recommendation/default prose, not the executable default. RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nAccurately quoting the official Stellar documentation on the old 24-hour/seven-day RPC retention wording, the 518400 Horizon default, or retention without the RPC BACKFILL flag is not a wrong claim while cached or older copies still show the first two values fixed on 2026-07-27 by sd-023 and sd-028 or sd-029 stands for the last omission; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is conflicting official recommendation/default prose, not the executable default. RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nAccurately quoting the official Stellar documentation on the old 24-hour/seven-day RPC retention wording, the 518400 Horizon default, or retention without the RPC BACKFILL flag is not a wrong claim while cached or older copies still show the first two values fixed on 2026-07-27 by sd-023 and sd-028 or the flag omission fixed on 2026-09-14 by sd-029; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
       },
       "tags": {
         "category": "tooling-infra",
@@ -52332,9 +52332,14 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-21",
+          "by": "improvements follow-up 2026-09-21 (.agents/rounds/2026-09-21-improvements-followup.md; Sol high gate review)",
           "evidence": [
+            "Caution expiry 2026-09-21: stellar-docs PR https://github.com/stellar/stellar-docs/pull/2789 merged as 9d71821f8405c262dec974da53da834604fd63ca on 2026-09-14. The grader caution now names that fix date for the RPC BACKFILL flag omission; golden truth unchanged.",
+            "Live re-check 2026-09-21T16:33:42Z: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring — the section Backfilling History on Startup states the flag, v25.1.0, the false default, the synchronous order, the 120960 target, and the SERVE_LEDGERS_FROM_DATASTORE prerequisite; the sample config lists both flags.",
+            "Live re-check 2026-09-21: https://github.com/stellar/stellar-rpc/blob/v28.0.1/cmd/stellar-rpc/internal/config/options.go — v28.0.1 retained 120960, false datastore serving, and false BACKFILL defaults, so the v27.1.1 golden facts still hold.",
+            "Improvement findings read 2026-09-21: improvements/resolved.json entry sd-029 and its successor improvements/stellar-docs/sd-053-rpc-backfill-fresh-start-and-gap-check.md. The successor covers a Docs omission only and needs no grader caution.",
+            "Sibling sweep 2026-09-21: grep sd-029|BACKFILL flag under eval/qa/corpus/battery → q-ti-self-host-retention-backfill only; no contradiction",
             "Solo scratchpad 575, GT-54 primary process 3383 and pre-read-locked blind process 3386, independently reviewed 2026-07-11; the blind matrix was sealed before primary read and replaced the primary's cautious no-backfill treatment with v27.1.1 source/test evidence.",
             "Blind KV gt54/blind-lock/process-3386 records the ten-case seal at 2026-07-11T06:06:25.716Z, primaryReadAt 2026-07-11T06:13:03.599Z, and the retention amendment as an exact final action.",
             "Sibling sweep checked q-ti-run-tune-own-horizon, q-ti-self-host-core-rpc-full-history, q-infra-rpc-event-retention, q-ti-historical-events-beyond-retention, and historical-balance cases; the shared rule is method-specific retention and getLedgers-only direct datastore fallback.",
