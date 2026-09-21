@@ -11,6 +11,8 @@ evidence:
   - live Algolia recheck 2026-07-14: SLP-0004 and SLP-0006 queries route to the SEP overview rather than a canonical SLP family page
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-protocol/issues/1981
   - 2026-09-04 issue state: #1981 remains open; its only comment is the 2026-08-14 github-actions stale notice, not maintainer activity
+  - 2026-09-21 source check at stellar-protocol 265d64edc87627707941a31bd12798b7fdeb47d1 still reproduced the defect; both README SHA-256 values equal the 2026-09-04 values. Issue #1981 closed as not_planned on 2026-09-14 by the stale bot, with no maintainer decision. The owner decided not to reopen it
+  - author-owned fix opened and read back 2026-09-21: https://github.com/stellar/stellar-protocol/pull/2021 adds a List of Proposals table to limits/README.md and an SLP mention to the root README (17 added lines, 0 removed; all four checks pass)
 recurrences:
   - date: 2026-08-11
     evidence: live stellar-protocol recheck — README still names only CAPs and SEPs, limits/README.md still has no SLP index, and limits still contains slp-0001.md through slp-0006.md. Docs search still returns SEP material for SLP-0004/SLP-0006. Issue #1981 remains open without comments or maintainer activity.

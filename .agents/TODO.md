@@ -68,21 +68,20 @@ Use `.agents/rounds/2026-09-16-maintenance-execution.md` and
 
 Done when: each finding records the resulting live state, and any fixed finding completes the resolver gates.
 
-### Decide on an SLP index pull request for stale-bot-closed `sd-037`
+### Re-check `sd-037` after stellar-protocol PR #2021 receives a maintainer decision
 
 Issue https://github.com/stellar/stellar-protocol/issues/1981 closed as `NOT_PLANNED` on 2026-09-14.
-The September 14 source check still reproduces the missing proposal index.
-The closure followed a stale-bot warning, not a maintainer scope decision.
-Keep the finding reported upstream. Do not post a keep-alive comment.
-Owner decision 2026-09-21: do not reopen #1981. No maintainer has engaged since 2026-07-14, and the
-stale workflow closes any quiet issue after 60 days. A bare reopen is a keep-alive action.
-The remaining option is a small pull request to `stellar/stellar-protocol` that adds the SLP index.
-The 2026-09-21 source check at `265d64edc87627707941a31bd12798b7fdeb47d1` still reproduces it.
-The root README and `limits/README.md` SHA-256 values equal the 2026-09-04 values in the finding.
-Evidence: `.agents/rounds/2026-09-14-truth-maintenance.md` and
-`.agents/rounds/2026-09-21-improvements-followup.md`.
+The stale bot closed it. No maintainer made a scope decision. The owner decided not to reopen it.
+The author-owned fix is https://github.com/stellar/stellar-protocol/pull/2021, opened on 2026-09-21.
+It adds the SLP list to `limits/README.md` and an SLP mention to the root README.
+The PR body offers to drop the table if the maintainers do not want to maintain it.
 
-Done when: the owner approves or declines that pull request, and the finding records the result.
+At the next improvements round, read the PR state and any review. Respond to requested changes.
+The stale workflow marks a quiet PR after 30 days and closes it 30 days later.
+Do not post a keep-alive comment. If the PR closes unmerged, record the reason and keep the finding.
+If it merges, re-run the two README source checks before changing the finding.
+
+Done when: the finding records the merged or declined result, and a fixed finding completes the resolver gates.
 
 ## Recovery
 
