@@ -16,8 +16,9 @@ The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maint
 
 Found on 2026-09-19 while wiring `includeContent` (`rounds/2026-09-19-stellardocs-include-content.md`).
 The eight client-filtered stellarDocs operations over-fetch 100 hits and keep at most 20. With
-`includeContent: true` the adapter now retrieves `content` for all 100. Live latency did not change in a
-nine-operation probe, so this is an upstream payload cost, not a correctness defect. A two-pass design
+`includeContent: true` the adapter now retrieves `content` for all 100. Measured on 2026-09-21 over 17 live
+queries: upstream response median 93 KB without `content` and 145 KB with it (largest 456 KB); adapter
+latency unchanged (median 94 ms to 93 ms). This is an upstream payload cost, not a correctness defect. A two-pass design
 (filter without `content`, then fetch `content` for the kept hits) removes the waste.
 
 Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
