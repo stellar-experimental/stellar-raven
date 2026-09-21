@@ -37,7 +37,11 @@ the nine unwired operations; 430 runs (37%) were affected.
   One more test pins the meetings path to the requested hit count; it fails without the adapter change.
 
 Design note: the eight client-filtered operations over-fetch 100 hits, so `includeContent: true` now
-retrieves `content` for 100 hits and returns at most the caller's `hitsPerPage` (maximum 20). Live latency was unchanged in a nine-operation
+retrieves `content` for 100 hits and returns at most the caller's `hitsPerPage` (maximum 20).
+Measured on 2026-09-21 with 17 live queries across the eight operations (`hitsPerPage: 5`): the upstream
+response is already a median of 93 KB without `content`, because the over-fetch carries 100 highlighted
+records. With `content` the median is 145 KB (+56%) and the largest was 456 KB. Adapter latency did not
+move (median 94 ms to 93 ms, maximum 149 ms). The returned payload grew from 1 to 3 KB to 1 to 15 KB. Live latency was unchanged in a nine-operation
 probe (about 90 to 600 ms on both builds, same hits in the same order). A two-pass design (filter
 first, then fetch `content` for the kept hits) would cut the upstream payload; it is not needed for
 correctness and is recorded in `.agents/TODO.md`.
@@ -72,6 +76,12 @@ unchanged. This is a byte-change refresh, not a movement of any routing number.
   answer-score tests; the rise in array-shape script errors is stated as a measured harm on a
   deterministic metric; the guard-set losses are not attributed away; the meetings test also asserts
   `content`; the result-shape defect is recorded in `.agents/TODO.md`.
+
+- Automated pull-request review (Copilot, 2026-09-19), four comments. Reconciled: the meetings-path test
+  now uses a stub that returns only requested attributes, and it fails when the mapping is removed; the
+  test comment describes current behavior; the payload concern is answered by the measurement in the
+  design note and stays in `.agents/TODO.md`; the result-shape comment is the subject of the stacked pull
+  request.
 
 ## End-to-end check (external harness; not this repository's instrument)
 
