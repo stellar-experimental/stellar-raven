@@ -167,3 +167,25 @@ Replace `<commit>` with that commit. Read the comment back from GitHub before re
 - References reconciled: the intake override is removed, `INDEX.md` is regenerated, and the golden case keeps its
   `rootCause` path by the `sd-023` and `sd-028` precedent. Dated audits and round ledgers stay as history.
 - `sd-037` decision: no reopen of stellar-protocol #1981. The reason is in `.agents/TODO.md`.
+
+## Release — 2026-09-21
+
+The owner authorized the merge and the deployment. This is the first deployment since `c44737e9` on 2026-09-17.
+It ships PRs #173 and #174. PRs #175 to #177 change records only.
+
+- PR #177 merged as `72e4341525822512789232c8fa7637464cd09ddd`. Preflight: clean tree and `HEAD == origin/main`.
+- `npm run typecheck`: exit 0. `npm test`: 120 files, 2185 passed, 4 skipped. `npm run test:smoke`: 94 passed.
+  `npm run build`: dry run completed.
+- `npx wrangler deploy --define __RAVEN_SOURCE_REVISION__:"72e43415…"` with the `sdf` profile.
+  Version `5e7c88fe-5774-4c92-bdb2-46515ab8ea28`, deployment `80d232f5-9139-4df5-9929-aac1a8b9a673`,
+  100% traffic at `2026-09-21T17:09:47.21443Z`. Record: [deployment.json](2026-09-21-improvements-followup/deployment.json).
+- Public reads after the deployment: `/` 200, `/playground` 200, unauthenticated `GET` and `POST /mcp` 401.
+  `/health/skills`: `ok: true`, 64 checked, `checkedAt` `2026-09-21T17:08:09.753Z`. That canary ran before the
+  deployment, so it is not a post-deployment check.
+- Authenticated connector reads after the deployment:
+  - `codemode.describe("stellarDocs.search_docs")` shows the output schema and the "`data` itself is not an array" note (#174).
+  - `stellarDocs.search_docs({ includeContent: true })` returned an object with `hits`, `nbHits`, `nbPages`, `page`.
+    The first hit had 875 characters of `content` (#173).
+  - `stellarDocs.search_docs_in_category({ category: "meetings", hitsPerPage: 3 })` returned 3 hits (#173).
+  - `scout.getRwaAssets` is not exposed and is not in search results. Issue #167 stays open.
+- Git state after the release: `main` only, no side branch, no worktree, no stash, no open pull request.
