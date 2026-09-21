@@ -651,4 +651,122 @@ describe("stellarDocs adapter", () => {
       expect(params.attributesToRetrieve).not.toContain("content");
     }
   });
+
+  // Every search op that advertises `includeContent` must honor it: the argument
+  // must reach Algolia's attributesToRetrieve, and `content` must come back only then.
+  // Algolia returns only the attributes a request names, so this stub does too. A stub
+  // that always returned `content` would pass with the mapping removed.
+  function algoliaStub(body: string): { fetchImpl: FetchLike; requests: { attributesToRetrieve?: string[]; hitsPerPage?: number }[] } {
+    const requests: { attributesToRetrieve?: string[]; hitsPerPage?: number }[] = [];
+    const fetchImpl: FetchLike = async (_url, init) => {
+      const params = JSON.parse(String(init?.body)) as { attributesToRetrieve?: string[]; hitsPerPage?: number };
+      requests.push(params);
+      const parsed = JSON.parse(body) as { hits: Record<string, unknown>[] };
+      if (!params.attributesToRetrieve?.includes("content")) for (const hit of parsed.hits) delete hit.content;
+      return new Response(JSON.stringify(parsed), { status: 200, headers: { "content-type": "application/json" } });
+    };
+    return { fetchImpl, requests };
+  }
+
+  const contentOps = catalog.entries.filter(
+    (e) =>
+      e.service === "stellarDocs" &&
+      "includeContent" in ((e.inputSchema as { properties?: object } | undefined)?.properties ?? {}) &&
+      e.id !== "stellarDocs.get_doc_page_sections"
+  );
+
+  it("finds every content-capable search op in the manifest", () => {
+    expect(contentOps.map((e) => e.id).sort()).toEqual([
+      "stellarDocs.search_anchor_sep_docs",
+      "stellarDocs.search_asset_token_docs",
+      "stellarDocs.search_docs",
+      "stellarDocs.search_docs_in_category",
+      "stellarDocs.search_meeting_notes",
+      "stellarDocs.search_protocol_concepts_docs",
+      "stellarDocs.search_rpc_horizon_data_docs",
+      "stellarDocs.search_sdk_cli_tools_docs",
+      "stellarDocs.search_soroban_contract_docs",
+      "stellarDocs.search_wallet_dapp_docs"
+    ]);
+  });
+
+  it("search_docs_in_category honors hitsPerPage on the meetings path, where the client filter is off", async () => {
+    const hits = Array.from({ length: 30 }, (_, i) => ({
+      url: `https://developers.stellar.org/meetings/2026/01/${i}#notes`,
+      url_without_anchor: `https://developers.stellar.org/meetings/2026/01/${i}`,
+      anchor: "notes",
+      type: "content",
+      hierarchy: { lvl0: "Meetings", lvl1: `Meeting ${i}` },
+      content: "Meeting notes section text.",
+      _snippetResult: { content: { value: "Meeting **notes**" } }
+    }));
+    const { fetchImpl, requests } = algoliaStub(JSON.stringify({ hits, nbHits: 30, page: 0, nbPages: 1, hitsPerPage: 100 }));
+    const op = entry("stellarDocs.search_docs_in_category");
+
+    const plain = await callStellarDocs(op, { query: "notes", category: "meetings", hitsPerPage: 3 }, docsEnv, fetchImpl);
+    expect(requests[0]?.attributesToRetrieve).not.toContain("content");
+    expect(plain.ok).toBe(true);
+    if (!plain.ok) return;
+    const plainHits = (plain.data as { hits: { content?: string }[] }).hits;
+    expect(plainHits).toHaveLength(3);
+    expect(plainHits.some((h) => "content" in h)).toBe(false);
+
+    const full = await callStellarDocs(op, { query: "notes", category: "meetings", hitsPerPage: 3, includeContent: true }, docsEnv, fetchImpl);
+    expect(requests[1]?.hitsPerPage).toBe(100);
+    expect(requests[1]?.attributesToRetrieve).toContain("content");
+    expect(full.ok).toBe(true);
+    if (!full.ok) return;
+    const meetingHits = (full.data as { hits: { content?: string }[] }).hits;
+    expect(meetingHits).toHaveLength(3);
+    expect(meetingHits.every((h) => h.content === "Meeting notes section text.")).toBe(true);
+  });
+
+  for (const op of contentOps) {
+    it(`${op.id} retrieves and returns section content only when includeContent is true`, async () => {
+      const mapping = (op.transport as { algolia?: { clientFilter?: { prefixesAnyOf?: string[] } } }).algolia;
+      const prefix = (mapping?.clientFilter?.prefixesAnyOf?.[0] ?? "https://developers.stellar.org/docs/build").replace(
+        "{category}",
+        "build"
+      );
+      const page = `${prefix.replace(/\/$/, "")}/example-page`;
+      const body = JSON.stringify({
+        hits: [
+          {
+            url: `${page}#section`,
+            url_without_anchor: page,
+            anchor: "section",
+            type: "content",
+            hierarchy: { lvl0: "Docs", lvl1: "Example page" },
+            content: "Full section text that a 20-word snippet cannot carry.",
+            _snippetResult: { content: { value: "Full **section** text" } }
+          }
+        ],
+        nbHits: 1,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 100
+      });
+      const args = op.id === "stellarDocs.search_docs_in_category" ? { query: "section", category: "build" } : { query: "section" };
+
+      const { fetchImpl, requests } = algoliaStub(body);
+
+      const plain = await callStellarDocs(op, args, docsEnv, fetchImpl);
+      expect(requests[0]?.attributesToRetrieve).not.toContain("content");
+      expect(plain.ok).toBe(true);
+      if (!plain.ok) return;
+      const plainHits = (plain.data as { hits: { snippet?: string; content?: string }[] }).hits;
+      expect(plainHits).toHaveLength(1);
+      expect(plainHits[0]?.snippet).toBe("Full **section** text");
+      expect(plainHits[0]).not.toHaveProperty("content");
+
+      const full = await callStellarDocs(op, { ...args, includeContent: true }, docsEnv, fetchImpl);
+      expect(requests[1]?.attributesToRetrieve).toContain("content");
+      expect(full.ok).toBe(true);
+      if (!full.ok) return;
+      const hits = (full.data as { hits: { snippet?: string; content?: string }[] }).hits;
+      expect(hits).toHaveLength(1);
+      expect(hits[0]?.snippet).toBe("Full **section** text");
+      expect(hits[0]?.content).toBe("Full section text that a 20-word snippet cannot carry.");
+    });
+  }
 });

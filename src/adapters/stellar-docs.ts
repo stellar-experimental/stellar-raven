@@ -490,7 +490,12 @@ export async function callStellarDocs(
       });
       clientFiltered = true;
     }
-    if (clientFiltered) hits = hits.slice(0, requestedHits);
+    // An op that pins Algolia's hitsPerPage to over-fetch still owes the caller its own
+    // hitsPerPage, even when a conditional disabled the client filter
+    // (search_docs_in_category with category=meetings returned all 100 over-fetched hits).
+    const overFetches =
+      typeof mapping.fixedParams?.hitsPerPage === "number" && !("hitsPerPage" in (mapping.paramMap ?? {}));
+    if (clientFiltered || overFetches) hits = hits.slice(0, requestedHits);
 
     if (hits.length === 0) {
       return errResult({
