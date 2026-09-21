@@ -260,7 +260,7 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
-          "nbPages": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable." },
           "page": { "type": "integer", "minimum": 0, "description": "Always 0: this operation takes no `page` argument." }
         }
       },
@@ -906,7 +906,7 @@
             }
           },
           "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
-          "nbPages": { "type": "integer", "minimum": 0 },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable." },
           "page": { "type": "integer", "minimum": 0, "description": "Always 0: this operation takes no `page` argument." }
         }
       },

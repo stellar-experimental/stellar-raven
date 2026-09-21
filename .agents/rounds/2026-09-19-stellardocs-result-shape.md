@@ -1,6 +1,6 @@
 # stellarDocs result shape — 2026-09-19
 
-Status: fix implemented and gated. End-to-end check with an external harness in progress.
+Status: fix implemented, gated, and checked end to end with an external harness. Reviews reconciled.
 
 ## Authority and scope
 
@@ -62,7 +62,40 @@ accepted total or threshold moved.
   scored `returns` line stays terse to keep routing neutral; the unscored schema and its rendered type
   carry the clear statement ("The hits live under `data.hits`; `data` itself is not an array.").
 
+- Post-result adversarial review of the results, the code, and the pull request text: Grok 4.6, high
+  effort. Verdict OPEN-PR-WITH-FIXES. It reproduced the primary result from the raw logs, verified the
+  freeze hashes and the hidden assignment, and searched every error text of the fixed arm for the same bug
+  in another wording (none). Reconciled: the docs-only error count is reported next to the primary; the
+  guard-set lean is stated with no cause claim; judge agent counts are exact.
+- Second post-result adversarial review: Kimi K3, high effort. Verdict OPEN-PR-WITH-FIXES. It recomputed
+  every number from the raw logs and the judge files and confirmed that the fixed arm has no script that
+  calls an array method on `.data`, no rebound-variable form, and no `.data.length` or `.data[i]` misuse.
+  Reconciled: `nbPages` descriptions on `search_doc_titles` and `search_meeting_notes` (routing results
+  unchanged); two-sided p values next to one-sided ones; the rule-break scan is reported.
+
+## End-to-end check (external harness; not this repository's instrument)
+
+A pre-registered A/B: `a9b2d537` (the `includeContent` fix) against `f3cc67b1` (this branch), 275
+QA-battery questions (215 stellarDocs-service, 60 guard), one Sonnet agent per question and arm, two judges
+with hidden arm labels (Opus and Sonnet, rubric v2.10, panel = the worse verdict), 550 runs. No paid
+instrument of this repository ran. The numbers are not comparable with any stored QA baseline.
+
+- Primary, from the logs: docs runs that lost a script to an array-shape error fell from 42 of 215 to 0 of
+  215 (exact sign test over questions, p = 4.5e-13). 36 of the 42 were in scripts that call only
+  stellarDocs operations; the other 6 also threw on a stellarDocs result. All script errors: 53 to 19.
+  Scripts that call an array method on `.data`: 55 to 0. Scripts that read `.data.hits`: 257 to 366.
+- Answer scores, docs set: 0.977 to 1.037 (41 better, 35 worse, p = 0.57, 95% interval -0.02 to +0.15).
+  No material change. This work claims no accuracy gain.
+- Three pre-registered one-sided harm tests on answer scores: docs p = 0.79, guard p = 0.25, all 275
+  p = 0.62. None fires. The design sees a loss of about 0.10 on the docs set and about 0.20 on the guard set.
+- Cost: `search` characters per run +36% on the docs set (34,619 to 47,222) and +32% on the guard set.
+- Open risk: the guard set leaned against this branch (-0.067, 8 better and 12 worse, not significant),
+  as it did for the `includeContent` fix with a different treatment. The cause is not known.
+- Deviation: the judge run stopped at an account usage limit part way and resumed two days later from its
+  cache. Judges see no arm labels and no dates.
+
 ## Gates
 
-`npm run typecheck`, `npm test`, `npm run test:smoke`, `npm run build`, `npm run eval:selftest`,
-`npm run secrets:scan -- --tree`, and `npm run eval:routing -- --gate`: see the pull request.
+`npm run typecheck`, `npm test` (2,185 passed, 4 skipped), `npm run test:smoke` (94 passed),
+`npm run build`, `npm run eval:selftest`, `npm run secrets:scan -- --tree`, and
+`npm run eval:routing -- --gate` pass. Generated artifacts are in sync after the CI regeneration sequence.

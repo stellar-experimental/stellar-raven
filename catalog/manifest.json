@@ -25940,6 +25940,7 @@
             "type": "integer"
           },
           "nbPages": {
+            "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable.",
             "minimum": 0,
             "type": "integer"
           },
@@ -26614,6 +26615,7 @@
             "type": "integer"
           },
           "nbPages": {
+            "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable.",
             "minimum": 0,
             "type": "integer"
           },
