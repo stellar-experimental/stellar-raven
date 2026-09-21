@@ -75,13 +75,14 @@ unchanged. This is a byte-change refresh, not a movement of any routing number.
   number from the per-run data and the logs. Reconciled: "no harm" is scoped to the pre-registered
   answer-score tests; the rise in array-shape script errors is stated as a measured harm on a
   deterministic metric; the guard-set losses are not attributed away; the meetings test also asserts
-  `content`; the result-shape defect is recorded in `.agents/TODO.md`.
+  `content`; the result-shape defect was recorded for follow-up and is fixed by
+  `2026-09-19-stellardocs-result-shape.md`.
 
 - Automated pull-request review (Copilot, 2026-09-19), four comments. Reconciled: the meetings-path test
   now uses a stub that returns only requested attributes, and it fails when the mapping is removed; the
   test comment describes current behavior; the payload concern is answered by the measurement in the
-  design note and stays in `.agents/TODO.md`; the result-shape comment is the subject of the stacked pull
-  request.
+  design note and stays in `.agents/TODO.md`; the result-shape comment is fixed by the stacked pull
+  request (`2026-09-19-stellardocs-result-shape.md`).
 
 ## End-to-end check (external harness; not this repository's instrument)
 
@@ -99,6 +100,7 @@ numbers are not comparable with any stored QA baseline.
   `get_doc_page_sections` calls 235 to 104; `execute` calls per question 2.38 to 2.14; median time 35.2 s
   to 31.9 s; truncated runs 21 to 23.
 - Measured harm: script errors where the agent treats the result as an array rose from 16 of 512
-  `execute` calls to 33 of 461. See the result-shape item in `.agents/TODO.md`.
+  `execute` calls to 33 of 461. `2026-09-19-stellardocs-result-shape.md` fixes the cause and measures
+  42 such runs falling to 0.
 - The meetings path was not exercised on the fixed build. One control run called it and got 32 hits
   for `hitsPerPage: 10`.

@@ -7,7 +7,9 @@ Status: fix implemented, gated, and checked end to end with an external harness.
 The user asked for the second defect from the `includeContent` round
 (`2026-09-19-stellardocs-include-content.md`) to be fixed, tested, and opened as a second pull request if
 it holds. This branch stacks on `fix/stellardocs-include-content`. Scope is catalog text and schemas for
-the stellarDocs search operations. No adapter, scorer, instruction, or tool-description change. No paid
+the stellarDocs search operations: their `returns` text, which the catalog builder appends to each
+operation description, and their output schemas. No adapter, scorer, server-instruction, or MCP
+tool-description change. No paid
 instrument of this repository ran, and no repository evaluation budget was spent.
 
 ## Defect
@@ -47,6 +49,10 @@ from `search_docs_in_category` lowers that operation's score by about 10 points 
 extended-lane cases (`q-pc-address-types-strkey`, `q-ti-parse-raw-ledger-data`) reorder stellarDocs
 operations among themselves at ranks 2 to 4. No graded flag changes in any lane, and every accepted total
 is unchanged (legacy 219/298/326 of 338; skills 17/23/23; holdout 12/26/29, 10 forbidden captures).
+
+Tested builds and later commits: the end-to-end check ran `a9b2d537` against `f3cc67b1`. Commits after
+`f3cc67b1` add `nbPages` descriptions on two operations (routing unchanged in all 544 cases), tests, ledger
+text, and TODO items. None changes `src/`.
 
 ## Decision: gate fingerprint refresh
 

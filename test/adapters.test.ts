@@ -773,7 +773,7 @@ describe("stellarDocs adapter", () => {
   // The documented result shape must be the shape the adapter returns. The search ops used to say
   // "Returns: Array of hits" with no outputSchema, so callers wrote `r.data.map(...)` and the script
   // failed with "r.data.map is not a function".
-  type Shape = { type?: string; required?: string[]; properties?: Record<string, Shape>; items?: Shape; additionalProperties?: boolean };
+  type Shape = { type?: string; format?: string; minimum?: number; required?: string[]; properties?: Record<string, Shape>; items?: Shape; additionalProperties?: boolean };
   function shapeErrors(value: unknown, schema: Shape, path = "data"): string[] {
     if (schema.type === "array") {
       if (!Array.isArray(value)) return [`${path} is not an array`];
@@ -791,7 +791,11 @@ describe("stellarDocs adapter", () => {
       }
       return errors;
     }
-    if (schema.type === "integer") return Number.isInteger(value) ? [] : [`${path} is not an integer`];
+    if (schema.type === "integer") {
+      if (!Number.isInteger(value)) return [`${path} is not an integer`];
+      return schema.minimum !== undefined && (value as number) < schema.minimum ? [`${path} is below ${schema.minimum}`] : [];
+    }
+    if (schema.type === "string" && schema.format === "uri" && typeof value === "string" && !/^https?:\/\/\S+$/.test(value)) return [`${path} is not a uri`];
     if (schema.type === "string" || schema.type === "boolean") return typeof value === schema.type ? [] : [`${path} is not a ${schema.type}`];
     return [`${path} has a schema type this test cannot check: ${String(schema.type)}`];
   }
@@ -867,6 +871,8 @@ describe("stellarDocs adapter", () => {
       expect(Array.isArray(wire)).toBe(false);
       expect(shapeErrors(wire, op.outputSchema as Shape)).toEqual([]);
       expect(wire.hits).toHaveLength(2);
+      // Optional in the schema because they come straight from the upstream response; the adapter still sets them.
+      expect(wire).toMatchObject({ nbHits: 2, nbPages: 1, page: 0 });
       const filtersOnClient = Boolean(mapping?.clientFilter);
       expect("clientFiltered" in wire, op.id).toBe(filtersOnClient);
       expect("clientFiltered" in ((op.outputSchema as Shape).properties ?? {}), op.id).toBe(filtersOnClient);
