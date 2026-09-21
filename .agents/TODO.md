@@ -68,42 +68,21 @@ Use `.agents/rounds/2026-09-16-maintenance-execution.md` and
 
 Done when: each finding records the resulting live state, and any fixed finding completes the resolver gates.
 
-### Retire `sd-029` through its successor `sd-053`
-
-PR https://github.com/stellar/stellar-docs/pull/2789 merged on 2026-09-14 and is deployed.
-The 2026-09-21 live check and the Sol high review found the narrowed `sd-029` scope fixed.
-Issue https://github.com/stellar/stellar-docs/issues/2602 stays open for the startup-behavior wording.
-`sd-053` restates the two verified residuals with `stellar-rpc` `v28.0.1` source evidence.
-
-Do these steps in order:
-
-1. Merge the branch that adds `sd-053`, so its public source link resolves.
-2. Post one verification comment on #2602. Use the draft in
-   `.agents/rounds/2026-09-21-improvements-followup.md`. Read the comment back from GitHub.
-3. Run `npm run improvements:resolve` for `sd-029` with `--resolving-ref` PR #2789, first as a dry run.
-4. Update the grader caution in `eval/qa/corpus/battery/tooling-infra/q-ti-self-host-retention-backfill.json`
-   through the `golden-truth` workflow. The live Docs now state the `BACKFILL` flag, so the
-   "sd-029 stands for the last omission" exception is stale. Point the `rootCause` at the
-   `improvements/resolved.json` receipt and at `sd-053`. Regenerate `eval/qa/cases.json` by script.
-
-Do not post a second comment on #2602 for `sd-053`. The verification comment carries its link.
-
-Done when: `sd-029` has a resolved receipt, #2602 carries one read-back verification comment,
-the golden caution matches the live page, and the corpus gates pass.
-
-### Decide the follow-up for stale-bot-closed `sd-037`
+### Decide on an SLP index pull request for stale-bot-closed `sd-037`
 
 Issue https://github.com/stellar/stellar-protocol/issues/1981 closed as `NOT_PLANNED` on 2026-09-14.
 The September 14 source check still reproduces the missing proposal index.
 The closure followed a stale-bot warning, not a maintainer scope decision.
 Keep the finding reported upstream. Do not post a keep-alive comment.
-At the next owner review, decide whether to reopen the issue or propose a successor.
+Owner decision 2026-09-21: do not reopen #1981. No maintainer has engaged since 2026-07-14, and the
+stale workflow closes any quiet issue after 60 days. A bare reopen is a keep-alive action.
+The remaining option is a small pull request to `stellar/stellar-protocol` that adds the SLP index.
 The 2026-09-21 source check at `265d64edc87627707941a31bd12798b7fdeb47d1` still reproduces it.
 The root README and `limits/README.md` SHA-256 values equal the 2026-09-04 values in the finding.
 Evidence: `.agents/rounds/2026-09-14-truth-maintenance.md` and
 `.agents/rounds/2026-09-21-improvements-followup.md`.
 
-Done when: an owner decides the follow-up based on the original trigger and current upstream scope.
+Done when: the owner approves or declines that pull request, and the finding records the result.
 
 ## Recovery
 

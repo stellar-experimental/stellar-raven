@@ -138,10 +138,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "The current Relayer page says LaunchTube is discontinued while the published Guestbook passkey prerequisites still require a LaunchTube JWT without a legacy/migration warning."
     },
-    "sd-029": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The RPC configuring page is developers.stellar.org content. PR #2789 fixed the narrowed scope on 2026-09-14; sd-053 holds the residuals until this record retires."
-    },
     "sd-032": {
       "repo": "stellar/stellar-docs",
       "reason": "Current Flutter wallet tutorial dependency ranges are stale and can conflict with the current wallet SDK dependency graph."

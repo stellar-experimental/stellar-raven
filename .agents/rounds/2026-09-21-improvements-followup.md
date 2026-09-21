@@ -152,3 +152,18 @@ Replace `<commit>` with that commit. Read the comment back from GitHub before re
 - Remaining risk: the work is uncommitted on branch `chore/improvements-followup-2026-09-21`. The #2602 comment, the
   resolver run, and the golden caution update depend on a merge to `main`.
 - Owner decision still open: `sd-037` (reopen #1981 or file a successor).
+
+## Closeout — 2026-09-21, after owner approval to commit, merge, and deploy
+
+- PR #175 merged as `c53d6f7c`. PR #176 merged as `302399f780b7bea83d057c3d00401efc9e0efdb8`. It set `sd-029` to
+  `fixed-upstream` and landed the golden caution update for `q-ti-self-host-retention-backfill`.
+  `npm run eval:qa:compile` changed exactly one case. `npm run eval:qa:lint -- --since origin/main`: 0 errors.
+  Cluster-018 reopened on the hash change and was re-swept as consistent through `--review`.
+- One upstream comment posted and read back: https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5764382567
+  (author `kalepail`, 2026-09-21T17:04:28Z). It carries the live result, the immutable `sd-029` snapshot, and the two
+  `sd-053` statements with source links. The draft above is superseded by that posted text.
+- `npm run improvements:resolve` retired `sd-029` with source commit `302399f7`. The receipt title was set by hand to
+  the original finding sentence, because the generator read the dated state note.
+- References reconciled: the intake override is removed, `INDEX.md` is regenerated, and the golden case keeps its
+  `rootCause` path by the `sd-023` and `sd-028` precedent. Dated audits and round ledgers stay as history.
+- `sd-037` decision: no reopen of stellar-protocol #1981. The reason is in `.agents/TODO.md`.
