@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-09-17",
+  "updated": "2026-09-21",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -140,7 +140,7 @@
     },
     "sd-029": {
       "repo": "stellar/stellar-docs",
-      "reason": "Current RPC operator docs omit the shipped v25.1+ BACKFILL startup path, prerequisites, and getLedgers-only direct datastore boundary."
+      "reason": "The RPC configuring page is developers.stellar.org content. PR #2789 fixed the narrowed scope on 2026-09-14; sd-053 holds the residuals until this record retires."
     },
     "sd-032": {
       "repo": "stellar/stellar-docs",
@@ -173,6 +173,10 @@
     "sd-052": {
       "repo": "stellar/stellar-cli",
       "reason": "The published manual is generated from Stellar CLI command descriptions. The placeholder-language correction belongs in the CLI source."
+    },
+    "sd-053": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The RPC configuring page section on BACKFILL is developers.stellar.org content owned by the docs repository."
     },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"
