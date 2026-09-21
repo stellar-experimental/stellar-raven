@@ -189,3 +189,11 @@ It ships PRs #173 and #174. PRs #175 to #177 change records only.
   - `stellarDocs.search_docs_in_category({ category: "meetings", hitsPerPage: 3 })` returned 3 hits (#173).
   - `scout.getRwaAssets` is not exposed and is not in search results. Issue #167 stays open.
 - Git state after the release: `main` only, no side branch, no worktree, no stash, no open pull request.
+
+## `sd-037` fix pull request — 2026-09-21
+
+- The owner approved an SLP index pull request in place of a reopen of #1981.
+- https://github.com/stellar/stellar-protocol/pull/2021 from `kalepail:docs/slp-index`, base `265d64edc87627707941a31bd12798b7fdeb47d1`.
+  Two files, 17 added lines, 0 removed. A script compared each table title and status with its SLP preamble: six of six match.
+- Checks: `mddiffcheck`, `lineendings`, and both Socket Security checks pass. The PR body was read back after one edit.
+- `sd-037` stays `reported-upstream`. `.agents/TODO.md` holds the re-check entry.
