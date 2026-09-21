@@ -12,6 +12,9 @@ evidence:
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-docs/issues/2602
   - scope correction 2026-07-27 accepting maintainer triage https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5035732543: data-lake-integration.mdx already documents datastore serving and the getLedgers-only boundary, so the original framing overstated the gap; the undocumented surface is the BACKFILL flag itself plus the stale configuring.mdx sample config
   - scope-narrowing reply posted and read back 2026-07-27: https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5091976539
+  - partial fix deployed, live check 2026-09-21T16:33:42Z: https://github.com/stellar/stellar-docs/pull/2789 merged as 9d71821f8405c262dec974da53da834604fd63ca on 2026-09-14. The live configuring page now has the section "Backfilling History on Startup". It states the flag, v25.1.0, the default false, the synchronous order, the 120960-ledger target, the coverage limits, the SERVE_LEDGERS_FROM_DATASTORE prerequisite, and the exact startup error. The sample config contains "# BACKFILL = false" and "# SERVE_LEDGERS_FROM_DATASTORE = false". Docs search for "RPC BACKFILL startup history" returns the new section first. The narrowed 2026-07-27 scope no longer reproduces
+  - the PR body asks maintainers to keep issue #2602 open for the startup-behavior wording, and #2602 is open on 2026-09-21. sd-053 holds the two verified residuals. This record retires through the resolver after the #2602 verification comment is posted; see .agents/rounds/2026-09-21-improvements-followup.md
+  - independent review 2026-09-21, Sol high (gpt-5.6-sol) plus a second author-side pass: narrowed scope FIXED-AND-DEPLOYED, full recommendation PARTIALLY-FIXED; every live BACKFILL claim matches stellar-rpc v28.0.1 options.go
 recurrences:
   - date: 2026-08-11
     evidence: live RPC Docs search for BACKFILL returns Hubble backfill pages, not RPC operator guidance; configuring.mdx still contains neither BACKFILL nor SERVE_LEDGERS_FROM_DATASTORE. Issue #2602 remains open; the latest maintainer activity is ElliotFriend's 2026-07-21 scope confirmation, followed by Raven's narrowing reply.
@@ -20,6 +23,10 @@ recurrences:
 ---
 
 ## Finding
+
+State on 2026-09-21: PR #2789 documents the flag and refreshes the sample config. This record is a
+retirement candidate. The remaining startup-behavior gaps are in `sd-053`. The text below is the
+original finding.
 
 Current Stellar RPC administration content does not document the shipped
 `BACKFILL` flag at all, and the `configuring.mdx` sample config predates it. Since v25.1, RPC can synchronously materialize approximately
