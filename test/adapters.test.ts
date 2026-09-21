@@ -769,4 +769,113 @@ describe("stellarDocs adapter", () => {
       expect(hits[0]?.content).toBe("Full section text that a 20-word snippet cannot carry.");
     });
   }
+
+  // The documented result shape must be the shape the adapter returns. The search ops used to say
+  // "Returns: Array of hits" with no outputSchema, so callers wrote `r.data.map(...)` and the script
+  // failed with "r.data.map is not a function".
+  type Shape = { type?: string; format?: string; minimum?: number; required?: string[]; properties?: Record<string, Shape>; items?: Shape; additionalProperties?: boolean };
+  function shapeErrors(value: unknown, schema: Shape, path = "data"): string[] {
+    if (schema.type === "array") {
+      if (!Array.isArray(value)) return [`${path} is not an array`];
+      return value.flatMap((v, i) => shapeErrors(v, schema.items ?? {}, `${path}[${i}]`));
+    }
+    if (schema.type === "object") {
+      if (value === null || typeof value !== "object" || Array.isArray(value)) return [`${path} is not an object`];
+      const obj = value as Record<string, unknown>;
+      const errors = (schema.required ?? []).filter((k) => !(k in obj)).map((k) => `${path}.${k} is missing`);
+      for (const [k, v] of Object.entries(obj)) {
+        const child = schema.properties?.[k];
+        if (!child) {
+          if (schema.additionalProperties === false) errors.push(`${path}.${k} is not documented`);
+        } else errors.push(...shapeErrors(v, child, `${path}.${k}`));
+      }
+      return errors;
+    }
+    if (schema.type === "integer") {
+      if (!Number.isInteger(value)) return [`${path} is not an integer`];
+      return schema.minimum !== undefined && (value as number) < schema.minimum ? [`${path} is below ${schema.minimum}`] : [];
+    }
+    if (schema.type === "string" && schema.format === "uri" && typeof value === "string" && !/^https?:\/\/\S+$/.test(value)) return [`${path} is not a uri`];
+    if (schema.type === "string" || schema.type === "boolean") return typeof value === schema.type ? [] : [`${path} is not a ${schema.type}`];
+    return [`${path} has a schema type this test cannot check: ${String(schema.type)}`];
+  }
+
+  const searchOps = catalog.entries.filter(
+    (e) => e.service === "stellarDocs" && e.kind === "operation" && e.id !== "stellarDocs.get_doc_page_sections"
+  );
+
+  it("documents an object result, never a bare array, on every stellarDocs search op", () => {
+    expect(searchOps).toHaveLength(11);
+    for (const op of searchOps) {
+      const schema = op.outputSchema as Shape | null;
+      expect(schema, op.id).not.toBeNull();
+      expect(schema?.type, op.id).toBe("object");
+      expect(schema?.properties?.hits?.type, op.id).toBe("array");
+      expect(op.description, op.id).not.toMatch(/Returns: Array of/);
+      expect(op.description, op.id).toContain("Returns: { hits: Array of");
+    }
+  });
+
+  it("search_docs_in_category on the meetings path still returns the documented shape, without clientFiltered", async () => {
+    const op = entry("stellarDocs.search_docs_in_category");
+    const hit = {
+      url: "https://developers.stellar.org/meetings/2026/01/15#notes",
+      url_without_anchor: "https://developers.stellar.org/meetings/2026/01/15",
+      anchor: "notes",
+      type: "content",
+      hierarchy: { lvl0: "Meetings", lvl1: "Protocol meeting" },
+      content: "Meeting notes section text.",
+      _snippetResult: { content: { value: "Meeting **notes**" } }
+    };
+    const { fetchImpl } = algoliaStub(JSON.stringify({ hits: [hit], nbHits: 1, page: 0, nbPages: 1, hitsPerPage: 100 }));
+    const r = await callStellarDocs(op, { query: "notes", category: "meetings", includeContent: true }, docsEnv, fetchImpl);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const wire = JSON.parse(JSON.stringify(r.data)) as Record<string, unknown>;
+    expect(shapeErrors(wire, op.outputSchema as Shape)).toEqual([]);
+    expect("clientFiltered" in wire).toBe(false);
+  });
+
+  for (const op of searchOps) {
+    it(`${op.id} returns exactly the shape its outputSchema documents`, async () => {
+      const mapping = (op.transport as { algolia?: { clientFilter?: { prefixesAnyOf?: string[] } } }).algolia;
+      const prefix = (mapping?.clientFilter?.prefixesAnyOf?.[0] ?? "https://developers.stellar.org/docs/build").replace("{category}", "build");
+      const page = `${prefix.replace(/\/$/, "")}/example-page`;
+      const record = (type: string, extra: Record<string, unknown>) => ({
+        url: `${page}#section`,
+        url_without_anchor: page,
+        anchor: "section",
+        type,
+        hierarchy: { lvl0: "Docs", lvl1: "Example page" },
+        ...extra
+      });
+      const body = JSON.stringify({
+        hits: [
+          record("content", { content: "Section text.", _snippetResult: { content: { value: "Section **text**" } } }),
+          record("lvl2", { content: null })
+        ],
+        nbHits: 2,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 100
+      });
+      const hasCategory = "category" in ((op.inputSchema as { properties?: object } | undefined)?.properties ?? {});
+      const hasContentFlag = "includeContent" in ((op.inputSchema as { properties?: object } | undefined)?.properties ?? {});
+      const args = { query: "section", ...(hasCategory ? { category: "build" } : {}), ...(hasContentFlag ? { includeContent: true } : {}) };
+      const { fetchImpl } = algoliaStub(body);
+      const r = await callStellarDocs(op, args, docsEnv, fetchImpl);
+      expect(r.ok).toBe(true);
+      if (!r.ok) return;
+      // Validate what crosses the sandbox boundary: the serialized payload, where `undefined` keys vanish.
+      const wire = JSON.parse(JSON.stringify(r.data)) as { hits: unknown[] };
+      expect(Array.isArray(wire)).toBe(false);
+      expect(shapeErrors(wire, op.outputSchema as Shape)).toEqual([]);
+      expect(wire.hits).toHaveLength(2);
+      // Optional in the schema because they come straight from the upstream response; the adapter still sets them.
+      expect(wire).toMatchObject({ nbHits: 2, nbPages: 1, page: 0 });
+      const filtersOnClient = Boolean(mapping?.clientFilter);
+      expect("clientFiltered" in wire, op.id).toBe(filtersOnClient);
+      expect("clientFiltered" in ((op.outputSchema as Shape).properties ?? {}), op.id).toBe(filtersOnClient);
+    });
+  }
 });

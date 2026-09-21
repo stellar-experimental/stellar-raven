@@ -177,7 +177,35 @@
           "includeMeetings": { "type": "boolean", "default": false, "description": "Also search the /meetings meeting-notes slice (drops the docs-only facet filter)." }
         }
       },
-      "returns": "Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet, content? } plus { nbHits, nbPages, page }.",
+      "returns": "{ hits: Array of hits: { url, url_without_anchor, anchor, breadcrumb (flattened hierarchy), type, snippet?, content? } } plus { nbHits, nbPages, page }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages available at the requested hitsPerPage." },
+          "page": { "type": "integer", "minimum": 0, "description": "The page returned (the `page` argument)." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query", "hitsPerPage": "hitsPerPage", "page": "page" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]] },
@@ -208,7 +236,34 @@
           "includeMeetings": { "type": "boolean", "default": false }
         }
       },
-      "returns": "Array of hits (page/heading level): { url, url_without_anchor, breadcrumb, type } plus { nbHits }.",
+      "returns": "{ hits: Array of hits (page/heading level): { url, url_without_anchor, anchor, breadcrumb, type, snippet? } } plus { nbHits }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`lvl1` to `lvl6` for a heading record; `content` for a body record matched through its headings." },
+                "breadcrumb": { "type": "string" },
+          "snippet": { "type": "string", "description": "Present when the matched record has body text." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: this operation takes no `page` argument." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query", "hitsPerPage": "hitsPerPage" },
         "fixedParams": {
@@ -244,7 +299,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? } plus counts { rawNbHits, filteredCount }.",
+      "returns": "{ hits: Array of hits limited to the category: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } } plus counts { nbHits }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category. Absent for category=meetings, which filters in the index." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -346,7 +430,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of contract-development hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -383,7 +496,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of asset/token hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -418,7 +560,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of fundamentals hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -453,7 +624,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of data/API hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -489,7 +689,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of anchor/SEP hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -525,7 +754,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of tools/SDK hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -558,7 +816,36 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of app/wallet/dapp hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Index-wide match count before any category filter." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: the operation reads one index page of 100 hits and filters it." },
+          "clientFiltered": { "type": "boolean", "description": "True when the operation kept only hits under its docs category." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:docs-default-current"]], "hitsPerPage": 100 },
@@ -594,7 +881,35 @@
           "includeContent": { "type": "boolean", "default": false, "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning)." }
         }
       },
-      "returns": "Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet, content? }.",
+      "returns": "{ hits: Array of meeting-note hits: { url, url_without_anchor, anchor, breadcrumb, type, snippet?, content? } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hits", "nbHits"],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string", "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content." },
+                "breadcrumb": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string", "description": "Present only with includeContent: true, and only on `content` records." }
+              }
+            }
+          },
+          "nbHits": { "type": "integer", "minimum": 0, "description": "Total matches in the index for this query." },
+          "nbPages": { "type": "integer", "minimum": 0, "description": "Pages of the index query at the requested hitsPerPage. This operation takes no `page` argument, so only the first page is reachable." },
+          "page": { "type": "integer", "minimum": 0, "description": "Always 0: this operation takes no `page` argument." }
+        }
+      },
       "algolia": {
         "paramMap": { "query": "query", "hitsPerPage": "hitsPerPage" },
         "fixedParams": { "facetFilters": [["docusaurus_tag:-docs-default-current"]] },

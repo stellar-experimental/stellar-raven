@@ -12,6 +12,19 @@ The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maint
 
 ## Adapters
 
+### Apply the documented `hitsPerPage` default on the three stellarDocs operations that pass it through
+
+Found on 2026-09-21 by validating every stellarDocs operation against live responses (531 calls, 3,634
+hits, no schema violation). `search_docs`, `search_doc_titles`, and `search_meeting_notes` map
+`hitsPerPage` straight to Algolia and document `default: 5`. When the caller omits it, the adapter sends no
+value and the index default applies, so the call returns 20 hits. The eight over-fetching operations are
+not affected; they slice to the documented default. Impact in 1,373 logged external-harness calls is low:
+agents omitted `hitsPerPage` in 2 of 1,187 `search_docs` calls, 32 of 113 `search_doc_titles` calls, and 0
+of 73 `search_meeting_notes` calls, never together with `includeContent: true`.
+
+Done when: the adapter sends the documented default, or the schema states the real default, and a test
+pins the behavior. Either choice changes what an agent sees, so measure it before shipping.
+
 ### Fetch stellarDocs `content` only for the hits that are returned
 
 Found on 2026-09-19 while wiring `includeContent` (`rounds/2026-09-19-stellardocs-include-content.md`).
@@ -23,19 +36,6 @@ latency unchanged (median 94 ms to 93 ms). This is an upstream payload cost, not
 
 Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
 single-pass payload is acceptable and this item is closed with that evidence.
-
-### State the real result shape of the stellarDocs search operations
-
-Found on 2026-09-19 (`rounds/2026-09-19-stellardocs-include-content.md`). The stellarDocs search
-operations say `returns: "Array of ... hits"` and carry no `outputSchema`. The result is an object:
-`{ hits, nbHits, nbPages, page, clientFiltered? }`. Agents write `r.data.map(...)` and the script fails
-with `r.data.map is not a function`, which costs one `execute` call. In 1,272 logged external-harness
-runs, 52 of 53 attributable errors of this kind came from stellarDocs operations. In the A/B for the
-`includeContent` fix, the error rate per `execute` call rose from 3.1% to 7.2% on the fixed build,
-probably because agents now read `content` from search hits instead of `get_doc_page_sections`.
-
-Done when: the `returns` text or an `outputSchema` states the object shape for every stellarDocs search
-operation, and a test pins the documented shape to what the adapter returns.
 
 ## Improvements follow-up
 
