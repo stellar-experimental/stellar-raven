@@ -1,7 +1,7 @@
 ---
 id: sk-026
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-29
 upstreamTitle: Core API skill error-documentation URLs omit the required escrow and token path groups
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - https://github.com/Trustless-Work/trustlesswork-skill/blob/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb/trustless-work-dev/skills/api/v2/core-concepts.md
   - 2026-09-29 live HTTP reads returned 404 for errors/escrow-receiver-trustline-missing and errors/token-trustline-missing. The corresponding errors/escrow/escrow-receiver-trustline-missing and errors/token/token-trustline-missing pages returned 200. Evidence is .agents/rounds/2026-09-29-truth-maintenance/trustless-work-doc-links.json.
   - Dedupe 2026-09-29 found no existing skill issue for these error-documentation links. The separate beta authentication conflict remains sk-025.
+  - upstream issue filed 2026-09-29: https://github.com/Trustless-Work/trustlesswork-skill/issues/16
 ---
 
 ## Finding

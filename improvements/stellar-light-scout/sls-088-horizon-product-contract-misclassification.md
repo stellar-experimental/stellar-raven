@@ -1,7 +1,7 @@
 ---
 id: sls-088
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-29
 upstreamTitle: Horizon API repository is marked as a deployable Soroban contract product
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - A recursive tree read at that scannedRef places all Rust Cargo.toml and .rs files under internal/integration/contracts. The IncrementContract, bulk_transfer, and constructor symbols returned by Scout belong to these integration contracts.
   - Live OpenAPI 1.9.54 defines Repo.codeVerified.isDeployableContract as the repository product, not vendored runtime or fixture crates. Its description explicitly excludes platform, SDK, and tooling repositories with such crates.
   - Dedupe 2026-09-29 found no Horizon contract-classification issue. Retired sls-046 covered the same classification error for stellar/stellar-core and remains in improvements/resolved.json.
+  - upstream issue filed 2026-09-29: https://github.com/Stellar-Light/stellarlight/issues/1739
 ---
 
 ## Finding

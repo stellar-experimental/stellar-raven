@@ -16,7 +16,7 @@ Total findings: 63
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 0           |
 | sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 0           |
 | sk-025 | The beta API skill forbids Authorization: Bearer for requests to https://beta.api.trustlesswork.com. The current Core API documentation…    | reported-upstream | 2026-09-16 | 0           |
-| sk-026 | The Core API skill gives error-documentation URLs that return HTTP 404. The example ESCROW_RECEIVER_TRUSTLINE_MISSING URL omits the…        | verified          | 2026-09-29 | 0           |
+| sk-026 | The Core API skill gives error-documentation URLs that return HTTP 404. The example ESCROW_RECEIVER_TRUSTLINE_MISSING URL omits the…        | reported-upstream | 2026-09-29 | 0           |
 
 ## stellar-light-scout
 
@@ -28,8 +28,8 @@ Total findings: 63
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
 | sls-085 | The Soroswap project record labels contract CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH as aggregator router. That address is… | reported-upstream | 2026-09-17 | 1           |
 | sls-086 | The Aquarius project description says: "AQUA locks into ICE for on-chain DAO governance votes directing rewards across DEX/AMM markets."…   | reported-upstream | 2026-09-17 | 1           |
-| sls-087 | Scout returns a stale Horizon protocol ceiling for a current-source question. The answer states MaxSupportedProtocolVersion = 28. The…      | verified          | 2026-09-29 | 0           |
-| sls-088 | Scout marks the Horizon API server repository as a deployable Soroban contract product. The response returns…                               | verified          | 2026-09-29 | 0           |
+| sls-087 | Scout returns a stale Horizon protocol ceiling for a current-source question. The answer states MaxSupportedProtocolVersion = 28. The…      | reported-upstream | 2026-09-29 | 0           |
+| sls-088 | Scout marks the Horizon API server repository as a deployable Soroban contract product. The response returns…                               | reported-upstream | 2026-09-29 | 0           |
 
 ## stellar-docs
 

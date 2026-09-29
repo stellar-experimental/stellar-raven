@@ -84,9 +84,9 @@ Routine recurrences stayed local. Untouched open issues received no reminders.
 | sls-024 | Record the partial fix across 1004 searchable rows | Evidence for positive deployment claims |
 | sls-029 / sls-033 / sls-085 / sls-086 | Record current local recurrences | Upstream content or metadata repair |
 | Seven recurring probes | Keep existing statuses | Original upstream defects remain |
-| sls-087 | Verify current Horizon answer 28 against own scanned source 29 | File the reviewed report |
-| sls-088 | Verify Horizon fixture contracts cause a false product classification | File the reviewed report |
-| sk-026 | Verify two error links return 404 while grouped links return 200 | File the reviewed report |
+| sls-087 | Verify current Horizon answer 28 against own scanned source 29 | Await the upstream fix; re-run the original trigger |
+| sls-088 | Verify Horizon fixture contracts cause a false product classification | Await the upstream fix; re-run the original trigger |
+| sk-026 | Verify two error links return 404 while grouped links return 200 | Await the upstream fix; re-run the original trigger |
 
 `sd-046` passed independent fresh checks on both rendered pages and complete indexed sections.
 Docs PR #2844 deployed its merged correction. CAP-0038 and Core agree with the pages.
@@ -110,6 +110,8 @@ The final review corrected a wallet field name and a deployment count descriptio
 It also required the Horizon recommendation to avoid a false application fallback.
 Every correction appears in the final source record before filing.
 The Trustless Work finding covers documentation links only; no escrow transaction ran.
+All three reports now have status `reported-upstream`.
+The active index contains 63 findings: 61 initial records, one retirement, and three additions.
 
 ## Own-repo todos
 
@@ -148,7 +150,12 @@ The current-source value mismatch remains independently verified.
 - `npm run improvements:index`: 63 active findings after one retirement and three new reports.
 - `npm run improvements:lint -- --live`: pass.
 - `npm run improvements:probes`: seven recurring; zero fixed candidates, inconclusive results, or errors.
-- Final staged tree secret scan and source-record publication: pending.
+- Staged tree and staged-addition secret scans: clean.
+- Exact finding snapshots published at `22ec28cbd6704fcde1acdaba9db7bfccea261161`.
 - Final scoped findings review: accepted; `final-findings-review.md` records each reconciled finding.
-- Standardized filing: pending publication of the exact source snapshot.
+- Standardized filing completed. Exact public source blobs, issue bodies, and authors passed GitHub readback.
+- `sls-087`: https://github.com/Stellar-Light/stellarlight/issues/1738.
+- `sls-088`: https://github.com/Stellar-Light/stellarlight/issues/1739.
+- `sk-026`: https://github.com/Trustless-Work/trustlesswork-skill/issues/16.
+- `filed-findings.json` records the immutable source, exact posted bodies, and verified authors.
 - Production deployment and closure of #180: require the owner's approval and live checks.

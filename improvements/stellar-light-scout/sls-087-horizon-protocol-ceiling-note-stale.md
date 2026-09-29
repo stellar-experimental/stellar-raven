@@ -1,7 +1,7 @@
 ---
 id: sls-087
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-09-29
 upstreamTitle: Horizon current protocol-ceiling answers retain 28 after the scanned source defines 29
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - The source commit message is Protocol 29 Support; its commit date is 2026-09-23T16:34:31Z.
   - The note cites master while the repository default branch is main. Independent review verified that the GitHub browser link redirects successfully. The contents API ref read returned 404; that does not establish a broken browser link.
   - Dedupe 2026-09-29 found only the closed predecessor for MaxSupportedProtocolVersion. Its retired Raven identity is sls-080 in improvements/resolved.json. This record uses a new identity and preserves that receipt.
+  - upstream issue filed 2026-09-29: https://github.com/Stellar-Light/stellarlight/issues/1738
 ---
 
 ## Finding
