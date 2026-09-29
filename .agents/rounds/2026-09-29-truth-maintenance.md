@@ -31,8 +31,8 @@ Its bounded link defect became `sk-026`; it does not block the pins.
 The review verified all 66 mirrored files and 222 catalog file transports.
 See `2026-09-29-truth-maintenance/drift-independent-review.md`.
 
-Production still needs the owner's deployment approval.
-Issue #180 remains open until deployment and live acceptance pass.
+The owner approved merging and production deployment in this session.
+PR #182 merged and the production checks passed. Issue #180 is closed.
 
 ## Eval verdict
 
@@ -77,7 +77,7 @@ Routine recurrences stayed local. Untouched open issues received no reminders.
 | Issue or finding | Action | Remaining condition |
 | --- | --- | --- |
 | Raven #167 | Retain the RWA exclusion | Existing mixed-intent acceptance conditions |
-| Raven #180 | Prepare independently accepted drift changes | Deployment approval and live verification |
+| Raven #180 | Merge and deploy the accepted drift changes | None; live acceptance passed |
 | Raven #181 / sd-046 | Close the notification and retire the finding | None for the verified original trigger |
 | sd-037 / stellar-protocol PR #2021 | Repair the SLP definition at 65d35aebf3ae3d5b9094b36959c27d9b8540e2a0 | Maintainer decision |
 | sd-027 / sd-034 / Docs PR #2837 | Retain the merge hold; nine checks pass | Review and template dependency |
@@ -158,15 +158,44 @@ The current-source value mismatch remains independently verified.
 - `sls-088`: https://github.com/Stellar-Light/stellarlight/issues/1739.
 - `sk-026`: https://github.com/Trustless-Work/trustlesswork-skill/issues/16.
 - `filed-findings.json` records the immutable source, exact posted bodies, and verified authors.
-- Production deployment and closure of #180: require the owner's approval and live checks.
+- Production deployment and closure of #180: completed after the owner approved the release.
 
 ## Publication
 
 The reviewed source commit is `22ec28cbd6704fcde1acdaba9db7bfccea261161`.
 The filing receipt commit is `1b7c06847b38398740bffc77d5bf7f0ba82d4440`.
 The branch is `chore/truth-maintenance-2026-09-29`.
-Draft PR https://github.com/stellar-experimental/stellar-raven/pull/182 contains the reviewed maintenance package.
+PR https://github.com/stellar-experimental/stellar-raven/pull/182 merged the reviewed maintenance package.
 The author, exact PR body, remote branch head, and clean worktree passed readback checks.
 GitHub CI checks the published head. Its durable results appear on PR #182.
 All independent agents completed their reviews. No development service started.
-The owner must approve production deployment before this round closes issue #180.
+The owner approved production deployment. This round completed issue #180 after live verification.
+
+## Production acceptance
+
+PR #182 merged by squash, as the repository requires.
+The merged runtime commit is `1e94ccdde8098d0317ab63cf0d9fe174f7f7dfce`.
+Worker Version ID is `5774bb56-d1f9-4725-ae65-bfd35e3c0bce`.
+Deployment ID is `5aa207b6-d989-42aa-8f82-f8831b6e2f0d`.
+Cloudflare reports 100% traffic on this version.
+MCP initialize reports the exact merged source revision.
+The deployed catalog has 60 operations, 20 whole skills, and 202 sections.
+Every one of the 282 IDs matches the committed manifest.
+All 80 operation and whole-skill exact-ID searches pass.
+The updated standards and Core API file reads carry the reviewed pinned URLs and content markers.
+RWA remains excluded.
+
+All six public route checks return HTTP 200. Unauthenticated MCP returns HTTP 401.
+The usage tail consumer and retention schedule checks pass with `WRANGLER_PROFILE=sdf`.
+The initial postdeploy hook used an unsuitable credential and returned HTTP 401 after the successful upload.
+The profile-specific recheck passed. No second deployment was needed.
+
+The raw local and HTTP surface hashes differ.
+Their complete tool definitions match after sorting JSON object keys; their instruction hashes match exactly.
+This confirms a serialization-order difference, not a changed tool definition.
+The temporary verification credentials were revoked, and their local files were removed.
+`production-verification.json` records each acceptance result.
+`drift-resolution-comment.json` records the exact posted comment, its author, and the closed issue state.
+
+The final receipt commit changes documentation and acceptance evidence only.
+Production continues to identify the reviewed runtime commit above.
