@@ -159,3 +159,14 @@ The current-source value mismatch remains independently verified.
 - `sk-026`: https://github.com/Trustless-Work/trustlesswork-skill/issues/16.
 - `filed-findings.json` records the immutable source, exact posted bodies, and verified authors.
 - Production deployment and closure of #180: require the owner's approval and live checks.
+
+## Publication
+
+The reviewed source commit is `22ec28cbd6704fcde1acdaba9db7bfccea261161`.
+The filing receipt commit is `1b7c06847b38398740bffc77d5bf7f0ba82d4440`.
+The branch is `chore/truth-maintenance-2026-09-29`.
+Draft PR https://github.com/stellar-experimental/stellar-raven/pull/182 contains the reviewed maintenance package.
+The author, exact PR body, remote branch head, and clean worktree passed readback checks.
+GitHub CI checks the published head. Its durable results appear on PR #182.
+All independent agents completed their reviews. No development service started.
+The owner must approve production deployment before this round closes issue #180.
