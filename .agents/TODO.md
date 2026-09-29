@@ -37,6 +37,18 @@ latency unchanged (median 94 ms to 93 ms). This is an upstream payload cost, not
 Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
 single-pass payload is acceptable and this item is closed with that evidence.
 
+## Golden freshness follow-up
+
+### Add dated reserve amounts to two sibling cases
+
+The 2026-09-29 independent review found existing undated amounts in `q-asset-trustline-basics` and `q-asset-amm-fee-reserve`.
+The values agree with the current Mainnet reserve setting.
+Use `golden-truth` to add an answer-visible date or express those amounts as dated examples.
+Repeat the affected source and sibling checks before changing the case files.
+The independent evidence is `rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md`.
+
+Done when: the cases carry dated amounts and the golden and register gates pass.
+
 ## Improvements follow-up
 
 ### Complete the September 14 source-metadata follow-up before 2026-10-01
@@ -60,6 +72,8 @@ The author must reconcile the hold with the updated template and remaining revie
 The 2026-09-21 re-check found no change. The head is still `108ba24e`, all nine checks pass, and
 the review decision is `REVIEW_REQUIRED`. The last event is the 2026-09-16 author-side comment.
 
+The 2026-09-29 re-check found the same head, nine passing checks, and the same review requirement.
+
 Re-check the replacement PR at the next improvements round, or earlier if its head changes or it closes.
 If it merges and deploys, run both original live page checks before changing either finding.
 Do not post a status comment while the maintainers are already working on the decision.
@@ -80,6 +94,12 @@ At the next improvements round, read the PR state and any review. Respond to req
 The stale workflow marks a quiet PR after 30 days and closes it 30 days later.
 Do not post a keep-alive comment. If the PR closes unmerged, record the reason and keep the finding.
 If it merges, re-run the two README source checks before changing the finding.
+
+The 2026-09-29 author repair addressed Copilot review `discussion_r4064649027`.
+Commit `65d35aebf3ae3d5b9094b36959c27d9b8540e2a0` broadens the root definition to protocol limits and network configuration.
+The six index rows still match their SLP titles and statuses.
+All four checks passed. The author posted and read back the review reply:
+https://github.com/stellar/stellar-protocol/pull/2021#discussion_r4137499419
 
 Done when: the finding records the merged or declined result, and a fixed finding completes the resolver gates.
 
@@ -107,8 +127,11 @@ Record the returned value, `generatedAt`, `scannedRef`, and `answerSource` in th
 Use the `sls-080` receipt in `improvements/resolved.json` as the durable finding record.
 
 The freshness blocker clears only when the DeepWiki answer equals the source value at the
-response's own `scannedRef`. The current source value is `28`; the match rule is not a permanent
-literal-`28` rule.
+response's own `scannedRef`. The 2026-09-29 monitor failed: the answer gave `28`, while the source defined `29`.
+The new finding is `improvements/stellar-light-scout/sls-087-horizon-protocol-ceiling-note-stale.md`.
+The evidence is `rounds/2026-09-29-truth-maintenance/horizon-monitor.json`.
+The current source value is `29`; the match rule is not a permanent literal-value rule.
+Re-run the original monitor when the upstream note changes or the owner reports a fix.
 
 The selection trigger remains three qualifying positive operation-selection misses after recovery.
 The Docs-versus-repository conflict remains monitor-only until three successful-recovery

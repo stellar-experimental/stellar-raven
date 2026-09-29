@@ -84,7 +84,7 @@
         "Live re-check: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves gives (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve.",
         "Live re-check: https://developers.stellar.org/docs/learn/fundamentals/lumens gives the same separate available-balance identity.",
         "Current Core source at 7e64393b61808fd498ae13317e0cf9cdc0a0c018 confirms the minimum-balance and available-balance split.",
-        "Sibling sweep: q-protocol-base-reserve-min-balance changed with the same source result; sd-046 remains active for the separate pool-share reserve omission."
+        "Sibling sweep 2026-09-08 confirmed the same formula. The separate sd-046 pool-share omission was resolved live on 2026-09-29; the independent review is .agents/rounds/2026-09-29-truth-maintenance/docs-independent-review.md."
       ],
       "rootCause": [
         "Resolved finding sd-043 at Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4"

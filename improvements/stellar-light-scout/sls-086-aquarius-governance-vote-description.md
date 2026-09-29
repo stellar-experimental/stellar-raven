@@ -14,6 +14,9 @@ evidence:
   - "Dedupe 2026-09-17: no active or resolved Raven finding covers this description; resolved sls-026 concerns Aquarius SCF totals. GitHub search repo:Stellar-Light/stellarlight for \"aquarius ICE\", governICE, and upvoteICE returned 0 results."
   - "Raw evidence: research/audits/2026-09-17-routing-audit/aquarius-description-roles.md."
   - upstream issue filed 2026-09-17: https://github.com/Stellar-Light/stellarlight/issues/1674
+recurrences:
+  - date: 2026-09-29
+    evidence: The Aquarius shortDescription still claims on-chain DAO governance votes directing rewards. The original product-description conflict remains unresolved. Live response snapshot is .agents/rounds/2026-09-29-truth-maintenance/scout-rechecks.json.
 ---
 
 ## Finding

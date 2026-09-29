@@ -1,0 +1,1251 @@
+{
+  "checkedAt": "2026-09-29T19:35:21.051Z",
+  "population": 1004,
+  "pages": [
+    {
+      "category": "Infrastructure",
+      "offset": 0,
+      "total": 204,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:15.894Z"
+    },
+    {
+      "category": "Infrastructure",
+      "offset": 100,
+      "total": 204,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:16.272Z"
+    },
+    {
+      "category": "Infrastructure",
+      "offset": 200,
+      "total": 204,
+      "returned": 4,
+      "generatedAt": "2026-09-29T19:35:16.490Z"
+    },
+    {
+      "category": "Tooling",
+      "offset": 0,
+      "total": 184,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:16.849Z"
+    },
+    {
+      "category": "Tooling",
+      "offset": 100,
+      "total": 184,
+      "returned": 84,
+      "generatedAt": "2026-09-29T19:35:17.189Z"
+    },
+    {
+      "category": "User-Facing App",
+      "offset": 0,
+      "total": 407,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:17.590Z"
+    },
+    {
+      "category": "User-Facing App",
+      "offset": 100,
+      "total": 407,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:18.038Z"
+    },
+    {
+      "category": "User-Facing App",
+      "offset": 200,
+      "total": 407,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:18.667Z"
+    },
+    {
+      "category": "User-Facing App",
+      "offset": 300,
+      "total": 407,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:19.361Z"
+    },
+    {
+      "category": "User-Facing App",
+      "offset": 400,
+      "total": 407,
+      "returned": 7,
+      "generatedAt": "2026-09-29T19:35:20.020Z"
+    },
+    {
+      "category": "Asset",
+      "offset": 0,
+      "total": 36,
+      "returned": 36,
+      "generatedAt": "2026-09-29T19:35:20.173Z"
+    },
+    {
+      "category": "Protocol/Contract",
+      "offset": 0,
+      "total": 157,
+      "returned": 100,
+      "generatedAt": "2026-09-29T19:35:20.503Z"
+    },
+    {
+      "category": "Protocol/Contract",
+      "offset": 100,
+      "total": 157,
+      "returned": 57,
+      "generatedAt": "2026-09-29T19:35:20.793Z"
+    },
+    {
+      "category": "Anchor",
+      "offset": 0,
+      "total": 15,
+      "returned": 15,
+      "generatedAt": "2026-09-29T19:35:20.923Z"
+    },
+    {
+      "category": "Partner Integration",
+      "offset": 0,
+      "total": 1,
+      "returned": 1,
+      "generatedAt": "2026-09-29T19:35:21.018Z"
+    }
+  ],
+  "basisCounts": {
+    "onchain-activity": 50,
+    "human-verified": 281,
+    "repo-activity": 117,
+    "site-liveness": 383,
+    "product-integration": 67,
+    "source-inherited": 77,
+    "package-release": 9,
+    "unverified": 5,
+    "operator-announcement": 15
+  },
+  "missingKnownBasisSource": [],
+  "missingDateOrBasis": [],
+  "missingDeployment": [],
+  "positiveDeploymentWithoutSource": [
+    {
+      "id": "6943361c30bcaa9def8ef08f",
+      "name": "Reflector",
+      "slug": "reflector",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/reflector"
+    },
+    {
+      "id": "69b0359e2d04b7c0f26d9e8c",
+      "name": "Band",
+      "slug": "band",
+      "status": "Live",
+      "statusAsOf": "2026-07-11T00:00:00.000Z",
+      "statusSourceUrl": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "evm",
+        "xrpl",
+        "cosmos"
+      ],
+      "url": "https://stellarlight.xyz/project/band"
+    },
+    {
+      "id": "6a2d9dd9213eeb05b4956573",
+      "name": "Circle",
+      "slug": "circle",
+      "status": "Live",
+      "statusAsOf": "2026-08-29T00:00:00.000Z",
+      "statusSourceUrl": "https://developers.circle.com/cctp/references/stellar-contracts",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/circle"
+    },
+    {
+      "id": "6943361d30bcaa9def8ef0b6",
+      "name": "Lightecho",
+      "slug": "lightecho",
+      "status": "Live",
+      "statusAsOf": "2026-07-11T00:00:00.000Z",
+      "statusSourceUrl": "https://github.com/bp-ventures/lightecho-stellar-oracle",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/lightecho"
+    },
+    {
+      "id": "6a7755632e18aa00aacaedd8",
+      "name": "MPP Router",
+      "slug": "mpp-router",
+      "status": "Live",
+      "statusAsOf": "2026-07-10T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/account/GDK3AVW3YE6UL3J4WLNKBMP65KSY32YPUKIOC6PXW65XJ3LEG3YIDXXB",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/mpp-router"
+    },
+    {
+      "id": "6a58e094d1d22223416b9086",
+      "name": "Gami Labs",
+      "slug": "gami-labs",
+      "status": "Live",
+      "statusAsOf": "2026-07-16T00:00:00.000Z",
+      "statusSourceUrl": "https://defillama.com/protocol/gami-labs",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "evm"
+      ],
+      "url": "https://stellarlight.xyz/project/gami-labs"
+    },
+    {
+      "id": "6a7755632e18aa00aacaee3b",
+      "name": "RenderGate",
+      "slug": "rendergate",
+      "status": "Pre-Release",
+      "statusAsOf": "2026-07-10T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/testnet/tx/5c898eb489265c142baee086d502e25b87a5536e4386e5ccdf69edc2515c0ef6",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/rendergate"
+    },
+    {
+      "id": "6a7755632e18aa00aacaee0e",
+      "name": "CleverCon",
+      "slug": "clevercon",
+      "status": "Pre-Release",
+      "statusAsOf": "2026-07-10T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/testnet/contract/CDFLEJ2HFPK3WKFTWB4CKP2JHEYNAUWKXGEJRYW4YMMGDSQSQ7D4LRTE",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/clevercon"
+    },
+    {
+      "id": "6a7755632e18aa00aacaede1",
+      "name": "TollPay",
+      "slug": "tollpay",
+      "status": "Live",
+      "statusAsOf": "2026-07-10T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/tx/015ef6bacf0520d567fa3cac44a7135ff4152fda79ee72d2e49a1f8670081099",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/tollpay"
+    },
+    {
+      "id": "694335e030bcaa9def8eebbc",
+      "name": "Kale",
+      "slug": "kale",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T00:00:00.000Z",
+      "statusSourceUrl": "https://api.stellar.expert/explorer/public/asset/KALE-GBDVX4VELCDSQ54KQJYTNHXAHFLBCA77ZY2USQBM4CSHTTV7DME7KALE/stats-history",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-05T23:17:09.685Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/kale"
+    },
+    {
+      "id": "69b036032d04b7c0f26db273",
+      "name": "Stellarport",
+      "slug": "stellarport",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T22:47:31.562Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/BTC-GBVOL67TMUQBGL4TZYNMY3ZQ5WGQYFPFD5VJRWXR72VA33VFNL225PL5",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/stellarport"
+    },
+    {
+      "id": "6a51277bee7b9cef9e030715",
+      "name": "Scopuly",
+      "slug": "scopuly",
+      "status": "Live",
+      "statusAsOf": "2026-08-31T11:31:00.480Z",
+      "statusSourceUrl": "https://defillama.com/protocol/scopuly",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-31T22:03:48.079Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/scopuly"
+    },
+    {
+      "id": "69b035b02d04b7c0f26da223",
+      "name": "CoopStable v2 - Yield sharing stablecoin",
+      "slug": "coopstable-v2-yield-sharing-stablecoin",
+      "status": "Live",
+      "statusAsOf": "2026-09-01T01:45:44.519Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/CUSD-GB4E4EA26SXUJSFJTMFCVGVNEKWGNQ44MLFRHHXWQHQ54RD7KQTYBNSR",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/coopstable-v2-yield-sharing-stablecoin"
+    },
+    {
+      "id": "6a7755632e18aa00aacaee32",
+      "name": "Nulucre Agents",
+      "slug": "nulucre-agents",
+      "status": "Pre-Release",
+      "statusAsOf": "2026-07-10T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/account/GCRUBFDANV52JP3URUJ7EZGPZKFEESBTW7T3FV2SJXZZGB6HDNRBWV24",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/nulucre-agents"
+    },
+    {
+      "id": "6943364f30bcaa9def8ef555",
+      "name": "Benji",
+      "slug": "benji",
+      "status": "Live",
+      "statusAsOf": "2026-08-28T00:00:00.000Z",
+      "statusSourceUrl": "https://benjiinvestments.com/",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/benji"
+    },
+    {
+      "id": "69b035fa2d04b7c0f26db0ad",
+      "name": "Spiko",
+      "slug": "spiko",
+      "status": "Live",
+      "statusAsOf": "2026-08-31T11:31:00.480Z",
+      "statusSourceUrl": "https://defillama.com/protocol/spiko",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-31T22:03:48.079Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/spiko"
+    },
+    {
+      "id": "6a557b6d83593a8417d60b2f",
+      "name": "USDY",
+      "slug": "usdy",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/USDY-GAJMPX5NBOG6TQFPQGRABJEEB2YE7RFRLUKJDZAZGAD5GFX4J7TADAZ6",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "evm",
+        "solana"
+      ],
+      "url": "https://stellarlight.xyz/project/usdy"
+    },
+    {
+      "id": "6a527d0175d7c8f2c730cd20",
+      "name": "YLDS",
+      "slug": "ylds",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T22:47:31.562Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/YLDS-GAC7MOPTQLQUM3KC24AW4GHS3RLF72LPEZO54AH7EZ6TSMGRB5SOAVH3",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "provenance",
+        "solana"
+      ],
+      "url": "https://stellarlight.xyz/project/ylds"
+    },
+    {
+      "id": "6943365e30bcaa9def8ef6c1",
+      "name": "VEUR",
+      "slug": "veur",
+      "status": "Live",
+      "statusAsOf": "2026-09-01T01:45:44.519Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/VEUR-GDXLSLCOPPHTWOQXLLKSVN4VN3G67WD2ENU7UMVAROEYVJLSPSEWXIZN",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/veur"
+    },
+    {
+      "id": "6943365c30bcaa9def8ef6a7",
+      "name": "MBRL",
+      "slug": "mbrl",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/MBRL-GDLS4RCNECY46KKA4OGU2MMJILUK3I372CUFISWM4HKCV7265RY2NJ4Z",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-05T05:28:54.666Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/mbrl"
+    },
+    {
+      "id": "6943365c30bcaa9def8ef69a",
+      "name": "EURC",
+      "slug": "eurckobo",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/EURC-GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/eurckobo"
+    },
+    {
+      "id": "6943365b30bcaa9def8ef680",
+      "name": "VCHF",
+      "slug": "vchf",
+      "status": "Live",
+      "statusAsOf": "2026-09-01T01:45:44.519Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/VCHF-GDXLSLCOPPHTWOQXLLKSVN4VN3G67WD2ENU7UMVAROEYVJLSPSEWXIZN",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/vchf"
+    },
+    {
+      "id": "6943365a30bcaa9def8ef666",
+      "name": "gYEN",
+      "slug": "gyen",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/GYEN-GDF6VOEGRWLOZ64PQQGKD2IYWA22RLT37GJKS2EJXZHT2VLAGWLC5TOB",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/gyen"
+    },
+    {
+      "id": "6943365930bcaa9def8ef659",
+      "name": "AUDD",
+      "slug": "audd",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/AUDD-GDC7X2MXTYSAKUUGAIQ7J7RPEIM7GXSAIWFYWWH4GLNFECQVJJLB2EEU",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/audd"
+    },
+    {
+      "id": "6943365930bcaa9def8ef64c",
+      "name": "ARS",
+      "slug": "ars",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/ARS-GCYE7C77EB5AWAA25R5XMWNI2EDOKTTFTTPZKM2SR5DI4B4WFD52DARS",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/ars"
+    },
+    {
+      "id": "6943365830bcaa9def8ef632",
+      "name": "zUSD",
+      "slug": "zusd",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/ZUSD-GDF6VOEGRWLOZ64PQQGKD2IYWA22RLT37GJKS2EJXZHT2VLAGWLC5TOB",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/zusd"
+    },
+    {
+      "id": "6943365630bcaa9def8ef5fe",
+      "name": "PEN",
+      "slug": "pen",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T22:34:44.624Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/PEN-GA4TDPNUCZPTOHB3TKUYMDCRVATXKEADH7ZEYEBWJKQKE2UBFCYNBPEN",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/pen"
+    },
+    {
+      "id": "6943365530bcaa9def8ef5f1",
+      "name": "MXNe",
+      "slug": "mxne",
+      "status": "Live",
+      "statusAsOf": "2026-09-01T01:45:44.519Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/MXNe-GCQCNWT22JDLENQAVIE6DRJGHWAQ6EX2H5ABGPV55EJUPPZM5UA7KHZR",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/mxne"
+    },
+    {
+      "id": "6943365530bcaa9def8ef5e4",
+      "name": "EURS",
+      "slug": "eurs",
+      "status": "Live",
+      "statusAsOf": "2026-09-01T01:45:44.519Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/EURS-GC5FGCDEOGOGSNWCCNKS3OMEVDHTE3Q5A5FEQWQKV3AXA7N6KDQ2CUZJ",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/eurs"
+    },
+    {
+      "id": "6943365330bcaa9def8ef5bd",
+      "name": "USDC",
+      "slug": "usdc",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/usdc"
+    },
+    {
+      "id": "6943365730bcaa9def8ef618",
+      "name": "BRL",
+      "slug": "brl",
+      "status": "Inactive",
+      "statusAsOf": "2026-07-10T00:00:00.000Z",
+      "statusSourceUrl": "https://ntokens.com/blog/brl-anchor-stellar",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-01T01:45:44.519Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/brl"
+    },
+    {
+      "id": "6943361530bcaa9def8eefe6",
+      "name": "Blend",
+      "slug": "blend",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/blend"
+    },
+    {
+      "id": "694335e130bcaa9def8eebd6",
+      "name": "Soroswap",
+      "slug": "soroswap",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/soroswap"
+    },
+    {
+      "id": "694335e530bcaa9def8eec31",
+      "name": "Allbridge",
+      "slug": "allbridge",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T00:00:00.000Z",
+      "statusSourceUrl": "https://allbridge.io/",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "evm",
+        "solana",
+        "tron",
+        "sui"
+      ],
+      "url": "https://stellarlight.xyz/project/allbridge"
+    },
+    {
+      "id": "694335df30bcaa9def8eeba7",
+      "name": "Aquarius",
+      "slug": "aquarius",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/AQUA-GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/aquarius"
+    },
+    {
+      "id": "694335e130bcaa9def8eebc9",
+      "name": "Phoenix",
+      "slug": "phoenix",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CB4SVAWJA6TSRNOJZ7W2AWFW46D5VR4ZMFZKDIKXEINZCZEGZCJZCKMI",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/phoenix"
+    },
+    {
+      "id": "69b035b42d04b7c0f26da2ee",
+      "name": "DeFindex",
+      "slug": "defindex",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CDB2WMKQQNVZMEBY7Q7GZ5C7E7IAFSNMZ7GGVD6WKTCEWK7XOIAVZSAP",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/defindex"
+    },
+    {
+      "id": "6943365130bcaa9def8ef589",
+      "name": "Etherfuse",
+      "slug": "etherfuse",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/CETES-GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/etherfuse"
+    },
+    {
+      "id": "69b035ea2d04b7c0f26dada6",
+      "name": "Rozo",
+      "slug": "rozo",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T00:00:00.000Z",
+      "statusSourceUrl": "https://rozo.ai/",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "evm",
+        "solana"
+      ],
+      "url": "https://stellarlight.xyz/project/rozo"
+    },
+    {
+      "id": "6a313ccaca449e3f81a99d32",
+      "name": "XOXNO",
+      "slug": "xoxno",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CDA3XS2HETVCW5GSRN3FH4X3YJ45IA6DNVSZTEOYDFGOCXQK4ZJG22JM",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/xoxno"
+    },
+    {
+      "id": "6a2d9e67213eeb05b4956de3",
+      "name": "Huma",
+      "slug": "huma",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CAXZGMU3EHOHGXGXDJWVPG5PIVC2DCZQ2JO2YI3RGSM4OQK7ZIQ46FV5",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/huma"
+    },
+    {
+      "id": "69b036112d04b7c0f26db529",
+      "name": "Untangled",
+      "slug": "untangled",
+      "status": "Live",
+      "statusAsOf": "2026-09-06T00:00:00.000Z",
+      "statusSourceUrl": "https://stellar.untangled.finance/",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/untangled"
+    },
+    {
+      "id": "69b035e12d04b7c0f26dabdd",
+      "name": "Peridot Finance",
+      "slug": "peridot-finance",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CCVUFGXKFVPAHWMMDDL6HXKUN2B2G73Z27VRM3WXZBBSQEUTNLI6YPEX",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/peridot-finance"
+    },
+    {
+      "id": "6943365030bcaa9def8ef562",
+      "name": "Excellar",
+      "slug": "excellar",
+      "status": "Live",
+      "statusAsOf": "2026-08-31T11:31:00.480Z",
+      "statusSourceUrl": "https://defillama.com/protocol/excellar",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-31T22:03:48.079Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/excellar"
+    },
+    {
+      "id": "6943361830bcaa9def8ef034",
+      "name": "Bondhive",
+      "slug": "bondhive",
+      "status": "Live",
+      "statusAsOf": "2026-08-17T03:02:29.060Z",
+      "statusSourceUrl": "https://bondhive.xyz/",
+      "statusBasis": "site-liveness",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/bondhive"
+    },
+    {
+      "id": "69b0360a2d04b7c0f26db3e1",
+      "name": "Templar Protocol",
+      "slug": "templar-protocol",
+      "status": "Live",
+      "statusAsOf": "2026-08-31T11:31:00.480Z",
+      "statusSourceUrl": "https://defillama.com/protocol/templar-protocol",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-31T22:03:48.079Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "bitcoin",
+        "evm",
+        "near"
+      ],
+      "url": "https://stellarlight.xyz/project/templar-protocol"
+    },
+    {
+      "id": "6943361630bcaa9def8eeff3",
+      "name": "Yieldblox",
+      "slug": "yieldblox",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/yieldblox"
+    },
+    {
+      "id": "6a58e095d1d22223416b908f",
+      "name": "DeFa by InvoiceMate",
+      "slug": "defa-invoicemate",
+      "status": "Live",
+      "statusAsOf": "2026-07-16T00:00:00.000Z",
+      "statusSourceUrl": "https://defillama.com/protocol/defa-by-invoicemate",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/defa-invoicemate"
+    },
+    {
+      "id": "6a4fcaaecae34a91fd8ecc81",
+      "name": "Spectra Finance",
+      "slug": "spectra-finance",
+      "status": "Live",
+      "statusAsOf": "2026-08-03T00:00:00.000Z",
+      "statusSourceUrl": "https://app.spectra.finance/api/v1/stellar/pools",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-28T02:32:35.927Z"
+      },
+      "supportedNetworks": [
+        "stellar",
+        "evm"
+      ],
+      "url": "https://stellarlight.xyz/project/spectra-finance"
+    },
+    {
+      "id": "6a2d9ff9213eeb05b4958570",
+      "name": "Velo",
+      "slug": "velo",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/VELO-GDM4RQUQQUVSKQA7S6EM7XBZP3FCGH4Q7CL6TABQ7B2BEJ5ERARM2M5M",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/velo"
+    },
+    {
+      "id": "6a2d9ff5213eeb05b495852d",
+      "name": "USDM1",
+      "slug": "usdm1",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/USDM1-GDM5QWWXCMDTQMZAKMYTCI52LA7FWBHAZMU5NJLMIFHDJISJRP2ZWPKC",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-09-05T23:17:09.685Z"
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/usdm1"
+    },
+    {
+      "id": "6a2d9ff2213eeb05b4958505",
+      "name": "Upshift",
+      "slug": "upshift",
+      "status": "Live",
+      "statusAsOf": "2026-08-31T11:31:00.480Z",
+      "statusSourceUrl": "https://defillama.com/protocol/upshift",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-31T22:03:48.079Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/upshift"
+    },
+    {
+      "id": "6a2d9fbe213eeb05b49581e8",
+      "name": "Sushi",
+      "slug": "sushi",
+      "status": "Live",
+      "statusAsOf": "2026-08-31T11:31:00.480Z",
+      "statusSourceUrl": "https://defillama.com/protocol/sushi-stellar",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-31T22:03:48.079Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/sushi"
+    },
+    {
+      "id": "6943363930bcaa9def8ef367",
+      "name": "MYKOBO",
+      "slug": "mykobo",
+      "status": "Live",
+      "statusAsOf": "2026-09-29T12:35:07.916Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/EURC-GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/mykobo"
+    },
+    {
+      "id": "6943362130bcaa9def8ef111",
+      "name": "Anclap",
+      "slug": "anclap",
+      "status": "Live",
+      "statusAsOf": "2026-09-05T22:34:44.624Z",
+      "statusSourceUrl": "https://stellar.expert/explorer/public/asset/PEN-GA4TDPNUCZPTOHB3TKUYMDCRVATXKEADH7ZEYEBWJKQKE2UBFCYNBPEN",
+      "statusBasis": "onchain-activity",
+      "deployment": {
+        "network": "mainnet",
+        "basis": "onchain-activity",
+        "sourceUrl": null,
+        "asOf": "2026-08-28T20:58:13.695Z"
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/anclap"
+    }
+  ],
+  "namedFixtures": [
+    {
+      "id": "6943363230bcaa9def8ef2b1",
+      "name": "Fluxity",
+      "slug": "fluxity",
+      "status": "Live",
+      "statusAsOf": "2026-08-14T15:41:53.000Z",
+      "statusSourceUrl": "https://github.com/luanlabs/fluxity.finance",
+      "statusBasis": "repo-activity",
+      "deployment": {
+        "network": "unknown",
+        "basis": null,
+        "sourceUrl": null,
+        "asOf": null
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/fluxity"
+    },
+    {
+      "id": "6a2d9e7f213eeb05b4956f3b",
+      "name": "K2 Lend",
+      "slug": "k2-lend",
+      "status": "Live",
+      "statusAsOf": "2026-08-17T03:02:29.060Z",
+      "statusSourceUrl": "https://k2lend.com/",
+      "statusBasis": "site-liveness",
+      "deployment": {
+        "network": "unknown",
+        "basis": null,
+        "sourceUrl": null,
+        "asOf": null
+      },
+      "supportedNetworks": null,
+      "url": "https://stellarlight.xyz/project/k2-lend"
+    },
+    {
+      "id": "6943361730bcaa9def8ef01a",
+      "name": "Slender",
+      "slug": "slender",
+      "status": "Inactive",
+      "statusAsOf": "2026-07-09T00:00:00.000Z",
+      "statusSourceUrl": "https://defillama.com/protocol/slender",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "unknown",
+        "basis": null,
+        "sourceUrl": null,
+        "asOf": null
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/slender"
+    },
+    {
+      "id": "69b035de2d04b7c0f26dab30",
+      "name": "OrbitCDP",
+      "slug": "orbitcdp",
+      "status": "Inactive",
+      "statusAsOf": "2026-09-05T00:00:00.000Z",
+      "statusSourceUrl": "https://orbitcdp.finance/",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "unknown",
+        "basis": null,
+        "sourceUrl": null,
+        "asOf": null
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/orbitcdp"
+    },
+    {
+      "id": "69b035ce2d04b7c0f26da82b",
+      "name": "Laina",
+      "slug": "laina",
+      "status": "Pre-Release",
+      "statusAsOf": "2026-08-27T00:00:00.000Z",
+      "statusSourceUrl": "https://github.com/laina-defi/laina/blob/main/src/lib/horizon.ts",
+      "statusBasis": "human-verified",
+      "deployment": {
+        "network": "unknown",
+        "basis": null,
+        "sourceUrl": null,
+        "asOf": null
+      },
+      "supportedNetworks": [
+        "stellar"
+      ],
+      "url": "https://stellarlight.xyz/project/laina"
+    }
+  ]
+}

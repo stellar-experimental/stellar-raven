@@ -20,7 +20,7 @@
       "Do NOT claim every trustline costs one reserve or that a sponsored account can remain under-reserved after sponsorship ends.",
       "Do NOT claim 0.5 XLM is timeless or that classic account reserves apply to Soroban contract storage."
     ],
-    "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve.\nCanonical-page caution: The official Lumens and Accounts pages group pool-share trustlines with ordinary subentries. An attributed one-reserve quote is not a wrong claim; grade caps at partial for that claim. This caution tracks improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md and expires when sd-046 reaches fixed-upstream and both live pages state the two-reserve rule."
+    "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve."
   },
   "tags": {
     "category": "protocol-core",
@@ -70,12 +70,12 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
-        "note": "Lists trustlines 'for both traditional assets and pool shares' as ordinary one-reserve subentries; conflicts by implication with the two-reserve pool-share rule (2026-08-30)."
+        "note": "Observed 2026-09-29: the Minimum balance section explicitly counts a pool-share trustline as two subentries and two base reserves."
       },
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
-        "note": "Same subentry list; no pool-share exception stated (2026-08-30)."
+        "note": "Observed 2026-09-29: the subentry list separates ordinary one-subentry trustlines from pool-share two-subentry trustlines."
       },
       {
         "class": "B",
@@ -137,41 +137,50 @@
         "verdict": "confirmed",
         "evidence": [
           {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+            "observedAt": "2026-09-29",
+            "note": "The deployed general page now states the two-base-reserve exception and links the Liquidity Pools trustlines section."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#subentries",
+            "observedAt": "2026-09-29",
+            "note": "Ordinary trustlines use one subentry; pool-share trustlines use two."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/cf8f96d8e165ef94b7e99c6ea45a12e4973841a1/src/transactions/SponsorshipUtils.cpp#L193",
+            "observedAt": "2026-09-29",
+            "note": "The independent source read confirms computeMultiplier returns 2 for pool shares and 1 for ordinary trustlines."
+          },
+          {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
-            "observedAt": "2026-08-30",
-            "note": "'count as two subentries (and therefore require two base reserves)'."
+            "observedAt": "2026-09-29",
+            "note": "CAP-0038 defines two subentries and two base reserves for a pool-share trustline."
           },
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
-            "observedAt": "2026-08-30",
-            "note": "'A pool share trustline requires 2 base reserves instead of 1' with the six-reserve worked example."
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
-            "observedAt": "2026-08-30",
-            "note": "Conflict by implication: pool shares are listed among ordinary subentries that each add one reserve; the dedicated page and the CAP control."
+            "class": "E",
+            "ref": ".agents/rounds/2026-09-29-truth-maintenance/docs-independent-review.md",
+            "observedAt": "2026-09-29",
+            "note": "Independent indexed-section reads returned complete corrected content on both pages."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-09-08",
-      "by": "improvements follow-up with Codex GPT-5.6 Sol high source matrix",
+      "date": "2026-09-29",
+      "by": "Truth-maintenance author with independent GPT-6 Sol high source verification",
       "evidence": [
-        ".agents/rounds/2026-09-08-improvements-docs-fixes/verify-sd-043-sol.md",
-        "Live re-check: Sponsored Reserves and Lumens now agree with current stellar-core on minimum balance and available balance.",
-        "Current Core source at 7e64393b61808fd498ae13317e0cf9cdc0a0c018 confirms the formula split.",
-        "The expired sd-043 canonical-page caution was removed.",
-        "Sibling sweep: q-pc-sponsored-reserves changed with the same source result; q-asset-amm-fee-reserve and q-asset-trustline-basics do not contradict it.",
-        "The separate pool-share two-reserve conflict remains tracked by improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md.",
-        "The accepted base-reserve case now keeps a claim-specific caution for the still-active sd-046 conflict."
+        ".agents/rounds/2026-09-29-truth-maintenance/docs-independent-review.md",
+        ".agents/rounds/2026-09-29-truth-maintenance/sd-046-live.json",
+        "Docs PR https://github.com/stellar/stellar-docs/pull/2844 merged as efd7b4a47192a8ee2e1c84559cf1bd7c7ef5da3d; fresh rendered and indexed reads passed.",
+        "The expired sd-046 caution was removed; the answer, key facts, avoid rules, dated base-reserve observation, and scheduled reverification date remain unchanged.",
+        "Sibling sweep: q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics, and register members retain the same reserve-unit and sponsorship rules."
       ],
       "rootCause": [
-        "Resolved finding sd-043 at Raven commit 767c981a9304bd74b167357ffdf9a39dd017cce4",
-        "improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md"
+        "Resolved finding sd-046 at Raven commit 8ab7b88f95177022cd24c0d0acb6e619b19ea23c"
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

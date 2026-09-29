@@ -1,0 +1,2437 @@
+{
+  "checkedAt": "2026-09-29T19:24:06.416Z",
+  "findingCount": 61,
+  "refCount": 69,
+  "results": [
+    {
+      "repo": "cloudflare/agents",
+      "number": 2296,
+      "findings": [
+        "cs-001"
+      ],
+      "url": "https://github.com/cloudflare/agents/issues/2296",
+      "title": "codemode: searchConnectors matches unrelated methods through short tokens",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-17T03:43:47Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "bug"
+      ],
+      "latestComments": []
+    },
+    {
+      "repo": "cloudflare/ai",
+      "number": 634,
+      "findings": [
+        "wai-001"
+      ],
+      "url": "https://github.com/cloudflare/ai/issues/634",
+      "title": "workers-ai-provider rejects the Unified Billing moonshotai/Kimi catalog slug before AI.run",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-15T23:50:11Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "edenbuilds",
+          "createdAt": "2026-08-15T23:50:11Z",
+          "url": "https://github.com/cloudflare/ai/issues/634#issuecomment-5304802270"
+        }
+      ]
+    },
+    {
+      "repo": "cloudflare/ai",
+      "number": 639,
+      "findings": [
+        "wai-001"
+      ],
+      "url": "https://github.com/cloudflare/ai/pull/639",
+      "title": "fix(workers-ai-provider): support Moonshot unified catalog slugs",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-15T23:46:43Z",
+      "closedAt": null,
+      "author": "edenbuilds",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "changeset-bot[bot]",
+          "createdAt": "2026-08-15T23:46:43Z",
+          "url": "https://github.com/cloudflare/ai/pull/639#issuecomment-5304791693"
+        }
+      ],
+      "pr": {
+        "headRefOid": "b57a507cd4a4e0eb8b2330196b75477c8eddfc64",
+        "isDraft": false,
+        "mergeCommit": null,
+        "mergedAt": null,
+        "reviewDecision": "REVIEW_REQUIRED",
+        "reviews": [],
+        "state": "OPEN",
+        "statusCheckRollup": []
+      }
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 18,
+      "findings": [
+        "ll-006"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/18",
+      "title": "Production semantic article search still misses current recurring reports",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/18#issuecomment-4963575610"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 19,
+      "findings": [
+        "ll-005"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/19",
+      "title": "External find_content_by_entity accepts person but returns a successful all-empty result",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/19#issuecomment-4963575526"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 20,
+      "findings": [
+        "ll-007"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/20",
+      "title": "Prevent event summary prose from contradicting structured event dates",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/20#issuecomment-4963575603"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 21,
+      "findings": [
+        "ll-001"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/21",
+      "title": "Expose an unambiguous week date for weekly-roundup canonical URLs",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/21#issuecomment-4963575515"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 22,
+      "findings": [
+        "ll-002"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/22",
+      "title": "State of Stellar Q1 2026 exposes only summary-length text",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/22#issuecomment-4963575516"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 23,
+      "findings": [
+        "ll-003"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/23",
+      "title": "ll-003: Make get_regions a controlled, typed geography vocabulary",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/23#issuecomment-4963575522"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 24,
+      "findings": [
+        "ll-011"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/24",
+      "title": "Correct YieldBlox incident summaries: units, scope, and recovery status",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:33Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:33Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/24#issuecomment-4963575671"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 25,
+      "findings": [
+        "ll-009"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/25",
+      "title": "Correct Messari Q1 report attribution in published RWA and developer metrics",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/25#issuecomment-4963575601"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 26,
+      "findings": [
+        "ll-013"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/26",
+      "title": "get_scf_submissions external response omits award/payment semantics",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-17T02:18:49Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:33Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/26#issuecomment-4963575664"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-09-17T02:18:49Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/26#issuecomment-5707452339"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 27,
+      "findings": [
+        "ll-010"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/27",
+      "title": "Add source and measurement-scope provenance to RWA milestones in weekly roundup content",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:33Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:33Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/27#issuecomment-4963575665"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 28,
+      "findings": [
+        "ll-015"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/28",
+      "title": "Correct Protocol 27 activation date in the July 3 weekly roundup",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:34Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:34Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/28#issuecomment-4963575745"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 29,
+      "findings": [
+        "ll-012"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/29",
+      "title": "search_directory broad RWA queries omit known records and lack product deployment state",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:33Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:33Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/29#issuecomment-4963575677"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 30,
+      "findings": [
+        "ll-014"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/30",
+      "title": "Expose match provenance and soft-empty semantics for project-content retrieval",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:34Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:34Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/30#issuecomment-4963575751"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 31,
+      "findings": [
+        "ll-016"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/31",
+      "title": "Preserve provenance for disputed historical causal accounts",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:34Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:34Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/31#issuecomment-4963575768"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 32,
+      "findings": [
+        "ll-020"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/32",
+      "title": "Keep pre-vote Protocol 27 coverage from standing in for current activation status",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:35Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/32#issuecomment-4963575853"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 33,
+      "findings": [
+        "ll-024"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/33",
+      "title": "Preserve schedule supersession in Meridian event records",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:36Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/33#issuecomment-4963575914"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 34,
+      "findings": [
+        "ll-018"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/34",
+      "title": "get_scf_submissions: exact slug \"band\" also returns unrelated \"bando\" history",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-11T18:24:15Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/34#issuecomment-4963575847"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-08-11T18:24:01Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/34#issuecomment-5257175616"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 35,
+      "findings": [
+        "ll-019",
+        "ll-029"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/35",
+      "title": "find_av_passages response schema conflicts with live payload and field semantics",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-19T20:37:52Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/35#issuecomment-4963575846"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-08-19T20:37:52Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/35#issuecomment-5347713582"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 36,
+      "findings": [
+        "ll-017"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/36",
+      "title": "ll-017: Add explicit exact-match provenance to named-person semantic and AV search",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:34Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:34Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/36#issuecomment-4963575742"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 37,
+      "findings": [
+        "ll-025"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/37",
+      "title": "Preserve planned-versus-shipped maturity in Quantum Preparedness Plan summary",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:35Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/37#issuecomment-4963575910"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 38,
+      "findings": [
+        "ll-022"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/38",
+      "title": "Preserve source-qualified CCTP milestones in generated content",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:35Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/38#issuecomment-4963575856"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 39,
+      "findings": [
+        "ll-023"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/39",
+      "title": "Expose structured release-state metadata for Confidential Tokens content",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:35Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/39#issuecomment-4963575908"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 40,
+      "findings": [
+        "ll-026"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/40",
+      "title": "Preserve announcement, scheduled-effective, and first-trade dates in content summaries",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:35Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:35Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/40#issuecomment-4963575912"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 41,
+      "findings": [
+        "ll-027"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/41",
+      "title": "Add dated asset/feed scope to the RedStone SEP-40 re-coverage",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:36Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:36Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/41#issuecomment-4963576001"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 42,
+      "findings": [
+        "ll-004"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/42",
+      "title": "Partner-authenticated GET /v1/tools omits account-scoped tools advertised by /v1/me",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-27T14:09:56Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-14T16:14:21Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/42#issuecomment-4971409286"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-27T14:09:56Z",
+          "url": "https://github.com/lumenloop/lumenloop-backend/issues/42#issuecomment-5092399001"
+        }
+      ]
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 43,
+      "findings": [
+        "ll-028"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/43",
+      "title": "Reject or echo the sort field in list_documents instead of ignoring unknown values",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-19T20:36:39Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "lumenloop/lumenloop-backend",
+      "number": 44,
+      "findings": [
+        "ll-030"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-backend/issues/44",
+      "title": "Lumenloop project records count sub-products without naming them",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-09T03:36:28Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "lumenloop/lumenloop-skills",
+      "number": 1,
+      "findings": [
+        "sk-004"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-skills/issues/1",
+      "title": "sk-004: Two lumenloop-skills playbooks teach that findavpassages yields verbatim,",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-07T21:22:12Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "lumenloop/lumenloop-skills",
+      "number": 2,
+      "findings": [
+        "sk-005"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-skills/issues/2",
+      "title": "sk-005: The Lumenloop skill corpus lacks machine-readable audience and transport metadata",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-09T23:45:06Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "lumenloop/lumenloop-skills",
+      "number": 3,
+      "findings": [
+        "sk-007"
+      ],
+      "url": "https://github.com/lumenloop/lumenloop-skills/issues/3",
+      "title": "sk-007: The ecosystem-digest skill hard-codes a stale 2026-06-08 recency window",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-09T23:45:08Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "lumenloop/stellar-ecosystem-db",
+      "number": 3,
+      "findings": [
+        "ll-008"
+      ],
+      "url": "https://github.com/lumenloop/stellar-ecosystem-db/issues/3",
+      "title": "Correct or qualify directory coverage and region fields for LOBSTR and MoneyGram",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-13T22:54:32Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-13T22:54:32Z",
+          "url": "https://github.com/lumenloop/stellar-ecosystem-db/issues/3#issuecomment-4963575617"
+        }
+      ]
+    },
+    {
+      "repo": "OpenZeppelin/openzeppelin-skills",
+      "number": 13,
+      "findings": [
+        "sk-014"
+      ],
+      "url": "https://github.com/OpenZeppelin/openzeppelin-skills/issues/13",
+      "title": "develop-secure-contracts omits Stellar terms and overstates its security scope",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-11T17:30:42Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "OpenZeppelin/openzeppelin-skills",
+      "number": 14,
+      "findings": [
+        "sk-015",
+        "sk-022"
+      ],
+      "url": "https://github.com/OpenZeppelin/openzeppelin-skills/issues/14",
+      "title": "Scope generic Stellar triggers to OpenZeppelin-specific skills",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-11T17:30:44Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "OpenZeppelin/openzeppelin-skills",
+      "number": 16,
+      "findings": [
+        "sk-022"
+      ],
+      "url": "https://github.com/OpenZeppelin/openzeppelin-skills/issues/16",
+      "title": "OpenZeppelin upgrade skill teaches retired derive APIs as current",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-09T03:35:50Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "soroswap/docs",
+      "number": 47,
+      "findings": [
+        "cs-002"
+      ],
+      "url": "https://github.com/soroswap/docs/issues/47",
+      "title": "Aggregator docs say Phoenix and Aqua are on Testnet or coming soon; mainnet adapters are configured and unpaused",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-17T03:43:33Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "Stellar-Light/stellar-scout",
+      "number": 9,
+      "findings": [
+        "sls-024"
+      ],
+      "url": "https://github.com/Stellar-Light/stellar-scout/issues/9",
+      "title": "sls-024: Scout lifecycle labels lack populated provenance and deployment qualifiers",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-08-25T19:51:25Z",
+      "closedAt": "2026-08-11T22:40:44Z",
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-08-11T22:40:43Z",
+          "url": "https://github.com/Stellar-Light/stellar-scout/issues/9#issuecomment-5259690727"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-08-25T19:51:25Z",
+          "url": "https://github.com/Stellar-Light/stellar-scout/issues/9#issuecomment-5415888272"
+        }
+      ]
+    },
+    {
+      "repo": "Stellar-Light/stellar-scout",
+      "number": 13,
+      "findings": [
+        "sk-019"
+      ],
+      "url": "https://github.com/Stellar-Light/stellar-scout/issues/13",
+      "title": "Separate read-only Scout guidance from feedback submission instructions",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-19T20:36:48Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 494,
+      "findings": [
+        "sls-024"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/494",
+      "title": "Verification: sls-023/024/029/031 — status + TVL provenance live (spec 1.7.13)",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-09-08T18:11:36Z",
+      "closedAt": "2026-08-11T22:40:41Z",
+      "author": "theboycoder",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-09-05T00:19:07Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5547988441"
+        },
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-09-05T02:35:15Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5548777030"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-09-08T18:11:36Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-5589712494"
+        }
+      ]
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 514,
+      "findings": [
+        "sls-029"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/514",
+      "title": "Oracle discovery needs product/network evidence, not provider-level Live",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-07-15T15:23:16Z",
+      "closedAt": "2026-07-14T00:12:15Z",
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-07-15T04:42:03Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/514#issuecomment-4976929571"
+        },
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-07-15T04:52:33Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/514#issuecomment-4976982460"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-15T15:23:15Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/514#issuecomment-4982290253"
+        }
+      ]
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 519,
+      "findings": [
+        "sls-033"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/519",
+      "title": "sls-033: Wallet enumeration lacks availability and product-kind semantics",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-07-15T17:42:54Z",
+      "closedAt": "2026-07-14T22:32:11Z",
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-07-14T22:32:10Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-4974614225"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-15T15:23:17Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-4982290425"
+        },
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-07-15T17:42:54Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-4983613441"
+        }
+      ]
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 522,
+      "findings": [
+        "sls-039"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/522",
+      "title": "sls-039: Project TVL lacks history, source URL, and non-additive metric breakdown",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-07-14T16:31:42Z",
+      "closedAt": "2026-07-14T00:13:04Z",
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-07-14T00:13:03Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/522#issuecomment-4964093999"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-14T16:31:42Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/522#issuecomment-4971573624"
+        }
+      ]
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 530,
+      "findings": [
+        "sls-039"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/pull/530",
+      "title": "feat(sls-032/035/036/039/044): schema wave — bridge routes, venueRole, leaderboard dataAsOf, llamaSlugs+tvlMethodUrl, funding set-delta provenance (spec 1.7.20)",
+      "state": "closed",
+      "stateReason": null,
+      "updatedAt": "2026-07-14T00:02:16Z",
+      "closedAt": "2026-07-14T00:02:16Z",
+      "author": "theboycoder",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "vercel[bot]",
+          "createdAt": "2026-07-14T00:00:32Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/pull/530#issuecomment-4964021745"
+        }
+      ],
+      "pr": {
+        "headRefOid": "e99c40e50a81b696114deed842d78606252378fd",
+        "isDraft": false,
+        "mergeCommit": {
+          "oid": "7bcd2857057006ced420b1a5516bf68478c12c13"
+        },
+        "mergedAt": "2026-07-14T00:02:16Z",
+        "reviewDecision": "",
+        "reviews": [],
+        "state": "MERGED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T00:01:03Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/Stellar-Light/stellarlight/actions/runs/29294697533/job/86965564151",
+            "name": "contract",
+            "startedAt": "2026-07-14T00:00:35Z",
+            "status": "COMPLETED",
+            "workflowName": "Contract gate"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T00:01:06Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/Stellar-Light/stellarlight/actions/runs/29294697384/job/86965563888",
+            "name": "spectral",
+            "startedAt": "2026-07-14T00:00:34Z",
+            "status": "COMPLETED",
+            "workflowName": "OpenAPI lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T00:01:10Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/Stellar-Light/stellarlight/actions/runs/29294697469/job/86965564065",
+            "name": "vitest",
+            "startedAt": "2026-07-14T00:00:35Z",
+            "status": "COMPLETED",
+            "workflowName": "Unit tests"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T00:01:19Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/Stellar-Light/stellarlight/actions/runs/29294697390/job/86965563885",
+            "name": "verify",
+            "startedAt": "2026-07-14T00:00:36Z",
+            "status": "COMPLETED",
+            "workflowName": "Verify advertised claims"
+          },
+          {
+            "__typename": "StatusContext",
+            "context": "Vercel – stellarlight-landing",
+            "startedAt": "2026-07-14T00:00:32Z",
+            "state": "FAILURE",
+            "targetUrl": "https://vercel.com/git/authorize?team=StellarLight&slug=stellar-light&teamId=team_Vhd4KosBKIBq9rU3z8cngdzv&type=github&job=%7B%22headInfo%22%3A%7B%22sha%22%3A%22e99c40e50a81b696114deed842d78606252378fd%22%7D%2C%22id%22%3A%22QmQXhFSXPjNwJnnfEctAUsHAP5edtdBFfhSLxWrbrrFe8z%22%2C%22org%22%3A%22Stellar-Light%22%2C%22prId%22%3A530%2C%22repo%22%3A%22stellarlight%22%7D"
+          }
+        ]
+      }
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 742,
+      "findings": [
+        "sls-029",
+        "sls-033"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/742",
+      "title": "Residuals after the 1.7.2x discovery-metadata work (oracles, wallets, leaderboard, research coverage)",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-08-19T22:01:42Z",
+      "closedAt": "2026-08-13T04:57:53Z",
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "theboycoder",
+          "createdAt": "2026-07-29T14:59:25Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-5119567436"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-30T16:50:16Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-5133765754"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-08-19T22:01:42Z",
+          "url": "https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-5348534497"
+        }
+      ]
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 1673,
+      "findings": [
+        "sls-085"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/1673",
+      "title": "Soroswap onchain contract label calls the AMM router an aggregator router",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-17T03:43:35Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "Stellar-Light/stellarlight",
+      "number": 1674,
+      "findings": [
+        "sls-086"
+      ],
+      "url": "https://github.com/Stellar-Light/stellarlight/issues/1674",
+      "title": "Aquarius project description credits reward direction to ICE governance votes",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-17T03:43:37Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "stellar/stellar-cli",
+      "number": 2722,
+      "findings": [
+        "sd-052"
+      ],
+      "url": "https://github.com/stellar/stellar-cli/issues/2722",
+      "title": "CLI manual presents unimplemented bindings as generators",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-09T03:35:53Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2367,
+      "findings": [
+        "sd-027",
+        "sd-034"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/pull/2367",
+      "title": "docs: modernize smart-wallets references + rewrite guestbook tutorial",
+      "state": "closed",
+      "stateReason": null,
+      "updatedAt": "2026-09-10T00:55:57Z",
+      "closedAt": "2026-09-09T19:35:25Z",
+      "author": "AshFrancis",
+      "labels": [
+        "bot:needs-decision"
+      ],
+      "latestComments": [
+        {
+          "author": "kaankacar",
+          "createdAt": "2026-09-08T15:11:05Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5587369224"
+        },
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-09-09T19:35:25Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5607609515"
+        },
+        {
+          "author": "github-actions[bot]",
+          "createdAt": "2026-09-09T19:35:36Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5607611677"
+        }
+      ],
+      "pr": {
+        "headRefOid": "bdc081d9c25d2e2db6f674b8b61421a4f2bf32cd",
+        "isDraft": false,
+        "mergeCommit": null,
+        "mergedAt": null,
+        "reviewDecision": "REVIEW_REQUIRED",
+        "reviews": [
+          {
+            "id": "PRR_kwDOHxKGUc711Qgw",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-04-16T20:55:32Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "1a0af7e29331ffeaa927ac11a855804dd7a548f3"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABMoq12A",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-09-08T14:20:05Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "bdc081d9c25d2e2db6f674b8b61421a4f2bf32cd"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABMpPbQQ",
+            "author": {
+              "login": "kaankacar"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-09-08T15:11:00Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "bdc081d9c25d2e2db6f674b8b61421a4f2bf32cd"
+            }
+          }
+        ],
+        "state": "CLOSED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T14:14:07Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34236797666/job/102096484018",
+            "name": "mdx-format",
+            "startedAt": "2026-09-08T14:12:44Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T14:12:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34236795996/job/102096478029",
+            "name": "preview",
+            "startedAt": "2026-09-08T14:12:44Z",
+            "status": "COMPLETED",
+            "workflowName": "pr-preview"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T19:35:37Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34395966250/job/102615625969",
+            "name": "preview",
+            "startedAt": "2026-09-09T19:35:31Z",
+            "status": "COMPLETED",
+            "workflowName": "pr-preview"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T14:17:15Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34236797666/job/102096484911",
+            "name": "build / build",
+            "startedAt": "2026-09-08T14:12:44Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T14:17:21Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34236797666/job/102098172824",
+            "name": "complete",
+            "startedAt": "2026-09-08T14:17:18Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T14:12:53Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev/dashboard/org/stellar/sbom/c4e32d72-bcff-4ad4-a5e1-3b821c0db43e",
+            "name": "Socket Security: Project Report",
+            "startedAt": "2026-09-08T14:12:41Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-08T14:12:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev",
+            "name": "Socket Security: Pull Request Alerts",
+            "startedAt": "2026-09-08T14:12:54Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ]
+      }
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2410,
+      "findings": [
+        "sd-032"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/pull/2410",
+      "title": "Deprecate Spanish Crowdin site translations",
+      "state": "closed",
+      "stateReason": null,
+      "updatedAt": "2026-07-15T04:50:10Z",
+      "closedAt": "2026-07-14T20:28:02Z",
+      "author": "JFWooten4",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "JFWooten4",
+          "createdAt": "2026-05-13T17:10:57Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2410#issuecomment-4443509476"
+        },
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-13T19:51:11Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2410#issuecomment-4962039356"
+        }
+      ],
+      "pr": {
+        "headRefOid": "6f22135cdd89e52b1f347c300eb98c35069db9f0",
+        "isDraft": false,
+        "mergeCommit": {
+          "oid": "ef832168a80a064b3e17f8bc763d7b7c7fafb3d2"
+        },
+        "mergedAt": "2026-07-14T20:28:02Z",
+        "reviewDecision": "APPROVED",
+        "reviews": [
+          {
+            "id": "PRR_kwDOHxKGUc752CXX",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-04-28T19:11:51Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "43fdd72916e7a100c4b50f5c4e3c94459eed366f"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABGAm_sw",
+            "author": {
+              "login": "ElliotFriend"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-07-14T20:27:06Z",
+            "includesCreatedEdit": false,
+            "state": "APPROVED",
+            "commit": {
+              "oid": "caac8648f1b6979a49f2ed28e3efc9fd2773be3e"
+            }
+          }
+        ],
+        "state": "MERGED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T20:24:28Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29365520218/job/87195978712",
+            "name": "mdx-format",
+            "startedAt": "2026-07-14T20:23:33Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T20:27:33Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29365520218/job/87195978749",
+            "name": "build / build",
+            "startedAt": "2026-07-14T20:23:33Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T20:27:38Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29365520218/job/87196843896",
+            "name": "complete",
+            "startedAt": "2026-07-14T20:27:35Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T20:23:43Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev/dashboard/org/stellar/sbom/4035eb48-2506-456d-b7e2-5dfe50cb7e1c",
+            "name": "Socket Security: Project Report",
+            "startedAt": "2026-07-14T20:23:27Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-14T20:24:13Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev",
+            "name": "Socket Security: Pull Request Alerts",
+            "startedAt": "2026-07-14T20:23:32Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ]
+      }
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2561,
+      "findings": [
+        "sd-050"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2561",
+      "title": "Rewrite the JavaScript SDK section of client-sdks.mdx: TypeScript-first, one package, bindings CLI, dedicated docs site",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-04T15:46:27Z",
+      "closedAt": null,
+      "author": "oceans404",
+      "labels": [
+        "dev-rel"
+      ],
+      "latestComments": []
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2565,
+      "findings": [
+        "sd-005"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2565",
+      "title": "sd-005: The docs' agentic-payments coverage documents x402 and MPP mechanics in depth",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-27T13:31:58Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-21T15:11:41Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2565#issuecomment-5035735424"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-27T13:31:58Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2565#issuecomment-5091973988"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2566,
+      "findings": [
+        "sd-003"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2566",
+      "title": "sd-003: The Algolia docs index excludes the auto-generated RPC-method and",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-27T13:32:00Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-15T14:50:14Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2566#issuecomment-4981955612"
+        },
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-21T15:11:55Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2566#issuecomment-5035737955"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-27T13:31:59Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2566#issuecomment-5091974189"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2567,
+      "findings": [
+        "sd-004"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2567",
+      "title": "sd-004: The RPC method reference pages describe pagination limits as \"hardcoded in",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-07-14T22:22:11Z",
+      "closedAt": "2026-07-13T14:17:57Z",
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-13T14:17:57Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2567#issuecomment-4958935363"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2572,
+      "findings": [
+        "sd-003",
+        "sd-004"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/pull/2572",
+      "title": "Document RPC pagination limits",
+      "state": "closed",
+      "stateReason": null,
+      "updatedAt": "2026-07-10T13:47:01Z",
+      "closedAt": "2026-07-10T13:46:59Z",
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-10T02:22:14Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2572#issuecomment-4931390681"
+        },
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-10T13:39:34Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2572#issuecomment-4935924361"
+        },
+        {
+          "author": "stellar-jenkins-ci[bot]",
+          "createdAt": "2026-07-10T13:46:06Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2572#issuecomment-4935986186"
+        }
+      ],
+      "pr": {
+        "headRefOid": "fb4e8ecbb50218b52313c434a9d0d4e8571fdb3a",
+        "isDraft": false,
+        "mergeCommit": {
+          "oid": "26542769f692926bc20cf44638c73b219a986802"
+        },
+        "mergedAt": "2026-07-10T13:46:59Z",
+        "reviewDecision": "APPROVED",
+        "reviews": [
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABFfq-Ww",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-07-09T14:09:03Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "dae4339537c92b49c77b1ea643db7a303b65ec3c"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABFnhCgg",
+            "author": {
+              "login": "ElliotFriend"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-07-10T13:39:49Z",
+            "includesCreatedEdit": false,
+            "state": "APPROVED",
+            "commit": {
+              "oid": "fb4e8ecbb50218b52313c434a9d0d4e8571fdb3a"
+            }
+          }
+        ],
+        "state": "MERGED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:39:01Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29096775324/job/86375178090",
+            "name": "mdx-format",
+            "startedAt": "2026-07-10T13:38:04Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:38:42Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29096771365/job/86375169315",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-07-10T13:38:02Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:38:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29096771365/job/86375169301",
+            "name": "Analyze (javascript-typescript)",
+            "startedAt": "2026-07-10T13:38:01Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:41:52Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29096775324/job/86375178176",
+            "name": "build / build",
+            "startedAt": "2026-07-10T13:38:04Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:41:57Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29096775324/job/86376003305",
+            "name": "complete",
+            "startedAt": "2026-07-10T13:41:54Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:38:34Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/runs/86375285161",
+            "name": "CodeQL",
+            "startedAt": "2026-07-10T13:38:32Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "StatusContext",
+            "context": "PR preview",
+            "startedAt": "2026-07-10T13:46:06Z",
+            "state": "SUCCESS",
+            "targetUrl": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:38:08Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev/dashboard/org/stellar/sbom/c92ef083-c379-4c2e-affc-f06ce343a5d8",
+            "name": "Socket Security: Project Report",
+            "startedAt": "2026-07-10T13:38:01Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-10T13:38:07Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev",
+            "name": "Socket Security: Pull Request Alerts",
+            "startedAt": "2026-07-10T13:38:05Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ]
+      }
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2575,
+      "findings": [
+        "sd-009"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2575",
+      "title": "sd-009: The docs omit SEP-6's canonical interactive-component deprecation status",
+      "state": "closed",
+      "stateReason": "not_planned",
+      "updatedAt": "2026-07-14T22:22:13Z",
+      "closedAt": "2026-07-14T18:54:55Z",
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-13T21:19:08Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2575#issuecomment-4962781289"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-14T18:54:55Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2575#issuecomment-4972837763"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2602,
+      "findings": [
+        "sd-053"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2602",
+      "title": "Document Stellar RPC BACKFILL startup behavior",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-21T17:04:28Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "dev-rel",
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-21T15:11:24Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5035732543"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-27T13:32:12Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5091976539"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-09-21T17:04:28Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5764382567"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2606,
+      "findings": [
+        "sd-032"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2606",
+      "title": "Avoid stale incompatible Flutter wallet SDK version pins",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-04T15:47:09Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "dev-rel",
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-21T15:11:37Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2606#issuecomment-5035734827"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2609,
+      "findings": [
+        "sd-035"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2609",
+      "title": "Replace legacy Wallets Kit v1 references in current tutorials",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-04T15:47:10Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "dev-rel",
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-15T15:21:41Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2609#issuecomment-4982273197"
+        },
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-21T15:11:05Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2609#issuecomment-5035729421"
+        },
+        {
+          "author": "kalepail",
+          "createdAt": "2026-07-27T13:32:13Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2609#issuecomment-5091976739"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2611,
+      "findings": [
+        "sd-014"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2611",
+      "title": "Document Stellar transaction inclusion verification boundaries",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-07-21T15:11:52Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "ElliotFriend",
+          "createdAt": "2026-07-21T15:11:51Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2611#issuecomment-5035737315"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2659,
+      "findings": [
+        "sd-035"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/pull/2659",
+      "title": "Pin Wallets Kit to v1 in the example app tutorial (stopgap)",
+      "state": "closed",
+      "stateReason": null,
+      "updatedAt": "2026-07-21T15:47:16Z",
+      "closedAt": "2026-07-21T15:47:15Z",
+      "author": "ElliotFriend",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "stellar-jenkins-ci[bot]",
+          "createdAt": "2026-07-21T15:20:20Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2659#issuecomment-5035827035"
+        },
+        {
+          "author": "stellar-jenkins-ci[bot]",
+          "createdAt": "2026-07-21T15:35:31Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2659#issuecomment-5035981490"
+        }
+      ],
+      "pr": {
+        "headRefOid": "94427abbfdf6ce74c1d12252f09e1c4ca761e3b5",
+        "isDraft": false,
+        "mergeCommit": {
+          "oid": "7a8791c4eca5e031c5185876f3127a2fe3d1589a"
+        },
+        "mergedAt": "2026-07-21T15:47:15Z",
+        "reviewDecision": "APPROVED",
+        "reviews": [
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABGuPpzw",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-07-21T15:12:24Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "7fdffd042c5d407314825faf341c1726e71bbf85"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABGuWNYA",
+            "author": {
+              "login": "ElliotFriend"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-07-21T15:25:29Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "7fdffd042c5d407314825faf341c1726e71bbf85"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABGuhjQg",
+            "author": {
+              "login": "kaankacar"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-07-21T15:46:45Z",
+            "includesCreatedEdit": false,
+            "state": "APPROVED",
+            "commit": {
+              "oid": "94427abbfdf6ce74c1d12252f09e1c4ca761e3b5"
+            }
+          }
+        ],
+        "state": "MERGED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:27:05Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29843953501/job/88679592362",
+            "name": "mdx-format",
+            "startedAt": "2026-07-21T15:26:12Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:27:17Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29843946859/job/88679577617",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-07-21T15:26:04Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:27:01Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29843946859/job/88679577493",
+            "name": "Analyze (javascript-typescript)",
+            "startedAt": "2026-07-21T15:26:04Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:29:24Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29843953501/job/88679592606",
+            "name": "build / build",
+            "startedAt": "2026-07-21T15:26:08Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:29:28Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/29843953501/job/88680490276",
+            "name": "complete",
+            "startedAt": "2026-07-21T15:29:26Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:26:54Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/runs/88679804486",
+            "name": "CodeQL",
+            "startedAt": "2026-07-21T15:26:52Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "StatusContext",
+            "context": "PR preview",
+            "startedAt": "2026-07-21T15:35:32Z",
+            "state": "SUCCESS",
+            "targetUrl": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:26:09Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev/dashboard/org/stellar/sbom/26ae1442-2ddb-4b3c-8a40-92ecdf4b62e8",
+            "name": "Socket Security: Project Report",
+            "startedAt": "2026-07-21T15:26:01Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-07-21T15:26:08Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev",
+            "name": "Socket Security: Pull Request Alerts",
+            "startedAt": "2026-07-21T15:26:06Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ]
+      }
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2700,
+      "findings": [
+        "sd-027",
+        "sd-034"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2700",
+      "title": "Smart-wallet guide routes new readers to legacy Passkey Kit and a discontinued LaunchTube",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-08-05T19:12:55Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-08-05T19:12:55Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2700#issuecomment-5196210824"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2789,
+      "findings": [
+        "sd-053"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/pull/2789",
+      "title": "Document RPC BACKFILL flag and refresh sample config",
+      "state": "closed",
+      "stateReason": null,
+      "updatedAt": "2026-09-14T19:39:17Z",
+      "closedAt": "2026-09-14T19:39:04Z",
+      "author": "kaankacar",
+      "labels": [
+        "bot:ready-to-merge"
+      ],
+      "latestComments": [
+        {
+          "author": "kaankacar",
+          "createdAt": "2026-09-07T15:17:40Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2789#issuecomment-5572687049"
+        },
+        {
+          "author": "github-actions[bot]",
+          "createdAt": "2026-09-09T20:07:50Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2789#issuecomment-5608017469"
+        },
+        {
+          "author": "github-actions[bot]",
+          "createdAt": "2026-09-14T19:39:17Z",
+          "url": "https://github.com/stellar/stellar-docs/pull/2789#issuecomment-5669738552"
+        }
+      ],
+      "pr": {
+        "headRefOid": "d12ade0b037b8a799a5d06bbe4b4e9ef7b9bee56",
+        "isDraft": false,
+        "mergeCommit": {
+          "oid": "9d71821f8405c262dec974da53da834604fd63ca"
+        },
+        "mergedAt": "2026-09-14T19:39:04Z",
+        "reviewDecision": "APPROVED",
+        "reviews": [
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABKo6oRw",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-08-24T14:30:44Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "c5d4e7d58a2cb74c4648628ca3d2dffaa07c653b"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABKpBuRA",
+            "author": {
+              "login": "kaankacar"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-08-24T14:41:11Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "7909d676a29ad33dd73b741310fd212ed2f1707c"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABKpB1MA",
+            "author": {
+              "login": "kaankacar"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-08-24T14:41:23Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "7909d676a29ad33dd73b741310fd212ed2f1707c"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABKpB6ag",
+            "author": {
+              "login": "kaankacar"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-08-24T14:41:31Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "7909d676a29ad33dd73b741310fd212ed2f1707c"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABMqPSaQ",
+            "author": {
+              "login": "Shaptic"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-09-08T16:46:10Z",
+            "includesCreatedEdit": false,
+            "state": "APPROVED",
+            "commit": {
+              "oid": "543e70f9f23cb991d381b5bd51167adda609b9ff"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABM4Sk8A",
+            "author": {
+              "login": "ElliotFriend"
+            },
+            "authorAssociation": "MEMBER",
+            "submittedAt": "2026-09-09T20:04:17Z",
+            "includesCreatedEdit": false,
+            "state": "APPROVED",
+            "commit": {
+              "oid": "d12ade0b037b8a799a5d06bbe4b4e9ef7b9bee56"
+            }
+          },
+          {
+            "id": "PRR_kwDOHxKGUc8AAAABM4UH4g",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-09-09T20:06:52Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "d12ade0b037b8a799a5d06bbe4b4e9ef7b9bee56"
+            }
+          }
+        ],
+        "state": "MERGED",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:05:22Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34398778120/job/102625136493",
+            "name": "mdx-format",
+            "startedAt": "2026-09-09T20:03:54Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:04:46Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34398776498/job/102625138484",
+            "name": "Analyze (actions)",
+            "startedAt": "2026-09-09T20:03:54Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:07:53Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34398776162/job/102625131972",
+            "name": "preview",
+            "startedAt": "2026-09-09T20:03:54Z",
+            "status": "COMPLETED",
+            "workflowName": "pr-preview"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-14T19:39:19Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34888190805/job/104123952561",
+            "name": "preview",
+            "startedAt": "2026-09-14T19:39:10Z",
+            "status": "COMPLETED",
+            "workflowName": "pr-preview"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:04:51Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34398776498/job/102625138123",
+            "name": "Analyze (javascript-typescript)",
+            "startedAt": "2026-09-09T20:03:54Z",
+            "status": "COMPLETED",
+            "workflowName": "CodeQL"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:08:44Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34398778120/job/102625137097",
+            "name": "build / build",
+            "startedAt": "2026-09-09T20:03:54Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:08:49Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/actions/runs/34398778120/job/102626764669",
+            "name": "complete",
+            "startedAt": "2026-09-09T20:08:46Z",
+            "status": "COMPLETED",
+            "workflowName": "Build, format MDX and Lint"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:04:40Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-docs/runs/102625396204",
+            "name": "CodeQL",
+            "startedAt": "2026-09-09T20:04:38Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:03:54Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev/dashboard/org/stellar/sbom/3a06154e-61e2-4882-b921-c91165fc15b0",
+            "name": "Socket Security: Project Report",
+            "startedAt": "2026-09-09T20:03:50Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-09T20:03:57Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev",
+            "name": "Socket Security: Pull Request Alerts",
+            "startedAt": "2026-09-09T20:03:55Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ]
+      }
+    },
+    {
+      "repo": "stellar/stellar-docs",
+      "number": 2842,
+      "findings": [
+        "sd-046"
+      ],
+      "url": "https://github.com/stellar/stellar-docs/issues/2842",
+      "title": "Lumens and Accounts pages obscure the two-reserve cost of pool-share trustlines",
+      "state": "closed",
+      "stateReason": "completed",
+      "updatedAt": "2026-09-28T16:34:06Z",
+      "closedAt": "2026-09-28T16:34:06Z",
+      "author": "kalepail",
+      "labels": [
+        "raven"
+      ],
+      "latestComments": [
+        {
+          "author": "kaankacar",
+          "createdAt": "2026-09-09T04:02:29Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2842#issuecomment-5595591264"
+        },
+        {
+          "author": "kaankacar",
+          "createdAt": "2026-09-09T04:08:40Z",
+          "url": "https://github.com/stellar/stellar-docs/issues/2842#issuecomment-5595638528"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-protocol",
+      "number": 1981,
+      "findings": [
+        "sd-037"
+      ],
+      "url": "https://github.com/stellar/stellar-protocol/issues/1981",
+      "title": "Add SLPs to the canonical proposal index and repository overview",
+      "state": "closed",
+      "stateReason": "not_planned",
+      "updatedAt": "2026-09-14T18:14:06Z",
+      "closedAt": "2026-09-14T18:14:06Z",
+      "author": "kalepail",
+      "labels": [
+        "stale"
+      ],
+      "latestComments": [
+        {
+          "author": "github-actions[bot]",
+          "createdAt": "2026-08-14T18:19:18Z",
+          "url": "https://github.com/stellar/stellar-protocol/issues/1981#issuecomment-5296722882"
+        }
+      ]
+    },
+    {
+      "repo": "stellar/stellar-protocol",
+      "number": 2010,
+      "findings": [
+        "sd-048"
+      ],
+      "url": "https://github.com/stellar/stellar-protocol/issues/2010",
+      "title": "CAP-0075 lists unsupported Poseidon2 S-box degrees",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-01T20:06:23Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": []
+    },
+    {
+      "repo": "stellar/stellar-protocol",
+      "number": 2021,
+      "findings": [
+        "sd-037"
+      ],
+      "url": "https://github.com/stellar/stellar-protocol/pull/2021",
+      "title": "Add a list of SLPs and mention SLPs in the root README",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-21T17:21:46Z",
+      "closedAt": null,
+      "author": "kalepail",
+      "labels": [],
+      "latestComments": [],
+      "pr": {
+        "headRefOid": "11b31a7118a4e5167bd3262aeb9aca5eb26b9186",
+        "isDraft": false,
+        "mergeCommit": null,
+        "mergedAt": null,
+        "reviewDecision": "",
+        "reviews": [
+          {
+            "id": "PRR_kwDOAVw6BM8AAAABOhmX0A",
+            "author": {
+              "login": "copilot-pull-request-reviewer"
+            },
+            "authorAssociation": "CONTRIBUTOR",
+            "submittedAt": "2026-09-21T17:21:45Z",
+            "includesCreatedEdit": false,
+            "state": "COMMENTED",
+            "commit": {
+              "oid": "11b31a7118a4e5167bd3262aeb9aca5eb26b9186"
+            }
+          }
+        ],
+        "state": "OPEN",
+        "statusCheckRollup": [
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-21T17:20:29Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-protocol/actions/runs/35631282760/job/106437813304",
+            "name": "mddiffcheck",
+            "startedAt": "2026-09-21T17:19:35Z",
+            "status": "COMPLETED",
+            "workflowName": "Check CAP Diffs"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-21T17:19:49Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://github.com/stellar/stellar-protocol/actions/runs/35631282741/job/106437812783",
+            "name": "lineendings",
+            "startedAt": "2026-09-21T17:19:35Z",
+            "status": "COMPLETED",
+            "workflowName": "Check CAP Line Endings"
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-21T17:19:43Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev/dashboard/org/stellar/sbom/da796e41-5d02-4390-88bf-9e1dcb01371b",
+            "name": "Socket Security: Project Report",
+            "startedAt": "2026-09-21T17:19:32Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          },
+          {
+            "__typename": "CheckRun",
+            "completedAt": "2026-09-21T17:19:56Z",
+            "conclusion": "SUCCESS",
+            "detailsUrl": "https://socket.dev",
+            "name": "Socket Security: Pull Request Alerts",
+            "startedAt": "2026-09-21T17:19:43Z",
+            "status": "COMPLETED",
+            "workflowName": ""
+          }
+        ]
+      }
+    },
+    {
+      "repo": "Trustless-Work/trustlesswork-skill",
+      "number": 6,
+      "findings": [
+        "sk-025"
+      ],
+      "url": "https://github.com/Trustless-Work/trustlesswork-skill/issues/6",
+      "title": "Version the skill around V1 mainnet and V2 beta protocol profiles",
+      "state": "open",
+      "stateReason": null,
+      "updatedAt": "2026-09-16T19:25:45Z",
+      "closedAt": null,
+      "author": "techrebelgit",
+      "labels": [],
+      "latestComments": [
+        {
+          "author": "kalepail",
+          "createdAt": "2026-09-16T19:25:45Z",
+          "url": "https://github.com/Trustless-Work/trustlesswork-skill/issues/6#issuecomment-5703275444"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-16T22:35:44Z",
+  "synced_at": "2026-09-29T19:23:49Z",
   "status": "complete",
   "missing_sources": [],
   "skill_count": 21,
@@ -189,9 +189,9 @@
       "repo": "stellar-dev-skill",
       "path": "skills",
       "ref": "main",
-      "commit": "0472452a05731de5e0a1e886d8aae6df24873fe2",
-      "commit_date": "2026-09-09T04:12:04Z",
-      "url": "https://github.com/stellar/stellar-dev-skill/tree/0472452a05731de5e0a1e886d8aae6df24873fe2/skills",
+      "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
+      "commit_date": "2026-09-15T15:59:11Z",
+      "url": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills",
       "license_files": [
         "LICENSE"
       ],
@@ -326,8 +326,8 @@
             },
             {
               "path": "ecosystem.md",
-              "size": 23430,
-              "sha": "5403ab392e8df0d5734c0437b66e86e7efc35079"
+              "size": 24195,
+              "sha": "f07066b36602ff5715939935024874ea8fd0ff3c"
             },
             {
               "path": "resources.md",
@@ -396,9 +396,9 @@
       "repo": "trustlesswork-skill",
       "path": ".",
       "ref": "main",
-      "commit": "634f32bd4be6769b0cae52e72db4899d5f5a069c",
-      "commit_date": "2026-09-12T04:46:13Z",
-      "url": "https://github.com/Trustless-Work/trustlesswork-skill/tree/634f32bd4be6769b0cae52e72db4899d5f5a069c",
+      "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
+      "commit_date": "2026-09-27T01:44:59Z",
+      "url": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
       "license_files": [
         "LICENSE"
       ],
@@ -408,13 +408,13 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 13836,
-              "sha": "c95f53e79a513dd3efb74badc70c3477d11ea052"
+              "size": 13994,
+              "sha": "4bb65f75e2523a3659be76a20f7904c06f0b65d6"
             },
             {
               "path": "constitution.md",
-              "size": 13910,
-              "sha": "81ff369c481642c053eb017a4d4efc967c5ac3e4"
+              "size": 14534,
+              "sha": "d474a89006c2e967b3209732db96497597fb39ff"
             },
             {
               "path": "skills/api/core-concepts.md",
@@ -423,13 +423,13 @@
             },
             {
               "path": "skills/api/multi-release-escrow.md",
-              "size": 31591,
-              "sha": "78fae830425de5d78c8026f60ae9c0cb8caa0c89"
+              "size": 31799,
+              "sha": "367ab6c86d4ece8fa92a44e420e7b19ab4dcc635"
             },
             {
               "path": "skills/api/single-release-escrow.md",
-              "size": 31462,
-              "sha": "19e2657df4bfc57d9e85107a516fa801b53f8d17"
+              "size": 31644,
+              "sha": "7996e0efc40acd334c8f25f4c9fa9a517c9efbaa"
             },
             {
               "path": "skills/api/trustlines.md",
@@ -443,18 +443,18 @@
             },
             {
               "path": "skills/api/v2/core-concepts.md",
-              "size": 9913,
-              "sha": "bdcaf9059492697f803354e87543b3845ff92358"
+              "size": 13189,
+              "sha": "6e976055ab07cd6f2c214134227e2c59a9dc7cc8"
             },
             {
               "path": "skills/api/v2/multi-release.md",
-              "size": 7870,
-              "sha": "0339311553bdb89b975d4d9ba1c2da2c80f684a7"
+              "size": 8718,
+              "sha": "cf1931267b3e7c9563e86c33b4bc6b68e02859bd"
             },
             {
               "path": "skills/api/v2/single-release.md",
-              "size": 8091,
-              "sha": "e9b9afb155b991d8cfc0c17323a11e25f7baee9c"
+              "size": 8704,
+              "sha": "e11f3454fd59b9753925c1636e4128c8226a6d49"
             },
             {
               "path": "skills/blocks/components.md",
@@ -488,13 +488,13 @@
             },
             {
               "path": "skills/protocol/v1.md",
-              "size": 11480,
-              "sha": "07ffd9f82e219264b8c4cee81e00735de52046e6"
+              "size": 11970,
+              "sha": "2d3efe8c90993c41067b90b4292b47737d78bd85"
             },
             {
               "path": "skills/protocol/v2.md",
-              "size": 7878,
-              "sha": "c790ddca6c811d37ffbd053315a91650569b30a3"
+              "size": 8503,
+              "sha": "0c79c9fe899c94709b43f99352da41deda6e5b9d"
             },
             {
               "path": "skills/react-sdk/hooks-reference.md",

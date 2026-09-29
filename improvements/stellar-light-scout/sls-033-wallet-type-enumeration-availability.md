@@ -27,6 +27,8 @@ recurrences:
     evidence: Production API 1.9.1 exact type=Wallet returns 63 rows with 1 null productKind, 33 nonempty availability values, and zero canonicalSlug values. MXlet remains unclassified and 30 wallet rows have no availability. Closed issue #519 and merged PR #540 delivered a partial fix; the residual still reproduces under open #742.
   - date: 2026-09-08
     evidence: Production API 1.9.48 exact type=Wallet returned 71 rows at 2026-09-08T14:33:50.155Z. Nine rows have null productKind, and 38 have empty availability. Response SHA-256 0bd102b62ba26fc9e5b91761bc8915ee72ecda1cd152644696c70696194380e0.
+  - date: 2026-09-29
+    evidence: The wallet query returned 72 rows. Ten rows lacked productKind and 39 lacked availability. The original metadata coverage gaps remain. Live response snapshot is .agents/rounds/2026-09-29-truth-maintenance/scout-rechecks.json.
 ---
 
 ## Finding
