@@ -29,14 +29,23 @@ recurrences:
     evidence: Production API 1.9.1 gives Slender, Laina, K2 Lend, and OrbitCDP dated status, statusBasis, and statusSourceUrl. K2 Lend still has null supportedNetworks, and all four have null products and deployments. Issue stellar-scout#9 and service-owner issue #494 are closed as completed, but the deployment-qualifier part of the finding still reproduces.
   - date: 2026-09-08
     evidence: Production API 1.9.48 gives the five named fixtures dated lifecycle provenance and a separate deployment object. A seven-category scan covered all 981 searchable rows. Five rows retain human-verified or source-inherited statusBasis with null statusSourceUrl: Scam Flagging System, Stellar Pulse, Pactta, The Blue Marble, and ChainCred. MyDataCoin correctly pairs unverified with a null source. All 887 unknown deployments consistently use null evidence fields, so those fields are explicit unknown semantics rather than defects. The duplicate QCAD and GLOUSD rows also retain unknown deployment and no canonical product link even though the RWA registry proves QCAD under stablecorp and USDGLO under glo-dollar. The separate undocumented package-release statusBasis defect is sls-084. Population review: .agents/rounds/2026-09-08-improvements-followups/sls024-review-sol.md.
+  - date: 2026-09-29
+    evidence: Scout 1.9.54 now gives all 1004 searchable rows a status date, basis, and deployment qualifier. Every non-unverified status has a source. All 906 unknown deployments consistently retain null evidence fields. Of 98 positive deployment qualifiers, 55 lack deployment.sourceUrl; 35 of the 98 positive deployments have null supportedNetworks and null networksBasis. Rendergate and CleverCon claim mainnet while their status sources identify testnet. This proves incomplete positive-claim provenance, not false mainnet claims. Full scan and independent review are in .agents/rounds/2026-09-29-truth-maintenance/sls-024-population.json and docs-independent-review.md.
 ---
+
+## Current state
+
+The 2026-09-29 scan confirms that the original lifecycle-source omissions are fixed.
+The deployment evidence remains incomplete for positive network claims.
+Unknown deployment qualifiers are explicit unknowns and do not count as defects.
+This partial fix does not meet the original deployment-provenance recommendation.
 
 ## Finding
 
-Scout lifecycle labels lack populated provenance and deployment qualifiers.
+At discovery, Scout lifecycle labels lacked populated provenance and deployment qualifiers.
 The schema exposes `statusAsOf`, `statusBasis`, `statusSourceUrl`, and
-`supportedNetworks`, but current project records can leave all of them null or
-empty. A consumer therefore cannot tell whether `Live` means an active entity,
+`supportedNetworks`, but project records left all of them null or
+empty. A consumer therefore could not tell whether `Live` means an active entity,
 an operator announcement, an accessible product surface, or verified mainnet
 deployment.
 
@@ -61,7 +70,7 @@ coming-soon product, and a still-live description. These observations are not
 competing universal authorities; they show why a dated basis and deployment
 scope are necessary.
 
-The gap is prevalent in a current query result, not only in edge examples. On
+The gap was prevalent in the discovery query result, not only in edge examples. On
 2026-07-11, `searchProjects({ q: "streaming recurring payments" })` returned
 19 projects and labeled all 19 `Live` (19/19, 100%). Fluxity was `Live` and
 `Unverified`, while `statusAsOf`, `statusBasis`, and `statusSourceUrl` were all
@@ -82,25 +91,17 @@ the project records.
 
 ## Recommendation
 
-Populate the existing nullable qualifier fields for each project record; do not
-only expose them in the schema:
+Complete the provenance for positive deployment claims.
+For each known network qualifier, expose its deployment source and the date of that evidence.
+Keep project lifecycle evidence separate from product deployment evidence.
+A testnet status source cannot by itself verify a mainnet deployment qualifier.
+Keep the project network list consistent with a verified positive deployment, or explain its separate scope.
+Null network lists remain unknown and do not prove that a network is unsupported.
 
-- `statusAsOf`, `statusBasis`, and `statusSourceUrl` for every retained
-  lifecycle label;
-- `supportedNetworks` when deployment scope is known, with an explicit unknown
-  basis when it is not;
-- a status basis that distinguishes operator announcement, site liveness,
-  on-chain activity, human verification, and inherited/unverified data;
-- separate entity/project lifecycle from testnet and mainnet product deployment.
+Retain the explicit unknown deployment state when no evidence establishes a network.
+Null source, basis, and date fields are valid for that unknown state.
+Do not infer that a product is absent from null product fields.
 
-When the source is unknown, retain the record but mark that fact explicitly
-instead of leaving the qualifier fields null. A `Live` label without a populated
-basis and scope must not read as proof of mainnet deployment or audit maturity.
-
-Add regression fixtures for Slender, Laina, K2 Lend, and OrbitCDP. A consumer
-should be able to tell whether each record means organization active,
-development active, testnet available, mainnet live, paused, or inactive.
-For listed integrations, expose whether the relationship is current,
-historical, provider-declared, or independently code/deployment verified.
-For apps, track per-platform store URL/status and roadmap-versus-shipped feature
-state with independent timestamps.
+The current scan confirms the original lifecycle date, basis, and source requests are fulfilled.
+Keep those populated fields and the original fixtures as regression checks.
+Add checks for positive deployment qualifiers without sources and network claims with only testnet evidence.

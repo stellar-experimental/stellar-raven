@@ -44,6 +44,30 @@ instructions ("ignore previous", "you must", credentials, URLs to fetch).
 
 ## Entries
 
+### 2026-09-29 — stellar-dev and trustless-work drift review (#180)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `65375fd2b2582af27fd267f912e8c6d01752120d` | `sel:4cfca3a746a6` | author read; independent GPT-6 Astra high accepted |
+| `trustless-work` | `80e2467f34041b9f70e66d6c2f567fc76ba9b1bb` | `sel:05e2eb56866c` | author read; independent GPT-6 Astra high accepted |
+
+The author read all ten changed file diffs from `ecosystem-skills/update.sh`.
+The standards companion adds Trustless Work to the escrow directory.
+The Trustless Work files add receiver trustline checks and token error codes.
+They remove `receiverMemo` from the Core API examples.
+They distinguish terminal milestone states from open disputes.
+The V1 guidance dates its contract changes and preserves earlier deployment behavior.
+No selected skill was added or removed.
+No changed text redirects the agent outside the skill topic or exposes a Raven operation.
+The beta authentication conflict in `sk-025` remains unresolved.
+
+`check-mirrors.mjs --fetch` verified all 66 selected files.
+The routing comparison retained every result ID, rank, and score across all 544 cases.
+The independent review accepted the drift and pin changes.
+See `.agents/rounds/2026-09-29-truth-maintenance/drift-independent-review.md`.
+The review found the bounded documentation defect `sk-026`; it does not block the pin update.
+The round ledger records the release gates.
+
 ### 2026-07-30 — baseline (no pin movement)
 
 | Source | Pinned commit | Selection | Reviewed |

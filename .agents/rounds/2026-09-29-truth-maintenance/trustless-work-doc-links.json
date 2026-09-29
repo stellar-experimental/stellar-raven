@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-09-29T19:41:10.753Z",
+  "checks": [
+    {
+      "url": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/errors/escrow-receiver-trustline-missing",
+      "status": 404,
+      "pageNotFound": false,
+      "containsErrorCode": true
+    },
+    {
+      "url": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/errors/token-trustline-missing",
+      "status": 404,
+      "pageNotFound": false,
+      "containsErrorCode": true
+    },
+    {
+      "url": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/errors/escrow/escrow-receiver-trustline-missing",
+      "status": 200,
+      "pageNotFound": false,
+      "containsErrorCode": true
+    },
+    {
+      "url": "https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/errors/token/token-trustline-missing",
+      "status": 200,
+      "pageNotFound": false,
+      "containsErrorCode": true
+    }
+  ]
+}

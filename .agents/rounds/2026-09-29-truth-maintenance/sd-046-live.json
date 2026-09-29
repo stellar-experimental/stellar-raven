@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-09-29T19:24:48.623Z",
+  "finding": "sd-046",
+  "results": [
+    {
+      "path": "/docs/learn/fundamentals/lumens",
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+      "source": {
+        "status": 200,
+        "sha256": "41c5e4dff68d292015201bcbcc60bd04bc97b4be27bae1a19f4ef412bb8e0ff8",
+        "checks": {
+          "present": {
+            "which counts as two and so requires two base reserves": true,
+            "1 claimant/base reserve (0.5 XLM) = 3 XLM": true
+          },
+          "absent": {
+            "(for both traditional assets and pool shares)": true,
+            "= 3.5 XLM": true
+          }
+        },
+        "liquidityPoolsLink": true
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 12,
+        "complete": true,
+        "truncated": false,
+        "checks": {
+          "present": {
+            "which counts as two and so requires two base reserves": true,
+            "1 claimant/base reserve (0.5 XLM) = 3 XLM": true
+          },
+          "absent": {
+            "(for both traditional assets and pool shares)": true,
+            "= 3.5 XLM": true
+          }
+        }
+      }
+    },
+    {
+      "path": "/docs/learn/fundamentals/stellar-data-structures/accounts",
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+      "source": {
+        "status": 200,
+        "sha256": "6612a90e937ae67928109c1f6a22cda72dc5d8b7e84c729e1478a36d4f13b07b",
+        "checks": {
+          "present": {
+            "Trustlines for traditional assets (one subentry each)": true,
+            "Trustlines for pool shares (two subentries each)": true
+          },
+          "absent": {
+            "(includes traditional assets and pool shares)": true
+          }
+        },
+        "liquidityPoolsLink": true
+      },
+      "index": {
+        "ok": true,
+        "nbSections": 5,
+        "complete": true,
+        "truncated": false,
+        "checks": {
+          "present": {
+            "Trustlines for traditional assets (one subentry each)": true,
+            "Trustlines for pool shares (two subentries each)": true
+          },
+          "absent": {
+            "(includes traditional assets and pool shares)": true
+          }
+        }
+      }
+    }
+  ]
+}

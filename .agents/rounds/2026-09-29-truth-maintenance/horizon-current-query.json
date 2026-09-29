@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-09-29T19:35:27.183Z",
+  "status": 200,
+  "q": "What is the current value of MaxSupportedProtocolVersion in internal/ingest/main.go?",
+  "answer": "Horizon's protocol ceiling: MaxSupportedProtocolVersion = 28 (a uint32 constant defined in internal/ingest/main.go) (verified 2026-09-01 at master AND at scanned ref 82660510 — https://github.com/stellar/stellar-horizon/blob/master/internal/ingest/main.go). Horizon split out of the stellar/go monorepo; the monorepo's frozen copy still carries pre-split values, so cite THIS repo for current Horizon constants.\n\n(A fuller mechanism walkthrough exists via sources.deepWikiUrl — an undated index that can LAG the dated fact above; where they disagree, the dated fact wins.)",
+  "generatedAt": "2026-09-29T19:35:27.140Z",
+  "scannedRef": "430a28e79b3b43c213840e45523519ca11251c0a",
+  "answerSource": "knowledge-note",
+  "answerAsOf": "2026-09-01T00:00:00Z",
+  "isDeployableContract": true,
+  "repoKind": "contract"
+}

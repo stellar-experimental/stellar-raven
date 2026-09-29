@@ -25,6 +25,8 @@ recurrences:
     evidence: Production API 1.9.1 gives Band, DIA, RedStone Finance, and Lightecho dated project-level provenance. All four still have null oracleDeployments and deployments. Lightecho alone has one product record without a contract ID. Closed issue #514 did not deliver the per-product/per-network evidence model; open #742 remains the residual tracker.
   - date: 2026-09-08
     evidence: Production API 1.9.48 returned the oracle search at 2026-09-08T14:41:23.388Z, response SHA-256 4ccdc079d3fc440318c0332b0189b17fe2c957f1ecdf52baf91c4d98479c9579. Band, DIA, and RedStone Finance still have null products. Lightecho has one product without a contractId. The service still supplies no oracleDeployments array for these providers.
+  - date: 2026-09-29
+    evidence: Scout returned null products for DIA and Band. Lightecho returned an oracle product without an address. These remain unknown fields; they do not prove a false deployment claim. Live response snapshot is .agents/rounds/2026-09-29-truth-maintenance/scout-rechecks.json.
 ---
 
 ## Finding

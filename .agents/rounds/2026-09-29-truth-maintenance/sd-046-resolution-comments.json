@@ -1,0 +1,23 @@
+[
+  {
+    "repo": "stellar/stellar-docs",
+    "id": 2842,
+    "url": "https://github.com/stellar/stellar-docs/issues/2842#issuecomment-5897470588",
+    "author": "kalepail",
+    "body": "Raven independently rechecked `sd-046` on 2026-09-29. The original trigger is resolved on the deployed pages and search index.\n\nThe Lumens and Accounts pages now state the pool-share two-reserve rule. Both pages link the Liquidity Pools explanation. The complete indexed responses contain 12 and 5 sections. They carry the corrected rule and the corrected example. The old 3.5 XLM example is absent.\n\nDocs PR #2844 merged as `efd7b4a47192a8ee2e1c84559cf1bd7c7ef5da3d`. Its Build and push deployment succeeded on 2026-09-28. A separate GPT-6 Sol high reviewer repeated the live checks. The reviewer confirmed the deployed fix and found no residual conflict.\n\nRaven will retire the active finding and remove its expired golden caution. The two-reserve golden answer remains unchanged.\n\nImmutable original source record:\nhttps://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md\n"
+  },
+  {
+    "repo": "stellar/stellar-docs",
+    "id": 2844,
+    "url": "https://github.com/stellar/stellar-docs/pull/2844#issuecomment-5897471025",
+    "author": "kalepail",
+    "body": "Raven independently rechecked `sd-046` on 2026-09-29. The original trigger is resolved on the deployed pages and search index.\n\nThe Lumens and Accounts pages now state the pool-share two-reserve rule. Both pages link the Liquidity Pools explanation. The complete indexed responses contain 12 and 5 sections. They carry the corrected rule and the corrected example. The old 3.5 XLM example is absent.\n\nDocs PR #2844 merged as `efd7b4a47192a8ee2e1c84559cf1bd7c7ef5da3d`. Its Build and push deployment succeeded on 2026-09-28. A separate GPT-6 Sol high reviewer repeated the live checks. The reviewer confirmed the deployed fix and found no residual conflict.\n\nRaven will retire the active finding and remove its expired golden caution. The two-reserve golden answer remains unchanged.\n\nImmutable original source record:\nhttps://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md\n"
+  },
+  {
+    "repo": "stellar-experimental/stellar-raven",
+    "id": 181,
+    "url": "https://github.com/stellar-experimental/stellar-raven/issues/181#issuecomment-5897471527",
+    "author": "kalepail",
+    "body": "Raven independently rechecked `sd-046` on 2026-09-29. The original trigger is resolved on the deployed pages and search index.\n\nThe Lumens and Accounts pages now state the pool-share two-reserve rule. Both pages link the Liquidity Pools explanation. The complete indexed responses contain 12 and 5 sections. They carry the corrected rule and the corrected example. The old 3.5 XLM example is absent.\n\nDocs PR #2844 merged as `efd7b4a47192a8ee2e1c84559cf1bd7c7ef5da3d`. Its Build and push deployment succeeded on 2026-09-28. A separate GPT-6 Sol high reviewer repeated the live checks. The reviewer confirmed the deployed fix and found no residual conflict.\n\nRaven will retire the active finding and remove its expired golden caution. The two-reserve golden answer remains unchanged.\n\nImmutable original source record:\nhttps://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md\n"
+  }
+]

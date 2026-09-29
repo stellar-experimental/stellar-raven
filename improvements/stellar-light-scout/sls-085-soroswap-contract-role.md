@@ -16,6 +16,9 @@ evidence:
   - "Independent coordinator reproduction at 2026-09-17T02:36Z, ledger 64465357: Scout repeats the aggregator-router label; the AMM router exposes get_factory, and the aggregator exposes get_adapters with that AMM router under protocol 0. Both on-chain WASM hashes match the owner deployment records."
   - "Raw evidence: research/audits/2026-09-17-routing-audit/soroswap-contract-role.md."
   - upstream issue filed 2026-09-17: https://github.com/Stellar-Light/stellarlight/issues/1673
+recurrences:
+  - date: 2026-09-29
+    evidence: The Soroswap response still labels the verified address as aggregator router. The original contract-label distinction remains unresolved. Live response snapshot is .agents/rounds/2026-09-29-truth-maintenance/scout-rechecks.json.
 ---
 
 ## Finding

@@ -1,0 +1,168 @@
+{
+  "checkedAt": "2026-09-29T19:32:08.120Z",
+  "results": [
+    {
+      "id": "sls-085",
+      "url": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3",
+      "status": 200,
+      "apiVersion": "1",
+      "generatedAt": "2026-09-29T19:32:05.079Z",
+      "observation": [
+        {
+          "slug": "soroswap",
+          "contracts": [
+            {
+              "address": "CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH",
+              "label": "aggregator router",
+              "events": 285919,
+              "eventsDelta": 296,
+              "subinvocationsDelta": 333,
+              "subinvocations": 217376,
+              "storageEntries": 1,
+              "createdAt": "2024-03-11T16:23:45.000Z",
+              "verifiedRepo": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sls-086",
+      "url": "https://stellarlight.xyz/api/projects/search?q=aquarius&limit=3",
+      "status": 200,
+      "apiVersion": "1",
+      "generatedAt": "2026-09-29T19:32:05.579Z",
+      "observation": [
+        {
+          "slug": "aquarius",
+          "shortDescription": "Aquarius (AQUA) is a DeFi liquidity layer and AMM on Stellar/Soroban running stable and volatile AMM liquidity pools with multihop swaps where liquidity providers earn fees plus AQUA reward yield, and incentivizes market-making on the native Stellar DEX. AQUA locks into ICE for on-chain DAO governance votes directing rewards across DEX/AMM markets."
+        }
+      ]
+    },
+    {
+      "id": "sls-029",
+      "url": "https://stellarlight.xyz/api/projects/search?q=oracle&limit=100",
+      "status": 200,
+      "apiVersion": "1",
+      "generatedAt": "2026-09-29T19:32:06.825Z",
+      "observation": [
+        {
+          "name": "DIA",
+          "slug": "dia",
+          "products": null
+        },
+        {
+          "name": "Band",
+          "slug": "band",
+          "products": null
+        },
+        {
+          "name": "Lightecho",
+          "slug": "lightecho",
+          "products": [
+            {
+              "name": "Lightecho Stellar Oracle",
+              "kind": "oracle-feed",
+              "network": "mainnet",
+              "status": "live",
+              "contractId": null,
+              "evidenceUrl": "https://github.com/bp-ventures/lightecho-stellar-oracle",
+              "asOf": "2026-08-13",
+              "note": "contract IDs published in the operator repo; per-network ID labels pending verification, so none is asserted here. Consumer caution: price state observed stale in upstream checks"
+            }
+          ]
+        },
+        {
+          "name": "Redstone Finance",
+          "slug": "redstone-finance",
+          "products": null
+        }
+      ]
+    },
+    {
+      "id": "sls-033",
+      "url": "https://stellarlight.xyz/api/projects/search?type=Wallet&limit=100",
+      "status": 200,
+      "apiVersion": "1",
+      "generatedAt": "2026-09-29T19:32:07.129Z",
+      "observation": {
+        "returned": 72,
+        "total": 72,
+        "missingProductKind": [
+          "smart-treasury",
+          "chainless",
+          "amulets",
+          "piggy-wallet",
+          "ibis",
+          "rehive",
+          "privy",
+          "haven",
+          "openzeppelin-stellar-privacy-wallet",
+          "mxlet"
+        ],
+        "missingAvailability": [
+          "hana",
+          "albedo",
+          "stellar-passport",
+          "trezor",
+          "bitget-wallet",
+          "smart-treasury",
+          "chainless",
+          "amulets",
+          "neon-wallet",
+          "piggy-wallet",
+          "mpcvault",
+          "ibis",
+          "unstoppable-wallet",
+          "stellar-metamask",
+          "spatium",
+          "sentit",
+          "humantech",
+          "freelii",
+          "empowch",
+          "elsa",
+          "coca",
+          "ben-wallet",
+          "kotani-pay",
+          "bebop",
+          "blaze",
+          "cypher",
+          "openxswitch",
+          "scopuly",
+          "rehive",
+          "privy",
+          "interstellar",
+          "boss-revolution",
+          "tago-cash",
+          "lemon",
+          "haven",
+          "openzeppelin-stellar-privacy-wallet",
+          "stellar-agent-wallet-skill",
+          "nemorixpay",
+          "mxlet"
+        ]
+      }
+    },
+    {
+      "id": "sls-024",
+      "url": "https://stellarlight.xyz/api/projects/search?q=Scam%20Flagging%20System&limit=100",
+      "status": 200,
+      "apiVersion": "1",
+      "generatedAt": "2026-09-29T19:32:08.088Z",
+      "observation": [
+        {
+          "name": "Scam Flagging System",
+          "status": "Inactive",
+          "statusBasis": "human-verified",
+          "statusSourceUrl": "https://docs.google.com/spreadsheets/d/1JCkWZ3X1h6kJKM6ZCZThDshK_whhNiTyGTV8R24Anho/edit",
+          "deployment": {
+            "network": "unknown",
+            "basis": null,
+            "sourceUrl": null,
+            "asOf": null
+          }
+        }
+      ]
+    }
+  ]
+}

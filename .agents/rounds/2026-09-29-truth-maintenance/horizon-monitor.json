@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-09-29T19:34:28.291Z",
+  "url": "https://stellarlight.xyz/api/repos/explain",
+  "q": "Which Horizon ingestion constant pins the highest supported protocol version, and what is its value?",
+  "repo": "stellar/stellar-horizon",
+  "generatedAt": "2026-09-29T19:32:18.708Z",
+  "scannedRef": "430a28e79b3b43c213840e45523519ca11251c0a",
+  "answer": "Horizon's protocol ceiling: MaxSupportedProtocolVersion = 28 (a uint32 constant defined in internal/ingest/main.go) (verified 2026-09-01 at master AND at scanned ref 82660510 — https://github.com/stellar/stellar-horizon/blob/master/internal/ingest/main.go). Horizon split out of the stellar/go monorepo; the monorepo's frozen copy still carries pre-split values, so cite THIS repo for current Horizon constants.\n\n(A fuller mechanism walkthrough exists via sources.deepWikiUrl — an undated index that can LAG the dated fact above; where they disagree, the dated fact wins.)",
+  "answerSource": "knowledge-note",
+  "answerAsOf": "2026-09-01T00:00:00Z",
+  "sourceUrl": "https://github.com/stellar/stellar-horizon/blob/430a28e79b3b43c213840e45523519ca11251c0a/internal/ingest/main.go#L38",
+  "sourceConstant": "29",
+  "sourceSha256": "8ea8c735f70863f0df17deaf4452ab0858ca0609d21be6ea0cc046976bd6db59",
+  "sourceMatchesAnswer": false,
+  "codeClassification": {
+    "repoKind": "contract",
+    "kindBasis": "isDeployableContract",
+    "isDeployableContract": true,
+    "stellarProof": "cargo-sdk"
+  }
+}
