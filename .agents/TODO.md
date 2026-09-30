@@ -405,7 +405,7 @@ protocol-history diagnostic stays source-expired until a separate accepted Scout
 
 ## Dependencies
 
-### Re-check the seven remaining dependency audit findings
+### Re-check the remaining dependency audit findings
 
 The 2026-09-17 toolchain update cleared the Hono finding and the root Wrangler finding.
 It pins Wrangler 4.133.0 and Hono 4.13.8, and it raises the `@cloudflare/workers-types` floor to Wrangler's peer requirement.

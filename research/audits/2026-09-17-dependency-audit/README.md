@@ -101,7 +101,8 @@ npm resolves the `@ai-sdk/provider-utils` range onto that same copy.
 `miniflare` 5.20260930.0-alpha pins `undici` 7.29.1, and Wrangler 4.145.0 depends on it.
 A root Wrangler update clears the Wrangler copy. The pool copy stays until the pool moves past 0.22.0.
 
-Gates on the branch: `npm run typecheck` exit 0; `npm test` 122 files, 2,195 passed, 4 skipped;
-`npm run build` dry run exit 0; `npm run test:smoke` 5 files, 94 passed; `npm run secrets:scan -- --tree` clean.
+The branch passed its gates. `npm run typecheck` exited 0. `npm test` ran 122 files: 2,195 passed
+and 4 skipped. `npm run build` completed its dry run with exit 0. `npm run test:smoke` ran 5 files
+with 94 passed. `npm run secrets:scan -- --tree` reported clean.
 The independent review (GPT-6-Astra, high) reproduced the audit counts in isolated copies.
 It also found the 7.29.1 patch and the Wrangler 4.145.0 path recorded above.
