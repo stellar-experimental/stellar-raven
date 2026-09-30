@@ -409,7 +409,7 @@ protocol-history diagnostic stays source-expired until a separate accepted Scout
 
 The 2026-09-17 toolchain update cleared the Hono finding and the root Wrangler finding.
 It pins Wrangler 4.133.0 and Hono 4.13.8, and it raises the `@cloudflare/workers-types` floor to Wrangler's peer requirement.
-Seven high findings remain. They come from two exact pins.
+On 2026-09-17, seven high findings remained. They came from two exact pins.
 
 `@cloudflare/vitest-pool-workers` 0.22.0 pins its own test tools:
 
@@ -429,12 +429,28 @@ Both groups are development tools only. The pool serves the `test:smoke` lane. T
 npm offers only a pool downgrade to 0.8.30, which breaks the vitest 4 smoke config. Do not use it or an override.
 Transformers 4.3.0 clears its chain, but it waits for the Vectorize runtime migration below.
 
+The 2026-09-30 recheck found 10 findings. Three were new.
+`fast-uri` 3.1.7 and `ip-address` 10.5.0 sit under `@modelcontextprotocol/sdk` and were moderate.
+`undici` 7.29.0 is high; Dependabot scopes it `runtime` through `@ai-sdk/provider-utils`.
+`npm audit fix` moved `fast-uri` to 3.1.8 and `ip-address` to 10.7.2. Nothing else in the lockfile moved.
+Eight high findings remain: the seven above plus `undici`.
+
+`undici` cannot move today. Both installed `miniflare` copies pin `7.29.0` exactly.
+npm resolves the `@ai-sdk/provider-utils` range `^7.28.0` onto that same copy.
+The advisories end at 7.29.0; 7.29.1 is patched.
+Wrangler 4.145.0 already depends on `miniflare` 5.20260930.0-alpha, which pins `undici` 7.29.1.
+A root Wrangler update therefore clears the Wrangler copy. The pool copy stays until the pool moves.
+The pool is still 0.22.0 (published 2026-09-18).
+The recheck evidence is in `research/audits/2026-09-17-dependency-audit/README.md`.
+
 Two local workerd runtimes coexist.
 `wrangler dev` and `npm run build` use `workerd` 1.20260916.1.
 The smoke pool and `@cloudflare/unenv-preset` use `workerd` 1.20260815.1.
 Evidence is in `research/audits/2026-09-17-dependency-audit/`.
 
-Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`, a `miniflare` that pins `undici` 7.30.0 or later is installed, and the runtime migration lands Transformers 4.3.0 or later.
+Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`.
+Every installed `miniflare` must pin an `undici` outside the advisory ranges (7.29.1 or later).
+The runtime migration must land Transformers 4.3.0 or later.
 
 ### Plan the Vectorize Transformers runtime migration
 

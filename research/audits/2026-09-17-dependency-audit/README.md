@@ -81,16 +81,27 @@ The change was rebased onto PR #170 without a conflict. Runtime source and catal
 
 ## Recheck 2026-09-30
 
-`npm audit` on `main` `6dd94394` reported 10 findings (8 high, 2 moderate); the audit above ended at 7.
-The three new ones and their outcome:
+`raven-next` compared `main` `6dd94394` with branch `chore/audit-fix-fast-uri-ip-address` (PR #186).
+Node was v24.13.0 and npm was 11.11.0.
+On `main`, `npm audit` reported 10 findings: 8 high and 2 moderate. The audit above ended at 7.
+The three new findings and their outcome:
 
 | Package | Path | Advisory range | Action |
 |---|---|---|---|
 | `fast-uri` 3.1.7 | `@modelcontextprotocol/sdk` → `ajv` | `>=3.0.0 <3.1.8` (GHSA-hrr3-gc8f-f4qj) | `npm audit fix` → 3.1.8 |
 | `ip-address` 10.5.0 | `@modelcontextprotocol/sdk` → `express-rate-limit` | `<=10.7.0` (four advisories) | `npm audit fix` → 10.7.2 |
-| `undici` 7.29.0 | `@ai-sdk/provider-utils` (`^7.28.0`) and both `miniflare` copies (`7.29.0` exact) | `7.0.0 - 7.29.0` (ten advisories) | blocked: npm dedupes onto the exact `miniflare` pin; waits for a `miniflare` that pins 7.30.0 or later |
+| `undici` 7.29.0 | `@ai-sdk/provider-utils` (`^7.28.0`) and both `miniflare` copies (`7.29.0` exact) | `7.0.0 - 7.29.0` (ten advisories) | blocked, see below |
 
-After the fix, `npm audit` reports 8 high and 0 moderate. The 8 are the seven findings recorded above plus
-`undici`. The lockfile diff is six lines per package: version, resolved, and integrity. No `package.json`
-change. Evidence and gates: `.agents/rounds/2026-09-30-raven-next.md`.
+After the fix, `npm audit` reports 8 high and 0 moderate. The 8 are the seven findings above plus `undici`.
+The lockfile diff is six lines per package: version, resolved, and integrity. `package.json` did not change.
 
+`undici` stays at 7.29.0 for now. Both installed `miniflare` copies pin it exactly.
+npm resolves the `@ai-sdk/provider-utils` range onto that same copy.
+`undici` 7.29.1 is outside every reported range.
+`miniflare` 5.20260930.0-alpha pins `undici` 7.29.1, and Wrangler 4.145.0 depends on it.
+A root Wrangler update clears the Wrangler copy. The pool copy stays until the pool moves past 0.22.0.
+
+Gates on the branch: `npm run typecheck` exit 0; `npm test` 122 files, 2,195 passed, 4 skipped;
+`npm run build` dry run exit 0; `npm run test:smoke` 5 files, 94 passed; `npm run secrets:scan -- --tree` clean.
+The independent review (GPT-6-Astra, high) reproduced the audit counts in isolated copies.
+It also found the 7.29.1 patch and the Wrangler 4.145.0 path recorded above.
