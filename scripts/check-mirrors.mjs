@@ -15,7 +15,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { readSkillFile } from "./lib/skill-mirror.mjs";
+import { pinnedSourceFailures, readSkillFile } from "./lib/skill-mirror.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -62,30 +62,9 @@ function checkEcosystemSkills() {
 
   const skillIds = new Set();
   for (const source of manifest.sources) {
-    // A pin is only usable if it names an immutable commit: everything
-    // downstream (transport URLs, integrity checks) is derived from it.
-    if (!/^[0-9a-f]{40}$/.test(source.commit ?? "")) {
-      fail(`ecosystem-skills source "${source.id}" has no full commit SHA (got "${source.commit}")`);
-    }
-    for (const skill of source.skills) {
-      const id = `${source.id}/${skill.name}`;
-      skillIds.add(id);
-      for (const file of skill.files) {
-        // The blob sha IS the integrity contract with upstream — a file
-        // without one could be fetched but never verified.
-        if (!/^[0-9a-f]{40}$/.test(file.sha ?? "")) {
-          fail(`ecosystem-skills manifest lists ${id}/${file.path} without a git blob sha`);
-        }
-      }
-    }
-    // Upstream license/notice names are recorded as provenance (nothing is
-    // redistributed) — THIRD-PARTY-NOTICES.md maps each source to its license,
-    // so a source with none recorded means the map cannot be verified.
-    if ((source.license_files ?? []).length === 0) {
-      fail(
-        `ecosystem-skills source "${source.id}" records no upstream LICENSE/NOTICE — ` +
-          `every source must carry its license provenance (see THIRD-PARTY-NOTICES.md)`,
-      );
+    for (const message of pinnedSourceFailures(source)) fail(message);
+    for (const skill of Array.isArray(source.skills) ? source.skills : []) {
+      skillIds.add(`${source.id}/${skill.name}`);
     }
   }
 
@@ -125,6 +104,9 @@ async function checkPinsResolve() {
   const manifest = readJson("ecosystem-skills/MANIFEST.json");
   const jobs = [];
   for (const source of manifest.sources) {
+    // A malformed pin cannot be fetched; checkEcosystemSkills already recorded
+    // its shape failure, which keeps the exit a pin problem (1), not a crash (2).
+    if (pinnedSourceFailures(source).length) continue;
     for (const skill of source.skills) {
       for (const file of skill.files) {
         jobs.push(

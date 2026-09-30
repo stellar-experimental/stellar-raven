@@ -37,6 +37,69 @@ latency unchanged (median 94 ms to 93 ms). This is an upstream payload cost, not
 Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
 single-pass payload is acceptable and this item is closed with that evidence.
 
+## Skill system
+
+Found by the 2026-09-30 skill system audit and its independent reviews
+(`.agents/rounds/2026-09-30-skill-system-audit.md`).
+
+### Read the Stellar Light SCF skill bodies
+
+`NEXT.md` decision K asks whether to pin any of the twelve `scf-*` skills from
+`Stellar-Light/awesome-stellar-community-fund`. The fit so far is name-level only.
+Read each body against the four criteria of the admission bar in `ecosystem-skills/README.md`
+"Adding a source", including overlap with `skills.lumenloop.scf-submission-radar` and
+`skills.stellar-light.stellar-scout`.
+
+Done when: each of the twelve has a recorded verdict that decision K can use.
+
+### Decide whether to track the skills.stellar.org Community section
+
+On 2026-09-30 the `https://skills.stellar.org/` index had a Community section. It listed skills that are
+not in the Stellar Light directory snapshot, for example `soroban-common-mistakes`, `pollar-wallet-auth`,
+`sub-rosa`, `caatinga`, and `nirium-agentic-payments`. `ecosystem-skills/catalog.json` snapshots only
+`stellarlight.xyz/api/skills`, so these candidates are invisible to the drift check and `INDEX.md`.
+
+Done when: the index is either snapshotted beside `catalog.json` or recorded as out of scope with a reason.
+
+### Make the drift check's cherry-pick mode explicit
+
+`scripts/check-skills-drift.mjs` `unclassifiedSkillDirs` enumerates a source only when
+`groups.json` `unpinnedUpstream` has an entry for it. A new cherry-picked source with an empty map
+gets no sibling check. The README now tells operators to record the first exclusion, but the code
+still infers the mode. Found by `rev-sol` (finding 2).
+
+Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers a
+cherry-picked source with no exclusions and one new upstream sibling.
+
+### Stage the index before the pin swap
+
+`ecosystem-skills/update.sh` moves `MANIFEST.json` and `catalog.json` into place before
+`build-index.mjs` runs, as two separate moves. An index failure leaves new pins with a stale
+`INDEX.md`. The README now states this. Found by `rev-sol` (finding 4); the selection validation part
+of that finding landed on 2026-09-30.
+
+Done when: the index is built from the staged files before the swap, or the swap rolls back on failure.
+
+### Cover source location in the pin-review digest
+
+`scripts/check-pin-review.mjs` `project()` digests the commit, skill names, file paths, and blob
+shas, but not `owner`, `repo`, or `path`. A location-only change moves transport URLs without a new
+attestation. Served bytes stay hash-verified at runtime, so this is a provenance gap. The checker
+applies the same projection to the base and the head, so extending it re-keys the printed digests
+without detecting movement; only a later selection or location change needs a new `PIN-REVIEW.md`
+entry. Found by `rev-sol` (finding 5 and its verification pass).
+
+Done when: the projection includes the location fields and a test proves a location-only change
+needs an attestation.
+
+### Remove the inactive private-archive branches from build-index.mjs
+
+`ecosystem-skills/build-index.mjs` still carries private-archive and credential-recovery branches.
+All accepted sources are public GitHub repositories, and `check-skills-drift.mjs` rejects other
+source types. Found by `rev-sol` (additional work 4).
+
+Done when: the branches are removed and the index still rebuilds byte-identically.
+
 ## Golden freshness follow-up
 
 ### Add dated reserve amounts to two sibling cases

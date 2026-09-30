@@ -94,7 +94,7 @@
     },
     {
       "id": "tooling-ecosystem",
-      "why": "Tooling questions labeled scout ask about the ecosystem tool/skill landscape — scout's AI-skills catalog (stellar-light.md: /api/skills, entries across skill-md/sdk/cli/mcp-server/tool kinds) and graded repos. Docs sdk/cli sections + stellar-dev skills stay acceptable. Catalog answers need list→get_skill/explainRepo detail.",
+      "why": "Tooling questions labeled scout ask about the ecosystem tool/skill landscape — scout's AI-skills catalog (stellar-light.md: /api/skills, entries across the kinds in meta.validKinds) and graded repos. Docs sdk/cli sections + stellar-dev skills stay acceptable. Catalog answers need list→get_skill/explainRepo detail.",
       "match": { "category": "tooling-infra", "service": "scout" },
       "plan": {
         "required": ["scout"],

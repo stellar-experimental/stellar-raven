@@ -1,6 +1,7 @@
 # NEXT — current handoff
 
-Updated 2026-09-17 during the [routing audit](rounds/2026-09-17-routing-audit.md).
+Updated 2026-09-30 during the [skill system audit](rounds/2026-09-30-skill-system-audit.md).
+Items 1 and 2 date from the [routing audit](rounds/2026-09-17-routing-audit.md) of 2026-09-17.
 Use [TODO.md](TODO.md) for task requirements and completion criteria.
 This file ranks the work and retains unresolved owner decisions, not deployment history.
 
@@ -157,6 +158,11 @@ Question: pin some, all, or none of the twelve `scf-*` skills from
 `ecosystem-skills/catalog.json` on 2026-07-27 (PR #43), but no pin decision exists. SCF work is a main
 Raven use case. Name-level fit only (bodies not yet read): `scf-live-context`, `scf-prescreen-checker`,
 `scf-claim-verifier`, and `scf-competitor-analyst` could fit a read-only gateway;
-`scf-fetch-external-doc` (network fetches) and `scf-round-reviewer` (CSV export input) likely do not.
-Evidence needed: a body read against the admission bar in `ecosystem-skills/README.md` "Adding a
-source". Safe default: not pinned, with this decision recorded.
+`scf-fetch-external-doc` (network fetches; upstream directory `skills/fetch-external-doc`) and
+`scf-round-reviewer` (CSV export input) likely do not. Overlap to resolve: the exposed
+`skills.lumenloop.scf-submission-radar` and `skills.stellar-light.stellar-scout` already cover SCF
+positioning and pitch drafting. Upstream last pushed 2026-07-23. The repo uses the standard `skills/`
+layout, so pinning needs no `update.sh` code change. Evidence needed: the body read queued in
+`TODO.md` ("Read the Stellar Light SCF skill bodies"), judged against all four criteria of the
+admission bar in `ecosystem-skills/README.md` "Adding a source". Safe default: not pinned, with this
+decision recorded.

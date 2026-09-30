@@ -31,6 +31,48 @@ const CACHE_DIR = join(ROOT, "ecosystem-skills", ".cache");
 const RAW_BASE = "https://raw.githubusercontent.com";
 
 /**
+ * Shape failures for one pinned source in MANIFEST.json, without any I/O.
+ * check-mirrors.mjs reports them; a source with any failure is unusable.
+ */
+export function pinnedSourceFailures(source) {
+  const failures = [];
+  const label = `ecosystem-skills source "${source?.id}"`;
+  // A pin is only usable if it names an immutable commit: everything
+  // downstream (transport URLs, integrity checks) is derived from it.
+  if (!/^[0-9a-f]{40}$/.test(source?.commit ?? "")) {
+    failures.push(`${label} has no full commit SHA (got "${source?.commit}")`);
+  }
+  const skills = Array.isArray(source?.skills) ? source.skills : [];
+  if (skills.length === 0) failures.push(`${label} pins no skills`);
+  for (const skill of skills) {
+    const id = `${source.id}/${skill?.name}`;
+    const files = Array.isArray(skill?.files) ? skill.files : [];
+    // Every served skill is entered through its SKILL.md; without one the
+    // catalog has no body to read.
+    if (!files.some((file) => file?.path === "SKILL.md")) {
+      failures.push(`ecosystem-skills manifest lists ${id} without a SKILL.md file`);
+    }
+    for (const file of files) {
+      // The blob sha IS the integrity contract with upstream — a file
+      // without one could be fetched but never verified.
+      if (!/^[0-9a-f]{40}$/.test(file?.sha ?? "")) {
+        failures.push(`ecosystem-skills manifest lists ${id}/${file?.path} without a git blob sha`);
+      }
+    }
+  }
+  // Upstream license/notice names are recorded as provenance (nothing is
+  // redistributed) — THIRD-PARTY-NOTICES.md maps each source to its license,
+  // so a source with none recorded means the map cannot be verified.
+  if ((source?.license_files ?? []).length === 0) {
+    failures.push(
+      `${label} records no upstream LICENSE/NOTICE — ` +
+        `every source must carry its license provenance (see THIRD-PARTY-NOTICES.md)`,
+    );
+  }
+  return failures;
+}
+
+/**
  * Upstream path of one mirrored file, reconstructing the layout
  * ecosystem-skills/update.sh pinned: sources with a `path` hold one directory
  * per skill under it; a source with `path: "."` holds its skill directories at

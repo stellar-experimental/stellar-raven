@@ -163,8 +163,8 @@ Skill bodies are fetched from their pinned upstream at read time, not bundled
     treats a verdict older than 3h as a failure for exactly this reason.
 - **Does anyone read sections?** group by `shape` (`whole` | `sections` |
   `files` | `mixed`). Feeds the open question in
-  `ideas/skill-discovery-without-bundling.md` — if `whole` dominates, 204
-  section catalog entries are dead weight.
+  `ideas/skill-discovery-without-bundling.md` — if `whole` dominates, the
+  section catalog entries (`skill-section` count in `catalog/manifest.json`) are dead weight.
 - **Which skills are actually used?** group by `id`; a long never-read tail is
   evidence for shrinking the read surface.
 - `retrievals` counts distinct pinned files a call fetched (a `##` section read
