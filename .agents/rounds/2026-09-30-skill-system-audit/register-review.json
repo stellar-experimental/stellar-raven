@@ -1,0 +1,26 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-023",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-30",
+      "reSwept": {
+        "date": "2026-09-30",
+        "reason": "Source-metadata refresh (2026-09-30): only q-ti-stellar-lab-usage-and-new-ui changed, and only in judge-blind truth metadata (dead cookbook URL replaced, new dated evidence, asOf and reverifyBy). No question, answer, keyFact, avoid, or note text moved. Re-derived today: https://developers.stellar.org/docs/tools/lab still names Friendbot funding for Testnet and Futurenet, and https://developers.stellar.org/docs/tools/quickstart still says not intended for production. The cluster note stands unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-137",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-30",
+      "reSwept": {
+        "date": "2026-09-30",
+        "reason": "Source-metadata refresh (2026-09-30): only judge-blind truth metadata of q-ti-stellar-lab-usage-and-new-ui changed. Re-derived today: https://developers.stellar.org/docs/tools/lab/saved/keypairs still says obfuscated, not encrypted, Testnet and Futurenet only, with possible legacy plain text; stellar/laboratory main has no commit to jsonCipher.ts or localStorageSavedKeypairs.ts after 624d40ff29ca (2025-09-04); https://lab.stellar.org/account/saved still loads page-dbc03db5d85268bb.js. The cluster note stands unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

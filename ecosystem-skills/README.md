@@ -23,7 +23,7 @@ ecosystem-skills/
 ├── MANIFEST.json    # THE ARTIFACT: per-source pinned commit + per-file path/size/git-blob-sha
 ├── INDEX.md         # AUTO-GENERATED themed directory (name + description + source + size), linked upstream
 ├── groups.json      # theme → skill-id mapping that drives INDEX.md grouping
-├── catalog.json     # full snapshot of the stellarlight.xyz/api/skills directory (42 entries)
+├── catalog.json     # full snapshot of the stellarlight.xyz/api/skills directory (count in INDEX.md)
 ├── build-index.mjs  # regenerates INDEX.md from MANIFEST.json + catalog.json + groups.json
 ├── update.sh        # re-pins every source (stores nothing), prints the body diff, rebuilds the index
 ├── .cache/          # gitignored working cache of fetched bodies, keyed by blob sha — safe to delete
@@ -40,10 +40,10 @@ else exists, including non-`skill-md` SDKs/MCP servers/CLIs that this server doe
 | --- | --- | --- | --- |
 | `lumenloop` | [`lumenloop/lumenloop-skills`](https://github.com/lumenloop/lumenloop-skills) `skills/` | 8 public Stellar-ecosystem analyst skills | `gh` tree listing @ pinned commit |
 | `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | 3 Stellar/Soroban contract skills (cherry-picked from a multi-chain repo) | `gh` tree listing @ pinned commit |
-| `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | 7 SDF developer skills (soroban, dapp, data, assets, agentic-payments, standards, zk-proofs) | `gh` tree listing @ pinned commit |
+| `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | SDF developer skills (smart-contracts, dapp, data, assets, agentic-payments, cross-chain, standards, zk-proofs) | `gh` tree listing @ pinned commit |
 | `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | 1 ecosystem-analyst skill | `gh` tree listing @ pinned commit |
 | `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) `trustless-work-dev/` (skill dir at the repo root, cherry-picked) | 1 escrow-integration skill | `gh` tree listing @ pinned commit |
-| _catalog_ | [`stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills) | 42-entry ecosystem directory (sdf / stellarlight / lumenloop / external) | `curl` snapshot → `catalog.json` (NOT downloaded as skills) |
+| _catalog_ | [`stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills) | ecosystem directory (sdf / stellarlight / lumenloop / external; entry count in `INDEX.md`) | `curl` snapshot → `catalog.json` (NOT downloaded as skills) |
 
 Every source is **public**, and each source's upstream `LICENSE`/`NOTICE` file names are recorded
 in `MANIFEST.json` (`license_files`) at the same pinned commit — see `THIRD-PARTY-NOTICES.md` at
@@ -167,6 +167,41 @@ what makes live fetching safe: an upstream edit cannot reach the model until som
 Requires an authenticated `gh` CLI, plus `jq`, `node`, `curl`, and `git`. **No API keys** — every
 source is public, and keeping the re-pin credential-free is a deliberate publish-safety property
 (see the Sources note above).
+
+## Adding a source
+
+A new source changes what the model reads. Treat it as an exposure decision, not a re-pin. The
+Trustless Work admission (PR #157, `.agents/rounds/2026-09-16-trustless-work/`) is the worked
+example.
+
+Admission bar — answer each in the round's source review before any pin lands:
+
+- The repository is public and names its license in a `LICENSE`/`NOTICE` file.
+- The skills are Stellar-specific and do not duplicate an exposed skill
+  (`research/skill-exposure-inventory.json`).
+- The skills fit a read-only, networkless gateway. Steps that need credentials, paid calls, writes,
+  or network fetches from the sandbox are out of scope or scrubbed, never served as instructions.
+- A reviewer read every selected body: no instruction override, credential, non-exposed operation,
+  or retired skill reference.
+
+Steps, in one PR:
+
+1. Add a `pin_github` line to `update.sh` (with a pick list when the repo is multi-chain or mixed)
+   and a row to the Sources table above. Code changes are needed only for a new repo layout; Trustless
+   Work needed the repo-root skill-dir mode.
+2. Add the repo to `improvements/intake.json` (`services.skills.default.repos` and `sourceRepos`)
+   and its license to `THIRD-PARTY-NOTICES.md`.
+3. Run `./update.sh`, file the new skills in `groups.json`, and record the `sel:` digest in
+   `PIN-REVIEW.md`.
+4. Add an `exposed` row per skill to `research/skill-exposure-inventory.json`.
+5. Rebuild and gate exactly as in
+   [`live-drift-resolution`](../.agents/skills/live-drift-resolution/SKILL.md) Step 1.
+6. Add at least one golden or skills-routing case that exercises the source, through `golden-truth`
+   or `run-evals`.
+7. Get an independent review (reviewer ≠ author), record it in a round ledger, then deploy.
+
+A candidate that is not admitted still needs a recorded decision in `.agents/TODO.md` or a round
+ledger, so the directory snapshot never hides an unmade choice.
 
 ## Source of truth
 

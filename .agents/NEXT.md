@@ -7,11 +7,12 @@ This file ranks the work and retains unresolved owner decisions, not deployment 
 ## Next work
 
 1. Resolve the remaining general routing and source-authority work from the September 17 audit.
-   Production uses Scout `1.9.52`; RWA stays excluded under issue #167.
+   Production uses Scout `1.9.54` (PR #182, deployed 2026-09-29); RWA stays excluded under issue #167.
    D3 failed its answer gate and was withdrawn. Keep the current scorer until a general repair passes.
 2. Follow Docs PR #2837 for `sd-027` / `sd-034`.
    Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
-3. Complete source-metadata follow-up before October 1 and review dependency upgrades.
+3. Refresh the two sibling golden freshness items (TODO.md) and review dependency upgrades.
+   The October 1 source-metadata case closed on 2026-09-30.
 4. Complete the private usage checks and coordinate the separately gated history cleanup.
 
 The [September 14 improvements review](../research/audits/2026-09-14-improvements-review.md) records upstream blockers.
@@ -148,3 +149,14 @@ The three questions from the 2026-08-28 grill remain open. They overlap decision
 
 The current margin table is mixed-tuple calibration. The `0.08` value is only a no-change
 confidence radius. A same-tuple pair from decision A recalibrates it. Safe default: no promotion.
+
+### K. Decide exposure for the Stellar Light SCF skills
+
+Question: pin some, all, or none of the twelve `scf-*` skills from
+`Stellar-Light/awesome-stellar-community-fund` (MIT). They entered the directory snapshot in
+`ecosystem-skills/catalog.json` on 2026-07-27 (PR #43), but no pin decision exists. SCF work is a main
+Raven use case. Name-level fit only (bodies not yet read): `scf-live-context`, `scf-prescreen-checker`,
+`scf-claim-verifier`, and `scf-competitor-analyst` could fit a read-only gateway;
+`scf-fetch-external-doc` (network fetches) and `scf-round-reviewer` (CSV export input) likely do not.
+Evidence needed: a body read against the admission bar in `ecosystem-skills/README.md` "Adding a
+source". Safe default: not pinned, with this decision recorded.

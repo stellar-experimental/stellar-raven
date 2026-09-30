@@ -138,6 +138,8 @@ Use the matching skill when the task triggers it:
 - `run-evals` — select instruments, review verdicts, triage causes, and file findings.
 - `improvements-pipeline` — maintain finding lifecycle, intake, probes, index, and upstream follow-up.
 - `golden-truth` — change golden answers with provenance and explicit uncertainty.
+- `retrieval-system-audit` — measure and improve retrieval across every exposed operation and skill
+  with live probes and A/B evidence.
 - `cloudflare-observability-review` — investigate production logs, traces, telemetry, and Ray IDs.
 - `audit-reviewability` — audit or repair reviewability debt in code, comments, documentation,
   tests, agent instructions, and generated changes.

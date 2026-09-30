@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-09-21",
+  "updated": "2026-09-30",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -222,6 +222,10 @@
     "sk-026": {
       "repo": "Trustless-Work/trustlesswork-skill",
       "reason": "The upstream Core API skill owns the broken error-documentation examples and URL template."
+    },
+    "sk-027": {
+      "repo": "Stellar-Light/stellar-scout",
+      "reason": "The Scout skill repository owns the SKILL.md, README, and reference text that describe the skills catalog."
     }
   }
 }
