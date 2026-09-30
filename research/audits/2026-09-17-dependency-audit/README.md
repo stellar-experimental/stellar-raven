@@ -78,3 +78,32 @@ has no `MCP_ADMIN_TOKEN`; that name came from the primary checkout's local `.dev
 Fable high reviewed the final scope and validation logs. The review passed.
 The coordinator repeated type checking with a recorded exit code of zero.
 The change was rebased onto PR #170 without a conflict. Runtime source and catalog remain identical to `848edec4`.
+
+## Recheck 2026-09-30
+
+`raven-next` compared `main` `6dd94394` with branch `chore/audit-fix-fast-uri-ip-address` (PR #186).
+Node was v24.13.0 and npm was 11.11.0.
+On `main`, `npm audit` reported 10 findings: 8 high and 2 moderate. The audit above ended at 7.
+The three new findings and their outcome:
+
+| Package | Path | Advisory range | Action |
+|---|---|---|---|
+| `fast-uri` 3.1.7 | `@modelcontextprotocol/sdk` → `ajv` | `>=3.0.0 <3.1.8` (GHSA-hrr3-gc8f-f4qj) | `npm audit fix` → 3.1.8 |
+| `ip-address` 10.5.0 | `@modelcontextprotocol/sdk` → `express-rate-limit` | `<=10.7.0` (four advisories) | `npm audit fix` → 10.7.2 |
+| `undici` 7.29.0 | `@ai-sdk/provider-utils` (`^7.28.0`) and both `miniflare` copies (`7.29.0` exact) | `7.0.0 - 7.29.0` (ten advisories) | blocked, see below |
+
+After the fix, `npm audit` reports 8 high and 0 moderate. The 8 are the seven findings above plus `undici`.
+The lockfile diff is six lines per package: version, resolved, and integrity. `package.json` did not change.
+
+`undici` stays at 7.29.0 for now. Both installed `miniflare` copies pin it exactly.
+npm resolves the `@ai-sdk/provider-utils` range onto that same copy.
+`undici` 7.29.1 is outside every reported range.
+`miniflare` 5.20260930.0-alpha pins `undici` 7.29.1, and Wrangler 4.145.0 depends on it.
+A root Wrangler update clears the Wrangler copy. The pool copy stays until the pool moves past 0.22.0.
+
+The branch passed its gates. `npm run typecheck` exited 0. `npm test` ran 122 files: 2,195 passed
+and 4 skipped. `npm run build` completed its dry run with exit 0. `npm run test:smoke` ran 5 files
+with 94 passed. `npm run secrets:scan -- --tree` reported clean.
+
+The independent review (GPT-6-Astra, high) reproduced the audit counts in isolated copies.
+It also found the 7.29.1 patch and the Wrangler 4.145.0 path recorded above.
