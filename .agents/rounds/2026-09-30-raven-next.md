@@ -203,7 +203,7 @@ verification, and a receipt below.
 | lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | this ledger, PRs A to D | running |
 | review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `review-a-sol.md`, `verify-a-sol.md`, `final-a-sol.md`, `final2-a-sol.md` in this round directory | accept (final, after three fix passes) |
 | review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
-| review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `tmp/review-c-grok.md`, copied to this round directory | running |
+| review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
 
 Panes `w3W:pC`, `w3W:pD`, and `w3W:pG` were split from `w3W:p2` and belong to this lead.
 
@@ -229,7 +229,32 @@ Panes `w3W:pC`, `w3W:pD`, and `w3W:pG` were split from `w3W:p2` and belong to th
 | The audit README cited an uncommitted ledger | fixed: the recheck records revisions, counts, and gates inline |
 | Sentence rules and a trailing blank line | fixed |
 
+### PR C (#187), reviewer `rev-grok-c`
+
+| finding | disposition |
+| --- | --- |
+| A forced failure of the second rename left a new manifest beside the old catalog and index; the README and script claimed nothing after the first rename could fail | fixed: the staged files move into a sibling directory first, the previous three files are kept beside them, and a trap restores them on a failed rename. The reviewer re-ran the forced failure on the new script: all three targets ended as the previous bytes. The success path leaves no `.swap.*` directory. README and comments describe this behavior. |
+
+The reviewer verified everything else in the brief: byte-identical index rebuild, the five re-keyed
+tokens, a location-only change on a copy of the production manifest (exit 1 without a ledger line,
+exit 0 with one), the reachability of the index-build error handler under `set -e`, the drift
+check's rejection of non-github sources, and the gates.
+
 ## Receipts
+
+### PR A (#185) — bookkeeping, roster, `sd-052`, pointers
+
+- Review: `rev-sol-a` (GPT-6.1-Sol, high), six findings plus one follow-up, final verdict accept.
+  Four review files are in this round directory.
+- CI passed (`Analyze`, `CodeQL`, `secrets`, `test`). GitHub merged the PR by squash as
+  `e67f8d11bc4fb218a618516b16e32b1be01722be` at 2026-09-30T21:36:21Z. The branch was deleted.
+- `npm ci` then `npm run deploy` from the clean `main` checkout at `e67f8d11`. The preflight
+  printed `tree clean and HEAD == origin/main`. Worker Version ID
+  `7b92d550-13d8-4202-9050-7e69c5617a2b`, version created 2026-09-30T21:36:39.221Z, deployment
+  created 2026-09-30T21:36:41.912Z, 100% of traffic. The `postdeploy` hook passed.
+- Verification at 21:36:51Z: the nine public routes returned HTTP 200; unauthenticated
+  `POST /mcp` returned HTTP 401. The PR changed no Worker source, so no authenticated re-check
+  was repeated beyond the PR B one.
 
 ### PR B (#186) — dependency audit fix
 
