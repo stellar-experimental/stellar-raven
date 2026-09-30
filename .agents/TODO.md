@@ -434,7 +434,7 @@ Two local workerd runtimes coexist.
 The smoke pool and `@cloudflare/unenv-preset` use `workerd` 1.20260815.1.
 Evidence is in `research/audits/2026-09-17-dependency-audit/`.
 
-Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`, and the runtime migration lands Transformers 4.3.0 or later.
+Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`, a `miniflare` that pins `undici` 7.30.0 or later is installed, and the runtime migration lands Transformers 4.3.0 or later.
 
 ### Plan the Vectorize Transformers runtime migration
 

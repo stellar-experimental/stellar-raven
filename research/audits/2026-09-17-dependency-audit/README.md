@@ -78,3 +78,19 @@ has no `MCP_ADMIN_TOKEN`; that name came from the primary checkout's local `.dev
 Fable high reviewed the final scope and validation logs. The review passed.
 The coordinator repeated type checking with a recorded exit code of zero.
 The change was rebased onto PR #170 without a conflict. Runtime source and catalog remain identical to `848edec4`.
+
+## Recheck 2026-09-30
+
+`npm audit` on `main` `6dd94394` reported 10 findings (8 high, 2 moderate); the audit above ended at 7.
+The three new ones and their outcome:
+
+| Package | Path | Advisory range | Action |
+|---|---|---|---|
+| `fast-uri` 3.1.7 | `@modelcontextprotocol/sdk` → `ajv` | `>=3.0.0 <3.1.8` (GHSA-hrr3-gc8f-f4qj) | `npm audit fix` → 3.1.8 |
+| `ip-address` 10.5.0 | `@modelcontextprotocol/sdk` → `express-rate-limit` | `<=10.7.0` (four advisories) | `npm audit fix` → 10.7.2 |
+| `undici` 7.29.0 | `@ai-sdk/provider-utils` (`^7.28.0`) and both `miniflare` copies (`7.29.0` exact) | `7.0.0 - 7.29.0` (ten advisories) | blocked: npm dedupes onto the exact `miniflare` pin; waits for a `miniflare` that pins 7.30.0 or later |
+
+After the fix, `npm audit` reports 8 high and 0 moderate. The 8 are the seven findings recorded above plus
+`undici`. The lockfile diff is six lines per package: version, resolved, and integrity. No `package.json`
+change. Evidence and gates: `.agents/rounds/2026-09-30-raven-next.md`.
+
