@@ -121,9 +121,10 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
    (`simple`). Draining it with the resolver needs a distinct reviewer and an upstream resolution
    comment. That comment is an outward write (`needs-decision`).
 4. **Clear the two new moderate advisories.** `npm audit fix` changes only `fast-uri` → 3.1.8 and
-   `ip-address` → 10.7.2. `undici` stays until a `miniflare` pin moves. Value: removes the two
-   runtime-scope Dependabot alerts and one high group. Effort: 1 h with `typecheck`, `test`,
-   `build`, `test:smoke`. `simple`. The seven known findings stay blocked as recorded in `TODO.md`.
+   `ip-address` → 10.7.2. `undici` stays until a `miniflare` pin moves. Value: clears the two
+   moderate audit findings and the `ip-address` Dependabot alert. The `undici` alert and the
+   eight high findings remain until the relevant pins change. Effort: 1 h with `typecheck`,
+   `test`, `build`, `test:smoke`. `simple`. Broader dependency work stays separately gated.
 5. **Stale pointers in `PLAN.md` and `NEXT.md`.** `PLAN.md` §7 calls the September 14 audit "the
    latest reviewed drift". `NEXT.md` item 4 still asks to "coordinate the separately gated history
    cleanup". `TODO.md` closed that on 2026-09-17. Value: handoff accuracy. Effort: 10 min. `simple`.
