@@ -9,8 +9,8 @@ not vendored here, so a re-pin commit shows only hash changes — the text itsel
 a formality: the entry attests that a human read the body diff `ecosystem-skills/update.sh`
 printed.
 
-The `sel:` digest covers a source's whole selection — commit, skill names, file paths, and per-file
-blob shas — not just its commit. Retargeting an entry to a different file inside the same pinned
+The `sel:` digest covers a source's whole selection — location (`owner`, `repo`, `path`), commit,
+skill names, file paths, and per-file blob shas — not just its commit. Retargeting an entry to a different file inside the same pinned
 tree, or adding/dropping a selected skill, changes which prompt input is served without moving the
 commit, so the commit alone is not what the gate can key on. Print the current digests with
 `node scripts/check-pin-review.mjs --digests`.
@@ -358,3 +358,19 @@ No active golden answer needs a change from these surviving claims.
 The parent read the generated body diff. Grok independently checked the source and emitted bytes.
 See [the pairing review](../.agents/rounds/2026-09-16-truth-maintenance/light-pin-excluded-rwa-review.md).
 This entry records source review only. Routing acceptance and production verification remain separate gates.
+
+## 2026-09-30 — digest projection gained the source location
+
+`scripts/check-pin-review.mjs` now digests `owner`, `repo`, and `path` with the selection, so a
+location-only change (the same commit and blobs fetched from a different repository) needs a fresh
+entry. The checker applies one projection to the base and the head, so this change moved no
+source: `node scripts/check-pin-review.mjs --base origin/main` printed "no skill pin or file
+selection moved". The printed tokens re-keyed. These are the current ones, recorded so later
+entries can be compared against them; no selection was reviewed or changed today:
+
+- `lumenloop d92c56bda17a sel:6b1929302da9` (was `sel:a9447c2ec930`)
+- `openzeppelin-stellar 6f215af60eb6 sel:1892256e9ae3` (was `sel:4c4191f30c20`)
+- `stellar-dev 65375fd2b258 sel:c5525681f332` (was `sel:4cfca3a746a6`)
+- `stellar-light 3b587aa9f23d sel:e625f367b39c` (was `sel:339145ff9f53`)
+- `trustless-work 80e2467f3404 sel:b23fec8248ff` (was `sel:05e2eb56866c`)
+

@@ -71,35 +71,6 @@ still infers the mode. Found by `rev-sol` (finding 2).
 Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers a
 cherry-picked source with no exclusions and one new upstream sibling.
 
-### Stage the index before the pin swap
-
-`ecosystem-skills/update.sh` moves `MANIFEST.json` and `catalog.json` into place before
-`build-index.mjs` runs, as two separate moves. An index failure leaves new pins with a stale
-`INDEX.md`. The README now states this. Found by `rev-sol` (finding 4); the selection validation part
-of that finding landed on 2026-09-30.
-
-Done when: the index is built from the staged files before the swap, or the swap rolls back on failure.
-
-### Cover source location in the pin-review digest
-
-`scripts/check-pin-review.mjs` `project()` digests the commit, skill names, file paths, and blob
-shas, but not `owner`, `repo`, or `path`. A location-only change moves transport URLs without a new
-attestation. Served bytes stay hash-verified at runtime, so this is a provenance gap. The checker
-applies the same projection to the base and the head, so extending it re-keys the printed digests
-without detecting movement; only a later selection or location change needs a new `PIN-REVIEW.md`
-entry. Found by `rev-sol` (finding 5 and its verification pass).
-
-Done when: the projection includes the location fields and a test proves a location-only change
-needs an attestation.
-
-### Remove the inactive private-archive branches from build-index.mjs
-
-`ecosystem-skills/build-index.mjs` still carries private-archive and credential-recovery branches.
-All accepted sources are public GitHub repositories, and `check-skills-drift.mjs` rejects other
-source types. Found by `rev-sol` (additional work 4).
-
-Done when: the branches are removed and the index still rebuilds byte-identically.
-
 ## Golden freshness follow-up
 
 ### Add dated reserve amounts to two sibling cases
