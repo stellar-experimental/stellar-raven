@@ -68,8 +68,8 @@ trap 'rm -rf "$WORK"' EXIT
 SRC_DIR="$WORK/sources"   # one <id>.json per re-pinned source
 # Everything is staged under $WORK — the manifest, the catalog, AND the index
 # built from them — and only moved into place AFTER all sources succeed and the
-# index builds, so a mid-run failure never leaves a half-written MANIFEST.json
-# or a new pin set beside a stale INDEX.md.
+# index builds. A failure before the swap leaves the committed files untouched;
+# a failure inside the swap restores them (see the swap section below).
 MANIFEST_TMP="$WORK/MANIFEST.json"
 CATALOG_TMP="$WORK/catalog.json"
 INDEX_TMP="$WORK/INDEX.md"
@@ -222,11 +222,39 @@ node "$SCRIPT_DIR/build-index.mjs" --manifest "$MANIFEST_TMP" --catalog "$CATALO
 }
 
 # --- Swap: only now do we touch the real MANIFEST + catalog + INDEX. ---
-# Three renames on one filesystem, each atomic on its own; nothing after this
-# point can fail in a way that needs a rollback.
-mv "$MANIFEST_TMP" "$MANIFEST"
-mv "$CATALOG_TMP" "$CATALOG"
-mv "$INDEX_TMP" "$INDEX"
+# The staged files first move into a sibling directory of the targets, so each
+# final `mv` is a same-filesystem rename ($WORK may live on another device,
+# where `mv` becomes a copy that can stop part-way). The previous three files
+# are copied beside them, and a rollback trap covers the renames: if any rename
+# fails, the previous manifest, catalog, and index go back, so the tree is
+# never left with a new manifest beside an old catalog or index.
+SWAP_DIR="$SCRIPT_DIR/.swap.$$"
+mkdir -p "$SWAP_DIR"
+trap 'rm -rf "$WORK" "$SWAP_DIR"' EXIT
+mv "$MANIFEST_TMP" "$SWAP_DIR/MANIFEST.json"
+mv "$CATALOG_TMP"  "$SWAP_DIR/catalog.json"
+mv "$INDEX_TMP"    "$SWAP_DIR/INDEX.md"
+cp -p "$MANIFEST" "$SWAP_DIR/MANIFEST.json.prev"
+cp -p "$CATALOG"  "$SWAP_DIR/catalog.json.prev"
+cp -p "$INDEX"    "$SWAP_DIR/INDEX.md.prev"
+
+swap_rollback() {
+  echo "error: swap failed — restoring the previous manifest, catalog, and index" >&2
+  local f
+  for f in MANIFEST.json catalog.json INDEX.md; do
+    if [ -f "$SWAP_DIR/$f.prev" ] && ! mv -f "$SWAP_DIR/$f.prev" "$SCRIPT_DIR/$f"; then
+      echo "error: could not restore $f; the previous copy is at $SWAP_DIR/$f.prev" >&2
+      return
+    fi
+  done
+  rm -rf "$WORK" "$SWAP_DIR"
+}
+trap 'swap_rollback' EXIT
+mv -f "$SWAP_DIR/MANIFEST.json" "$MANIFEST"
+mv -f "$SWAP_DIR/catalog.json"  "$CATALOG"
+mv -f "$SWAP_DIR/INDEX.md"      "$INDEX"
+trap 'rm -rf "$WORK" "$SWAP_DIR"' EXIT
+rm -rf "$SWAP_DIR"
 
 echo "Pinned ${TOTAL_SKILLS} skills across $(echo "$SOURCES" | jq length) sources — complete."
 
