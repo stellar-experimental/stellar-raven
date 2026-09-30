@@ -204,7 +204,7 @@ verification, and a receipt below.
 | review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `review-a-sol.md`, `verify-a-sol.md`, `final-a-sol.md`, `final2-a-sol.md` in this round directory | accept (final, after three fix passes) |
 | review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
 | review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
-| review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | `review-d-grok.md` in this round directory | running |
+| review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | `review-d-grok.md`, `verify-d-grok.md`, `final-d-grok.md` in this round directory | accept with fixes; final `confirmed` at `ebf6683d` |
 | research (item 7) | `res-astra-scf` (GPT-6-Astra, high) | `w3W:pH` | `scf-skill-bodies-astra.md` in this round directory | done |
 
 Panes `w3W:pC`, `w3W:pD`, `w3W:pG`, and `w3W:pH` were split from `w3W:p2` and belong to this lead.
