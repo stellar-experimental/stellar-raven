@@ -45,7 +45,9 @@ Six read-only shards were reviewed sequentially.
 
 ## Decisions
 
-Summary counts from the JSON inventory:
+Summary counts from the JSON inventory on 2026-07-07. The JSON is the maintained table and has
+changed since: `skills.stellar-dev.cross-chain` (2026-08-10) and
+`skills.trustless-work.trustless-work-dev` (2026-09-15) raised `exposed` to 20.
 
 | currentState | count |
 | --- | ---: |

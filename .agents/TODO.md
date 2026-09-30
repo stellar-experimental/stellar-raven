@@ -7,7 +7,7 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-The latest maintenance work is [the September 16 ledger](rounds/2026-09-16-maintenance-execution.md).
+The latest maintenance work is [the September 29 ledger](rounds/2026-09-29-truth-maintenance.md).
 [NEXT.md](NEXT.md) ranks the work and holds open owner decisions.
 
 ## Adapters
@@ -51,15 +51,17 @@ Done when: the cases carry dated amounts and the golden and register gates pass.
 
 ## Improvements follow-up
 
-### Complete the September 14 source-metadata follow-up before 2026-10-01
+### Refresh the two sibling freshness items from the September 14 golden review
 
-The freshness audit found a dead CLI cookbook link in `q-ti-stellar-lab-usage-and-new-ui`.
-It also identified dated x402 board membership and builder-population facts in sibling cases.
-Use `research/audits/2026-09-14-golden-freshness-review.md` for the exact cases and replacement source.
-Apply the golden-truth workflow to source metadata and any factual changes.
-Preserve historical observations and scheduled dates unless new verification supports a change.
+The September 14 freshness review queued two sibling items as a separate golden-truth pass.
+`q-defi-x402-on-stellar-what` records a 2026-07-10 Governing Board state; on 2026-09-14,
+https://stellar.org/x402 said SDF holds a seat on the Foundation's Governing Board.
+`q-gap-builders-person-empty` records a 114-profile builder directory; the 2026-09-14 live advisory said 183.
+Both are judge-facing text changes, so they need multi-class triangulation and an independent re-derivation.
+Case 1 of the same review (`q-ti-stellar-lab-usage-and-new-ui`, the dead cookbook URL) closed on 2026-09-30.
+Use `research/audits/2026-09-14-golden-freshness-review.md` Cases 5 and 6 for the evidence.
 
-Done when: the source link works, sibling claims have current evidence, and the corpus gates pass.
+Done when: both cases carry current, triangulated evidence and the corpus gates pass.
 
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
 

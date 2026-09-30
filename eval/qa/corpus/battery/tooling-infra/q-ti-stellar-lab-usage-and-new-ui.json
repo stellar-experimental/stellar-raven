@@ -39,8 +39,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-09-09",
-    "reverifyBy": "2026-10-01",
+    "asOf": "2026-09-30",
+    "reverifyBy": "2026-12-31",
     "sources": [
       {
         "class": "A",
@@ -74,8 +74,8 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/contract-assets",
-        "note": "class inferred at migration"
+        "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+        "note": "Live CLI cookbook page for SAC deploy and ID lookup. It replaced the removed contract-assets URL, which returned HTTP 404 on 2026-09-14 and 2026-09-30."
       },
       {
         "class": "B",
@@ -105,6 +105,18 @@
             "ref": "F: unauthenticated live UI inspection with no signing/submission",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab",
+            "observedAt": "2026-09-30",
+            "note": "HTTP 200. The page still names Testnet and Futurenet, transaction simulation, and Friendbot funding."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/transactions",
+            "observedAt": "2026-09-30",
+            "note": "HTTP 200. The walkthrough still uses Fetch next sequence and Add Operation."
           }
         ],
         "note": "Legacy verdict: confirmed-as-of-2026-07-11."
@@ -142,6 +154,24 @@
             "ref": "https://lab.stellar.org/_next/static/chunks/app/(sidebar)/account/saved/page-dbc03db5d85268bb.js",
             "observedAt": "2026-09-09",
             "note": "The independent reviewer read the deployed writer and confirmed the same XOR/base64 path and legacy JSON read path."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+            "observedAt": "2026-09-30",
+            "note": "HTTP 200. The page still says obfuscated, not encrypted, Testnet and Futurenet only, and warns that older entries may remain plain text."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/laboratory/commits/main/src/helpers/jsonCipher.ts",
+            "observedAt": "2026-09-30",
+            "note": "Default branch main. The latest commit touching jsonCipher.ts and localStorageSavedKeypairs.ts is 624d40ff29ca (2025-09-04), so the pinned bbbe48c79b8a helpers are unchanged."
+          },
+          {
+            "class": "F",
+            "ref": "https://lab.stellar.org/account/saved",
+            "observedAt": "2026-09-30",
+            "note": "The live page still loads account/saved/page-dbc03db5d85268bb.js, the bundle the 2026-09-09 review read. No keys, signing, submission, or storage write ran."
           }
         ]
       },
@@ -166,25 +196,34 @@
             "ref": "B/F: current CLI command implementation/help",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract",
+            "observedAt": "2026-09-30",
+            "note": "HTTP 200. The page shows stellar contract asset deploy for deployment and stellar contract id asset for the address lookup."
+          },
+          {
+            "class": "F",
+            "ref": "local stellar 28.1.0 (c0f4d0da891b) stellar contract asset --help",
+            "observedAt": "2026-09-30",
+            "note": "deploy: Deploy builtin Soroban Asset Contract. id: Get Id of builtin Soroban Asset Contract. Deprecated, use stellar contract id asset instead."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-09-09",
-      "by": "Astra maintenance author and independent Grok 4.6 high re-derivation; .agents/rounds/2026-09-08-maintenance-independent-review-grok.md",
+      "date": "2026-09-30",
+      "by": "Claude Opus 5.5 source-metadata refresh for the .agents/TODO.md September 14 follow-up; research/audits/2026-09-14-golden-freshness-review.md Case 1",
       "evidence": [
-        "Storage-format correction only. Other protocol, CLI, signer, and capability claims retain their prior corroboration dates. Existing reverifyBy dates remain unchanged.",
-        "https://developers.stellar.org/docs/tools/lab/saved/keypairs — live official guidance says obfuscated, not encrypted, with legacy plaintext and test-network caveats.",
-        "https://github.com/stellar/laboratory/blob/bbbe48c79b8a90bbc548115a0573c912b1e9fa9e/src/helpers/localStorageSavedKeypairs.ts and https://github.com/stellar/laboratory/blob/bbbe48c79b8a90bbc548115a0573c912b1e9fa9e/src/helpers/jsonCipher.ts — current main and the live served bundle agree on the new-write and legacy-read paths.",
-        "https://lab.stellar.org/account/saved — isolated rendered UI confirms unencrypted/unprotected and test-network warnings; no keys, signing, submission, or storage write ran.",
-        ".agents/rounds/2026-09-08-maintenance-independent-review-grok.md — independent A/B/live-surface re-derivation and 2026-09-09T03:14:02Z reconciliation reject a false UI-versus-Docs conflict.",
-        "Sibling sweep: q-ti-stellar-lab-usage-and-new-ui and q-ti-secret-key-vs-mnemonic-derivation now share the same storage boundary. q-tool-lab-what-is has no conflicting storage-format claim.",
-        "The sd-030 live Docs correction remains present. Its old warning caution has no current conflicting source. sd-049 used obsolete master as current implementation evidence."
+        "Source-metadata refresh only. No question, golden answer, keyFact, avoid, note, or trap text changed.",
+        "https://developers.stellar.org/docs/tools/cli/cookbook/contract-assets returned HTTP 404 on 2026-09-30. https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract returned HTTP 200 and shows both SAC commands.",
+        "2026-09-30T19:42:17Z re-probe: the Lab, transactions, saved keypairs, and Quickstart Docs pages returned HTTP 200 with the quoted text in the corroboration rows. Quickstart still says not intended for production.",
+        "stellar/laboratory main has no commit to the two storage helpers after 624d40ff29ca (2025-09-04). The live saved-keypairs bundle hash is unchanged since 2026-09-09.",
+        "Sibling sweep: no other battery case cites the removed cookbook URL. q-tool-lab-what-is and q-ti-secret-key-vs-mnemonic-derivation are unchanged because no gospel text changed."
       ],
       "rootCause": [
-        "Eval-side source-selection error: obsolete Laboratory master was treated as the current default branch, creating the unsupported sd-049 conflict.",
-        ".agents/rounds/2026-09-08-maintenance-execution.md"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-ti-stellar-lab-usage-and-new-ui"

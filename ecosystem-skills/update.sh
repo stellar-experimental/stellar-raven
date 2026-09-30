@@ -15,7 +15,7 @@
 #
 #   lumenloop            github  lumenloop/lumenloop-skills        (8 public skills)
 #   openzeppelin-stellar github  OpenZeppelin/openzeppelin-skills  (3 Stellar skills, cherry-picked)
-#   stellar-dev          github  stellar/stellar-dev-skill         (7 SDF skills)
+#   stellar-dev          github  stellar/stellar-dev-skill         (every SDF skill under skills/)
 #   stellar-light        github  Stellar-Light/stellar-scout       (1 skill, repo root)
 #   trustless-work       github  Trustless-Work/trustlesswork-skill (1 skill dir at the repo root, cherry-picked)
 #
