@@ -9,14 +9,18 @@
  * this makes the review durable by requiring `ecosystem-skills/PIN-REVIEW.md` to
  * name what was reviewed.
  *
- * WHAT IS COMPARED — the whole selection, not just the commit. A source's
- * commit SHA is only one of the fields that decide which bytes get served: the
- * skill names, the file paths, and the per-file blob shas do too. Comparing
- * commits alone let a change retarget an entry to a different markdown file in
- * the same pinned tree, or add/drop a selected skill, with the gate reporting
- * "no skill pin moved". So each source is reduced to a canonical projection
- * (id + commit + skill names + each file's path and blob sha) and digested; the
- * ledger must name that digest.
+ * WHAT IS COMPARED — the whole selection and its location, not just the
+ * commit. A source's commit SHA is only one of the fields that decide which
+ * bytes get served: the skill names, the file paths, and the per-file blob shas
+ * do too. Comparing commits alone let a change retarget an entry to a different
+ * markdown file in the same pinned tree, or add/drop a selected skill, with the
+ * gate reporting "no skill pin moved". The owner, repo, and path decide WHERE
+ * those bytes are fetched from (scripts/lib/skill-mirror.mjs builds the raw URL
+ * from them): a location-only change moves every transport URL to a different
+ * repository while the served bytes stay hash-verified, so it is a provenance
+ * change that needs the same fresh read. So each source is reduced to a
+ * canonical projection (id + owner + repo + path + commit + skill names + each
+ * file's path and blob sha) and digested; the ledger must name that digest.
  *
  * WHY A DIGEST AND NOT THE COMMIT. The attestation has to be NEW. A bare commit
  * SHA is satisfied by any older line that happens to mention it, so a
@@ -42,9 +46,12 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const baseIdx = process.argv.indexOf("--base");
 const BASE = baseIdx >= 0 ? process.argv[baseIdx + 1] : "origin/main";
 
-/** Every field that decides which bytes this source serves, in a stable order. */
+/** Every field that decides which bytes this source serves, and from where, in a stable order. */
 const project = (source) => ({
   id: source.id,
+  owner: source.owner,
+  repo: source.repo,
+  path: source.path,
   commit: source.commit,
   skills: [...(source.skills ?? [])]
     .map((skill) => ({

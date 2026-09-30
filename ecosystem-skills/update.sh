@@ -49,6 +49,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST="$SCRIPT_DIR/MANIFEST.json"
 CATALOG="$SCRIPT_DIR/catalog.json"
+INDEX="$SCRIPT_DIR/INDEX.md"
 
 command -v gh    >/dev/null || { echo "error: gh CLI not found" >&2; exit 1; }
 command -v jq    >/dev/null || { echo "error: jq not found" >&2; exit 1; }
@@ -65,10 +66,13 @@ MISSING_SOURCES="[]"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 SRC_DIR="$WORK/sources"   # one <id>.json per re-pinned source
-# Everything is staged under $WORK and only moved into place AFTER all sources
-# succeed, so a mid-run failure never leaves a half-written MANIFEST.json.
+# Everything is staged under $WORK — the manifest, the catalog, AND the index
+# built from them — and only moved into place AFTER all sources succeed and the
+# index builds, so a mid-run failure never leaves a half-written MANIFEST.json
+# or a new pin set beside a stale INDEX.md.
 MANIFEST_TMP="$WORK/MANIFEST.json"
 CATALOG_TMP="$WORK/catalog.json"
+INDEX_TMP="$WORK/INDEX.md"
 mkdir -p "$SRC_DIR"
 
 NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -208,9 +212,21 @@ if [ -f "$MANIFEST" ]; then
   echo
 fi
 
-# --- Atomic swap: only now do we touch the real MANIFEST + catalog. ---
+# Build the themed index from the STAGED manifest and catalog (fetches each
+# pinned SKILL.md into the gitignored working cache to read its frontmatter).
+# This runs before the swap: an index failure aborts the run with the committed
+# pins, catalog, and index all untouched.
+node "$SCRIPT_DIR/build-index.mjs" --manifest "$MANIFEST_TMP" --catalog "$CATALOG_TMP" --out "$INDEX_TMP" || {
+  echo "error: index build failed — refusing to swap pins" >&2
+  exit 1
+}
+
+# --- Swap: only now do we touch the real MANIFEST + catalog + INDEX. ---
+# Three renames on one filesystem, each atomic on its own; nothing after this
+# point can fail in a way that needs a rollback.
 mv "$MANIFEST_TMP" "$MANIFEST"
 mv "$CATALOG_TMP" "$CATALOG"
+mv "$INDEX_TMP" "$INDEX"
 
 echo "Pinned ${TOTAL_SKILLS} skills across $(echo "$SOURCES" | jq length) sources — complete."
 
@@ -219,9 +235,5 @@ echo
 echo "Record these in ecosystem-skills/PIN-REVIEW.md (scripts/check-pin-review.mjs enforces them):"
 node "$SCRIPT_DIR/../scripts/check-pin-review.mjs" --digests | sed 's/^/  /'
 echo
-
-# Regenerate the themed index (fetches each pinned SKILL.md into the gitignored
-# working cache to read its frontmatter).
-node "$SCRIPT_DIR/build-index.mjs"
 
 echo "Done. Manifest: $MANIFEST (status: ${MIRROR_STATUS})"
