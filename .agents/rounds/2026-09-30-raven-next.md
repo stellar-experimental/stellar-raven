@@ -230,4 +230,19 @@ Panes `w3W:pC`, `w3W:pD`, and `w3W:pG` were split from `w3W:p2` and belong to th
 
 ## Receipts
 
-(none yet)
+### PR B (#186) — dependency audit fix
+
+- Review: `rev-astra-b` (GPT-6-Astra, high), four findings, all fixed; verification and final
+  files are in this round directory. The reviewer's `undici` 7.29.1 finding corrected the
+  completion condition.
+- CI passed (`Analyze`, `CodeQL`, `secrets`, `test`). GitHub merged the PR by squash as
+  `c87bc99a30aa09c8faea4bdcdc005e690ca28973` at 2026-09-30T21:28:11Z. The branch was deleted.
+- `npm ci` then `npm run deploy` from the clean `main` checkout at `c87bc99a`. The preflight
+  printed `tree clean and HEAD == origin/main`. Worker Version ID
+  `3ddbfa5b-861f-4698-86c3-894e09bdc50c`, version created 2026-09-30T21:28:45.117Z, deployment
+  created 2026-09-30T21:28:47.431Z, 100% of traffic. The `postdeploy` hook passed with the
+  default credential this time: `Usage tail consumer and daily retention schedule are present.`
+- Verification at 21:29:49Z: the nine public routes returned HTTP 200; unauthenticated
+  `POST /mcp` returned HTTP 401; `/health/skills` reported `checked: 64` at 21:07:19Z. One
+  authenticated `search` through the Raven connector returned three gated hits for a CLI
+  bindings query (`stellarDocs.search_sdk_cli_tools_docs` first, score 254).
