@@ -99,7 +99,8 @@ The vendor headers in `src/catalog/vendor/` explain which upstream helpers Raven
 
 The server, public site, Playground, skill reads, digest runner, authentication, and maintenance checks are implemented.
 Historical experiments and deployment evidence live in the evaluation records and dated round ledgers.
-The [September 14 audit](.agents/rounds/2026-09-14-truth-maintenance.md) records the latest reviewed drift and outstanding work.
+The [September 29 maintenance round](.agents/rounds/2026-09-29-truth-maintenance.md) records the latest reviewed drift.
+The [September 30 skill system audit](.agents/rounds/2026-09-30-skill-system-audit.md) records the latest reviewed skill pins.
 
 Run the checks in [AGENTS.md](AGENTS.md) before release.
 Deploy only from a clean checkout that matches pushed `origin/main`.
