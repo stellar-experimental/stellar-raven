@@ -334,4 +334,19 @@ was collected between 20:56Z and 21:34Z on 2026-09-30.
   `partial`). Its verdict hinged on key fact 2 (filter miss versus empty directory), not on the count
   that moved. No paid re-judge.
 - Sibling sweeps are recorded in each case's `truth.verified.evidence`.
+- The register also reopened the numeric invariant `base reserve` (member content changed). The
+  review file cannot clear an invariant entry, so the entry was re-swept directly: verdict
+  `consistent`, `reSwept` 2026-09-30 with the ledger and Horizon evidence. Found by the reviewer.
+
+### Reconciliation (PR D, reviewer `rev-grok-c`, Grok 4.7 high, live re-derivation)
+
+| finding | disposition |
+| --- | --- |
+| The direct stellarlight.xyz read was labelled class D; it is class C and the same witness as the Raven read | fixed: relabelled; the 226 count is recorded as a one-witness dated observation |
+| tftc.io and the SDF X post were labelled class E; the tftc.io page is undated | fixed: tftc.io is class D with no date; the SDF post is class A and marked as the same witness as stellar.org/x402; the independent seat corroboration is x402.org/members |
+| The `base reserve` numeric invariant was still `reopen` | fixed: re-swept directly, see above |
+
+The reviewer re-derived every matrix row live (Horizon ledger 64703824 at 21:48:22Z, the author
+page's seven articles, the GitHub archive flags, the Linux Foundation release, x402.org/members)
+and found no score laundering, no new number in a key fact, and no new avoid item.
 

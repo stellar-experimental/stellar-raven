@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "dee3a486022eb4b6d8b3a980712332a87ff324920d1eb4ff8c0db0d8862141a7",
+  "corpusContentSha256": "6660138b1fde128646d390d80d99364848b0946b0f6a9e18320607c5e35c2bd4",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -13126,16 +13126,16 @@
                 "note": "Premier tier benefits include 'Appointed seat on the Governing Board'."
               },
               {
-                "class": "E",
+                "class": "D",
                 "ref": "https://www.tftc.io/x402-foundation-operational-launch-ai-agent-payments",
                 "observedAt": "2026-09-30",
-                "note": "2026-07-16 report: 'The foundation now has 17 premier members with governing board seats', listing Stellar Development Foundation."
+                "note": "General-web report found through search (page text undated; it describes the Foundation as about three months operational): 'The foundation now has 17 premier members with governing board seats', listing Stellar Development Foundation."
               },
               {
-                "class": "E",
+                "class": "A",
                 "ref": "https://x.com/StellarOrg/status/2077056655758664090",
                 "observedAt": "2026-09-30",
-                "note": "SDF post 2026-07-14: 'SDF will hold a seat on the x402 Foundation Governing Board, with CPO @tomerweller'."
+                "note": "SDF's own post, 2026-07-14 15:44 UTC: 'SDF will hold a seat on the x402 Foundation Governing Board, with CPO @tomerweller'. Same witness as stellar.org/x402; not independent corroboration."
               }
             ]
           }
@@ -13147,10 +13147,11 @@
             "Live read 2026-09-30 of https://stellar.org/x402 (SDF Premier member; Governing Board seat via its CPO).",
             "Live read 2026-09-30T21:34Z of the Linux Foundation press release dated 2026-07-14 (operational launch; SDF among 17 Premier members; 40 members).",
             "Live read 2026-09-30 of https://x402.org/members (Premier tier: appointed Governing Board seat).",
-            "Secondary reports: tftc.io 2026-07-16 (17 premier members with governing board seats, incl. SDF); SDF X post 2026-07-14.",
+            "Other reads: tftc.io article (class D, undated page; 17 premier members with governing board seats, incl. SDF); SDF's own X post of 2026-07-14 (class A, same witness as stellar.org/x402). Independent corroboration of the seat beyond SDF comes from x402.org/members (Premier tier: appointed Governing Board seat; SDF listed under Premier Members).",
             "The protocol mechanics, v2 exact scope, SEP-41/SAC authorization, facilitator settlement, API-key qualification, and MPP distinction are unchanged from the 2026-08-29 verification; only the dated governance sentence moved.",
             "Sibling sweep 2026-09-30: grep 'Governing Board|not seated|Premier member|x402 Foundation' → q-defi-agentic-payment-standards-compare (says governed through the x402 Foundation/Linux Foundation; consistent), q-hist-x402-stellar-announcement (announcement-time case; no governance claim); no contradiction.",
-            "research/audits/2026-09-14-golden-freshness-review.md Case 5 flagged this sibling freshness item."
+            "research/audits/2026-09-14-golden-freshness-review.md Case 5 flagged this sibling freshness item.",
+            "Independent review 2026-09-30 (Grok 4.7): re-derived the Linux Foundation release (14 July 2026, 17 Premier members, 40 members, no 'Governing Board' wording), x402.org/members (SDF under Premier Members; Premier benefit 'Appointed seat on the Governing Board'), and stellar.org/x402; corrected the two evidence classes recorded here."
           ],
           "rootCause": [
             "freshness-drift",
@@ -18259,10 +18260,10 @@
                 "note": "20:56Z: ok, builders=[], counts.total=0, matchMode=expanded, advisory: 'The directory has 226 builder profiles, but none match these filters — … This is a filter miss, not an empty or unseeded directory'."
               },
               {
-                "class": "D",
+                "class": "C",
                 "ref": "https://stellarlight.xyz/api/builders?q=zzzzqqq and https://stellarlight.xyz/api/status",
                 "observedAt": "2026-09-30",
-                "note": "21:26:08Z direct upstream read: total 0 with the same advisory text; /api/status builders count 226, lastUpdatedAt 2026-09-30T12:57:22.194Z."
+                "note": "21:26:08Z direct upstream read: total 0 with the same advisory text; /api/status builders count 226, lastUpdatedAt 2026-09-30T12:57:22.194Z. This is the same Stellar Light directory the Raven read reaches (one witness for the 226 count), so it confirms the contract shape, not an independent count."
               }
             ]
           }
@@ -18275,7 +18276,8 @@
             "Live re-probe 2026-09-30T21:26:08Z of https://stellarlight.xyz/api/builders?q=zzzzqqq and /api/status: same advisory, builders count 226 (populationId builders|status:all).",
             "research/audits/2026-09-14-golden-freshness-review.md Case 6 recorded the interim 183 figure on 2026-09-14; the count is volatile and the answer now dates it.",
             "Sibling sweep 2026-09-30: grep '114 profiles|183 builder|226 builder|builder profiles' → q-builder-by-region-latam (no fixed count asserted), q-gap-builders-person-empty; grep getBuilders|filter miss → q-edge-closed-world-builder-directory-miss, q-gap-leaderboard-project-not-builder, q-builder-content-by-person; no contradiction.",
-            "The filter-miss taxonomy (zero-result filter miss versus unseeded or empty directory) is unchanged; only the dated count moved."
+            "The filter-miss taxonomy (zero-result filter miss versus unseeded or empty directory) is unchanged; only the dated count moved.",
+            "Independent review 2026-09-30 (Grok 4.7): the direct stellarlight.xyz read is class C and the same witness as the Raven read; the 226 count therefore has one witness and is stated as a dated observation, not a corroborated fact."
           ],
           "rootCause": [
             "freshness-drift",
