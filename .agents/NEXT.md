@@ -14,7 +14,8 @@ This file ranks the work and retains unresolved owner decisions, not deployment 
    Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
 3. Refresh the two sibling golden freshness items (TODO.md) and review dependency upgrades.
    The October 1 source-metadata case closed on 2026-09-30.
-4. Complete the private usage checks and coordinate the separately gated history cleanup.
+4. Complete the private usage checks (TODO.md, "Usage archive follow-up").
+   The public history rewrite closed on 2026-09-17 without rewriting; nothing remains to coordinate.
 
 The [September 14 improvements review](../research/audits/2026-09-14-improvements-review.md) records upstream blockers.
 Keep monitor-only programs at their triggers in TODO.md.
