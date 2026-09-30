@@ -42,16 +42,6 @@ single-pass payload is acceptable and this item is closed with that evidence.
 Found by the 2026-09-30 skill system audit and its independent reviews
 (`.agents/rounds/2026-09-30-skill-system-audit.md`).
 
-### Read the Stellar Light SCF skill bodies
-
-`NEXT.md` decision K asks whether to pin any of the twelve `scf-*` skills from
-`Stellar-Light/awesome-stellar-community-fund`. The fit so far is name-level only.
-Read each body against the four criteria of the admission bar in `ecosystem-skills/README.md`
-"Adding a source", including overlap with `skills.lumenloop.scf-submission-radar` and
-`skills.stellar-light.stellar-scout`.
-
-Done when: each of the twelve has a recorded verdict that decision K can use.
-
 ### Decide whether to track the skills.stellar.org Community section
 
 On 2026-09-30 the `https://skills.stellar.org/` index had a Community section. It listed skills that are

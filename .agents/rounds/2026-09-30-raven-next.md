@@ -205,7 +205,7 @@ verification, and a receipt below.
 | review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
 | review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
 | review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | `review-d-grok.md` in this round directory | running |
-| research (item 7) | `res-astra-scf` (GPT-6-Astra, high) | `w3W:pH` | `scf-skill-bodies-astra.md` in this round directory | running |
+| research (item 7) | `res-astra-scf` (GPT-6-Astra, high) | `w3W:pH` | `scf-skill-bodies-astra.md` in this round directory | done |
 
 Panes `w3W:pC`, `w3W:pD`, `w3W:pG`, and `w3W:pH` were split from `w3W:p2` and belong to this lead.
 `gh pr merge --delete-branch` removed the merged branches' worktrees (`raven-next-a`, `-b`, `-c`)
@@ -352,4 +352,30 @@ and 125 a second time; `register-review-d2.json` re-swept both (metadata-only ch
 The reviewer re-derived every matrix row live (Horizon ledger 64703824 at 21:48:22Z, the author
 page's seven articles, the GitHub archive flags, the Linux Foundation release, x402.org/members)
 and found no score laundering, no new number in a key fact, and no new avoid item.
+
+## Item 7 — Stellar Light `scf-*` skill bodies (decision K input)
+
+`res-astra-scf` read all twelve `SKILL.md` bodies at upstream HEAD `b9a1509fb4230a191ab0055c2beca29303c1a30c`
+(2026-07-23) with blob-hash verification, plus the two pinned exposed skills for overlap. The full
+table with line-level evidence is `scf-skill-bodies-astra.md` in this round directory. Summary:
+
+| skill | fit verdict | note |
+| --- | --- | --- |
+| `scf-budget-builder` | fit | budget validation; dated rate bands need attribution; body heading differs from the directory tagline |
+| `scf-claim-verifier` | fit | claim-specific evidence checks beyond general research |
+| `scf-competitor-analyst` | fit | largest conceptual overlap with `scf-submission-radar` and `stellar-scout` |
+| `scf-fetch-external-doc` | fit as client reference | Google Docs/Drive, GitHub, IPFS fetches and `/tmp` writes; suggests authenticated GitHub access; upstream name `fetch-external-doc` |
+| `scf-interest-form-drafter` | fit | form submission stays a reader action |
+| `scf-live-context` | fit, after a content fix | derives the round from an open RFP row; conflicts with the pinned Scout body and `scout.getRfps` `submissionWindow`/`currentPhase` |
+| `scf-prescreen-checker` | fit | structured prescreen; no SCF decision |
+| `scf-referral-preparer` | fit | sharing and submission prompts to record |
+| `scf-reviewer` | fit | funding recommendations are advisory text; routes from the pinned Scout body |
+| `scf-round-reviewer` | no fit | requires an absent `CLAUDE.md`, local CSV under `data/`, `reviews/results.csv`, and external skill installs |
+| `scf-submission-drafter` | fit | requires the root submission template, outside the standard `skills/` pin |
+| `scf-tranche-reporter` | fit | completion-form and access-change prompts; mentions an audit co-pay |
+
+Cross-cutting facts for the owner: four bodies link to root `docs/` files that the selector does not
+pin; the LICENSE is MIT with a LumenLoop copyright line; the lane did not execute any workflow or
+validate award rules against the handbook. Decision K in `NEXT.md` now points at this evidence.
+The `TODO.md` body-read item is closed.
 
