@@ -196,11 +196,23 @@ Each PR passes its gates and an independent review from a non-Fable lane (Sol, A
 Opus). Every finding is reconciled. Then CI, squash merge, `npm run deploy`, production
 verification, and a receipt below.
 
+## Outcome
+
+All four PRs merged and deployed on 2026-09-30 (#185, #186, #187, #188); the last production
+version of this block is `cc77c5bf-e0d6-4f98-b57b-d526a9e7c393`. Items 1, 3 (status), 4, 5, 6,
+7, 9, and the 2026-10-07 case from 9b are done. Ranked items still open for the owner: the
+`AGENTS.md` lane wording (item 2), the `sd-052` resolver comment (item 3), `sk-028` filing (8),
+the broader dependency refresh (10), the Community section (11), the Vectorize migration (12),
+the stellarDocs `hitsPerPage` default (14), and the source-authority guidance (16). Item 15
+(stellarDocs two-pass `content`) and the dated golden checks from 2026-10-08 onward are the next
+agent work. Decision K now has its body-read evidence. The reviewer panes `w3W:pC`, `pD`, `pG`,
+and `pH` are closed; the four merged worktrees are removed.
+
 ## Lanes
 
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | this ledger, PRs A to D | running |
+| lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | this ledger, PRs A to D and the receipt PR | done |
 | review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `review-a-sol.md`, `verify-a-sol.md`, `final-a-sol.md`, `final2-a-sol.md` in this round directory | accept (final, after three fix passes) |
 | review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
 | review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
@@ -261,6 +273,26 @@ check's rejection of non-github sources, and the gates.
 - Verification at 21:36:51Z: the nine public routes returned HTTP 200; unauthenticated
   `POST /mcp` returned HTTP 401. The PR changed no Worker source, so no authenticated re-check
   was repeated beyond the PR B one.
+
+### PR D (#188) — golden freshness pass
+
+- Review: `rev-grok-c` (Grok 4.7, high), three findings plus one residual, all fixed; final
+  verdict `confirmed` at `ebf6683d`. Three review files are in this round directory.
+- CI passed (`Analyze`, `CodeQL`, `secrets`, `test`) on the final head `46d9abcb`. GitHub merged
+  the PR by squash as `c43b8092d675a24b19270ac7b3ca920b31119f5f` at 2026-09-30T22:23:10Z. The
+  branch was deleted.
+- `npm ci` then `npm run deploy` from the clean `main` checkout at `c43b8092`. The preflight
+  printed `tree clean and HEAD == origin/main`. Worker Version ID
+  `cc77c5bf-e0d6-4f98-b57b-d526a9e7c393`, version created 2026-09-30T22:23:28.029Z, deployment
+  created 2026-09-30T22:23:30.885Z, 100% of traffic. The `postdeploy` hook returned HTTP 401 with
+  the default credential; `WRANGLER_PROFILE=sdf node scripts/check-usage-deployment.mjs` → `Usage
+  tail consumer and daily retention schedule are present.`
+- Verification at 22:23:34Z: the nine public routes returned HTTP 200; unauthenticated
+  `POST /mcp` returned HTTP 401. One authenticated `search` through the Raven connector returned
+  two gated hits for a pool-share reserve query (`stellarDocs.search_protocol_concepts_docs`
+  first, score 77). The PR changed no Worker source; the goldens are eval inputs.
+- This receipt lands through PR #189 (ledger only). That PR is not deployed: it changes nothing the
+  Worker bundle reads.
 
 ### PR C (#187) — skill tooling hardening
 
