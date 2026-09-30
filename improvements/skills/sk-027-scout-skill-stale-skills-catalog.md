@@ -1,7 +1,7 @@
 ---
 id: sk-027
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-30
 upstreamTitle: Scout skill describes /api/skills as seven SDF skills and names the removed soroban slug
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - 2026-09-30T19:41:24Z GET https://stellarlight.xyz/api/skills/soroban returned HTTP 404 {"error":"unknown skill: soroban"}; /api/skills/smart-contracts returned HTTP 200; /api/skills/stellar-scout returned 34541 characters of content with source stellarlight.
   - 2026-09-30 Raven production scout.getSkill({ name "soroban" }) returned soft-empty status 404, and codemode.skill.read of skills.stellar-light.stellar-scout served all four stale phrases.
   - Dedupe 2026-09-30 found no open or closed Stellar-Light/stellar-scout issue for the skills-catalog description. Earlier API-reference drift findings sk-008, sk-009, and sk-018 covered other endpoints and are resolved.
+  - upstream issue filed 2026-09-30: https://github.com/Stellar-Light/stellar-scout/issues/14
 ---
 
 ## Finding

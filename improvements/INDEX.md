@@ -17,7 +17,7 @@ Total findings: 64
 | sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 0           |
 | sk-025 | The beta API skill forbids Authorization: Bearer for requests to https://beta.api.trustlesswork.com. The current Core API documentation…    | reported-upstream | 2026-09-16 | 0           |
 | sk-026 | The Core API skill gives error-documentation URLs that return HTTP 404. The example ESCROW_RECEIVER_TRUSTLINE_MISSING URL omits the…        | reported-upstream | 2026-09-29 | 0           |
-| sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. The live catalog has 43 entries from four sources and eight SDF…    | verified          | 2026-09-30 | 0           |
+| sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. The live catalog has 43 entries from four sources and eight SDF…    | reported-upstream | 2026-09-30 | 0           |
 
 ## stellar-light-scout
 
