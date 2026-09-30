@@ -101,9 +101,10 @@ node build-index.mjs           # just rebuild the index (e.g. after editing grou
 
 `update.sh` resolves a commit per source, walks its tree, records every file's path/size/blob
 hash, drops skills deleted upstream, rewrites `MANIFEST.json` + `catalog.json`, then runs
-`build-index.mjs`. It fails closed at every step: a source it cannot resolve, a directory it
-cannot fetch, or a body diff it cannot print aborts the run before the swap, so a partial or
-mixed-age pin set is never written. After a re-pin, check the output for any **Uncategorized**
+`build-index.mjs`. Every step before the swap fails closed: a source it cannot resolve, a tree it
+cannot fetch, a truncated tree, a selected skill without `SKILL.md`, or a body diff it cannot print
+aborts the run before the swap, so a partial or mixed-age pin set is never written. The index
+rebuild runs after the swap (see "Swap last" above). After a re-pin, check the output for any **Uncategorized**
 skills and file them into `groups.json`, and **read the skill diffs** — skills are prompt input.
 
 Validate the pin set:
@@ -208,18 +209,21 @@ must already exist as `proposed` from an earlier commit (step 6).
 4. Add an `exposed` row per skill to `research/skill-exposure-inventory.json`
    (`test/skill-exposure-classification.test.ts` requires it).
 5. Rebuild the generated artifacts as in
-   [`live-drift-resolution`](../.agents/skills/live-drift-resolution/SKILL.md) Step 1, then pass the
-   acceptance gates: `npm test`, `npm run eval:qa:lint -- --stale --enforce-floors`, and the routing
-   comparison of that skill's Step 4. Expect the count contracts to move (`test/catalog.test.ts`,
-   `test/skills.test.ts`, `test/search.test.ts`, the demo trace totals) and record the new catalog
-   fingerprint in `eval/gates.json`. Numerical thresholds stay unchanged unless a separate decision
-   changes them. A host description override (`scripts/description-notes.mjs`) or a search-admission
-   change is its own routing decision with its own comparison.
-6. Give every new exposed skill active QA battery coverage: CI enforces `skill floor 1` per exposed
-   skill, and a skills-routing case does not count. Commit each new case as `proposed` first, then
-   activate it in the admission PR after an independent `golden-truth` review. A case in
-   `eval/skills-cases.json` is additional routing coverage, not a substitute.
-7. Get an independent review from a reviewer who differs from both the author and the orchestrator
+   [`live-drift-resolution`](../.agents/skills/live-drift-resolution/SKILL.md) Step 1.
+6. Give every new exposed skill active QA battery coverage before the final gates: CI enforces
+   `skill floor 1` per exposed skill, and a skills-routing case does not count. Each new case must
+   already be committed as `proposed` in an earlier commit. Activate it in the admission PR after an
+   independent `golden-truth` review, then run `npm run eval:qa:compile` and
+   `npm run eval:qa:register`. A case in `eval/skills-cases.json` is additional routing coverage, not
+   a substitute.
+7. Pass the acceptance gates on the complete tree: `npm test`,
+   `npm run eval:qa:lint -- --stale --enforce-floors`, and the routing comparison of that skill's
+   Step 4. Expect the count contracts to move (`test/catalog.test.ts`, `test/skills.test.ts`,
+   `test/search.test.ts`, the demo trace totals) and record the new catalog fingerprint in
+   `eval/gates.json`. Numerical thresholds stay unchanged unless a separate decision changes them. A
+   host description override (`scripts/description-notes.mjs`) or a search-admission change is its
+   own routing decision with its own comparison.
+8. Get an independent review from a reviewer who differs from both the author and the orchestrator
    (`AGENTS.md`), record it in a round ledger, and deploy with the owner's approval.
 
 A candidate that is not admitted still needs a recorded decision — an open owner question in

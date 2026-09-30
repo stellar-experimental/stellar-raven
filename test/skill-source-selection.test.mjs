@@ -15,12 +15,19 @@ const tree = {
 
 describe("GitHub skill source selection", () => {
   it("rejects root Markdown files when child skill directories live at the repo root", () => {
-    expect(selectGitHubSkillFiles(tree, { sourcePath: "." }).map((file) => file.src)).toEqual([
+    const rootSkills = { tree: tree.tree.filter((entry) => !entry.path.startsWith("skills/")) };
+    expect(selectGitHubSkillFiles(rootSkills, { sourcePath: "." }).map((file) => file.src)).toEqual([
       "skill-a/reference.md",
       "skill-a/SKILL.md",
-      "skill-b/SKILL.md",
-      "skills/skill-c/SKILL.md"
+      "skill-b/SKILL.md"
     ]);
+  });
+
+  it("refuses an unpicked child directory without its own SKILL.md", () => {
+    // In "." mode `skills/skill-c/SKILL.md` would make `skills` a skill with no SKILL.md of its own.
+    expect(() => selectGitHubSkillFiles(tree, { sourcePath: "." })).toThrow(/"skills" under "\." has no SKILL\.md/);
+    const notesOnly = { tree: [{ type: "blob", path: "skills/broken/notes.md", size: 1, sha: "a" }] };
+    expect(() => selectGitHubSkillFiles(notesOnly, { sourcePath: "skills" })).toThrow(/"broken" under "skills" has no SKILL\.md/);
   });
 
   it("applies a root-directory allow-list after rejecting root Markdown files", () => {

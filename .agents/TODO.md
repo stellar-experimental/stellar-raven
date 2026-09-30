@@ -84,12 +84,13 @@ Done when: the index is built from the staged files before the swap, or the swap
 
 `scripts/check-pin-review.mjs` `project()` digests the commit, skill names, file paths, and blob
 shas, but not `owner`, `repo`, or `path`. A location-only change moves transport URLs without a new
-attestation. Served bytes stay hash-verified at runtime, so this is a provenance gap. Changing the
-projection re-keys every `sel:` digest, so the change needs fresh `PIN-REVIEW.md` entries for all
-sources. Found by `rev-sol` (finding 5).
+attestation. Served bytes stay hash-verified at runtime, so this is a provenance gap. The checker
+applies the same projection to the base and the head, so extending it re-keys the printed digests
+without detecting movement; only a later selection or location change needs a new `PIN-REVIEW.md`
+entry. Found by `rev-sol` (finding 5 and its verification pass).
 
-Done when: the projection includes the location fields, a test proves a location-only change needs
-an attestation, and `PIN-REVIEW.md` records the re-keyed digests.
+Done when: the projection includes the location fields and a test proves a location-only change
+needs an attestation.
 
 ### Remove the inactive private-archive branches from build-index.mjs
 

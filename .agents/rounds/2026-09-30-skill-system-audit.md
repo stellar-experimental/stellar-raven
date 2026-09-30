@@ -159,3 +159,24 @@ with skills absent from the Stellar Light snapshot. Queued in `TODO.md`.
 - `npm run eval:plan -- eval/qa/results/2026-08-30T03-43-11-variantA.json` (the latest saved result;
   it has no row for the edited case) → identical output with the `605c1558` coverage rules and with
   this branch (`required covered 40 correct 40 partial 13 wrong / 93`). No re-judge applies.
+
+### Verification pass
+
+Each reviewer checked `f65e165d..a6db8c1a` against its own findings. Files: `verify-rev-fable.md`,
+`verify-rev-astra.md`, `verify-rev-sol.md`, `verify-rev-grok.md` (written to the ignored `tmp/` and
+copied unchanged). Verdicts: `rev-fable` accept, `rev-grok` accept, `rev-astra` reject, `rev-sol`
+reject. Both rejections accepted the functional fixes and named these remaining problems; each is
+fixed in the next commit.
+
+| problem | reviewer | fix |
+| --- | --- | --- |
+| The golden record above says the reviewers worked "without the author's notes". They read the notes first, so their checks were independent live source checks, not blind re-derivation. The first review round also did not check the upload-deploy page or the Quickstart implementation. | astra | Correction to the "Golden verification record": replace "each without the author's notes" with "after reading the author's notes (independent source checks, not blind)". The case's `truth.verified` now says who checked which source in which pass. Clusters re-closed with `register-review-3.json`. |
+| Directory mode without picks accepts a child directory with no `SKILL.md`; the reconciliation marked the selector finding fixed | sol | The selector now rejects every selected directory without `SKILL.md`, picked or not, with a test. All five real sources still select exactly their manifest files. |
+| `check-mirrors.mjs` throws on `skills: {}` and accepts a skill whose `SKILL.md` row is missing | sol, astra | The per-source checks moved to `pinnedSourceFailures` in `scripts/lib/skill-mirror.mjs`, which guards non-array values and requires a `SKILL.md` row. `test/pinned-source-shape.test.mjs` covers it. |
+| Admission step 5 ran `--enforce-floors` before step 6 activated the new cases; the reconciliation marked the finding fixed | sol | Steps reordered: rebuild (5), QA activation with compile and register (6), acceptance gates on the complete tree (7), review and deploy (8). |
+| The README still said `update.sh` "fails closed at every step" | sol | Narrowed to the steps before the swap, naming the new tree and `SKILL.md` checks. |
+| The `TODO.md` digest item said a projection change needs new attestations for all sources | sol | Corrected: the checker applies one projection to base and head, so only a later selection or location change needs a new entry. |
+
+Accepted as deferred by the reviewers: the drift check's inferred cherry-pick mode (both current
+cherry-picked sources have non-empty exclusion maps), the staged index, the digest location fields,
+the inactive `build-index.mjs` branches, the SCF body read, and the filer's repeated evidence.

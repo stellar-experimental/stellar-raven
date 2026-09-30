@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "fc5bdc7dc054e77408d09ae0135024ceba50b3f0d0ea4ce2124a1f729588893d",
+  "corpusContentSha256": "fb54ff1e8202c1b4b40da344337efb6a09c9119ab5f7d6833357e9f9aa873e6d",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -52820,11 +52820,11 @@
         ],
         "verified": {
           "date": "2026-09-30",
-          "by": "Claude Opus 5.5 source-metadata refresh for the .agents/TODO.md September 14 follow-up; independent live re-derivation by rev-fable (Claude Fable 5.1 high), rev-astra (GPT-6-Astra high), rev-sol (GPT-6.1-Sol high), and rev-grok (Grok 4.7 high); .agents/rounds/2026-09-30-skill-system-audit.md",
+          "by": "Claude Opus 5.5 source-metadata refresh for the .agents/TODO.md September 14 follow-up; independent live source checks, not blind (each reviewer read the author's notes first), by rev-fable (Claude Fable 5.1 high), rev-astra (GPT-6-Astra high), rev-sol (GPT-6.1-Sol high), and rev-grok (Grok 4.7 high); .agents/rounds/2026-09-30-skill-system-audit.md",
           "evidence": [
             "Source-metadata and evidence refresh only. No question, golden answer, keyFact, avoid, note, or trap text changed.",
             "https://developers.stellar.org/docs/tools/cli/cookbook/contract-assets returned HTTP 404 on 2026-09-30. https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract returned HTTP 200 and shows both SAC commands.",
-            "2026-09-30 re-probe by the author and four independent reviewers: the Lab, transactions, upload-deploy, saved keypairs, and Quickstart Docs pages returned HTTP 200 with the quoted text in the corroboration rows.",
+            "2026-09-30 live checks: the Lab, transactions, saved keypairs, and Quickstart Docs pages by the author and all four reviewers; the upload-deploy page and stellar/quickstart main by the author, then rev-astra and rev-sol in the verification pass. Each returned HTTP 200 with the quoted text in the corroboration rows.",
             "stellar/laboratory main has no commit to the two storage helpers after 624d40ff29ca (2025-09-04). The live saved-keypairs bundle hash is unchanged since 2026-09-09.",
             "stellar/quickstart main (8f5dcf166978, 2026-09-29) serves Lab at /lab with a custom network default. rev-grok's contrary reading used the stale master branch; the round ledger records the reconciliation.",
             "Sibling sweep: no other battery case cites the removed cookbook URL. q-asset-deploy-sac-cli and q-sor-sac-introspection keep the same deploy-versus-id distinction. Cluster-023 members (q-edge-jailbreak-generate-secret-keys, q-edge-send-me-free-xlm, q-infra-testnet-vs-futurenet, q-ti-custodial-account-generation-c-address, q-ti-testnet-usdc-faucet, q-tool-cli-testnet-identity-howto) and cluster-137 member q-ti-secret-key-vs-mnemonic-derivation are unchanged because no gospel text changed."

@@ -54,6 +54,12 @@ export function selectGitHubSkillFiles(treeResponse, { sourcePath, picks = [] })
       throw new Error(`picked skill "${pick}" has no SKILL.md under "${sourcePath}"`);
     }
   }
+  // Without picks every child directory becomes a skill, so each must be one.
+  for (const skill of new Set(files.map((file) => file.skill))) {
+    if (!files.some((file) => file.skill === skill && file.relpath === "SKILL.md")) {
+      throw new Error(`selected directory "${skill}" under "${sourcePath}" has no SKILL.md`);
+    }
+  }
   return files;
 }
 
