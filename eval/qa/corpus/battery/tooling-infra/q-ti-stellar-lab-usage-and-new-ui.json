@@ -117,6 +117,12 @@
             "ref": "https://developers.stellar.org/docs/tools/lab/transactions",
             "observedAt": "2026-09-30",
             "note": "HTTP 200. The walkthrough still uses Fetch next sequence and Add Operation."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/smart-contracts/upload-deploy-contract",
+            "observedAt": "2026-09-30",
+            "note": "HTTP 200. Signing methods: secret key, hardware wallet, extension wallet, or signature. These match the answer's raw-secret, hardware, wallet-kit, and external paths."
           }
         ],
         "note": "Legacy verdict: confirmed-as-of-2026-07-11."
@@ -210,17 +216,42 @@
             "note": "deploy: Deploy builtin Soroban Asset Contract. id: Get Id of builtin Soroban Asset Contract. Deprecated, use stellar contract id asset instead."
           }
         ]
+      },
+      {
+        "claim": "Quickstart serves Stellar Lab locally at /lab with a custom network default, and Quickstart is not intended for production",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/8f5dcf166978/README.md",
+            "observedAt": "2026-09-30",
+            "note": "Default branch main, tip 8f5dcf166978 (2026-09-29). The README lists `Lab: http://localhost:8000/lab`, `--enable lab`, and says Lab is built-in to Quickstart. The old master branch (tip 258a5b6e0e99, 2025-03-26) has no Lab; do not use it as current evidence."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/quickstart/blob/8f5dcf166978/common/nginx/etc/conf.d/lab.conf",
+            "observedAt": "2026-09-30",
+            "note": "`location /lab` proxies to the local Lab process. common/lab/bin/start exports NEXT_PUBLIC_DEFAULT_NETWORK=custom."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/quickstart",
+            "observedAt": "2026-09-30",
+            "note": "HTTP 200. The page says the quickstart image is not intended for production purposes."
+          }
+        ]
       }
     ],
     "verified": {
       "date": "2026-09-30",
-      "by": "Claude Opus 5.5 source-metadata refresh for the .agents/TODO.md September 14 follow-up; research/audits/2026-09-14-golden-freshness-review.md Case 1",
+      "by": "Claude Opus 5.5 source-metadata refresh for the .agents/TODO.md September 14 follow-up; independent live re-derivation by rev-fable (Claude Fable 5.1 high), rev-astra (GPT-6-Astra high), rev-sol (GPT-6.1-Sol high), and rev-grok (Grok 4.7 high); .agents/rounds/2026-09-30-skill-system-audit.md",
       "evidence": [
-        "Source-metadata refresh only. No question, golden answer, keyFact, avoid, note, or trap text changed.",
+        "Source-metadata and evidence refresh only. No question, golden answer, keyFact, avoid, note, or trap text changed.",
         "https://developers.stellar.org/docs/tools/cli/cookbook/contract-assets returned HTTP 404 on 2026-09-30. https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract returned HTTP 200 and shows both SAC commands.",
-        "2026-09-30T19:42:17Z re-probe: the Lab, transactions, saved keypairs, and Quickstart Docs pages returned HTTP 200 with the quoted text in the corroboration rows. Quickstart still says not intended for production.",
+        "2026-09-30 re-probe by the author and four independent reviewers: the Lab, transactions, upload-deploy, saved keypairs, and Quickstart Docs pages returned HTTP 200 with the quoted text in the corroboration rows.",
         "stellar/laboratory main has no commit to the two storage helpers after 624d40ff29ca (2025-09-04). The live saved-keypairs bundle hash is unchanged since 2026-09-09.",
-        "Sibling sweep: no other battery case cites the removed cookbook URL. q-tool-lab-what-is and q-ti-secret-key-vs-mnemonic-derivation are unchanged because no gospel text changed."
+        "stellar/quickstart main (8f5dcf166978, 2026-09-29) serves Lab at /lab with a custom network default. rev-grok's contrary reading used the stale master branch; the round ledger records the reconciliation.",
+        "Sibling sweep: no other battery case cites the removed cookbook URL. q-asset-deploy-sac-cli and q-sor-sac-introspection keep the same deploy-versus-id distinction. Cluster-023 members (q-edge-jailbreak-generate-secret-keys, q-edge-send-me-free-xlm, q-infra-testnet-vs-futurenet, q-ti-custodial-account-generation-c-address, q-ti-testnet-usdc-faucet, q-tool-cli-testnet-identity-howto) and cluster-137 member q-ti-secret-key-vs-mnemonic-derivation are unchanged because no gospel text changed."
       ],
       "rootCause": [
         "freshness-drift"

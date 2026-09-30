@@ -76,3 +76,86 @@ Gates on the branch:
 - `npm run secrets:scan -- --tree` → clean.
 
 Remaining risk: none for runtime. The PR changes no Worker source, catalog, or spec.
+
+## Independent review round
+
+Opened 2026-09-30 after the merge and deploy of PR #183. `sk-027` was filed as
+https://github.com/Stellar-Light/stellar-scout/issues/14 before the round. Brief:
+`.agents/rounds/2026-09-30-skill-system-audit/review-brief.md`.
+
+| lane | agent (model, effort) | pane | write set | status |
+| --- | --- | --- | --- | --- |
+| product, docs, and upstream text | `rev-fable` (Claude Fable 5.1, high) | `w46:p2` | `review-rev-fable.md` | running |
+| pipeline and gate compliance | `rev-astra` (GPT-6-Astra, high) | `w46:p5` | `review-rev-astra.md` | running |
+| code-versus-docs and missed work | `rev-sol` (GPT-6.1-Sol, high) | `w46:p3` | `review-rev-sol.md` | running |
+| live re-derivation and assumption attack | `rev-grok` (Grok 4.7, high) | `w46:p4` | `review-rev-grok.md` | running |
+
+All four reviewers differ from the author and orchestrator (Claude Opus 5.5, pane `w46:p1`), which
+created and owns panes `w46:p2`–`w46:p5`.
+
+### PR #183 release receipt
+
+- Merged by squash as `f65e165db4d579042d756a9c07a6a22b17e11347` after CI passed (`Analyze`, `CodeQL`,
+  `secrets`, `test`).
+- `npm run deploy` from `main` → Worker Version ID `c4d27b61-e0f0-47a4-a6fe-6ce298fb1b81`, deployment
+  `6ebfc176-1365-45e0-892e-37142c7f3b5c`, created `2026-09-30T19:49:09.958Z`, 100% of traffic
+  (`wrangler deployments status`; confirmed read-only by `rev-fable`, `rev-sol`, and `rev-grok`).
+- The `postdeploy` hook returned HTTP 401 with the default credential, as on 2026-09-29.
+  `WRANGLER_PROFILE=sdf node scripts/check-usage-deployment.mjs` → `Usage tail consumer and daily
+  retention schedule are present.`
+- Six public routes returned HTTP 200; unauthenticated `POST /mcp` returned HTTP 401.
+- Authenticated production check through the Raven connector after the deploy: 55 varied
+  `codemode.search` queries returned exactly the 20 manifest skill IDs; `scout.listSkills({ source:
+  "sdf" })` returned the eight SDF slugs; `codemode.skill.read` of `skills.stellar-dev.cross-chain`
+  returned content. The Codex reviewers could not repeat this (their MCP approval policy is `never`).
+- `sk-027` filed 2026-09-30T19:53:24Z as https://github.com/Stellar-Light/stellar-scout/issues/14
+  (commit `2f79caab` records `reported-upstream`).
+
+### Reconciliation
+
+All four verdicts: `accept with fixes`. Reviews: `review-rev-fable.md`, `review-rev-astra.md`,
+`review-rev-sol.md`, `review-rev-grok.md` in this round's directory. The Codex sandbox blocks writes
+under `.agents/`, so `rev-astra` and `rev-sol` wrote to the ignored `tmp/` and the orchestrator copied
+the files unchanged.
+
+| finding | reviewers | disposition |
+| --- | --- | --- |
+| Admission bar says credential or write steps are scrubbed; the worked example serves them | fable F1, sol 1 | fixed: bar now treats them as reference content, names what `src/skills/scrub.ts` removes, and routes remaining prompts to `PIN-REVIEW.md` |
+| Step 6 allows a routing case instead of per-skill QA coverage; proposal-first activation missing | fable F3, astra 1, sol 3, grok 3 | fixed: step 6 requires `skill floor 1` coverage per skill, proposal-first, independent activation |
+| Step 5 links regeneration only; count contracts, fingerprint, routing comparison missing | fable F2, astra 2, sol 3, grok 3 | fixed: step 5 names the acceptance gates, count contracts, `eval/gates.json` fingerprint, and separate routing decisions |
+| `unpinnedUpstream` omitted; drift check infers cherry-pick mode from a non-empty map | fable F4, sol 2, grok 3 | docs fixed (step 3 and the design-choices text); code change queued in `TODO.md` |
+| Reviewer independence from the orchestrator missing; decision location omits `NEXT.md` | sol 3, fable F8, grok 3 | fixed |
+| `sk-027` misses `SKILL.md:90`, `README.md:76-78` (`soroban`, `anchors`), `api-reference.md:196`; recommendation writes a new fixed roster | fable F5, astra 4, sol 6, grok 1 | fixed in the finding; one correction comment posted (allowed: it changes the proposed action): https://github.com/Stellar-Light/stellar-scout/issues/14#issuecomment-5919085549 |
+| Golden refresh stamped `asOf` over claims the first pass did not re-derive; no independent matrix or plan comparison | astra 3, grok 2 | fixed: signer-category and Quickstart `/lab` rows added with 2026-09-30 evidence; four reviewers re-derived the claims; plan comparison below |
+| Quickstart has no `/lab` | grok 2 | rejected: `rev-grok` read the stale `master` branch (tip `258a5b6e0e99`, 2025-03-26). Default branch `main` (tip `8f5dcf166978`, 2026-09-29) README lists `http://localhost:8000/lab`; `common/nginx/etc/conf.d/lab.conf` proxies `/lab`; `common/lab/bin/start` sets `NEXT_PUBLIC_DEFAULT_NETWORK=custom` |
+| PR #183 body said each golden claim had re-verified evidence | astra 3 | corrected here: the first pass re-verified the storage, CLI, Lab, and Quickstart-production claims; the signer and `/lab` claims gained evidence in this follow-up |
+| `update.sh:36` "≈30 entries"; `update.sh:25` retired tracker id | fable F6, F12, sol 7 | fixed |
+| Stale descriptions: `inventory/README.md:7`, observability "204", run-evals collections | sol 7 | fixed |
+| Selector accepts truncated trees and missing picks; mirror check accepts an empty source | sol 4 | fixed with tests; each real source still selects exactly its manifest file count |
+| Swap is two moves and the index builds after them | sol 4 | README claim narrowed; staged index queued in `TODO.md` |
+| Pin-review digest omits `owner`, `repo`, `path` | sol 5 | queued in `TODO.md` (re-keys every `sel:` digest; served bytes stay hash-verified) |
+| Inactive private-archive branches in `build-index.mjs` | sol add. 4 | queued in `TODO.md` |
+| Decision K omits overlap, upstream push date, layout, and `fetch-external-doc` path; body read not queued | fable F7, grok 4, astra add. 1 | fixed in `NEXT.md` K; body read queued in `TODO.md` |
+| `NEXT.md` header stamp; `EVALS.md` link; `coverage-rules.json` kind list | fable F10, add. 5, add. 6 | fixed |
+| Deploy id and live check missing from the ledger | fable F9, astra add. 3 | fixed (release receipt above) |
+| Scout skill states the Builders directory as dozens / ~110; live has 226 | grok add. 1 | filed locally as successor `sk-028` (`verified`); upstream filing waits for the owner |
+| Filer repeats frontmatter evidence in the issue body | fable F11, astra add. 4 | no change: filer template behavior, not this finding |
+| `THIRD-PARTY-NOTICES.md` scrub counts unpinned by a test | fable add. 7 | no change: `rev-sol` verified 7 LumenLoop + 1 Stellar Light files match |
+| Research chunk counts disagree inside the Scout skill | grok add. 2 | no change: unverified; not filed |
+
+New item found during reconciliation: the `https://skills.stellar.org/` index has a Community section
+with skills absent from the Stellar Light snapshot. Queued in `TODO.md`.
+
+### Golden verification record
+
+- Claim matrix for `q-ti-stellar-lab-usage-and-new-ui`: capability (Lab, transactions, upload-deploy
+  Docs), storage (keypairs Docs, `stellar/laboratory` helpers, live bundle), SAC CLI (cookbook, CLI
+  28.1.0 help), Quickstart (`stellar/quickstart` main README and `lab.conf`, Quickstart Docs). Each row
+  carries 2026-09-30 evidence in `truth.corroboration`. Independent re-derivations: `rev-fable`
+  (19:58Z), `rev-astra`, `rev-sol`, and `rev-grok` (20:03Z–20:07Z), each without the author's notes.
+- `npm run eval:qa:register` reopened clusters 023 and 137 again after the evidence edit;
+  `npm run eval:qa:register -- --review .agents/rounds/2026-09-30-skill-system-audit/register-review-2.json`
+  → `updated; 0 reopened`; `npm run eval:qa:register -- --check` → `up to date`.
+- `npm run eval:plan -- eval/qa/results/2026-08-30T03-43-11-variantA.json` (the latest saved result;
+  it has no row for the edited case) → identical output with the `605c1558` coverage rules and with
+  this branch (`required covered 40 correct 40 partial 13 wrong / 93`). No re-judge applies.

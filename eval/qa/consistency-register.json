@@ -693,7 +693,7 @@
         "lastChecked": "2026-09-30",
         "reSwept": {
           "date": "2026-09-30",
-          "reason": "Source-metadata refresh (2026-09-30): only q-ti-stellar-lab-usage-and-new-ui changed, and only in judge-blind truth metadata (dead cookbook URL replaced, new dated evidence, asOf and reverifyBy). No question, answer, keyFact, avoid, or note text moved. Re-derived today: https://developers.stellar.org/docs/tools/lab still names Friendbot funding for Testnet and Futurenet, and https://developers.stellar.org/docs/tools/quickstart still says not intended for production. The cluster note stands unchanged.",
+          "reason": "Evidence-only follow-up after the independent review round (2026-09-30): q-ti-stellar-lab-usage-and-new-ui gained dated corroboration rows (upload-deploy signing methods; Quickstart /lab on stellar/quickstart main 8f5dcf166978) and a fuller truth.verified record. No question, answer, keyFact, avoid, or note text moved. Four independent reviewers re-derived the Lab Friendbot funding for Testnet and Futurenet and the Quickstart non-production warning from live Docs. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -702,7 +702,7 @@
           "q-edge-send-me-free-xlm": "2a6287ef7a1ff80613c611aa03542a657df4363663912c63ca9a7750a3153443",
           "q-infra-testnet-vs-futurenet": "0cbacad7c6ce832c85a791e78ebb68753111fabaf3d7370878fc9a29953418d5",
           "q-ti-custodial-account-generation-c-address": "9201738ea99647028b00a71648da5b96a30d8149e751a858f271d8a1b5aef042",
-          "q-ti-stellar-lab-usage-and-new-ui": "73a505350dabaac3f4a16b9e9db54c67324380a785e634522a93f0cf70bb60f0",
+          "q-ti-stellar-lab-usage-and-new-ui": "2e07ed442d97acf1c6c5aeb57b7d7db59fd4d7bb6e2c86b1dadbdc868e2b025d",
           "q-ti-testnet-usdc-faucet": "b63dbd8f354b77b26f4847dc55bc9006dc6f33ec570775fc7a17c0775359dc4c",
           "q-tool-cli-testnet-identity-howto": "43cfc42ea3ad0429fc7ea7a57b30981327de833c7567602e6a17dc20a7a37b7f"
         }
@@ -3255,13 +3255,13 @@
         "lastChecked": "2026-09-30",
         "reSwept": {
           "date": "2026-09-30",
-          "reason": "Source-metadata refresh (2026-09-30): only judge-blind truth metadata of q-ti-stellar-lab-usage-and-new-ui changed. Re-derived today: https://developers.stellar.org/docs/tools/lab/saved/keypairs still says obfuscated, not encrypted, Testnet and Futurenet only, with possible legacy plain text; stellar/laboratory main has no commit to jsonCipher.ts or localStorageSavedKeypairs.ts after 624d40ff29ca (2025-09-04); https://lab.stellar.org/account/saved still loads page-dbc03db5d85268bb.js. The cluster note stands unchanged.",
+          "reason": "Evidence-only follow-up after the independent review round (2026-09-30): only judge-blind truth metadata of q-ti-stellar-lab-usage-and-new-ui changed. rev-astra, rev-sol, and rev-grok independently re-read the saved-keypairs Docs page, stellar/laboratory main (helpers unchanged since 624d40ff29ca), and the live page-dbc03db5d85268bb.js bundle: XOR/base64 writes, JSON-first legacy reads, and test-network-only storage. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "Saved Keypairs is unprotected Testnet/Futurenet browser storage. Current writes use reversible XOR/base64 obfuscation and legacy plaintext rows remain readable. Docs, source, and UI warnings agree. The former conflict used Laboratory's obsolete master branch.",
         "memberContentSha256": {
           "q-ti-secret-key-vs-mnemonic-derivation": "a12dc527ea94f7350be7ee6df042da06a167cf42b8331c6ad28f2be32df3c33b",
-          "q-ti-stellar-lab-usage-and-new-ui": "73a505350dabaac3f4a16b9e9db54c67324380a785e634522a93f0cf70bb60f0"
+          "q-ti-stellar-lab-usage-and-new-ui": "2e07ed442d97acf1c6c5aeb57b7d7db59fd4d7bb6e2c86b1dadbdc868e2b025d"
         }
       }
     ]

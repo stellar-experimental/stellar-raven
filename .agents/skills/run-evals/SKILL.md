@@ -641,7 +641,8 @@ the reviewer checks they're true.
 ## Step 6 — file the findings (the round's primary artifact)
 
 Charter: `improvements/README.md`. One file per finding in the matching collection
-(`lumenloop/`, `stellar-light-scout/`, `stellar-docs/`, `skills/`, `workers-ai-provider/`), next id in the
+(`lumenloop/`, `stellar-light-scout/`, `stellar-docs/`, `skills/`, `workers-ai-provider/`,
+`canonical-source/`), next id in the
 collection's `<prefix>-NNN` sequence. Frontmatter + three sections.
 For lifecycle, intake, probe, index, and lint maintenance details, use the
 `improvements-pipeline` skill.
@@ -653,7 +654,7 @@ the proposed owner must actually undertake to expose the fact.
 ```
 ---
 id: <collection>-NNN
-service: lumenloop | stellar-light-scout | stellar-docs | skills | workers-ai-provider
+service: lumenloop | stellar-light-scout | stellar-docs | skills | workers-ai-provider | canonical-source
 status: proposed | verified | reported-upstream | declined-upstream | fixed-upstream
 discovered: YYYY-MM-DD
 evidence:

@@ -67,7 +67,10 @@ function checkEcosystemSkills() {
     if (!/^[0-9a-f]{40}$/.test(source.commit ?? "")) {
       fail(`ecosystem-skills source "${source.id}" has no full commit SHA (got "${source.commit}")`);
     }
-    for (const skill of source.skills) {
+    if (!Array.isArray(source.skills) || source.skills.length === 0) {
+      fail(`ecosystem-skills source "${source.id}" pins no skills`);
+    }
+    for (const skill of source.skills ?? []) {
       const id = `${source.id}/${skill.name}`;
       skillIds.add(id);
       for (const file of skill.files) {

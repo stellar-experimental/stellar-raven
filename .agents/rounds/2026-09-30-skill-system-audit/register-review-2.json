@@ -1,0 +1,26 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-023",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-30",
+      "reSwept": {
+        "date": "2026-09-30",
+        "reason": "Evidence-only follow-up after the independent review round (2026-09-30): q-ti-stellar-lab-usage-and-new-ui gained dated corroboration rows (upload-deploy signing methods; Quickstart /lab on stellar/quickstart main 8f5dcf166978) and a fuller truth.verified record. No question, answer, keyFact, avoid, or note text moved. Four independent reviewers re-derived the Lab Friendbot funding for Testnet and Futurenet and the Quickstart non-production warning from live Docs. The cluster note stands unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-137",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-30",
+      "reSwept": {
+        "date": "2026-09-30",
+        "reason": "Evidence-only follow-up after the independent review round (2026-09-30): only judge-blind truth metadata of q-ti-stellar-lab-usage-and-new-ui changed. rev-astra, rev-sol, and rev-grok independently re-read the saved-keypairs Docs page, stellar/laboratory main (helpers unchanged since 624d40ff29ca), and the live page-dbc03db5d85268bb.js bundle: XOR/base64 writes, JSON-first legacy reads, and test-network-only storage. The cluster note stands unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

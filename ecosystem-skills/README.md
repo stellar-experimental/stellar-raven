@@ -69,16 +69,22 @@ back in. The partner skills survive only as name-only stubs in `inventory/lumenl
 - **What we deliberately do NOT pin is named too.** `openzeppelin-stellar` cherry-picks 3 Stellar
   skills from a multi-chain repo, and that pick list is hard-coded in `update.sh` — so a newly
   published sibling (the repo already has setup/upgrade/review per chain) would never be pinned and
-  re-running `update.sh` would not find it. `check-skills-drift.mjs` therefore lists every unpinned
-  upstream skill dir on any drift of a cherry-picked source, making "we skipped these" a decision
-  someone makes rather than an omission nobody sees.
+  re-running `update.sh` would not find it. So every upstream sibling a cherry-picked source skips
+  is recorded with a reason under `groups.json` `unpinnedUpstream`, and `check-skills-drift.mjs`
+  fails on every run — current commit or not — while any upstream directory is neither pinned nor
+  recorded. That makes "we skipped these" a decision someone makes rather than an omission nobody
+  sees. The check enumerates a source only when its `unpinnedUpstream` map is non-empty, so a new
+  cherry-picked source must record at least its first exclusion.
 - **The ecosystem is bigger than what we mirror.** `catalog.json` captures the full stellarlight
   directory — including SDKs/MCP servers/CLIs that aren't `SKILL.md` skills — so the map of "what
   exists" stays complete without dragging in non-skill artifacts. `build-index.mjs` reads this
   directory directly instead of storing a second projection in `MANIFEST.json`.
-- **Swap atomically.** `update.sh` stages the whole pin set in a temp tree and only swaps
-  `MANIFEST.json` / `catalog.json` into place on full success. A mid-run failure leaves the
-  existing pins untouched — it never produces a half-written manifest.
+- **Swap last.** `update.sh` stages the whole pin set in a temp tree and only moves
+  `MANIFEST.json` and `catalog.json` into place after every source resolved, every selection
+  validated, and the body diff printed. A failure before that point leaves the existing pins
+  untouched. The two moves are separate files, not one transaction, and `build-index.mjs` runs
+  after them: if the index rebuild fails, the new pins are in place and `INDEX.md` is stale, so
+  rerun `node build-index.mjs` before committing.
 - **Deterministic except timestamps.** Back-to-back runs against the same upstream produce
   byte-identical output **except the timestamp fields**: `MANIFEST.synced_at`,
   `catalog.fetched_at`, and their rendered copies in `INDEX.md`
@@ -152,7 +158,7 @@ nothing silently changes exposure":
 Eval coupling: `eval/skills-cases.json` grades skills routing. Cases whose target skill leaves
 catalog exposure move to its inert `retiredCases` array (rationale + date), and the skills-lane
 floor in `eval/gates.json` is re-baselined **in the same commit** with the decision recorded in
-the round ledger (EVALS.md rule 1).
+the round ledger ([`eval/EVALS.md`](../eval/EVALS.md) rule 1).
 
 **Automated drift detection (CI):** the daily `refresh.yml` workflow runs
 `node scripts/check-skills-drift.mjs`, which compares every pin in `MANIFEST.json` against upstream
@@ -172,36 +178,53 @@ source is public, and keeping the re-pin credential-free is a deliberate publish
 
 A new source changes what the model reads. Treat it as an exposure decision, not a re-pin. The
 Trustless Work admission (PR #157, `.agents/rounds/2026-09-16-trustless-work/`) is the worked
-example.
+example; `git show --stat 58954b67` lists every file it touched.
 
 Admission bar — answer each in the round's source review before any pin lands:
 
 - The repository is public and names its license in a `LICENSE`/`NOTICE` file.
 - The skills are Stellar-specific and do not duplicate an exposed skill
   (`research/skill-exposure-inventory.json`).
-- The skills fit a read-only, networkless gateway. Steps that need credentials, paid calls, writes,
-  or network fetches from the sandbox are out of scope or scrubbed, never served as instructions.
-- A reviewer read every selected body: no instruction override, credential, non-exposed operation,
-  or retired skill reference.
+- The skills are reference content for the reader's own environment. They may describe credentials,
+  paid calls, signing, writes, or network steps that the reader performs; serving them grants the
+  sandbox no network access and authorizes none of those actions. Record any credential or
+  supply-chain prompt that remains as accepted risk in `PIN-REVIEW.md`. `src/skills/scrub.ts` removes
+  only references to non-exposed operations and retired skills at read time.
+- A reviewer read every selected body: no instruction override, no literal credential, and no
+  reference to a non-exposed operation or retired skill that the scrub would not remove.
 
-Steps, in one PR:
+Steps. The pin, catalog, fingerprint, and QA activation land in one admission PR; a new QA case
+must already exist as `proposed` from an earlier commit (step 6).
 
 1. Add a `pin_github` line to `update.sh` (with a pick list when the repo is multi-chain or mixed)
-   and a row to the Sources table above. Code changes are needed only for a new repo layout; Trustless
-   Work needed the repo-root skill-dir mode.
+   and a row to the Sources table above. A new repo layout also needs selector and link code;
+   Trustless Work needed the repo-root skill-dir mode.
 2. Add the repo to `improvements/intake.json` (`services.skills.default.repos` and `sourceRepos`)
    and its license to `THIRD-PARTY-NOTICES.md`.
 3. Run `./update.sh`, file the new skills in `groups.json`, and record the `sel:` digest in
-   `PIN-REVIEW.md`.
-4. Add an `exposed` row per skill to `research/skill-exposure-inventory.json`.
-5. Rebuild and gate exactly as in
-   [`live-drift-resolution`](../.agents/skills/live-drift-resolution/SKILL.md) Step 1.
-6. Add at least one golden or skills-routing case that exercises the source, through `golden-truth`
-   or `run-evals`.
-7. Get an independent review (reviewer ≠ author), record it in a round ledger, then deploy.
+   `PIN-REVIEW.md`. For a cherry-picked source, list every upstream sibling directory you do not
+   pin under `groups.json` `unpinnedUpstream` with a reason; `check-skills-drift.mjs` enumerates a
+   source only when that map is non-empty.
+4. Add an `exposed` row per skill to `research/skill-exposure-inventory.json`
+   (`test/skill-exposure-classification.test.ts` requires it).
+5. Rebuild the generated artifacts as in
+   [`live-drift-resolution`](../.agents/skills/live-drift-resolution/SKILL.md) Step 1, then pass the
+   acceptance gates: `npm test`, `npm run eval:qa:lint -- --stale --enforce-floors`, and the routing
+   comparison of that skill's Step 4. Expect the count contracts to move (`test/catalog.test.ts`,
+   `test/skills.test.ts`, `test/search.test.ts`, the demo trace totals) and record the new catalog
+   fingerprint in `eval/gates.json`. Numerical thresholds stay unchanged unless a separate decision
+   changes them. A host description override (`scripts/description-notes.mjs`) or a search-admission
+   change is its own routing decision with its own comparison.
+6. Give every new exposed skill active QA battery coverage: CI enforces `skill floor 1` per exposed
+   skill, and a skills-routing case does not count. Commit each new case as `proposed` first, then
+   activate it in the admission PR after an independent `golden-truth` review. A case in
+   `eval/skills-cases.json` is additional routing coverage, not a substitute.
+7. Get an independent review from a reviewer who differs from both the author and the orchestrator
+   (`AGENTS.md`), record it in a round ledger, and deploy with the owner's approval.
 
-A candidate that is not admitted still needs a recorded decision in `.agents/TODO.md` or a round
-ledger, so the directory snapshot never hides an unmade choice.
+A candidate that is not admitted still needs a recorded decision — an open owner question in
+`.agents/NEXT.md`, a work item in `.agents/TODO.md`, or a round ledger — so the directory snapshot
+never hides an unmade choice.
 
 ## Source of truth
 

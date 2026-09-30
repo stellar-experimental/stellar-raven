@@ -22,8 +22,8 @@
 # Public sources ONLY, no credentials. The lumenloop-api partner source (6
 # partner skills from the private lumenloop-api-skills repo, fetched via the
 # credentialed /v1/skills/archive/partner endpoint) was REMOVED 2026-07-06:
-# the skills were retired from catalog exposure 2026-07-03 (Solo todo 825,
-# RETIRED_ONBOARDING_SKILLS in scripts/exposure.mjs), their description
+# the skills were retired from catalog exposure 2026-07-03
+# (RETIRED_ONBOARDING_SKILLS in scripts/exposure.mjs), their description
 # harvest is complete, and partner-tier content must not live in this public
 # repo. Do NOT re-add a credentialed source here — this script staying
 # keyless is what guarantees future agent-run syncs can never pull
@@ -33,8 +33,8 @@
 # manifest (provenance, not redistribution — nothing is copied here). See
 # THIRD-PARTY-NOTICES.md at the repo root for the source-by-source license map.
 #
-# It also snapshots the stellarlight.xyz/api/skills DIRECTORY (≈30 ecosystem
-# entries across sources/kinds) into catalog.json — the "what exists in the
+# It also snapshots the stellarlight.xyz/api/skills DIRECTORY (every ecosystem
+# entry across sources/kinds; the count is in INDEX.md) into catalog.json — the "what exists in the
 # ecosystem" map, NOT downloaded as skills.
 #
 # Each source pins its own commit/ref + synced_at in MANIFEST.json. INDEX.md is

@@ -4,7 +4,7 @@ Machine-generated snapshots of the three third-party services used for catalog a
 drift detection (see `PLAN.md` §§2, 5). `scripts/build-catalog.mjs` directly consumes the
 Lumenloop and Stellar Light snapshots plus the Stellar Docs title snapshot; the Algolia settings
 snapshot is drift evidence only. The builder's other semantic inputs are the authored
-`specs/stellar-docs.json`, the skills manifest and its enumerated mirror Markdown files, and the
+`specs/stellar-docs.json`, the skills manifest and the upstream Markdown files it pins, and the
 runnable-skill registry. Catalog assembly also reads pinned skill bodies through the hash-verified cache.
 A cache miss fetches the pinned upstream file. See [the scripts guide](../scripts/README.md).
 
