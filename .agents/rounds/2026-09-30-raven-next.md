@@ -201,8 +201,8 @@ verification, and a receipt below.
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
 | lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | this ledger, PRs A to D | running |
-| review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `tmp/review-a-sol.md`, copied to this round directory | accept with fixes; reconciled below |
-| review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `tmp/review-b-astra.md`, copied to this round directory | accept with fixes; reconciled below |
+| review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `review-a-sol.md`, `verify-a-sol.md`, `final-a-sol.md`, `final2-a-sol.md` in this round directory | accept (final, after three fix passes) |
+| review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
 | review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `tmp/review-c-grok.md`, copied to this round directory | running |
 
 Panes `w3W:pC`, `w3W:pD`, and `w3W:pG` were split from `w3W:p2` and belong to this lead.
