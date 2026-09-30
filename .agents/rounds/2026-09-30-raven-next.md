@@ -205,8 +205,13 @@ verification, and a receipt below.
 | review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
 | review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
 | review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | `review-d-grok.md` in this round directory | running |
+| research (item 7) | `res-astra-scf` (GPT-6-Astra, high) | `w3W:pH` | `scf-skill-bodies-astra.md` in this round directory | running |
 
-Panes `w3W:pC`, `w3W:pD`, and `w3W:pG` were split from `w3W:p2` and belong to this lead.
+Panes `w3W:pC`, `w3W:pD`, `w3W:pG`, and `w3W:pH` were split from `w3W:p2` and belong to this lead.
+`gh pr merge --delete-branch` removed the merged branches' worktrees (`raven-next-a`, `-b`, `-c`)
+with the branches, which broke the shells in `w3W:pC` and `w3W:pD`; the lead closed those two
+panes after their reviews were complete and moved the item 7 research to `w3W:pH`. The PR D
+reviewer in `w3W:pG` works from absolute paths and was unaffected.
 
 ## Reconciliation
 
