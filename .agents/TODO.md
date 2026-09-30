@@ -71,31 +71,7 @@ still infers the mode. Found by `rev-sol` (finding 2).
 Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers a
 cherry-picked source with no exclusions and one new upstream sibling.
 
-## Golden freshness follow-up
-
-### Add dated reserve amounts to two sibling cases
-
-The 2026-09-29 independent review found existing undated amounts in `q-asset-trustline-basics` and `q-asset-amm-fee-reserve`.
-The values agree with the current Mainnet reserve setting.
-Use `golden-truth` to add an answer-visible date or express those amounts as dated examples.
-Repeat the affected source and sibling checks before changing the case files.
-The independent evidence is `rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md`.
-
-Done when: the cases carry dated amounts and the golden and register gates pass.
-
 ## Improvements follow-up
-
-### Refresh the two sibling freshness items from the September 14 golden review
-
-The September 14 freshness review queued two sibling items as a separate golden-truth pass.
-`q-defi-x402-on-stellar-what` records a 2026-07-10 Governing Board state; on 2026-09-14,
-https://stellar.org/x402 said SDF holds a seat on the Foundation's Governing Board.
-`q-gap-builders-person-empty` records a 114-profile builder directory; the 2026-09-14 live advisory said 183.
-Both are judge-facing text changes, so they need multi-class triangulation and an independent re-derivation.
-Case 1 of the same review (`q-ti-stellar-lab-usage-and-new-ui`, the dead cookbook URL) closed on 2026-09-30.
-Use `research/audits/2026-09-14-golden-freshness-review.md` Cases 5 and 6 for the evidence.
-
-Done when: both cases carry current, triangulated evidence and the corpus gates pass.
 
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
 
