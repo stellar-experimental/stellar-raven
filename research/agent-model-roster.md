@@ -1,9 +1,9 @@
 # Agent model roster
 
-Runtime facts re-verified 2026-09-30 against the installed CLIs and their on-disk model catalogs
-on this host. The previous pass was 2026-08-25. The external-benchmark snapshot below is still the
-2026-07-09 pass and was **not** re-checked; it is labelled in place. Launch mechanics are the Herdr
-mechanics re-derived on 2026-08-25 and re-run on 2026-09-30.
+`raven-next` re-verified the runtime facts on 2026-09-30 against the installed CLIs and their
+on-disk model catalogs on this host. The previous pass was 2026-08-25. The external-benchmark
+snapshot below is still the 2026-07-09 pass. Nobody re-checked it; the label says so in place.
+The launch mechanics are the Herdr mechanics from 2026-08-25, re-run on 2026-09-30.
 
 This is the availability, mechanics, and external-evidence record for repo-work fan-out.
 `AGENTS.md` owns the repo's active model/effort policy; the global `herdr` skill owns pane and
@@ -69,9 +69,11 @@ description is quoted in the second column.
 
 The generation moved between the 2026-08-25 pass and this one. `gpt-6.1-sol` replaced
 `gpt-5.6-sol` as the workhorse and as this host's configured default. `gpt-6-astra` is the new
-frontier tier; there is no Astra in the 5.6 line and no Terra in the 6 line. The 5.6 ids remain
-callable but the catalog labels every one of them "older generation". Treat `gpt-5.6-terra` as a
-retired lane: `AGENTS.md` routing text that still says "Terra" points at an older-generation model.
+frontier tier. The 5.6 line has no Astra, and the 6 line has no Terra. The 5.6 ids remain callable.
+The catalog describes them as "Older generation workhorse model", "Older balanced model for
+straightforward work", and "Older fast and efficient model". `AGENTS.md` still routes a Terra lane.
+Whether that lane moves to a 6-line model is an open owner decision recorded in
+`.agents/rounds/2026-09-30-raven-next.md`; this file records the catalog, not the policy.
 
 `gpt-daybreak-blue-latest` is listed as callable but is **not** a house lane. `AGENTS.md` does not
 route to it. Treat it as evidence-only until a gauntlet says otherwise. The catalog also carries two
@@ -109,9 +111,9 @@ Installed Grok CLI `1.0.44` reports four models; `grok models` names `grok-4.7` 
 - `grok-4.6` — prior frontier model, 256k context, low/medium/high/xhigh reasoning, defaulting to high.
 - `grok-4.5` — older model, 256k context, low/medium/high reasoning, defaulting to high.
 
-Two changes since the 2026-08-25 pass. `grok-4.7` replaced `grok-4.6` as the default, and the
-catalog now reports a 256k context for every model where the 2026-08-25 cache reported 500k. Quote
-256k until a newer cache says otherwise.
+Two things changed since the 2026-08-25 pass. `grok-4.7` replaced `grok-4.6` as the default. The
+catalog now reports a 256k context for every model; the 2026-08-25 cache reported 500k. Quote 256k
+until a newer cache says otherwise.
 
 Grok is the first-class vendor-diverse review arm. This exact line ran on 2026-09-30 and returned
 a completed adversarial review:
@@ -131,9 +133,9 @@ instruct the agent to write its findings to a Markdown file and reply with only 
 
 ## Public evidence snapshot — 2026-07-09
 
-**Not re-verified in the 2026-08-25 or 2026-09-30 passes.** Every figure below is the 2026-07-09
-reading and describes GPT-5.6 and Grok **4.5**. No public GPT-6 or Grok 4.7 figure has been
-recorded here. Do not quote this table as current.
+**Neither the 2026-08-25 pass nor the 2026-09-30 pass re-verified this section.** Every figure
+below is the 2026-07-09 reading. It describes GPT-5.6 and Grok **4.5**. This file records no public
+GPT-6 or Grok 4.7 figure. Do not quote this table as current.
 
 This is directional evidence for calibration if house axes are reintroduced, not a second
 operational routing table. Public API prices do not define a house `cost` score; any future score
@@ -206,18 +208,18 @@ Relevant external evidence:
 - **Effort curves:** most comparable public results are at `max`; there is not yet a controlled
   low/medium/high/xhigh/max curve on this repo's work, and none at all for the GPT-6 line.
 
-To calibrate the currently unscored models, run the same representative repo tasks at explicit
-configurations: Astra `high` and `max`, Sol 6.1 `high` and `max`, Luna `medium` and `max`, and
-Grok 4.7 `high` and `xhigh`. Record unsupervised completion quality, retries/interventions, wall
-time, allowance or credit consumption, and a blind paired taste judgment from a reviewer other
-than the author. Treat Sol/Astra `ultra` as a separate multi-agent arm.
+To calibrate the unscored models, run the same representative repo tasks at explicit
+configurations. Use Astra `high` and `max`, Sol 6.1 `high` and `max`, Luna `medium` and `max`,
+and Grok 4.7 `high` and `xhigh`. Record unsupervised completion quality, retries, wall time, and
+allowance or credit consumption. Add a blind paired taste judgment from a reviewer other than the
+author. Treat Sol and Astra `ultra` as a separate multi-agent arm.
 
 ## Claude aliases
 
-Claude Code `2.1.286` accepts `fable`, `opus`, and `sonnet` aliases. Fable must be invoked as
-`--model fable` (or the full model id); `--model fable-5` is not a valid CLI alias. The `fable` line
-ran on 2026-09-30 as an independent reviewer and returned a completed review; the `opus` line is the
-launch syntax the owner verified the same day for the orchestrator pane:
+Claude Code `2.1.286` accepts the `fable`, `opus`, and `sonnet` aliases. Invoke Fable as
+`--model fable` or with the full model id. `--model fable-5` is not a valid CLI alias. The `fable`
+line below ran on 2026-09-30 as an independent reviewer and returned a completed review. The
+`opus` line is the launch syntax the owner verified the same day for the orchestrator pane:
 
 ```sh
 herdr agent start <name> --kind claude --pane <id> -- --model fable --effort high --permission-mode bypassPermissions
@@ -226,14 +228,14 @@ herdr agent start <name> --kind claude --pane <id> -- --model opus --effort high
 
 ## Evidence boundaries
 
-- GPT-6.1 Sol, GPT-6 Astra, GPT-6 Luna, Claude Fable/Opus, and Grok 4.7 are **catalog-listed** and
-  selectable from their CLIs. Catalog presence is not proof of a working call. Dated call evidence
-  from the 2026-09-30 skill system audit: `gpt-6.1-sol` at high, `gpt-6-astra` at high, `grok-4.7`
-  at high, and Claude `fable` at high each completed an independent review of this repository,
-  every one launched through a Herdr pane (`.agents/rounds/2026-09-30-skill-system-audit.md`).
-  Luna stays evidence-only, not an active house lane. External benchmarks support interim roles;
-  local gauntlets or Tyler's direct judgment would be required before reintroducing house
-  cost/intelligence/taste scores.
+- GPT-6.1 Sol, GPT-6 Astra, GPT-6 Luna, Claude Fable, Claude Opus, and Grok 4.7 are
+  **catalog-listed** and selectable from their CLIs. Catalog presence is not proof of a working
+  call. The 2026-09-30 skill system audit supplies dated call evidence for four of them.
+  `gpt-6.1-sol`, `gpt-6-astra`, `grok-4.7`, and Claude `fable`, each at high, completed an
+  independent review of this repository through a Herdr pane
+  (`.agents/rounds/2026-09-30-skill-system-audit.md`). Luna stays evidence-only, not an active
+  house lane. External benchmarks support interim roles. Local gauntlets or Tyler's direct
+  judgment must come before any house cost, intelligence, or taste score returns.
 - The public demo's Workers AI/provider models are a separate surface and measurement contract.
   Its current verdict is `research/gauntlets/2026-08-06-primary-selection-summary.md`; the
   2026-07-07 gauntlet is superseded. Do not infer fan-out agent quality from either.

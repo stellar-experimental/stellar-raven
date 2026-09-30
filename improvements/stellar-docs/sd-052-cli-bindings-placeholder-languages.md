@@ -11,8 +11,8 @@ evidence:
   - eval/qa/results/2026-09-04T05-40-51-variantA.json row q-soroban-cli-bindings presented placeholder languages as built-in generators and received a wrong verdict
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-terra.md records the dated recheck
   - upstream issue filed 2026-09-09: https://github.com/stellar/stellar-cli/issues/2722
-  - 2026-09-29T21:42:53Z stellar/stellar-cli PR 2766 merged as d0b26d9f47e72d3ab5949c467cb11d452933cce8. It appends "(requires external plugin)" to the python, java, flutter, swift, php, and kmp descriptions in FULL_HELP_DOCS.md and cmd/soroban-cli/src/commands/contract/bindings.rs. The issue closed as completed at 2026-09-29T21:42:55Z.
-  - 2026-09-30T21:04:42Z live read of https://developers.stellar.org/docs/tools/cli/stellar-cli shows "Generate Python bindings (requires external plugin)" and the same note for Java, Flutter, Swift, and PHP (page SHA-256 prefix 27b15e9aa8073d04). The manual no longer presents the placeholder languages as built-in generators. The note does not link the external tool; that detail of the recommendation remains open but is not a defect.
+  - stellar/stellar-cli PR 2766 merged at 2026-09-29T21:42:53Z as d0b26d9f47e72d3ab5949c467cb11d452933cce8. It appends "(requires external plugin)" to the python, java, flutter, swift, php, and kmp descriptions. The files are FULL_HELP_DOCS.md and cmd/soroban-cli/src/commands/contract/bindings.rs. Issue 2722 closed as completed at 2026-09-29T21:42:55Z.
+  - 2026-09-30T21:04:42Z live read of https://developers.stellar.org/docs/tools/cli/stellar-cli. The page shows "Generate Python bindings (requires external plugin)". Java, Flutter, Swift, and PHP carry the same note. Page SHA-256 prefix 27b15e9aa8073d04. The manual no longer presents the placeholder languages as built-in generators. The note does not link the external tool. That part of the recommendation stays open; it is not a defect.
   - resolver gates not yet run: a distinct reviewer must re-derive the live check and the upstream resolution comment needs owner approval (.agents/rounds/2026-09-30-raven-next.md)
 ---
 

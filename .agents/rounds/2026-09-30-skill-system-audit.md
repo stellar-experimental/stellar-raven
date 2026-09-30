@@ -208,22 +208,24 @@ rejected with evidence, or queued in `.agents/TODO.md` with the reviewer's agree
 
 ### PR #184 release receipt
 
-Recorded on 2026-09-30 by `raven-next` (`.agents/rounds/2026-09-30-raven-next.md`) from the owner's
-handoff and a read-only re-check between 20:53Z and 20:57Z.
+`raven-next` recorded this receipt on 2026-09-30 (`.agents/rounds/2026-09-30-raven-next.md`).
+The merge, deploy, and `postdeploy` facts come from the owner's handoff. `raven-next` re-checked
+the deployment, the routes, and the usage check read-only between 20:53Z and 20:57Z.
 
-- Merged by squash as `6dd9439461a286f5ca5f87722fb60f238c610d3d` at 2026-09-30T20:46:08Z after CI
-  passed (`secrets`, `Analyze`, `test`, `CodeQL`).
-- `npm run deploy` from `main` → Worker Version ID `9f5a4151-8fa6-41d9-a68d-776052d6ddd5`, version
-  created 2026-09-30T20:46:26.467Z, deployment created 2026-09-30T20:46:29.652Z, 100% of traffic
-  (`wrangler deployments status`, re-read at 20:53Z).
+- GitHub merged the PR by squash as `6dd9439461a286f5ca5f87722fb60f238c610d3d` at
+  2026-09-30T20:46:08Z. CI passed first (`secrets`, `Analyze`, `test`, `CodeQL`).
+- The owner ran `npm run deploy` from `main`. Worker Version ID:
+  `9f5a4151-8fa6-41d9-a68d-776052d6ddd5`. Version created 2026-09-30T20:46:26.467Z. Deployment
+  created 2026-09-30T20:46:29.652Z. `wrangler deployments status` showed 100% of traffic on it at
+  20:53Z.
 - The `postdeploy` hook returned HTTP 401 with the default credential, as on 2026-09-29 and for
   PR #183. `WRANGLER_PROFILE=sdf node scripts/check-usage-deployment.mjs` → `Usage tail consumer
   and daily retention schedule are present.`
-- Public routes `/`, `/playground`, `/terms`, `/health`, `/health/skills`, `/og.png`,
-  `/robots.txt`, `/sitemap.xml`, and `/.well-known/oauth-authorization-server` returned HTTP 200;
-  unauthenticated `POST /mcp` returned HTTP 401. `/health/skills` reported `checked: 64` at
-  2026-09-30T20:07:19Z.
+- Nine public routes returned HTTP 200: `/`, `/playground`, `/terms`, `/health`,
+  `/health/skills`, `/og.png`, `/robots.txt`, `/sitemap.xml`, and
+  `/.well-known/oauth-authorization-server`. Unauthenticated `POST /mcp` returned HTTP 401.
+  `/health/skills` reported `checked: 64` at 2026-09-30T20:07:19Z.
 - The owner's authenticated check after the deploy served 20 skills. The re-check ran one
-  authenticated `search` and one `execute` with four parallel service calls through the Raven
-  connector; all four calls returned `ok`, and `scout.getStatus` reported `apiVersion` `1.9.54`.
-- Panes `w46:p2`–`w46:p5` are released with this receipt.
+  authenticated `search` and one `execute` through the Raven connector. The `execute` made four
+  parallel service calls. All four returned `ok`. `scout.getStatus` reported `apiVersion` `1.9.54`.
+- This receipt releases panes `w46:p2`–`w46:p5`.

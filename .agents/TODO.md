@@ -166,6 +166,14 @@ The six index rows still match their SLP titles and statuses.
 All four checks passed. The author posted and read back the review reply:
 https://github.com/stellar/stellar-protocol/pull/2021#discussion_r4137499419
 
+The 2026-09-30 recheck found a maintainer approval. `leighmcculloch` (`MEMBER`) approved head
+`777561b2` at 2026-09-29T21:44:44Z:
+https://github.com/stellar/stellar-protocol/pull/2021#pullrequestreview-5358887566
+GitHub reports `mergeable_state: blocked`, so a second condition still holds the merge.
+The default-branch root README and `limits/README.md` still lack the SLP index.
+The finding stays `reported-upstream`. Do not post a reminder because of the approval.
+At the next round, read the merge blocker and any new review.
+
 Done when: the finding records the merged or declined result, and a fixed finding completes the resolver gates.
 
 ## Recovery
