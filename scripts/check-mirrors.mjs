@@ -104,6 +104,9 @@ async function checkPinsResolve() {
   const manifest = readJson("ecosystem-skills/MANIFEST.json");
   const jobs = [];
   for (const source of manifest.sources) {
+    // A malformed pin cannot be fetched; checkEcosystemSkills already recorded
+    // its shape failure, which keeps the exit a pin problem (1), not a crash (2).
+    if (pinnedSourceFailures(source).length) continue;
     for (const skill of source.skills) {
       for (const file of skill.files) {
         jobs.push(

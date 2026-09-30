@@ -180,3 +180,18 @@ fixed in the next commit.
 Accepted as deferred by the reviewers: the drift check's inferred cherry-pick mode (both current
 cherry-picked sources have non-empty exclusion maps), the staged index, the digest location fields,
 the inactive `build-index.mjs` branches, the SCF body read, and the filer's repeated evidence.
+
+### Re-check pass
+
+`rev-astra` and `rev-sol` re-checked `a6db8c1a..406301af` (`recheck-rev-astra.md`,
+`recheck-rev-sol.md`). `rev-astra`: accept. `rev-sol`: reject on one remaining problem, which
+`rev-astra` also reproduced as non-blocking.
+
+Correction to the "Verification pass" table: the `check-mirrors.mjs` row was only fixed for the
+offline mode. With `--fetch`, which `refresh.yml` runs daily, `checkPinsResolve()` still iterated
+`skills: {}` and the command exited 2 (`source.skills is not iterable`) instead of 1.
+
+Fix in the next commit: `checkPinsResolve()` skips a source that `pinnedSourceFailures` rejects, so
+its recorded shape failure keeps the exit at 1. `test/check-mirrors-cli.test.mjs` runs the real
+checker on a throwaway tree with a malformed manifest and requires exit 1 in both modes. Without the
+fix the `--fetch` case fails (`1 failed | 1 passed`); with it both pass.
