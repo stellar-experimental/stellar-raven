@@ -346,6 +346,9 @@ was collected between 20:56Z and 21:34Z on 2026-09-30.
 | tftc.io and the SDF X post were labelled class E; the tftc.io page is undated | fixed: tftc.io is class D with no date; the SDF post is class A and marked as the same witness as stellar.org/x402; the independent seat corroboration is x402.org/members |
 | The `base reserve` numeric invariant was still `reopen` | fixed: re-swept directly, see above |
 
+The class corrections changed the x402 case content again, so the register reopened clusters 012
+and 125 a second time; `register-review-d2.json` re-swept both (metadata-only change).
+
 The reviewer re-derived every matrix row live (Horizon ledger 64703824 at 21:48:22Z, the author
 page's seven articles, the GitHub archive flags, the Linux Foundation release, x402.org/members)
 and found no score laundering, no new number in a key fact, and no new avoid item.
