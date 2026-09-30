@@ -195,3 +195,13 @@ Fix in the next commit: `checkPinsResolve()` skips a source that `pinnedSourceFa
 its recorded shape failure keeps the exit at 1. `test/check-mirrors-cli.test.mjs` runs the real
 checker on a throwaway tree with a malformed manifest and requires exit 1 in both modes. Without the
 fix the `--fetch` case fails (`1 failed | 1 passed`); with it both pass.
+
+### Final verdicts
+
+`rev-sol` re-checked `406301af..5a72232e` (`final-rev-sol.md`): accept. It reproduced exit 1 in both
+modes for `skills: {}` and exit 2 at `406301af`, and found no new defect.
+
+Final state: `rev-fable` accept (verification pass), `rev-grok` accept (verification pass),
+`rev-astra` accept (re-check pass), `rev-sol` accept (final re-check). Every finding is fixed,
+rejected with evidence, or queued in `.agents/TODO.md` with the reviewer's agreement. Panes
+`w46:p2`–`w46:p5` stay open under this orchestrator until the PR merges and deploys.
