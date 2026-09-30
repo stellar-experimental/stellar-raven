@@ -204,8 +204,14 @@ verification, and a receipt below.
 | review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `review-a-sol.md`, `verify-a-sol.md`, `final-a-sol.md`, `final2-a-sol.md` in this round directory | accept (final, after three fix passes) |
 | review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
 | review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
+| review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | `review-d-grok.md`, `verify-d-grok.md`, `final-d-grok.md` in this round directory | accept with fixes; final `confirmed` at `ebf6683d` |
+| research (item 7) | `res-astra-scf` (GPT-6-Astra, high) | `w3W:pH` | `scf-skill-bodies-astra.md` in this round directory | done |
 
-Panes `w3W:pC`, `w3W:pD`, and `w3W:pG` were split from `w3W:p2` and belong to this lead.
+Panes `w3W:pC`, `w3W:pD`, `w3W:pG`, and `w3W:pH` were split from `w3W:p2` and belong to this lead.
+`gh pr merge --delete-branch` removed the merged branches' worktrees (`raven-next-a`, `-b`, `-c`)
+with the branches, which broke the shells in `w3W:pC` and `w3W:pD`; the lead closed those two
+panes after their reviews were complete and moved the item 7 research to `w3W:pH`. The PR D
+reviewer in `w3W:pG` works from absolute paths and was unaffected.
 
 ## Reconciliation
 
@@ -256,6 +262,19 @@ check's rejection of non-github sources, and the gates.
   `POST /mcp` returned HTTP 401. The PR changed no Worker source, so no authenticated re-check
   was repeated beyond the PR B one.
 
+### PR C (#187) — skill tooling hardening
+
+- Review: `rev-grok-c` (Grok 4.7, high), one finding (a failed second rename left a mixed pin
+  set), fixed with a rollback-guarded swap and re-verified by the reviewer on a copy.
+- CI passed (`Analyze`, `CodeQL`, `secrets`, `test`). GitHub merged the PR by squash as
+  `157c26b42038055b87f904e1c0b92479afad35a7` at 2026-09-30T21:40:10Z. The branch was deleted.
+- `npm ci` then `npm run deploy` from the clean `main` checkout at `157c26b4`. The preflight
+  printed `tree clean and HEAD == origin/main`. Worker Version ID
+  `d6996315-bbfb-4406-95b1-d08be8822a0a`, version created 2026-09-30T21:40:28.306Z, deployment
+  created 2026-09-30T21:40:31.289Z, 100% of traffic. The `postdeploy` hook passed.
+- Verification at 21:40:34Z: the nine public routes returned HTTP 200; unauthenticated
+  `POST /mcp` returned HTTP 401. The PR changed no Worker source, catalog, or manifest.
+
 ### PR B (#186) — dependency audit fix
 
 - Review: `rev-astra-b` (GPT-6-Astra, high), four findings, all fixed; verification and final
@@ -272,3 +291,92 @@ check's rejection of non-github sources, and the gates.
   `POST /mcp` returned HTTP 401; `/health/skills` reported `checked: 64` at 21:07:19Z. One
   authenticated `search` through the Raven connector returned three gated hits for a CLI
   bindings query (`stellarDocs.search_sdk_cli_tools_docs` first, score 254).
+
+## PR D — golden freshness pass (queued items and the 2026-10-07 case)
+
+Five owned cases changed under `golden-truth`. No key fact gained a new number. Dated amounts and
+counts moved into dated wording; counts, roles, and protocol facts are unchanged. Live evidence
+was collected between 20:56Z and 21:34Z on 2026-09-30.
+
+### Corroboration matrices
+
+| case | claim | verdict | classes | evidence |
+| --- | --- | --- | --- | --- |
+| `q-gap-builders-person-empty` | An absent query is a filter miss; the directory count is volatile (114 on 2026-07-11, 183 on 2026-09-14, 226 on 2026-09-30) | confirmed-as-of | C (Raven and the direct Stellar Light read are the same witness) | Raven connector `scout.getBuilders({ q: "zzzzqqq" })` 20:56Z: `builders: []`, total 0, `matchMode: expanded`, advisory "The directory has 226 builder profiles, but none match these filters — … a filter miss, not an empty or unseeded directory"; `https://stellarlight.xyz/api/builders?q=zzzzqqq` 21:26:08Z same advisory; `/api/status` builders count 226, `lastUpdatedAt` 2026-09-30T12:57:22Z |
+| `q-defi-x402-on-stellar-what` | The x402 Foundation launched operationally on 2026-07-14; SDF is a Premier member and states it holds a Governing Board seat (as of 2026-09-30) | confirmed-as-of | A, D | `https://stellar.org/x402` ("holds a seat on the Foundation's Governing Board, represented by Tomer Weller"); Linux Foundation press release dated July 14, 2026 ("operational launch"; SDF among 17 Premier members; 40 members); `https://x402.org/members` (Premier tier: "Appointed seat on the Governing Board"; SDF listed under Premier Members); tftc.io article, undated page ("17 premier members with governing board seats"); SDF X post 2026-07-14 (same witness as stellar.org) |
+| `q-asset-trustline-basics` | One base reserve is 0.5 XLM on Mainnet today; a trustline adds one; a pool-share trustline adds two | confirmed-as-of | A, C | `developers.stellar.org/docs/learn/fundamentals/lumens` ("currently 0.5 XLM. Validators can vote to change the base reserve"); Horizon ledger 64703557 closed 2026-09-30T21:26:07Z, `base_reserve_in_stroops` 5000000, protocol 28 |
+| `q-asset-amm-fee-reserve` | Pool-share trustline needs two base reserves; fee 30 bps | confirmed | A, B, C | liquidity-pools page ("A pool share trustline requires 2 base reserves instead of 1"; "30 bps, which is equal to 0.30%"); CAP-0038 (prior evidence); Horizon ledger 64703557 |
+| `q-builder-content-by-person` | The official author index lists seven posts; the two repositories in the roster are archived and readable | confirmed-as-of | A, B | `developers.stellar.org/meetings/authors/kalepail` main list: seven articles 2024-01-26 to 2024-06-13 (the sidebar lists every meeting and is not the roster); GitHub API: `kalepail/passkey-kit` archived, moved to `stellar/passkey-kit`; `stellar/launchtube` archived, last push 2026-01-14; the four event and meeting pages HTTP 200 |
+
+### Encoding
+
+- `q-gap-builders-person-empty`: the answer dates the count; notes tell the grader to grade the
+  filter-miss reading, not a fixed count. `rootCause`: `freshness-drift` and the `TODO.md` item.
+- `q-defi-x402-on-stellar-what`: the governance sentence carries three dates (2026-07-10 unseated,
+  2026-07-14 launch, 2026-09-30 seat); notes say the unseated reading is correct only as a
+  pre-launch observation. New class D source added. `rootCause`: `freshness-drift` and the item.
+- `q-asset-trustline-basics` and `q-asset-amm-fee-reserve`: XLM amounts dated as a Mainnet
+  setting; key fact 2 of the AMM case binds the two-reserve count only. `rootCause`:
+  `eval-authoring` and the `TODO.md` item.
+- `q-builder-content-by-person`: no gospel change; notes and corroboration record the re-count
+  and the archived repositories; `reverifyBy` 2027-01-07. `rootCause`: `freshness-drift`.
+
+### Gates and register
+
+- `npm run eval:qa:compile` → 501 cases; only the five intended cases changed.
+- `npm run eval:qa:lint -- --since origin/main --stale` → 0 errors, 62 warnings (the `main` baseline;
+  a transient key-fact length and snapshot-date warning was removed by binding the count only).
+- `npm run eval:qa:register` reopened clusters 012, 017, 073, 114, 116, 123, 125, and 128;
+  `register-review-d.json` re-swept each with a reason; `--check` → up to date.
+- `npm run eval:plan -- eval/qa/results/2026-08-30T03-43-11-variantA.json` → byte-identical output on
+  the branch and on `main`.
+- Re-judge check: the saved run has one row among the five (`q-gap-builders-person-empty`,
+  `partial`). Its verdict hinged on key fact 2 (filter miss versus empty directory), not on the count
+  that moved. No paid re-judge.
+- Sibling sweeps are recorded in each case's `truth.verified.evidence`.
+- The register also reopened the numeric invariant `base reserve` (member content changed). The
+  review file cannot clear an invariant entry, so the entry was re-swept directly: verdict
+  `consistent`, `reSwept` 2026-09-30 with the ledger and Horizon evidence. Found by the reviewer.
+
+### Reconciliation (PR D, reviewer `rev-grok-c`, Grok 4.7 high, live re-derivation)
+
+| finding | disposition |
+| --- | --- |
+| The direct stellarlight.xyz read was labelled class D; it is class C and the same witness as the Raven read | fixed: relabelled; the 226 count is recorded as a one-witness dated observation |
+| tftc.io and the SDF X post were labelled class E; the tftc.io page is undated | fixed: tftc.io is class D with no date; the SDF post is class A and marked as the same witness as stellar.org/x402; the independent seat corroboration is x402.org/members |
+| The `base reserve` numeric invariant was still `reopen` | fixed: re-swept directly, see above |
+| Verification on `11a26ac4` found the register check failing (the class edit reopened 012 and 125 again) and the matrix rows still naming the old classes | fixed in `dedd55b3` (`register-review-d2.json`) and here (matrix rows); the intermediate commit shipped because a piped `--check` masked its exit code |
+
+The class corrections changed the x402 case content again, so the register reopened clusters 012
+and 125 a second time; `register-review-d2.json` re-swept both (metadata-only change).
+
+The reviewer re-derived every matrix row live (Horizon ledger 64703824 at 21:48:22Z, the author
+page's seven articles, the GitHub archive flags, the Linux Foundation release, x402.org/members)
+and found no score laundering, no new number in a key fact, and no new avoid item.
+
+## Item 7 — Stellar Light `scf-*` skill bodies (decision K input)
+
+`res-astra-scf` read all twelve `SKILL.md` bodies at upstream HEAD `b9a1509fb4230a191ab0055c2beca29303c1a30c`
+(2026-07-23) with blob-hash verification, plus the two pinned exposed skills for overlap. The full
+table with line-level evidence is `scf-skill-bodies-astra.md` in this round directory. Summary:
+
+| skill | fit verdict | note |
+| --- | --- | --- |
+| `scf-budget-builder` | fit | budget validation; dated rate bands need attribution; body heading differs from the directory tagline |
+| `scf-claim-verifier` | fit | claim-specific evidence checks beyond general research |
+| `scf-competitor-analyst` | fit | largest conceptual overlap with `scf-submission-radar` and `stellar-scout` |
+| `scf-fetch-external-doc` | fit as client reference | Google Docs/Drive, GitHub, IPFS fetches and `/tmp` writes; suggests authenticated GitHub access; upstream name `fetch-external-doc` |
+| `scf-interest-form-drafter` | fit | form submission stays a reader action |
+| `scf-live-context` | fit, after a content fix | derives the round from an open RFP row; conflicts with the pinned Scout body and `scout.getRfps` `submissionWindow`/`currentPhase` |
+| `scf-prescreen-checker` | fit | structured prescreen; no SCF decision |
+| `scf-referral-preparer` | fit | sharing and submission prompts to record |
+| `scf-reviewer` | fit | funding recommendations are advisory text; routes from the pinned Scout body |
+| `scf-round-reviewer` | no fit | requires an absent `CLAUDE.md`, local CSV under `data/`, `reviews/results.csv`, and external skill installs |
+| `scf-submission-drafter` | fit | requires the root submission template, outside the standard `skills/` pin |
+| `scf-tranche-reporter` | fit | completion-form and access-change prompts; mentions an audit co-pay |
+
+Cross-cutting facts for the owner: four bodies link to root `docs/` files that the selector does not
+pin; the LICENSE is MIT with a LumenLoop copyright line; the lane did not execute any workflow or
+validate award rules against the handbook. Decision K in `NEXT.md` now points at this evidence.
+The `TODO.md` body-read item is closed.
+

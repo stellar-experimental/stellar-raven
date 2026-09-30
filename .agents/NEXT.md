@@ -12,8 +12,9 @@ This file ranks the work and retains unresolved owner decisions, not deployment 
    D3 failed its answer gate and was withdrawn. Keep the current scorer until a general repair passes.
 2. Follow Docs PR #2837 for `sd-027` / `sd-034`.
    Decide the follow-up for stale-bot-closed `sd-037`; its original source trigger still reproduces.
-3. Refresh the two sibling golden freshness items (TODO.md) and review dependency upgrades.
-   The October 1 source-metadata case closed on 2026-09-30.
+3. Review dependency upgrades (TODO.md, Dependencies). The two sibling golden freshness items,
+   the two reserve-date cases, and the October 1 and October 7 source checks closed on 2026-09-30
+   ([raven-next](rounds/2026-09-30-raven-next.md)).
 4. Complete the private usage checks (TODO.md, "Usage archive follow-up").
    The public history rewrite closed on 2026-09-17 without rewriting; nothing remains to coordinate.
 
@@ -163,7 +164,14 @@ Raven use case. Name-level fit only (bodies not yet read): `scf-live-context`, `
 `scf-round-reviewer` (CSV export input) likely do not. Overlap to resolve: the exposed
 `skills.lumenloop.scf-submission-radar` and `skills.stellar-light.stellar-scout` already cover SCF
 positioning and pitch drafting. Upstream last pushed 2026-07-23. The repo uses the standard `skills/`
-layout, so pinning needs no `update.sh` code change. Evidence needed: the body read queued in
-`TODO.md` ("Read the Stellar Light SCF skill bodies"), judged against all four criteria of the
-admission bar in `ecosystem-skills/README.md` "Adding a source". Safe default: not pinned, with this
-decision recorded.
+layout, so pinning needs no `update.sh` code change. Evidence: the body read landed on 2026-09-30 as
+`.agents/rounds/2026-09-30-raven-next/scf-skill-bodies-astra.md` (GPT-6-Astra, high; upstream HEAD
+`b9a1509f`, 2026-07-23; MIT, copyright line names LumenLoop). Verdicts: eleven `fit` as reference
+content, one `no fit` (`scf-round-reviewer`, which depends on an absent `CLAUDE.md`, local CSV
+files, and external skill packages). Caveats the decision must weigh: four bodies link to root
+`docs/` files and the submission drafter requires the root template, which the standard
+`skills/` selector does not pin; `scf-live-context` identifies the round from an open RFP row,
+which conflicts with the pinned Scout body and the current `scout.getRfps` schema (a content defect
+to resolve before admission); `scf-fetch-external-doc` and the referral, tranche, and round bodies
+carry credential, sharing, or install prompts that admission must record; the fetch skill's
+frontmatter name is `fetch-external-doc`. Safe default: not pinned, with this decision recorded.
