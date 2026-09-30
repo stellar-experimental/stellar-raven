@@ -1,9 +1,9 @@
 # Agent model roster
 
-Runtime facts re-verified 2026-08-25 against the installed CLIs and their on-disk model catalogs
-on this host. The external-benchmark snapshot below is still the 2026-07-09 pass and was **not**
-re-checked; it is labelled in place. Launch mechanics were re-derived for Herdr on 2026-08-25;
-the Solo spawn syntax they replace is gone.
+Runtime facts re-verified 2026-09-30 against the installed CLIs and their on-disk model catalogs
+on this host. The previous pass was 2026-08-25. The external-benchmark snapshot below is still the
+2026-07-09 pass and was **not** re-checked; it is labelled in place. Launch mechanics are the Herdr
+mechanics re-derived on 2026-08-25 and re-run on 2026-09-30.
 
 This is the availability, mechanics, and external-evidence record for repo-work fan-out.
 `AGENTS.md` owns the repo's active model/effort policy; the global `herdr` skill owns pane and
@@ -15,15 +15,17 @@ Every id, context window, and effort list in the next three sections comes from 
 caches on disk. Read them directly instead of trusting this file:
 
 ```sh
-codex --version && jq '.client_version, (.models[]|{slug, visibility, context_window, max_context_window, efforts:[.supported_reasoning_levels[].effort]})' ~/.codex/models_cache.json
+codex --version && jq '.client_version, (.models[]|{slug, visibility, description, context_window, max_context_window, default_reasoning_level, efforts:[.supported_reasoning_levels[].effort]})' ~/.codex/models_cache.json
 grok --version && grok models && jq '.grok_version, (.models[].info|{id, context_window, efforts:[.reasoning_efforts[]|{id, default}]})' ~/.grok/models_cache.json
 claude --version && claude --help | grep -A6 -- --model
 opencode --version
+grep -E '^(model|model_reasoning_effort)' ~/.codex/config.toml
 ```
 
 `grok models` reaches the network and is the only source for which model is the CLI default. It
 can print `Settings fetch failed` warnings first; those are harmless and it still exits zero. The
-`jq` read of the cache is offline and covers everything else.
+`jq` read of the cache is offline and covers everything else. The Codex host default comes from
+`~/.codex/config.toml`, not from the catalog.
 
 ## Callable runtimes
 
@@ -33,15 +35,15 @@ passed to the CLI unchanged, so the model and effort flags below are the CLI's o
 
 | `--kind` | CLI | Default model | Explicit model syntax |
 |---|---|---|---|
-| `codex` | `codex` | `gpt-5.6-sol` (host config: high; catalog default: low) | `-m`/`--model <model>` |
+| `codex` | `codex` | `gpt-6.1-sol` (host config: high; catalog default: low) | `-m`/`--model <model>` |
 | `claude` | `claude` | account/runtime default | `--model <alias-or-id>` (no short flag) |
-| `grok` | `grok` | `grok-4.6` | `-m`/`--model <model>` |
+| `grok` | `grok` | `grok-4.7` | `-m`/`--model <model>` |
 | `opencode` | `opencode` | runtime/provider dependent | `-m`/`--model <provider/model>` |
 
 Run `herdr agent` for the installed kind list; it is the authority, not this table.
 
-Installed versions on 2026-08-25: Codex `0.149.1`, Claude Code `2.1.245`, Grok `1.0.5`,
-OpenCode `1.18.22`.
+Installed versions on 2026-09-30: Codex `0.159.2`, Claude Code `2.1.286`, Grok `1.0.44`,
+OpenCode `1.18.32`.
 
 The saved commands already contain permission-bypass flags, but generic runtimes can still expose
 setup/trust prompts. Inspect
@@ -50,56 +52,72 @@ one. In particular, passing a second Codex `--yolo` in `extra_args` kills the sp
 
 ## Codex models
 
-Installed Codex CLI `0.149.1` exposes these relevant ids:
+Installed Codex CLI `0.159.2` exposes these `visibility: list` ids. The catalog's own one-line
+description is quoted in the second column.
 
-| id | catalog positioning | working context | max context | reasoning efforts |
-|---|---|---:|---:|---|
-| `gpt-5.6-sol` | latest frontier agentic coding model | 272k | 872k | low, medium, high, xhigh, max, ultra |
-| `gpt-5.6-terra` | balanced everyday agentic coding model | 272k | 872k | low, medium, high, xhigh, max, ultra |
-| `gpt-5.6-luna` | fast/affordable agentic coding model | 272k | 872k | low, medium, high, xhigh, max |
-| `gpt-daybreak-blue-latest` | frontier model for broad defensive cybersecurity work | 272k | 872k | low, medium, high, xhigh, max, ultra |
+| id | catalog description | working context | max context | catalog default effort | reasoning efforts |
+|---|---|---:|---:|---|---|
+| `gpt-6.1-sol` | latest workhorse model for coding and everyday work | 272k | 872k | low | low, medium, high, xhigh, max, ultra |
+| `gpt-6-astra` | frontier intelligence for the most demanding work | 272k | 872k | medium | low, medium, high, xhigh, max, ultra |
+| `gpt-6-sol` | previous generation workhorse model | 272k | 872k | medium | low, medium, high, xhigh, max, ultra |
+| `gpt-6-luna` | fast and affordable model for easier tasks | 272k | 872k | medium | low, medium, high, xhigh, max |
+| `gpt-5.6-sol` | older generation workhorse model | 272k | 872k | low | low, medium, high, xhigh, max, ultra |
+| `gpt-5.6-terra` | older balanced model for straightforward work | 272k | 872k | medium | low, medium, high, xhigh, max, ultra |
+| `gpt-5.6-luna` | older fast and efficient model | 272k | 872k | medium | low, medium, high, xhigh, max |
+| `gpt-daybreak-blue-latest` | latest frontier agentic coding model for broad defensive cybersecurity work | 272k | 872k | low | low, medium, high, xhigh, max, ultra |
+| `gpt-5.5` | legacy coding model | 272k | 272k | medium | low, medium, high, xhigh |
+
+The generation moved between the 2026-08-25 pass and this one. `gpt-6.1-sol` replaced
+`gpt-5.6-sol` as the workhorse and as this host's configured default. `gpt-6-astra` is the new
+frontier tier; there is no Astra in the 5.6 line and no Terra in the 6 line. The 5.6 ids remain
+callable but the catalog labels every one of them "older generation". Treat `gpt-5.6-terra` as a
+retired lane: `AGENTS.md` routing text that still says "Terra" points at an older-generation model.
 
 `gpt-daybreak-blue-latest` is listed as callable but is **not** a house lane. `AGENTS.md` does not
-route to it. Treat it as evidence-only until a gauntlet says otherwise.
-
-Those four are every model the catalog marks `visibility: list` today. It also lists the
-prior-generation `gpt-5.5`, `gpt-5.4`, `gpt-5.4-mini`, and `gpt-5.3-codex-spark`, which are kept
-for reference and are not fan-out lanes, plus one `visibility: hide` entry, `codex-auto-review`,
-which Codex uses internally for approval review and which is never a fan-out target.
+route to it. Treat it as evidence-only until a gauntlet says otherwise. The catalog also carries two
+`visibility: hide` entries, `gpt-reserve` and `codex-auto-review`, which Codex uses internally and
+which are never fan-out targets.
 
 Herdr examples:
 
 ```sh
-herdr agent start reviewer --kind codex --pane <id> -- -m gpt-5.6-terra -c model_reasoning_effort="high"
-herdr agent start reviewer --kind codex --pane <id> -- -m gpt-5.6-luna -c model_reasoning_effort="medium"
+herdr agent start reviewer --kind codex --pane <id> -- -m gpt-6.1-sol -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write
+herdr agent start reviewer --kind codex --pane <id> -- -m gpt-6-astra -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write
 ```
 
 One-shot equivalents:
 
 ```sh
-codex exec -s read-only -m gpt-5.6-sol -c 'model_reasoning_effort="high"' "<investigation brief>"
-codex exec --yolo -m gpt-5.6-luna -c 'model_reasoning_effort="medium"' "<bounded edit brief>"
+codex exec -s read-only -m gpt-6.1-sol -c 'model_reasoning_effort="high"' "<investigation brief>"
+codex exec --yolo -m gpt-6-luna -c 'model_reasoning_effort="medium"' "<bounded edit brief>"
 ```
 
-There is no bare `gpt-5.6` id in the Codex catalog checked on this date; use the Sol, Terra,
-or Luna slug explicitly.
+There is no bare `gpt-6` or `gpt-6.1` id in the Codex catalog checked on this date; use the Sol,
+Astra, or Luna slug explicitly.
+
+The Codex `workspace-write` sandbox cannot write under `.agents/` in this repository. Have a Codex
+reviewer write its findings to the ignored `tmp/` directory and copy the file into the round
+directory yourself.
 
 ## Grok models
 
-Installed Grok CLI `1.0.5` reports exactly two models:
+Installed Grok CLI `1.0.44` reports four models; `grok models` names `grok-4.7` as the default:
 
-- `grok-4.6` — **default** frontier model, 500k context, low/medium/high/**xhigh** reasoning,
+- `grok-4.7` — **default** frontier model, 256k context, low/medium/high/xhigh reasoning,
   defaulting to high.
-- `grok-4.5` — prior frontier model, 500k context, low/medium/high reasoning, defaulting to high.
+- `grok-4.7-build-fast` — the fast variant of 4.7 at twice the price, 256k context, same efforts.
+- `grok-4.6` — prior frontier model, 256k context, low/medium/high/xhigh reasoning, defaulting to high.
+- `grok-4.5` — older model, 256k context, low/medium/high reasoning, defaulting to high.
 
-Two changes since the 2026-07-15 pass. Grok 4.6 adds an `xhigh` effort that 4.5 does not have, and
-`grok-composer-2.5-fast` is gone from the catalog.
+Two changes since the 2026-08-25 pass. `grok-4.7` replaced `grok-4.6` as the default, and the
+catalog now reports a 256k context for every model where the 2026-08-25 cache reported 500k. Quote
+256k until a newer cache says otherwise.
 
-Grok is the first-class vendor-diverse review arm. This exact line ran on 2026-08-25 and returned
+Grok is the first-class vendor-diverse review arm. This exact line ran on 2026-09-30 and returned
 a completed adversarial review:
 
 ```sh
-herdr agent start <name> --kind grok --pane <id> -- --model grok-4.6 --reasoning-effort high --always-approve
+herdr agent start <name> --kind grok --pane <id> -- --model grok-4.7 --reasoning-effort high --always-approve
 ```
 
 Grok needs a real terminal. Redirecting its output to a file fails with `Device not configured`,
@@ -113,8 +131,8 @@ instruct the agent to write its findings to a Markdown file and reply with only 
 
 ## Public evidence snapshot — 2026-07-09
 
-**Not re-verified in the 2026-08-25 pass.** Every figure below is the 2026-07-09 reading and
-describes Grok **4.5**, not the 4.6 that is now the CLI default. No public Grok 4.6 figure has been
+**Not re-verified in the 2026-08-25 or 2026-09-30 passes.** Every figure below is the 2026-07-09
+reading and describes GPT-5.6 and Grok **4.5**. No public GPT-6 or Grok 4.7 figure has been
 recorded here. Do not quote this table as current.
 
 This is directional evidence for calibration if house axes are reintroduced, not a second
@@ -170,12 +188,13 @@ Relevant external evidence:
   95. The public API/Artificial Analysis specification reports a 1M model context. Say **272k
   working Codex context** in repo fan-out guidance so these surfaces are not conflated. The
   2026-07-15 pass recorded 372k; that figure was wrong or has since changed, and it is retired.
-- The installed catalog exposes low/medium/high/xhigh/max/ultra for Sol and Terra, and
-  low/medium/high/xhigh/max for Luna. Its catalog defaults are low for Sol and medium for
-  Terra/Luna. This host's `~/.codex/config.toml` selects Sol at high effort, and the Codex
-  command inherits that host configuration; the repository itself does not set that default.
-- Grok 4.6 exposes low/medium/high/xhigh and defaults to high. Grok 4.5 exposes low/medium/high
-  and defaults to high. The installed Grok CLI reports 500k context for both.
+- The installed catalog exposes low/medium/high/xhigh/max/ultra for the Sol and Astra ids and
+  low/medium/high/xhigh/max for the Luna ids. Its catalog defaults are low for `gpt-6.1-sol` and
+  medium for `gpt-6-astra`, `gpt-6-sol`, and `gpt-6-luna`. This host's `~/.codex/config.toml`
+  selects `gpt-6.1-sol` at high effort, and the Codex command inherits that host configuration;
+  the repository itself does not set that default.
+- Grok 4.7 and 4.6 expose low/medium/high/xhigh and default to high. Grok 4.5 exposes
+  low/medium/high and defaults to high. The installed Grok CLI reports 256k context for all four.
 
 ### What remains to calibrate
 
@@ -184,36 +203,36 @@ Relevant external evidence:
 - **Taste:** launch posts contain promising frontend, artifact, and Office-work examples, but the
   search found no same-harness independent taste comparison. Keep this axis unscored until a local
   blind review or Tyler's direct ranking supplies it.
-- **Effort curves:** most comparable GPT-5.6 results are at `max`; there is not yet a controlled
-  low/medium/high/xhigh/max curve on this repo's work.
+- **Effort curves:** most comparable public results are at `max`; there is not yet a controlled
+  low/medium/high/xhigh/max curve on this repo's work, and none at all for the GPT-6 line.
 
-To calibrate the currently unscored models, run the same representative repo tasks at explicit configurations:
-Sol `high` and `max`, Terra `medium` and `max`, Luna `medium` and `max`, and Grok 4.6 `high`
-and `xhigh`.
-Record unsupervised completion quality, retries/interventions, wall time, allowance or credit
-consumption, and a blind paired taste judgment from a reviewer other than the author. Treat
-Sol/Terra `ultra` as a separate multi-agent arm.
+To calibrate the currently unscored models, run the same representative repo tasks at explicit
+configurations: Astra `high` and `max`, Sol 6.1 `high` and `max`, Luna `medium` and `max`, and
+Grok 4.7 `high` and `xhigh`. Record unsupervised completion quality, retries/interventions, wall
+time, allowance or credit consumption, and a blind paired taste judgment from a reviewer other
+than the author. Treat Sol/Astra `ultra` as a separate multi-agent arm.
 
 ## Claude aliases
 
-Claude Code `2.1.245` accepts `fable`, `opus`, and `sonnet` aliases. Fable 5 must be invoked as
-`--model fable` (or the full `claude-fable-5` id); `--model fable-5` is not a valid CLI alias.
-This exact line ran on 2026-08-25 and returned a completed adversarial review:
+Claude Code `2.1.286` accepts `fable`, `opus`, and `sonnet` aliases. Fable must be invoked as
+`--model fable` (or the full model id); `--model fable-5` is not a valid CLI alias. The `fable` line
+ran on 2026-09-30 as an independent reviewer and returned a completed review; the `opus` line is the
+launch syntax the owner verified the same day for the orchestrator pane:
 
 ```sh
-herdr agent start <name> --kind claude --pane <id> -- --model fable --permission-mode bypassPermissions
+herdr agent start <name> --kind claude --pane <id> -- --model fable --effort high --permission-mode bypassPermissions
+herdr agent start <name> --kind claude --pane <id> -- --model opus --effort high --permission-mode bypassPermissions
 ```
 
 ## Evidence boundaries
 
-- GPT-5.6 Sol/Terra/Luna, Claude Fable/Opus, and Grok 4.6 are **catalog-listed** and selectable
-  from their CLIs, and are covered by the active routing policy in `AGENTS.md`. Catalog presence
-  is not proof of a working call. Three of them carry dated call evidence from this pass: on
-  2026-08-25 `gpt-5.6-sol` at high effort, `grok-4.6` at high effort, and Claude `fable` each
-  completed an independent review of this repository, every one launched through a Herdr pane.
-  The others are listed-and-selectable only. Luna stays
-  evidence-only, not an active house lane. External benchmarks support interim roles; local
-  gauntlets or Tyler's direct judgment would be required before reintroducing house
+- GPT-6.1 Sol, GPT-6 Astra, GPT-6 Luna, Claude Fable/Opus, and Grok 4.7 are **catalog-listed** and
+  selectable from their CLIs. Catalog presence is not proof of a working call. Dated call evidence
+  from the 2026-09-30 skill system audit: `gpt-6.1-sol` at high, `gpt-6-astra` at high, `grok-4.7`
+  at high, and Claude `fable` at high each completed an independent review of this repository,
+  every one launched through a Herdr pane (`.agents/rounds/2026-09-30-skill-system-audit.md`).
+  Luna stays evidence-only, not an active house lane. External benchmarks support interim roles;
+  local gauntlets or Tyler's direct judgment would be required before reintroducing house
   cost/intelligence/taste scores.
 - The public demo's Workers AI/provider models are a separate surface and measurement contract.
   Its current verdict is `research/gauntlets/2026-08-06-primary-selection-summary.md`; the
