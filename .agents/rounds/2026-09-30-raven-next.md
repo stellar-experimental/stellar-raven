@@ -7,11 +7,12 @@ Production: Worker Version `9f5a4151-8fa6-41d9-a68d-776052d6ddd5`, deployed 2026
 
 Task 1: survey the service and the repo with live read-only probes. Rank what is worth doing next.
 Task 2: land the clear, simple improvements. Each one passes its gates and an independent Herdr
-review, then goes through a PR, CI, a squash merge, a deploy, and production verification. Each
-one gets a receipt here.
+review. Then it goes through a PR, CI, a squash merge, and a deploy. Production verification and
+a receipt here close it.
 
-The owner approves these first: upstream filing or comments, paid evaluation, exposure or policy
-changes, Algolia writes, any `NEXT.md` owner decision, and any destructive git action.
+Some actions need the owner's approval first. They are upstream filing or comments, paid
+evaluation, exposure or policy changes, Algolia writes, and any `NEXT.md` owner decision. Any
+destructive git action also needs it.
 
 ## Survey evidence (2026-09-30, about 20:50Z to 21:05Z)
 
@@ -83,8 +84,8 @@ Agent tooling on this host:
   `grok-4.7-build-fast`, `grok-4.6`, and `grok-4.5`. Claude Code `2.1.286` accepts `fable`,
   `opus`, and `sonnet`. OpenCode is `1.18.32`.
 - `research/agent-model-roster.md` was last verified 2026-08-25. Since then the Codex default
-  moved from `gpt-5.6-sol` to `gpt-6.1-sol`, the Grok default moved from `grok-4.6` to
-  `grok-4.7`, the Grok context figure moved from 500k to 256k, and the CLI versions moved.
+  moved from `gpt-5.6-sol` to `gpt-6.1-sol`. The Grok default moved from `grok-4.6` to
+  `grok-4.7`. The Grok context figure moved from 500k to 256k. The CLI versions moved.
   `AGENTS.md` routes "Terra high" for routine work; the catalog now calls `gpt-5.6-terra` older.
 
 Goldens (scan of `truth.reverifyBy` in `eval/qa/corpus/battery`):
@@ -113,35 +114,37 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
    in `AGENTS.md`: `needs-decision`. Proposal: Astra high for hard work; Sol 6.1 high for
    routine work and bounded verification; Luna evidence-only. The owner named Sol, Astra, Grok,
    and Opus as the lanes for this session.
-3. **`sd-052` is fixed upstream and live.** stellar-cli issue 2722 closed 2026-09-29 via merged PR
-   2766; the live manual at `developers.stellar.org/docs/tools/cli/stellar-cli` now reads
-   "Generate Python bindings (requires external plugin)" for all five languages. Value: pipeline
-   truth. Effort: 30 min to record `fixed-upstream` with dated evidence (`simple`); draining it
-   with the resolver needs a distinct reviewer and an upstream resolution comment
-   (`needs-decision`: the comment is an outward write).
+3. **`sd-052` is fixed upstream and live.** stellar-cli issue 2722 closed on 2026-09-29 through
+   merged PR 2766. The live manual at `developers.stellar.org/docs/tools/cli/stellar-cli` now
+   reads "Generate Python bindings (requires external plugin)". All five languages carry the note.
+   Value: pipeline truth. Effort: 30 min to record `fixed-upstream` with dated evidence
+   (`simple`). Draining it with the resolver needs a distinct reviewer and an upstream resolution
+   comment. That comment is an outward write (`needs-decision`).
 4. **Clear the two new moderate advisories.** `npm audit fix` changes only `fast-uri` → 3.1.8 and
-   `ip-address` → 10.7.2; `undici` 7.30.0 is in range for a targeted update. Value: removes the two
+   `ip-address` → 10.7.2. `undici` stays until a `miniflare` pin moves. Value: removes the two
    runtime-scope Dependabot alerts and one high group. Effort: 1 h with `typecheck`, `test`,
    `build`, `test:smoke`. `simple`. The seven known findings stay blocked as recorded in `TODO.md`.
 5. **Stale pointers in `PLAN.md` and `NEXT.md`.** `PLAN.md` §7 calls the September 14 audit "the
-   latest reviewed drift"; `NEXT.md` item 4 still asks to "coordinate the separately gated history
-   cleanup", which `TODO.md` closed on 2026-09-17. Value: handoff accuracy. Effort: 10 min. `simple`.
-6. **Skill tooling hardening from `TODO.md`.** Remove the inactive private-archive branches from
-   `build-index.mjs` (byte-identical rebuild check), add `owner`/`repo`/`path` to the pin-review
-   digest with a location-only test, and build the index from staged files before the swap in
-   `update.sh`. Reviewer-accepted deferrals with clear done criteria. Value: provenance and
+   latest reviewed drift". `NEXT.md` item 4 still asks to "coordinate the separately gated history
+   cleanup". `TODO.md` closed that on 2026-09-17. Value: handoff accuracy. Effort: 10 min. `simple`.
+6. **Skill tooling hardening from `TODO.md`.** Three items. Remove the inactive private-archive
+   branches from `build-index.mjs`, with a byte-identical rebuild check. Add `owner`, `repo`, and
+   `path` to the pin-review digest, with a location-only test. Build the index from staged files
+   before the swap in `update.sh`. All three are reviewer-accepted deferrals with clear done
+   criteria. Value: provenance and
    fail-closed refresh. Effort: 2 to 3 h. `simple`. The explicit cherry-pick mode is lower value
    (both cherry-picked sources have exclusion maps) and changes the manifest contract:
    `needs-decision`.
-7. **Read the twelve Stellar Light `scf-*` skill bodies** against the four admission criteria and
-   record a per-skill verdict table for decision K. Value: unblocks K. Effort: 1.5 h. `simple`
+7. **Read the twelve Stellar Light `scf-*` skill bodies** against the four admission criteria.
+   Record a per-skill verdict table for decision K. Value: unblocks K. Effort: 1.5 h. `simple`
    (the verdicts); the pin decision stays with the owner.
 8. **File `sk-028` upstream.** Verified; dedupe on 2026-09-30 found only closed `sls-010`, which
    is about substring filtering, not the count. Effort: 10 min. `needs-decision` (outward write).
 9. **Golden updates already queued.** `TODO.md` already directs four cases through
-   `golden-truth`: `q-defi-x402-on-stellar-what` (board seat), `q-gap-builders-person-empty`
-   (114 → live 226 today), and the dated reserve amounts in `q-asset-trustline-basics` and
-   `q-asset-amm-fee-reserve`. They need source triangulation, an independent re-derivation, and
+   `golden-truth`. They are `q-defi-x402-on-stellar-what` (board seat) and
+   `q-gap-builders-person-empty` (114 → live 226 today). The other two are the dated reserve
+   amounts in `q-asset-trustline-basics` and `q-asset-amm-fee-reserve`. They need source
+   triangulation, an independent re-derivation, and
    the corpus gates. They need no further scheduling approval. Effort: 1 to 2 h each. `simple`
    (with the `golden-truth` gates).
 9b. **Golden checks with a due date.** `q-builder-content-by-person` is due 2026-10-07 (author
@@ -158,8 +161,8 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
 12. **Vectorize Transformers runtime migration.** Needs the comparison design in `TODO.md` first.
     Effort: a day. `needs-decision`.
 13. **Upstream rechecks.** PR 2837 (`sd-027`/`sd-034`) is unchanged. PR 2021 (`sd-037`) gained a
-    maintainer approval on 2026-09-29 but is `blocked` and unmerged; this PR records that in the
-    `TODO.md` item. `sd-037` stays `reported-upstream` until the two README source checks show the
+    maintainer approval on 2026-09-29. It is still `blocked` and unmerged. This PR records that in
+    the `TODO.md` item. `sd-037` stays `reported-upstream` until the two README source checks show the
     fix. No reminder comment. Issue #167 stays blocked on a general intent mechanism. The
     September 17 routing and source-authority work (`NEXT.md` item 1) stays open.
 14. **stellarDocs `hitsPerPage` default.** Three operations pass the value through and document
@@ -176,13 +179,14 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
     Playground runner has no answer-cost accounting or judge dollar cap. `needs-decision`
     (prompt text is policy; the measurement is paid).
 
-The survey found no defect in the MCP server, the adapters, the web surfaces, the canary, CI, or
-the refresh workflows. The usage checks passed within the limits stated above.
+The survey found no defect in the MCP server, the adapters, or the web surfaces. It found none in
+the canary, CI, or the refresh workflows. The usage checks passed within the limits stated above.
 
 ## Plan for this block
 
-PR A (bookkeeping and docs): items 1, 2 (roster only; `AGENTS.md` waits for the owner), 3
-(status and evidence), 5, and the `sd-037` note from item 13. PR B (dependencies): item 4.
+PR A (bookkeeping and docs) carries items 1, 3 (status and evidence), and 5. It carries the
+roster half of item 2; `AGENTS.md` waits for the owner. It also carries the `sd-037` note from
+item 13. PR B (dependencies): item 4.
 PR C (skill tooling): item 6. PR D (goldens): item 9 and the 2026-10-07 case from 9b. Item 7 runs
 as a read-only research lane and writes its table here. Items 8, 10, 11, 12, 14, and 16 wait for
 the owner. Item 15 follows the PRs above.

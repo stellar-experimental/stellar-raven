@@ -52,8 +52,8 @@ one. In particular, passing a second Codex `--yolo` in `extra_args` kills the sp
 
 ## Codex models
 
-Installed Codex CLI `0.159.2` exposes these `visibility: list` ids. The catalog's own one-line
-description is quoted in the second column.
+Installed Codex CLI `0.159.2` exposes these `visibility: list` ids. The second column quotes the
+catalog's own one-line description.
 
 | id | catalog description | working context | max context | catalog default effort | reasoning efforts |
 |---|---|---:|---:|---|---|
@@ -69,16 +69,17 @@ description is quoted in the second column.
 
 The generation moved between the 2026-08-25 pass and this one. `gpt-6.1-sol` replaced
 `gpt-5.6-sol` as the workhorse and as this host's configured default. `gpt-6-astra` is the new
-frontier tier. The 5.6 line has no Astra, and the 6 line has no Terra. The 5.6 ids remain callable.
-The catalog describes them as "Older generation workhorse model", "Older balanced model for
-straightforward work", and "Older fast and efficient model". `AGENTS.md` still routes a Terra lane.
-Whether that lane moves to a 6-line model is an open owner decision recorded in
-`.agents/rounds/2026-09-30-raven-next.md`; this file records the catalog, not the policy.
+frontier tier. The 5.6 line has no Astra, and the 6 line has no Terra.
+
+The 5.6 ids remain callable. The catalog describes them as "Older generation workhorse model",
+"Older balanced model for straightforward work", and "Older fast and efficient model".
+`AGENTS.md` still routes a Terra lane. Whether that lane moves to a 6-line model is an open owner
+decision (`.agents/rounds/2026-09-30-raven-next.md`). This file records the catalog, not the policy.
 
 `gpt-daybreak-blue-latest` is listed as callable but is **not** a house lane. `AGENTS.md` does not
 route to it. Treat it as evidence-only until a gauntlet says otherwise. The catalog also carries two
-`visibility: hide` entries, `gpt-reserve` and `codex-auto-review`, which Codex uses internally and
-which are never fan-out targets.
+`visibility: hide` entries, `gpt-reserve` and `codex-auto-review`. Codex uses them internally. They
+are never fan-out targets.
 
 Herdr examples:
 
@@ -94,11 +95,11 @@ codex exec -s read-only -m gpt-6.1-sol -c 'model_reasoning_effort="high"' "<inve
 codex exec --yolo -m gpt-6-luna -c 'model_reasoning_effort="medium"' "<bounded edit brief>"
 ```
 
-There is no bare `gpt-6` or `gpt-6.1` id in the Codex catalog checked on this date; use the Sol,
-Astra, or Luna slug explicitly.
+The Codex catalog checked on this date has no bare `gpt-6` or `gpt-6.1` id. Use the Sol, Astra,
+or Luna slug explicitly.
 
 The Codex `workspace-write` sandbox cannot write under `.agents/` in this repository. Have a Codex
-reviewer write its findings to the ignored `tmp/` directory and copy the file into the round
+reviewer write its findings to the ignored `tmp/` directory. Then copy the file into the round
 directory yourself.
 
 ## Grok models
@@ -193,8 +194,8 @@ Relevant external evidence:
 - The installed catalog exposes low/medium/high/xhigh/max/ultra for the Sol and Astra ids and
   low/medium/high/xhigh/max for the Luna ids. Its catalog defaults are low for `gpt-6.1-sol` and
   medium for `gpt-6-astra`, `gpt-6-sol`, and `gpt-6-luna`. This host's `~/.codex/config.toml`
-  selects `gpt-6.1-sol` at high effort, and the Codex command inherits that host configuration;
-  the repository itself does not set that default.
+  selects `gpt-6.1-sol` at high effort. The Codex command inherits that host configuration. The
+  repository itself does not set that default.
 - Grok 4.7 and 4.6 expose low/medium/high/xhigh and default to high. Grok 4.5 exposes
   low/medium/high and defaults to high. The installed Grok CLI reports 256k context for all four.
 
@@ -205,8 +206,8 @@ Relevant external evidence:
 - **Taste:** launch posts contain promising frontend, artifact, and Office-work examples, but the
   search found no same-harness independent taste comparison. Keep this axis unscored until a local
   blind review or Tyler's direct ranking supplies it.
-- **Effort curves:** most comparable public results are at `max`; there is not yet a controlled
-  low/medium/high/xhigh/max curve on this repo's work, and none at all for the GPT-6 line.
+- **Effort curves:** most comparable public results are at `max`. This repo's work has no
+  controlled low/medium/high/xhigh/max curve yet. The GPT-6 line has no curve at all.
 
 To calibrate the unscored models, run the same representative repo tasks at explicit
 configurations. Use Astra `high` and `max`, Sol 6.1 `high` and `max`, Luna `medium` and `max`,
@@ -231,8 +232,8 @@ herdr agent start <name> --kind claude --pane <id> -- --model opus --effort high
 - GPT-6.1 Sol, GPT-6 Astra, GPT-6 Luna, Claude Fable, Claude Opus, and Grok 4.7 are
   **catalog-listed** and selectable from their CLIs. Catalog presence is not proof of a working
   call. The 2026-09-30 skill system audit supplies dated call evidence for four of them.
-  `gpt-6.1-sol`, `gpt-6-astra`, `grok-4.7`, and Claude `fable`, each at high, completed an
-  independent review of this repository through a Herdr pane
+  `gpt-6.1-sol`, `gpt-6-astra`, `grok-4.7`, and Claude `fable` each ran at high. Each completed
+  an independent review of this repository through a Herdr pane
   (`.agents/rounds/2026-09-30-skill-system-audit.md`). Luna stays evidence-only, not an active
   house lane. External benchmarks support interim roles. Local gauntlets or Tyler's direct
   judgment must come before any house cost, intelligence, or taste score returns.
