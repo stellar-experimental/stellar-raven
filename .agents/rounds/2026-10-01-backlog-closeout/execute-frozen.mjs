@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { readFileSync, realpathSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { randomUUID } from "node:crypto";
-import { runReservedInvocation, withLaunchCleanup, PROCESS_GUARD, processGuardSha256 } from "./paired-launch-runtime.mjs";
+import { runReservedInvocation, withLaunchCleanup, PROCESS_GUARD, processGuardSha256, managedEnvironment } from "./paired-launch-runtime.mjs";
+import { assertClaudePin } from "./paired-claude-pin.mjs";
 import { runCompleteness } from "../../../eval/lib/harness-guards.mjs";
 
 export function validateStoredJudgeArtifact(artifact, plan) {
@@ -46,6 +47,23 @@ export async function executeFrozen(phase, manager, env = process.env) {
   const planSha256 = validateAuthorizedPairedCollectionPlan(plan, env.PAIRED_AUTHORIZED_SHA256);
   assert.deepEqual(plan.launchProcessGuard,{path:PROCESS_GUARD,sha256:processGuardSha256()},
     "the signed process guard differs from this executor");
+  const hashes = plan.arms.baseline.inputHashes;
+  assert.match(hashes.agentEnvironmentSha256, /^[a-f0-9]{64}$/, 'the frozen environment hash is missing');
+  assertClaudePin(plan.immutableClaude, managedEnvironment(env), hashes.agentEnvironmentSha256);
+  for (const arm of ['baseline', 'candidate']) {
+    for (const key of ['agentBinarySha256', 'judgeBinarySha256']) {
+      assert.equal(plan.arms[arm].inputHashes[key], plan.immutableClaude.sha256);
+    }
+    for (const key of ['agentEnvironmentSha256', 'judgeEnvironmentSha256']) {
+      assert.equal(plan.arms[arm].inputHashes[key], hashes.agentEnvironmentSha256);
+    }
+  }
+  assert.equal(plan.p6.claudePath, plan.immutableClaude.claudePath);
+  for (const command of [plan.p6.command, ...Object.values(plan.flipRejudge.commands)]) {
+    const index = command.indexOf('--claude-path');
+    assert.ok(index >= 0, 'the command lacks the private Claude path');
+    assert.equal(command[index + 1], plan.immutableClaude.claudePath);
+  }
   const methods = {
     p6: [plan.p6.command, plan.worktrees[`${plan.p6.runnerArm}Runner`]],
     collection: [[process.execPath, "eval/qa/paired-collection-supervisor.mjs",

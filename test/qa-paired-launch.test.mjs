@@ -1,10 +1,12 @@
 import { spawn } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, realpathSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, realpathSync, symlinkSync, unlinkSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { reserveInvocation, processTable, withLaunchCleanup, OwnedProcesses, PROCESS_GUARD, processGuardSha256 } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch-runtime.mjs";
+import { reserveInvocation, processTable, withLaunchCleanup, OwnedProcesses, PROCESS_GUARD, processGuardSha256, managedEnvironment } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch-runtime.mjs";
+import { createClaudePin } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-claude-pin.mjs";
+import { agentEnvironmentIdentity } from "../eval/lib/executable-identity.mjs";
 import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, PORTS } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
 import { executeFrozen, validateStoredJudgeArtifact } from "../.agents/rounds/2026-10-01-backlog-closeout/execute-frozen.mjs";
 import { pairedCollectionPlanSha256 } from "../eval/qa/paired-collection-supervisor.mjs";
@@ -20,6 +22,29 @@ function completeArtifact(plan) {
     comparable:true,aggregatesSuppressed:false,selectedIds:plan.selected.ids,unattemptedIds:[],
     inputSnapshot:{caseIdsSha256:plan.selected.idsSha256,casesSha256:plan.selected.contentSha256},
     completeness,judgingCompleteness:completeness,judgeStored:{unattemptedIds:[],incompleteIds:[]}}};
+}
+
+function freezeFixture(root, plan) {
+  const versions = path.join(root, '.local/share/claude/versions');
+  mkdirSync(versions, {recursive:true});
+  mkdirSync(path.join(root, '.local/bin'), {recursive:true});
+  const binary = path.join(versions, 'fixture-1');
+  writeFileSync(binary, '#!/bin/sh\n[ "$1" = "--version" ] || exit 99\necho "fixture-1 (Claude Code)"\n', {mode:0o700});
+  symlinkSync(binary, path.join(root, '.local/bin/claude'));
+  const env = {...process.env, HOME:root, PAIRED_RUN:root, PAIRED_CR:root};
+  delete env.QA_AGENT_PROMPT_APPEND;
+  plan.immutableClaude = createClaudePin(env);
+  const hash = agentEnvironmentIdentity(managedEnvironment(env)).sha256;
+  for (const arm of ['baseline','candidate']) {
+    plan.arms[arm].inputHashes = {agentBinarySha256:plan.immutableClaude.sha256,
+      judgeBinarySha256:plan.immutableClaude.sha256, agentEnvironmentSha256:hash, judgeEnvironmentSha256:hash};
+  }
+  plan.p6.claudePath = plan.immutableClaude.claudePath;
+  for (const command of new Set([plan.p6.command, ...Object.values(plan.flipRejudge.commands)])) {
+    command.push('--claude-path', plan.immutableClaude.claudePath);
+  }
+  env.PAIRED_AUTHORIZED_SHA256 = pairedCollectionPlanSha256(plan);
+  return env;
 }
 
 const runtime = fileURLToPath(new URL("../.agents/rounds/2026-10-01-backlog-closeout/paired-launch-runtime.mjs", import.meta.url));
@@ -78,6 +103,8 @@ describe("paired launch reservations", () => {
         const qa=path.join(root,"eval","qa");mkdirSync(qa,{recursive:true});
         const supervisor=fileURLToPath(new URL("../eval/qa/paired-collection-supervisor.mjs",import.meta.url));
         const harmless=`import {appendFileSync} from 'node:fs';
+const {spawnSync}=await import('node:child_process');
+if(spawnSync('claude',['--version'],{encoding:'utf8'}).stdout.trim()!=='fixture-1 (Claude Code)') throw new Error('followed the public link');
 appendFileSync(${JSON.stringify(path.join(root,"invocations"))},'started\\n');
 console.log(JSON.stringify({method:'qa-paired-ordinal-ni-v1',verdict:'PASS',reasons:[]}));
 process.exitCode=${code};`;
@@ -91,14 +118,18 @@ process.exitCode=${code};`;
           p6:{command,runnerArm:"candidate"},
           arms:{baseline:{judgeCommand:command},candidate:{judgeCommand:command}},
           comparisonCommand:command,flipRejudge:{commands:{baseline:command,candidate:command}}};
-        const planSha256=pairedCollectionPlanSha256(plan);
+        const env=freezeFixture(root,plan);
+        const updated=path.join(root,'.local/share/claude/versions/fixture-2');
+        writeFileSync(updated,'#!/bin/sh\necho "fixture-2 (Claude Code)"\n',{mode:0o700});
+        unlinkSync(path.join(root,'.local/bin/claude'));
+        symlinkSync(updated,path.join(root,'.local/bin/claude'));
+        const planSha256=env.PAIRED_AUTHORIZED_SHA256;
         writeFileSync(path.join(root,"plan.json"),JSON.stringify(plan));
         if(!["p6","collection"].includes(phase)) {
           writeFileSync(path.join(root,"receipt.json"),JSON.stringify({
             schema:"qa-paired-collection-receipt-v1",planSha256,rows:200,artifacts:{baseline:path.join(root,"artifact.json"),candidate:path.join(root,"artifact.json")}}));
         }
         writeFileSync(path.join(root,"artifact.json"),JSON.stringify(completeArtifact(plan)));
-        const env={...process.env,PAIRED_RUN:root,PAIRED_CR:root,PAIRED_AUTHORIZED_SHA256:planSha256};
         await withLaunchCleanup(async manager=>{
           if(code===0) await executeFrozen(phase,manager,env);
           else await expect(executeFrozen(phase,manager,env)).rejects.toThrow("p6 failed");
@@ -112,6 +143,29 @@ process.exitCode=${code};`;
           .toMatchObject({planSha256,phase});
       } finally { rmSync(root,{recursive:true,force:true}); }
     },10_000);
+
+  it.each(['p6','collection','baselineJudge','candidateJudge','compare','baselineFlip','candidateFlip'])(
+    'stops %s before reservation or a child when the updater flag changes', async phase => {
+      const root=mkdtempSync(path.join(os.tmpdir(),'paired-launch-pin-stop-'));
+      try {
+        const qa=path.join(root,'eval/qa');mkdirSync(qa,{recursive:true});
+        const supervisor=fileURLToPath(new URL('../eval/qa/paired-collection-supervisor.mjs',import.meta.url));
+        writeFileSync(path.join(qa,'paired-collection-supervisor.mjs'),
+          `export {validateAuthorizedPairedCollectionPlan} from ${JSON.stringify(supervisor)};`);
+        const command=[process.execPath,'must-not-start.mjs'];
+        const plan={launchProcessGuard:{path:PROCESS_GUARD,sha256:processGuardSha256()},
+          worktrees:{baselineRunner:root,candidateRunner:root},p6:{command,runnerArm:'candidate'},
+          arms:{baseline:{judgeCommand:command},candidate:{judgeCommand:command}},
+          flipRejudge:{commands:{baseline:command,candidate:command}},comparisonCommand:command};
+        const env=freezeFixture(root,plan);
+        writeFileSync(path.join(root,'plan.json'),JSON.stringify(plan));
+        env.DISABLE_AUTOUPDATER='0';
+        const manager={spawn:()=>{throw new Error('must not spawn');}};
+        await expect(executeFrozen(phase,manager,env)).rejects.toThrow(/DISABLE_AUTOUPDATER must remain 1/);
+        expect(existsSync(path.join(root,`${phase}.started.json`))).toBe(false);
+        expect(existsSync(path.join(root,`${phase}.log`))).toBe(false);
+      } finally {rmSync(root,{recursive:true,force:true});}
+    });
 
   it.each(["p6", "collection"])("reserves %s atomically across simultaneous starts", async (phase) => {
     const root = mkdtempSync(path.join(os.tmpdir(),"paired-launch-race-"));
@@ -393,11 +447,11 @@ describe('paired launch delta regressions',()=>{
       artifact.meta.judgingCompleteness={...artifact.meta.judgingCompleteness,aggregatesAllowed:false,judgedRows:199};
       writeFileSync(incomplete,`import {writeFileSync} from 'node:fs';writeFileSync(${JSON.stringify(artifactPath)},${JSON.stringify(JSON.stringify(artifact))});console.log('budget exhausted; partial artifact retained');`);
       writeFileSync(candidate,`import {writeFileSync} from 'node:fs';writeFileSync(${JSON.stringify(path.join(root,'candidate-invoked'))},'yes');`);
+      const env=freezeFixture(root,plan);
       writeFileSync(path.join(root,'plan.json'),JSON.stringify(plan));
-      const planSha256=pairedCollectionPlanSha256(plan);
+      const planSha256=env.PAIRED_AUTHORIZED_SHA256;
       writeFileSync(path.join(root,'receipt.json'),JSON.stringify({schema:'qa-paired-collection-receipt-v1',planSha256,rows:200,
         artifacts:{baseline:artifactPath,candidate:path.join(root,'candidate.json')}}));
-      const env={...process.env,PAIRED_RUN:root,PAIRED_CR:root,PAIRED_AUTHORIZED_SHA256:planSha256};
       await expect(withLaunchCleanup(manager=>runLaunchSteps(manager,[
         ()=>executeFrozen('baselineJudge',manager,env),()=>executeFrozen('candidateJudge',manager,env)
       ]),{timeoutMs:600})).rejects.toThrow(/suppresses aggregates/);

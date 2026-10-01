@@ -489,5 +489,6 @@ The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing t
 Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
 
 After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
-or delete the round's launch scripts, `paired-stability-register.json`, and
-`test/qa-paired-launch.test.mjs` together. The test imports the scripts from the round folder.
+or delete the round's launch scripts, `paired-stability-register.json`,
+`test/qa-paired-launch.test.mjs`, and `test/qa-paired-claude-pin.test.mjs` together. Both tests
+import the scripts from the round folder.
