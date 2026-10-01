@@ -49,7 +49,7 @@ Total findings: 65
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 3           |
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 0           |
-| sd-052 | The generated CLI manual lists five placeholder languages as binding generators. Each command exits before generating bindings in Stellar…  | reported-upstream | 2026-09-04 | 0           |
+| sd-052 | The generated CLI manual lists five placeholder languages as binding generators. Each command exits before generating bindings in Stellar…  | fixed-upstream    | 2026-09-04 | 0           |
 | sd-053 | The RPC configuring page now has the section "Backfilling History on Startup". The section explains BACKFILL, but it omits two startup…     | reported-upstream | 2026-09-21 | 0           |
 
 ## lumenloop

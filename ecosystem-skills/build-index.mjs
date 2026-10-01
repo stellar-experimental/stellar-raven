@@ -13,6 +13,19 @@
 // separate "what exists in the ecosystem" map (incl. non-skill-md tools/SDKs).
 //
 // Run automatically by update.sh; safe to run standalone after a sync.
+//
+// Usage:
+//   node build-index.mjs [--manifest <path>] [--catalog <path>] [--out <path>]
+//
+// The three paths default to the files beside this script. update.sh passes its
+// staged MANIFEST.json and catalog.json and an output path inside its work tree,
+// so the index is built and validated BEFORE any pinned file is swapped into
+// place; a failure here then leaves the committed pin set untouched.
+//
+// Every source must be a public GitHub source (type "github"). The manifest
+// carries no other source type: update.sh cannot produce one and
+// scripts/check-skills-drift.mjs rejects one. This script fails closed on any
+// other type instead of rendering a placeholder row for it.
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -27,9 +40,27 @@ import {
 
 const DIR = dirname(fileURLToPath(import.meta.url));
 
-const manifest = JSON.parse(readFileSync(join(DIR, "MANIFEST.json"), "utf8"));
-const catalog = JSON.parse(readFileSync(join(DIR, "catalog.json"), "utf8"));
+function argPath(flag, fallback) {
+  const i = process.argv.indexOf(flag);
+  if (i < 0) return fallback;
+  const value = process.argv[i + 1];
+  if (!value || value.startsWith("--")) throw new Error(`build-index: ${flag} needs a path`);
+  return value;
+}
+
+const MANIFEST_PATH = argPath("--manifest", join(DIR, "MANIFEST.json"));
+const CATALOG_PATH = argPath("--catalog", join(DIR, "catalog.json"));
+const OUT_PATH = argPath("--out", join(DIR, "INDEX.md"));
+
+const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8"));
 const { groups } = JSON.parse(readFileSync(join(DIR, "groups.json"), "utf8"));
+
+for (const src of manifest.sources) {
+  if (src.type !== "github") {
+    throw new Error(`build-index: source "${src.id}" has type "${src.type}"; only "github" sources are supported`);
+  }
+}
 
 // Build an index of every synced skill: id "source/skill" -> metadata.
 const skillById = new Map();
@@ -108,14 +139,6 @@ out.push(
     "exposure scrub."
 );
 out.push("");
-if (manifest.status && manifest.status !== "complete") {
-  const missing = (manifest.missing_sources || []).join(", ") || "unknown";
-  out.push(
-    `> ⚠️ **PARTIAL MIRROR** (status: \`${manifest.status}\`). Missing source(s): \`${missing}\`. ` +
-      `Re-run \`./update.sh\` with the required credentials for a complete mirror.`,
-  );
-  out.push("");
-}
 
 // Per-source pin table.
 out.push("## Sources (pinned)");
@@ -123,19 +146,9 @@ out.push("");
 out.push("| Source | Origin | Pinned | Skills |");
 out.push("| --- | --- | --- | --- |");
 for (const src of manifest.sources) {
-  let origin, pin;
-  if (src.type === "github") {
-    const where = src.path === "." ? " (skill dirs at root)" : src.path ? ` \`${src.path}/\`` : " (root)";
-    origin = `[\`${src.owner}/${src.repo}\`](https://github.com/${src.owner}/${src.repo})${where}`;
-    pin = src.url ? `[\`${String(src.commit).slice(0, 12)}\`](${src.url})` : `\`${String(src.commit).slice(0, 12)}\``;
-  } else {
-    // lumenloop-archive: private repo, not git-commit-reproducible. Show the API
-    // ref + a short archive sha256 so the run is at least digest-verifiable.
-    origin = `\`${src.repo || src.endpoint}\` (${src.set} archive, private)`;
-    const ref = src.commit_ref || src.commit || "?";
-    const dg = src.archive_sha256 ? ` · zip \`sha256:${String(src.archive_sha256).slice(0, 12)}…\`` : "";
-    pin = `api \`${ref}\`${dg}`;
-  }
+  const where = src.path === "." ? " (skill dirs at root)" : src.path ? ` \`${src.path}/\`` : " (root)";
+  const origin = `[\`${src.owner}/${src.repo}\`](https://github.com/${src.owner}/${src.repo})${where}`;
+  const pin = src.url ? `[\`${String(src.commit).slice(0, 12)}\`](${src.url})` : `\`${String(src.commit).slice(0, 12)}\``;
   out.push(`| \`${src.id}\` | ${origin} | ${pin} | ${src.skills.length} |`);
 }
 out.push("");
@@ -204,8 +217,8 @@ if (Array.isArray(catalog.entries)) {
   out.push("");
 }
 
-writeFileAtomic(join(DIR, "INDEX.md"), out.join("\n"));
+writeFileAtomic(OUT_PATH, out.join("\n"));
 
-console.log(`INDEX.md written: ${categorized.size} categorized, ${uncategorized.length} uncategorized.`);
+console.log(`${OUT_PATH === join(DIR, "INDEX.md") ? "INDEX.md" : OUT_PATH} written: ${categorized.size} categorized, ${uncategorized.length} uncategorized.`);
 if (uncategorized.length) console.log("  uncategorized → " + uncategorized.join(", "));
 for (const w of warnings) console.warn("  warning: " + w);

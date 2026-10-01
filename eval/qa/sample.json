@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "fb54ff1e8202c1b4b40da344337efb6a09c9119ab5f7d6833357e9f9aa873e6d",
+  "corpusContentSha256": "6660138b1fde128646d390d80d99364848b0946b0f6a9e18320607c5e35c2bd4",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -536,7 +536,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve (0.5 XLM)** — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves (1.0 XLM)**.\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
+        "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve** (0.5 XLM on Mainnet as of 2026-09-30; validators can vote to change it) — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves** (1.0 XLM at that setting).\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
         "keyFacts": [
           "Defines a trustline as an account's explicit opt-in to hold a non-native asset.",
           "Creates the trustline through ChangeTrust for a specific asset and issuer.",
@@ -547,7 +547,7 @@
           "Do NOT claim assets can be received without any trustline (like ERC-20 on Ethereum).",
           "Do NOT state the base reserve is a flat fee that is consumed/spent rather than a held minimum balance."
         ],
-        "notes": "Foundational. Dossier §1.2. Base reserve = 0.5 XLM; trustline = 1 base reserve; pool-share trustline = 2.\nAlso good if the answer: Each trustline reserves one base reserve (0.5 XLM). | Pool-share (AMM) trustlines cost two base reserves.\nGolden cites: A trustlines page on developers.stellar.org."
+        "notes": "Foundational. Dossier §1.2. Base reserve = 0.5 XLM on Mainnet as of 2026-09-30 (a network setting validators can change; Horizon ledger 64703557 base_reserve_in_stroops 5000000); trustline = 1 base reserve; pool-share trustline = 2. Do not penalize an answer that dates the XLM amount or gives it in base-reserve units.\nAlso good if the answer: Each trustline reserves one base reserve (0.5 XLM). | Pool-share (AMM) trustlines cost two base reserves.\nGolden cites: A trustlines page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -574,21 +574,18 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+          "date": "2026-09-30",
+          "by": "raven-next round 2026-09-30 (golden-truth pass, PR D; lead Claude Fable 5.1, independent re-derivation recorded in .agents/rounds/2026-09-30-raven-next.md)",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-establish-trustline-howto",
-            "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines",
-            "Structural re-form (long-fact): Split the trustline definition and shortened the reserve requirement; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page defines a trustline as an account's explicit opt-in to hold a particular asset.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page requires ChangeTrust with the issuing account for a specific asset.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/lumens — the page says each trustline subentry adds a base reserve to the account's XLM minimum balance.",
-            "Sibling sweep 2026-08-29: grep explicit opt-in|extra base reserve → q-asset-trustline-basics; no contradiction"
+            "Live read 2026-09-30 of https://developers.stellar.org/docs/learn/fundamentals/lumens: base reserve currently 0.5 XLM, changeable by validator vote; each trustline subentry adds one base reserve; a pool-share trustline counts as two.",
+            "Live read 2026-09-30T21:26:07Z of Horizon Mainnet ledger 64703557: base_reserve_in_stroops 5000000.",
+            "Change: the XLM amounts in the answer and notes are now dated and marked as a network setting; the base-reserve counts and the held-minimum distinction are unchanged.",
+            "Sibling sweep 2026-09-30: grep '0.5 XLM|base reserve' → 16 cases; q-asset-amm-fee-reserve updated in the same pass; q-edge-1xlm-activation-fee and the cluster-017 members already date or derive the amount; no contradiction.",
+            ".agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md found the undated amounts."
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Add dated reserve amounts to two sibling cases"
           ]
         },
         "origin": "raven-next q-asset-trustline-basics",
@@ -601,10 +598,23 @@
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines",
                 "observedAt": "2026-07-11"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+                "observedAt": "2026-09-30",
+                "note": "'One base reserve is currently 0.5 XLM. Validators can vote to change the base reserve'; 'Every subentry after that requires an additional base reserve (currently 0.5 XLM)'; pool-share trustline 'counts as two'."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+                "observedAt": "2026-09-30",
+                "note": "Ledger 64703557 closed 2026-09-30T21:26:07Z: base_reserve_in_stroops 5000000 (0.5 XLM), protocol_version 28."
               }
             ]
           }
-        ]
+        ],
+        "asOf": "2026-09-30"
       }
     },
     {

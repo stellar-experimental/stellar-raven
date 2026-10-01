@@ -49,6 +49,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST="$SCRIPT_DIR/MANIFEST.json"
 CATALOG="$SCRIPT_DIR/catalog.json"
+INDEX="$SCRIPT_DIR/INDEX.md"
 
 command -v gh    >/dev/null || { echo "error: gh CLI not found" >&2; exit 1; }
 command -v jq    >/dev/null || { echo "error: jq not found" >&2; exit 1; }
@@ -65,10 +66,13 @@ MISSING_SOURCES="[]"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 SRC_DIR="$WORK/sources"   # one <id>.json per re-pinned source
-# Everything is staged under $WORK and only moved into place AFTER all sources
-# succeed, so a mid-run failure never leaves a half-written MANIFEST.json.
+# Everything is staged under $WORK — the manifest, the catalog, AND the index
+# built from them — and only moved into place AFTER all sources succeed and the
+# index builds. A failure before the swap leaves the committed files untouched;
+# a failure inside the swap restores them (see the swap section below).
 MANIFEST_TMP="$WORK/MANIFEST.json"
 CATALOG_TMP="$WORK/catalog.json"
+INDEX_TMP="$WORK/INDEX.md"
 mkdir -p "$SRC_DIR"
 
 NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -208,9 +212,49 @@ if [ -f "$MANIFEST" ]; then
   echo
 fi
 
-# --- Atomic swap: only now do we touch the real MANIFEST + catalog. ---
-mv "$MANIFEST_TMP" "$MANIFEST"
-mv "$CATALOG_TMP" "$CATALOG"
+# Build the themed index from the STAGED manifest and catalog (fetches each
+# pinned SKILL.md into the gitignored working cache to read its frontmatter).
+# This runs before the swap: an index failure aborts the run with the committed
+# pins, catalog, and index all untouched.
+node "$SCRIPT_DIR/build-index.mjs" --manifest "$MANIFEST_TMP" --catalog "$CATALOG_TMP" --out "$INDEX_TMP" || {
+  echo "error: index build failed — refusing to swap pins" >&2
+  exit 1
+}
+
+# --- Swap: only now do we touch the real MANIFEST + catalog + INDEX. ---
+# The staged files first move into a sibling directory of the targets, so each
+# final `mv` is a same-filesystem rename ($WORK may live on another device,
+# where `mv` becomes a copy that can stop part-way). The previous three files
+# are copied beside them, and a rollback trap covers the renames: if any rename
+# fails, the previous manifest, catalog, and index go back, so the tree is
+# never left with a new manifest beside an old catalog or index.
+SWAP_DIR="$SCRIPT_DIR/.swap.$$"
+mkdir -p "$SWAP_DIR"
+trap 'rm -rf "$WORK" "$SWAP_DIR"' EXIT
+mv "$MANIFEST_TMP" "$SWAP_DIR/MANIFEST.json"
+mv "$CATALOG_TMP"  "$SWAP_DIR/catalog.json"
+mv "$INDEX_TMP"    "$SWAP_DIR/INDEX.md"
+cp -p "$MANIFEST" "$SWAP_DIR/MANIFEST.json.prev"
+cp -p "$CATALOG"  "$SWAP_DIR/catalog.json.prev"
+cp -p "$INDEX"    "$SWAP_DIR/INDEX.md.prev"
+
+swap_rollback() {
+  echo "error: swap failed — restoring the previous manifest, catalog, and index" >&2
+  local f
+  for f in MANIFEST.json catalog.json INDEX.md; do
+    if [ -f "$SWAP_DIR/$f.prev" ] && ! mv -f "$SWAP_DIR/$f.prev" "$SCRIPT_DIR/$f"; then
+      echo "error: could not restore $f; the previous copy is at $SWAP_DIR/$f.prev" >&2
+      return
+    fi
+  done
+  rm -rf "$WORK" "$SWAP_DIR"
+}
+trap 'swap_rollback' EXIT
+mv -f "$SWAP_DIR/MANIFEST.json" "$MANIFEST"
+mv -f "$SWAP_DIR/catalog.json"  "$CATALOG"
+mv -f "$SWAP_DIR/INDEX.md"      "$INDEX"
+trap 'rm -rf "$WORK" "$SWAP_DIR"' EXIT
+rm -rf "$SWAP_DIR"
 
 echo "Pinned ${TOTAL_SKILLS} skills across $(echo "$SOURCES" | jq length) sources — complete."
 
@@ -219,9 +263,5 @@ echo
 echo "Record these in ecosystem-skills/PIN-REVIEW.md (scripts/check-pin-review.mjs enforces them):"
 node "$SCRIPT_DIR/../scripts/check-pin-review.mjs" --digests | sed 's/^/  /'
 echo
-
-# Regenerate the themed index (fetches each pinned SKILL.md into the gitignored
-# working cache to read its frontmatter).
-node "$SCRIPT_DIR/build-index.mjs"
 
 echo "Done. Manifest: $MANIFEST (status: ${MIRROR_STATUS})"

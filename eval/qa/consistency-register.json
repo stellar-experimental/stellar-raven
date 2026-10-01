@@ -351,10 +351,10 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-17",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-09-17",
-          "reason": "September 17 routing audit: Re-read all 12 members. No changed member asserts a different per-project SCF total: q-defi-aquarius-what-is carries no SCF amount before or after the correction; q-defi-soroswap-what-is keeps its unchanged grounding note 'SCF $346,750', matching q-scf-history-soroswap ($57,600 + $139,150 + $100,000 + $50,000 = $346,750); q-eco-lobstr-wallet is not a member. q-defi-rwa-scf-similar's Awarded/budget/totalPaid distinction agrees with the new LOBSTR awarded-versus-paid rule. Every repeated figure in the cluster note is untouched. Verdict consistent. Evidence: research/audits/2026-09-17-routing-audit/register-review.md.",
+          "date": "2026-09-30",
+          "reason": "Review reconciliation (2026-09-30): q-defi-x402-on-stellar-what changed again only in judge-blind truth metadata (two evidence classes corrected: tftc.io to D, the SDF post to A; verified evidence lines). No answer, key fact, avoid, note, or SCF figure moved. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, OrbitCDP $280K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster.",
@@ -366,7 +366,7 @@
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
           "q-defi-rwa-scf-similar": "6188b68c9d4b7bd55ca639d82de7e5fa20a3cca24293f487b95ebfbb83031fc8",
           "q-defi-soroswap-what-is": "85a819dfd79c3c03706a91fb88b5c41eeaa69863c33ce4027ef4b26acbde5b58",
-          "q-defi-x402-on-stellar-what": "74b1a618eb34b80415b5c94ae086110b1a02d035e8de61b55c73c187ba50dbdf",
+          "q-defi-x402-on-stellar-what": "0516eedef2611b2a8e696633499722857d31d5dd4fe7507eaf48d54af90336a5",
           "q-eco-hana-wallet-scf": "e14915f7762da07e0fab8ca483c83cecc6fac4efa688bad7748521547ea3bb8d",
           "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
           "q-scf-history-soroswap": "f06b47f25de8eda43c207d88f6db3f466f321ac74427d5e46343a45056031a58",
@@ -508,18 +508,18 @@
           "q-token-initial-supply-distribution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-29",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-09-29",
-          "reason": "Independent review of all 15 members confirms the dated reserve, fee, sponsorship, cadence, and monetary-history claims remain consistent. The two edited case answers, key facts, and avoid rules are unchanged. Evidence: .agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): q-asset-trustline-basics and q-asset-amm-fee-reserve now date the 0.5 XLM base reserve and the 1.0 XLM pool-share figure as the current Mainnet setting; the base-reserve counts, the held-minimum distinction, the fee, and the invariant are unchanged. Re-derived today: Horizon Mainnet ledger 64703557 base_reserve_in_stroops 5000000; developers.stellar.org lumens page says 0.5 XLM currently, changeable by validator vote. Every other member is untouched. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
+          "q-asset-amm-fee-reserve": "dcddbdcbafc12c69979f6569921c137ac2a1d2b4ba1e584bd88536d3aaef301a",
           "q-asset-path-payment-ops": "d1858cdb20a6ad46a02b5a2fb508565055ca8bd6f82108e4aa540d9e8b1756f3",
           "q-asset-sdex-vs-amm": "22c2224b7e32ffd98a31efb52f060f51fc3375718005bee7f2e03900cee4cbec",
-          "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
+          "q-asset-trustline-basics": "5165cf10224c55c81981c3e87120a78308a9d29d34e07e2a7f6aaae91bffcf91",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-edge-noinfo-stellar-pos-staking-rewards": "5d62e5f09e0c19773e579e22d4e82867820a2423d464d03b2949ada7ad6eb3de",
           "q-hot-fee-pool-burn-deflation": "226c8fb4dfa00bed1c0267de78f256fe5dfbefcbc1b2df7b1235f4f76590de42",
@@ -1825,15 +1825,15 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "The CRDT entity and source-routing facts did not change. The narrowed Lumenloop caution does not change the person-versus-project boundary. The prior consistency verdict stands.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): q-builder-content-by-person changed only in notes and truth metadata (seven-post re-count; archived repository state). The person-lane claim and the entity-lane distinction are unchanged. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "cce42c00a37d04797236c5b9b93518df632848057f513c38070998476c3ac59e",
+          "q-builder-content-by-person": "11a80fae05575d6eddf7991e58ab61372a51d51b81e04ef7d84f1c4ee43de51f",
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
           "q-defi-ondo-usdy": "6b3f7e4fde78404d9df4a9b411845f4bf6ad2041e07c0e4ac8b7b7dc69a623f5",
           "q-defi-wisdomtree-crdt": "12bd370e7313e8fbc61b85d2a0d84c8a81c81ae2b08bfadaf26466783466433b"
@@ -2711,15 +2711,15 @@
           "q-protocol-base-reserve-min-balance"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-29",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-09-29",
-          "reason": "Independent review of all four members confirms the sponsorship formula, separate selling-liability boundary, zero-balance sponsored creation, and two-reserve pool-share rule remain consistent. Evidence: .agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): q-asset-amm-fee-reserve dates the 1.0 XLM figure and binds key fact 2 to the two-reserve count; no reserve or minimum-balance constant changed. Re-derived today: Horizon ledger 64703557 base reserve 5000000 stroops. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
+          "q-asset-amm-fee-reserve": "dcddbdcbafc12c69979f6569921c137ac2a1d2b4ba1e584bd88536d3aaef301a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-pc-sponsored-reserves": "38232c50533912b418354de288348de0680f89e1a857a7dc7d40805ba1ecc9fe",
           "q-protocol-base-reserve-min-balance": "64a42d2984ec8a377d65f456c3f3d2bf8c3e78b8e6efeeb0e5c24773f7431a34"
@@ -2755,15 +2755,15 @@
           "q-protocol-amm-cap-0038"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-30",
         "note": "Protocol 18/CAP-0038 native constant-product path-routing liquidity pools remain protocol ledger primitives, not Soroban contracts; target retained unchanged.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
+          "q-asset-amm-fee-reserve": "dcddbdcbafc12c69979f6569921c137ac2a1d2b4ba1e584bd88536d3aaef301a",
           "q-protocol-amm-cap-0038": "16e8a737e4385d99cdd253882d18e0d94c4ec300cd3d957e3ac05a1670acc478"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "PR 92 review fix (2026-08-29): byte-only canonical JSON re-serialization of q-protocol-operations-vs-transactions and q-protocol-amm-cap-0038 (Copilot indentation comments); parsed JSON identical to HEAD, no field changed; prior same-day verdict stands. Prior reason: Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-asset-amm-fee-reserve, q-protocol-amm-cap-0038 (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-amm-cap-0038 changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): q-asset-amm-fee-reserve changed only its dated reserve wording; the CAP-0038 protocol-primitive claim is untouched. The cluster note stands unchanged.",
           "verdict": "consistent"
         }
       },
@@ -2921,16 +2921,16 @@
           "q-raph-low-xlm-transfer-fail"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-29",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-09-29",
-          "reason": "Independent review of all six members confirms the currently observed 0.5 XLM reserve, 1 XLM empty unsponsored minimum, ordinary one-reserve trustline, two-reserve pool-share trustline, and conditional reserve release. Pre-existing undated sibling amounts remain freshness debt. Evidence: .agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): the two reserve cases now state the checked network setting with a date (Mainnet ledger 64703557, 2026-09-30T21:26:07Z, 0.5 XLM); this is the same setting the cluster note records. Counts unchanged. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "At the checked network setting, one base reserve is 0.5 XLM; an empty unsponsored account needs two reserves (1 XLM), ordinary subentries add one reserve, and a pool-share trustline adds two. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
-          "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
+          "q-asset-amm-fee-reserve": "dcddbdcbafc12c69979f6569921c137ac2a1d2b4ba1e584bd88536d3aaef301a",
+          "q-asset-trustline-basics": "5165cf10224c55c81981c3e87120a78308a9d29d34e07e2a7f6aaae91bffcf91",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-protocol-base-reserve-min-balance": "64a42d2984ec8a377d65f456c3f3d2bf8c3e78b8e6efeeb0e5c24773f7431a34",
@@ -2971,15 +2971,15 @@
           "q-x402-payment-verification"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-09-30",
+          "reason": "Review reconciliation (2026-09-30): q-defi-x402-on-stellar-what changed again only in judge-blind truth metadata (evidence classes and verified lines). No SEP, roster, facilitator, wallet, or sponsorship claim moved. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. The official roster lists Freighter Browser, Albedo, Hana, HOT, Klever, and OneKey and excludes Freighter Mobile, while Freighter owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry and Stellar Wallets Kit explicitly throws for Albedo. Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, and OneKey; Hana owner docs recommend Wallets Kit but do not establish that stronger claim.",
         "memberContentSha256": {
-          "q-defi-x402-on-stellar-what": "74b1a618eb34b80415b5c94ae086110b1a02d035e8de61b55c73c187ba50dbdf",
+          "q-defi-x402-on-stellar-what": "0516eedef2611b2a8e696633499722857d31d5dd4fe7507eaf48d54af90336a5",
           "q-hist-x402-stellar-announcement": "b868b75b82dbd044ba9684b5cdbe7b8abf1bbaf49649a0bd3c2386637b695cd1",
           "q-soroban-x402-auth-entry-signing": "784506578e5475e4dafa51fbf3702310452d44b1edcef416f079f80bd7decca6",
           "q-x402-payment-verification": "4603440ec97ff335e2ae6c258423997a14ada05190a5c8bd90260717c8e5056c"
@@ -3042,15 +3042,15 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): q-builder-content-by-person changed only in notes and truth metadata. The closed-world versus open-world rule and the Strupey and Justin Rice controls are unchanged. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "cce42c00a37d04797236c5b9b93518df632848057f513c38070998476c3ac59e",
+          "q-builder-content-by-person": "11a80fae05575d6eddf7991e58ab61372a51d51b81e04ef7d84f1c4ee43de51f",
           "q-builder-justin-rice-history": "666e25ec6c21713634ebec85fa3e3906be546df9a88c080820fa916ec74ad1dd",
           "q-edge-closed-world-builder-directory-miss": "7e55f4e9fc468ad7f3606a52121ca356d3955ae1b4e2dc46076e28bee5ec629e",
           "q-edge-lumenloop-person-entity-empty": "46b0c6f9b14c35a622553e95456108b6f27caf71b1784db61a8130ce669f637f",
@@ -3352,16 +3352,16 @@
           "q-raph-low-xlm-transfer-fail"
         ],
         "memberContentSha256": {
-          "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
+          "q-asset-trustline-basics": "5165cf10224c55c81981c3e87120a78308a9d29d34e07e2a7f6aaae91bffcf91",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-protocol-base-reserve-min-balance": "64a42d2984ec8a377d65f456c3f3d2bf8c3e78b8e6efeeb0e5c24773f7431a34",
           "q-raph-low-xlm-transfer-fail": "708796fcb7cd1fda916f09883339a601a693068beecb04c57baadb5aca99c275"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-09-29",
+        "lastChecked": "2026-09-30",
         "reSwept": {
-          "date": "2026-09-29",
-          "reason": "Independent 2026-09-29 review: re-read all four affected cases. The as-of verified 0.5 XLM base reserve, 1 XLM empty unsponsored minimum, sponsorship-aware formula, and two-reserve pool-share exception remain consistent. Mainnet ledger 63426130 returned 5000000 stroops per base reserve. The changed case removed only the expired canonical-page caution and refreshed source provenance; answer, key facts, avoid rules, asOf, and reverifyBy stayed unchanged. Pre-existing undated sibling amounts remain freshness debt. Evidence: .agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md.",
+          "date": "2026-09-30",
+          "reason": "Golden freshness pass (2026-09-30): q-asset-trustline-basics now dates the 0.5 XLM base reserve and the 1.0 XLM pool-share amount as the current Mainnet setting (Horizon ledger 64703557, 2026-09-30T21:26:07Z, base_reserve_in_stroops 5000000; the independent reviewer read ledger 64703824 at 21:48:22Z with the same value). The dated wording matches the authoritative value and the accepted spellings; the formula, the two-reserve pool-share exception, and the other three affected cases are unchanged. Evidence: .agents/rounds/2026-09-30-raven-next.md, PR D section.",
           "verdict": "consistent"
         }
       },

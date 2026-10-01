@@ -79,12 +79,14 @@ observable.
   directory — including SDKs/MCP servers/CLIs that aren't `SKILL.md` skills — so the map of "what
   exists" stays complete without dragging in non-skill artifacts. `build-index.mjs` reads this
   directory directly instead of storing a second projection in `MANIFEST.json`.
-- **Swap last.** `update.sh` stages the whole pin set in a temp tree and only moves
-  `MANIFEST.json` and `catalog.json` into place after every source resolved, every selection
-  validated, and the body diff printed. A failure before that point leaves the existing pins
-  untouched. The two moves are separate files, not one transaction, and `build-index.mjs` runs
-  after them: if the index rebuild fails, the new pins are in place and `INDEX.md` is stale, so
-  rerun `node build-index.mjs` before committing.
+- **Swap last.** `update.sh` stages the whole pin set in a temp tree — `MANIFEST.json`,
+  `catalog.json`, and the `INDEX.md` built from those staged files — and only moves the three
+  into place after every source resolved, every selection validated, the body diff printed, and
+  the index built. A failure before that point leaves the committed pins, catalog, and index
+  untouched. The swap itself is three same-directory renames guarded by a rollback trap: the
+  staged files are first moved beside their targets, the previous three files are kept next to
+  them, and a failed rename puts the previous files back. The swap is not one atomic
+  transaction, but it does not leave a new manifest beside an old catalog or index.
 - **Deterministic except timestamps.** Back-to-back runs against the same upstream produce
   byte-identical output **except the timestamp fields**: `MANIFEST.synced_at`,
   `catalog.fetched_at`, and their rendered copies in `INDEX.md`
@@ -100,12 +102,13 @@ node build-index.mjs           # just rebuild the index (e.g. after editing grou
 ```
 
 `update.sh` resolves a commit per source, walks its tree, records every file's path/size/blob
-hash, drops skills deleted upstream, rewrites `MANIFEST.json` + `catalog.json`, then runs
-`build-index.mjs`. Every step before the swap fails closed: a source it cannot resolve, a tree it
-cannot fetch, a truncated tree, a selected skill without `SKILL.md`, or a body diff it cannot print
-aborts the run before the swap, so a partial or mixed-age pin set is never written. The index
-rebuild runs after the swap (see "Swap last" above). After a re-pin, check the output for any **Uncategorized**
-skills and file them into `groups.json`, and **read the skill diffs** — skills are prompt input.
+hash, drops skills deleted upstream, builds the index from the staged files with
+`build-index.mjs --manifest … --catalog … --out …`, then swaps `MANIFEST.json`, `catalog.json`,
+and `INDEX.md` into place. Every step before the swap fails closed: a source it cannot resolve, a
+tree it cannot fetch, a truncated tree, a selected skill without `SKILL.md`, a body diff it cannot
+print, or an index it cannot build aborts the run before the swap, so a partial or mixed-age pin
+set is never written. After a re-pin, check the output for any **Uncategorized** skills and file
+them into `groups.json`, and **read the skill diffs** — skills are prompt input.
 
 Validate the pin set:
 

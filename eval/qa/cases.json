@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "fb54ff1e8202c1b4b40da344337efb6a09c9119ab5f7d6833357e9f9aa873e6d",
+  "corpusContentSha256": "6660138b1fde128646d390d80d99364848b0946b0f6a9e18320607c5e35c2bd4",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -2401,12 +2401,12 @@
         "answer": "A Stellar AMM liquidity pool charges a **fixed 30 basis points (0.30%)** fee per swap, and a\n**pool-share trustline requires 2 base reserves** (vs. 1 for a regular asset trustline) [1]. Pools\nenforce the **constant-product invariant `Asset A * Asset B = k`** — the protocol never lets the\nproduct of the reserves decrease — and the 0.30% fee accrues into the pool, growing `k` so it is\ndistributed to liquidity providers proportional to their shares [1]. Pool shares are not\ntransferable between accounts; they change only via deposit/withdraw.\n\nSource: [1] developers.stellar.org \"Liquidity on the Stellar DEX / Liquidity Pools\" page.",
         "keyFacts": [
           "States the AMM swap fee is 30 basis points (0.30%).",
-          "States a pool-share trustline consumes two base reserves (1.0 XLM)."
+          "States a pool-share trustline consumes two base reserves."
         ],
         "avoid": [
           "Do NOT state a wrong fee (0.03%, 0.25%, 1%) or a wrong reserve count (one base reserve)."
         ],
-        "notes": "Precise-number factual. Dossier §3.3. Verified on developers.stellar.org liquidity-pools page: fee = 30 bps (0.30%); pool-share trustline = 2 base reserves; constant-product invariant A*B=k.\nAlso good if the answer: Notes the pool enforces a constant-product (x*y=k) invariant and fees accrue to LPs.\nGolden cites: The Stellar liquidity-pools page on developers.stellar.org."
+        "notes": "Precise-number factual. Dossier §3.3. Verified on developers.stellar.org liquidity-pools page: fee = 30 bps (0.30%); pool-share trustline = 2 base reserves (1.0 XLM at the 0.5 XLM Mainnet base reserve as of 2026-09-30; the XLM figure is a network setting, the count is protocol); constant-product invariant A*B=k. Do not penalize an answer that gives the reserve in base-reserve units without an XLM figure, or that dates the XLM figure.\nAlso good if the answer: Notes the pool enforces a constant-product (x*y=k) invariant and fees accrue to LPs.\nGolden cites: The Stellar liquidity-pools page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -2428,16 +2428,18 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 5B numeric corroboration backfill",
+          "date": "2026-09-30",
+          "by": "raven-next round 2026-09-30 (golden-truth pass, PR D; lead Claude Fable 5.1, independent re-derivation recorded in .agents/rounds/2026-09-30-raven-next.md)",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
-            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+            "Live read 2026-09-30 of the liquidity-pools page: pool-share trustline requires 2 base reserves; fee 30 bps (0.30%).",
+            "Live read 2026-09-30T21:26:07Z of Horizon Mainnet ledger 64703557: base_reserve_in_stroops 5000000.",
+            "Change: key fact 2 now binds the two-reserve count only; the 1.0 XLM figure moved to the dated notes and answer; the fee and the invariant are unchanged.",
+            "Sibling sweep 2026-09-30: q-asset-trustline-basics updated in the same pass; cluster-017 members (q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-edge-1xlm-activation-fee, q-hot-fee-pool-burn-deflation) restate 0.5 XLM as the current base reserve; no contradiction.",
+            ".agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md found the undated amounts."
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Add dated reserve amounts to two sibling cases"
           ]
         },
         "origin": "raven-next q-asset-amm-fee-reserve",
@@ -2457,10 +2459,23 @@
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
                 "observedAt": "2026-07-11",
                 "note": "The fetched CAP-0038 source defines the liquidity-pool trustline ledger entry and reserve treatment."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+                "observedAt": "2026-09-30",
+                "note": "'A pool share trustline requires 2 base reserves instead of 1'; 'The fee rate on Stellar is 30 bps, which is equal to 0.30%'."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+                "observedAt": "2026-09-30",
+                "note": "Ledger 64703557 closed 2026-09-30T21:26:07Z: base_reserve_in_stroops 5000000 (0.5 XLM), so two base reserves are 1.0 XLM today."
               }
             ]
           }
-        ]
+        ],
+        "asOf": "2026-09-30"
       }
     },
     {
@@ -3282,7 +3297,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve (0.5 XLM)** — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves (1.0 XLM)**.\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
+        "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve** (0.5 XLM on Mainnet as of 2026-09-30; validators can vote to change it) — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves** (1.0 XLM at that setting).\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
         "keyFacts": [
           "Defines a trustline as an account's explicit opt-in to hold a non-native asset.",
           "Creates the trustline through ChangeTrust for a specific asset and issuer.",
@@ -3293,7 +3308,7 @@
           "Do NOT claim assets can be received without any trustline (like ERC-20 on Ethereum).",
           "Do NOT state the base reserve is a flat fee that is consumed/spent rather than a held minimum balance."
         ],
-        "notes": "Foundational. Dossier §1.2. Base reserve = 0.5 XLM; trustline = 1 base reserve; pool-share trustline = 2.\nAlso good if the answer: Each trustline reserves one base reserve (0.5 XLM). | Pool-share (AMM) trustlines cost two base reserves.\nGolden cites: A trustlines page on developers.stellar.org."
+        "notes": "Foundational. Dossier §1.2. Base reserve = 0.5 XLM on Mainnet as of 2026-09-30 (a network setting validators can change; Horizon ledger 64703557 base_reserve_in_stroops 5000000); trustline = 1 base reserve; pool-share trustline = 2. Do not penalize an answer that dates the XLM amount or gives it in base-reserve units.\nAlso good if the answer: Each trustline reserves one base reserve (0.5 XLM). | Pool-share (AMM) trustlines cost two base reserves.\nGolden cites: A trustlines page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -3320,21 +3335,18 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+          "date": "2026-09-30",
+          "by": "raven-next round 2026-09-30 (golden-truth pass, PR D; lead Claude Fable 5.1, independent re-derivation recorded in .agents/rounds/2026-09-30-raven-next.md)",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-establish-trustline-howto",
-            "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines",
-            "Structural re-form (long-fact): Split the trustline definition and shortened the reserve requirement; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page defines a trustline as an account's explicit opt-in to hold a particular asset.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page requires ChangeTrust with the issuing account for a specific asset.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/lumens — the page says each trustline subentry adds a base reserve to the account's XLM minimum balance.",
-            "Sibling sweep 2026-08-29: grep explicit opt-in|extra base reserve → q-asset-trustline-basics; no contradiction"
+            "Live read 2026-09-30 of https://developers.stellar.org/docs/learn/fundamentals/lumens: base reserve currently 0.5 XLM, changeable by validator vote; each trustline subentry adds one base reserve; a pool-share trustline counts as two.",
+            "Live read 2026-09-30T21:26:07Z of Horizon Mainnet ledger 64703557: base_reserve_in_stroops 5000000.",
+            "Change: the XLM amounts in the answer and notes are now dated and marked as a network setting; the base-reserve counts and the held-minimum distinction are unchanged.",
+            "Sibling sweep 2026-09-30: grep '0.5 XLM|base reserve' → 16 cases; q-asset-amm-fee-reserve updated in the same pass; q-edge-1xlm-activation-fee and the cluster-017 members already date or derive the amount; no contradiction.",
+            ".agents/rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md found the undated amounts."
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Add dated reserve amounts to two sibling cases"
           ]
         },
         "origin": "raven-next q-asset-trustline-basics",
@@ -3347,10 +3359,23 @@
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines",
                 "observedAt": "2026-07-11"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+                "observedAt": "2026-09-30",
+                "note": "'One base reserve is currently 0.5 XLM. Validators can vote to change the base reserve'; 'Every subentry after that requires an additional base reserve (currently 0.5 XLM)'; pool-share trustline 'counts as two'."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+                "observedAt": "2026-09-30",
+                "note": "Ledger 64703557 closed 2026-09-30T21:26:07Z: base_reserve_in_stroops 5000000 (0.5 XLM), protocol_version 28."
               }
             ]
           }
-        ]
+        ],
+        "asOf": "2026-09-30"
       }
     },
     {
@@ -4121,7 +4146,7 @@
           "Do NOT attribute semantic A/V results without exact-name and source validation.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAccurately quoting the canonical LumenLoop source on Tyler's empty exact-person lane or unverified semantic person matches is not a wrong claim while ll-005 and ll-017 stand; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAccurately quoting the canonical LumenLoop source on Tyler's empty exact-person lane or unverified semantic person matches is not a wrong claim while ll-005 and ll-017 stand; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source.\n2026-09-30 re-verification: the official author index still lists seven posts (2024-01-26 to 2024-06-13); the four event and meeting pages still resolve; kalepail/passkey-kit is archived and points to stellar/passkey-kit; stellar/launchtube is archived (last push 2026-01-14) and remains readable. The 2026-07-13 roster in the answer is a dated example; an answer observed later should report the archived state with its own date."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -4135,8 +4160,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-07",
+        "asOf": "2026-09-30",
+        "reverifyBy": "2027-01-07",
         "sources": [
           {
             "class": "A",
@@ -4207,39 +4232,40 @@
                 "ref": "https://github.com/stellar/passkey-kit",
                 "observedAt": "2026-08-05",
                 "note": "Current canonical continuation; the archived kalepail repository says full history and tags moved here."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+                "observedAt": "2026-09-30",
+                "note": "Seven author posts in the page's main article list (2024-01-26, 2024-02-08, 2024-02-22, 2024-03-07, 2024-03-21, 2024-04-18, 2024-06-13)."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/launchtube",
+                "observedAt": "2026-09-30",
+                "note": "GitHub API: archived true, last push 2026-01-14T03:09:51Z; still readable."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/kalepail/passkey-kit",
+                "observedAt": "2026-09-30",
+                "note": "GitHub API: archived true, last push 2026-07-31T17:18:57Z; README says development moved to stellar/passkey-kit."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+          "date": "2026-09-30",
+          "by": "raven-next round 2026-09-30 (golden-truth pass, PR D; lead Claude Fable 5.1, independent re-derivation recorded in .agents/rounds/2026-09-30-raven-next.md)",
           "evidence": [
-            "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; exact-person probes and official-source roster.",
-            "2026-07-13 recheck of https://developers.stellar.org/meetings/authors/kalepail, https://developers.stellar.org/meetings/2024/06/13, and https://github.com/kalepail/passkey-kit corrected the stale repository-status wording.",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611 — durable multi-model review and current-source reconciliation",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611 — scheduled the mutable person/content result set and corrected repository source class without changing the inherited as-of claim.",
-            "https://github.com/kalepail/passkey-kit — archived move page; the answer's explicit 2026-07-13 observation and corroboration evidence remain unchanged.",
-            "https://github.com/stellar/passkey-kit — current canonical continuation observed 2026-08-05.",
-            "solo://proj/49/todo/reconcile-bounded-tr--1355",
-            "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-005 and ll-017; the verified Tyler roster and retrieval limits are unchanged.",
-            "Improvements review 2026-08-27: improvements/lumenloop/ll-005-person-entity-empty-lane.md and improvements/lumenloop/ll-017-semantic-person-match-provenance.md remain reported upstream; the disputed claims are Tyler's empty exact-person lane and unverified semantic person matches.",
-            "Sibling sweep 2026-08-27: grep ll-005|ll-017|Tyler van der Hoeven → q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-org-mazieres-chief-scientist, q-builder-justin-rice-history; no contradiction",
-            "Structural re-form (long-fact): split the source-supported and observation-framing requirements into two short facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/meetings/authors/kalepail — the official exact-name author page supplies specific Tyler van der Hoeven content.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/meetings/2024/06/13 — the official dated meeting page confirms the content can be framed as a dated observation.",
-            "Sibling sweep 2026-08-29: grep Tyler van der Hoeven|person-lane|semantic matches → q-builder-content-by-person, q-builder-justin-rice-history, q-defi-rwa-scf-similar, q-eco-stellar-wallets-list, q-tool-indexer-repos-discovery; no contradiction."
+            "Live read 2026-09-30T21:31Z of https://developers.stellar.org/meetings/authors/kalepail: seven articles in the main list, dated 2024-01-26 through 2024-06-13; the sidebar lists every meeting and is not the author roster.",
+            "HTTP 200 on 2026-09-30 for https://developers.stellar.org/meetings/2024/06/13, https://stellar.org/events/community/practical-path-payments, https://stellar.org/community/events/turing-complete-contract-proposal-for-stellar, https://stellar.org/events/community/ama-with-sdfs-new-developer-advocates, and the three GitHub repositories.",
+            "GitHub API 2026-09-30: kalepail/passkey-kit archived (moved to stellar/passkey-kit); stellar/launchtube archived, last push 2026-01-14.",
+            "Change: no gospel change; notes record the archived repository state and the re-count; reverifyBy staggered to 2027-01-07.",
+            "Sibling sweep 2026-09-30: grep 'launchtube|passkey-kit' → q-passkey-wallet-recovery, q-soroban-add-signer-smart-wallet-howto, q-passkey-platform-constraints, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery; none asserts that either repository is active; no contradiction."
           ],
           "rootCause": [
-            "Route recipe was treated as truth and an empty data-shaped response was mistaken for absence.",
-            "improvements/lumenloop/ll-005-person-entity-empty-lane.md",
-            "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "truth-metadata maintenance",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-builder-content-by-person"
@@ -12967,7 +12993,7 @@
         "skills.stellar-dev.agentic-payments"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current source data named by the case, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nx402 is a general HTTP 402 payment protocol created by Coinbase Developer Platform and contributed to the Linux Foundation. On Stellar, the canonical scheme is **x402 v2 exact** on `stellar:testnet`/`stellar:pubnet`. The client builds a SEP-41 token `transfer(from,to,amount)` invocation, simulates it, and signs Soroban authorization entries; a classic asset participates through its SAC contract interface. USDC is the default, not the only token.\n\nThe resource server sets price and payee. A facilitator verifies structure, recipient, amount, authorization, expiration, and safety; settlement must reverify, rebuild with the facilitator source, sponsor fees, sign, and submit. The facilitator is not the seller and does not set the price. Current exact-v2 Stellar settlement is fee-sponsored. Coinbase-hosted Stellar support is documented testnet-only; OpenZeppelin documents testnet and mainnet hosted endpoints.\n\nx402 can remove a buyer's traditional API subscription/account prerequisite, but hosted facilitator setup can still require service credentials: unauthenticated OpenZeppelin `/supported` probes returned 401 on **2026-07-10**, and official docs describe key issuance. x402 is distinct from MPP Charge/Session. As of 2026-07-10 the x402 Foundation listed membership tiers and SDF as Premier, while the Linux Foundation page still said the Governing Board was not seated; call organizations members, not seated governors.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current source data named by the case, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nx402 is a general HTTP 402 payment protocol created by Coinbase Developer Platform and contributed to the Linux Foundation. On Stellar, the canonical scheme is **x402 v2 exact** on `stellar:testnet`/`stellar:pubnet`. The client builds a SEP-41 token `transfer(from,to,amount)` invocation, simulates it, and signs Soroban authorization entries; a classic asset participates through its SAC contract interface. USDC is the default, not the only token.\n\nThe resource server sets price and payee. A facilitator verifies structure, recipient, amount, authorization, expiration, and safety; settlement must reverify, rebuild with the facilitator source, sponsor fees, sign, and submit. The facilitator is not the seller and does not set the price. Current exact-v2 Stellar settlement is fee-sponsored. Coinbase-hosted Stellar support is documented testnet-only; OpenZeppelin documents testnet and mainnet hosted endpoints.\n\nx402 can remove a buyer's traditional API subscription/account prerequisite, but hosted facilitator setup can still require service credentials: unauthenticated OpenZeppelin `/supported` probes returned 401 on **2026-07-10**, and official docs describe key issuance. x402 is distinct from MPP Charge/Session. Governance is dated: on 2026-07-10 the x402 Foundation listed SDF as a Premier member while its Governing Board was not yet seated; on 2026-07-14 the Linux Foundation announced the Foundation's operational launch with SDF among 17 Premier members, and as of 2026-09-30 SDF states it holds a Governing Board seat. Name the observation date with any governance claim.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents source-supported content as a current or dated observation, not a memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -12981,7 +13007,7 @@
           "Do NOT conflate the seller/payee, facilitator, price setter, x402, and MPP roles.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "VERIFIED 2026-06-22 against developers.stellar.org/docs/build/agentic-payments/x402: Coinbase Developer Platform origin, HTTP 402 revival, Soroban authorization entries, any SEP-41 token with USDC default (distinct Testnet/Mainnet contract addresses), facilitator model with two options — Coinbase x402 facilitator (Testnet, sponsored fees) and OpenZeppelin Relayer plugin (Testnet+Mainnet, /verify //settle //supported endpoints). NOTE: the Phase-1 '~5 second settlement' figure is NOT stated in the docs — REMOVED from the gate; the facilitator claim now keys on the verify/settle model. MPP is documented on the SAME agentic-payments index page as a distinct sibling protocol (so the 'don't conflate x402 with MPP' trap stands). Freshness:true. 2026-06-29 RE-VERIFIED: both sources (developers.stellar.org/docs/build/agentic-payments/x402, stellar.org/x402) resolve 200; x402 Coinbase/HTTP-402 origin corroborated by independent writeups. No fabricated names. Confidence stays medium (fast-moving).\nAlso good if the answer: Enables APIs and AI agents to charge micro-payments per HTTP request without prior account setup.\nGolden cites: At least one primary developers.stellar.org agentic-payments / x402 docs page (or stellar.org/x402).\nGT-18 CORRECTION 2026-07-10 supersedes the inherited no-API-key trap. Grade role-qualified protocol mechanics, v2/SEP-41/SAC scope, fee sponsorship, hosted-service credentials, and dated governance status.\nAccurately quoting the canonical Stellar documentation on Coinbase's current x402 ownership attribution is not a wrong claim while sd-005 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "VERIFIED 2026-06-22 against developers.stellar.org/docs/build/agentic-payments/x402: Coinbase Developer Platform origin, HTTP 402 revival, Soroban authorization entries, any SEP-41 token with USDC default (distinct Testnet/Mainnet contract addresses), facilitator model with two options — Coinbase x402 facilitator (Testnet, sponsored fees) and OpenZeppelin Relayer plugin (Testnet+Mainnet, /verify //settle //supported endpoints). NOTE: the Phase-1 '~5 second settlement' figure is NOT stated in the docs — REMOVED from the gate; the facilitator claim now keys on the verify/settle model. MPP is documented on the SAME agentic-payments index page as a distinct sibling protocol (so the 'don't conflate x402 with MPP' trap stands). Freshness:true. 2026-06-29 RE-VERIFIED: both sources (developers.stellar.org/docs/build/agentic-payments/x402, stellar.org/x402) resolve 200; x402 Coinbase/HTTP-402 origin corroborated by independent writeups. No fabricated names. Confidence stays medium (fast-moving).\nAlso good if the answer: Enables APIs and AI agents to charge micro-payments per HTTP request without prior account setup.\nGolden cites: At least one primary developers.stellar.org agentic-payments / x402 docs page (or stellar.org/x402).\nGT-18 CORRECTION 2026-07-10 supersedes the inherited no-API-key trap. Grade role-qualified protocol mechanics, v2/SEP-41/SAC scope, fee sponsorship, hosted-service credentials, and dated governance status.\nAccurately quoting the canonical Stellar documentation on Coinbase's current x402 ownership attribution is not a wrong claim while sd-005 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\n2026-09-30 governance refresh: the Linux Foundation press release of 2026-07-14 announces the operational launch and lists SDF among the Premier members; stellar.org/x402 states SDF holds a Governing Board seat (represented by its CPO). An answer that says the board was unseated is correct only as a pre-2026-07-14 observation; an answer that says SDF holds a seat is correct as of 2026-09-30. Grade the dating, not one snapshot."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -12995,7 +13021,7 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-09-30",
         "sources": [
           {
             "class": "D",
@@ -13021,6 +13047,11 @@
             "class": "D",
             "ref": "https://x402.org/members",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.linuxfoundation.org/press/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications",
+            "note": "Operational launch press release, 2026-07-14; Premier member roster."
           }
         ],
         "corroboration": [
@@ -13071,35 +13102,60 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "SDF is a Premier member of the x402 Foundation and holds a Governing Board seat (as of 2026-09-30); the Foundation launched operationally on 2026-07-14.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.org/x402",
+                "observedAt": "2026-09-30",
+                "note": "Page (updated 2026-07-14): 'The Stellar Development Foundation is a Premier member of the x402 Foundation … As a Premier member, SDF holds a seat on the Foundation's Governing Board, represented by Tomer Weller, SDF's Chief Product Officer'."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.linuxfoundation.org/press/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications",
+                "observedAt": "2026-09-30",
+                "note": "Dated July 14, 2026: 'announced the operational launch of the x402 Foundation and the completed contribution of the x402 protocol by Coinbase'; 'Premier members include … Stellar Development Foundation …' (17 Premier members, 40 members total). The release does not itself use the words Governing Board."
+              },
+              {
+                "class": "D",
+                "ref": "https://x402.org/members",
+                "observedAt": "2026-09-30",
+                "note": "Premier tier benefits include 'Appointed seat on the Governing Board'."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.tftc.io/x402-foundation-operational-launch-ai-agent-payments",
+                "observedAt": "2026-09-30",
+                "note": "General-web report found through search (page text undated; it describes the Foundation as about three months operational): 'The foundation now has 17 premier members with governing board seats', listing Stellar Development Foundation."
+              },
+              {
+                "class": "A",
+                "ref": "https://x.com/StellarOrg/status/2077056655758664090",
+                "observedAt": "2026-09-30",
+                "note": "SDF's own post, 2026-07-14 15:44 UTC: 'SDF will hold a seat on the x402 Foundation Governing Board, with CPO @tomerweller'. Same witness as stellar.org/x402; not independent corroboration."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-09-30",
+          "by": "raven-next round 2026-09-30 (golden-truth pass, PR D; lead Claude Fable 5.1, independent re-derivation recorded in .agents/rounds/2026-09-30-raven-next.md)",
           "evidence": [
-            "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
-            "Sibling sweep: q-soroban-x402-auth-entry-signing, q-ti-openzeppelin-relayer, q-defi-agentic-payment-standards-compare",
-            "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Structural re-form (symmetric-caution): Added a claim-specific caution for Stellar Docs' x402 ownership attribution; the truth is unchanged.",
-            "Finding read 2026-08-27: improvements/stellar-docs/sd-005-agentic-payments-no-landscape-positioning.md — disputed the docs' stale current x402 ownership attribution to Coinbase.",
-            "Sibling sweep 2026-08-27: grep x402 Foundation|Coinbase Developer Platform|Linux Foundation → q-defi-agentic-payment-standards-compare, q-soroban-x402-auth-entry-signing, q-x402-payment-verification; no contradiction",
-            "Structural re-form (long-fact): shortened two facts while keeping the detailed authorization-entry and fee-sponsorship claims in the answer; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments/x402 — the current official page provides dated source support for x402's HTTP and Stellar mechanics.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments/x402 — the official page shows changeable v2, provider, network, and credential details that require an as-of date.",
-            "Live re-check 2026-08-29: https://github.com/x402-foundation/x402/blob/main/specs/schemes/exact/scheme_exact_stellar.md — the normative scheme confirms HTTP 402 context, Stellar exact v2, SEP-41 authorization entries, and facilitator-sponsored settlement.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments/x402 — the official page distinguishes protocol per-request payments from API keys required by the hosted OpenZeppelin facilitator.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments — the official index documents x402 and MPP as distinct payment protocols.",
-            "Sibling sweep 2026-08-29: grep HTTP 402|v2 exact|facilitator-sponsored|x402 from MPP → q-agent-payment-standard-choice, q-defi-x402-on-stellar-what, q-hist-x402-stellar-announcement, q-mpp-discovery-and-modes, q-soroban-x402-auth-entry-signing; no contradiction."
+            "Live read 2026-09-30 of https://stellar.org/x402 (SDF Premier member; Governing Board seat via its CPO).",
+            "Live read 2026-09-30T21:34Z of the Linux Foundation press release dated 2026-07-14 (operational launch; SDF among 17 Premier members; 40 members).",
+            "Live read 2026-09-30 of https://x402.org/members (Premier tier: appointed Governing Board seat).",
+            "Other reads: tftc.io article (class D, undated page; 17 premier members with governing board seats, incl. SDF); SDF's own X post of 2026-07-14 (class A, same witness as stellar.org/x402). Independent corroboration of the seat beyond SDF comes from x402.org/members (Premier tier: appointed Governing Board seat; SDF listed under Premier Members).",
+            "The protocol mechanics, v2 exact scope, SEP-41/SAC authorization, facilitator settlement, API-key qualification, and MPP distinction are unchanged from the 2026-08-29 verification; only the dated governance sentence moved.",
+            "Sibling sweep 2026-09-30: grep 'Governing Board|not seated|Premier member|x402 Foundation' → q-defi-agentic-payment-standards-compare (says governed through the x402 Foundation/Linux Foundation; consistent), q-hist-x402-stellar-announcement (announcement-time case; no governance claim); no contradiction.",
+            "research/audits/2026-09-14-golden-freshness-review.md Case 5 flagged this sibling freshness item.",
+            "Independent review 2026-09-30 (Grok 4.7): re-derived the Linux Foundation release (14 July 2026, 17 Premier members, 40 members, no 'Governing Board' wording), x402.org/members (SDF under Premier Members; Premier benefit 'Appointed seat on the Governing Board'), and stellar.org/x402; corrected the two evidence classes recorded here."
           ],
           "rootCause": [
-            "Protocol-level no-subscription UX was conflated with hosted facilitator service authentication.",
-            "improvements/stellar-docs/sd-005-agentic-payments-no-landscape-positioning.md",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "freshness-drift",
+            ".agents/TODO.md — Refresh the two sibling freshness items from the September 14 golden review"
           ]
         },
         "origin": "raven-next q-defi-x402-on-stellar-what"
@@ -18151,7 +18207,7 @@
         "scout.getBuilders"
       ],
       "golden": {
-        "answer": "`getBuilders` is a people-profile directory. An intentionally absent query returned `builders: []`, total 0, and advisory text saying this was a filter miss while the directory held 114 profiles. Broaden/drop filters or use its suggested channels; do not conclude there are no Stellar builders.",
+        "answer": "`getBuilders` is a people-profile directory. An intentionally absent query returned `builders: []`, total 0, and advisory text saying this was a filter miss and naming the directory size (114 profiles on 2026-07-11; 226 on 2026-09-30, a changeable count to date rather than memorize). Broaden/drop filters or use its suggested channels; do not conclude there are no Stellar builders.",
         "keyFacts": [
           "Treats builder search as a person-entity directory.",
           "Treats a zero-result filter miss and an unseeded or empty directory as different cases."
@@ -18159,7 +18215,7 @@
         "avoid": [
           "Do NOT use an empty builder filter result as evidence that the builder ecosystem is empty."
         ],
-        "notes": "N1 live contract probe 2026-07-11: Succeeded for an absent query with builders=[], total=0, and advisory explicitly describing a filter miss."
+        "notes": "N1 live contract probe 2026-07-11: Succeeded for an absent query with builders=[], total=0, and advisory explicitly describing a filter miss.\nLive re-probe 2026-09-30: the same absent-query contract held (builders=[], total=0, matchMode=expanded, advisory naming a filter miss); the directory count in the advisory is now 226. Grade the filter-miss reading, not a fixed profile count."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -18173,7 +18229,7 @@
         },
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-09-30",
         "sources": [
           {
             "class": "A",
@@ -18196,24 +18252,36 @@
                 "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
                 "observedAt": "2026-07-11",
                 "note": "Succeeded for an absent query with builders=[], total=0, and advisory explicitly describing a filter miss."
+              },
+              {
+                "class": "C",
+                "ref": "Raven connector execute scout.getBuilders({ q: \"zzzzqqq\", limit: 1 }) via https://raven.stellar.org/mcp",
+                "observedAt": "2026-09-30",
+                "note": "20:56Z: ok, builders=[], counts.total=0, matchMode=expanded, advisory: 'The directory has 226 builder profiles, but none match these filters — … This is a filter miss, not an empty or unseeded directory'."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/builders?q=zzzzqqq and https://stellarlight.xyz/api/status",
+                "observedAt": "2026-09-30",
+                "note": "21:26:08Z direct upstream read: total 0 with the same advisory text; /api/status builders count 226, lastUpdatedAt 2026-09-30T12:57:22.194Z. This is the same Stellar Light directory the Raven read reaches (one witness for the 226 count), so it confirms the contract shape, not an independent count."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-09-30",
+          "by": "raven-next round 2026-09-30 (golden-truth pass, PR D; lead Claude Fable 5.1, independent re-derivation recorded in .agents/rounds/2026-09-30-raven-next.md)",
           "evidence": [
-            "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
-            "catalog/manifest.json#scout.getBuilders",
-            "inventory/stellar-light.json",
-            "Structural re-form (negative-predicate): recast the filter-miss taxonomy as one positive atomic fact; zero-result, unseeded, and empty-directory meanings are unchanged.",
-            "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the current getBuilders contract still defines a people directory and scopes empty rows to its filter.",
-            "Sibling sweep 2026-08-27: grep getBuilders|filter miss|person directory|empty builder result → q-edge-closed-world-builder-directory-miss, q-gap-leaderboard-project-not-builder, and q-builder-content-by-person; no contradiction"
+            "Live re-probe 2026-09-30T20:56Z through the Raven connector: scout.getBuilders absent query returned ok with builders=[], total 0, matchMode expanded, and the filter-miss advisory naming 226 profiles.",
+            "Live re-probe 2026-09-30T21:26:08Z of https://stellarlight.xyz/api/builders?q=zzzzqqq and /api/status: same advisory, builders count 226 (populationId builders|status:all).",
+            "research/audits/2026-09-14-golden-freshness-review.md Case 6 recorded the interim 183 figure on 2026-09-14; the count is volatile and the answer now dates it.",
+            "Sibling sweep 2026-09-30: grep '114 profiles|183 builder|226 builder|builder profiles' → q-builder-by-region-latam (no fixed count asserted), q-gap-builders-person-empty; grep getBuilders|filter miss → q-edge-closed-world-builder-directory-miss, q-gap-leaderboard-project-not-builder, q-builder-content-by-person; no contradiction.",
+            "The filter-miss taxonomy (zero-result filter miss versus unseeded or empty directory) is unchanged; only the dated count moved.",
+            "Independent review 2026-09-30 (Grok 4.7): the direct stellarlight.xyz read is class C and the same witness as the Raven read; the 226 count therefore has one witness and is stated as a dated observation, not a corroborated fact."
           ],
           "rootCause": [
-            "solo://project/49/scratchpad/p4/n1-gapops",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift",
+            ".agents/TODO.md — Refresh the two sibling freshness items from the September 14 golden review"
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
