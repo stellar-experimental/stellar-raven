@@ -195,3 +195,18 @@ describe("tool descriptions — Claude Code 2KB clipped prefix", () => {
     }
   });
 });
+
+
+describe("source authority across description surfaces", () => {
+  it("deletes the contradictory clause without adding a replacement rule", () => {
+    const ending = "Skip it for single-step how-tos and debugging.";
+    expect(EXECUTE_DESCRIPTION.indexOf(ending)).toBeGreaterThan(2048);
+    expect(EXECUTE_DESCRIPTION).toContain(`${ending}\n- A few skills are RUNNABLE:`);
+    expect(EXECUTE_DESCRIPTION).not.toContain("Use Stellar Docs for protocol, standards, API, and implementation claims.");
+    expect(EXECUTE_DESCRIPTION).not.toContain("Start with Scout or Lumenloop for ecosystem facts.");
+    for (const text of [EXECUTE_DESCRIPTION, SEARCH_DESCRIPTION, SERVER_INSTRUCTIONS]) {
+      expect(text).not.toContain("purely factual questions use docs first");
+    }
+    expect(SERVER_INSTRUCTIONS).toContain("start Scout/Lumenloop even when docs mention the topic");
+  });
+});
