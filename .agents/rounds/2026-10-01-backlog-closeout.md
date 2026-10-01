@@ -107,28 +107,32 @@ release. Each branch gets an independent review by a model that did not author i
   behavior. The run exposed a Scout gap: a failed backend read under load returns HTTP 200 with a
   zero total. `sls-089` is filed as Stellar-Light/stellarlight#1751, and an own-repo TODO item
   covers the adapter mapping. Run stops along the way (CLI auto-update, a `.dev.vars` mismatch, a
-  fresh-shell environment hash) all happened before spend.
+  fresh-shell environment hash) each stopped before its next paid command; no stop cost a paid
+  call.
 - Decision A launch preparation (#206, #207): the supervisor pins the active corpus count in the
   plan (the battery has 501 active cases); the run sheet, operator scripts, and stability register
   are in this folder; the launch pins the immutable Claude executable. Reviews: GPT-6-Astra high,
   ACCEPT WITH FIXES, two delta rounds, final CONFIRMED; the pin follow-up ACCEPT.
 - Source-authority measurement (#209): the arms were re-frozen after the Gateway-transport
-  accounting repair (baseline `5ebffbac`, candidate `894f5fea`); no routing regression and no
+  accounting repair (review: GPT-6.1-Sol high, ACCEPT WITH FIXES, delta CONFIRMED; baseline
+  `5ebffbac`, candidate `894f5fea`); no routing regression and no
   verified answer regression; blind second reader BOUNDED PASS; `$3.23`.
 
 ## Outcome
 
 - Merged: #200 to #209. Upstream: stellar/stellar-docs#2889 (`sd-054`) and
-  Stellar-Light/stellarlight#1751 (`sls-089`) filed; stellar/stellar-protocol#2021 updated and
-  waiting for a maintainer re-approval.
+  Stellar-Light/stellarlight#1751 (`sls-089`) filed; stellar/stellar-protocol#2021 updated, blocked,
+  and waiting for a maintainer action.
 - Owner decisions resolved under delegation, each open to veto: C (#202, #204), D, G, H, and I
   (#201). K: not pinned (ADR-0010). A: ready for a weekend UTC run after the owner signs the plan
   hash (run sheet in this folder).
-- Paid spend this round: about `$33` (adapter `$29.30`, authority `$3.23`, plus one probe with an
-  unknown charge).
+- Paid spend this round: `$32.53` reported (adapter `$29.30`, authority `$3.23`), plus one failed
+  receipt probe with an unknown charge.
 - Retained evidence and its current consumers: `scf-review-*.md` (ADR-0010);
   `owner-adjudications.md` (TODO monitor, H items, prompt-conflict item);
   `golden-owner-judgments.md` and `golden-followups.md` (case provenance, `sd-054`);
-  `paired-*` files (TODO decision A); `sd-measure/` (`sls-089` evidence, release record);
-  `authority-*.md` (release record). This ledger stays open until decision A runs; prune the
-  folder then under `.agents/README.md` "Retention".
+  `paired-*` files (TODO decision A); `sd-measure/evidence/` and `sd-measure/review-result.md` (`sls-089`). The other
+  `sd-measure/` files and `authority-*.md` have no current consumer. They stay only while this
+  ledger is open. This ledger stays open until decision A runs; prune the
+  folder then under `.agents/README.md` "Retention". Keep `sd-measure/evidence/` while `sls-089` is open. The upstream issue
+  links to three of its files on `main`.
