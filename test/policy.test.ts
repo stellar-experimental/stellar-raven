@@ -133,22 +133,10 @@ describe("validateArgs — the manifest schema dialect", () => {
 describe("redaction", () => {
   const secrets = secretsFromEnv({ LUMENLOOP_API_KEY: "llmcp_secret_value_123", ALGOLIA_API_KEY_DOCS: "short" });
 
-  // The case below ("collects every current host secret env name") hardcodes
-  // the same five literals as SECRET_ENV_NAMES, so it is a MIRROR of the
-  // source, not a set-wise check: add a sixth secret binding and it — and every
-  // other test — still passes while that value flows to the sandbox unredacted
-  // in any upstream error body that echoes it. This case supplies the missing
-  // independent side: the real secret-name set the Worker is configured with.
-  it("redacts every secret-shaped binding the Worker actually has, not just a hardcoded five", () => {
-    const devVarsPath = join(dirname(fileURLToPath(import.meta.url)), "..", ".dev.vars");
-    let devVars: string;
-    try {
-      devVars = readFileSync(devVarsPath, "utf8");
-    } catch {
-      // Gitignored and generated (AGENTS.md); CI writes a stub before vitest.
-      // Skip rather than fail on a fresh clone — same posture as the gitleaks lane.
-      return;
-    }
+  it("collects every secret-shaped binding declared by the CI type-generation stub", () => {
+    const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
+    const stub = workflow.match(/\bprintf\s+'([^']+)'\s*>\s*\.dev\.vars\b/);
+    if (!stub) throw new Error("CI must declare a .dev.vars placeholder command for type generation");
 
     // Bindings that are deliberately NOT secrets: public identifiers that
     // appear in legitimate results, and a local-dev flag. Redacting these would
@@ -165,13 +153,12 @@ describe("redaction", () => {
       "MCP_ADMIN_TOKEN"
     ]);
 
-    const configured = devVars
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith("#"))
+    const configured = stub[1]!
+      .split("\\n")
+      .filter((line) => line.trim())
       .map((line) => line.split("=")[0]!.trim())
       .filter((name) => name && !NOT_SECRETS.has(name));
-    expect(configured.length, "no secret-shaped bindings parsed from .dev.vars").toBeGreaterThan(0);
+    expect(configured.length, "CI declares no secret-shaped bindings").toBeGreaterThan(0);
 
     // Every one of them must be collected by the redactor. A value long enough
     // to clear the min-length filter, unique per name so a miss is identifiable.

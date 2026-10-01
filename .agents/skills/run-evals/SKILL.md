@@ -443,14 +443,15 @@ lint. Charter: `improvements/README.md`. The round-specific bar:
 
 ## Step 7 — close the round
 
-Results JSONs are **local-only evidence** (`eval/**/results/`, gitignored). The committed
-record is the READMEs — update the relevant lane README's results section with the exact
-results-file stamp, the numbers table, and honest reading notes (report as-is; "nothing
-tuned, numbers as-is" is the house style; caveats belong in the record, not omitted).
+Results JSONs are **local-only evidence** (`eval/**/results/`, gitignored).
+Record result stamps, numbers, and interpretation limits in the round ledger.
+Place retained dated evidence in `research/audits/` or `eval/qa/reviewed/`.
+Link required evidence from the relevant lane guide.
+Apply the [retention rule](../../README.md#retention) when closing the round.
 
 Close-out checklist:
 - [ ] Gate verdict recorded (and `gates.json` re-baselined in-commit if legitimate)
-- [ ] Lane README(s) updated with stamped results + reading notes
+- [ ] Dated results recorded; lane guides link the evidence their current contracts need
 - [ ] Every failure triaged (step 5 table complete in the round ledger)
 - [ ] New/updated `improvements/` findings committed — a round with zero findings needs an
       explicit "nothing new surfaced, here's what was re-checked" note to be credible

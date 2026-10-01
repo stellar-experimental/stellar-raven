@@ -203,7 +203,7 @@ Each comment author is `kalepail`.
 Sol completed the bounded accepted-source experiment without changing scorer admission or scores.
 Its report is [`2026-09-09-search-124-implementation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-implementation-sol.md).
 Grok 4.6 high independently passed the implementation and both original leaderboard triggers.
-Its report is `2026-09-09-search-124-final-grok.md`.
+Its report is [`2026-09-09-search-124-final-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-final-grok.md).
 The reviewer differs from the author and orchestrator.
 Root independently reran the 145 focused tests successfully.
 Root confirmed the candidate catalog equals merged main after removing only the new `routingPhrases` fields.

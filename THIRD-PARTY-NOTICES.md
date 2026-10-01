@@ -1,25 +1,28 @@
 # Third-party notices
 
-This repository is licensed under [Apache-2.0](./LICENSE) (see `LICENSE`), **except** the
-third-party content noted below.
+This repository is licensed under [Apache-2.0](./LICENSE). The third-party content below keeps
+its own license.
 
 ## Ecosystem skills — served, not stored
 
-**Raven forwards skill content. It does not store it.** You can verify this from the repository:
+Raven forwards skill content. It does not store it. The repository shows this in three ways.
 
-**1. Nothing is stored.** Ecosystem skill bodies (`SKILL.md` playbooks and their companion files)
-are not committed to this repository and are not shipped inside the Worker bundle. What is
-committed is an address: `ecosystem-skills/MANIFEST.json` records, per source, the upstream
-repository and a full commit SHA, and per file a path and git blob hash; `catalog/manifest.json`
-additionally records a SHA-256 per file. Raven is never the source of record for this content and
-must not become one — durable mirrors of it (an R2 bucket, a committed copy, a bundled copy) are
-out of scope by decision, not by oversight.
+**1. The repository stores no skill body.** Ecosystem skill bodies are the `SKILL.md` playbooks
+and their companion files. They are not committed here, and the Worker bundle does not contain
+them. The repository commits an address for each file:
 
-**2. What exists while serving is transport, not a store.** A request causes the Worker to fetch
-the file from `raw.githubusercontent.com` at the pinned commit, verify it against both recorded
-digests, and return it. A colo edge cache, an in-isolate memo, and a gitignored build cache hold
-copies in flight so the same bytes are not refetched per request. They are caches on a forwarding
-path; upstream remains the source.
+- `ecosystem-skills/MANIFEST.json` records the upstream repository and a full commit SHA for each
+  source. It records a path and a git blob hash for each file.
+- `catalog/manifest.json` also records a SHA-256 for each file.
+
+Raven is never the source of record for this content. A durable mirror is out of scope by
+decision. This applies to an R2 bucket, a committed copy, and a bundled copy.
+
+**2. Caches are transport, not a store.** For a read, the Worker fetches the file from
+`raw.githubusercontent.com` at the pinned commit. It verifies the file against both recorded
+digests and returns it. Three caches hold copies in transit: a colo edge cache, an in-isolate
+memo, and a gitignored build cache. They prevent a new fetch of the same bytes for each request.
+Upstream remains the source.
 
 **3. Responses carry upstream content and provenance.** Whole-skill reads preserve upstream YAML
 frontmatter. Companion-file reads include any upstream YAML frontmatter. Heading-section reads
@@ -39,23 +42,25 @@ complete Markdown sections, rows, or list items that name excluded Scout operati
 | `stellar-light` | [Stellar-Light/stellar-scout](https://github.com/Stellar-Light/stellar-scout) | MIT |
 | `trustless-work` | [Trustless-Work/trustlesswork-skill](https://github.com/Trustless-Work/trustlesswork-skill) | Apache-2.0 (Trustless Work) |
 
-Each source's own `LICENSE`/`NOTICE` file names are recorded in `MANIFEST.json`
-(`license_files`) at the same pinned commit, as provenance that every upstream is licensed —
-those files are not fetched, copied, or served.
+`MANIFEST.json` records the names of each source's `LICENSE` and `NOTICE` files (`license_files`)
+at the same pinned commit. This record shows that every upstream source has a license. Raven does
+not fetch, copy, or serve those files.
 
-Two derived facts about a skill ARE committed, because routing needs them: the one-line
-`description` from a skill's YAML frontmatter (what `search` scores) and its `##` section headings
-(how `skill.read` addresses parts of a body). Section prose, body excerpts, and body-derived
-keyword bags are not committed — `test/skill-content-not-vendored.test.ts` is the standing guard
-on that line.
+The repository commits two derived facts about each skill, because routing needs them:
+
+- The one-line `description` from the skill's YAML frontmatter. `search` scores it.
+- The `##` section headings. `skill.read` uses them to address parts of a body.
+
+The repository does not commit section prose, body excerpts, or keyword lists derived from a
+body. `test/skill-content-not-vendored.test.ts` guards this rule.
 
 ## Vendored code: `src/catalog/vendor/`
 
-`normalize.ts`, `search-scoring.ts`, and `json-schema-types.ts` are vendored (with documented
-adaptations — see each file's header) from
-[`@cloudflare/codemode`](https://www.npmjs.com/package/@cloudflare/codemode) **v0.4.2** — the
-frozen snapshot the copies were taken from, not the version the Worker depends on (`package.json`
-pins that separately). It is distributed under the MIT license:
+`normalize.ts`, `search-scoring.ts`, and `json-schema-types.ts` are copies from
+[`@cloudflare/codemode`](https://www.npmjs.com/package/@cloudflare/codemode) **v0.4.2**. Each file
+header documents its adaptations. Version 0.4.2 is the snapshot that the copies came from. It is
+not the version that the Worker depends on; `package.json` pins that version separately. The
+package uses the MIT license:
 
 > MIT License Copyright (c) 2025 Cloudflare, Inc.
 >
@@ -86,11 +91,11 @@ The fonts are © IBM Corp. and are licensed under the
 
 - `ecosystem-skills/catalog.json` — a factual snapshot of the public
   [stellarlight.xyz/api/skills](https://stellarlight.xyz/api/skills) ecosystem directory.
-- `inventory/*.json` — interface metadata (operation names, descriptions, schemas) published by
-  the upstream services themselves for consumption; regenerated by
-  `scripts/refresh-inventory.mjs`. Partner-tier LumenLoop items are persisted as name-only stubs;
-  partner-tier detail is never committed to this repository.
-- `eval/corpus/` — project-authored corpora from this project's retired prior-art repositories,
-  including questions adapted from reviewed external collections. See
+- `inventory/*.json` — interface metadata that the upstream services publish for consumption:
+  operation names, descriptions, and schemas. `scripts/refresh-inventory.mjs` regenerates it.
+  Partner-tier LumenLoop items are name-only stubs. Partner-tier detail is never committed to this
+  repository.
+- `eval/corpus/` — project-authored corpora from this project's retired prior-art repositories.
+  They include questions adapted from reviewed external collections. See
   [`eval/corpus/PROVENANCE.md`](./eval/corpus/PROVENANCE.md).
 - `assets/repo/banner.png` — the README banner image.

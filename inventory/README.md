@@ -1,12 +1,13 @@
 # inventory/ — service inventory snapshots
 
-Machine-generated snapshots of the three third-party services used for catalog assembly and
-drift detection. `scripts/build-catalog.mjs` directly consumes the
-Lumenloop and Stellar Light snapshots plus the Stellar Docs title snapshot; the Algolia settings
-snapshot is drift evidence only. The builder's other semantic inputs are the authored
-`specs/stellar-docs.json`, the skills manifest and the upstream Markdown files it pins, and the
-runnable-skill registry. Catalog assembly also reads pinned skill bodies through the hash-verified cache.
-A cache miss fetches the pinned upstream file. See [the scripts guide](../scripts/README.md).
+This directory holds generated snapshots of the three upstream services. Catalog assembly and
+drift detection use them.
+
+`scripts/build-catalog.mjs` reads the Lumenloop and Stellar Light snapshots and the Stellar Docs
+title snapshot. The Algolia settings snapshot is drift evidence only. The builder also reads the
+authored `specs/stellar-docs.json`, the skills manifest, the pinned skill files, and the
+runnable-skill registry. It reads pinned skill files through the hash-verified cache, and a cache
+miss fetches the pinned upstream file. See [the scripts guide](../scripts/README.md).
 
 ## Refresh
 
@@ -14,12 +15,15 @@ A cache miss fetches the pinned upstream file. See [the scripts guide](../script
 node scripts/refresh-inventory.mjs
 ```
 
-Node 24 (`.nvmrc`), zero dependencies; reads `LUMENLOOP_API_KEY` plus the per-property Algolia pairs
-`ALGOLIA_{APPLICATION_ID,API_KEY}_{DOCS,SITE}` from `.env` at the repo root. The script is idempotent (a file is only
-rewritten when its content — ignoring `fetchedAt` — changed, so back-to-back runs produce
-zero diff) and deterministic (keys sorted recursively, tool/skill arrays sorted by name),
-so any diff is a real upstream contract change. It refuses to write any output containing
-a `.env` value (Algolia hostnames are written with an `{ALGOLIA_APPLICATION_ID_DOCS}` / `{ALGOLIA_APPLICATION_ID_SITE}` placeholder).
+The script needs Node 24 (`.nvmrc`) and no dependencies. It reads `LUMENLOOP_API_KEY` and the
+Algolia pairs `ALGOLIA_{APPLICATION_ID,API_KEY}_{DOCS,SITE}` from `.env` at the repository root.
+
+- **Idempotent.** The script rewrites a file only when its content changes. It ignores
+  `fetchedAt` in that comparison, so two runs in a row produce no diff.
+- **Deterministic.** It sorts keys recursively and sorts tool and skill arrays by name. A diff is
+  therefore a real upstream contract change.
+- **No secrets in output.** It refuses to write an output that contains a `.env` value. Algolia
+  hostnames use the placeholders `{ALGOLIA_APPLICATION_ID_DOCS}` and `{ALGOLIA_APPLICATION_ID_SITE}`.
 
 ### Daily refresh in CI
 
@@ -33,8 +37,9 @@ On a fork, also set two repository variables:
 
 - `RAVEN_SERVICE_URL`: the base URL of your deployed Raven. The workflow reads its
   `/health/skills`. Without it, the refresh skips on a fork.
-- `REFRESH_ISSUE_ASSIGNEE`: the maintainer who gets drift issues. Without it, the repository owner
-  gets them.
+- `REFRESH_ISSUE_ASSIGNEE`: the maintainer who gets the drift issues and the `dependency-audit`
+  issue. Without it, the repository owner gets them.
+  [The operations guide](../docs/operations.md#scheduled-workflows) lists the workflows.
 
 ## Files
 
@@ -47,9 +52,10 @@ On a fork, also set two repository variables:
 
 ### `lumenloop.json` details
 
-- **Tools.** All 21 tool names: 18 guest and 3 partner. The refresh unions keyless `GET /v1/tools`
-  with the authored `LUMENLOOP_PARTNER_TOOLS` name list, because the list endpoint hides partner
-  tools even with a partner key. It checks the union count against `GET /v1/me` `tools.available`.
+- **Tools.** All 21 tool names: 18 guest and 3 partner. The list endpoint hides partner tools
+  even with a partner key. The refresh therefore joins keyless `GET /v1/tools` with the authored
+  `LUMENLOOP_PARTNER_TOOLS` name list. It checks the joined count against `GET /v1/me`
+  `tools.available`.
 - **Guest tools** carry full detail: description, `when_to_use`/`returns`, input and output JSON
   Schemas, and the invoke block.
 - **Partner tools** are name-only stubs (`partner_stub: true`). Partner-tier detail is never
@@ -64,9 +70,10 @@ On a fork, also set two repository variables:
 
 ## Generated — never hand-edited
 
-Every file here is rebuilt by `scripts/refresh-inventory.mjs`; do not edit them directly
-([`AGENTS.md` “Commands and verification”](../AGENTS.md#commands-and-verification)). Stellar Docs
-operation definitions are not inventory content: edit the authored `specs/stellar-docs.json`
-instead. The `LUMENLOOP_PARTNER_TOOLS` name list is authored in
-`scripts/refresh-inventory.mjs`; edit it there and re-run the refresh. A count mismatch against
-`/v1/me` fails the run loudly.
+`scripts/refresh-inventory.mjs` rebuilds every file here. Do not edit them directly
+([`AGENTS.md` “Commands and verification”](../AGENTS.md#commands-and-verification)).
+
+- Stellar Docs operation definitions are not inventory content. Edit the authored
+  `specs/stellar-docs.json` instead.
+- `scripts/refresh-inventory.mjs` holds the authored `LUMENLOOP_PARTNER_TOOLS` name list. Edit
+  it there and run the refresh again. A count mismatch against `/v1/me` fails the run.

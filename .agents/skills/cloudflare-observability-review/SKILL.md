@@ -253,15 +253,16 @@ High-value fields:
 - The older `auth` app field is redacted to `*****` by Cloudflare and is not
   useful for grouping; the `/mcp` summary deliberately uses `accessMode`.
 - Browser auth-flow rejections: `evt = "auth_reject"` with `status` and
-  `reason`. Emitted from the single `text()` helper in `src/auth/workos.ts`,
-  so it covers every `/authorize` and `/callback` refusal. `reason` is the
-  constant response body — group by it, because the platform event alone is
-  the same `POST /authorize -> 400` line for a `CSRF token mismatch`, a
-  `Terms acknowledgement required`, and an `Invalid authorization request`.
-  `/callback` splits the same way into `Invalid or expired state`,
-  `Invalid login state`, and `State binding mismatch`. No identity fields: a
-  rejected flow has no attributed subject, and the rejected credential must
-  never be hashed. Token-exchange failures inside
+  `reason`. Group by both fields. `src/auth/workos.ts` owns the emitters.
+  Consent retries use `retryConsent()` with HTTP 303 and a constant reason,
+  such as `CSRF token mismatch` or `Terms acknowledgement required`.
+  Authorization errors with an allowed redirect use HTTP 303 and `error.code` as the reason.
+  Without an allowed redirect, `text()` returns HTTP 400.
+  Its reason uses `unredirectable:` followed by the error code, error class, or `unknown`.
+  Callback state failures use HTTP 400. Their reasons match their constant response bodies:
+  `Invalid or expired state`, `Invalid login state`, or `State binding mismatch`.
+  These events omit identity fields. Never hash rejected credentials.
+  Token-exchange failures inside
   `@cloudflare/workers-oauth-provider` (`/token`, `/register`) stay opaque —
   status and path only.
 - App JSON logs: `evt`, `queryChars`,
@@ -319,9 +320,11 @@ signals the error.
 - **`evidenceState` on a `demo-step` is per-step.** The final answering step
   makes no tool calls, so `evidenceState: "none"` there is structural and does
   NOT mean the turn lacked evidence — earlier steps hold it.
-- **`sourceBasis` (and its `canonicalUrlCount`) exists only on truncated
-  execute results.** It is computed from the full pre-truncation value, so a
-  zero count can never demonstrate that truncation dropped something.
+- **`sourceBasis` exists when the result is truncated or an operation provides allowed source metadata.**
+  Use `demo-execute.resultTruncated` to identify truncation.
+  Untruncated results with source metadata have no stored result artifact.
+  `canonicalUrlCount` comes from the full redacted result before truncation.
+  A zero count cannot show that truncation removed a URL.
 - **A single wide-window `view: "events"` query returns a tiny, unrepresentative
   slice — it is NOT "all the matching events under `limit`."** On one filter
   (`cf-worker-event`, `path = /authorize`, `limit: 500`), a flat 7-day query

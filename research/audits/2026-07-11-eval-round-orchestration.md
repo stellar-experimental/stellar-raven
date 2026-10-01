@@ -1,7 +1,7 @@
 # 2026-07-11 tier-interleave eval round — orchestration trail and re-judge evidence
 
 Dated evidence companion to the committed round record
-[`eval/qa/reviewed/2026-07-11-tier-interleave-round.md`](../../eval/qa/reviewed/2026-07-11-tier-interleave-round.md)
+[`eval/qa/reviewed/2026-07-11-tier-interleave-round.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/qa/reviewed/2026-07-11-tier-interleave-round.md)
 (commit `917371b`). Preserves two things that otherwise lived only in Solo scratchpads
 (`solo://proj/49/scratchpad/e2e-eval-round-2026--593` plan+review, `…--594` working record,
 both archived after this file landed): the **13 identical-input re-judge dispositions** —

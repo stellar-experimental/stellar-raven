@@ -53,8 +53,10 @@ refresh workflow, so a date passing fires within 24 hours. This skill owns that 
 
 - **Triage on fire.** When the stale gate fails, dispatch each past-due case through the
   `golden-truth` lane: re-verify (update `truth.verified` + `truth.asOf` + a new
-  `reverifyBy`) or record an explicit dated extension with rootCause. Never silently bump a
-  date — the gospel-change lint audits either remedy.
+  `reverifyBy`) or record an explicit dated extension with rootCause.
+  Reviewers must check the evidence for either action.
+  The gospel-change lint checks changes to questions, golden content, freshness tags, and trap tags.
+  It does not require new evidence when only `truth.reverifyBy` changes.
 - **Drip policy.** `reverifyBy` dates are set by the verifying author, quarter-granular and
   staggered across cases, so re-verification arrives as a steady drip instead of a cliff.
   When a round re-verifies many cases at once, spread the new dates; a wall of identical

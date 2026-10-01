@@ -287,7 +287,7 @@ Acceptance checks:
 8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
    simulation, and balance questions do not capture it.
 9. The leaderboard and RFP improvements remain.
-10. The full legacy, extended, skills, and holdout gates do not regress.
+10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no regression.
 11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
 
 Done when: all eleven acceptance checks pass in a reviewed general scoring change. The

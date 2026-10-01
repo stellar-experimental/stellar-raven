@@ -39,7 +39,9 @@ For help, use the `#raven` channel in the
 2. Create `.dev.vars` with the variable names in the `.dev.vars` step of
    [`ci.yml`](./.github/workflows/ci.yml). Set `DEV_ALLOW_UNAUTHENTICATED=true` to skip OAuth.
    This bypass works only for the loopback hosts `localhost`, `127.0.0.1`, `::1`, and `[::1]`.
-   A Lumenloop call needs a real `LUMENLOOP_API_KEY`; without it, the call returns an error.
+   A Lumenloop call needs a real `LUMENLOOP_API_KEY`. A Stellar Docs call needs real
+   `ALGOLIA_APPLICATION_ID_DOCS` and `ALGOLIA_API_KEY_DOCS` values. Without them, the call returns
+   an error. A Stellar Light/Scout call needs no key.
 3. Run `npm run typegen`. It generates `env.d.ts` from `wrangler.jsonc` and the names in
    `.dev.vars`.
 4. Run `npm run dev` and connect a client to `http://localhost:8787/mcp`. Restart the server after
