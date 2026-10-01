@@ -76,14 +76,45 @@ a cherry-picked source with no exclusions and one new upstream sibling.
 
 ## Golden truth
 
-### Reconcile Soroswap API and contract scope in sibling grader notes
+### Refresh the SCF current-round goldens after the #45 phase change
 
-The September 17 golden audit found ambiguous SDEX routing notes in `q-eco-dex-saturation` and
-`q-defi-soroswap-vs-stellarx`. Soroswap API quotes can include SDEX, while its deployed aggregator
-lists three AMM adapters. Do not treat those surfaces as identical. Use the `golden-truth` workflow.
+Found on 2026-10-01 during the owner-judgment lane
+([ledger](rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md)).
+`https://communityfund.stellar.org/awards`
+and `https://stellarlight.xyz/api/rfps?status=open` both show SCF #45 in Notification & Award
+Distribution. `q-scf-current-round` and `q-edge-fresh-latest-scf-round` still place #45 in Panel
+Review as of 2026-09-03. The SCF date-contingent trap in `eval/qa/consistency-register.json` is in
+`reopen` state for this reason. Use the `golden-truth` workflow.
 
-Done when: independently verified notes preserve this distinction, and the corpus and sibling
-checks pass.
+Done when: both cases report the phase that the official page shows then, and a register review
+closes the trap.
+
+### Re-verify the MetaMask Bridge statements in `q-defi-bridge-evm-to-stellar-axelar`
+
+Found on 2026-10-01 in the same lane. MetaMask's support page
+`https://support.metamask.io/configure/networks/stellar/` describes swaps from another chain into
+Stellar. In `MetaMask/core@418b73c1` `packages/bridge-controller/src/constants/bridge.ts`,
+`ALLOWED_BRIDGE_CHAIN_IDS` includes `XlmScope.Pubnet`. The default bridge ranking omits Stellar
+when remote configuration is unavailable. Actual client and route availability remain unverified.
+The case says its audit did not verify MetaMask Bridge as the Stellar route, and its avoid item
+bars that claim. The case needs a dated route review. Do not label the feature disputed from the
+fallback comment alone. `cluster-037` is in `reopen` state for this review. Use the `golden-truth`
+workflow.
+
+Done when: the case encodes the route state that dated evidence supports, and a register review
+closes `cluster-037`.
+
+### Remove superseded legacy lines from the compliance grader notes
+
+Found on 2026-10-01 in the same lane. `q-pay-anchor-msb-licensing`,
+`q-pay-travel-rule-aid-flows`, and `q-comp-finclusive-caas` each keep a legacy grounding line above
+a dated CORRECTION line that overrides it. Examples: "anchors are regulated financial
+institutions", "the originating org / licensed anchor holds Travel Rule/KYC", and a partner list
+that avoid item 4 forbids. The goldens stay strict, so the notes must not give the judge the
+opposite instruction. Use the `golden-truth` workflow.
+
+Done when: each case's notes carry only instructions that agree with its answer, key facts, and
+avoid items.
 
 ## Improvements follow-up
 
@@ -102,6 +133,18 @@ status comment while the maintainers are working on the decision. History:
 
 Done when: each finding records the resulting live state, and any fixed finding completes the
 resolver gates.
+
+### Assess a Stellar Docs lead for the ledger cadence after Protocol 28
+
+Found on 2026-10-01 during the owner-judgment lane
+([ledger](rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md)). Mainnet has closed
+ledgers at a 5.0-second mean since Protocol 28 activated at ledger 64458446 on 2026-09-16. The
+Validators and Stellar Stack pages still say "every 5-7 seconds". The range contains the observed
+value, so this is a lead, not a filed finding. `q-protocol-ledger-close-time` accepts either figure
+when dated or attributed.
+
+Done when: an `improvements-pipeline` pass files a finding with a reproduced probe, or records why
+the wording needs no change.
 
 ### Re-check `sd-037` after stellar-protocol PR #2021 receives a maintainer decision
 
@@ -540,28 +583,3 @@ batches, the recalibrated simulator output, and the all-row review go to the rou
 `eval/qa/README.md` as a labeled paired diagnostic.
 
 Safe default: no spend.
-
-### C. Golden truth and product judgment blockers
-
-Evidence: `.agents/rounds/2026-09-03-truth-maintenance/golden-followup-fable.md`. No golden changes
-from these items without a `golden-truth` edit and independent review. Recheck each question against
-the current corpus first; the per-case truth metadata owns current dispute status.
-
-- `q-scf-rfp-tooling`: does "developer tooling or indexing infrastructure" bind by the RFP-track
-  definition or by each brief's Scout category?
-- `q-sor-persistent-unbounded-collection-cap`: does an attributed, dated 64 KiB docs figure trip
-  avoid item 2?
-- `q-protocol-ledger-close-time`: does key fact 1 keep the live multi-ledger sample requirement, or
-  accept a dated attributed Docs range? No exposed operation returns ledger close timestamps.
-- `q-ti-historical-pointintime-balances`: do trade-implied USD prices from Hubble trade rows count
-  as invented ledger-derived prices under avoid item 3?
-- Compliance cluster (`q-pay-anchor-msb-licensing`, `q-pay-travel-rule-aid-flows`,
-  `q-comp-finclusive-caas`, `q-crp-custodial-vs-noncustodial-wallets`,
-  `q-crp-become-an-anchor-licensing`): expand ADR-0008 beyond three cases with independent review,
-  or keep the goldens strict and route the gap to a coverage diagnostic?
-- `q-edge-metamask-evm-mental-model`: move the case from `stable` to `scheduled` with a re-verify
-  cadence? The answer carries a dated third-party Snap claim.
-- `q-defi-aquarius-what-is`: should key fact 3 bind on the tested surface? No exposed surface hosts
-  the Aquarius ICE documentation.
-
-Safe default: no golden change.
