@@ -75,20 +75,6 @@ infers the mode.
 Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers
 a cherry-picked source with no exclusions and one new upstream sibling.
 
-## Tooling
-
-### Add an executed browser test for the Playground page
-
-Found by the 2026-09-30 repository audit (test lane). Page tests match JavaScript source text, and
-core tests run extracted functions against hand-written elements. No checked-in test runs the
-complete page's event handlers in a browser.
-
-Done when: one offline browser integration test (for example `test/browser/playground.test.ts` with
-its own explicit config) stubs the chat stream and clipboard and checks submit, streamed completion,
-copy, and the length refusal. Only after it passes, remove the source-spelling assertions from
-`test/demo-page.test.ts`. Keep the CSP hash, emitted-reference, metadata, and truthful-example
-checks.
-
 ## Golden truth
 
 ### Reconcile Soroswap API and contract scope in sibling grader notes
