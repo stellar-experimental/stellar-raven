@@ -374,3 +374,17 @@ entries can be compared against them; no selection was reviewed or changed today
 - `stellar-light 3b587aa9f23d sel:e625f367b39c` (was `sel:339145ff9f53`)
 - `trustless-work 80e2467f3404 sel:b23fec8248ff` (was `sel:05e2eb56866c`)
 
+
+## 2026-10-01 — accepted risk: the Scout body's plugin install prompt
+
+No pin or selection moved. This entry records a bounded risk in the current `stellar-light`
+selection (`3b587aa9f23d`). The served Scout body sends SCF review, scoring, claim checks, and
+delivery checks to a separate plugin. It gives the install command
+`npx skills add Stellar-Light/awesome-stellar-community-fund`. The exposure scrub keeps that line,
+because it names no Raven operation or retired skill.
+
+Raven accepts the line as reference text for the reader's own environment. The Trustless Work
+install prompts above have the same class. Serving the line installs nothing and gives the sandbox
+no network access. Raven does not serve the plugin itself; see
+[ADR-0010](../research/decisions/0010-scf-community-fund-skills-stay-unpinned.md). Review this line
+again at the next `stellar-light` re-pin.

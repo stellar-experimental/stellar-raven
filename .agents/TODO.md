@@ -16,7 +16,6 @@ Open owner decisions are at the end of this file. Each one is listed once.
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
 2. Follow the upstream Docs and protocol pull requests for `sd-027`, `sd-034`, and `sd-037`.
-3. Complete the private usage checks ("Usage archive follow-up" below).
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -151,29 +150,6 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 (`git fetch origin pull/102/head`).
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
-
-### Recheck three dated upstream leads from the GT-41 and GT-43 audits
-
-Found in dated golden-truth audits on 2026-07-10 and 2026-07-11. These are leads, not confirmed
-current defects. None is verified or filed, and none fits the current `improvements/` service map.
-
-- Recheck the GT-41 scaffold dependency failure with current supported versions. The report
-  observed `ed25519-dalek` 3.0 resolving under `soroban-sdk` 26.1 and 27.0. Incompatible random
-  traits then broke `cargo test`; pinning 2.2.0 made the SDK-27 test pass. Reproduce before filing
-  against `stellar/rs-soroban-env`, or close the lead with evidence.
-  [Dated GT-41 evidence](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-10-gt41-soroban-empirical-findings.md).
-- Recheck the GT-41 CLI template version decision with the `stellar/stellar-cli` owner. The report
-  observed CLI 27.0.0 generating a `soroban-sdk = "26"` template. Confirm whether protocol-support
-  policy explains the difference before treating it as a defect.
-  [Dated GT-41 evidence](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-10-gt41-soroban-empirical-findings.md).
-- Recheck the GT-43 CAP-0075 selector and protocol-floor discrepancy with the protocol-spec owner.
-  The report contrasts U32Val/P24 text with v25+ Symbol selectors and a P25 feature floor. Verify
-  current specification and implementation evidence before filing or closing the lead. This
-  candidate differs from `sd-048`, which concerns S-box degrees.
-  [Dated GT-43 evidence](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-11-gt43-sac-sep41-bn254.md).
-
-Done when: each lead is reproduced against current sources and filed through `improvements-pipeline`,
-or closed with recorded evidence.
 
 ## Routing
 
@@ -524,17 +500,6 @@ item, but do not count them until condition 3 holds. No trigger authorizes imple
 Done when: the full section 8 trigger fires and the owner approves a phase-zero study, or the owner
 retires the program.
 
-## Usage archive follow-up
-
-### Verify scheduled collection and cleanup
-
-The usage collector shipped on 2026-09-11. After its release, verify the next scheduled canary and
-the daily retention cleanup in private storage. The hourly usage-health workflow detects stale
-canaries and possible collection gaps. Keep production counts and request identifiers out of this
-public task queue.
-
-Done when: private operational checks confirm the scheduled canary and cleanup succeeded.
-
 ## Owner decisions
 
 Each decision names the question, the evidence it needs, and the safe default. Record each answer
@@ -600,28 +565,3 @@ the current corpus first; the per-case truth metadata owns current dispute statu
   the Aquarius ICE documentation.
 
 Safe default: no golden change.
-
-### K. Decide exposure for the Stellar Light SCF skills
-
-Question: pin some, all, or none of the twelve `scf-*` skills from
-`Stellar-Light/awesome-stellar-community-fund` (MIT; the copyright line names LumenLoop). They are
-in the directory snapshot in `ecosystem-skills/catalog.json`, but no pin decision exists. SCF work
-is a main Raven use case. Overlap to resolve: the exposed `skills.lumenloop.scf-submission-radar`
-and `skills.stellar-light.stellar-scout` already cover SCF positioning and pitch drafting. The
-repository uses the standard `skills/` layout, so pinning needs no `update.sh` code change.
-
-Evidence: the body read in `.agents/rounds/2026-09-30-raven-next/scf-skill-bodies-astra.md`
-(upstream HEAD `b9a1509f`), judged against the admission bar in `ecosystem-skills/README.md`
-"Adding a source". Verdicts: eleven `fit` as reference content, and one `no fit`
-(`scf-round-reviewer`, which depends on an absent `CLAUDE.md`, local CSV files, and external skill
-packages). Caveats the decision must weigh:
-
-- Four bodies link to root `docs/` files, and the submission drafter requires the root template.
-  The standard `skills/` selector does not pin either.
-- `scf-live-context` identifies the round from an open RFP row. That conflicts with the pinned
-  Scout body and the current `scout.getRfps` schema, a content defect to resolve before admission.
-- `scf-fetch-external-doc` and the referral, tranche, and round bodies carry credential, sharing,
-  or install prompts that admission must record.
-- The fetch skill's frontmatter name is `fetch-external-doc`.
-
-Safe default: not pinned, with this decision recorded.
