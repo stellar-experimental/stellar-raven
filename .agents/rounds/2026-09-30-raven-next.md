@@ -213,10 +213,10 @@ and `pH` are closed; the four merged worktrees are removed.
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
 | lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | this ledger, PRs A to D and the receipt PR | done |
-| review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | `review-a-sol.md`, `verify-a-sol.md`, `final-a-sol.md`, `final2-a-sol.md` in this round directory | accept (final, after three fix passes) |
-| review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | `review-b-astra.md`, `verify-b-astra.md`, `final-b-astra.md` in this round directory | accept (final) |
-| review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | `review-c-grok.md`, `verify-c-grok.md` in this round directory | accept with fixes; fix confirmed |
-| review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | `review-d-grok.md`, `verify-d-grok.md`, `final-d-grok.md` in this round directory | accept with fixes; final `confirmed` at `ebf6683d` |
+| review A | `rev-sol-a` (GPT-6.1-Sol, high) | `w3W:pC` | [`review-a-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/review-a-sol.md), [`verify-a-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/verify-a-sol.md), [`final-a-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/final-a-sol.md), [`final2-a-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/final2-a-sol.md) in this round directory | accept (final, after three fix passes) |
+| review B | `rev-astra-b` (GPT-6-Astra, high) | `w3W:pD` | [`review-b-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/review-b-astra.md), [`verify-b-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/verify-b-astra.md), [`final-b-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/final-b-astra.md) in this round directory | accept (final) |
+| review C | `rev-grok-c` (Grok 4.7, high) | `w3W:pG` | [`review-c-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/review-c-grok.md), [`verify-c-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/verify-c-grok.md) in this round directory | accept with fixes; fix confirmed |
+| review D | `rev-grok-c` (Grok 4.7, high), reused pane | `w3W:pG` | [`review-d-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/review-d-grok.md), [`verify-d-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/verify-d-grok.md), [`final-d-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/final-d-grok.md) in this round directory | accept with fixes; final `confirmed` at `ebf6683d` |
 | research (item 7) | `res-astra-scf` (GPT-6-Astra, high) | `w3W:pH` | `scf-skill-bodies-astra.md` in this round directory | done |
 
 Panes `w3W:pC`, `w3W:pD`, `w3W:pG`, and `w3W:pH` were split from `w3W:p2` and belong to this lead.
@@ -359,7 +359,7 @@ was collected between 20:56Z and 21:34Z on 2026-09-30.
 - `npm run eval:qa:lint -- --since origin/main --stale` → 0 errors, 62 warnings (the `main` baseline;
   a transient key-fact length and snapshot-date warning was removed by binding the count only).
 - `npm run eval:qa:register` reopened clusters 012, 017, 073, 114, 116, 123, 125, and 128;
-  `register-review-d.json` re-swept each with a reason; `--check` → up to date.
+  [`register-review-d.json`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/register-review-d.json) re-swept each with a reason; `--check` → up to date.
 - `npm run eval:plan -- eval/qa/results/2026-08-30T03-43-11-variantA.json` → byte-identical output on
   the branch and on `main`.
 - Re-judge check: the saved run has one row among the five (`q-gap-builders-person-empty`,
@@ -377,10 +377,10 @@ was collected between 20:56Z and 21:34Z on 2026-09-30.
 | The direct stellarlight.xyz read was labelled class D; it is class C and the same witness as the Raven read | fixed: relabelled; the 226 count is recorded as a one-witness dated observation |
 | tftc.io and the SDF X post were labelled class E; the tftc.io page is undated | fixed: tftc.io is class D with no date; the SDF post is class A and marked as the same witness as stellar.org/x402; the independent seat corroboration is x402.org/members |
 | The `base reserve` numeric invariant was still `reopen` | fixed: re-swept directly, see above |
-| Verification on `11a26ac4` found the register check failing (the class edit reopened 012 and 125 again) and the matrix rows still naming the old classes | fixed in `dedd55b3` (`register-review-d2.json`) and here (matrix rows); the intermediate commit shipped because a piped `--check` masked its exit code |
+| Verification on `11a26ac4` found the register check failing (the class edit reopened 012 and 125 again) and the matrix rows still naming the old classes | fixed in `dedd55b3` ([`register-review-d2.json`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/register-review-d2.json)) and here (matrix rows); the intermediate commit shipped because a piped `--check` masked its exit code |
 
 The class corrections changed the x402 case content again, so the register reopened clusters 012
-and 125 a second time; `register-review-d2.json` re-swept both (metadata-only change).
+and 125 a second time; [`register-review-d2.json`](https://github.com/stellar-experimental/stellar-raven/blob/e1307b457311ebf13dd47e846814d45f87d68fea/.agents/rounds/2026-09-30-raven-next/register-review-d2.json) re-swept both (metadata-only change).
 
 The reviewer re-derived every matrix row live (Horizon ledger 64703824 at 21:48:22Z, the author
 page's seven articles, the GitHub archive flags, the Linux Foundation release, x402.org/members)

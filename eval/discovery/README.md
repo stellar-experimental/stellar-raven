@@ -69,68 +69,14 @@ The summary groups counts by seed pool.
 The classifier never combines hits across repeated agent runs to claim recovery.
 The discovery measures do not establish final-answer correctness. Use [QA](../qa/README.md) for that measure.
 
-## Replay smoke record — 2026-07-10
+## Changes to discovery
 
-Standalone replay smoke evidence against the existing Solo `dev` process:
-`2026-07-10T04-31-51-308Z-todo-902-smoke.json` (91/91 calls completed; family top-1
-20/91, family top-5 37/91, usable operation top-5 28/91). The result is local/gitignored by
-policy; its exact stamp and aggregate are retained here.
-
-## Phase 0 Baseline
-
-Baseline **re-stamped 2026-07-09 after pr17 fold** (Pool C re-seeded against the real
-`agentic-2026-07-04-drift.json` results file during the earlier independent ground-truth
-adjudication; see `lumenloop-agentic-misses` above). The pre-adjudication table reported the
-overall lane at 32/40 (80.0%) familyHit@3 and 25/40 (62.5%) usableOp@5 — those numbers were
-inflated by Pool C accepting Scout as a family, which masked the LumenLoop one-shot-discovery gap.
-Post-PR-17-fold numbers, run against the Solo `dev-wt` server at `http://localhost:8788`:
-
-| pool | n | familyHit@3 | usableOp@5 |
-| --- | ---: | ---: | ---: |
-| extended-strict-misses | 12 | 6/12 (50.0%) | 4/12 (33.3%) |
-| issue-9-exemplars | 10 | 10/10 (100.0%) | 7/10 (70.0%) |
-| lumenloop-agentic-misses | 8 | 3/8 (37.5%) | 2/8 (25.0%) |
-| pr17-fold | 3 | 3/3 (100.0%) | 3/3 (100.0%) |
-| round-844-real-user | 10 | 10/10 (100.0%) | 9/10 (90.0%) |
-| overall | 43 | 32/43 (74.4%) | 25/43 (58.1%) |
-
-The PR #17 fold added only the `pr17-fold` pool; extended/issue-9/round-844 numbers are
-byte-identical to the pre-adjudication run, and Pool C remains at its adjudicated baseline.
-
-### July 9 artifact availability
-
-No `eval/discovery/results/` JSON or exact result-file stamp survives for this July 9 baseline.
-A free in-memory replay on 2026-07-09 from 22:04:36.356Z through 22:04:37.631Z reproduced all
-43 rows and the table exactly (32 family hits, 25 usable operations; pool counts 6/4, 10/7,
-3/2, 3/3, 10/9), but that replay was not persisted. Those timestamps are an execution window,
-not an invented artifact stamp. The table above is therefore the committed historical record;
-the missing raw JSON is explicitly unavailable, and the next run must write a new honest stamp.
-
-## July 10 paired extension baseline
-
-The next run wrote the missing raw evidence and reproduced the historical one-shot table exactly:
-`2026-07-10T03-57-12-740Z.json` = 32/43 family@3 and 25/43 usable-op@5. The paired
-`2026-07-10T04-06-53-881Z-discovery-current-agent.json` agent run reached 40/43 family@3,
-36/43 usable-op@5, and selected an expected primary family on 36/43. Pool results:
-
-| pool | n | agent familyHit@3 | agent usableOp@5 | expected primary |
-| --- | ---: | ---: | ---: | ---: |
-| extended-strict-misses | 12 | 12/12 | 12/12 | 12/12 |
-| issue-9-exemplars | 10 | 10/10 | 9/10 | 10/10 |
-| lumenloop-agentic-misses | 8 | 5/8 | 4/8 | 3/8 |
-| pr17-fold | 3 | 3/3 | 3/3 | 3/3 |
-| round-844-real-user | 10 | 10/10 | 8/10 | 8/10 |
-| overall | 43 | **40/43** | **36/43** | **36/43** |
-
-Paired miss classification (`2026-07-10-current-miss-classification.json`): 25 downstream,
-12 agent-behavior, 6 retrieval. Five of the six retrieval cases are in the LumenLoop pool
-(tokenized-RWA freshness, Aquarius, RWA overview, Soroswap, LOBSTR); the sixth is testnet USDC
-faucet. This classification is discovery-layer only; it does not claim those questions are
-unanswerable downstream.
+[ADR-0009](../../research/decisions/0009-discovery-stays-lexical.md) records the lexical discovery decision and its measured reopening conditions.
+Use fresh, identified artifacts for comparisons. Historical scores do not establish current performance.
 
 ## Miss Classification
 
-The historical review taxonomy remains the interpretation layer:
+Use these categories when reviewing misses:
 
 - `retrieval`: one-search discovery failed to surface a needed family or usable op even though the exposed catalog contains one.
 - `agent-behavior`: the needed family/op was visible, but an agent likely needs better search planning, follow-up search, or source-family guidance.

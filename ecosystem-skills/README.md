@@ -1,27 +1,29 @@
 # Stellar/Soroban ecosystem skills — pin set
 
-A version-pinned **reference** to the **Stellar/Soroban agent skills** (Claude-Code-style
-`SKILL.md` playbooks) published across the ecosystem — LumenLoop, OpenZeppelin, the Stellar
-Development Foundation (SDF), Stellar Light, and Trustless Work — plus a snapshot of the broader
-[stellarlight.xyz](https://stellarlight.xyz/skills) ecosystem **directory**.
+This directory is a version-pinned reference to the Stellar/Soroban agent skills that the
+ecosystem publishes. A skill is a Claude-Code-style `SKILL.md` playbook. The sources are
+LumenLoop, OpenZeppelin, the Stellar Development Foundation (SDF), Stellar Light, and Trustless
+Work. The directory also holds a snapshot of the broader
+[stellarlight.xyz](https://stellarlight.xyz/skills) ecosystem directory.
 
-**Skill bodies are not stored here.** This directory holds their addresses: a commit SHA per
-source and a path + git blob hash per file. Everything that needs the text — the catalog build,
-the super-spec build, this directory's own index, and the Worker at read time — fetches it from
-upstream at the pinned commit and verifies it against the pinned hash. Bytes that do not match
-are refused, not used. See `THIRD-PARTY-NOTICES.md` at the repo root.
+**This directory stores no skill body.** It stores addresses: a commit SHA for each source, and a
+path and a git blob hash for each file. Four consumers need the text: the catalog build, the
+super-spec build, this directory's index, and the Worker at read time. Each consumer fetches the
+file from upstream at the pinned commit and verifies it against the pinned hash. It refuses bytes
+that do not match. See [`THIRD-PARTY-NOTICES.md`](../THIRD-PARTY-NOTICES.md).
 
-In **this** repo the pin set is what the unified catalog builds from: each skill becomes a
-searchable catalog entry, and each of its `##` sections becomes an exposed exact-id entry with
-`searchable: false`. Sections are readable through `skill.read` but stay out of search
+The unified catalog builds from this pin set. Each skill becomes a searchable catalog entry. Each
+`##` section becomes an exact-ID entry with `searchable: false`. `skill.read` can read a section,
+but search does not return it
 ([ADR-0005](../research/decisions/0005-skills-form-sections-out-of-search.md)). The manifest
-allowlist applies to both.
+allowlist applies to skills and to sections.
 
 ## Layout
 
 ```
 ecosystem-skills/
 ├── MANIFEST.json    # THE ARTIFACT: per-source pinned commit + per-file path/size/git-blob-sha
+├── PIN-REVIEW.md    # review ledger: one `sel:` digest per reviewed pin selection (CI-gated)
 ├── INDEX.md         # AUTO-GENERATED themed directory (name + description + source + size), linked upstream
 ├── groups.json      # theme → skill-id mapping that drives INDEX.md grouping
 ├── catalog.json     # full snapshot of the stellarlight.xyz/api/skills directory (count in INDEX.md)
@@ -31,9 +33,10 @@ ecosystem-skills/
 └── README.md
 ```
 
-**Start at [`INDEX.md`](./INDEX.md)** — it groups every pinned skill by theme, links straight to
-the upstream source at its pinned commit, and ends with the ecosystem directory snapshot (what
-else exists, including non-`skill-md` SDKs/MCP servers/CLIs that this server does *not* serve).
+Start at [`INDEX.md`](./INDEX.md). It groups every pinned skill by theme and links each skill to
+the upstream source at its pinned commit. It ends with the ecosystem directory snapshot. That
+snapshot also lists SDKs, MCP servers, and CLIs that are not `SKILL.md` skills. This server does
+not serve those entries.
 
 ## Sources
 
@@ -46,53 +49,52 @@ else exists, including non-`skill-md` SDKs/MCP servers/CLIs that this server doe
 | `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) `trustless-work-dev/` (skill dir at the repo root, cherry-picked) | 1 escrow-integration skill | `gh` tree listing @ pinned commit |
 | _catalog_ | [`stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills) | ecosystem directory (sdf / stellarlight / lumenloop / external; entry count in `INDEX.md`) | `curl` snapshot → `catalog.json` (NOT downloaded as skills) |
 
-Every source is **public**, and each source's upstream `LICENSE`/`NOTICE` file names are recorded
-in `MANIFEST.json` (`license_files`) at the same pinned commit — see `THIRD-PARTY-NOTICES.md` at
-the repo root for the license map.
+Every source is public. `MANIFEST.json` records the names of each source's upstream `LICENSE` and
+`NOTICE` files (`license_files`) at the same pinned commit.
+[`THIRD-PARTY-NOTICES.md`](../THIRD-PARTY-NOTICES.md) gives the license of each source.
 
-The LumenLoop API exposes 14 skills (`GET /v1/skills`): the 8 public ones (identical to the
-GitHub repo) and 6 partner-set ones. Raven pins only the public set. The partner set (the
-`lumenloop-api-*` onboarding family) comes from a private repository through a credentialed
-endpoint, so it has no pin source here. Partner-tier content must not live in this public
-repository. Because the re-pin uses no credentials, no re-pin can pull it in. The partner skills
-appear only as name-only stubs in `inventory/lumenloop.json`, so the `/v1/skills` union stays
-observable.
+The LumenLoop API exposes 14 skills (`GET /v1/skills`): 8 public skills and 6 partner-set skills.
+The public skills are identical to the GitHub repository. Raven pins only the public set.
+
+The partner set is the `lumenloop-api-*` onboarding family. It comes from a private repository
+through a credentialed endpoint, so it has no pin source here. Partner-tier content must not be
+in this public repository. The re-pin uses no credentials, so no re-pin can add that content. The
+partner skills appear only as name-only stubs in `inventory/lumenloop.json`. Those stubs keep the
+full `/v1/skills` set observable.
 
 ## Design choices
 
-- **Reference, not copy.** The pin (commit + blob hash) is the artifact; bodies stay upstream and
-  are verified on every use. The "nice organization" lives in `INDEX.md` + `groups.json`.
-- **The index is auto-generated.** Each skill's name + one-line description is extracted from its
-  `SKILL.md` YAML frontmatter at the pinned commit, so the index never drifts from the skills.
-- **Newly synced skills surface loudly.** Any skill not filed in `groups.json` lands in an
-  "Uncategorized" section of `INDEX.md` (and is printed by `update.sh`).
-- **What we deliberately do NOT pin is named too.** `openzeppelin-stellar` cherry-picks 3 Stellar
-  skills from a multi-chain repo, and that pick list is hard-coded in `update.sh` — so a newly
-  published sibling (the repo already has setup/upgrade/review per chain) would never be pinned and
-  re-running `update.sh` would not find it. So every upstream sibling a cherry-picked source skips
-  is recorded with a reason under `groups.json` `unpinnedUpstream`, and `check-skills-drift.mjs`
-  fails on every run — current commit or not — while any upstream directory is neither pinned nor
-  recorded. That makes "we skipped these" a decision someone makes rather than an omission nobody
-  sees. The check enumerates a source only when its `unpinnedUpstream` map is non-empty, so a new
-  cherry-picked source must record at least its first exclusion.
-- **The ecosystem is bigger than what we mirror.** `catalog.json` captures the full stellarlight
-  directory — including SDKs/MCP servers/CLIs that aren't `SKILL.md` skills — so the map of "what
-  exists" stays complete without dragging in non-skill artifacts. `build-index.mjs` reads this
-  directory directly instead of storing a second projection in `MANIFEST.json`.
-- **Swap last.** `update.sh` stages the whole pin set in a temp tree — `MANIFEST.json`,
-  `catalog.json`, and the `INDEX.md` built from those staged files — and only moves the three
-  into place after every source resolved, every selection validated, the body diff printed, and
-  the index built. A failure before that point leaves the committed pins, catalog, and index
-  untouched. The swap is three same-filesystem renames from a sibling `.swap.<pid>/` directory.
-  Copies of the previous three files wait there, and a rollback trap restores them if any rename
-  fails. The swap is not one atomic transaction, but it never leaves a new manifest beside an old
+- **Reference, not copy.** The pin (commit and blob hash) is the artifact. Bodies stay upstream,
+  and each use verifies them. `INDEX.md` and `groups.json` supply the organization.
+- **Generated index.** `build-index.mjs` takes each skill's name and one-line description from the
+  YAML frontmatter of its `SKILL.md` at the pinned commit. The index therefore agrees with the
+  skills.
+- **New skills are visible.** A skill that `groups.json` does not file goes to an "Uncategorized"
+  section of `INDEX.md`. `update.sh` also prints it.
+- **Skipped skills are recorded.** A cherry-picked source pins only the skills in a pick list in
+  `update.sh`. `openzeppelin-stellar` picks 3 Stellar skills from a multi-chain repository. A
+  later run of `update.sh` does not find a new upstream sibling. For this reason,
+  `groups.json` `unpinnedUpstream` records each skipped sibling with a reason.
+  `check-skills-drift.mjs` fails on every run while an upstream directory is neither pinned nor
+  recorded. The check lists a source only when its `unpinnedUpstream` map is not empty. A new
+  cherry-picked source must therefore record at least its first exclusion.
+- **Complete directory snapshot.** `catalog.json` holds the full stellarlight directory. It
+  includes SDKs, MCP servers, and CLIs that are not `SKILL.md` skills, but Raven does not download
+  them. `build-index.mjs` reads this file directly. `MANIFEST.json` holds no second copy.
+- **Swap last.** `update.sh` stages `MANIFEST.json`, `catalog.json`, and the `INDEX.md` that it
+  builds from them in a temporary tree. It moves the three files into place only after four steps
+  pass. Every source resolves. Every selection validates. The body diff prints. The index builds.
+  A failure before that point leaves the committed files unchanged.
+
+  The swap is three same-filesystem renames from a sibling `.swap.<pid>/` directory. That
+  directory holds copies of the previous three files. A rollback trap restores them if a rename
+  fails. The swap is not one atomic transaction. But it never leaves a new manifest next to an old
   catalog or index.
-- **Deterministic except timestamps.** Back-to-back runs against the same upstream produce
-  byte-identical output **except the timestamp fields**: `MANIFEST.synced_at`,
-  `catalog.fetched_at`, and their rendered copies in `INDEX.md`
-  (the "synced …" / "fetched …" text). Nothing else changes.
-- **Honest provenance per source.** Every GitHub source pins a full commit SHA (independently
-  verifiable) in `MANIFEST.json`.
+- **Deterministic except timestamps.** Two runs against the same upstream produce byte-identical
+  output, except these timestamp fields: `MANIFEST.synced_at`, `catalog.fetched_at`, and their
+  rendered copies in `INDEX.md` (the "synced …" and "fetched …" text).
+- **Verifiable provenance.** `MANIFEST.json` pins a full commit SHA for every GitHub source.
+  Anyone can verify it independently.
 
 ## Updating
 
@@ -101,14 +103,26 @@ observable.
 node build-index.mjs           # just rebuild the index (e.g. after editing groups.json)
 ```
 
-`update.sh` resolves a commit per source, walks its tree, records every file's path/size/blob
-hash, drops skills deleted upstream, builds the index from the staged files with
-`build-index.mjs --manifest … --catalog … --out …`, then swaps `MANIFEST.json`, `catalog.json`,
-and `INDEX.md` into place. Every step before the swap fails closed: a source it cannot resolve, a
-tree it cannot fetch, a truncated tree, a selected skill without `SKILL.md`, a body diff it cannot
-print, or an index it cannot build aborts the run before the swap, so a partial or mixed-age pin
-set is never written. After a re-pin, check the output for any **Uncategorized** skills and file
-them into `groups.json`, and **read the skill diffs** — skills are prompt input.
+`update.sh` does these steps in order:
+
+1. It resolves a commit for each source and walks its tree.
+2. It records the path, size, and blob hash of every file. It drops skills that upstream deleted.
+3. It builds the index from the staged files with
+   `build-index.mjs --manifest … --catalog … --out …`.
+4. It swaps `MANIFEST.json`, `catalog.json`, and `INDEX.md` into place.
+
+Every step before the swap fails closed. Each of these conditions aborts the run before the swap:
+
+- A source that does not resolve.
+- A tree that the script cannot fetch, or a truncated tree.
+- A selected skill without `SKILL.md`.
+- A body diff that the script cannot print.
+- An index that the script cannot build.
+
+The script therefore never writes a partial or mixed-age pin set.
+
+After a re-pin, do two things. File each **Uncategorized** skill in `groups.json`. **Read the
+skill diffs**, because skills are prompt input.
 
 Validate the pin set:
 
@@ -117,17 +131,20 @@ node scripts/check-mirrors.mjs           # offline: pin shape, group coverage, c
 node scripts/check-mirrors.mjs --fetch   # + every pin still resolves upstream and hashes as recorded
 ```
 
-This fails if any skill is uncategorized, if `groups.json` references skills missing from
-`MANIFEST.json`, if a source has no commit SHA or a file has no blob hash, or if the pin set is
-partial.
+The check fails in these conditions:
+
+- A skill is uncategorized.
+- `groups.json` refers to a skill that `MANIFEST.json` does not contain.
+- A source has no commit SHA, or a file has no blob hash.
+- The pin set is partial.
 
 ### After a re-pin: rebuild the generated surfaces (repo root)
 
-The pin set is an *input*; the model-facing artifacts are generated from it (fetching each pinned
-file once into `.cache/`) and must be rebuilt after every re-pin. The canonical, ordered sequence
-— including the attestation and the gates CI actually enforces — is
+The pin set is an input. The model-facing artifacts are generated from it, and each pinned file is
+fetched once into `.cache/`. Rebuild them after every re-pin.
 [`.agents/skills/live-drift-resolution/SKILL.md`](../.agents/skills/live-drift-resolution/SKILL.md)
-Step 1; run that, not a shorter version of it. In outline:
+Step 1 gives the canonical ordered sequence, with the attestation and the gates that CI enforces.
+Run that sequence, not a shorter version. In outline:
 
 ```bash
 node scripts/check-mirrors.mjs --fetch   # every new pin resolves upstream (bypasses .cache)
@@ -142,100 +159,109 @@ npm run eval:routing -- --gate   # routing gates (eval/gates.json baselines)
 npm run secrets:scan -- --tree
 ```
 
-A re-pin is not resolved until it is **deployed** — the pinned URLs are compiled into the Worker,
-so production keeps fetching the old commit until `npm run deploy` runs.
+A re-pin is not resolved until it is **deployed**. The pinned URLs are compiled into the Worker.
+Production fetches the previous commit until `npm run deploy` runs.
 
-Two guard classes can fail the catalog build loudly — both mean "a human must reconcile,
-nothing silently changes exposure":
+Two guards can fail the catalog build. Each failure means that a person must reconcile the data.
+Neither guard changes exposure silently.
 
-- **Retirement guard** (`assertRetirementNamesResolve`, `scripts/build-catalog.mjs`): the
-  deny-listed pinned skills (`RETIRED_ONBOARDING_SKILLS` in `scripts/exposure.mjs`, which holds
-  `lumenloop-mcp-connect`) are matched by upstream NAME. If a sync renames or removes one, the
-  build fails instead of silently un-retiring it: retire the new name, or drop the entry if the
-  skill is gone. The unpinned partner family is listed separately in
-  `RETIRED_PARTNER_ONBOARDING_SKILLS` (`scripts/exposure.mjs`), and `src/skills/scrub.ts` removes
-  references to it at read time.
-- **Orphaned description notes** (`scripts/description-notes.mjs`): catalog notes are exact-match
-  data keyed on upstream tool, operation, or skill IDs. A rename orphans the note and fails every
-  affected generator. Skill description overrides change only host discovery text and do not
-  modify pinned source bytes. `codemode.skill.read` still applies its existing exposure scrub.
+- **Retirement guard** (`assertRetirementNamesResolve`, `scripts/build-catalog.mjs`).
+  `RETIRED_ONBOARDING_SKILLS` in `scripts/exposure.mjs` lists the deny-listed pinned skills. It
+  holds `lumenloop-mcp-connect`. The guard matches them by upstream name. If a sync renames or
+  removes one, the build fails. It does not un-retire the skill silently. Retire the new name, or
+  remove the entry if the skill is gone.
 
-Eval coupling: `eval/skills-cases.json` grades skills routing. Cases whose target skill leaves
-catalog exposure move to its inert `retiredCases` array (rationale + date), and the skills-lane
-floor in `eval/gates.json` is re-baselined **in the same commit** with the decision recorded in
-the round ledger ([`eval/EVALS.md`](../eval/EVALS.md) rule 1).
+  `RETIRED_PARTNER_ONBOARDING_SKILLS` in `scripts/exposure.mjs` lists the unpinned partner family
+  separately. `src/skills/scrub.ts` removes references to that family at read time.
+- **Orphaned description notes** (`scripts/description-notes.mjs`). Catalog notes are exact-match
+  data. Their keys are upstream tool, operation, or skill IDs. An upstream rename orphans the note
+  and fails every affected generator. A skill description override changes only host discovery
+  text. It does not change pinned source bytes. `codemode.skill.read` still applies its exposure
+  scrub.
 
-**Automated drift detection (CI):** the daily `refresh.yml` workflow runs
-`node scripts/check-skills-drift.mjs`, which compares every pin in `MANIFEST.json` against upstream
-— latest commit touching each GitHub source's pinned path, and a volatile-field-free re-projection
-of the live stellarlight directory against `catalog.json`. Any drift fails the run and lands in the
-same drift issue as the inventory checks. It is **detection only** — CI never runs `update.sh`,
-because these skills are prompt input and upstream edits must be human-reviewed: on drift, run
-`./update.sh` locally, read the skill diffs, re-pin, and commit. (Pinning by commit is exactly
-what makes live fetching safe: an upstream edit cannot reach the model until someone re-pins.) The script also runs standalone
-(`node scripts/check-skills-drift.mjs [--json]`, exit 1 on drift).
+**Eval coupling.** `eval/skills-cases.json` grades skills routing. When a target skill leaves
+catalog exposure, move its cases to the inert `retiredCases` array. Add a rationale and a date.
+Re-baseline the skills-lane floor in `eval/gates.json` in the same commit, and record the decision
+in the round ledger. The
+[`run-evals`](../.agents/skills/run-evals/SKILL.md) skill, Step 4, gives the re-baseline rule.
 
-Requires an authenticated `gh` CLI, plus `jq`, `node`, `curl`, and `git`. **No API keys** — every
-source is public, and keeping the re-pin credential-free is a deliberate publish-safety property
-(see the Sources note above).
+**Automated drift detection (CI).** The daily `refresh.yml` workflow runs
+`node scripts/check-skills-drift.mjs`. The script compares every pin in `MANIFEST.json` against
+upstream in two ways:
+
+- For each GitHub source, it finds the latest commit that touches the pinned path.
+- It projects the live stellarlight directory again, without volatile fields, and compares the
+  result with `catalog.json`.
+
+Drift fails the run and goes into the same drift issue as the inventory checks. The workflow only
+detects drift. CI never runs `update.sh`, because skills are prompt input and a person must review
+upstream edits. On drift, run `./update.sh` locally, read the skill diffs, re-pin, and commit.
+The commit pin makes live fetching safe: an upstream edit cannot reach the model until someone
+re-pins. The script also runs standalone (`node scripts/check-skills-drift.mjs [--json]`, exit 1
+on drift).
+
+`update.sh` requires an authenticated `gh` CLI, plus `jq`, `node`, `curl`, and `git`. It needs no
+API keys, because every source is public. The credential-free re-pin is a deliberate
+publish-safety property (see [Sources](#sources)).
 
 ## Adding a source
 
 A new source changes what the model reads. Treat it as an exposure decision, not a re-pin. The
-Trustless Work admission is the worked example: its round ledger is
+Trustless Work admission is the worked example. Its round ledger is
 [`.agents/rounds/2026-09-16-trustless-work-acceptance.md`](../.agents/rounds/2026-09-16-trustless-work-acceptance.md).
 
-Admission bar — answer each in the round's source review before any pin lands:
+**Admission bar.** Answer each point in the round's source review before any pin lands:
 
-- The repository is public and names its license in a `LICENSE`/`NOTICE` file.
+- The repository is public and names its license in a `LICENSE` or `NOTICE` file.
 - The skills are Stellar-specific and do not duplicate an exposed skill
   (`research/skill-exposure-inventory.json`).
-- The skills are reference content for the reader's own environment. They may describe credentials,
-  paid calls, signing, writes, or network steps that the reader performs; serving them grants the
-  sandbox no network access and authorizes none of those actions. Record any credential or
-  supply-chain prompt that remains as accepted risk in `PIN-REVIEW.md`. `src/skills/scrub.ts` removes
-  only references to non-exposed operations and retired skills at read time.
-- A reviewer read every selected body: no instruction override, no literal credential, and no
-  reference to a non-exposed operation or retired skill that the scrub would not remove.
+- The skills are reference content for the reader's own environment. They can describe
+  credentials, paid calls, signing, writes, or network steps that the reader does. Serving them
+  gives the sandbox no network access and authorizes none of those actions. Record any remaining
+  credential or supply-chain prompt as accepted risk in `PIN-REVIEW.md`. At read time,
+  `src/skills/scrub.ts` removes only references to non-exposed operations and retired skills.
+- A reviewer read every selected body. The body contains no instruction override and no literal
+  credential. It contains no reference to a non-exposed operation or retired skill that the scrub
+  does not remove.
 
-Steps. The pin, catalog, fingerprint, and QA activation land in one admission PR; a new QA case
-must already exist as `proposed` from an earlier commit (step 6).
+**Steps.** The pin, the catalog, the fingerprint, and the QA activation land in one admission pull
+request. A new QA case must already exist as `proposed` from an earlier commit (step 6).
 
-1. Add a `pin_github` line to `update.sh` (with a pick list when the repo is multi-chain or mixed)
-   and a row to the Sources table above. A new repo layout also needs selector and link code;
-   Trustless Work needed the repo-root skill-dir mode.
-2. Add the repo to `improvements/intake.json` (`services.skills.default.repos` and `sourceRepos`)
-   and its license to `THIRD-PARTY-NOTICES.md`.
+1. Add a `pin_github` line to `update.sh` and a row to the Sources table above. Add a pick list
+   when the repository is multi-chain or mixed. A new repository layout also needs selector and
+   link code. For example, Trustless Work uses the repo-root skill-dir mode.
+2. Add the repository to `improvements/intake.json` (`services.skills.default.repos` and
+   `sourceRepos`). Add its license to `THIRD-PARTY-NOTICES.md`.
 3. Run `./update.sh`, file the new skills in `groups.json`, and record the `sel:` digest in
-   `PIN-REVIEW.md`. For a cherry-picked source, list every upstream sibling directory you do not
-   pin under `groups.json` `unpinnedUpstream` with a reason; `check-skills-drift.mjs` enumerates a
-   source only when that map is non-empty.
-4. Add an `exposed` row per skill to `research/skill-exposure-inventory.json`
-   (`test/skill-exposure-classification.test.ts` requires it).
+   `PIN-REVIEW.md`. For a cherry-picked source, list every upstream sibling directory that you do
+   not pin under `groups.json` `unpinnedUpstream`, with a reason. `check-skills-drift.mjs` lists a
+   source only when that map is not empty.
+4. Add an `exposed` row for each skill to `research/skill-exposure-inventory.json`.
+   `test/skill-exposure-classification.test.ts` requires it.
 5. Rebuild the generated artifacts as in
    [`live-drift-resolution`](../.agents/skills/live-drift-resolution/SKILL.md) Step 1.
-6. Give every new exposed skill active QA battery coverage before the final gates: CI enforces
-   `skill floor 1` per exposed skill, and a skills-routing case does not count. Each new case must
-   already be committed as `proposed` in an earlier commit. Activate it in the admission PR after an
-   independent `golden-truth` review, then run `npm run eval:qa:compile` and
-   `npm run eval:qa:register`. A case in `eval/skills-cases.json` is additional routing coverage, not
-   a substitute.
+6. Give every new exposed skill active QA battery coverage before the final gates. CI enforces
+   `skill floor 1` for each exposed skill, and a skills-routing case does not count. Commit each
+   new case as `proposed` in an earlier commit. Activate it in the admission pull request after an
+   independent `golden-truth` review. Then run `npm run eval:qa:compile` and
+   `npm run eval:qa:register`. A case in `eval/skills-cases.json` is additional routing coverage,
+   not a substitute.
 7. Pass the acceptance gates on the complete tree: `npm test`,
-   `npm run eval:qa:lint -- --stale --enforce-floors`, and the routing comparison of that skill's
-   Step 4. Expect the count contracts to move (`test/catalog.test.ts`, `test/skills.test.ts`,
-   `test/search.test.ts`, the demo trace totals) and record the new catalog fingerprint in
-   `eval/gates.json`. Numerical thresholds stay unchanged unless a separate decision changes them. A
-   host description override (`scripts/description-notes.mjs`) or a search-admission change is its
-   own routing decision with its own comparison.
-8. Get an independent review from a reviewer who differs from both the author and the orchestrator
-   (`AGENTS.md`), record it in a round ledger, and deploy with the owner's approval.
+   `npm run eval:qa:lint -- --stale --enforce-floors`, and the routing comparison in Step 4 of
+   `live-drift-resolution`. Expect the count contracts to move (`test/catalog.test.ts`,
+   `test/skills.test.ts`, `test/search.test.ts`, and the demo trace totals). Record the new
+   catalog fingerprint in `eval/gates.json`. Numerical thresholds stay unchanged unless a separate
+   decision changes them. A host description override (`scripts/description-notes.mjs`) or a
+   search-admission change is a separate routing decision with its own comparison.
+8. Get an independent review from a reviewer who is neither the author nor the orchestrator
+   (`AGENTS.md`). Record it in a round ledger, and deploy with the owner's approval.
 
-A candidate that is not admitted still needs a recorded decision — an open owner decision or a
-work item in `.agents/TODO.md`, or a round ledger — so the directory snapshot never hides an unmade
-choice.
+A candidate that is not admitted still needs a recorded decision. Record it as an open owner
+decision or a work item in `.agents/TODO.md`, or in a round ledger. The directory snapshot then
+never hides a decision that nobody made.
 
 ## Source of truth
 
-Each source's pin is recorded in [`MANIFEST.json`](./MANIFEST.json): a full commit SHA per GitHub
-source plus a git blob hash per file. That pair is both the provenance record and the runtime
-integrity contract. Re-run `update.sh` to reconcile with upstream.
+[`MANIFEST.json`](./MANIFEST.json) records each source's pin: a full commit SHA for each GitHub
+source and a git blob hash for each file. That pair is the provenance record and the runtime
+integrity contract. Run `update.sh` again to reconcile with upstream.

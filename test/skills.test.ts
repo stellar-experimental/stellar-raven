@@ -78,6 +78,35 @@ describe("skill transports", () => {
 });
 
 describe("readSkill", () => {
+  it("returns only the source content, including upstream license text", async () => {
+    const id = "skills.test.original-content";
+    const url = "https://example.test/SKILL.md";
+    const body = "---\nname: example\nlicense: MIT\n---\n\n# Example\n\nCopyright Example Authors.\n";
+    const synthetic: Catalog = {
+      ...catalog,
+      entries: [
+        {
+          id,
+          service: "skills",
+          kind: "skill",
+          description: "Synthetic skill content",
+          inputSchema: null,
+          outputSchema: null,
+          transport: { type: "file", url, sha: "0".repeat(40), sha256: "0".repeat(64) },
+          provenance: { source: "test", fetchedAt: "2026-01-01T00:00:00Z" }
+        }
+      ]
+    };
+
+    expect(await readSkill(synthetic, staticSkillSource({ [url]: body }), id)).toEqual({
+      ok: true,
+      id,
+      url,
+      content: body.trim(),
+      availableSections: []
+    });
+  });
+
   it("reads a whole skill by exact catalog id, forwarding upstream frontmatter", async () => {
     const r = await readSkill(catalog, source, "skills.lumenloop.stellar-project-dossier");
     expect(r.ok).toBe(true);

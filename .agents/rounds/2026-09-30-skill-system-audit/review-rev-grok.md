@@ -98,7 +98,7 @@ Evidence against the `/lab` sentence:
 - `gh api repos/stellar/quickstart/git/trees/master?recursive=1` returned 146 paths at tip `258a5b6e0e9978648f9f02a072d38efb4c7dec70`. No path contains `lab`.
 
 The cluster re-close can stand for the two sentences it actually cites.
-`.agents/rounds/2026-09-30-skill-system-audit/register-review.json` cluster-023 cites Friendbot for Testnet and Futurenet, and "not intended for production".
+[`.agents/rounds/2026-09-30-skill-system-audit/register-review.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/register-review.json) cluster-023 cites Friendbot for Testnet and Futurenet, and "not intended for production".
 Both of those sentences are true on the pages above.
 The Lab docs page says: "You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet."
 This finding does not reopen that cluster note.

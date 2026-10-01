@@ -121,9 +121,9 @@ rather than create a duplicate.
   the canonical and digest contracts measure live grounding separately.
 
 Prior aggregate baselines are archival in
-[`research/audits/2026-07-qa-history.md`](../../../research/audits/2026-07-qa-history.md).
+[`research/audits/2026-07-qa-history.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-qa-history.md).
 The immediately preceding architecture experiment remains separately recorded in
-[`2026-07-10-per-operation-architecture-ab.md`](./2026-07-10-per-operation-architecture-ab.md).
+[`2026-07-10-per-operation-architecture-ab.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/qa/reviewed/2026-07-10-per-operation-architecture-ab.md).
 
 ## What this establishes
 

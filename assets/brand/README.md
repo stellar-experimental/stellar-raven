@@ -1,13 +1,17 @@
 # assets/brand/ — brand masters (upload source-of-truth)
 
-Brand assets for **external dashboards** — currently the WorkOS AuthKit sign-in customizer.
-**Nothing here is served by the Worker.** The live site inlines all of its own assets as
-generated code (`FAVICON` data URI + `ravenSvg()` in `src/site.ts`, fonts in `src/fonts.ts`,
-`/og.png` in `src/og.ts`); there is no `assets` binding in `wrangler.jsonc`. These files exist
-only so brand uploads are versioned and reproducible.
+These brand assets are for external dashboards. The WorkOS AuthKit sign-in customizer uses them.
+The Worker does not serve them, and `wrangler.jsonc` has no `assets` binding. These files keep
+brand uploads versioned and reproducible.
 
-Source-of-truth for the shape and palette is `src/site.ts` (the `RAVEN_PATH` and `TOKENS`
-blocks). If those change, regenerate here.
+The live site holds its own assets as generated code:
+
+- `src/site.ts` holds the `FAVICON` data URI and `ravenSvg()`.
+- `src/fonts.ts` holds the fonts.
+- `src/og.ts` holds `/og.png`.
+
+`src/site.ts` is the source of truth for the shape (`RAVEN_PATH`) and the palette (`TOKENS`).
+If those blocks change, regenerate the files here.
 
 ## Files
 
@@ -18,8 +22,9 @@ blocks). If those change, regenerate here.
 | `raven-logo-dark.svg` | Logo (full lockup) — dark-mode page (light wordmark) |
 | `raven-logo-light.svg` | Logo (full lockup) — light-mode page (dark wordmark) |
 
-The mark is a single hot-orange spark (`#FF5500`) on transparent, so one icon/favicon file
-serves both light and dark slots. The full lockups differ only in wordmark color.
+The mark is one orange shape (`#FF5500`) on a transparent background. One icon file and one
+favicon file therefore serve the light and dark slots. The full lockups differ only in wordmark
+color.
 
 ## Palette (from `TOKENS` in `src/site.ts`)
 

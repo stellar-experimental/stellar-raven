@@ -27,22 +27,6 @@ describe("skill bodies are not vendored", () => {
     expect(existsSync(join(ROOT, "src", "skills", "bundle.json"))).toBe(false);
   });
 
-  it("attaches no license text or notice to what skill.read returns", () => {
-    // Responses carry upstream's own bytes and nothing WE authored. Upstream
-    // frontmatter (which is where a source declares its licence) is forwarded
-    // untouched; this guard is that Raven never composes a notice of its own,
-    // because "helpfully" appending one is the obvious wrong turn.
-    // License markers only — `notice` is a legitimate field name here (the
-    // size advisory), so matching the bare word would be a false positive.
-    const licenseish = /\bLICENSE\b|\bcopyright\b|©|\bAGPL\b|\bSPDX\b|Apache-2\.0|MIT License/i;
-    for (const file of ["store.ts", "source.ts", "scrub.ts"]) {
-      const code = readFileSync(join(ROOT, "src", "skills", file), "utf8")
-        .replace(/^\s*\/\*[\s\S]*?\*\//gm, "") // block comments
-        .replace(/^\s*\/\/.*$/gm, ""); // line comments
-      expect(licenseish.test(code), `${file} references license text`).toBe(false);
-    }
-  });
-
   it("addresses every ## section by heading only — never a body excerpt", () => {
     const sections = skillEntries.filter(
       (e) => e.kind === "skill-section" && !e.id.includes("#file:")

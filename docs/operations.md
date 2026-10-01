@@ -1,8 +1,8 @@
 # Operating Raven
 
 This guide is for the operator of a Raven deployment. It covers deployment, named API keys,
-health checks, observability, data retention, and account-data deletion. For the usage archive,
-read [the usage guide](../usage/README.md). For the design, read
+health checks, scheduled workflows, observability, data retention, and account-data deletion.
+For the usage archive, read [the usage guide](../usage/README.md). For the design, read
 [the architecture](../ARCHITECTURE.md).
 
 ## Deploy
@@ -72,6 +72,20 @@ npm run mcp-key -- revoke admin
 
 The cron trigger in `wrangler.jsonc` runs the canary every hour (`src/skills/canary.ts`). The
 daily `refresh.yml` workflow reads `/health/skills`.
+
+## Scheduled workflows
+
+No workflow opens a pull request. Automated findings go to GitHub issues.
+
+| Workflow | Schedule | Report |
+|---|---|---|
+| `refresh.yml` | Daily | It keeps one open issue with the label `drift` for upstream drift in the service snapshots, skill pins, and canaries. A script fault goes to an issue with the label `refresh-failure`. [`inventory/README.md`](../inventory/README.md) lists its secrets and variables. |
+| `dependency-audit.yml` | Daily, and on each change to `package.json` or `package-lock.json` on `main` | It keeps one open issue with the label `dependency-audit` for `npm audit` findings. It replaces the issue body when the findings change and closes the issue when the audit is clean. It needs no secret. |
+| `usage-health.yml` | Hourly | The run fails on a usage collection gap. It opens no issue. [`usage/README.md`](../usage/README.md) describes it. |
+
+The repository variable `REFRESH_ISSUE_ASSIGNEE` names the maintainer who gets the drift,
+refresh-failure, and dependency issues. Without it, the repository owner gets them. The
+repository does not use Dependabot pull requests.
 
 ## Observability
 

@@ -1,6 +1,6 @@
 # QA improvement plan — from ~65% toward the honest ceiling
 
-Date: 2026-08-25. Companion to `research/qa-miss-analysis-2026-08-25.md` and the lane
+Date: 2026-08-25. Companion to [`research/qa-miss-analysis-2026-08-25.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-miss-analysis-2026-08-25.md) and the lane
 reports in `research/qa-deep-dive-2026-08-25/`. Nothing here is precious: every track is
 reversible until it passes its gate.
 

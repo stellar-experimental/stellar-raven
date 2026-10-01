@@ -61,43 +61,24 @@ An unknown service produces zero MCP hits and names the valid services in `nextS
 
 ## 2. The scoring pipeline
 
-[The catalog reference](src/catalog/README.md) defines the detailed scoring, admission, selection, and recovery stages. The vendored scorer supplies lexical matching and a token-coverage gate. [scoring.ts](src/catalog/scoring.ts) adds stopword rescue, query aliases, weighted keywords, and kind weighting. Routing metadata adds operation vocabulary and rejects contradictory intent. Whole-skill admission requires identity, alias, slug, capability, or domain-code evidence. Section entries carry `searchable: false` and remain available through exact-ID navigation.
+[The catalog reference](src/catalog/README.md) defines the scoring, admission, selection, ordering, count, and recovery rules.
+This section gives only the stages.
 
-`searchCatalogPage` first scores gated candidates and selects a page with service diversity. A short page uses the complete ungated pool to fill open slots. A full gated page also evaluates targeted ungated candidates for bounded replacement.
-Replacement can preserve complete structured intent or reduce service overflow.
+1. The vendored scorer supplies lexical matching and a token-coverage gate.
+   [scoring.ts](src/catalog/scoring.ts) adds stopword rescue, query aliases, weighted keywords, and kind weighting.
+2. Routing metadata adds operation vocabulary and rejects contradictory intent.
+   A whole skill enters search only with independent admission evidence.
+   Section entries carry `searchable: false` and remain available through exact-ID navigation.
+3. `searchCatalogPage` selects a page of gated candidates with service diversity.
+   Ungated candidates can fill a short page or make a bounded replacement in a full page.
+4. The selector fixes membership, then orders the hits.
+   Every hit carries `tier: "gated" | "backfill"`.
+   Returned hit order defines the ranking; scores alone do not describe every ordering rule.
 
-Cross-service replacement in [preserveIntentWithinServiceQuota](src/catalog/search.ts) can change service counts.
-The candidate needs quota space and targeted intent evidence.
-The replaced entry must follow the first hit and belong to a service with multiple selected entries.
-The replaced entry must lack targeted intent evidence.
-
-The selector fixes membership before applying tier interleaving.
-A backfill hit can pass an adjacent gated hit when its score meets the 1.6× margin.
-A separate freshness rule can prioritize a selected dated-semantic operation over adjacent exact-lane operations.
-Returned hit order defines the ranking; scores alone do not describe every ordering rule.
-Every hit carries `tier: "gated" | "backfill"`.
-
-### Counts and recovery
-
-For a full gated page, `total` counts the gated candidates.
-Targeted replacement does not expand that total.
-For a short gated page, `total` also counts novel candidates from the complete ungated pool.
-`truncated` equals `total > hits.length`.
-These fields describe catalog navigation, not completeness of upstream evidence.
-
-`widerCandidates` provides at most three separate advisory entries.
-Zero-hit and all-backfill pages can receive broad source recommendations.
-Unresolved one-content-token queries can receive a directory anchor even on gated pages.
-Proper-name identity questions can put canonical broad anchors before page-resident advice.
-Service filters constrain advice, and skill-only searches suppress it.
-
-Caller-supplied exact operation IDs in `recoverFrom` produce separate `recovery` candidates.
-Suggestions do not resolve misspelled IDs or change ranked hit membership.
-`confidence` and `recoveryMetadata` describe the navigation evidence and filtered source scope.
+`total` and `truncated` describe catalog navigation, not completeness of upstream evidence.
+`widerCandidates` and `recovery` supply advice that stays separate from the ranked hits.
 [ADR-0007](research/decisions/0007-structural-recovery-guidance.md) records the structural, advisory, bounded recovery decision.
-
-Oversized rendered output types use `COMPACT_OUTPUT_THRESHOLD` from [output-compaction.ts](src/catalog/output-compaction.ts).
-The compact type preserves top-level fields and names the exact `codemode.describe` call for the full schema.
+An oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
 The manifest and detail helpers retain the complete schemas.
 
 ## 3. An `execute` call, end to end
@@ -226,37 +207,30 @@ A script can inspect the spec without returning the whole document to the model.
 
 ## 6. Skill splitting — pins → sections → reads
 
-[The skill reference](src/skills/README.md) defines read and runner mechanisms.
+[The skill reference](src/skills/README.md) defines the read, integrity, deadline, runner, and availability-check mechanisms.
+[ecosystem-skills/README.md](ecosystem-skills/README.md) defines the pin set and its update procedure.
+
 `ecosystem-skills/MANIFEST.json` pins upstream commits and file digests.
 Raven forwards skill bodies; it does not keep a durable owned mirror or bundle bodies into the Worker.
 Transport caches do not become the source of record.
 The generated catalog defines the exposed skills and section addresses.
-Sections remain readable but do not enter default search.
+Sections remain readable by exact ID but do not enter default search.
 
-Each file pin requires its raw-byte SHA-256 and git blob hash to match.
-Memo identity includes the URL and both hashes.
-Cache bytes receive integrity checks before use.
-Each file load has a 20s deadline; a read can load the main file before loading companions.
-That deadline does not bound the aggregate multi-file read to 20s.
-Whole reads retain upstream license material and provide advisory section guidance for large bodies.
+### Availability posture
 
-Exact section resolution rejects unknown or uncataloged sections.
+A skill read depends on the upstream file at its pinned commit.
+Raven accepts this availability risk because the risk is observable.
+`skill_read` error events show failed reads from real traffic.
+The daily mirror check and the hourly Worker canary test retrieval without their caches.
+`GET /health/skills` publishes the canary verdict.
+A failed check requires diagnosis; it does not prove that upstream deleted a file.
+Never mirror the content to correct an availability failure.
 
-The daily mirror check bypasses its file cache to test upstream availability.
-The hourly Worker canary bypasses memo and colo caches to test Worker retrieval.
-`GET /health/skills` publishes a fixed verdict without file URLs or hashes.
-A fresh failure, stale verdict, missing verdict, and check error remain distinct states.
-Each canary samples one execution location; real-traffic errors cover user-selected locations.
-Failures from both checks require diagnosis and do not alone prove that upstream deleted a file.
+### Runners
 
-Skill runners execute reviewed first-party code on the host.
-`RUNNERS` defines exact runnable IDs, schemas, and declared operations.
-The same operation closures serve model scripts and runners.
-Runners receive only their declared operation functions and input, without an environment parameter.
-The host owns the call ledger and validates runner wiring against the manifest.
-The runner deadline returns a timeout envelope without canceling in-flight operations.
-
-Import checks and fetch-stub tests support review; they do not form a runner sandbox.
+Skill runners execute reviewed first-party code on the host, outside the sandbox.
+`RUNNERS` defines the exact runnable IDs, schemas, and declared operations.
+A runner receives only its declared operation functions and its input.
 
 ## 7. Operating limits and caps
 

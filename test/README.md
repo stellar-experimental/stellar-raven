@@ -28,13 +28,24 @@ These tests check failure recovery without changing tracked generated files.
 
 | Test group | Main coverage |
 | --- | --- |
-| `catalog*`, `search*`, `routing*`, `drift-*` | Catalog validation, ranking, exact identities, and admission rules |
+| `catalog*`, `search*`, `scoring*`, `routing*`, `drift-*`, `extract-*`, `micro-map*`, `super-spec*` | Catalog validation, ranking, exact identities, admission rules, and generated specifications |
 | [adapters.test.ts](adapters.test.ts), [lumenloop-shape.test.ts](lumenloop-shape.test.ts) | Service contracts, response shapes, and error handling |
-| `executor*`, `spec-sandbox*`, `artifacts*` | Execution limits, spec access, and artifact storage |
-| [auth.test.ts](auth.test.ts), [policy.test.ts](policy.test.ts) | Authentication, request controls, and secret removal |
+| `executor*`, `spec-sandbox*`, `artifacts*`, `shape-logs*`, `source-basis*`, `evidence-checkpoint*` | Execution limits, spec access, artifact storage, and evidence boundaries |
+| `auth*`, `policy*`, `retention*`, `consent-page*`, `html*` | Authentication, request controls, retention, escaping, and secret removal |
+| `server*`, `mcp-*`, `observability*`, `site-lazy-counts*` | MCP contracts, operator keys, request events, and page initialization |
 | `demo*` | Page contracts and extracted page functions |
+| `skill*`, `pinned-source-shape*` | Pinned content, section reads, source integrity, exposure, and runner contracts |
+| `qa-*`, `re-judge*` | Evaluation evidence, grading, lifecycle, budgets, identity checks, and saved-answer grading |
+| `playground-*`, `quarantine-reader-rejection*` | Playground evaluation artifacts and quarantine controls |
 | `improvements*` | Finding lifecycle, issue body construction, and write recovery |
-| `eval*`, `evidence*`, `golden*` | Evaluation data, scoring helpers, and compilation |
+| `eval*`, `evidence-pack*`, `golden*`, `plan-grade*`, `temporal-scorer*` | Evaluation data, evidence extraction, scoring, and compilation |
+| `agentic-capture*`, `analyze-composition*`, `compare-architecture-ab*` | Transcript capture, operation composition, and comparison measurements |
+| `discovery-paid-run-guards*`, `exact-old-runtime-adapter*`, `p6-judge-self-test*`, `partner-docs-eval*`, `plain-operation-harness*` | Evaluation command controls and local substitutes for model and service calls |
+| `check-*`, `build-index*`, `diff-pins*`, `refresh-inventory*`, `scripts-shared*`, `summarize-*`, `classify-canary*` | Maintenance commands, pin review, atomic writes, health classification, and issue summaries |
+| `algolia-rule-canary*`, `deploy-preflight*`, `scan-secrets*`, `private-usage-guard*`, `emitted-text-guard*` | Deployment, search-rule, secret-scanning, private-data, and exposure guards |
+| `usage*` | Usage collection, health checks, and report runtime behavior |
+| [usage/report-site/test](../usage/report-site/test/) | Separate report-site authentication, aggregation, and output tests |
+| [live-cases.test.mjs](live-cases.test.mjs) | Offline checks of the manual live scripts |
 | `smoke/` | Worker routes and Dynamic Worker execution |
 
 The demo tests do not execute the complete page in a browser.

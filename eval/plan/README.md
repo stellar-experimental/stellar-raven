@@ -98,79 +98,9 @@ so misclassification stays visible.
 - `anyOf`/`required` grade presence, not quality — calling `scout.getStatus` alone marks scout as
   touched. Op classes soften this (meta ops never satisfy progression) but not set coverage.
 
-## Results — 2026-07-02 fresh run (30 stratified cases, variant A, full execute capture;
-`eval/qa/results/2026-07-02T18-18-36-variantA{,.plan}.json`, git-ignored/local-only)
+## Decision rule
 
-Answer quality (context): **18 correct / 9 partial / 3 wrong / 0 errors** — weighted 75%, the
-best run on this sample to date (the same 30 cases scored 65.5% weighted in the A/B round; the
-delta is at least partly the post-ADR-0001 tool naming plus normal run variance, n=30).
-
-Plan grades:
-
-| metric | value |
-|---|---|
-| requiredCovered | **28/30 (93%)** |
-| mean onPlanRatio | 0.97 |
-| off-plan touches | 2 cases (informational) |
-| progression (11 expected) | 4 used / 7 skipped |
-
-- **Verdict × requiredCovered**: covered → 17C/8P/3W; missed → 1C/1P. Both misses still produced
-  usable answers, but they are real plan gaps, not grader noise — e.g.
-  `q-aas-list-token-on-exchanges-aggregators` (labeled scout) was answered entirely from
-  stellarDocs + skills without ever consulting scout's structured project directory: a
-  right-answer-wrong-evidence pattern the answer-only eval cannot see.
-- **Progression barely correlates with correctness at this n** (used → 1C/2P/1W; skipped →
-  3C/3P/1W): agents usually satisfy detail-demanding questions from broad-call payloads (Scout
-  rows carry rich inline data), so skipping `get_*` follow-ups is often rational, not lazy.
-  Keep the metric informational; do not gate on it.
-- Off-plan touches were 1× lumenloop + 1× stellarDocs across 30 cases — service boundaries in the
-  catalog descriptions are holding.
-
-Conclusion for todo 799: multi-tool set-grading is live and the acceptable-sets hold up (93%
-coverage with honest misses); progression is measurable but not (yet) predictive. Revisit
-progression weighting only if a future run shows detail-starved wrong answers.
-
-## Results — 2026-07-03 post-nudge checkpoint (same 30 cases, variant A;
-`eval/qa/results/2026-07-03T16-06-45-variantA{,.plan}.json`, git-ignored/local-only)
-
-Answer quality (context): **20 correct / 9 partial / 1 wrong** — the wrong overturned as a
-judge artifact on live review (see `eval/qa/README.md`), so zero true wrongs. This run is the
-checkpoint todo 807 was waiting for: the `execute` description now carries a broad→detail
-progression nudge (todo 824 item 7), deployed between the 07-02 run and this one.
-
-| metric | 2026-07-02 (pre-nudge) | this run |
-|---|---|---|
-| requiredCovered | 28/30 (93%) | 28/30 (93%) |
-| mean onPlanRatio | 0.97 | 0.97 |
-| progression (11 expected) | 4 used / 7 skipped | **7 used / 4 skipped** |
-| verdict × used | 1C/2P/1W | 3C/4P/0W |
-| verdict × skipped | 3C/3P/1W | 1C/2P/1W |
-
-- **The nudge moved behavior** (36% → 64% progression usage) at zero coverage cost.
-- **The tripwire never fired.** The one skipped-bucket wrong was live-dissected
-  (Solo scratchpad 521): the broad payloads carried every needed specific
-  (`detailStarvation: NO` — the case is a counterexample to progression-gating, and the
-  verdict itself was a judge artifact). Cumulatively, across three graded runs no
-  detail-starved wrong answer has ever been observed.
-- **Decision:** progression stays informational, never gated — now evidence-backed at the
-  post-nudge checkpoint, not just provisional. Todo 807 closed 2026-07-03; reopen only if a
-  future run produces an actual detail-starvation transcript.
-
-## Results — 2026-07-09 truth-maintenance closeout
-
-Fresh sample-30 QA result `eval/qa/results/2026-07-09T19-53-07-variantA.json` (answering and
-judge model `claude-sonnet-5`, rubric v2.4 / evidence pack p3) scored 20 correct / 8 partial /
-2 wrong and reported $16.6216 cost. Its free offline plan sidecar is
-`eval/qa/results/2026-07-09T19-53-07-variantA.plan.json`.
-
-| metric | value |
-|---|---:|
-| requiredCovered | **28/30 (93%)** |
-| mean onPlanRatio | **0.977777…** |
-| progression (11 expected) | **4 used / 7 skipped** |
-| truncated transcript inputs | **0** |
-
-This closes the plan record for the July 9 headline checkpoint: set coverage stayed at the
-established 28/30 level, mean on-plan ratio remained high, and the no-truncation condition makes
-the extraction complete under this grader. Progression remains informational; 4/11 does not
-override the standing decision without a detail-starved wrong-answer mechanism.
+Progression remains informational. Reopen its weighting only when a transcript shows a wrong answer caused by missing detail retrieval.
+A skipped detail call alone does not meet that condition: the broad result can already contain the required facts.
+The [dated decision](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/plan/README.md#results--2026-07-03-post-nudge-checkpoint-same-30-cases-variant-a)
+records the evidence for this rule.

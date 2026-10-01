@@ -83,15 +83,15 @@ Verify the live producer settings after deployment. Preserve any other tail cons
 Check a known tool response in both the retained logs and D1, then verify the hourly canary arrives.
 Run the monthly report and inspect the collector's logs for failed writes.
 
-Deploy the producer with `npm run deploy`. Direct Wrangler commands skip its `postdeploy` check.
-That check uses `CLOUDFLARE_API_TOKEN` when it is set. Otherwise it tries the Wrangler OAuth
-profiles `WRANGLER_PROFILE`, `default`, and `sdf`, in that order.
+Deploy the producer with `npm run deploy`, as [the operations guide](../docs/operations.md#deploy)
+describes. Its `postdeploy` check uses `CLOUDFLARE_API_TOKEN` when it is set. Otherwise it tries
+the Wrangler OAuth profiles `WRANGLER_PROFILE`, `default`, and `sdf`, in that order.
 
 To stop new collection, remove only this tail consumer from the producer settings and config.
 Preserve the database for the agreed retention period.
 
-The hourly `usage-health` workflow and the `postdeploy` check skip with a notice when the report
-token or a Cloudflare credential is absent. They never fail a fork that has not configured its own archive.
+The hourly `usage-health` workflow skips with a notice when the report token is absent.
+It never fails a fork that has not configured its own archive.
 
 ## Dashboard
 

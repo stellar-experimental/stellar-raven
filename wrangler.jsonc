@@ -2,8 +2,8 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "stellar-raven-codemode",
   "main": "src/server.ts",
-  // PLAN §6 pins: compat date ≥ 2026-06-11 + nodejs_compat (matches the
-  // codemode-mcp-openapi reference example).
+  // Keep the compatibility date at 2026-06-11 or later, with nodejs_compat
+  // (matches Cloudflare's codemode-mcp-openapi reference example).
   "compatibility_date": "2026-06-11",
   // global_fetch_strictly_public: all global fetches resolve as public
   // internet (SSRF-safe), which lets workers-oauth-provider enable CIMD —
@@ -16,31 +16,30 @@
   ],
   // Dynamic Workers / Worker Loader binding for the `execute` tool
   // (DynamicWorkerExecutor). Open beta, Workers Paid in production; works in
-  // local dev on any plan. Load-bearing: Phase 3 shipped, so every `execute`
-  // call loads its sandbox isolate through this binding.
+  // local dev on any plan. Load-bearing: every `execute` call loads its
+  // sandbox isolate through this binding.
   "worker_loaders": [
     {
       "binding": "LOADER"
     }
   ],
-  // Workers AI binding for the /demo agent playground. The primary model is
-  // currently openai/gpt-5.4 routed through Workers AI / AI Gateway Unified
-  // Billing, with provider fallbacks configured in src/demo/model-config.ts.
-  // Demo-only: the MCP surface never touches this binding.
+  // Workers AI binding for the /playground chat. Model calls route through
+  // Workers AI / AI Gateway Unified Billing. src/demo/model-config.ts owns the
+  // primary and fallback model IDs. Playground-only: the MCP surface never
+  // touches this binding.
   "ai": {
     "binding": "AI",
     "remote": true
   },
   "vars": {
-    // AI Gateway every /demo model call routes through (design Decisions
-    // 3/5: gateway-side limits are the account-level cost backstop —
-    // per-request caps alone don't bound aggregate spend). Uses the
-    // dedicated demo gateway, whose rate-limit / spend-limit rules are
-    // dashboard-side config — keep at least one spend-limit rule on it while
-    // /demo is live.
+    // AI Gateway every /playground model call routes through. Gateway-side
+    // limits are the account-level cost backstop — per-request caps alone
+    // don't bound aggregate spend. Uses the dedicated gateway, whose
+    // rate-limit / spend-limit rules are dashboard-side config — keep at
+    // least one spend-limit rule on it while /playground is live.
     "DEMO_AI_GATEWAY_ID": "stellar-raven-demo",
-    // Execute result/log/error model-boundary cap. Default preserves the
-    // original ~6k-token behavior; raise only for measured truncation review.
+    // Execute result/log/error model-boundary cap (about 6k tokens). Raise
+    // only for measured truncation review.
     "EXECUTE_MODEL_BOUNDARY_MAX_TOKENS": "6000"
   },
   // Token/client/grant storage for @cloudflare/workers-oauth-provider plus
@@ -61,16 +60,16 @@
       "preview_bucket_name": "stellar-raven-artifacts-dev"
     }
   ],
-  // Production hostnames: raven.stellar.org is the canonical route (canonical
-  // since 2026-08-04); the two stellar.buzz hosts are retained as aliases (they keep
-  // the WorkOS redirect-URI registrations valid + back-compat for existing
-  // clients). Ignored by local wrangler dev. workers.dev stays off: the custom
-  // domains are the only front door.
+  // Production hostnames: raven.stellar.org is the canonical route; the two
+  // stellar.buzz hosts are aliases (they keep the WorkOS redirect-URI
+  // registrations valid and serve existing clients). Ignored by local
+  // wrangler dev. workers.dev stays off: the custom domains are the only
+  // front door.
   "routes": [
     // raven.stellar.org arrives via Cloudflare for SaaS on the stellar.buzz
     // zone (custom hostname + CNAME to proxy-fallback.stellar.buzz). Without
     // this route the custom-hostname traffic falls through to the zone's
-    // fallback handling (wisprduck) instead of this worker.
+    // fallback origin instead of this worker.
     {
       "pattern": "raven.stellar.org/*",
       "zone_name": "stellar.buzz"
@@ -117,7 +116,7 @@
   // Readable production stack traces in Workers Logs (bundle is esbuild
   // output; without maps, errors point at minified positions).
   "upload_source_maps": true
-  // NOTE: stateless server (PLAN §1) — deliberately no Durable Object
+  // NOTE: stateless server (ARCHITECTURE.md) — deliberately no Durable Object
   // bindings/migrations. Secrets (LUMENLOOP_API_KEY, ALGOLIA_{APPLICATION_ID,API_KEY}_{DOCS,SITE},
   // WORKOS_CLIENT_ID, WORKOS_API_KEY,
   // MCP_SERVER_SECRET) go via `wrangler secret put` in prod and `.dev.vars`

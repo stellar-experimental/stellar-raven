@@ -57,7 +57,7 @@ No independent review was requested for this round.
   no commit to the two storage helpers after `624d40ff29ca` (2025-09-04); the live saved-keypairs
   bundle is still `page-dbc03db5d85268bb.js`; local `stellar 28.1.0` help matches.
 - `npm run eval:qa:register` → reopened `cluster-023` and `cluster-137` (member hash changed).
-  `npm run eval:qa:register -- --review .agents/rounds/2026-09-30-skill-system-audit/register-review.json`
+  [`npm run eval:qa:register -- --review .agents/rounds/2026-09-30-skill-system-audit/register-review.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/register-review.json)
   → `updated; 0 reopened`.
 - `npm run eval:qa:compile` → `eval/qa/cases.json (501 cases; sha256 06d348f6…)`; only content
   hashes moved in `sample.json` and `lifecycle-registry.json`.
@@ -81,13 +81,13 @@ Remaining risk: none for runtime. The PR changes no Worker source, catalog, or s
 
 Opened 2026-09-30 after the merge and deploy of PR #183. `sk-027` was filed as
 https://github.com/Stellar-Light/stellar-scout/issues/14 before the round. Brief:
-`.agents/rounds/2026-09-30-skill-system-audit/review-brief.md`.
+[`.agents/rounds/2026-09-30-skill-system-audit/review-brief.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-brief.md).
 
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| product, docs, and upstream text | `rev-fable` (Claude Fable 5.1, high) | `w46:p2` | `review-rev-fable.md` | running |
-| pipeline and gate compliance | `rev-astra` (GPT-6-Astra, high) | `w46:p5` | `review-rev-astra.md` | running |
-| code-versus-docs and missed work | `rev-sol` (GPT-6.1-Sol, high) | `w46:p3` | `review-rev-sol.md` | running |
+| product, docs, and upstream text | `rev-fable` (Claude Fable 5.1, high) | `w46:p2` | [`review-rev-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-rev-fable.md) | running |
+| pipeline and gate compliance | `rev-astra` (GPT-6-Astra, high) | `w46:p5` | [`review-rev-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-rev-astra.md) | running |
+| code-versus-docs and missed work | `rev-sol` (GPT-6.1-Sol, high) | `w46:p3` | [`review-rev-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-rev-sol.md) | running |
 | live re-derivation and assumption attack | `rev-grok` (Grok 4.7, high) | `w46:p4` | `review-rev-grok.md` | running |
 
 All four reviewers differ from the author and orchestrator (Claude Opus 5.5, pane `w46:p1`), which
@@ -113,8 +113,8 @@ created and owns panes `w46:p2`–`w46:p5`.
 
 ### Reconciliation
 
-All four verdicts: `accept with fixes`. Reviews: `review-rev-fable.md`, `review-rev-astra.md`,
-`review-rev-sol.md`, `review-rev-grok.md` in this round's directory. The Codex sandbox blocks writes
+All four verdicts: `accept with fixes`. Reviews: [`review-rev-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-rev-fable.md), [`review-rev-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-rev-astra.md),
+[`review-rev-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/review-rev-sol.md), `review-rev-grok.md` in this round's directory. The Codex sandbox blocks writes
 under `.agents/`, so `rev-astra` and `rev-sol` wrote to the ignored `tmp/` and the orchestrator copied
 the files unchanged.
 
@@ -154,7 +154,7 @@ with skills absent from the Stellar Light snapshot. Queued in `TODO.md`.
   carries 2026-09-30 evidence in `truth.corroboration`. Independent re-derivations: `rev-fable`
   (19:58Z), `rev-astra`, `rev-sol`, and `rev-grok` (20:03Z–20:07Z), each without the author's notes.
 - `npm run eval:qa:register` reopened clusters 023 and 137 again after the evidence edit;
-  `npm run eval:qa:register -- --review .agents/rounds/2026-09-30-skill-system-audit/register-review-2.json`
+  [`npm run eval:qa:register -- --review .agents/rounds/2026-09-30-skill-system-audit/register-review-2.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/register-review-2.json)
   → `updated; 0 reopened`; `npm run eval:qa:register -- --check` → `up to date`.
 - `npm run eval:plan -- eval/qa/results/2026-08-30T03-43-11-variantA.json` (the latest saved result;
   it has no row for the edited case) → identical output with the `605c1558` coverage rules and with
@@ -162,15 +162,15 @@ with skills absent from the Stellar Light snapshot. Queued in `TODO.md`.
 
 ### Verification pass
 
-Each reviewer checked `f65e165d..a6db8c1a` against its own findings. Files: `verify-rev-fable.md`,
-`verify-rev-astra.md`, `verify-rev-sol.md`, `verify-rev-grok.md` (written to the ignored `tmp/` and
+Each reviewer checked `f65e165d..a6db8c1a` against its own findings. Files: [`verify-rev-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/verify-rev-fable.md),
+[`verify-rev-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/verify-rev-astra.md), [`verify-rev-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/verify-rev-sol.md), [`verify-rev-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/verify-rev-grok.md) (written to the ignored `tmp/` and
 copied unchanged). Verdicts: `rev-fable` accept, `rev-grok` accept, `rev-astra` reject, `rev-sol`
 reject. Both rejections accepted the functional fixes and named these remaining problems; each is
 fixed in the next commit.
 
 | problem | reviewer | fix |
 | --- | --- | --- |
-| The golden record above says the reviewers worked "without the author's notes". They read the notes first, so their checks were independent live source checks, not blind re-derivation. The first review round also did not check the upload-deploy page or the Quickstart implementation. | astra | Correction to the "Golden verification record": replace "each without the author's notes" with "after reading the author's notes (independent source checks, not blind)". The case's `truth.verified` now says who checked which source in which pass. Clusters re-closed with `register-review-3.json`. |
+| The golden record above says the reviewers worked "without the author's notes". They read the notes first, so their checks were independent live source checks, not blind re-derivation. The first review round also did not check the upload-deploy page or the Quickstart implementation. | astra | Correction to the "Golden verification record": replace "each without the author's notes" with "after reading the author's notes (independent source checks, not blind)". The case's `truth.verified` now says who checked which source in which pass. Clusters re-closed with [`register-review-3.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/register-review-3.json). |
 | Directory mode without picks accepts a child directory with no `SKILL.md`; the reconciliation marked the selector finding fixed | sol | The selector now rejects every selected directory without `SKILL.md`, picked or not, with a test. All five real sources still select exactly their manifest files. |
 | `check-mirrors.mjs` throws on `skills: {}` and accepts a skill whose `SKILL.md` row is missing | sol, astra | The per-source checks moved to `pinnedSourceFailures` in `scripts/lib/skill-mirror.mjs`, which guards non-array values and requires a `SKILL.md` row. `test/pinned-source-shape.test.mjs` covers it. |
 | Admission step 5 ran `--enforce-floors` before step 6 activated the new cases; the reconciliation marked the finding fixed | sol | Steps reordered: rebuild (5), QA activation with compile and register (6), acceptance gates on the complete tree (7), review and deploy (8). |
@@ -183,8 +183,8 @@ the inactive `build-index.mjs` branches, the SCF body read, and the filer's repe
 
 ### Re-check pass
 
-`rev-astra` and `rev-sol` re-checked `a6db8c1a..406301af` (`recheck-rev-astra.md`,
-`recheck-rev-sol.md`). `rev-astra`: accept. `rev-sol`: reject on one remaining problem, which
+`rev-astra` and `rev-sol` re-checked `a6db8c1a..406301af` ([`recheck-rev-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/recheck-rev-astra.md),
+[`recheck-rev-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/recheck-rev-sol.md)). `rev-astra`: accept. `rev-sol`: reject on one remaining problem, which
 `rev-astra` also reproduced as non-blocking.
 
 Correction to the "Verification pass" table: the `check-mirrors.mjs` row was only fixed for the
@@ -198,7 +198,7 @@ fix the `--fetch` case fails (`1 failed | 1 passed`); with it both pass.
 
 ### Final verdicts
 
-`rev-sol` re-checked `406301af..5a72232e` (`final-rev-sol.md`): accept. It reproduced exit 1 in both
+`rev-sol` re-checked `406301af..5a72232e` ([`final-rev-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-30-skill-system-audit/final-rev-sol.md)): accept. It reproduced exit 1 in both
 modes for `skills: {}` and exit 2 at `406301af`, and found no new defect.
 
 Final state: `rev-fable` accept (verification pass), `rev-grok` accept (verification pass),

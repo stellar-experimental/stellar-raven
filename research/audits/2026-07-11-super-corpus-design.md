@@ -518,7 +518,7 @@ deltas, `lint-corpus.mjs`, live-lane v2 cutover + self-test digests, ci.yml chan
 `cases.json` + `sample.json`. Atomic because the byte-identity step runs the new compiler — new
 tooling with old artifacts (or vice versa) is CI-red by construction (§13b). The projection
 audit + promptSha256 proof run here and their results are recorded in the commit message and
-`eval/qa/reviewed/2026-07-super-corpus-migration.md`.
+[`eval/qa/reviewed/2026-07-super-corpus-migration.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/qa/reviewed/2026-07-super-corpus-migration.md).
 
 **C6 — delete-legacy (overlay only; Resolution 4).** `golden-overrides.json`, `grader-notes.mjs`,
 `test/qa-grader-notes.test.mjs`. Nothing else — raven-next/raven-golden-qa untouched. A repo-wide
@@ -611,7 +611,7 @@ Paid research spend concentrates in H1/H2/N2 (gospel is worth expensive verifica
 
 - **`eval/qa/README.md` rewritten current-state-only, ~10 KB** (from 40,661 bytes): schema
   reference, directory/lane map, commands, comparability rules, links to skills. All run
-  archaeology and rubric narrative move to a dated `research/audits/2026-07-qa-history.md`;
+  archaeology and rubric narrative move to a dated [`research/audits/2026-07-qa-history.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-qa-history.md);
   the short rubric changelog already in the `judge.mjs` header stays (Grok MN-3).
 - **`golden-truth` SKILL.md**: rewritten for owned files — edits land in per-case files; the
   gospel-change lint replaces override enforcement; corroboration required-when rules; the

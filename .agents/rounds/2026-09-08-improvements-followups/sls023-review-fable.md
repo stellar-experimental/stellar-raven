@@ -214,7 +214,7 @@ active references are:
     through unchanged (`src/adapters/scout.ts` does not reshape rows).
 
 Leave as dated provenance: `research/qa-deep-dive-2026-08-25/*.md`, `.agents/rounds/2026-08-28-*`,
-`.agents/rounds/2026-09-03-truth-maintenance*`, `.agents/rounds/2026-09-08-live-drift-91.md`.
+`.agents/rounds/2026-09-03-truth-maintenance*`, [`.agents/rounds/2026-09-08-live-drift-91.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-live-drift-91.md).
 
 ### Q5. Is an upstream resolution comment justified now?
 

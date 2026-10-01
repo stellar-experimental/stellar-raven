@@ -15,14 +15,13 @@ change must follow. [README.md](./README.md) describes the project.
 
 ## Set up
 
-Use Node 24 (`.nvmrc`). Follow [Run locally](./README.md#run-locally) in the README:
+Follow steps 1 to 3 of [Run locally](./README.md#run-locally) in the README. Two notes apply to
+contributors:
 
-1. `npm ci`. It also installs the pre-commit hook (`scripts/git-hooks/pre-commit`), which blocks
-   commits that contain secrets.
-2. Create `.dev.vars` with the names from the `.dev.vars` step in
-   [`ci.yml`](./.github/workflows/ci.yml). Placeholder values are enough for typecheck and tests.
-3. `npm run typegen`. Without `.dev.vars`, the generated `Env` type has no secret members and
-   typecheck fails.
+- `npm ci` also installs the pre-commit hook (`scripts/git-hooks/pre-commit`). The hook blocks
+  commits that contain secrets.
+- Placeholder values in `.dev.vars` are enough for typecheck and tests. Without `.dev.vars`, the
+  generated `Env` type has no secret members and typecheck fails.
 
 ## Checks
 
