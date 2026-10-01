@@ -236,16 +236,16 @@
           "q-tool-lab-what-is"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-01",
+          "reason": "Grader-note cleanup (2026-10-01): q-comp-anchor-compliance-stack changed two also-good lines only. One now names AUTH_REQUIRED and AUTH_REVOCABLE, as SEP-8 v1.7.4 requires. One now names the regulated operator and states no categorical licensing allocation. No SEP status claim changed. q-sep-8-regulated-assets and q-comp-sep8-regulated-assets-approval-server state the same Required plus Revocable requirement. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "SEP-1/9/10/12/24/31/46/48 Active; SEP-6 Active with only interactive components deprecated in favor of SEP-24 (the only-partial-deprecation nuance is stated identically in all 3 cases that touch it); SEP-30/38/39/41/43/45/55/57/58 Draft — consistent everywhere. SEP-8 moved to tensions (upstream repo itself inconsistent). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-aas-sep30-recoverable-wallets": "7fd557231a01715b10a66a0f2d2f14f30e5507e466c64bf9e239dc6ba3a7be6a",
-          "q-comp-anchor-compliance-stack": "8f9abfe06daac570636d12faacec49b4ae583eadf637e26bcfbd2edbbe9e6301",
+          "q-comp-anchor-compliance-stack": "7924c3ffe3a07da78302bd4753f25b6d112170b17e3d4db05077fe7f568b5d9c",
           "q-crp-oz-rwa-erc3643-trex": "0a5c51fc65c1dadf0ddd185f12b4273119c2e6ff09b8bca0f766853c4fcc94d4",
           "q-sep-1-toml": "003abe972298404172d851133871e58f8757ce021d516496b6151c0c3025d3c8",
           "q-sep-12-kyc": "ebec5007eb4a5ba477f9861cbac429232589b4fc0758e9575c6b533c26a9376b",
@@ -309,7 +309,7 @@
         "lastChecked": "2026-10-01",
         "reSwept": {
           "date": "2026-10-01",
-          "reason": "Owner decision C (2026-10-01): q-scf-rfp-tooling gained a grader scope note only. The note says the RFP-track definition, not a Scout category label, binds the tooling scope. No program mechanic, cap, tier, or total changed. Re-read q-scf-open-rfps, q-scf-how-to-apply, and q-scf-current-round; no contradiction. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md. Re-stamped after the ledger moved into the round folder; no member content changed beyond that provenance path.",
+          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. No program mechanic, cap, tier, or total changed. This review also keeps the 2026-10-01 result for q-scf-rfp-tooling: its scope note binds the RFP-track definition. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -319,7 +319,7 @@
           "q-scf-ambassador-program": "fd296d5bc36350b62b2734dd07cfcf995ce36e837c4d14ad12db296fb9e66977",
           "q-scf-audit-bank": "527e1d0f43a47d3ee620cd1042d92755911cd7acabd7807268fc7a88e5cacaba",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10",
           "q-scf-hackathons-active": "98f4eaa3afa6d75cf02c353e104f3a33d0127e20d10450756ac18bfc6db291da",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-instawards": "53a993c5870b2fb1d4bede4aaa7dd46fc75c18192e950532b35f6841d1f37490",
@@ -789,15 +789,15 @@
           "q-scf-current-round"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-01",
         "note": "Current-round facts stay in q-scf-current-round; the v7 centralization case now contains only payment-term and network-authority claims.",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2"
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10"
         },
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed SCF #46, #45, and #44 state after the source-note correction; no contradiction exists.",
+          "date": "2026-10-01",
+          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. q-edge-scf-v7-centralization-myths carries no round-phase claim. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         }
       },
@@ -926,16 +926,16 @@
           "q-scf-history-soroswap"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the narrowed SCF #45 source note; award mechanics remain consistent.",
+          "date": "2026-10-01",
+          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. Award mechanics and the Soroswap award history are unchanged. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "Program maximum ($100K in XLM via $50K Base plus optional $50K Supplemental), individual Soroswap award, general Build cap, and current-round deadline are explicitly distinguished.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10",
           "q-scf-history-soroswap": "f06b47f25de8eda43c207d88f6db3f466f321ac74427d5e46343a45056031a58"
         }
       },
@@ -1004,15 +1004,15 @@
           "q-sep-45-contract-auth"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-edge-inject-ignore-instructions, q-sep-45-contract-auth changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-01",
+          "reason": "Grader-note cleanup (2026-10-01): q-comp-anchor-compliance-stack changed two also-good lines only. One now names AUTH_REQUIRED and AUTH_REVOCABLE, as SEP-8 v1.7.4 requires. One now names the regulated operator and states no categorical licensing allocation. The SEP-10 G/M and SEP-45 C authentication split is unchanged in every member. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "SEP-10 uses a signed challenge transaction and JWT for classic G and muxed M clients. C contract accounts use SEP-45 authorization-entry authentication; SEP-45 complements rather than replaces SEP-10.",
         "memberContentSha256": {
-          "q-comp-anchor-compliance-stack": "8f9abfe06daac570636d12faacec49b4ae583eadf637e26bcfbd2edbbe9e6301",
+          "q-comp-anchor-compliance-stack": "7924c3ffe3a07da78302bd4753f25b6d112170b17e3d4db05077fe7f568b5d9c",
           "q-edge-inject-ignore-instructions": "304b259627194a9ceb858df45165f13b048867a015396816a62ee4b3425c26e8",
           "q-sep-45-contract-auth": "e5048ec1d291cdd2e18788fd958e9b1135360ebee46a38228f188131da0e33c3"
         }
@@ -1027,24 +1027,20 @@
           "q-pc-address-types-strkey",
           "q-sor-sac-introspection"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-29",
+        "verdict": "consistent",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-asset-trustline-vs-sac, q-defi-bridge-evm-to-stellar-axelar, q-edge-metamask-evm-mental-model, q-pc-address-types-strkey, q-sor-sac-introspection (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-asset-trustline-vs-sac, q-defi-bridge-evm-to-stellar-axelar, q-edge-metamask-evm-mental-model, q-pc-address-types-strkey, q-sor-sac-introspection changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-01",
+          "reason": "MetaMask route review (2026-10-01), after the independent review fix: q-defi-bridge-evm-to-stellar-axelar and q-edge-metamask-evm-mental-model agree. Both date MetaMask's documented Stellar support to 2026-10-01 and keep the third-party Snap distinct. The bridge case states that MetaMask documents swaps into Stellar and configures Stellar as an active bridge chain, and that the recorded quote requests returned no route, so the route, messenger, and destination token stay unverified. Its provenance records five zero-quote requests and one nine-quote control. This supersedes the cluster note's Snap-only wording. The native XLM, SAC, and ERC-20 statements are unchanged in every member. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "Native XLM has no issuer/trustline and is not ERC-20, but it has a deterministic network-specific SAC ID exposing the same asset through SEP-41. Ordinary MetaMask EVM custom-network flow cannot add Stellar; a dated third-party Stellar Snap exists and is distinct from MetaMask Bridge or a safety endorsement. Wrapped/bridged assets remain separate representations. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-trustline-vs-sac": "aee5936d93963d764fb54455832d50df38f8e4b0bc512a79669d53055a185319",
-          "q-defi-bridge-evm-to-stellar-axelar": "e14f741df7e1ca14dda8da8c51a03f2432c9471e4070a0bb797dcb2b553301ca",
+          "q-defi-bridge-evm-to-stellar-axelar": "7abc657128fc63fd21e39bc6e61faa8cc4b6432b616c0b52d0f52bbf39bcde0f",
           "q-edge-metamask-evm-mental-model": "ed54ba625daab12da7b7f94913087a89187c66d64c6b8b40afb8361444017088",
           "q-pc-address-types-strkey": "2fdaa985abc06184d0eba050dccecd5b41562cf4fadf41388aad517812ec4477",
           "q-sor-sac-introspection": "10a9eeaa01c68c888cb424c133a619db548736bc7e15bbb4c2ff32e3fa96c06d"
-        },
-        "reopened": {
-          "date": "2026-10-01",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -1100,17 +1096,17 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the SCF dated-state and avoid-item corrections; no governance contradiction exists.",
+          "date": "2026-10-01",
+          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. q-edge-fresh-latest-scf-round carries the same refreshed state. Tranche terms and the authority distinction are unchanged. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "3949ed2b3292f0c27a394e7bc82161dc0536bcceff5d3ed32cf2e67586f5386c",
+          "q-edge-fresh-latest-scf-round": "57a8fba26d047c8dfa22d78a770558e5cb2d9e9919e98a5b2efdff45fd8ceca4",
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
@@ -2875,10 +2871,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the current-round source note; the Build award cap and usage remain consistent.",
+          "date": "2026-10-01",
+          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. The Build cap and its usage are unchanged. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
         "note": "All cases distinguish the current SCF Build cap of $150,000 worth of XLM from project-history amounts and other SDF programs.",
@@ -2886,7 +2882,7 @@
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
           "q-scf-build-tracks": "5fa791dca7d40fe769531d3b2ea6573c89f666d6de4b67cf8d82866f01f3fd29",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
@@ -2900,15 +2896,15 @@
           "q-scf-total-distributed"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-01",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the current SCF state while preserving the fixed SCF #43 result; no contradiction exists.",
+          "date": "2026-10-01",
+          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. The cluster note carries the same 2026-10-01 phase. The fixed SCF #43 result is unchanged; q-scf-round-43-results and q-scf-total-distributed carry no #45 phase claim. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
-        "note": "SCF #43 keeps its fixed 29-project and $3,139,069 result. #44 is now last concluded. #45 is in Panel Review. #46 is current in Submission.",
+        "note": "SCF #43 keeps its fixed 29-project and $3,139,069 result. #44 is now last concluded. As of 2026-10-01, #45 is in Notification & Award Distribution. #46 is current in Submission.",
         "memberContentSha256": {
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10",
           "q-scf-round-43-results": "55b27c37bcce1e58e728e605abb644e76f91053d971b0603774867c67ec4c2d2",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68"
         }
@@ -3568,34 +3564,41 @@
       },
       {
         "label": "SCF Submission",
-        "authoritativeValue": "SCF #46 Submission through 2026-11-08; #45 Panel Review; #44 last concluded",
-        "rule": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08; #45 is in Panel Review; #44 is the last concluded round.",
+        "authoritativeValue": "SCF #46 Submission through 2026-11-08; #45 Notification & Award Distribution; #44 last concluded",
+        "rule": "As of 2026-10-01, SCF #46 is in Submission through 2026-11-08; #45 is in Notification & Award Distribution; #44 is the last concluded round.",
         "acceptedSpellings": [
           "SCF #46",
           "Submission",
           "2026-11-08",
           "November 8, 2026",
-          "Panel Review"
+          "Notification & Award Distribution"
         ],
         "evidence": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "observedAt": "2026-09-03T15:39:35.870Z",
+            "observedAt": "2026-10-01T18:48:36Z",
             "httpStatus": 200,
-            "note": "Official awards index showed SCF #46 in Submission through November 8, 2026, #45 in Panel Review, and #44 ended."
+            "note": "Official awards index showed SCF #46 in Submission through November 8, 2026, #45 in Notification & Award Distribution, and #44 ended."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+            "observedAt": "2026-10-01T18:48:36Z",
+            "httpStatus": 200,
+            "note": "Official SCF #45 page: 'SCF #45 is currently in the Notification and Award Distribution phase.'"
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "observedAt": "2026-09-03T15:39:35.870Z",
+            "observedAt": "2026-10-01T18:48:36Z",
             "httpStatus": 200,
-            "note": "Live Scout metadata reported #46 Submission through 2026-11-08, #45 Panel Review, and #44 last concluded."
+            "note": "Live Scout metadata (generatedAt 2026-10-01T17:56:10.444Z) reported #46 Submission through 2026-11-08, #45 Notification & Award Distribution, and #44 last concluded."
           }
         ],
         "datePolicy": {
           "mode": "as-of",
-          "asOf": "2026-09-03",
+          "asOf": "2026-10-01",
           "recheckOn": "next SCF round or phase change"
         },
         "affectedCaseIds": [
@@ -3603,16 +3606,16 @@
           "q-scf-current-round"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "3949ed2b3292f0c27a394e7bc82161dc0536bcceff5d3ed32cf2e67586f5386c",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2"
+          "q-edge-fresh-latest-scf-round": "57a8fba26d047c8dfa22d78a770558e5cb2d9e9919e98a5b2efdff45fd8ceca4",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Final-review reconciliation: both affected cases encode #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded.",
+          "date": "2026-10-01",
+          "reason": "SCF phase refresh (2026-10-01): both affected cases encode #46 Submission through 2026-11-08, #45 Notification & Award Distribution, and #44 as last concluded. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-09-03"
+        "lastChecked": "2026-10-01"
       },
       {
         "label": "Stellar base fee floor",
@@ -3714,7 +3717,7 @@
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
         "requiredRecheck": "Keep SCF #43's fixed result separate. Refresh current-round and open-RFP cases after each official phase change.",
-        "disposition": "reviewed — as of 2026-09-03, #46 is in Submission through 2026-11-08, #45 is in Panel Review, #44 is last concluded, and #43 remains fixed historical truth.",
+        "disposition": "reviewed — as of 2026-10-01, #46 is in Submission through 2026-11-08, #45 is in Notification & Award Distribution, #44 is last concluded, and #43 remains fixed historical truth.",
         "caseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-round-43-results",
@@ -3724,24 +3727,20 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "3949ed2b3292f0c27a394e7bc82161dc0536bcceff5d3ed32cf2e67586f5386c",
-          "q-scf-current-round": "e3102e2068b933a982c1337c1d7ede07c8b12017b52e0d4c9735b956997c2ef2",
+          "q-edge-fresh-latest-scf-round": "57a8fba26d047c8dfa22d78a770558e5cb2d9e9919e98a5b2efdff45fd8ceca4",
+          "q-scf-current-round": "78ae64c2f8be28938b07bc4c83e20b863c2c985cdb00be8e4311ea8281e22e10",
           "q-scf-open-rfps": "88264560ff4bdd1b9cb65b014a8b434dadd8c19f0eeb2ee057bb2513a89283b0",
           "q-scf-rfp-tooling": "0238b41899740bae996ed89462f93d71a1979a6944bf47965e6ce1393026f0d7",
           "q-scf-round-43-results": "55b27c37bcce1e58e728e605abb644e76f91053d971b0603774867c67ec4c2d2",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68"
         },
-        "verdict": "reopen",
+        "verdict": "consistent",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Reviewed the fired SCF phase-change trap; #46 is in Submission, #45 is in Panel Review, #44 is concluded, and #43 remains fixed.",
+          "date": "2026-10-01",
+          "reason": "Reviewed the fired SCF phase-change trap: #45 moved from Panel Review to Notification & Award Distribution. q-scf-current-round and q-edge-fresh-latest-scf-round now report that phase. q-scf-open-rfps, q-scf-rfp-tooling, q-scf-round-43-results, and q-scf-total-distributed carry no #45 phase claim. The next known trigger is the #46 submission deadline on 2026-11-08. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-09-03",
-        "reopened": {
-          "date": "2026-10-01",
-          "reason": "member-content-changed"
-        }
+        "lastChecked": "2026-10-01"
       },
       {
         "triggerDateEvent": "2026-10-08 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",

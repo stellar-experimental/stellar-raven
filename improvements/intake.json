@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-09-30",
+  "updated": "2026-10-01",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -169,6 +169,10 @@
     "sd-053": {
       "repo": "stellar/stellar-docs",
       "reason": "The RPC configuring page section on BACKFILL is developers.stellar.org content owned by the docs repository."
+    },
+    "sd-054": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Stellar Stack and Validators cadence sentences are developers.stellar.org content owned by the docs repository."
     },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"
