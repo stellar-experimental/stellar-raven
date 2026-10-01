@@ -22,7 +22,7 @@
       "Do NOT substitute clawback for SEP-8's Revocable requirement.",
       "Do NOT give categorical licensing/legal advice or claim Anchor Platform itself supplies compliance."
     ],
-    "notes": "Multi-hop how-to chaining SEP-10/12/24/8 + flags, verified against the individual SEP specs. Trap: scrambling SEP roles.\nAlso good if the answer: For regulated assets, a SEP-8 approval server gates the transaction before submission. | The asset's native flags (AUTH_REQUIRED / AUTH_CLAWBACK_ENABLED) enforce control at the ledger. | The anchor (a regulated financial institution) runs off-chain AML/sanctions screening; licensing burden is the anchor's, not Stellar's.\nGolden cites: developers.stellar.org anchor / Anchor Platform docs and the relevant SEP specs.\nCORRECTION 2026-07-10: grade a capability-driven matrix, not one mandatory sequence. SEP-10 G/M and SEP-45 C are account-scoped; SEP-6 auth is conditional; SEP-12 uses PUT for upload; SEP-8 is only for regulated assets and requires Required + Revocable; legal duties are actor/activity/jurisdiction-specific."
+    "notes": "Multi-hop how-to chaining SEP-10/12/24/8 + flags, verified against the individual SEP specs. Trap: scrambling SEP roles.\nAlso good if the answer: For regulated assets, a SEP-8 approval server gates the transaction before submission. | The asset's native flags (AUTH_REQUIRED / AUTH_REVOCABLE) enforce control at the ledger. | The regulated operator runs off-chain AML/sanctions screening; the network holds no licensing duty merely because it settles the transfer.\nGolden cites: developers.stellar.org anchor / Anchor Platform docs and the relevant SEP specs.\nCORRECTION 2026-07-10: grade a capability-driven matrix, not one mandatory sequence. SEP-10 G/M and SEP-45 C are account-scoped; SEP-6 auth is conditional; SEP-12 uses PUT for upload; SEP-8 is only for regulated assets and requires Required + Revocable; legal duties are actor/activity/jurisdiction-specific."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -120,6 +120,12 @@
             "ref": "B/F: official reference flow",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/af35d0ccb5b492ddd2ebf09162ceab2600503130/ecosystem/sep-0008.md",
+            "observedAt": "2026-10-01",
+            "note": "SEP-8 v1.7.4: 'Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.' The recorded text search found no clawback requirement."
           }
         ]
       },
@@ -144,15 +150,25 @@
             "ref": "A/D: applicable duties depend on actor, activity, product, route, and jurisdiction",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+            "observedAt": "2026-10-01",
+            "note": "FIN-2019-G001: 'Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes'. Regulatory treatment follows the facts and circumstances of the activity, not the label."
           }
         ],
         "note": "Legacy verdict: overbroad."
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
       "evidence": [
+        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3, sibling found by the sweep): two also-good lines contradicted this case's own avoid items and CORRECTION line. 'AUTH_REQUIRED / AUTH_CLAWBACK_ENABLED' is now 'AUTH_REQUIRED / AUTH_REVOCABLE' (avoid item 3). 'The anchor (a regulated financial institution) ... licensing burden is the anchor's' now names the regulated operator and states no categorical allocation (avoid item 4, key fact 5). Answer, keyFacts, and avoid are unchanged.",
+        "Live re-check 2026-10-01 (class B): https://github.com/stellar/stellar-protocol/blob/af35d0ccb5b492ddd2ebf09162ceab2600503130/ecosystem/sep-0008.md — 'Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.'",
+        "Live re-check 2026-10-01 (class A): https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — the guidance applies to the described business model, not to a product label.",
+        "Sibling sweep 2026-10-01: q-pay-anchor-msb-licensing, q-pay-travel-rule-aid-flows, q-comp-finclusive-caas (cleaned in this change), q-crp-become-an-anchor-licensing, and q-crp-custodial-vs-noncustodial-wallets all scope duties by entity and activity; no contradiction.",
         "Solo scratchpad 575 GT-07 primary and GT-08 blind reviews",
         "Structural re-form (negative-predicate): split the authentication and SEP-role fact, then shortened all facts with positive predicates; truth is unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/anchors — the anchor flow remains capability-driven across several SEP services.",
@@ -164,6 +180,7 @@
         "Sibling sweep 2026-08-27: grep SEP-45|SEP-12|SEP-8|Required + Revocable → q-sep-45-contract-auth, q-sep-12-kyc, q-sep-8-regulated-assets, q-comp-sep6-vs-sep12-roles, q-anchor-platform-what; no contradiction"
       ],
       "rootCause": [
+        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
         "Separate SEP descriptions were compressed into a false mandatory sequence.",
         "Optional clawback was substituted for SEP-8's normative Revocable flag.",
         "Technical platform roles were generalized into categorical legal advice.",

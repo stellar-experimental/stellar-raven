@@ -16,7 +16,7 @@
       "Do NOT treat FATF guidance as self-executing identical law everywhere or use one universal threshold.",
       "Do NOT conflate KYC with Travel Rule transmission."
     ],
-    "notes": "2026-06-29 reviewed. SDF-published responsibility framing: the originating org / licensed anchor holds Travel Rule/KYC; SDF disclaims control over independent orgs' fees in aid flows. Don't state a regulatory exemption as settled. Trap: putting the compliance duty on the protocol.\nAlso good if the answer: SDF explicitly disclaims control over fees and operations of independent organizations participating in aid flows. | KYC in aid contexts is handled off-chain and is contextual/proportionate to the recipient population.\nGolden cites: SDF aid/SDP docs or policy materials; reputable Travel-Rule reference where relevant.\nCORRECTION 2026-07-10: require an actor/route/custody/threshold/jurisdiction matrix and separate Travel Rule from KYC. Avoid categorical humanitarian exemptions or duties."
+    "notes": "2026-06-29 reviewed. Don't state a regulatory exemption as settled. Trap: putting the compliance duty on the protocol.\nAlso good if the answer: SDF explicitly disclaims control over fees and operations of independent organizations participating in aid flows. | KYC in aid contexts is handled off-chain and is contextual/proportionate to the recipient population.\nGolden cites: SDF aid/SDP docs or policy materials; reputable Travel-Rule reference where relevant.\nCORRECTION 2026-07-10: require an actor/route/custody/threshold/jurisdiction matrix and separate Travel Rule from KYC. Avoid categorical humanitarian exemptions or duties."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -75,14 +75,23 @@
             "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers",
+            "observedAt": "2026-10-01",
+            "note": "The Travel Rule duties attach to the transmittor's financial institution and each intermediary financial institution: 'An intermediary financial institution must pass on all of the above listed information, as specified in the travel rule, it receives from a transmittor's financial institution or the preceding intermediary financial institution'."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
       "evidence": [
+        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy line 'SDF-published responsibility framing: the originating org / licensed anchor holds Travel Rule/KYC; SDF disclaims control over independent orgs' fees in aid flows'. It assigned the duty by label and merged Travel Rule with KYC, which avoid items 1 and 3 and the 2026-07-10 CORRECTION line reject. The also-good lines are unchanged. Answer, keyFacts, and avoid are unchanged.",
+        "Live re-check 2026-10-01 (class A): https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties attach to the transmittor's financial institution and intermediary financial institutions, by role in the transmittal.",
+        "Sibling sweep 2026-10-01: q-pay-anchor-msb-licensing, q-comp-finclusive-caas, q-crp-custodial-vs-noncustodial-wallets, q-crp-become-an-anchor-licensing, and q-comp-anchor-compliance-stack all scope duties by entity and activity; no contradiction.",
         "Solo scratchpad 575 GT-11 legal role/route matrices",
         "Structural re-form (negative-predicate): Shortened the duty-allocation fact and recast two comparison facts as positive requirements; truth unchanged",
         "Live re-check 2026-08-27: https://www.ecfr.gov/current/title-31/part-1010/section-1010.410 — the rule assigned different data and record duties by financial-institution role and applied a $3,000 threshold.",
@@ -91,6 +100,7 @@
         "Sibling sweep 2026-08-27: grep Travel Rule|VASP-to-unhosted|CDD/KYC|humanitarian aid → q-comp-anchor-compliance-stack, q-comp-finclusive-caas, q-hist-unhcr-stellar-aid-assist, q-pay-travel-rule-aid-flows; no contradiction"
       ],
       "rootCause": [
+        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
         "Program roles and a network disclaimer were promoted into legal conclusions.",
         "CDD/KYC and intermediary Travel Rule duties were conflated.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
