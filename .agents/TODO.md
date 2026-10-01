@@ -77,17 +77,6 @@ a cherry-picked source with no exclusions and one new upstream sibling.
 
 ## Tooling
 
-### Replace the inline inventory-diff snippets with a script
-
-Found by the 2026-09-30 repository audit. The `live-drift-resolution` skill classifies drift with
-three inline `node -e` programs. Two of them are almost identical (the path·method set and the
-routing-text tuple). The third compares whole operation objects and `components`. Inline programs
-drift from each other and have no tests.
-
-Done when: one script under `scripts/` (for example `diff-inventory.mjs` with surface, text, and
-deep modes) prints each comparison, a test covers each mode, and the skill calls the script instead
-of the inline programs.
-
 ### Add an executed browser test for the Playground page
 
 Found by the 2026-09-30 repository audit (test lane). Page tests match JavaScript source text, and
