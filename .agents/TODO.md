@@ -48,32 +48,6 @@ hits) removes the waste.
 Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
 single-pass payload is acceptable and this item is closed with that evidence.
 
-## Skill system
-
-Found by the [skill system audit](rounds/2026-09-30-skill-system-audit.md) and its independent
-reviews.
-
-### Decide whether to track the skills.stellar.org Community section
-
-The `https://skills.stellar.org/` index has a Community section with skills that are not in the
-Stellar Light directory snapshot, for example `soroban-common-mistakes`, `pollar-wallet-auth`,
-`sub-rosa`, `caatinga`, and `nirium-agentic-payments`. `ecosystem-skills/catalog.json` snapshots
-only `stellarlight.xyz/api/skills`, so these candidates are invisible to the drift check and
-`INDEX.md`.
-
-Done when: the index is either snapshotted beside `catalog.json` or recorded as out of scope with a
-reason.
-
-### Make the drift check's cherry-pick mode explicit
-
-`scripts/check-skills-drift.mjs` `unclassifiedSkillDirs` enumerates a source only when
-`groups.json` `unpinnedUpstream` has an entry for it. A new cherry-picked source with an empty map
-gets no sibling check. The README tells operators to record the first exclusion, but the code still
-infers the mode.
-
-Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers
-a cherry-picked source with no exclusions and one new upstream sibling.
-
 ## Golden truth
 
 ### Refresh the SCF current-round goldens after the #45 phase change

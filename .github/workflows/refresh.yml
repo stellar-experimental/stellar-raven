@@ -338,7 +338,9 @@ jobs:
                 cat skills-drift.txt
                 echo '```'
                 echo
-                echo 'Remediation: run `ecosystem-skills/update.sh` locally, review the skill diffs (skills are prompt input — read them), re-pin, commit. Never auto-sync from CI.'
+                echo 'Follow the labeled remediation paths in the checker output above.'
+                echo 'Source drift needs a reviewed re-pin. Community-only drift needs only a directory snapshot and index refresh.'
+                echo 'Never auto-sync from CI.'
               fi
               if [ "$algolia_rule_state" = "drift" ]; then
                 echo
