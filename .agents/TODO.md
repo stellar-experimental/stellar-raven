@@ -298,20 +298,8 @@ checks.
 
 ### Reconcile source-authority guidance for full-description clients
 
-The September 17 audit found conflicting instructions in `EXECUTE_DESCRIPTION` and
-`AUTHORITY_RULES`. The former says all factual questions use Docs first; the latter assigns
-ecosystem facts to Scout or Lumenloop. The conflicting clause falls beyond Claude's 2,048-character
-tool-description clip, so a clipped-client QA run cannot measure its correction. Evidence:
-`research/audits/2026-09-17-routing-audit/direction-review.md`, section 8.
-
-Use the existing source-family rule when removing the contradictory clause. Measure a
-full-description client or Playground against protocol and ecosystem controls before release. Do
-not add operation lists, entity examples, or a new routing field. The existing Playground runner
-lacks answer-cost accounting and a judge dollar cap, so keep that comparison unlaunched until
-budget enforcement covers both costs. Do not add a parallel evaluation runner.
-
-Done when: one consistent authority rule reaches the relevant client, with no verified answer
-regression.
+Phase 1 corrects the description and adds Playground dollar accounting. Independent review and measurement remain required before release.
+See [the authority plan](rounds/2026-10-01-backlog-closeout/authority-plan.md) for controls, commands, budgets, and release conditions.
 
 ### Reconcile the QA answering prompt with out-of-scope goldens
 

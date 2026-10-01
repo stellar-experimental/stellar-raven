@@ -350,13 +350,13 @@ describe("playground semantic artifact contract", () => {
       let index = 0;
       let saved: any;
       const result: any = await orchestratePlaygroundRun({
-        cases: [{ id: "a" }, { id: "b" }], treeAtStart: start, startMeta: meta, judgeEnabled: true,
+        cases: [{ id: "a" }, { id: "b" }], maxBudgetUsd: 10, treeAtStart: start, startMeta: meta, judgeEnabled: true,
         snapshotTree: async () => {
           const step = scenario.snapshots[index++]!;
           if (step === "throw") throw new Error("git\nfailed");
           return step === "changed" ? changed : start;
         },
-        runAnswer: async (item: any) => ({ answer: item.id }),
+        runAnswer: async (item: any) => ({ answer: item.id, costUsd: 0.1 }),
         judgeAnswer: async () => ({ score: "pass", costUsd: 0.25 }),
         makeRow: (item: any, run: any, verdict: any) => ({ id: item.id, answer: run.answer, verdict }),
         buildNormalArtifact: (rows: any[]) => ({ rows }),
@@ -378,9 +378,9 @@ describe("playground semantic artifact contract", () => {
     let snapshots = 0;
     let saved: any;
     const result: any = await orchestratePlaygroundRun({
-      cases: [{ id: "a" }, { id: "b" }], treeAtStart: start, startMeta: meta, judgeEnabled: true,
+      cases: [{ id: "a" }, { id: "b" }], maxBudgetUsd: 10, treeAtStart: start, startMeta: meta, judgeEnabled: true,
       snapshotTree: async () => (++snapshots === 3 ? changed : start),
-      runAnswer: async () => ({ answer: "" }),
+      runAnswer: async () => ({ answer: "", costUsd: 0.1 }),
       judgeAnswer: async () => ({ score: "error" }),
       makeRow: (item: any, run: any, verdict: any) => ({ id: item.id, answer: run.answer, verdict }),
       buildNormalArtifact: () => { throw new Error("normal artifact must not be built"); },

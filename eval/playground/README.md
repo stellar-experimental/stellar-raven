@@ -17,23 +17,61 @@ npm run eval:playground -- --preflight
 npm run eval:playground -- --print-generation
 
 # Small paid run. Both provenance assertions are mandatory before model spend.
-npm run eval:playground -- --confirm-paid --url http://localhost:8787 \
+npm run eval:playground -- --confirm-paid --max-budget-usd 10 --url http://localhost:8787 \
   --server-generation <sha256-from-print-generation> \
   --round-cap-context /tmp/playground-round-cap.json \
   --sample 5 --seed baseline-a
 
 # Targeted reproduction.
-npm run eval:playground -- --confirm-paid \
+npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
   --server-generation <sha256-from-print-generation> \
   --round-cap-context /tmp/playground-round-cap.json \
   --ids q-aas-burn-clawback-redemption-mechanics
 
 # Whole named contract, only when it stays within the one-subject 30/hour cap.
-npm run eval:playground -- --confirm-paid \
+npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
   --server-generation <sha256-from-print-generation> \
   --round-cap-context /tmp/playground-round-cap.json \
   --cases eval/qa/corpus/live/live-cases.json --full
 ```
+
+## Dollar accounting
+
+Each paid invocation requires exactly one spaced `--max-budget-usd USD` flag.
+The existing runner counts answer costs and judge costs in one sequential ledger.
+It sends the remaining amount to each answer turn and each judge call.
+The next call stops when the reported costs exhaust the amount.
+An excess cost invalidates the method and stops further calls.
+A provider can exceed the remaining amount within its last call.
+This checkpoint limit does not reserve funds or guarantee a provider-side dollar ceiling.
+
+Loopback requests carry `x-raven-eval-max-budget-usd` to the existing chat route.
+The route records each provider response's `cf-aig-log-id`.
+It reads the reported USD cost with `AI.gateway(id).getLog(logId)` after the stream finishes.
+It settles each previous call before the next provider call, including fallback calls.
+It disables automatic SDK retries and permits one Gateway attempt per provider call.
+It enables Gateway metadata logging and disables payload logging for these evaluation requests.
+Ordinary Playground requests keep their existing logging settings.
+The [Gateway log API](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/logs/methods/get/) defines the reported cost field.
+
+The route emits one `eval-cost` frame before stream closure, after any terminal frame.
+The runner reads through stream closure to collect this frame.
+Missing log identities, missing costs, duplicate identities, and failed requests never imply zero cost.
+Five bounded log reads permit a short reporting delay.
+A missing cost invalidates the method and prevents the next answer or judge call.
+The current accounting path requires a provider transport that returns raw responses with Gateway log identities.
+An unsupported transport stops before its provider call.
+Live cost reporting remains a measurement prerequisite; offline mocks cannot prove Gateway availability.
+
+Results retain `budget.selectedCaseIds`, `incompleteCaseIds`, and `unattemptedCaseIds`.
+The ledger records each authorization and reported cost.
+`meta.totalCostUsd` sums reported complete-call costs; invalid methods can have additional unknown costs.
+Each row retains the answer-cost frame, including any reported partial amount.
+Missing or excessive costs produce an invalid method with exit code 1.
+Budget exhaustion with unfinished cases produces an incomplete method with exit code 1.
+Both suppress the aggregate and block downstream grading.
+Generation quarantines also retain the budget ledger for cost reconciliation.
+The judge tuple records the executable path, real path, version, and SHA-256 before spend.
 
 `--server-generation` is deliberately an operator assertion, not runtime introspection. The
 harness requires it, checks it against the complete local working-tree generation before the
