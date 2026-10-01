@@ -53,21 +53,6 @@ status comment while the maintainers are working on the decision. History:
 Done when: each finding records the resulting live state, and any fixed finding completes the
 resolver gates.
 
-### File `sd-054` after the coordinator approves the upstream write
-
-`improvements/stellar-docs/sd-054-ledger-cadence-5-7-seconds-stale-after-protocol-28.md` is
-`verified` with a recurring probe. It asks for a precision update, not a contradiction fix. The
-Stellar Stack and Validators pages say "every 5-7 seconds". The sampled Mainnet intervals are
-about five seconds after Protocol 28. Both 199-delta post-upgrade samples contain five-second
-deltas. stellar/stellar-docs PR 2806 (merged 2026-09-08, closing issue 2805) set the current
-wording before Protocol 28 activated. The dry run of `npm run improvements:file` resolves
-`stellar/stellar-docs` and renders the issue body. Commit the finding before filing, so that the
-issue carries a commit-pinned snapshot. The 2026-10-01 follow-up lane had no authority to file
-([ledger](rounds/2026-10-01-backlog-closeout/golden-followups.md)).
-
-Done when: the issue is filed through `npm run improvements:file` and read back, or the owner
-decides not to file and the finding records that decision.
-
 ### Re-check `sd-037` after stellar-protocol PR #2021 receives a maintainer decision
 
 The stale bot closed issue https://github.com/stellar/stellar-protocol/issues/1981 as
@@ -472,6 +457,8 @@ in a round ledger, `eval/qa/README.md`, or a decision record, then delete the de
 
 The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing the canonical plan hash.
 Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
+Run it on a quiet machine. Under a heavy load average, the `ps` calls of the launch cleanup can
+time out. Cleanup then stops safely for manual action and causes no extra spend.
 
 After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
 or delete the round's launch scripts, `paired-stability-register.json`,

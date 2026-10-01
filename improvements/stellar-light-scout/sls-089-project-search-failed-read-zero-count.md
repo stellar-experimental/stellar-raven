@@ -1,7 +1,7 @@
 ---
 id: sls-089
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-10-01
 upstreamTitle: Project search returns a successful zero count after a backend read timeout
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - https://stellarlight.xyz/api/openapi.json
   - .agents/rounds/2026-10-01-backlog-closeout/sd-measure/review-result.md
   - Dedupe 2026-10-01 found no local finding and no Stellar-Light/stellarlight issue for a failed backend read, an incomplete-results warning, or a zero count after a timeout.
+  - upstream issue filed 2026-10-01: https://github.com/Stellar-Light/stellarlight/issues/1751
 ---
 
 ## Finding

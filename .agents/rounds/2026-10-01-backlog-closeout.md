@@ -15,13 +15,16 @@ record each for veto. Upstream: update PR stellar/stellar-protocol#2021 and file
 
 | lane | agent (model, effort) | branch | write set | status |
 | --- | --- | --- | --- | --- |
-| sd-adapter | GPT-6-Astra, high | `feat/stellardocs-adapter-contract` | Stellar Docs adapter, tests, its docs | running |
-| skills-drift | GPT-6.1-Sol, high | `chore/skills-drift-pick-mode` | drift check, ecosystem-skills docs | running |
-| golden | Claude Fable 5.1, high | `golden/owner-judgments` | owned golden cases (decision C, Soroswap) | running |
-| adjudicate | GPT-6-Astra, high | `eval/owner-adjudications` | decisions D, G, H, I; harness items | running |
-| gt-leads | GPT-6.1-Sol, high | `improvements/gt-leads` | `improvements/` findings | running |
-| scf-fable, scf-grok, scf-astra | Claude Fable 5.1, Grok 4.7, GPT-6-Astra (high) | read-only | decision K reviews | running |
-| orchestration | Claude Opus 5.5 | `chore/backlog-closeout-2026-10-01` | ledger, decision A run sheet, monitors, usage checks | running |
+| sd-adapter | GPT-6-Astra, high | `feat/stellardocs-adapter-contract` | Stellar Docs adapter, tests, its docs | merged #208 after measurement |
+| skills-drift | GPT-6.1-Sol, high | `chore/skills-drift-pick-mode` | drift check, ecosystem-skills docs | merged #203 |
+| golden | Claude Fable 5.1, high | `golden/owner-judgments` | owned golden cases (decision C, Soroswap) | merged #202 |
+| golden2 | Claude Fable 5.1, high | `golden/followups-2026-10-01` | decision C follow-ups, `sd-054` | merged #204 |
+| adjudicate | GPT-6-Astra, high | `eval/owner-adjudications` | decisions D, G, H, I | merged #201 |
+| gt-leads | GPT-6.1-Sol, high | (folded into the coordinator branch) | GT-41/GT-43 closure | merged #200 |
+| scf-fable, scf-grok, scf-astra | Claude Fable 5.1, Grok 4.7, GPT-6-Astra (high) | read-only | decision K reviews | ADR-0010 in #200 |
+| paired-prep | GPT-6.1-Sol, high | `eval/paired-run-sheet`, `eval/paired-pin-claude` | decision A launch tooling | merged #206, #207 |
+| authority | GPT-6-Astra, high | `fix/source-authority-guidance` | source-authority clause, Playground accounting | merged #209 after measurement |
+| orchestration | Claude Opus 5.5 | `chore/backlog-closeout-2026-10-01`, `chore/sd-measure-ledger`, `chore/backlog-closeout-final` | ledger, usage checks, filings | merged #200, #205, closeout |
 
 Model-facing changes get a measured QA comparison (pre-spend plan reviewed by another tier) before
 release. Each branch gets an independent review by a model that did not author it.
@@ -92,3 +95,47 @@ release. Each branch gets an independent review by a model that did not author i
     passed, with content equivalence in all nine branches.
   - Paid run 1 stopped before spend: the Claude Code CLI auto-updated (2.1.286 to 2.1.287). The
     executable re-pin to the immutable versioned file: GPT-6.1-Sol high, GO PAID 2 OK.
+- Decision C follow-ups merged (#204), and `sd-054` filed as stellar/stellar-docs#2889 (read back:
+  open, `raven` label). The finding records `reported-upstream`.
+- Source-authority lane (`authority`, GPT-6-Astra high): pure deletion of "purely factual questions
+  use docs first" from `EXECUTE_DESCRIPTION` (Option A), plus answer and judge cost accounting for
+  the Playground runner. Code review: Grok 4.7 high, ACCEPT, no findings (eval mode is gated to
+  localhost hosts after origin and auth checks). Plan review: Claude Fable 5.1 high, LAUNCH-OK WITH
+  FIXES, then LAUNCH-OK on the bounded delta. Frozen arms: baseline `295a90cc` (accounting only),
+  candidate `2cc020de` (adds the deletion). The demo AI Gateway has a daily spend limit with
+  adequate headroom for the planned ceiling (figures kept private).
+- Stellar Docs adapter measurement result (#208): both arms complete and comparable on 20 battery
+  and 15 live cases (`$26.52`); the repeated-judging union ran on 18 panels (`$2.78`). Independent
+  result review (Claude Fable 5.1 high): RELEASE OK; no grade difference reaches a changed adapter
+  behavior. The run exposed a Scout gap: a failed backend read under load returns HTTP 200 with a
+  zero total. `sls-089` is filed as Stellar-Light/stellarlight#1751, and an own-repo TODO item
+  covers the adapter mapping. Run stops along the way (CLI auto-update, a `.dev.vars` mismatch, a
+  fresh-shell environment hash) each stopped before its next paid command; no stop cost a paid
+  call.
+- Decision A launch preparation (#206, #207): the supervisor pins the active corpus count in the
+  plan (the battery has 501 active cases); the run sheet, operator scripts, and stability register
+  are in this folder; the launch pins the immutable Claude executable. Reviews: GPT-6-Astra high,
+  ACCEPT WITH FIXES, two delta rounds, final CONFIRMED; the pin follow-up ACCEPT.
+- Source-authority measurement (#209): the arms were re-frozen after the Gateway-transport
+  accounting repair (review: GPT-6.1-Sol high, ACCEPT WITH FIXES, delta CONFIRMED; baseline
+  `5ebffbac`, candidate `894f5fea`); no routing regression and no
+  verified answer regression; blind second reader BOUNDED PASS; `$3.23`.
+
+## Outcome
+
+- Merged: #200 to #209. Upstream: stellar/stellar-docs#2889 (`sd-054`) and
+  Stellar-Light/stellarlight#1751 (`sls-089`) filed; stellar/stellar-protocol#2021 updated, blocked,
+  and waiting for a maintainer action.
+- Owner decisions resolved under delegation, each open to veto: C (#202, #204), D, G, H, and I
+  (#201). K: not pinned (ADR-0010). A: ready for a weekend UTC run after the owner signs the plan
+  hash (run sheet in this folder).
+- Paid spend this round: `$32.53` reported (adapter `$29.30`, authority `$3.23`), plus one failed
+  receipt probe with an unknown charge.
+- Retained evidence and its current consumers: `scf-review-*.md` (ADR-0010);
+  `owner-adjudications.md` (TODO monitor, H items, prompt-conflict item);
+  `golden-owner-judgments.md` and `golden-followups.md` (case provenance, `sd-054`); `paired-*`
+  files (TODO decision A); `sd-measure/evidence/` and `sd-measure/review-result.md` (`sls-089`). The
+  other `sd-measure/` files and `authority-*.md` have no current consumer. They stay only while this
+  ledger is open. This ledger stays open until decision A runs; prune the folder then under
+  `.agents/README.md` "Retention". Keep `sd-measure/evidence/` while `sls-089` is open. The upstream
+  issue links to three of its files on `main`.

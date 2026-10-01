@@ -1,7 +1,7 @@
 ---
 id: sd-054
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-10-01
 upstreamTitle: Update the ledger cadence on the Stellar Stack and Validators pages from 5-7 seconds to about 5 seconds
 evidence:
@@ -18,6 +18,7 @@ evidence:
   - upstream search 2026-10-01 on stellar/stellar-docs for "5-7 seconds" and "close time" found no cadence report newer than issue 2805 and PR 2806. Issue 2883 cites issue 2805 as history for a link-health proposal; it is not a cadence report
   - eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json already accepts either figure when the answer dates it or names its source (truth.verified 2026-10-01). No golden change is needed for this finding
   - probe run 2026-10-01 with `npm run improvements:probes -- --service stellar-docs`; the result is in .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md. The probe reads the Stellar Stack page only and proves text presence, not the cadence. A missing match is a review signal; resolution must read both rendered pages and repeat the live cadence check
+  - upstream issue filed 2026-10-01: https://github.com/stellar/stellar-docs/issues/2889
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/learn/fundamentals/stellar-stack.mdx
