@@ -141,8 +141,16 @@ The archive cannot recreate tool events that expired from Workers Logs before co
 
 ## Owner data stays outside the repository
 
-The owner keeps production snapshots, audit exports, and the Sites publication copy in private
-directories outside this repository. This repository works without them.
+This repository is the only source for usage collection and the report. It works without any
+private directory. On the owner's machine, two private local Git repositories (no remote) sit
+beside it:
+
+| Directory | Holds |
+|---|---|
+| `~/Desktop/stellar-raven-aux-priv-report` | The Sites publication copy of `usage/report-site/`. `scripts/sync-usage-site.mjs` writes it from clean `main`; never edit it directly. |
+| `~/Desktop/stellar-raven-aux-priv-evidence` | Production snapshots, dashboard exports, and audits with real figures. Production data lives there and nowhere else. |
+
+A fork creates its own Sites project and keeps its own evidence outside its repository.
 
 Never commit production counts, request identifiers, or account hashes. Public tests use explicitly
 synthetic fixtures. Import historical snapshot JSON into D1 with a bound parameter through the

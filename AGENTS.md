@@ -17,8 +17,8 @@ in a networkless Dynamic Worker; host adapters own all service traffic, policy, 
   for operator procedures.
 - Use `research/` for dated evidence and design context; it is not an instruction layer.
 - This repo is self-contained, including usage collection and reporting under `usage/`. Owner-only
-  private folders exist outside the repository. Never depend on them, and never commit production
-  counts here. See `usage/README.md`.
+  private folders exist outside the repository; `usage/README.md` names them and their roles. Never
+  depend on them, and never commit production counts here.
 - Use `.agents/skills/<name>/SKILL.md` for repeatable task workflows. `.claude/skills` is the
   committed symlink to the same canonical directory.
 - Use `.agents/TODO.md` for the own-repo work queue, priorities, and open owner decisions, and
