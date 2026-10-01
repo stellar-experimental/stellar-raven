@@ -444,7 +444,7 @@ export function collectIntakeRepos(intake) {
 }
 
 export function markdownTable(rows, headers) {
-  const escape = (value) => String(value ?? "").replace(/\|/g, "\\|").replace(/\n/g, " ");
+  const escape = (value) => String(value ?? "").replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/\n/g, " ");
   const widths = headers.map((header, idx) =>
     Math.max(header.length, ...rows.map((row) => escape(row[idx]).length)),
   );

@@ -38,6 +38,7 @@ if (!upstream || !out) {
   console.error("usage: capture-proxy.mjs --upstream <url> --out <capture.jsonl> [--port N]");
   process.exit(1);
 }
+const upstreamUrl = new URL(upstream);
 mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
 
 const server = http.createServer(async (req, res) => {
@@ -47,7 +48,7 @@ const server = http.createServer(async (req, res) => {
   // Origin-form only: `new URL(req.url, upstream)` would let an absolute-form
   // request line (`POST http://elsewhere/x`) override the upstream and turn
   // this into an open loopback relay for the duration of a run.
-  if (!req.url.startsWith("/")) {
+  if (!req.url.startsWith("/") || req.url.startsWith("//") || req.url.includes("\\")) {
     appendFileSync(
       out,
       JSON.stringify({
@@ -65,7 +66,10 @@ const server = http.createServer(async (req, res) => {
     return;
   }
   try {
-    const upstreamResponse = await fetch(new URL(req.url, upstream), {
+    const target = new URL(req.url, upstreamUrl);
+    if (target.origin !== upstreamUrl.origin) throw new Error("upstream origin mismatch");
+    const upstreamResponse = await fetch(target, {
+      redirect: "manual",
       method: req.method,
       headers: {
         ...(req.headers["content-type"] ? { "content-type": req.headers["content-type"] } : {}),

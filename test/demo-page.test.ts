@@ -28,7 +28,7 @@ const chatHtml = demoPage({ authenticated: true });
 
 describe("demo page CSP", () => {
   it("pins the exact inline script by sha256 (no unsafe-inline for script)", () => {
-    const scripts = [...chatHtml.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+    const scripts = [...chatHtml.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi)];
     expect(scripts).toHaveLength(1);
     const hash = createHash("sha256").update(scripts[0]?.[1] ?? "", "utf8").digest("base64");
     const csp = DEMO_PAGE_HEADERS["content-security-policy"] ?? "";
