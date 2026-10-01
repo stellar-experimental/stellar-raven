@@ -269,6 +269,31 @@ describe("stellarDocs adapter", () => {
     expect(headers["X-Algolia-Application-Id"]).toBe("TESTAPPID");
   });
 
+  for (const id of ["search_docs", "search_doc_titles", "search_meeting_notes"]) {
+    it(`${id} sends the documented default and preserves explicit hit limits`, async () => {
+      for (const limit of [undefined, 1, 20]) {
+        const { fetchImpl, calls } = stubFetch(fixture("stellar-docs-success.json"), 200);
+        await callStellarDocs(entry(`stellarDocs.${id}`), {
+          query: "storage", ...(limit === undefined ? {} : { hitsPerPage: limit })
+        }, docsEnv, fetchImpl);
+        expect(JSON.parse(String(calls[0]?.init?.body)).hitsPerPage).toBe(limit ?? 5);
+      }
+    });
+  }
+
+  it("scopes page-section misses to the candidate windows and preserves recovery hints", async () => {
+    const { fetchImpl, calls } = stubFetch(fixture("stellar-docs-soft-empty.json"), 200);
+    const result = await callStellarDocs(entry("stellarDocs.get_doc_page_sections"), {
+      path: "/docs/build/unknown-page"
+    }, docsEnv, fetchImpl);
+    expect(calls).toHaveLength(2);
+    expect(result).toMatchObject({ ok: false, error: {
+      kind: "soft-empty",
+      message: "The page-section queries returned no matching records for /docs/build/unknown-page within their candidate windows. Check url_without_anchor from a search hit.",
+      hint: expect.stringContaining("broad Lumenloop or Scout")
+    } });
+  });
+
   it("resolves credentials from whatever env pair the transport names (_SITE, not just _DOCS)", async () => {
     // The adapter is spec-driven: transport.applicationIdEnv/apiKeyEnv name
     // the pair (3ef9131 generalization). Prove it with a synthetic entry on
@@ -324,7 +349,7 @@ describe("stellarDocs adapter", () => {
     }
   });
 
-  it("maps zero hits to soft-empty (reliable negative on this index)", async () => {
+  it("maps zero hits to a query-scoped soft-empty", async () => {
     const { fetchImpl } = stubFetch(fixture("stellar-docs-soft-empty.json"), 200);
     const r = await callStellarDocs(
       entry("stellarDocs.search_docs"),
@@ -335,7 +360,7 @@ describe("stellarDocs adapter", () => {
     expect(r.ok).toBe(false);
     if (r.ok) return;
     expect(r.error.kind).toBe("soft-empty");
-    expect(r.error.message).toContain("not in the docs corpus");
+    expect(r.error.message).toBe("This query returned no hits in the docs index with the operation filters.");
     expect(r.error.hint).toContain("docs index");
     expect(r.error.hint).toContain("open-world ecosystem identity");
   });
@@ -656,16 +681,29 @@ describe("stellarDocs adapter", () => {
   // must reach Algolia's attributesToRetrieve, and `content` must come back only then.
   // Algolia returns only the attributes a request names, so this stub does too. A stub
   // that always returned `content` would pass with the mapping removed.
-  function algoliaStub(body: string): { fetchImpl: FetchLike; requests: { attributesToRetrieve?: string[]; hitsPerPage?: number }[] } {
-    const requests: { attributesToRetrieve?: string[]; hitsPerPage?: number }[] = [];
-    const fetchImpl: FetchLike = async (_url, init) => {
-      const params = JSON.parse(String(init?.body)) as { attributesToRetrieve?: string[]; hitsPerPage?: number };
-      requests.push(params);
+  type SearchRequest = { attributesToRetrieve?: string[]; hitsPerPage?: number };
+  type ObjectRequest = { indexName: string; objectID: string; attributesToRetrieve: string[] };
+  function algoliaStub(body: string): { fetchImpl: FetchLike; requests: SearchRequest[]; objectRequests: ObjectRequest[][] } {
+    const requests: SearchRequest[] = [];
+    const objectRequests: ObjectRequest[][] = [];
+    const fetchImpl: FetchLike = async (url, init) => {
       const parsed = JSON.parse(body) as { hits: Record<string, unknown>[] };
+      parsed.hits.forEach((hit, i) => { hit.objectID ??= String(i); });
+      if (url.endsWith("/objects")) {
+        const params = JSON.parse(String(init?.body)) as { requests: ObjectRequest[] };
+        objectRequests.push(params.requests);
+        const results = params.requests.map((request) => {
+          const hit = parsed.hits.find((hit) => hit.objectID === request.objectID);
+          return hit ? { objectID: hit.objectID, content: hit.content } : null;
+        });
+        return Response.json({ results });
+      }
+      const params = JSON.parse(String(init?.body)) as SearchRequest;
+      requests.push(params);
       if (!params.attributesToRetrieve?.includes("content")) for (const hit of parsed.hits) delete hit.content;
-      return new Response(JSON.stringify(parsed), { status: 200, headers: { "content-type": "application/json" } });
+      return Response.json(parsed);
     };
-    return { fetchImpl, requests };
+    return { fetchImpl, requests, objectRequests };
   }
 
   const contentOps = catalog.entries.filter(
@@ -700,7 +738,7 @@ describe("stellarDocs adapter", () => {
       content: "Meeting notes section text.",
       _snippetResult: { content: { value: "Meeting **notes**" } }
     }));
-    const { fetchImpl, requests } = algoliaStub(JSON.stringify({ hits, nbHits: 30, page: 0, nbPages: 1, hitsPerPage: 100 }));
+    const { fetchImpl, requests, objectRequests } = algoliaStub(JSON.stringify({ hits, nbHits: 30, page: 0, nbPages: 1, hitsPerPage: 100 }));
     const op = entry("stellarDocs.search_docs_in_category");
 
     const plain = await callStellarDocs(op, { query: "notes", category: "meetings", hitsPerPage: 3 }, docsEnv, fetchImpl);
@@ -713,11 +751,13 @@ describe("stellarDocs adapter", () => {
 
     const full = await callStellarDocs(op, { query: "notes", category: "meetings", hitsPerPage: 3, includeContent: true }, docsEnv, fetchImpl);
     expect(requests[1]?.hitsPerPage).toBe(100);
-    expect(requests[1]?.attributesToRetrieve).toContain("content");
+    expect(requests[1]?.attributesToRetrieve).not.toContain("content");
     expect(full.ok).toBe(true);
     if (!full.ok) return;
     const meetingHits = (full.data as { hits: { content?: string }[] }).hits;
     expect(meetingHits).toHaveLength(3);
+    expect(objectRequests).toHaveLength(1);
+    expect(objectRequests[0]?.map((request) => request.objectID)).toEqual(["0", "1", "2"]);
     expect(meetingHits.every((h) => h.content === "Meeting notes section text.")).toBe(true);
   });
 
@@ -760,13 +800,125 @@ describe("stellarDocs adapter", () => {
       expect(plainHits[0]).not.toHaveProperty("content");
 
       const full = await callStellarDocs(op, { ...args, includeContent: true }, docsEnv, fetchImpl);
-      expect(requests[1]?.attributesToRetrieve).toContain("content");
+      if (mapping?.clientFilter) expect(requests[1]?.attributesToRetrieve).not.toContain("content");
+      else expect(requests[1]?.attributesToRetrieve).toContain("content");
       expect(full.ok).toBe(true);
       if (!full.ok) return;
       const hits = (full.data as { hits: { snippet?: string; content?: string }[] }).hits;
       expect(hits).toHaveLength(1);
       expect(hits[0]?.snippet).toBe("Full **section** text");
       expect(hits[0]?.content).toBe("Full section text that a 20-word snippet cannot carry.");
+    });
+  }
+
+  const retainedPage = "https://developers.stellar.org/docs/build/smart-contracts/example";
+  const candidateHits = Array.from({ length: 100 }, (_, i) => ({
+    objectID: `record-${i}`,
+    url: `${i % 2 === 0 ? retainedPage : "https://developers.stellar.org/docs/other"}#${i}`,
+    url_without_anchor: i % 2 === 0 ? retainedPage : "https://developers.stellar.org/docs/other",
+    hierarchy: { lvl1: "Original title" },
+    content: `Full content ${i}`,
+    _snippetResult: { content: { value: `Query snippet ${i}` } }
+  }));
+  const candidateBody = JSON.stringify({ hits: candidateHits, nbHits: 450, nbPages: 5, page: 0, hitsPerPage: 100 });
+
+  for (const limit of [undefined, 1, 20]) {
+    it(`retrieves content only after filtering and limiting (${limit ?? "default"})`, async () => {
+      const { fetchImpl, requests, objectRequests } = algoliaStub(candidateBody);
+      const result = await callStellarDocs(entry("stellarDocs.search_soroban_contract_docs"), {
+        query: "storage", includeContent: true, ...(limit === undefined ? {} : { hitsPerPage: limit })
+      }, docsEnv, fetchImpl);
+      expect(requests).toHaveLength(1);
+      expect(requests[0]?.hitsPerPage).toBe(100);
+      expect(requests[0]?.attributesToRetrieve).not.toContain("content");
+      expect(objectRequests).toHaveLength(1);
+      expect(objectRequests[0]).toEqual(candidateHits.filter((_, i) => i % 2 === 0).slice(0, limit ?? 5).map((hit) => ({
+        indexName: "crawler_Stellar Docs - Docusaurus", objectID: hit.objectID,
+        attributesToRetrieve: ["objectID", "content"]
+      })));
+      expect(result).toMatchObject({ ok: true, data: { nbHits: 450, nbPages: 5, page: 0, clientFiltered: true } });
+      if (!result.ok) return;
+      const hits = (result.data as { hits: { content: string; snippet: string; breadcrumb: string }[] }).hits;
+      expect(hits).toHaveLength(limit ?? 5);
+      hits.forEach((hit, i) => {
+        expect(hit).toMatchObject({ content: `Full content ${i * 2}`, snippet: `Query snippet ${i * 2}`, breadcrumb: "Original title" });
+        expect(hit).not.toHaveProperty("objectID");
+      });
+    });
+  }
+
+  it("keeps the search order when content records arrive in another order", async () => {
+    const { fetchImpl } = algoliaStub(candidateBody);
+    const reordered: FetchLike = async (url, init) => {
+      if (!url.endsWith("/objects")) return fetchImpl(url, init);
+      return Response.json({ results: [
+        { objectID: "record-2", content: "second", url: "https://unrelated.example" },
+        { objectID: "record-0", content: "first" }
+      ] });
+    };
+    const result = await callStellarDocs(entry("stellarDocs.search_soroban_contract_docs"), {
+      query: "storage", hitsPerPage: 2, includeContent: true
+    }, docsEnv, reordered);
+    expect(result).toMatchObject({ ok: true, data: { hits: [
+      { content: "first", url: `${retainedPage}#0` }, { content: "second", url: `${retainedPage}#2` }
+    ] } });
+  });
+
+  it("does not retrieve content for a filtered miss", async () => {
+    const { fetchImpl, objectRequests } = algoliaStub(JSON.stringify({
+      hits: [candidateHits[1]], nbHits: 450, nbPages: 5, page: 0, hitsPerPage: 100
+    }));
+    const result = await callStellarDocs(entry("stellarDocs.search_soroban_contract_docs"), {
+      query: "storage", includeContent: true
+    }, docsEnv, fetchImpl);
+    expect(objectRequests).toEqual([]);
+    expect(result).toMatchObject({ ok: false, error: {
+      kind: "soft-empty", status: 200,
+      message: "The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search.",
+      hint: expect.stringContaining("Broaden once with stellarDocs.search_docs")
+    } });
+  });
+
+  it("rejects retained hits without record IDs before content retrieval", async () => {
+    const { fetchImpl, calls } = stubFetch(candidateBody.replaceAll(/"objectID":"record-\d+",/g, ""), 200);
+    const result = await callStellarDocs(entry("stellarDocs.search_soroban_contract_docs"), {
+      query: "storage", includeContent: true
+    }, docsEnv, fetchImpl);
+    expect(calls).toHaveLength(1);
+    expect(result).toMatchObject({ ok: false, error: {
+      kind: "error", message: "Algolia search hits lack record IDs for content retrieval"
+    } });
+  });
+
+  for (const failure of ["403", "429", "503", "network", "body", "json", "missing", "wrong-id", "invalid"]) {
+    it(`preserves error classification for content retrieval failure: ${failure}`, async () => {
+      const { fetchImpl } = algoliaStub(candidateBody);
+      const contentHosts: string[] = [];
+      const failing: FetchLike = async (url, init) => {
+        if (!url.endsWith("/objects")) return fetchImpl(url, init);
+        contentHosts.push(new URL(url).hostname);
+        if (failure === "network") throw new Error("offline");
+        if (failure === "body") {
+          const response = new Response("{}");
+          response.text = async () => { throw new Error("body failed"); };
+          return response;
+        }
+        if (failure === "json") return new Response("{");
+        if (failure === "missing") return Response.json({ results: [null] });
+        if (failure === "wrong-id") return Response.json({ results: [{ objectID: "unrequested", content: "wrong" }] });
+        if (failure === "invalid") return Response.json({ results: "invalid" });
+        return Response.json({ message: "upstream failure" }, { status: Number(failure) });
+      };
+      const result = await callStellarDocs(entry("stellarDocs.search_soroban_contract_docs"), {
+        query: "storage", hitsPerPage: 1, includeContent: true
+      }, docsEnv, failing);
+      expect(result).toMatchObject({ ok: false, error: { kind: "error" } });
+      const retry = ["503", "network", "body"].includes(failure);
+      expect(contentHosts).toEqual([
+        "testappid-dsn.algolia.net",
+        ...(retry ? ["testappid-1.algolianet.com", "testappid-2.algolianet.com", "testappid-3.algolianet.com"] : [])
+      ]);
+      if (["403", "429"].includes(failure)) expect(result).toMatchObject({ error: { status: Number(failure) } });
     });
   }
 
