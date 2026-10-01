@@ -92,3 +92,12 @@ release. Each branch gets an independent review by a model that did not author i
     passed, with content equivalence in all nine branches.
   - Paid run 1 stopped before spend: the Claude Code CLI auto-updated (2.1.286 to 2.1.287). The
     executable re-pin to the immutable versioned file: GPT-6.1-Sol high, GO PAID 2 OK.
+- Decision C follow-ups merged (#204), and `sd-054` filed as stellar/stellar-docs#2889 (read back:
+  open, `raven` label). The finding records `reported-upstream`.
+- Source-authority lane (`authority`, GPT-6-Astra high): pure deletion of "purely factual questions
+  use docs first" from `EXECUTE_DESCRIPTION` (Option A), plus answer and judge cost accounting for
+  the Playground runner. Code review: Grok 4.7 high, ACCEPT, no findings (eval mode is gated to
+  localhost hosts after origin and auth checks). Plan review: Claude Fable 5.1 high, LAUNCH-OK WITH
+  FIXES, then LAUNCH-OK on the bounded delta. Frozen arms: baseline `295a90cc` (accounting only),
+  candidate `2cc020de` (adds the deletion). The demo AI Gateway has a daily spend limit with
+  adequate headroom for the planned ceiling (figures kept private).
