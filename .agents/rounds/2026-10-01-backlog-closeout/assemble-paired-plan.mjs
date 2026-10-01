@@ -3,10 +3,10 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
+import { assertClaudePin } from './paired-claude-pin.mjs';
 const e = process.env;
 const load = name => import(pathToFileURL(`${e.PAIRED_CR}/${name}`));
 const { stratifiedSample } = await load('eval/qa/lib.mjs');
-const { executableIdentity, agentEnvironmentIdentity } = await load('eval/lib/executable-identity.mjs');
 const { PAIRED_CAPACITY_CONTRACT, capacityRejectionReasons } = await load('eval/qa/check-paired-capacity.mjs');
 const { loadJudgeStabilityRegister } = await load('eval/qa/judge-stability.mjs');
 const { assertRunQaCliSyntax } = await load('eval/qa/run-qa.mjs');
@@ -43,8 +43,8 @@ function snapshot(root) {
 }
 const selected = snapshot(e.PAIRED_CR);
 assert.deepEqual(snapshot(e.PAIRED_BR), selected);
-const binary = executableIdentity('claude');
-const environment = agentEnvironmentIdentity();
+const immutableClaude = json(`${e.PAIRED_RUN}/claude-pin.json`);
+const { binary, environment } = assertClaudePin(immutableClaude, e);
 const registerPath = `${e.PAIRED_RUN}/paired-stability-register.json`;
 const register = loadJudgeStabilityRegister(registerPath, {verifySources:false});
 assert.equal(register.status, 'available');
@@ -107,6 +107,7 @@ assert.equal(existsSync(p6Path), false);
 assert.equal(existsSync(`${p6Path}.tmp`), false);
 const plan = {
   schema: 'qa-paired-collection-plan-v2', deadlineMs: 14400000, selected, worktrees,
+  immutableClaude,
   launchProcessGuard:{path:e.PAIRED_PROCESS_GUARD,sha256:sha(readFileSync(e.PAIRED_PROCESS_GUARD))},
   devVars: json(`${e.PAIRED_RUN}/dev-vars-identity.json`),
   caps: {baseline:{collectionUsd:80,cumulativeUsd:120},candidate:{collectionUsd:80,cumulativeUsd:120},twoArmCumulativeUsd:240},

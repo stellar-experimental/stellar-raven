@@ -7,6 +7,7 @@ import path from "node:path";
 import { createInterface } from "node:readline/promises";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { randomBytes } from "node:crypto";
+import { createClaudePin } from "./paired-claude-pin.mjs";
 import { executeFrozen } from "./execute-frozen.mjs";
 import { assertListenersStopped, processTable, withLaunchCleanup } from "./paired-launch-runtime.mjs";
 
@@ -70,6 +71,7 @@ export async function runLaunchSteps(manager, steps) {
 
 export async function launchPaired(env) {
   mkdirSync(env.PAIRED_RUN, { mode: 0o700 });
+  createClaudePin(env);
   const load = (name) => import(pathToFileURL(`${env.PAIRED_CR}/${name}`));
   // The cleanup handlers exist before installs, servers, probes, or paid children start.
   return withLaunchCleanup(async (manager) => runLaunchSteps(manager, [

@@ -46,7 +46,18 @@ The manager adds the fixed process guard to `NODE_OPTIONS` for every managed chi
 Assembly records that environment and the guard's path and SHA-256 in the signed plan.
 The executor checks the guard pin before every phase.
 Do not remove the guard or invoke a paid phase outside the operator script.
-Do not update Claude or alter `PATH`, `TMPDIR`, or the recorded Claude environment during the method.
+Before identity capture, the script creates `/private/tmp/stellar-raven-paired-launch/claude-bin` with mode `0700`.
+That directory contains only a `claude` link.
+The link targets the versioned file from `realpath ~/.local/bin/claude` under `~/.local/share/claude/versions/`.
+The script puts this directory first on `PATH` and sets `DISABLE_AUTOUPDATER=1`.
+Other sessions can move the public link without changing this private link.
+Keep the private link, versioned file, `PATH`, `TMPDIR`, and recorded Claude environment unchanged.
+Keep `DISABLE_AUTOUPDATER=1` throughout the method.
+The signed plan records `immutableClaude`: the private link, versioned real path, version, and SHA-256.
+Before every phase, the executor checks that record and the frozen environment hash.
+It also checks the directory's mode, its sole link, and the updater flag.
+A failed check stops before the next paid command starts.
+Keep the existing evidence after a stop; never replace the pin or update the signed identity.
 
 ## Stability-register source
 
@@ -109,6 +120,9 @@ A failed check runs cleanup and blocks every later paid phase.
 
 ### 1. Create and install four worktrees
 
+Before any child starts, `launchPaired` creates the private Claude link through [paired-claude-pin.mjs](paired-claude-pin.mjs).
+It creates `claude-pin.json` exclusively and records no environment values.
+The link targets the versioned file directly; it never targets the public link.
 `launchPaired` creates both runners and the candidate server at the supplied revision.
 It creates the baseline server at `90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0`.
 Each creation uses `git worktree add --detach <absolute root> <revision>`.
@@ -180,7 +194,10 @@ The operator calls [assemble-paired-plan.mjs](assemble-paired-plan.mjs) from the
 That script uses `stratifiedSample` from `eval/qa/lib.mjs`.
 It freezes 200 explicit IDs and recomputes all four hashes independently in both runners.
 It verifies every paid command's flags through its actual parser.
-It records the Claude path and version without printing environment values.
+It checks the private Claude pin and records its path, version, and SHA-256 without printing environment values.
+P6 and both flip commands use this link through `--claude-path`.
+Both collection commands and both stored-judge commands resolve `claude` through the private directory first on `PATH`.
+`run-qa.mjs` then uses that resolved private link for its answer and judge calls.
 It opens `plan.json` and `cli-identity.json` exclusively.
 
 The operator runs the correct npm hash form from the candidate runner:
@@ -399,6 +416,9 @@ Register: /private/tmp/stellar-raven-paired-launch/paired-stability-register.jso
   Confirm the replacement pin at signature time.
 Adapter: <sha256>.  Probe: <sha256>.  Pre-arm vector: <sha256>.
 Claude path: <p6.claudePath>.  Binary: <sha256>.  Environment: <sha256>.
+Versioned real path: <immutableClaude.realPath>.  Version: <immutableClaude.version>.
+Private directory: <immutableClaude.privateBin>, mode 0700, containing only the claude link.
+DISABLE_AUTOUPDATER=1.  The private directory remains first on PATH.
 Launch process guard: <absolute guard path> <sha256>; included in the canonical plan.
   The managed NODE_OPTIONS value remains fixed across assembly and every paid phase.
   Collection, stored-judge, P6, and flip pins are this same pair.

@@ -84,6 +84,12 @@ export function assertListenersStopped(ports, { deadlineMs } = {}) {
 export const PROCESS_GUARD = fileURLToPath(new URL('./paired-process-guard.cjs',import.meta.url));
 export const processGuardSha256 = () => createHash('sha256').update(readFileSync(PROCESS_GUARD)).digest('hex');
 
+export function managedEnvironment(env) {
+  return { ...env,
+    NODE_OPTIONS: `${env.NODE_OPTIONS ?? ''} --require ${JSON.stringify(PROCESS_GUARD)}`.trim(),
+    PAIRED_PROCESS_GUARD: PROCESS_GUARD };
+}
+
 export class OwnedProcesses {
   constructor({ journalPath, timeoutMs = CLEANUP_TIMEOUT_MS, listeners = [],
     checkListeners = assertListenersStopped, readProcesses = processTable, signalGroup = process.kill } = {}) {
@@ -190,10 +196,8 @@ export class OwnedProcesses {
     if (this.stopping) throw new Error('launch cleanup has started; no new child may start');
     assert.equal(processGuardSha256(),this.guardSha256,'the process guard changed; stop the launch');
     const generation = randomUUID();
-    const nodeOptions = `${env.NODE_OPTIONS ?? ''} --require ${JSON.stringify(PROCESS_GUARD)}`.trim();
-    const child = spawn(command[0],command.slice(1),{cwd,stdio,detached:true,env:{...env,
-      NODE_OPTIONS:nodeOptions,PAIRED_PROCESS_REGISTRY:this.registry,PAIRED_PROCESS_GENERATION:generation,
-      PAIRED_PROCESS_GUARD:PROCESS_GUARD}});
+    const child = spawn(command[0],command.slice(1),{cwd,stdio,detached:true,env:{...managedEnvironment(env),
+      PAIRED_PROCESS_REGISTRY:this.registry,PAIRED_PROCESS_GENERATION:generation}});
     const group = {pgid:child.pid,generation,name,exited:false};
     if (child.pid) {this.groups.set(child.pid,group);this.creations.set(child.pid,generation);}
     const completion = new Promise((resolve,reject) => {
