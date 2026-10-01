@@ -24,16 +24,17 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Adapters
 
-### Measure the Stellar Docs adapter contract before release
+### Do not return a failed Scout backend read as data
 
-The adapter now sends `hitsPerPage: 5` when callers omit that mapped argument.
-Category searches retrieve full content only after filtering and limiting candidates.
-Search and page-section miss messages now describe their query scope.
-Mocked adapter tests cover these changes in `test/adapters.test.ts`.
-The runtime contract is documented in `docs/stellar-docs.md`.
+Found on 2026-10-01 in the Stellar Docs adapter measurement. Under a parallel batch of 65
+`scout.searchProjects` calls, Scout returned HTTP 200 with `counts.total: 0`, no rows, and
+`meta.warnings` that begins "backend read failed" and reports a timeout. The adapter returned
+`ok` data. One answer then called two populated categories unused. A direct burst of the same
+65 requests reproduced one such response.
 
-Done when: a separately reviewed QA comparison finds no verified answer regression before release.
-The coordinator owns this measurement; the adapter lane runs no paid evaluations.
+Done when: a response whose own metadata reports a failed backend read does not resolve as
+`ok` data, a test pins the mapping, and the unread-parameter warning stays a success.
+Measure the change before release, because it alters what an agent sees.
 
 ## Skill system
 
@@ -268,6 +269,19 @@ Done when: a pool release pins patched `miniflare` and `wrangler` versions, the 
 removed, and `npm audit` and `npm run test:smoke` still pass.
 
 ## Eval instruments
+
+### Investigate missing source evidence in the p6 judge pack
+
+The 2026-10-01 adapter comparison found a disputed Beans Wrong grade in
+`eval/qa/results/2026-10-01T22-05-47-variantA.json` (`q-live-beans-cross-service-reconcile`).
+The raw transcript contains the founder story, lifecycle claims, release tag, and SDK commit date.
+The p6 pack omits those details, and the judges call them fabricated.
+The result records `evidenceSupportCheck.status: pack-omission` and `requiresReview: true`.
+The primary SDF article independently confirms the founder story.
+
+Trace the general evidence-selection boundary and propose a repair with replayable coverage.
+Do not change the frozen adapter-measurement artifacts or replace their original verdicts.
+Any repaired pack needs a separate reviewed measurement before it supports acceptance.
 
 ### Re-check the upstream codemode short-token repair
 

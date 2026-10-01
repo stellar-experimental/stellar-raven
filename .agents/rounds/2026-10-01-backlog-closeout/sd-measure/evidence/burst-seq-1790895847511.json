@@ -1,0 +1,254 @@
+[
+ {
+  "k": "cat:Tooling",
+  "status": 200,
+  "ms": 135,
+  "total": 184,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 4000
+ },
+ {
+  "k": "cat:User-Facing App",
+  "status": 200,
+  "ms": 41,
+  "total": 407,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 4769
+ },
+ {
+  "k": "type:Payments",
+  "status": 200,
+  "ms": 48,
+  "total": 303,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 5160
+ },
+ {
+  "k": "type:SDK",
+  "status": 200,
+  "ms": 73,
+  "total": 163,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 3996
+ },
+ {
+  "k": "type:RWA",
+  "status": 200,
+  "ms": 38,
+  "total": 101,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 5812
+ },
+ {
+  "k": "catLive:Infrastructure",
+  "status": 200,
+  "ms": 47,
+  "total": 167,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 6046
+ },
+ {
+  "k": "catLive:Tooling",
+  "status": 200,
+  "ms": 44,
+  "total": 152,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 4002
+ },
+ {
+  "k": "catLive:User-Facing App",
+  "status": 200,
+  "ms": 78,
+  "total": 353,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 4771
+ },
+ {
+  "k": "catLive:Protocol/Contract",
+  "status": 200,
+  "ms": 44,
+  "total": 124,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 6578
+ },
+ {
+  "k": "typeLive:Payments",
+  "status": 200,
+  "ms": 43,
+  "total": 255,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 5162
+ },
+ {
+  "k": "typeLive:SDK",
+  "status": 200,
+  "ms": 55,
+  "total": 140,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 3998
+ },
+ {
+  "k": "typeLive:RWA",
+  "status": 200,
+  "ms": 41,
+  "total": 84,
+  "returned": 1,
+  "metaKeys": [
+   "source",
+   "generatedAt",
+   "filters",
+   "matchMode",
+   "matchModeLabel",
+   "counts",
+   "semantic",
+   "scfCountBasis"
+  ],
+  "metaError": null,
+  "warn": null,
+  "rows": 1,
+  "bytes": 5813
+ }
+]
