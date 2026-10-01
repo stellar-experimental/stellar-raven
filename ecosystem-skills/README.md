@@ -230,6 +230,8 @@ publish-safety property (see [Sources](#sources)).
 A new source changes what the model reads. Treat it as an exposure decision, not a re-pin. The
 Trustless Work admission is the worked example. Its round ledger is
 [`.agents/rounds/2026-09-16-trustless-work-acceptance.md`](../.agents/rounds/2026-09-16-trustless-work-acceptance.md).
+[ADR-0010](../research/decisions/0010-scf-community-fund-skills-stay-unpinned.md) records a source
+that failed the bar, with its reopening conditions.
 
 **Admission bar.** Answer each point in the round's source review before any pin lands:
 

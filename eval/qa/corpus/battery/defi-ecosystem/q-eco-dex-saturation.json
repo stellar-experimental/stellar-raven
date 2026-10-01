@@ -15,7 +15,7 @@
       "Do NOT hard-code three serious players, equate a DEX tag with independent liquidity, or claim routing absorbs competitors.",
       "Do NOT exclude or include a product as a venue without a dated role/liquidity test."
     ],
-    "notes": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Grounded on Scout: serious AMM/DEX players = Soroswap (aggregator), Aquarius (AQUA AMM), Phoenix (AMM hub). Soroswap's aggregator routes across Soroswap/Phoenix/Aquarius + SDEX. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator. Small field — converging on a few anchors.\nAlso good if the answer: Notes StellarX is a trading UI (not an aggregator) and Comet is a reference/research implementation, not a high-traffic DEX. | Notes new AMM entrants tend to be absorbed into Soroswap's aggregation routing.\nGolden cites: Sources for the DEX/AMM landscape composition.\nGT-19 CORRECTION 2026-07-10: grade the explicit venue/role/usage criterion, not 'roughly three.' Directory DEX counts mix venues, routers, and UIs."
+    "notes": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Grounded on Scout: serious AMM/DEX players = Soroswap (aggregator), Aquarius (AQUA AMM), Phoenix (AMM hub). Soroswap's on-chain aggregator routes across its Soroban AMM adapters only. Soroswap's API quotes can also include classic SDEX liquidity. Do not treat those two layers as one. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator. Small field — converging on a few anchors.\nAlso good if the answer: Notes StellarX is a trading UI (not an aggregator) and Comet is a reference/research implementation, not a high-traffic DEX.\nGolden cites: Sources for the DEX/AMM landscape composition.\nGT-19 CORRECTION 2026-07-10: grade the explicit venue/role/usage criterion, not 'roughly three.' Directory DEX counts mix venues, routers, and UIs."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -64,12 +64,49 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-10-01, Soroswap's on-chain aggregator routes through three Soroban AMM adapters (Soroswap, Phoenix, Aqua) and excludes the classic SDEX, while Soroswap's API quotes can include SDEX liquidity.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "stellar contract invoke --id CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO --rpc-url https://mainnet.sorobanrpc.com --send no -- get_adapters",
+            "observedAt": "2026-10-01",
+            "note": "Simulation after ledger 64718335 returned three unpaused adapters: protocol_id 0, 1, and 2 (Soroswap, Phoenix, Aqua). No SDEX, Comet, or Sushi adapter."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/soroswap/aggregator/blob/84de10e0f8d26168b4a76f8c23b963e50917517c/public/mainnet.contracts.json",
+            "observedAt": "2026-10-01",
+            "note": "aggregator CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO with soroswap_adapter, phoenix_adapter, and aqua_adapter ids only."
+          },
+          {
+            "class": "A",
+            "ref": "https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx",
+            "observedAt": "2026-10-01",
+            "note": "'Stellar SDEX is not included as it is incompatible with Soroban-based smart contracts, and the Soroswap Aggregator only works with Soroban-based protocols.' api/index.mdx: 'Fetch quotes and optimal routes for token swaps across multiple protocols (Soroswap, Phoenix, Aqua and SDEX)'. The same aggregator page carries stale Testnet labels (cs-002), so it is not evidence for adapter status."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap",
+            "observedAt": "2026-10-01",
+            "note": "Scout's record now separates the layers: 'an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution. Its swap Route API returns quotes and optimal routing across Stellar DEXs, including the Stellar classic DEX (SDEX).'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
       "evidence": [
+        "Soroswap scope reconciliation (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the grader note merged Soroswap's API quotes with its on-chain aggregator. The note now states both layers. The 'absorbed into Soroswap's aggregation routing' also-good line is removed: it contradicts avoid item 1, and the live adapter set has no Sushi or Comet adapter. Answer, keyFacts, and avoid are unchanged.",
+        "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", finding 2): this case is stable, so its grader note carries only the durable distinction. The dated observation stays in truth.corroboration.",
+        "Live check 2026-10-01 (class F): get_adapters simulation on CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO — three unpaused adapters, protocol_id 0, 1, 2.",
+        "Live check 2026-10-01 (class B): soroswap/aggregator@84de10e0f8d26168b4a76f8c23b963e50917517c public/mainnet.contracts.json — soroswap, phoenix, and aqua adapters only.",
+        "Live check 2026-10-01 (class A): soroswap/docs@1d7a3c8a85616918415056ad2a0f6d2177fc1948 concepts/aggregator.mdx ('Stellar SDEX is not included') and api/index.mdx ('Soroswap, Phoenix, Aqua and SDEX').",
+        "Live check 2026-10-01 (class C): https://stellarlight.xyz/api/projects/search?q=soroswap — Scout's own text separates on-chain aggregation from the Route API.",
+        "Sibling sweep 2026-10-01: grep Soroswap|SDEX|aggregator|adapter → q-defi-soroswap-what-is (same layer split, same adapter set), q-defi-soroswap-vs-stellarx (reconciled in this change), q-defi-phoenix-what-is (Phoenix is one AMM source aggregated by Soroswap), q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap; no contradiction.",
         "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; the reviewers intentionally differed on venue membership because the inherited criterion is undefined.",
         "Structural re-form (negative-predicate): split the compound saturation requirement into two atomic positive facts; the counting criterion and all four role categories are unchanged.",
         "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current directory clustering still requires an explicit counting criterion before saturation analysis.",
@@ -77,6 +114,7 @@
         "Sibling sweep 2026-08-27: grep serious players|native venues|aggregators/routers|DEX saturation|independent liquidity → q-eco-defi-market-map, q-asset-sdex-vs-amm, and q-defi-soroswap-vs-stellarx; no contradiction"
       ],
       "rootCause": [
+        ".agents/TODO.md — Reconcile Soroswap API and contract scope in sibling grader notes: eval-side grader-note compression merged the API quote layer with the on-chain aggregator",
         "Role-taxonomy collapse and an undefined qualitative threshold became an exact competitor count.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
