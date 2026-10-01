@@ -15,13 +15,16 @@ record each for veto. Upstream: update PR stellar/stellar-protocol#2021 and file
 
 | lane | agent (model, effort) | branch | write set | status |
 | --- | --- | --- | --- | --- |
-| sd-adapter | GPT-6-Astra, high | `feat/stellardocs-adapter-contract` | Stellar Docs adapter, tests, its docs | running |
-| skills-drift | GPT-6.1-Sol, high | `chore/skills-drift-pick-mode` | drift check, ecosystem-skills docs | running |
-| golden | Claude Fable 5.1, high | `golden/owner-judgments` | owned golden cases (decision C, Soroswap) | running |
-| adjudicate | GPT-6-Astra, high | `eval/owner-adjudications` | decisions D, G, H, I; harness items | running |
-| gt-leads | GPT-6.1-Sol, high | `improvements/gt-leads` | `improvements/` findings | running |
-| scf-fable, scf-grok, scf-astra | Claude Fable 5.1, Grok 4.7, GPT-6-Astra (high) | read-only | decision K reviews | running |
-| orchestration | Claude Opus 5.5 | `chore/backlog-closeout-2026-10-01` | ledger, decision A run sheet, monitors, usage checks | running |
+| sd-adapter | GPT-6-Astra, high | `feat/stellardocs-adapter-contract` | Stellar Docs adapter, tests, its docs | merged #208 after measurement |
+| skills-drift | GPT-6.1-Sol, high | `chore/skills-drift-pick-mode` | drift check, ecosystem-skills docs | merged #203 |
+| golden | Claude Fable 5.1, high | `golden/owner-judgments` | owned golden cases (decision C, Soroswap) | merged #202 |
+| golden2 | Claude Fable 5.1, high | `golden/followups-2026-10-01` | decision C follow-ups, `sd-054` | merged #204 |
+| adjudicate | GPT-6-Astra, high | `eval/owner-adjudications` | decisions D, G, H, I | merged #201 |
+| gt-leads | GPT-6.1-Sol, high | (folded into the coordinator branch) | GT-41/GT-43 closure | merged #200 |
+| scf-fable, scf-grok, scf-astra | Claude Fable 5.1, Grok 4.7, GPT-6-Astra (high) | read-only | decision K reviews | ADR-0010 in #200 |
+| paired-prep | GPT-6.1-Sol, high | `eval/paired-run-sheet`, `eval/paired-pin-claude` | decision A launch tooling | merged #206, #207 |
+| authority | GPT-6-Astra, high | `fix/source-authority-guidance` | source-authority clause, Playground accounting | merged #209 after measurement |
+| orchestration | Claude Opus 5.5 | `chore/backlog-closeout-2026-10-01`, `chore/sd-measure-ledger`, `chore/backlog-closeout-final` | ledger, usage checks, filings | merged #200, #205, closeout |
 
 Model-facing changes get a measured QA comparison (pre-spend plan reviewed by another tier) before
 release. Each branch gets an independent review by a model that did not author it.
