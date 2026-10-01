@@ -51,7 +51,7 @@ Total findings: 66
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 0           |
 | sd-052 | The generated CLI manual lists five placeholder languages as binding generators. Each command exits before generating bindings in Stellar…  | fixed-upstream    | 2026-09-04 | 0           |
 | sd-053 | The RPC configuring page now has the section "Backfilling History on Startup". The section explains BACKFILL, but it omits two startup…     | reported-upstream | 2026-09-21 | 0           |
-| sd-054 | Two pages say that the network updates the ledger "every 5-7 seconds": the Stellar Stack page and the Validators introduction. The sampled… | verified          | 2026-10-01 | 0           |
+| sd-054 | Two pages say that the network updates the ledger "every 5-7 seconds": the Stellar Stack page and the Validators introduction. The sampled… | reported-upstream | 2026-10-01 | 0           |
 
 ## lumenloop
 
