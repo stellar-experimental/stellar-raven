@@ -24,30 +24,16 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Adapters
 
-### Apply the documented `hitsPerPage` default on the three stellarDocs operations that pass it through
+### Measure the Stellar Docs adapter contract before release
 
-Found on 2026-09-21 by validating every stellarDocs operation against live responses.
-`search_docs`, `search_doc_titles`, and `search_meeting_notes` map `hitsPerPage` straight to Algolia
-and document `default: 5`. When the caller omits it, the adapter sends no value, so the index
-default applies and the call returns 20 hits. The over-fetching operations are not affected: they
-slice to the documented default. Logged external-harness calls omitted the field rarely, and never
-together with `includeContent: true`.
+The adapter now sends `hitsPerPage: 5` when callers omit that mapped argument.
+Category searches retrieve full content only after filtering and limiting candidates.
+Search and page-section miss messages now describe their query scope.
+Mocked adapter tests cover these changes in `test/adapters.test.ts`.
+The runtime contract is documented in `docs/stellar-docs.md`.
 
-Done when: the adapter sends the documented default, or the schema states the real default, and a
-test pins the behavior. Either choice changes what an agent sees, so measure it before shipping.
-
-### Fetch stellarDocs `content` only for the hits that are returned
-
-Found on 2026-09-19 while wiring `includeContent`
-([ledger](rounds/2026-09-19-stellardocs-include-content.md)). The eight client-filtered stellarDocs
-operations over-fetch 100 hits and keep at most 20. With `includeContent: true`, the adapter
-retrieves `content` for all 100. A 2026-09-21 measurement over 17 live queries found a larger
-upstream payload (median 93 KB to 145 KB) and no latency change. This is a payload cost, not a
-correctness defect. A two-pass design (filter without `content`, then fetch `content` for the kept
-hits) removes the waste.
-
-Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
-single-pass payload is acceptable and this item is closed with that evidence.
+Done when: a separately reviewed QA comparison finds no verified answer regression before release.
+The coordinator owns this measurement; the adapter lane runs no paid evaluations.
 
 ## Skill system
 
@@ -267,18 +253,6 @@ Acceptance checks:
 
 Done when: all eleven acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
-
-### Scope the Stellar Docs miss messages to the query
-
-Found by the 2026-09-30 repository audit. Two soft-empty messages in `src/adapters/stellar-docs.ts`
-claim corpus absence: the page-sections miss says "the path is not in the docs index", and the
-ordinary search miss says "this topic is not in the docs corpus (zero is a reliable negative on this
-index)". The adapter searches a bounded, filtered window of the index, so a miss proves only that
-this query and window returned nothing (see `docs/stellar-docs.md`, "Result and absence
-semantics"). These strings are model-facing, so a change alters agent behavior.
-
-Done when: both messages use query-scoped language, a test pins the new wording, and a measured run
-shows no verified answer regression before release.
 
 ## Dependencies
 
