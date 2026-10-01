@@ -1,8 +1,8 @@
 # Private usage report
 
 This directory contains public source code, not production usage data.
-The owner's private OpenAI Sites deployment renders current aggregates and historical snapshots
-from the authenticated report API. `.openai/hosting.json` names the Sites project.
+The owner's private Sites deployment renders current aggregates and historical snapshots
+from the authenticated report API. `.openai/hosting.json` holds its hosting project ID.
 The browser receives no database credentials or account identifiers.
 The report API requires its independent `REPORT_TOKEN` before every query.
 Both API and Sites responses use `Cache-Control: no-store` for private data.

@@ -149,5 +149,5 @@ Owner follow-ups (answered 2026-10-01): no Dependabot security-update pull reque
 findings go to one deterministic issue instead (PR #191); the pre-purge
 history bundles were deleted by the owner, so pre-purge history is not recoverable; the global Codex
 Solo memory file was deleted. The banner's generator was only inferred from its original file name,
-so the docs now state no generator. The "OpenAI Sites" name, inferred from
-`usage/report-site/.openai/hosting.json`, waits for the owner.
+so the docs now state no generator. The "OpenAI Sites" name was inferred the same way (from
+`usage/report-site/.openai/hosting.json`) and was removed for the same reason.

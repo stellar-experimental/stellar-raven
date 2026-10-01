@@ -96,8 +96,8 @@ token or a Cloudflare credential is absent. They never fail a fork that has not 
 ## Dashboard
 
 The dashboard source is in [`report-site/`](report-site/README.md). It is reviewed in Raven pull
-requests. The owner publishes it as an OpenAI Sites project, which `report-site/.openai/hosting.json`
-names. The Sites deployment adds owner-only access.
+requests. The owner publishes it as a private Sites project; `report-site/.openai/hosting.json`
+holds its project ID. The Sites deployment adds owner-only access.
 
 After a report change merges, sync the reviewed main branch to the separate Sites publication checkout:
 
