@@ -1,0 +1,7 @@
+[
+  { "id": "lumenloop", "owner": "lumenloop", "repo": "lumenloop-skills", "path": "skills", "ref": "main", "mode": "all", "picks": [] },
+  { "id": "openzeppelin-stellar", "owner": "OpenZeppelin", "repo": "openzeppelin-skills", "path": "skills", "ref": "main", "mode": "pick", "picks": ["setup-stellar-contracts", "upgrade-stellar-contracts", "develop-secure-contracts"] },
+  { "id": "stellar-dev", "owner": "stellar", "repo": "stellar-dev-skill", "path": "skills", "ref": "main", "mode": "all", "picks": [] },
+  { "id": "stellar-light", "owner": "Stellar-Light", "repo": "stellar-scout", "path": "", "ref": "main", "mode": "root", "picks": ["stellar-scout"] },
+  { "id": "trustless-work", "owner": "Trustless-Work", "repo": "trustlesswork-skill", "path": ".", "ref": "main", "mode": "pick", "picks": ["trustless-work-dev"] }
+]

@@ -7,19 +7,19 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "As of 2026-09-03, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Panel Review. SCF #44 is the last concluded round. A grounded answer checks official awards state and Scout metadata.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
+    "answer": "As of 2026-10-01, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Notification & Award Distribution. SCF #44 is the last concluded round. A grounded answer checks official awards state and Scout metadata.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
     "keyFacts": [
       "Presents specific source-supported content as current or dated.",
       "Makes the as-of date visible for each changeable status or deadline.",
       "Reports SCF #46 in Submission in the dated example.",
       "Reports 2026-11-08 as SCF #46's submission deadline.",
-      "Places #45 in Panel Review and #44 as the last concluded round."
+      "Places #45 in Notification & Award Distribution and #44 as the last concluded round."
     ],
     "avoid": [
       "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
       "Do NOT invent a deadline time, timezone, notification date, or submission count."
     ],
-    "notes": "GT-23 refreshed 2026-09-03. Require a dated round, phase, and deadline. #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is concluded."
+    "notes": "GT-23 refreshed 2026-10-01. Require a dated round, phase, and deadline. #46 is in Submission through 2026-11-08. #45 is in Notification & Award Distribution. #44 is concluded."
   },
   "tags": {
     "category": "edge-behavior",
@@ -33,23 +33,23 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-09-03",
+    "asOf": "2026-10-01",
     "reverifyBy": "2026-11-10",
     "sources": [
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
-        "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08, #45 was in Panel Review, and #44 was last concluded."
+        "note": "Official awards index observed 2026-10-01; SCF #46 was in Submission through 2026-11-08, #45 was in Notification & Award Distribution, and #44 was last concluded."
       },
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
-        "note": "Official awards state observed 2026-09-03; it showed the current #46/#45/#44 phase sequence."
+        "note": "Official awards state observed 2026-10-01; it showed the current #46/#45/#44 phase sequence."
       },
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/rfps?status=open",
-        "note": "Live Scout result observed 2026-09-03; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and submission deadline 2026-11-08."
+        "note": "Live Scout result observed 2026-10-01; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, submission deadline 2026-11-08, and round 45 in Notification & Award Distribution."
       }
     ],
     "corroboration": [
@@ -71,12 +71,41 @@
           }
         ],
         "note": "Legacy verdict: confirmed-time-slice."
+      },
+      {
+        "claim": "As of 2026-10-01, SCF #46 is in Submission through 2026-11-08. #45 is in Notification & Award Distribution. #44 is last concluded.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-10-01",
+            "note": "Fetched 2026-10-01T18:48Z. Round cards: 'SCF #46 Submission, Deadline to submit: November 8, 2026'; 'SCF #45 Notification & Award Distribution, Deadline to submit: August 16, 2026'; 'SCF #44 Ended'; 'SCF #43 Ended'. The embedded round data carries the same three phase values."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+            "observedAt": "2026-10-01",
+            "note": "'SCF #45 is currently in the Notification and Award Distribution phase.'"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-10-01",
+            "note": "meta.generatedAt 2026-10-01T17:56:10.444Z; scfRound.currentRound 46, currentPhase Submission, submissionWindow.closes 2026-11-08, lastConfirmedRound 44; roundsInProgress lists round 45 in 'Notification & Award Distribution'. Scout names the official awards page as its verifyAt source, so this class is not fully independent of the official page."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
       "evidence": [
+        "SCF phase refresh (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 1): SCF #45 moved from Panel Review to Notification & Award Distribution. The answer, key fact 5, and the notes now report that phase as of 2026-10-01. The #46 Submission state, the 2026-11-08 deadline, and #44 as the last concluded round are unchanged. truth.reverifyBy is unchanged because the next known phase event is the #46 deadline.",
+        "Live check 2026-10-01 (class A): https://communityfund.stellar.org/awards — #46 Submission, deadline November 8, 2026; #45 Notification & Award Distribution; #44 Ended.",
+        "Live check 2026-10-01 (class A): https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — 'SCF #45 is currently in the Notification and Award Distribution phase.'",
+        "Live check 2026-10-01 (class C): https://stellarlight.xyz/api/rfps?status=open — currentRound 46, Submission through 2026-11-08; round 45 in Notification & Award Distribution; lastConfirmedRound 44.",
+        "Sibling sweep 2026-10-01: grep #45|Panel Review → q-scf-current-round (refreshed in this change), q-scf-open-rfps-live (its avoid item names #45 without a phase), q-scf-open-rfps, q-scf-rfp-tooling, q-scf-round-43-results, q-scf-total-distributed (no #45 phase claim); no contradiction.",
         "A: https://communityfund.stellar.org/awards confirmed #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded on 2026-09-03.",
         "C: https://stellarlight.xyz/api/rfps?status=open returned the same current-round state on 2026-09-03T15:39:35.870Z.",
         "Sibling sweep 2026-09-03: q-scf-current-round and the SCF phase invariant remain consistent.",

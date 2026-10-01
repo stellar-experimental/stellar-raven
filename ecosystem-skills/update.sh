@@ -36,6 +36,8 @@
 # It also snapshots the stellarlight.xyz/api/skills DIRECTORY (every ecosystem
 # entry across sources/kinds; the count is in INDEX.md) into catalog.json — the "what exists in the
 # ecosystem" map, NOT downloaded as skills.
+# It snapshots the skills.stellar.org Community Built names and links into community.json.
+# sources.json defines the pin coordinates, modes, and pick lists for both sync and drift checks.
 #
 # Each source pins its own commit/ref + synced_at in MANIFEST.json. INDEX.md is
 # regenerated via build-index.mjs.
@@ -49,6 +51,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST="$SCRIPT_DIR/MANIFEST.json"
 CATALOG="$SCRIPT_DIR/catalog.json"
+COMMUNITY="$SCRIPT_DIR/community.json"
 INDEX="$SCRIPT_DIR/INDEX.md"
 
 command -v gh    >/dev/null || { echo "error: gh CLI not found" >&2; exit 1; }
@@ -66,12 +69,13 @@ MISSING_SOURCES="[]"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 SRC_DIR="$WORK/sources"   # one <id>.json per re-pinned source
-# Everything is staged under $WORK — the manifest, the catalog, AND the index
+# Everything is staged under $WORK — the manifest, both directories, AND the index
 # built from them — and only moved into place AFTER all sources succeed and the
 # index builds. A failure before the swap leaves the committed files untouched;
 # a failure inside the swap restores them (see the swap section below).
 MANIFEST_TMP="$WORK/MANIFEST.json"
 CATALOG_TMP="$WORK/catalog.json"
+COMMUNITY_TMP="$WORK/community.json"
 INDEX_TMP="$WORK/INDEX.md"
 mkdir -p "$SRC_DIR"
 
@@ -171,14 +175,18 @@ fetch_catalog() {
 # Re-pin every source. With `set -e`, any failure here aborts BEFORE the swap
 # below, so MANIFEST.json is never left clobbered.
 # ===========================================================================
-pin_github lumenloop            lumenloop   lumenloop-skills    skills main
-pin_github openzeppelin-stellar OpenZeppelin openzeppelin-skills skills main \
-            setup-stellar-contracts upgrade-stellar-contracts develop-secure-contracts
-pin_github stellar-dev          stellar     stellar-dev-skill   skills main
-pin_github stellar-light        Stellar-Light stellar-scout     ""     main stellar-scout
-pin_github trustless-work       Trustless-Work trustlesswork-skill "." main trustless-work-dev
+# The drift checker reads the same explicit selection modes, even without exclusions.
+node "$SCRIPT_DIR/../scripts/lib/skill-source-definitions.mjs" "$SCRIPT_DIR/sources.json" > "$WORK/sources.jsonl"
+while IFS= read -r source; do
+  picks=()
+  read -r -a picks <<< "$(jq -r '.picks | join(" ")' <<< "$source")"
+  pin_github "$(jq -r '.id' <<< "$source")" "$(jq -r '.owner' <<< "$source")" \
+    "$(jq -r '.repo' <<< "$source")" "$(jq -r '.path' <<< "$source")" \
+    "$(jq -r '.ref' <<< "$source")" ${picks[@]+"${picks[@]}"}
+done < "$WORK/sources.jsonl"
 
 fetch_catalog
+node "$SCRIPT_DIR/../scripts/lib/stellar-community.mjs" "$COMMUNITY_TMP"
 
 # Assemble MANIFEST.json (staged) from every per-source pin object.
 SOURCES="$(jq -s 'sort_by(.id)' "$SRC_DIR"/*.json)"
@@ -212,19 +220,19 @@ if [ -f "$MANIFEST" ]; then
   echo
 fi
 
-# Build the themed index from the STAGED manifest and catalog (fetches each
+# Build the themed index from the STAGED manifest and directories (fetches each
 # pinned SKILL.md into the gitignored working cache to read its frontmatter).
 # This runs before the swap: an index failure aborts the run with the committed
-# pins, catalog, and index all untouched.
-node "$SCRIPT_DIR/build-index.mjs" --manifest "$MANIFEST_TMP" --catalog "$CATALOG_TMP" --out "$INDEX_TMP" || {
+# pins, directories, and index all untouched.
+node "$SCRIPT_DIR/build-index.mjs" --manifest "$MANIFEST_TMP" --catalog "$CATALOG_TMP" --community "$COMMUNITY_TMP" --out "$INDEX_TMP" || {
   echo "error: index build failed — refusing to swap pins" >&2
   exit 1
 }
 
-# --- Swap: only now do we touch the real MANIFEST + catalog + INDEX. ---
+# --- Swap: only now do we touch the real pins, directories, and index. ---
 # The staged files first move into a sibling directory of the targets, so each
 # final `mv` is a same-filesystem rename ($WORK may live on another device,
-# where `mv` becomes a copy that can stop part-way). The previous three files
+# where `mv` becomes a copy that can stop part-way). The previous four files
 # are copied beside them, and a rollback trap covers the renames: if any rename
 # fails, the previous manifest, catalog, and index go back, so the tree is
 # never left with a new manifest beside an old catalog or index.
@@ -233,15 +241,17 @@ mkdir -p "$SWAP_DIR"
 trap 'rm -rf "$WORK" "$SWAP_DIR"' EXIT
 mv "$MANIFEST_TMP" "$SWAP_DIR/MANIFEST.json"
 mv "$CATALOG_TMP"  "$SWAP_DIR/catalog.json"
+mv "$COMMUNITY_TMP" "$SWAP_DIR/community.json"
 mv "$INDEX_TMP"    "$SWAP_DIR/INDEX.md"
 cp -p "$MANIFEST" "$SWAP_DIR/MANIFEST.json.prev"
 cp -p "$CATALOG"  "$SWAP_DIR/catalog.json.prev"
+cp -p "$COMMUNITY" "$SWAP_DIR/community.json.prev"
 cp -p "$INDEX"    "$SWAP_DIR/INDEX.md.prev"
 
 swap_rollback() {
-  echo "error: swap failed — restoring the previous manifest, catalog, and index" >&2
+  echo "error: swap failed — restoring the previous pins, directories, and index" >&2
   local f
-  for f in MANIFEST.json catalog.json INDEX.md; do
+  for f in MANIFEST.json catalog.json community.json INDEX.md; do
     if [ -f "$SWAP_DIR/$f.prev" ] && ! mv -f "$SWAP_DIR/$f.prev" "$SCRIPT_DIR/$f"; then
       echo "error: could not restore $f; the previous copy is at $SWAP_DIR/$f.prev" >&2
       return
@@ -252,6 +262,7 @@ swap_rollback() {
 trap 'swap_rollback' EXIT
 mv -f "$SWAP_DIR/MANIFEST.json" "$MANIFEST"
 mv -f "$SWAP_DIR/catalog.json"  "$CATALOG"
+mv -f "$SWAP_DIR/community.json" "$COMMUNITY"
 mv -f "$SWAP_DIR/INDEX.md"      "$INDEX"
 trap 'rm -rf "$WORK" "$SWAP_DIR"' EXIT
 rm -rf "$SWAP_DIR"

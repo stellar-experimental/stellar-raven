@@ -116,3 +116,43 @@ _The broader map of what exists across the Stellar agent-skill ecosystem — 43 
 | `scf-tranche-reporter` | `stellarlight` | `skill-md` |
 | `stellar-scout` | `stellarlight` | `skill-md` |
 | `stellar-scout-mcp` | `stellarlight` | `mcp-server` |
+
+## Community directory (stellar/stellar-dev-skill main source snapshot)
+
+The snapshot lists 30 Community skills from [stellar/stellar-dev-skill main](https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/site/src/data/skills.ts).
+The snapshot date is 2026-10-01T18:32:51.402Z.
+Source changes can precede deployment or never deploy.
+These links support discovery. Each skill needs a separate pin and exposure review before Raven can serve it.
+
+| Community skill | Upstream link |
+| --- | --- |
+| Anchors | [Source](https://raw.githubusercontent.com/CheesecakeLabs/stellar-anchor-skill/main/SKILL.md) |
+| Caatinga | [Source](https://raw.githubusercontent.com/Dione-b/caatinga-skill/master/skills/caatinga/SKILL.md) |
+| Contextio SDK | [Source](https://raw.githubusercontent.com/Eras256/Contextio/main/packages/sdk/SKILL.md) |
+| OpenZeppelin Contracts | [Source](https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/main/skills/setup-stellar-contracts/SKILL.md) |
+| ROZO Checkout | [Source](https://raw.githubusercontent.com/RozoAI/rozo-checkout-skill/main/SKILL.md) |
+| ROZO Intents | [Source](https://raw.githubusercontent.com/RozoAI/rozo-intents-skills/main/SKILL.md) |
+| Trustless Work Escrow | [Source](https://raw.githubusercontent.com/Trustless-Work/trustlesswork-skill/main/trustless-work-dev/SKILL.md) |
+| Stellar Agent Search | [Source](https://raw.githubusercontent.com/berkingurcan/stellar-agent-search/main/skills/mcp/SKILL.md) |
+| Sozu Testnet USDC Faucet | [Source](https://raw.githubusercontent.com/blessedux/agent-skills/main/sozu-faucet/SKILL.md) |
+| PMLL | [Source](https://raw.githubusercontent.com/drQedwards/pmll/main/SKILL.md) |
+| Eunomia Bounded Agent Treasury | [Source](https://raw.githubusercontent.com/eunomia-finance/eunomia/main/SKILL.md) |
+| Cogladius | [Source](https://raw.githubusercontent.com/furkanyesildag/cogladius/main/SKILL.md) |
+| Agent Browser WebAuthn | [Source](https://raw.githubusercontent.com/kalepail/skills/main/skills/agent-browser-webauthn/SKILL.md) |
+| Sub Rosa | [Source](https://raw.githubusercontent.com/karagozemin/Sub-Rosa/main/skills/sub-rosa/SKILL.md) |
+| LumenLoop MCP Connect | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/lumenloop-mcp-connect/SKILL.md) |
+| SCF Submission Radar | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/scf-submission-radar/SKILL.md) |
+| Stellar Builder Quickstart | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-builder-quickstart/SKILL.md) |
+| Stellar Content Auditor | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-content-auditor/SKILL.md) |
+| Stellar Ecosystem Digest | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-ecosystem-digest/SKILL.md) |
+| Stellar Ecosystem Scout | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-ecosystem-scout/SKILL.md) |
+| Stellar Integration Finder | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-integration-finder/SKILL.md) |
+| Stellar Project Dossier | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-project-dossier/SKILL.md) |
+| Soroban Common Mistakes | [Source](https://raw.githubusercontent.com/mariaelisaaraya/stellar-security-guide/main/skills/soroban-common-mistakes/SKILL.md) |
+| MPP Discover | [Source](https://raw.githubusercontent.com/mpprouter/stellar-agent-wallet-skill/main/skills/discover/SKILL.md) |
+| Nirium Agentic Payments | [Source](https://raw.githubusercontent.com/nirium-protocol/nirium-sdk/main/skills/nirium-agentic-payments/SKILL.md) |
+| DeFindex SDK | [Source](https://raw.githubusercontent.com/paltalabs/defindex-sdk/main/defindex-sdk-skill.md) |
+| StellarTools | [Source](https://raw.githubusercontent.com/payrouteshq/stellartools/main/SKILL.md) |
+| Pollar Wallets & Fiat Ramps | [Source](https://raw.githubusercontent.com/pollar-xyz/pollar/main/skills/pollar-wallet-auth/SKILL.md) |
+| Soroswap SDK | [Source](https://raw.githubusercontent.com/soroswap/sdk/main/soroswap-sdk-skill.md) |
+| Stellar Scout | [Source](https://stellarlight.xyz/skills/stellar-scout.md) |

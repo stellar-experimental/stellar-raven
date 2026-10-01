@@ -23,11 +23,12 @@ function stage(manifest) {
   dir = mkdtempSync(join(tmpdir(), "build-index-"));
   writeFileSync(join(dir, "MANIFEST.json"), JSON.stringify(manifest));
   writeFileSync(join(dir, "catalog.json"), JSON.stringify({ source: "https://example.invalid", fetched_at: "2026-01-01T00:00:00Z", entries: [] }));
+  writeFileSync(join(dir, "community.json"), JSON.stringify({ source: "https://community.example.invalid", fetched_at: "2026-01-01T00:00:00Z", entries: [{ title: "Staged Community", url: "https://example.invalid/community" }] }));
   return dir;
 }
 
 const run = (args) => spawnSync(process.execPath, [SCRIPT, ...args], { cwd: REPO, encoding: "utf8" });
-const staged = (extra = []) => run(["--manifest", join(dir, "MANIFEST.json"), "--catalog", join(dir, "catalog.json"), "--out", join(dir, "INDEX.md"), ...extra]);
+const staged = (extra = []) => run(["--manifest", join(dir, "MANIFEST.json"), "--catalog", join(dir, "catalog.json"), "--community", join(dir, "community.json"), "--out", join(dir, "INDEX.md"), ...extra]);
 
 afterEach(() => {
   if (dir) rmSync(dir, { recursive: true, force: true });
@@ -44,6 +45,8 @@ describe("build-index staged inputs and source types", () => {
     expect(out).toContain("## Sources (pinned)");
     expect(out).toContain("`lumenloop/lumenloop-skills`");
     expect(out).toContain("https://example.invalid");
+    expect(out).toContain("Staged Community");
+    expect(out).toContain("https://community.example.invalid");
     expect(readFileSync(INDEX, "utf8")).toBe(before);
   });
 

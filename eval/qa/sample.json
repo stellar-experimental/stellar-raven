@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "6660138b1fde128646d390d80d99364848b0946b0f6a9e18320607c5e35c2bd4",
+  "corpusContentSha256": "325c4c399e5e8e859731b5ae779d3277d2beef9e98abc1ff1629727efe5efcc7",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 13,
-      "scheduled": 5,
-      "stable": 12
+      "scheduled": 6,
+      "stable": 11
     },
     "traps": {
       "scam-check": 2
@@ -1929,20 +1929,20 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "Stellar ledgers currently close in roughly **5–7 seconds**, not a fixed 3–5-second consensus constant. In a 199-ledger Pubnet sample on 2026-07-10, deltas were 5–7 seconds (mean 5.839, median 6). CAP-0070 made timing/configuration adjustable; a configured target is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date cadence measurements and sample multiple ledgers.",
+        "answer": "As of **2026-10-01**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-10-01 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds, and official Docs pages still say every 5–7 seconds. CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
         "keyFacts": [
-          "Uses the current 5–7-second observed range with a dated multi-ledger sample.",
+          "States about 5 seconds, or the documented 5–7 seconds, with a date or source.",
           "Explains configurable target versus observed cadence and closeTime semantics."
         ],
         "avoid": [
-          "Do NOT state 3–5 seconds or exactly five seconds as an immutable guarantee based on one adjacent-ledger delta."
+          "Do NOT claim the close time is a fixed protocol constant or guaranteed for every ledger."
         ],
-        "notes": "Ledger close is roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
+        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-10-01, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). Official Docs pages still say every 5–7 seconds, which matched samples before Protocol 28. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -1951,6 +1951,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
+        "asOf": "2026-10-01",
+        "reverifyBy": "2026-12-15",
         "sources": [
           {
             "class": "A",
@@ -1976,6 +1978,16 @@
             "class": "C",
             "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
             "note": "Fresh consecutive-ledger samples on 2026-08-30 (two independent lanes)."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/ledger/64718000",
+            "note": "Independent ledger-header reader used for the 2026-10-01 cadence cross-check."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md",
+            "note": "Protocol 28 consensus change that coincides with the 5.0-second cadence."
           }
         ],
         "corroboration": [
@@ -2028,8 +2040,8 @@
             ]
           },
           {
-            "claim": "Stellar ledgers close every 3–5 seconds (the golden.avoid trap).",
-            "verdict": "contradicted",
+            "claim": "Through Protocol 27, Docs and multi-ledger samples contradicted a 3–5-second cadence: no sampled delta was below 5 s. The 3–5-second figure is retired Docs wording, not a current avoid item.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
@@ -2134,12 +2146,64 @@
                 "note": "Both corrected positive records are present. The original 3-5 seconds query no longer returns the stale Validators sentence."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, Mainnet ledgers close about every 5 seconds: the target is 5000 ms, a 199-delta sample was 5 s for every delta, and the mean has been 5.000 s since Protocol 28 activated at ledger 64458446 on 2026-09-16. Before Protocol 28 the mean was about 5.6 s. Official Docs pages still say every 5-7 seconds.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-10-01",
+                "note": "Ledgers 64718137–64718336 (17:41:07Z–17:57:42Z): 199 closed_at deltas, 5s×199; min 5 / max 5 / mean 5.0."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers/{sequence}",
+                "observedAt": "2026-10-01",
+                "note": "Mean close time per 15,000-ledger window: 5.000 s for every window from ledger 64463336 (2026-09-16T23:47:36Z) to 64718336; 5.396–5.702 s for the windows from 2026-09-01 to 2026-09-16. First protocol_version 28 ledger 64458446 closed 2026-09-16T17:00:06Z; first protocol_version 29 ledger 64717645 closed 2026-10-01T17:00:07Z."
+              },
+              {
+                "class": "C",
+                "ref": "https://api.stellar.expert/explorer/public/ledger/{sequence}",
+                "observedAt": "2026-10-01",
+                "note": "Independent reader of the same ledger headers: ledgers 64700000→64718000 mean 5.0 s (protocol 28→29); ledgers 64400000→64440000 mean 5.583 s (protocol 27)."
+              },
+              {
+                "class": "F",
+                "ref": "stellar network settings --network mainnet --output json (stellar-cli 28.1.0)",
+                "observedAt": "2026-10-01",
+                "note": "scp_timing.ledger_target_close_time_milliseconds 5000."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md",
+                "observedAt": "2026-10-01",
+                "note": "Protocol version 28; 'This will improve SCP performance, as transaction set dissemination is costly and validators can safely make initial progress on consensus while waiting for transaction sets.' The cadence change coincides with this upgrade; this lane did not prove causation."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/learn/fundamentals/stellar-stack.mdx",
+                "observedAt": "2026-10-01",
+                "note": "'Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds.' docs/validators/README.mdx carries the same sentence; both rendered pages match. The range contains the observed 5 s, so this is loose current wording, not a canonical-page conflict."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-09",
-          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Owner decision C, question 3 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the re-check found freshness drift. Since Protocol 28 (ledger 64458446, 2026-09-16T17:00:06Z) Mainnet closes ledgers at a 5.0-second mean; the golden pinned a 5–7-second observed range from July and a sample requirement that no exposed operation can meet. The answer, key fact 1, the avoid item, and the notes now gate a dated or attributed cadence. tags.freshness moves stable → scheduled with truth.asOf 2026-10-01 and truth.reverifyBy 2026-12-15.",
+            "Live sample 2026-10-01 (class C): https://horizon.stellar.org/ledgers?order=desc&limit=200 — ledgers 64718137–64718336, 199 deltas, all 5 s.",
+            "Live windows 2026-10-01 (class C): https://horizon.stellar.org/ledgers/{sequence} at 15,000-ledger steps — 5.000 s mean for every window since 2026-09-16T23:47Z; 5.4–5.7 s before.",
+            "Independent reader 2026-10-01 (class C): https://api.stellar.expert/explorer/public/ledger/{64700000,64718000} — 5.0 s mean; {64400000,64440000} — 5.583 s mean.",
+            "Network setting 2026-10-01 (class F): stellar network settings --network mainnet — scp_timing.ledger_target_close_time_milliseconds 5000.",
+            "Docs re-check 2026-10-01 (class A): stellar-docs 109d95d18fe151ac40cc2fd5f5cc769660e51fcc docs/validators/README.mdx and docs/learn/fundamentals/stellar-stack.mdx — both still say every 5-7 seconds; rendered pages match.",
+            "Surface check 2026-10-01: catalog/manifest.json has no operation field named closed_at, closeTime, or close_time; no exposed operation returns ledger close timestamps.",
+            "The 3–5-second avoid clause is removed: 5 s is now the observed value, so a number trap on that range could punish a near-true claim. The former contradicted row is kept as a dated historical row.",
+            "Sibling sweep 2026-10-01: grep 5–7|~5 s|close time|17,280 → q-asset-path-payment-ops says one ledger close is about 5 s (consistent); q-sor-ttl-defaults-extend, q-sor-doc-timestamping-manage-data, q-ti-tx-too-late-resubmit, and q-quickstart-manual-ledger-close state no cadence figure; q-protocol-max-tx-set-size asserts no cadence; no contradiction.",
+            "No saved answer was re-judged and no paid QA ran.",
             ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
             ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
             "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
@@ -2148,6 +2212,7 @@
             "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
+            "freshness-drift",
             "improvements/resolved.json entry sd-047; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
             "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
