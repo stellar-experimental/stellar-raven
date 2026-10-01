@@ -42,3 +42,27 @@ release. Each branch gets an independent review by a model that did not author i
   succeeded (Cloudflare GraphQL `workersInvocationsScheduled`), and the last 30 hourly usage-health
   runs succeeded. The private record is `audits/2026-10-01-usage-scheduled-checks.md` in the evidence
   folder.
+- Decision K: not pinned. Three independent reviews (Claude Fable 5.1, Grok 4.7, and GPT-6-Astra,
+  all at high effort) concluded "pin none now". The reviews are in `2026-10-01-backlog-closeout/`.
+  [ADR-0010](../../research/decisions/0010-scf-community-fund-skills-stay-unpinned.md) records the
+  decision and its reopening conditions. `ecosystem-skills/PIN-REVIEW.md` now records the Scout
+  body's plugin install prompt as an accepted risk (a Fable side finding).
+- Decision A run blocker found: `eval/qa/paired-collection-supervisor.mjs` required exactly 500
+  active cases; the battery has 501. Lane `paired-prep` fixes this and writes the run sheet.
+- GT-41/GT-43 leads: all three closed, none filed (lane `gt-leads`, GPT-6.1-Sol high; independent
+  review Grok 4.7 high, ACCEPT WITH FIXES, all three findings reconciled here).
+  - GT-41 dependency: fresh `soroban-sdk` requirements `26`, `26.1`, `27`, and `28` resolve SDK
+    26.1.1, 27.0.6, and 28.0.0. Those pin host `=26.1.4`, `=27.0.1`, and `=28.0.2`, whose
+    `ed25519-dalek` requirement is `2.0.0` (caret), so `cargo test` passes. The fix is
+    stellar/rs-soroban-env#1706 (issue #1705). Exact older pins (SDK 26.0.1, 26.1.0, 27.0.0; host
+    `=26.1.3`, `=27.0.0`, and 28.0.0 with `>=2.0.0`) can still resolve dalek 3.0.0. The closure
+    covers the current requirement ranges only.
+  - GT-41 CLI template: release order explains the skew. CLI v27.0.0 (2026-06-17) and v28.0.0
+    (2026-08-26) shipped before SDK 27.0.0 (2026-07-08) and 28.0.0 (2026-09-18). Each scaffolded
+    the newest released SDK major. CLI v27.1.0 and v28.1.0 moved the template to SDK 27 and 28.
+    This is release timing, not a defect.
+  - GT-43 CAP-0075: current CAP text and released host `v28.0.2` agree on `Symbol` selectors and
+    the Protocol 25 floor. `sd-036` (stellar/stellar-protocol#1980, fixed by #1996) already covers
+    the defect. `sd-048` stays open for the separate S-box degree conflict.
+  - The lane's draft audit file had no current consumer under `.agents/README.md` "Retention", so
+    it is not committed. This entry and the commit message hold the evidence.
