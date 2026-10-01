@@ -28,9 +28,16 @@ const chatHtml = demoPage({ authenticated: true });
 
 describe("demo page CSP", () => {
   it("pins the exact inline script by sha256 (no unsafe-inline for script)", () => {
-    const scripts = [...chatHtml.matchAll(/<script>([\s\S]*?)<\/script>/g)];
-    expect(scripts).toHaveLength(1);
-    const hash = createHash("sha256").update(scripts[0]?.[1] ?? "", "utf8").digest("base64");
+    const lowerHtml = chatHtml.toLowerCase();
+    const scriptStart = lowerHtml.indexOf("<script");
+    expect(scriptStart).toBeGreaterThanOrEqual(0);
+    const openingTagEnd = lowerHtml.indexOf(">", scriptStart);
+    expect(openingTagEnd).toBeGreaterThan(scriptStart);
+    const closingTagStart = lowerHtml.indexOf("</script>", openingTagEnd + 1);
+    expect(closingTagStart).toBeGreaterThan(openingTagEnd);
+    expect(lowerHtml.indexOf("<script", closingTagStart + "</script>".length)).toBe(-1);
+    const script = chatHtml.slice(openingTagEnd + 1, closingTagStart);
+    const hash = createHash("sha256").update(script, "utf8").digest("base64");
     const csp = DEMO_PAGE_HEADERS["content-security-policy"] ?? "";
     expect(csp).toContain(`script-src 'sha256-${hash}'`);
     expect(csp).not.toContain("unsafe-eval");

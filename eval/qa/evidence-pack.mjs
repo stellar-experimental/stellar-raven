@@ -151,7 +151,7 @@ function exactClaimTermPriority(term) {
   if (/^https:\/\//i.test(term)) return 7;
   if (/\b\d{4}-\d{2}-\d{2}/.test(term)) return 13;
   if (/\b(?:id\d{6,}|(?:[a-z][a-z0-9-]*\.){2,}[a-z0-9-]+)\b/i.test(term)) return 13;
-  if (/\b[a-z]+(?:[A-Z][A-Za-z0-9]+)+\b/.test(term)) return 12;
+  if (/\b[a-z]+[A-Z][A-Za-z0-9]+\b/.test(term)) return 12;
   if (/^\$?\s?\d/i.test(term)) return 11;
   if (/\b[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\b/.test(term)) return 10;
   return 8;
@@ -169,7 +169,7 @@ function isIdentifierLikeClaimTerm(value) {
     /^\d{4}-\d{2}-\d{2}$/.test(value) ||
     /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(value) ||
     /^(?:[a-z][a-z0-9-]*\.){2,}[a-z0-9-]+$/i.test(value) ||
-    /^[a-z]+(?:[A-Z][A-Za-z0-9]+)+$/.test(value) ||
+    /^[a-z]+[A-Z][A-Za-z0-9]+$/.test(value) ||
     /^[a-z][a-z0-9]*(?:_[a-z0-9]+)+$/i.test(value)
   );
 }
@@ -993,10 +993,20 @@ function prioritizeFactsForExactTerms(facts, candidateAnswer) {
 }
 
 function protocolVersionClaimTerms(text) {
-  return orderedUnique(
-    [...String(text ?? "").matchAll(/\b[A-Z][A-Za-z0-9.-]*(?:-[A-Z][A-Za-z0-9.-]*)+\s+\d+(?:\.\d+)+\b/g)]
-      .map((match) => match[0])
-  );
+  const input = String(text ?? "");
+  const terms = [];
+  // Consume each whole name once. Repeated hyphens must not create overlapping
+  // ways to partition the name when the version is absent.
+  const names = /\b[A-Z][A-Za-z0-9.-]*/g;
+  let name;
+  while ((name = names.exec(input)) !== null) {
+    if (!/-[A-Z]/.test(name[0])) continue;
+    const version = /^\s+\d+(?:\.\d+)+\b/.exec(input.slice(names.lastIndex));
+    if (!version) continue;
+    terms.push(name[0] + version[0]);
+    names.lastIndex += version[0].length;
+  }
+  return orderedUnique(terms);
 }
 
 function verbatimClaimTerms(text) {
@@ -1136,7 +1146,7 @@ function exactSupportTerms(text) {
   for (const match of input.matchAll(/\b\d[\d,]*(?:\.\d+)?\s?(?:USD|USDC|XLM|EURC|%|[KMB])\b/gi)) add(match[0]);
   for (const match of input.matchAll(/\b(?:id\d{6,}|(?:[a-z][a-z0-9-]*\.){2,}[a-z0-9-]+)\b/gi)) add(match[0]);
   for (const match of input.matchAll(/\b[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\b/g)) add(match[0]);
-  for (const match of input.matchAll(/\b[a-z]+(?:[A-Z][A-Za-z0-9]+)+\b/g)) add(match[0]);
+  for (const match of input.matchAll(/\b[a-z]+[A-Z][A-Za-z0-9]+\b/g)) add(match[0]);
   for (const match of input.matchAll(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/gi)) add(match[0]);
   for (const match of input.matchAll(/(?<![\w/-])\d{2,}(?:,\d{3})*(?:\.\d+)?(?![\w/-])/g)) add(match[0]);
   return orderedUnique(terms);

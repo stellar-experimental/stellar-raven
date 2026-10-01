@@ -146,6 +146,53 @@ describe("capture-proxy", () => {
   });
 });
 
+describe("capture-proxy destination boundary", () => {
+  it("rejects authority overrides and does not follow redirects", async () => {
+    const root = mkdtempSync(join(tmpdir(), "agentic-destination-"));
+    let otherRequests = 0;
+    const other = http.createServer((_req, res) => { otherRequests++; res.end("escaped"); });
+    await new Promise((resolve) => other.listen(0, "127.0.0.1", resolve));
+    const otherUrl = `http://127.0.0.1:${other.address().port}/stolen`;
+    const upstream = http.createServer((req, res) => {
+      if (req.url === "/redirect") res.writeHead(302, { location: otherUrl });
+      res.end("upstream");
+    });
+    await new Promise((resolve) => upstream.listen(0, "127.0.0.1", resolve));
+    const proxy = spawn(process.execPath, [PROXY, "--upstream",
+      `http://127.0.0.1:${upstream.address().port}`, "--out", join(root, "capture.jsonl")]);
+    try {
+      const port = await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error("proxy startup timeout")), 5_000);
+        proxy.stdout.on("data", (chunk) => {
+          const match = String(chunk).match(/listening on (\d+)/);
+          if (match) { clearTimeout(timer); resolve(Number(match[1])); }
+        });
+        proxy.on("exit", () => { clearTimeout(timer); reject(new Error("proxy exited")); });
+      });
+      const request = (target) => new Promise((resolve, reject) => {
+        const req = http.request({ hostname: "127.0.0.1", port, path: target,
+          headers: { authorization: "Bearer fixture-only" } }, (res) => {
+          res.resume(); res.on("end", () => resolve(res.statusCode));
+        });
+        req.on("error", reject); req.end();
+      });
+      for (const target of [otherUrl, otherUrl.slice(5), `/\\127.0.0.1:${other.address().port}/stolen`,
+        `///127.0.0.1:${other.address().port}/stolen`]) {
+        expect(await request(target), target).toBe(400);
+      }
+      expect(await request("/mcp?query=ok")).toBe(200);
+      expect(await request("/redirect")).toBe(302);
+      expect(otherRequests).toBe(0);
+    } finally {
+      const exited = new Promise((resolve) => proxy.once("exit", resolve));
+      proxy.kill(); await exited;
+      upstream.closeAllConnections(); other.closeAllConnections();
+      await Promise.all([new Promise((resolve) => upstream.close(resolve)), new Promise((resolve) => other.close(resolve))]);
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
 describe("reconcile-capture", () => {
   const row = (searchCalls) => ({ caseId: "q-fixture", effort: "low", searchCalls });
 

@@ -84,6 +84,29 @@ const SECRET_VALUES = (() => {
   return [...byPair.values()];
 })();
 
+// Match src/policy/redact.ts's secret names. Application IDs are public identifiers.
+// Keep this helper local so the maintenance script still runs as plain JavaScript.
+const ERROR_SECRET_ENV_NAMES = [
+  "LUMENLOOP_API_KEY", "ALGOLIA_API_KEY_DOCS", "ALGOLIA_API_KEY_SITE",
+  "MCP_SERVER_SECRET", "WORKOS_API_KEY"
+];
+
+function redactErrorMessage(message) {
+  const variants = new Set();
+  for (const name of ERROR_SECRET_ENV_NAMES) {
+    const value = ENV[name];
+    if (typeof value !== "string" || value.length === 0) continue;
+    variants.add(value);
+    variants.add(encodeURIComponent(value));
+    variants.add(Buffer.from(value).toString("base64"));
+  }
+  // Replace once, longest first: overlapping secrets cannot expose a suffix or
+  // rewrite the replacement marker. Escape every regex metacharacter literally.
+  const pattern = [...variants].sort((a, b) => b.length - a.length)
+    .map((value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+  return pattern ? String(message).replace(new RegExp(pattern, "g"), "[redacted]") : String(message);
+}
+
 function assertNoSecrets(fileName, text) {
   for (const [name, value] of SECRET_VALUES) {
     if (text.includes(value)) {
@@ -478,7 +501,7 @@ async function main() {
 
 if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
   main().catch((err) => {
-    console.error(`refresh-inventory failed: ${err.message}`);
+    console.error(`refresh-inventory failed: ${redactErrorMessage(err.message)}`);
     process.exit(1);
   });
 }
