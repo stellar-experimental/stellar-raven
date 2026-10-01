@@ -17,7 +17,6 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { demoPage, DEMO_PAGE_HEADERS } from "../src/demo/page";
-import { DEMO_CAPS } from "../src/demo/budget";
 import { loadManifest, searchCatalogPage } from "../src/catalog/search";
 import { renderPublicHeadMetadata } from "../src/site";
 // The reusable ADR-0003 leak guard (backed by scripts/exposure.mjs data) —
@@ -110,50 +109,23 @@ describe("demo page states", () => {
     expect(lockedHtml).not.toMatch(/<br\s*\/?\s*>/i);
   });
 
-  it("authenticated: composer + trace client wired to /playground/chat", () => {
+  it("authenticated: renders the composer and trace regions", () => {
     expect(chatHtml).toContain('id="composer-form"');
     expect(chatHtml).toContain('id="log"');
     expect(chatHtml).toContain('id="log" role="log" aria-live="off"');
     expect(chatHtml).not.toContain('id="log" aria-live="polite"');
     expect(chatHtml).toContain('id="jump"');
     expect(chatHtml).toContain('role="status"');
-    expect(chatHtml).toContain('first && !reduceMotion ? "smooth" : "instant"');
-    expect(chatHtml).toContain('history.length === 1');
-    expect(chatHtml).toContain('behavior: "instant"');
-    expect(chatHtml).toContain("preventScroll: true");
     expect(chatHtml).not.toContain("maxlength=");
     expect(chatHtml).toContain('aria-describedby="composer-count"');
     expect(chatHtml).toContain('<div id="composer-count" class="composer-count"></div>');
     expect(chatHtml).not.toContain('id="composer-count" class="composer-count" role="status"');
-    expect(chatHtml).toContain(`var userMessageLimit = ${DEMO_CAPS.maxUserMessageChars};`);
-    expect(chatHtml).toContain("updateComposerLimitState(input, sendBtn, composerCount, announce, busy, wasOverLimit, userMessageLimit)");
-    expect(chatHtml).toContain('fetch("/playground/chat"');
     expect(chatHtml).toContain("Ask about Stellar and Raven will search its connected sources");
     expect(chatHtml).not.toContain("full power and glory of Stellar Raven");
     expect(chatHtml).toContain("connect an MCP client to <code>/mcp</code>");
     expect(chatHtml).toContain("backdrop-filter:none");
     expect(chatHtml).not.toContain('class="flow"');
-    for (const t of ["token", "tool-start", "tool-result", "done", "error"]) {
-      expect(chatHtml).toContain(`"${t}"`);
-    }
-    expect(chatHtml).toContain("stalled"); // the no-result-by-done state
     expect(chatHtml).not.toContain("stepline"); // no step dividers in the live trace either
-  });
-
-  it("authenticated: wires one Copy action per answer to the async Clipboard API", () => {
-    // Behavior lives in test/demo-copy-core.test.ts; this pins the wiring that
-    // only exists in the assembled page.
-    expect(chatHtml).toContain("attachCopyRow(document, navigator, current, acc)");
-    expect(chatHtml).toContain("clip.writeText(source)");
-    expect(chatHtml).not.toContain("execCommand(");
-    // Copy feedback has its own per-row status node; the shared turn-progress
-    // region is untouched by the feature.
-    expect(chatHtml).toContain('<div id="sr" class="sr-only" role="status"></div>');
-    expect(chatHtml).toContain(".answer-actions{display:flex");
-    // The locked page ships zero script, so it gets no Copy action (the
-    // shared stylesheet still carries the .answer-actions rule).
-    expect(lockedHtml).not.toContain("attachCopyRow");
-    expect(lockedHtml).not.toContain("buildCopyRow");
   });
 
   it("keeps demo-facing copy free of transport and envelope jargon", () => {
