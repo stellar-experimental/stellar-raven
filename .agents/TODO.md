@@ -458,39 +458,12 @@ in a round ledger, `eval/qa/README.md`, or a decision record, then delete the de
 
 ### A. Authorize the supervised paired subset measurement
 
-Question: sign the authorization block in
-`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md` revision 3, or do
-not. The signed record lives outside the plan file and names the canonical plan SHA-256 printed by
-`npm run eval:qa:paired:plan-sha256`. The signature covers that hash and every command array in the
-plan. Any plan edit after the signature voids it. A general round approval is not this
-authorization.
+The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing the canonical plan hash.
+Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
 
-Answers needed first:
-
-1. Retire or retain the earlier `$882.50` plan. Recommended: retire.
-2. Denominator: 200 selected (recommended), 150 selected, or 500 under a reviewed deadline change.
-3. Two concurrent server pairs under the supervisor (recommended), or sequential Option B.
-4. Answer-only collection with stored judging (recommended).
-5. Accept the concurrent-load estimand. A capacity artifact passed the fixed technical gate; it
-   does not accept the estimand.
-6. Keep the whole-arm guard stop for this look. Decide Option E separately.
-7. Launch window: weekend UTC start, four-hour deadline, no retry in the same authorization.
-8. Product-loss margin: keep `0.08` as the experimental no-change radius (recommended), or accept
-   `0.05`, `0.10`, or another validated value. Print the `0.05` and `0.10` tables. The current
-   margin table is mixed-tuple calibration; a same-tuple pair recalibrates it.
-9. Keep the candidate-only T4 or T5 rule terminal.
-10. Run the P6 judge self-test once at `$3.50` through the exact frozen wrapper command.
-
-Method under that authorization: one supervised 200-ID answer-only pair, stored judging one arm
-after the other, one paired comparison, and two frozen flip rejudge commands with `--allow-empty`
-and Claude identity pins. Caps: P6 `$3.50`; collection `$80` per arm; stored judging cumulative
-`$120` per arm; two-arm cumulative `$240`; flip rejudges `$15` each; maximum `$273.50`. The launch
-command carries `--authorized-plan-sha256`. The capacity artifact must be at most 24 hours old at
-launch. The manifest stays uncommitted and is deleted after the run. The paired JSON, both flip
-batches, the recalibrated simulator output, and the all-row review go to the round ledger and
-`eval/qa/README.md` as a labeled paired diagnostic.
-
-Safe default: no spend.
+After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
+or delete the round's launch scripts, `paired-stability-register.json`, and
+`test/qa-paired-launch.test.mjs` together. The test imports the scripts from the round folder.
 
 ### C. Golden truth and product judgment blockers
 
