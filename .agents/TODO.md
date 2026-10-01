@@ -460,6 +460,8 @@ in a round ledger, `eval/qa/README.md`, or a decision record, then delete the de
 
 The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing the canonical plan hash.
 Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
+Run it on a quiet machine. Under a heavy load average, the launch cleanup's `ps` calls can time
+out; cleanup then stops safely for manual action, with no extra spend.
 
 After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
 or delete the round's launch scripts, `paired-stability-register.json`,
