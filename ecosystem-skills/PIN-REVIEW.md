@@ -383,8 +383,8 @@ delivery checks to a separate plugin. It gives the install command
 `npx skills add Stellar-Light/awesome-stellar-community-fund`. The exposure scrub keeps that line,
 because it names no Raven operation or retired skill.
 
-Raven accepts the line as reference text for the reader's own environment, the same class as the
-Trustless Work install prompts above. Serving it installs nothing and gives the sandbox no network
-access. Raven does not serve the plugin itself; see
+Raven accepts the line as reference text for the reader's own environment. The Trustless Work
+install prompts above have the same class. Serving the line installs nothing and gives the sandbox
+no network access. Raven does not serve the plugin itself; see
 [ADR-0010](../research/decisions/0010-scf-community-fund-skills-stay-unpinned.md). Review this line
 again at the next `stellar-light` re-pin.

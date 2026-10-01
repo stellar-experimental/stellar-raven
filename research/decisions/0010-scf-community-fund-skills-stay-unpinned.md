@@ -24,29 +24,48 @@ The earlier body read is
   treats an open RFP row as the current round, which contradicts `scout.getRfps` and the pinned
   Scout body. Bodies link to unpinned root `docs/` files and to pages that return 404. Some bodies
   state award medians that a sibling body in the same commit contradicts.
-- **Small marginal answer.** `scout.scfPitch`, `scout.vetIdea`, `scout.getRfps`, handbook search
-  through `scout.searchResearch`, `skills.lumenloop.scf-submission-radar`, and
-  `skills.stellar-light.stellar-scout` already cover positioning, idea vetting, and pitch drafting.
+- **Small marginal answer.** Exposed operations already cover positioning, idea vetting, and pitch
+  drafting: `scout.scfPitch`, `scout.vetIdea`, `scout.getRfps`, and `scout.searchResearch`. Two
+  exposed skills cover them too: `skills.lumenloop.scf-submission-radar` and
+  `skills.stellar-light.stellar-scout`.
 - **Dormant upstream.** The SCF round and its dated facts changed after the last upstream commit.
 
 ## Reopening
 
-Reopen only for a named subset of applicant-side skills. The reviews name
-`scf-tranche-reporter`, `scf-prescreen-checker`, `scf-referral-preparer`, and
-`scf-claim-verifier` as the candidates with a real gap. `scf-round-reviewer` and
-`fetch-external-doc` stay out.
+Reopen only for a named subset of applicant-side skills. The reviews do not agree on one shortlist.
+Fable names `scf-tranche-reporter`, `scf-prescreen-checker`, and `scf-referral-preparer`.
+Astra names `scf-claim-verifier` and `scf-tranche-reporter`. Grok names none.
+This decision treats the union of those four skills as the only reopening candidates.
+`scf-round-reviewer` and `fetch-external-doc` stay out.
 
 A reopening needs all of the following:
 
-1. Upstream corrects the selected bodies first: round and submission-window semantics from
-   `meta.scfRound`, no broken or relative `docs/` links, and handbook-consistent caps and rules.
-2. A new source ID (`stellar-light` already names `Stellar-Light/stellar-scout`), a pick list, and
-   `unpinnedUpstream` rows with reasons for every excluded sibling.
-3. Host description overrides, and a routing comparison that keeps every lane inside its band with
-   no threshold change. No new skill may take first place on an SCF fact case.
-4. One `proposed` QA case per skill, activated after an independent `golden-truth` review, an
-   `exposed` row in `research/skill-exposure-inventory.json`, and the accepted risks in
-   `ecosystem-skills/PIN-REVIEW.md`.
-5. An independent review and the owner's approval to deploy.
+1. Upstream corrects round and submission-window semantics with `meta.scfRound`.
+   It replaces broken or relative `docs/` links.
+   It aligns caps and rules with the handbook.
+2. For `scf-claim-verifier`, upstream also meets Astra's precondition P1.
+   Status claims use `statusBasis`, `statusAsOf`, and `statusSourceUrl`.
+   Award claims use `scfRoundAwards`, `scfSourceUrl`, and `scfAsOf`.
+   The body checks project identity, and it explains unnumbered awards and undisclosed amounts.
+   It no longer depends on `scf-live-context`.
+3. For `scf-tranche-reporter`, upstream also meets Astra's precondition P2.
+   The UX wording agrees with the handbook, and the approved deliverables stay the review basis.
+   The body states that a draft does not authorize a submission, payment, or access change.
+4. The source gets a new source ID, because `stellar-light` already names
+   `Stellar-Light/stellar-scout`. It also gets a pick list.
+   `unpinnedUpstream` lists every excluded sibling with a reason.
+5. Each selected skill gets a host description override.
+   A routing comparison keeps every lane inside its band with no threshold change.
+   No new skill takes first place on an SCF fact case.
+6. Each selected skill needs a `proposed` QA case.
+   Activate it after an independent `golden-truth` review.
+   Cover status provenance, unnumbered awards, missing evidence, closed windows, and tranche
+   deviations where a skill applies.
+   Add an `exposed` row in `research/skill-exposure-inventory.json`.
+   Record accepted risks in `ecosystem-skills/PIN-REVIEW.md`.
+7. An independent review and the owner's approval to deploy.
 
-The Fable review lists the full precondition set.
+The full precondition sets are in the
+[Fable review](../../.agents/rounds/2026-10-01-backlog-closeout/scf-review-fable.md) ("Preconditions")
+and the [Astra review](../../.agents/rounds/2026-10-01-backlog-closeout/scf-review-astra.md)
+("Preconditions", P1 to P3).
