@@ -16,21 +16,24 @@ independent review, ship.
 
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| docs-public | Claude Opus 5.5, high | `w3W:p4` | report | audit |
-| agent-docs | Claude Opus 5.5, high | `w3W:p5` | report | audit |
-| docs-arch | GPT-6.1-Sol, high | `w3W:p6` | report | audit |
-| structure | GPT-6.1-Sol, high | `w3W:p7` | report | audit |
-| records | GPT-6-Astra, high | `w3W:p8` | report | audit |
-| eval | GPT-6-Astra, high | `w3W:p9` | report | audit |
-| tests | GPT-6-Astra, high | `w3W:pA` | report | audit |
-| privacy | Grok 4.7, high | `w3W:pB` | report | audit |
-| memory and orchestration | Claude Opus 5.5 | `w3W:p3` | memories, ledger, Git | audit |
+| docs-public | Claude Opus 5.5, high | `w3W:p4` | public docs, `docs/operations.md`, `CONTRIBUTING.md` | applied |
+| agent-docs | Claude Opus 5.5, high | `w3W:p5` | `AGENTS.md`, `.agents/` except rounds | applied |
+| docs-arch | GPT-6.1-Sol, high | `w3W:p6` | `ARCHITECTURE.md`, `docs/stellar-docs.md`, ADRs, `src/` comments | applied |
+| structure | GPT-6.1-Sol, high | `w3W:p7` | `package.json`, CI, `.gitignore`, `scripts/` | applied |
+| records | GPT-6-Astra, high | `w3W:p8` | `.agents/rounds/`, `research/`, `ideas/`, `eval/qa/reviewed/` | applied |
+| eval | GPT-6-Astra, high | `w3W:p9` | `eval/` | applied |
+| tests | GPT-6-Astra, high | `w3W:pA` | `test/` | applied |
+| privacy | Grok 4.7, high | `w3W:pB` | report only | audit complete |
+| memory and orchestration | Claude Opus 5.5 | `w3W:p3` | memories, ledger, Git | applied |
+| review: product and docs | Claude Fable 5.1, high | `w3W:pJ` | report only | ready after fixes |
+| review: assumption attack | Grok 4.7, high (new session) | `w3W:pB` | report only | ready after fixes |
 
-The orchestrator created and owns panes `w3W:p4`–`w3W:pB`. `AGENTS.md` routes hard analysis to Sol
-and routine work to Terra; the installed Codex catalog now offers GPT-6-Astra (frontier) and
-GPT-6.1-Sol (workhorse), as in the 2026-09-30 skill system audit. Astra takes the three largest
-analysis lanes. Independent reviewers come later and must differ from every author and the
-orchestrator: Claude Fable 5.1 high and a new Grok 4.7 high session.
+The orchestrator created and owns panes `w3W:p4`–`w3W:pB` and `w3W:pJ`. `AGENTS.md` routed hard
+analysis to Sol and routine work to Terra; the installed Codex catalog offers GPT-6-Astra (frontier)
+and GPT-6.1-Sol (workhorse), as in the 2026-09-30 skill system audit. Astra took the three largest
+analysis lanes. Both reviewers differ from every author and from the orchestrator. Fable is the
+matched tier for documentation; Grok is the vendor-diverse attack tier. The Grok reviewer ran in a
+new session after the privacy lane, which made no edits, exited.
 
 ## Ledger
 
@@ -77,8 +80,8 @@ round relayed cross-lane requests (mostly comment pointers to the new docs and t
 
 - Records: pass 1 deleted 396 history-only records; pass 2 deleted 202 more (57,799 lines) that lost
   their last live reference after the other lanes repointed comments and docs. Retained records that
-  linked to a deleted file now use commit-pinned links at `6dd94394`; plain-text mentions stay
-  unchanged. The Connectors Directory ledger was deleted: its own 2026-08-28 owner disposition moved
+  cite a deleted file now use commit-pinned links at `6dd94394` (one rule for links, backticked paths,
+  and plain paths; decided after review finding F12). The Connectors Directory ledger was deleted: its own 2026-08-28 owner disposition moved
   that work outside the repository.
 - `program-log.md` moved to `eval/qa/reviewed/2026-08-27-golden-truth/program-log.md`, byte-identical,
   so golden citations still resolve by name.

@@ -27,7 +27,7 @@ What changed since 2026-07-03, honestly stated:
   dossier/digest skills themselves define exact pipelines over already-exposed free ops —
   the composition is being re-derived per run instead of promoted once.
 - **The "grown, not authored" objection is answered by our own upstream research**:
-  research/codemode.md §9 item 4 — "Unlike Cloudflare's grown-not-authored snippets, ours
+  [research/codemode.md](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/codemode.md) §9 item 4 — "Unlike Cloudflare's grown-not-authored snippets, ours
   are authored — that's fine; the runtime mechanism is identical." Upstream's
   `codemode.run(name)` executes runtime-saved snippets from a DO; our server is stateless,
   so the equivalent is build-time repo artifacts. Mirrors upstream's mechanism
@@ -133,9 +133,8 @@ enforcement, not conflated:
    throw and a stub facade, so a smuggled network call fails CI at runtime, not just
    lexically.
 
-```
-sandbox: codemode.skill.run(name, input)
-  │ provider RPC (the skill_read mechanism, research/codemode.md §"platform global")
+<pre><code>sandbox: codemode.skill.run(name, input)
+  │ provider RPC (the skill_read mechanism, <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/codemode.md">research/codemode.md</a> §"platform global")
   ▼
 host: skill_run fn (providers.ts)
   ├─ exact-match resolve name → runnable skill entry   (fail-loud, names valid runnables)
@@ -146,7 +145,7 @@ host: skill_run fn (providers.ts)
   ├─ outputSchema warn-belt → attach `calls` (ledger)  (§6)
   ├─ redactSecrets(aggregate)                          (belt; constituents already redacted)
   └─ logEvent("skill_run", …counts from ledger) → envelope back across the RPC
-```
+</code></pre>
 
 **Runner module contract** (`src/skills/runners/types.ts`):
 

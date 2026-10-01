@@ -41,14 +41,13 @@ Evidence files:
 
 Run from a configured repository root. Each script reads `.dev.vars` without printing credentials.
 
-```sh
-./node_modules/.bin/esbuild .agents/rounds/2026-09-16-docs-resolutions/scripts/priority-source-index-recheck.ts --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-source-index.mjs
+<pre><code>./node_modules/.bin/esbuild <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-source-index-recheck.ts">.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-source-index-recheck.ts</a> --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-source-index.mjs
 node /tmp/raven-docs-source-index.mjs
-./node_modules/.bin/esbuild .agents/rounds/2026-09-16-docs-resolutions/scripts/priority-index-section-extract.ts --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-sections.mjs
+./node_modules/.bin/esbuild <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-index-section-extract.ts">.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-index-section-extract.ts</a> --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-sections.mjs
 node /tmp/raven-docs-sections.mjs
-./node_modules/.bin/esbuild .agents/rounds/2026-09-16-docs-resolutions/scripts/sd044-search-recheck.ts --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-quickstart.mjs
+./node_modules/.bin/esbuild <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/scripts/sd044-search-recheck.ts">.agents/rounds/2026-09-16-docs-resolutions/scripts/sd044-search-recheck.ts</a> --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-quickstart.mjs
 node /tmp/raven-docs-quickstart.mjs
-```
+</code></pre>
 
 ## Golden reconciliation
 

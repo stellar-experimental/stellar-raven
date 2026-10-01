@@ -154,7 +154,7 @@ caution the new lint expects.
 
 - **WisdomTree receipts are sufficient and consistent.** `/tmp/raven-qadeep/wisdomtree-toml.txt`
   line 289–290 shows `code="CRDT"` / `issuer="GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45"`;
-  `horizon-crdt.json` returns the same issuer with `contract_id
+  [`horizon-crdt.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/receipts/horizon-crdt.json) returns the same issuer with `contract_id
   CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P` (231 authorized accounts). Headers match
   the reported fetch times/ETag. I re-fetched both sources live on 2026-08-26: TOML unchanged; Horizon
   `assets?asset_code=CRDT` lists five issuers and only the WisdomTree one carries that SAC. Two classes

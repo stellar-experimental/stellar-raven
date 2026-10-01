@@ -13,7 +13,7 @@ Repository: `/Users/kalepail/Desktop/stellar-raven-codemode` (read `AGENTS.md` f
      section with what PR #157 (`58954b67`) and `.agents/rounds/2026-09-16-trustless-work/`
      actually did. Is any step wrong, missing, or misleading?
    - `ecosystem-skills/update.sh`, `eval/plan/coverage-rules.json`,
-     `research/skill-exposure-inventory.md`, `AGENTS.md`, `.agents/NEXT.md` (Scout version,
+     `research/skill-exposure-inventory.md`, `AGENTS.md`, [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) (Scout version,
      item 3, decision K), `.agents/TODO.md` (narrowed freshness item, ledger pointer).
    - The golden refresh of
      `eval/qa/corpus/battery/tooling-infra/q-ti-stellar-lab-usage-and-new-ui.json` and the

@@ -17,15 +17,15 @@ independent review of the brief.
 
 | lane | agent (model, effort) | write set | status |
 | --- | --- | --- | --- |
-| Measurement brief | Claude, Fable 5, high | `brief-fable.md` | revised after review |
-| Independent brief review | Grok, Grok 4.6, high | `review-grok-brief.md` | complete; verdict `BLOCK` |
-| Brief reconciliation | Claude, Fable 5, high | `brief-reconciliation-fable.md` | complete |
-| Bounded delta review | Grok, Grok 4.6, high | `review-grok-brief-delta.md` | complete; verdict `PASS` |
+| Measurement brief | Claude, Fable 5, high | [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/brief-fable.md) | revised after review |
+| Independent brief review | Grok, Grok 4.6, high | [`review-grok-brief.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-brief.md) | complete; verdict `BLOCK` |
+| Brief reconciliation | Claude, Fable 5, high | [`brief-reconciliation-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/brief-reconciliation-fable.md) | complete |
+| Bounded delta review | Grok, Grok 4.6, high | [`review-grok-brief-delta.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-brief-delta.md) | complete; verdict `PASS` |
 | Implementation | Codex, GPT-5.6 Sol, high | per brief section 12 | complete; review verdict `PASS` |
-| Pre-fetch implementation review | Grok, Grok 4.6, high | `review-grok-implementation.md` | complete; verdict `PASS` |
-| Bounded pin review | Grok, Grok 4.6, high | `review-grok-pins.md` | complete; verdict `PASS` |
-| Result verification | Codex, GPT-5.6 Terra, high | `result-verification-terra.md` | complete; verdict `PASS` |
-| Final adversarial review | Grok, Grok 4.6, high | `review-grok-final.md` | `BLOCK` reconciled; delta `PASS` |
+| Pre-fetch implementation review | Grok, Grok 4.6, high | [`review-grok-implementation.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-implementation.md) | complete; verdict `PASS` |
+| Bounded pin review | Grok, Grok 4.6, high | [`review-grok-pins.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-pins.md) | complete; verdict `PASS` |
+| Result verification | Codex, GPT-5.6 Terra, high | [`result-verification-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/result-verification-terra.md) | complete; verdict `PASS` |
+| Final adversarial review | Grok, Grok 4.6, high | [`review-grok-final.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-final.md) | `BLOCK` reconciled; delta `PASS` |
 
 Role record: Claude Fable 5 high authored the brief and the reconciliation. The root Codex
 agent orchestrates this round. Grok 4.6 high reviews and differs from both.
@@ -48,7 +48,7 @@ agent orchestrates this round. Grok 4.6 high reviews and differs from both.
 - Model: Grok 4.6
 - Effort: high
 - Reason: vendor-diverse assumption attack, matching the attempt-one review chain.
-- Report contract: verdict `PASS` or `BLOCK` with numbered findings in `review-grok-brief.md`.
+- Report contract: verdict `PASS` or `BLOCK` with numbered findings in [`review-grok-brief.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-brief.md).
 - Escalate to xhigh only after a high pass misses a real finding.
 
 ## Ledger
@@ -74,14 +74,14 @@ No model ran. The observed values are recorded in brief section 3.
 
 ### 2026-08-31 — brief authored
 
-Fable wrote `brief-fable.md`.
+Fable wrote [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/brief-fable.md).
 The brief is ready for the independent Grok review.
 No fetch, implementation, preflight, or referee work may start before that review passes.
 The frozen contracts, the clause artifact, `eval/gates.json`, and all of `src/` are unchanged.
 
 ### 2026-08-31 — brief review returned BLOCK
 
-Grok wrote `review-grok-brief.md` with verdict `BLOCK` and six blocking findings.
+Grok wrote [`review-grok-brief.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-brief.md) with verdict `BLOCK` and six blocking findings.
 The `text-classification` pipeline cannot encode a text pair, and its one-label softmax
 returns `1` for every finite logit. The snapshot layout did not match the 4.2.0 local
 resolver. The remainder sort, the scoring projection, and the pair-batch composition were
@@ -93,7 +93,7 @@ acceptance table, the one-referee rule, and the no-`src/` boundary.
 
 ### 2026-08-31 — brief repaired and reconciled
 
-Fable repaired `brief-fable.md` and wrote `brief-reconciliation-fable.md` with the H1–H6 and
+Fable repaired [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/brief-fable.md) and wrote [`brief-reconciliation-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/brief-reconciliation-fable.md) with the H1–H6 and
 M1–M4 mapping. The scorer now uses `AutoTokenizer` plus `AutoModelForSequenceClassification`
 directly, with pinned `text_pair` encoding, one sigmoid over the raw logit, `max_length` 512,
 the parent snapshot layout, and lazy initialization. The union restates the attempt-one
@@ -107,7 +107,7 @@ No fetch, implementation, preflight, or referee work is authorized before it pas
 
 ### 2026-08-31 — bounded delta review returned PASS
 
-Grok wrote `review-grok-brief-delta.md` with verdict `PASS`.
+Grok wrote [`review-grok-brief-delta.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-brief-delta.md) with verdict `PASS`.
 The repaired pair encoding, score transform, snapshot layout, candidate order, pair order,
 and offline tests matched the frozen measurement brief.
 This gate authorized the section 12 implementation only.
@@ -122,7 +122,7 @@ No model was fetched or loaded during implementation.
 
 ### 2026-08-31 — pre-fetch implementation review returned PASS
 
-Grok wrote `review-grok-implementation.md` with verdict `PASS`.
+Grok wrote [`review-grok-implementation.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-implementation.md) with verdict `PASS`.
 The review confirmed the direct `text_pair` call, raw-logit sigmoid, lazy local-only loader,
 parent snapshot layout, frozen union and pair order, cache integrity, and untouched forbidden files.
 This gate authorized the bounded model fetch.
@@ -148,7 +148,7 @@ The bounded pin review is the next gate.
 
 ### 2026-08-31 — bounded pin review returned PASS
 
-Grok wrote `review-grok-pins.md` with verdict `PASS`.
+Grok wrote [`review-grok-pins.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-pins.md) with verdict `PASS`.
 The review independently verified every downloaded file size and byte SHA-256.
 It confirmed that the snapshot contains exactly the five pinned files.
 This gate authorized the local preflight.
@@ -227,7 +227,7 @@ Codex GPT-5.6 Terra high must now verify the stored cache without loading the mo
 
 ### 2026-08-31 — independent result verification returned PASS
 
-Terra wrote `result-verification-terra.md` with verdict `PASS`.
+Terra wrote [`result-verification-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/result-verification-terra.md) with verdict `PASS`.
 The verifier ran from a temporary directory with `RAVEN_RERANK_MODEL_DIR` unset.
 It imported no scorer, preflight, fetch, or Transformers module.
 
@@ -253,7 +253,7 @@ Result and cache JSON stay local and uncommitted, preserved under
 
 ### 2026-08-31 — final adversarial review reconciled
 
-Grok wrote `review-grok-final.md` with an initial `BLOCK` on two stale queue instructions.
+Grok wrote [`review-grok-final.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1/review-grok-final.md) with an initial `BLOCK` on two stale queue instructions.
 `.agents/TODO.md` still ordered an attempt-two brief after recording that attempt as spent.
 [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) also told the next agent to start that completed brief.
 Both instructions were repaired without changing the harness, hashes, tables, or frozen contracts.

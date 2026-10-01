@@ -64,6 +64,10 @@ jobs:
           configured=true
           for name in LUMENLOOP_API_KEY ALGOLIA_APPLICATION_ID_DOCS ALGOLIA_API_KEY_DOCS ALGOLIA_APPLICATION_ID_SITE ALGOLIA_API_KEY_SITE; do
             if [ -z "${!name}" ]; then
+              if [ "$REPOSITORY" = "stellar-experimental/stellar-raven" ]; then
+                echo "::error::$name is absent. The live refresh requires this secret."
+                exit 1
+              fi
               configured=false
               echo "::notice::$name is absent. The live refresh will skip."
             fi

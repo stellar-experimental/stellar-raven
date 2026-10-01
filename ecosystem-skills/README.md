@@ -83,10 +83,10 @@ observable.
   `catalog.json`, and the `INDEX.md` built from those staged files — and only moves the three
   into place after every source resolved, every selection validated, the body diff printed, and
   the index built. A failure before that point leaves the committed pins, catalog, and index
-  untouched. The swap itself is three same-directory renames guarded by a rollback trap: the
-  staged files are first moved beside their targets, the previous three files are kept next to
-  them, and a failed rename puts the previous files back. The swap is not one atomic
-  transaction, but it does not leave a new manifest beside an old catalog or index.
+  untouched. The swap is three same-filesystem renames from a sibling `.swap.<pid>/` directory.
+  Copies of the previous three files wait there, and a rollback trap restores them if any rename
+  fails. The swap is not one atomic transaction, but it never leaves a new manifest beside an old
+  catalog or index.
 - **Deterministic except timestamps.** Back-to-back runs against the same upstream produce
   byte-identical output **except the timestamp fields**: `MANIFEST.synced_at`,
   `catalog.fetched_at`, and their rendered copies in `INDEX.md`

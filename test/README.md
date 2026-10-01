@@ -29,9 +29,9 @@ These tests check failure recovery without changing tracked generated files.
 | Test group | Main coverage |
 | --- | --- |
 | `catalog*`, `search*`, `routing*`, `drift-*` | Catalog validation, ranking, exact identities, and admission rules |
-| `adapters*`, `scout*`, `stellar-docs*`, `lumenloop*` | Service contracts, response shapes, and error handling |
+| [adapters.test.ts](adapters.test.ts), [lumenloop-shape.test.ts](lumenloop-shape.test.ts) | Service contracts, response shapes, and error handling |
 | `executor*`, `spec-sandbox*`, `artifacts*` | Execution limits, spec access, and artifact storage |
-| `auth*`, `gate*`, `policy*`, `redact*` | Authentication, request controls, and secret removal |
+| [auth.test.ts](auth.test.ts), [policy.test.ts](policy.test.ts) | Authentication, request controls, and secret removal |
 | `demo*` | Page contracts and extracted page functions |
 | `improvements*` | Finding lifecycle, issue body construction, and write recovery |
 | `eval*`, `evidence*`, `golden*` | Evaluation data, scoring helpers, and compilation |

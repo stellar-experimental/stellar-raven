@@ -4,7 +4,8 @@ Raven reads Stellar developer documentation through a host-side Algolia REST ada
 The [authored spec](../specs/stellar-docs.json) defines operation IDs, arguments, output schemas, and query mappings.
 The generated [catalog](../catalog/manifest.json) defines the exposed operations.
 [The architecture guide](../ARCHITECTURE.md) describes the MCP and sandbox boundaries.
-[The operator guide](operations.md) describes credential setup and project operation.
+[Run locally](../README.md#run-locally) describes development setup.
+[The operator guide](operations.md) describes deployment, observability, and account-data deletion.
 
 ## Sources of truth
 

@@ -15,7 +15,7 @@ I also compared the correction against the original reviewed commit, `8ce44d58`.
 
 2. **Fixed — Premature Terra retirement.**
 
-   `research/agent-model-roster.md:70-76` removes the retirement instruction.
+   [`research/agent-model-roster.md:70-76`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) removes the retirement instruction.
    It states the catalog descriptions and identifies the routing change as an open owner decision.
    `AGENTS.md` retains authority over routing policy.
    The correction leaves its Terra assignment unchanged.
@@ -41,7 +41,7 @@ I also compared the correction against the original reviewed commit, `8ce44d58`.
 
    `.agents/rounds/2026-09-30-raven-next.md:80-88,109-115` names the changed defaults, versions, and Grok context figure.
    It no longer claims every previous ID is stale.
-   `research/agent-model-roster.md:73-74` distinguishes the three 5.6 descriptions.
+   [`research/agent-model-roster.md:73-74`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) distinguishes the three 5.6 descriptions.
    A fresh cache read confirms those descriptions.
 
 6. **Partly fixed — Writing rules.**
@@ -66,13 +66,13 @@ I also compared the correction against the original reviewed commit, `8ce44d58`.
    | `.agents/rounds/2026-09-30-raven-next.md` | 160-162 | 22 | The PR #2021 approval and TODO sentence |
    | `.agents/rounds/2026-09-30-raven-next.md` | 179-180 | 21 | The survey conclusion |
    | `.agents/rounds/2026-09-30-raven-next.md` | 184-185 | 27 | The PR A scope sentence |
-   | `research/agent-model-roster.md` | 75-76 | 24 | The open routing decision and policy distinction |
-   | `research/agent-model-roster.md` | 79-81 | 21 | The hidden-model sentence |
-   | `research/agent-model-roster.md` | 97-98 | 24 | The bare-ID restriction and slug instruction |
-   | `research/agent-model-roster.md` | 100-102 | 21 | The reviewer output and copy instruction |
-   | `research/agent-model-roster.md` | 195-197 | 24 | The host-default and configuration-inheritance sentence |
-   | `research/agent-model-roster.md` | 208-209 | 29 | The effort-curve sentence |
-   | `research/agent-model-roster.md` | 234-236 | 21 | The completed-review evidence sentence |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 75-76 | 24 | The open routing decision and policy distinction |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 79-81 | 21 | The hidden-model sentence |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 97-98 | 24 | The bare-ID restriction and slug instruction |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 100-102 | 21 | The reviewer output and copy instruction |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 195-197 | 24 | The host-default and configuration-inheritance sentence |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 208-209 | 29 | The effort-curve sentence |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 234-236 | 21 | The completed-review evidence sentence |
    | `improvements/stellar-docs/sd-052-cli-bindings-placeholder-languages.md` | 16 | 22 | The resolver-gates evidence entry |
 
    The roster also retains passive wording at lines 55-56: `description is quoted`.

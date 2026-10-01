@@ -27,7 +27,7 @@ It is the headline measure. Other instruments test routing, discovery, tool use,
 | [Missing-fact clusters](qa/cluster-missing-facts.mjs) | Repeated omissions in stored verdicts | Offline; accepts a saved result file | Diagnostic |
 
 The Vectorize experiments measured NO-SHIP outcomes. The repository does not retain their implementation or commands.
-Dated result sections preserve their measurement evidence.
+Git history preserves their measurement evidence.
 
 ## Contract ownership
 

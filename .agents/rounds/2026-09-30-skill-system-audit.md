@@ -14,7 +14,7 @@ Out of scope, recorded instead:
 - The two sibling golden freshness items (`q-defi-x402-on-stellar-what`,
   `q-gap-builders-person-empty`). They change judge-facing text and need independent
   re-derivation. Queued in `.agents/TODO.md`.
-- A pin decision for the twelve Stellar Light `scf-*` skills. Owner decision K in `.agents/NEXT.md`.
+- A pin decision for the twelve Stellar Light `scf-*` skills. Owner decision K in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 - Upstream filing of `sk-027`. The finding is `verified`; filing is an outward-facing write that
   waits for the owner.
 - 28 `research/skill-exposure-inventory.json` evidence refs to the removed
@@ -47,7 +47,7 @@ No independent review was requested for this round.
 - Stale docs found by grep: `ecosystem-skills/README.md` (42 entries; 7 SDF skills including
   `soroban`), `ecosystem-skills/update.sh` (7 SDF skills), `eval/plan/coverage-rules.json`
   (42 entries), `research/skill-exposure-inventory.md` (18 exposed vs 20 in the JSON),
-  `.agents/NEXT.md` (Scout `1.9.52` vs `1.9.54` deployed in PR #182), `.agents/TODO.md`
+  [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) (Scout `1.9.52` vs `1.9.54` deployed in PR #182), `.agents/TODO.md`
   (latest ledger pointer). `AGENTS.md` omitted the `retrieval-system-audit` runbook.
 - `q-ti-stellar-lab-usage-and-new-ui` re-probe at 2026-09-30T19:42:17Z:
   `docs/tools/cli/cookbook/contract-assets` HTTP 404;
@@ -124,7 +124,7 @@ the files unchanged.
 | Step 6 allows a routing case instead of per-skill QA coverage; proposal-first activation missing | fable F3, astra 1, sol 3, grok 3 | fixed: step 6 requires `skill floor 1` coverage per skill, proposal-first, independent activation |
 | Step 5 links regeneration only; count contracts, fingerprint, routing comparison missing | fable F2, astra 2, sol 3, grok 3 | fixed: step 5 names the acceptance gates, count contracts, `eval/gates.json` fingerprint, and separate routing decisions |
 | `unpinnedUpstream` omitted; drift check infers cherry-pick mode from a non-empty map | fable F4, sol 2, grok 3 | docs fixed (step 3 and the design-choices text); code change queued in `TODO.md` |
-| Reviewer independence from the orchestrator missing; decision location omits `NEXT.md` | sol 3, fable F8, grok 3 | fixed |
+| Reviewer independence from the orchestrator missing; decision location omits [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) | sol 3, fable F8, grok 3 | fixed |
 | `sk-027` misses `SKILL.md:90`, `README.md:76-78` (`soroban`, `anchors`), `api-reference.md:196`; recommendation writes a new fixed roster | fable F5, astra 4, sol 6, grok 1 | fixed in the finding; one correction comment posted (allowed: it changes the proposed action): https://github.com/Stellar-Light/stellar-scout/issues/14#issuecomment-5919085549 |
 | Golden refresh stamped `asOf` over claims the first pass did not re-derive; no independent matrix or plan comparison | astra 3, grok 2 | fixed: signer-category and Quickstart `/lab` rows added with 2026-09-30 evidence; four reviewers re-derived the claims; plan comparison below |
 | Quickstart has no `/lab` | grok 2 | rejected: `rev-grok` read the stale `master` branch (tip `258a5b6e0e99`, 2025-03-26). Default branch `main` (tip `8f5dcf166978`, 2026-09-29) README lists `http://localhost:8000/lab`; `common/nginx/etc/conf.d/lab.conf` proxies `/lab`; `common/lab/bin/start` sets `NEXT_PUBLIC_DEFAULT_NETWORK=custom` |
@@ -135,8 +135,8 @@ the files unchanged.
 | Swap is two moves and the index builds after them | sol 4 | README claim narrowed; staged index queued in `TODO.md` |
 | Pin-review digest omits `owner`, `repo`, `path` | sol 5 | queued in `TODO.md` (re-keys every `sel:` digest; served bytes stay hash-verified) |
 | Inactive private-archive branches in `build-index.mjs` | sol add. 4 | queued in `TODO.md` |
-| Decision K omits overlap, upstream push date, layout, and `fetch-external-doc` path; body read not queued | fable F7, grok 4, astra add. 1 | fixed in `NEXT.md` K; body read queued in `TODO.md` |
-| `NEXT.md` header stamp; `EVALS.md` link; `coverage-rules.json` kind list | fable F10, add. 5, add. 6 | fixed |
+| Decision K omits overlap, upstream push date, layout, and `fetch-external-doc` path; body read not queued | fable F7, grok 4, astra add. 1 | fixed in [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) K; body read queued in `TODO.md` |
+| [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) header stamp; `EVALS.md` link; `coverage-rules.json` kind list | fable F10, add. 5, add. 6 | fixed |
 | Deploy id and live check missing from the ledger | fable F9, astra add. 3 | fixed (release receipt above) |
 | Scout skill states the Builders directory as dozens / ~110; live has 226 | grok add. 1 | filed locally as successor `sk-028` (`verified`); upstream filing waits for the owner |
 | Filer repeats frontmatter evidence in the issue body | fable F11, astra add. 4 | no change: filer template behavior, not this finding |

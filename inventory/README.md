@@ -24,9 +24,10 @@ a `.env` value (Algolia hostnames are written with an `{ALGOLIA_APPLICATION_ID_D
 ### Daily refresh in CI
 
 The daily `refresh.yml` workflow runs the same refresh. It opens or updates a drift issue when a snapshot
-changes. It skips with a notice when any of these repository secrets is absent:
-`LUMENLOOP_API_KEY`, `ALGOLIA_APPLICATION_ID_DOCS`, `ALGOLIA_API_KEY_DOCS`,
-`ALGOLIA_APPLICATION_ID_SITE`, and `ALGOLIA_API_KEY_SITE`.
+changes. It requires these repository secrets: `LUMENLOOP_API_KEY`, `ALGOLIA_APPLICATION_ID_DOCS`,
+`ALGOLIA_API_KEY_DOCS`, `ALGOLIA_APPLICATION_ID_SITE`, and `ALGOLIA_API_KEY_SITE`.
+Missing required secrets fail the workflow in stellar-experimental/stellar-raven. Other repositories
+skip with a notice.
 
 On a fork, also set two repository variables:
 

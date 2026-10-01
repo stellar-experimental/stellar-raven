@@ -26,7 +26,7 @@ The host owns service traffic, authentication, argument validation, and secrets.
 | Recovery advice, separate from ranking | Built | [ADR-0007](research/decisions/0007-structural-recovery-guidance.md) |
 | Skill pins: bodies stay upstream at reviewed commit and blob hashes | Built | [ecosystem-skills/README.md](ecosystem-skills/README.md) |
 | One runnable skill (the ecosystem digest) | Built | [src/skills/README.md](src/skills/README.md) |
-| WorkOS-backed OAuth, named API keys, localhost-only development bypass | Built | [docs/operations.md](docs/operations.md) |
+| WorkOS-backed OAuth, named API keys, loopback-only development bypass | Built | [ARCHITECTURE.md](ARCHITECTURE.md), [README.md](README.md#run-locally), [docs/operations.md](docs/operations.md) (API keys) |
 | Public site, `/docs`, and the signed-in Playground | Built | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Daily drift checks and the hourly skill canary | Built | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Usage collection and private monthly reports | Built | [usage/README.md](usage/README.md) |

@@ -190,7 +190,7 @@ The source-parity monitor passes. This is not a Docs-first recovery recurrence o
 
 ## Own-repo todos
 
-The triage statement that NEXT.md was missing was incorrect.
+The triage statement that [NEXT.md](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) was missing was incorrect.
 The file exists at [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md); TODO.md uses a sibling-relative reference.
 Correct stale handoff statements without creating a duplicate file or inventing settled owner decisions.
 Reconcile ll-004 prose against its latest recurrence and a fresh safe listing check.

@@ -37,13 +37,13 @@ The page quote itself is true.
 
 Finding 3 (Adding a source) is resolved.
 `ecosystem-skills/README.md:196-227` now requires `unpinnedUpstream`, states that the drift check enumerates a source only when that map is non-empty, names the routing comparison and the `eval/gates.json` fingerprint, keeps thresholds unchanged unless a separate decision changes them, requires `skill floor 1` and proposal-first activation, and requires a reviewer who differs from the author and the orchestrator.
-An unadmitted decision may live in `.agents/NEXT.md`.
+An unadmitted decision may live in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 I agree with the queued code change in `.agents/TODO.md` ("Make the drift check's cherry-pick mode explicit").
 The README now tells the operator the current limit.
 The code still infers the mode.
 
 Finding 4 (decision K directory name) is resolved.
-`.agents/NEXT.md` now names upstream directory `skills/fetch-external-doc`, the overlap with the exposed SCF skills, the `2026-07-23` push, and the standard `skills/` layout.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now names upstream directory `skills/fetch-external-doc`, the overlap with the exposed SCF skills, the `2026-07-23` push, and the standard `skills/` layout.
 I agree with the queued body read.
 The decision still says the fit is name-level.
 

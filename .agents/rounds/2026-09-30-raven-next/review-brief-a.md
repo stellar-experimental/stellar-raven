@@ -10,10 +10,10 @@ Read `AGENTS.md` and `.agents/rounds/2026-09-30-raven-next.md` first.
 
 1. `.agents/rounds/2026-09-30-skill-system-audit.md` — a "PR #184 release receipt" section.
 2. `.agents/rounds/2026-09-30-raven-next.md` — the new round ledger with a survey and a ranked list.
-3. `research/agent-model-roster.md` — runtime facts refreshed to the installed CLIs on 2026-09-30.
+3. [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) — runtime facts refreshed to the installed CLIs on 2026-09-30.
 4. `improvements/stellar-docs/sd-052-cli-bindings-placeholder-languages.md` — status
    `fixed-upstream` with dated evidence; `improvements/INDEX.md` regenerated.
-5. `PLAN.md` §7 and `.agents/NEXT.md` item 4 — stale pointers corrected.
+5. `PLAN.md` §7 and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) item 4 — stale pointers corrected.
 
 ## What to verify, independently
 
@@ -29,7 +29,7 @@ Read `AGENTS.md` and `.agents/rounds/2026-09-30-raven-next.md` first.
 - Re-derive the receipt facts: `gh pr view 184 --json mergeCommit,mergedAt,statusCheckRollup` and
   `npx wrangler deployments status` (read-only).
 - Check the ranked list for wrong evidence, wrong labels (`simple` versus `needs-decision`), and
-  items the survey missed that a reader of `.agents/TODO.md` and `.agents/NEXT.md` would expect.
+  items the survey missed that a reader of `.agents/TODO.md` and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) would expect.
 - Check every edited sentence for the writing rules in `AGENTS.md` and for claims the diff does not
   support.
 

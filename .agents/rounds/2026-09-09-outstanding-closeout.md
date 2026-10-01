@@ -50,7 +50,7 @@ The current issuer TOML declares the same nine assets; SHA-256 `f9b923ae30b0abf1
 Terra independently reproduced the service checks in [`2026-09-09-upstream-sweep-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-upstream-sweep-terra.md).
 These upstream fixes do not establish Raven catalog acceptance.
 
-Terra independently rejected the full source candidate in `2026-09-09-scout-drift-terra.md`.
+Terra independently rejected the full source candidate in [`2026-09-09-scout-drift-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-scout-drift-terra.md).
 Root preserved its 17 changed files in local stash commit `5d9d35bed804064482a66ba8f8f76b71f5759327`.
 The working runtime returned to accepted Scout `1.9.1` and the previous stellar-light skill pin.
 This rejects the source candidate, not the independently verified upstream fixes.

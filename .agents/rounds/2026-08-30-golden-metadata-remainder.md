@@ -64,7 +64,7 @@ Route cards:
 ## Rules for this round
 
 - Dead-provenance replacement (session-3 rule, [`2026-08-29-golden-truth-session-3/worker-rules.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/worker-rules.md)):
-  `/tmp/raven-qadeep/gt2/review-bN-partM.md` → `program-log.md § Session 2 › Batch N › Part M review (gt2-grok-rev)`;
+  `/tmp/raven-qadeep/gt2/review-bN-partM.md` → [`program-log.md § Session 2 › Batch N › Part M review (gt2-grok-rev)`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/program-log.md);
   `/tmp/raven-qadeep/review-judge.md` → `research/qa-deep-dive-2026-08-25/review-judge.md`;
   the Fable `conversions-copy-review.md` line → `Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.`
   The Fable replacement is applied only when every keyFact of the case has a `confirmed` or

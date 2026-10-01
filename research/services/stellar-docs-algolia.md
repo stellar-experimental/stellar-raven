@@ -1,7 +1,7 @@
 # Stellar Docs — direct Algolia REST Search API (primary integration)
 
 _Measured live on **2026-07-01** with raw curl probes using the dedicated search key in
-`.env`. This doc supersedes the MCP path in `stellar-docs-mcp.md` (retained as fallback). For
+`.env`. This doc supersedes the MCP path in [`stellar-docs-mcp.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/services/stellar-docs-mcp.md) (retained as fallback). For
 the authored spec built on top of this index — why it looks the way it does — see
 [`stellar-docs-spec-design.md`](./stellar-docs-spec-design.md) (design record; the 12 ops shipped)._
 
@@ -555,7 +555,7 @@ change, `updatedAt` staleness > 48 h, raw-record count swinging > 20%, or any na
 
 The Algolia-hosted MCP endpoint (`https://VNSJF5AWIZ.algolia.net/mcp/1/…/mcp`, index
 `docs_replica_agent`) remains available and fully documented in
-`research/services/stellar-docs-mcp.md` — same corpus, one usable tool, SSE-framed responses,
+[`research/services/stellar-docs-mcp.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/services/stellar-docs-mcp.md) — same corpus, one usable tool, SSE-framed responses,
 analytics params required. Fall back to it only if this search key is revoked; note its
 facet-values tool is permanently broken on this index (root cause confirmed here: no
 `searchable()` facets).

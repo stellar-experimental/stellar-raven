@@ -5,7 +5,7 @@ Lane: Claude, Fable 5.1, `xhigh`
 Branch: `codex/tm-coverage-metric` in worktree `/private/tmp/stellar-raven-tm-coverage-metric`
 Base commit: `80aaf52`
 First repair commit: `d1fddb9f32ce77532d719a1ab9c6254378ad023f`
-Independent review: `coverage-metric-review-sol.md` (Sol high, `CHANGES-REQUIRED`, R1 and R2)
+Independent review: [`coverage-metric-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/coverage-metric-review-sol.md) (Sol high, `CHANGES-REQUIRED`, R1 and R2)
 Follow-up repair: the commit that carries this revision of the report
 
 ## Scope

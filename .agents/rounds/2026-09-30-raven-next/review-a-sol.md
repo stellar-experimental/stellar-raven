@@ -20,7 +20,7 @@ accept with fixes
 
 2. **Medium — The roster changes routing policy before the recorded owner decision.**
 
-   File: `research/agent-model-roster.md:70-74`.
+   File: [`research/agent-model-roster.md:70-74`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md).
    Claim: agents must treat `gpt-5.6-terra` as a retired lane.
    Evidence: the installed catalog lists this model and supports six reasoning efforts.
    Its description says `Older balanced model for straightforward work.`
@@ -40,9 +40,9 @@ accept with fixes
    The adapter and specification still contain the relevant mappings and over-fetching behavior.
    `.agents/TODO.md:488-505` also queues conflicting source-authority instructions for full-description clients.
    `src/mcp/tools.ts` still contains the Docs-first clause.
-   `.agents/NEXT.md:9-12` places general routing and source-authority work first.
+   [`.agents/NEXT.md:9-12`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) places general routing and source-authority work first.
    Ranked item 13 mentions issue #167 but does not account for this distinct instruction conflict.
-   `.agents/NEXT.md:17` and `.agents/TODO.md:737-743` also require private collection and cleanup verification.
+   [`.agents/NEXT.md:17`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) and `.agents/TODO.md:737-743` also require private collection and cleanup verification.
    The survey checks the deployed schedule and an hourly health workflow.
    Neither check proves that daily retention cleanup succeeded.
    `scripts/check-usage-health.mjs` checks canary freshness and response gaps, without a cleanup-success field.
@@ -57,7 +57,7 @@ accept with fixes
    File: `.agents/rounds/2026-09-30-raven-next.md:130-135,155`.
    Claim: all listed golden freshness work waits for an owner scheduling decision.
    Evidence: `.agents/TODO.md:105-127` already directs four sibling-case updates through `golden-truth`.
-   `.agents/NEXT.md:15` also directs the two September 14 freshness updates.
+   [`.agents/NEXT.md:15`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) also directs the two September 14 freshness updates.
    These entries require source verification, independent review, and corpus checks.
    They do not require another scheduling approval.
    The reserve-date changes also have no future-event dependency.
@@ -68,7 +68,7 @@ accept with fixes
 
 5. **Low — The roster evidence uses false blanket statements.**
 
-   Files: `.agents/rounds/2026-09-30-raven-next.md:74,99-101`; `research/agent-model-roster.md:73`.
+   Files: `.agents/rounds/2026-09-30-raven-next.md:74,99-101`; [`research/agent-model-roster.md:73`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md).
    Claims: every previous ID, version, and default is stale; every 5.6 description says `older generation`.
    Evidence: previous IDs remain listed in the installed catalog.
    Claude aliases remain `fable`, `opus`, and `sonnet`.
@@ -91,7 +91,7 @@ accept with fixes
    | `.agents/rounds/2026-09-30-raven-next/review-brief-a.md` | 20-22, 26-28, 31-32, 41-43 |
    | `.agents/rounds/2026-09-30-skill-system-audit.md` | 211-218, 222-228 |
    | `improvements/stellar-docs/sd-052-cli-bindings-placeholder-languages.md` | 15-16 |
-   | `research/agent-model-roster.md` | 3-6, 55-56, 70-79, 95-100, 112-115, 193-195, 206-213, 217-220, 229-233 |
+   | [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) | 3-6, 55-56, 70-79, 95-100, 112-115, 193-195, 206-213, 217-220, 229-233 |
 
    For example, the roster's calibration sentence at lines 209-211 contains 34 words.
    Its call-evidence sentence at lines 230-233 contains 39 words.
@@ -101,7 +101,7 @@ accept with fixes
    Fix: split the prose into short sentences and identify the actor where the record supports one.
    Preserve commands, identifiers, numbers, catalog descriptions, and quoted upstream text exactly.
    Do not apply prose word limits to command lines or catalog tables.
-   The edited `PLAN.md` and `.agents/NEXT.md` sentences need no writing correction.
+   The edited `PLAN.md` and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) sentences need no writing correction.
 
 Review scope and limits:
 

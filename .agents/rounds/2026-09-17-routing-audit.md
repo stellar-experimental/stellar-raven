@@ -57,7 +57,7 @@ Dependency upgrades use a separate change and evidence record.
 
 Approved cap: **$250**. Completed evaluation spend: **$24.7944578**. No further method will run in this round.
 Audit agent sessions are orchestration work, separate from the evaluation runner receipts.
-The machine-readable accounting is `research/audits/2026-09-17-routing-audit/paid-receipts.json`.
+The machine-readable accounting is [`research/audits/2026-09-17-routing-audit/paid-receipts.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/paid-receipts.json).
 
 | Method | Rows | Cost USD | Result |
 | --- | ---: | ---: | --- |
@@ -133,7 +133,7 @@ The read-only production inventory covered 58 of 60 operations and all 20 whole 
 Two generation operations were excluded from the read-only inventory.
 All successful operation probes met their top-level required-field projection.
 This check does not establish full semantic or nested schema correctness.
-See `research/audits/2026-09-17-routing-audit/surface-ledger.json` for each operation, its profile, coverage, and probe evidence.
+See [`research/audits/2026-09-17-routing-audit/surface-ledger.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/surface-ledger.json) for each operation, its profile, coverage, and probe evidence.
 
 Discovery contained 29 section references that search cannot return.
 The repair maps supported tasks to whole skills and removes unsupported routes.

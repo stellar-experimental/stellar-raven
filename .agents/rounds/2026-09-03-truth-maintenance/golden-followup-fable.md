@@ -144,7 +144,7 @@ more directly. The expected verdict direction is unchanged, so this edit does no
 
 ## Review reconciliation
 
-Review `golden-followup-review-sol.md` (commit `30ab2b6`, Codex Sol high) returned CHANGES-REQUIRED
+Review [`golden-followup-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/golden-followup-review-sol.md) (commit `30ab2b6`, Codex Sol high) returned CHANGES-REQUIRED
 with one blocking finding, F1. The verification evidence and this report had said the parent answer
 read as the era-independent local-only claim that avoid item 4 forbids. That was wrong. The parent
 answer was era-bounded and did not say `only`. The defect was only the omitted server copy. The

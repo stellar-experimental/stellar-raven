@@ -3,7 +3,7 @@
 ## Scope
 
 The user authorized the work needed to close open Raven issues and pull requests.
-The preceding read-only audit remains in `2026-09-16-truth-maintenance.md` and its report directory.
+The preceding read-only audit remains in [`2026-09-16-truth-maintenance.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance.md) and its report directory.
 Each closure requires current evidence and the applicable repository gates.
 
 ## Lane plan

@@ -132,8 +132,8 @@ Choose the independent reviewer under "Coordination" by tier, not by a fixed mod
   [`docs/stellar-docs.md`](docs/stellar-docs.md).
 - Evals produce evidence-backed upstream findings in `improvements/`; scores are instruments, not
   the final product.
-- Never add a Solo path, todo, or scratchpad. Leave existing Solo references in dated records
-  unchanged.
+- Solo, a retired task tracker, is not a live path. Never add a `solo://` reference, a Solo todo,
+  or a Solo scratchpad. Leave existing Solo references in dated records unchanged.
 - Retired sibling repos must not be referenced as live paths. Retained prior art is read-only under
   `eval/corpus/`; it is also the routing eval's committed label source. The QA battery is owned
   under `eval/qa/corpus/` and does not read it.

@@ -2,7 +2,7 @@
 
 Raven exposes two MCP tools over a generated Stellar service catalog. `search` ranks catalog entries on the host. `execute` runs model-written JavaScript in a networkless Dynamic Worker. Host adapters own service traffic, credentials, argument validation, and response normalization.
 
-Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection details. Use [the operator guide](docs/operations.md) for setup, release, and retention procedures. The source modules and generated manifest define the implemented behavior.
+Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection details. Use [Run locally](README.md#run-locally) for development setup. Use [the operator guide](docs/operations.md) for release and retention procedures. The source modules and generated manifest define the implemented behavior.
 
 | Concern | Source |
 | --- | --- |
@@ -65,7 +65,11 @@ An unknown service produces zero MCP hits and names the valid services in `nextS
 
 `searchCatalogPage` first scores gated candidates and selects a page with service diversity. A short page uses the complete ungated pool to fill open slots. A full gated page also evaluates targeted ungated candidates for bounded replacement.
 Replacement can preserve complete structured intent or reduce service overflow.
-Some replacements change service counts while respecting the replacement conditions.
+
+Cross-service replacement in [preserveIntentWithinServiceQuota](src/catalog/search.ts) can change service counts.
+The candidate needs quota space and targeted intent evidence.
+The replaced entry must follow the first hit and belong to a service with multiple selected entries.
+The replaced entry must lack targeted intent evidence.
 
 The selector fixes membership before applying tier interleaving.
 A backfill hit can pass an adjacent gated hit when its score meets the 1.6× margin.
@@ -152,9 +156,9 @@ Logs and thrown errors never receive stored result artifacts.
 
 Only truncated results can receive artifacts.
 The host writes the full redacted result through [src/artifacts/store.ts](src/artifacts/store.ts).
-The R2 object contains `{ encoding, mime, body }`.
+The R2 object body is the redacted result string.
 Its key contains an owner hash and a random artifact ID.
-Custom metadata stores sizing, digest, expiry, request/Ray IDs, catalog time, and a bounded operation ledger.
+Custom metadata stores MIME type, sizing, digest, expiry, request/Ray IDs, catalog time, and a bounded operation ledger.
 
 `src/server.ts` reads OAuth grant properties from `ctx.props`.
 `authSubjectFromProps` supplies the subject to `resolveArtifactOwner`.
@@ -258,7 +262,8 @@ Import checks and fetch-stub tests support review; they do not form a runner san
 
 The code constants define these limits.
 Refresh this matrix when those constants change.
-[The operator guide](docs/operations.md) owns the retention table, account-data deletion, setup, and release procedures.
+[Run locally](README.md#run-locally) defines development setup.
+[The operator guide](docs/operations.md) owns the retention table, account-data deletion, and release procedures.
 AI Gateway account limits require separate live verification; this table describes application limits.
 
 ### Shared by demo and MCP
@@ -320,7 +325,9 @@ It writes records to a private D1 database.
 The producer and model sandbox receive no D1 binding.
 The collector excludes queries, answers, code, headers, protocol traffic, and raw account identifiers.
 API-key records remain separate from user counts.
-[usage/README.md](usage/README.md) defines reporting, coverage limits, and deletion procedures.
+
+[usage/README.md](usage/README.md) defines reporting and coverage limits.
+[The operator guide](docs/operations.md) defines account-data deletion procedures.
 
 ## 8. Build & refresh chain — keeping the catalog honest
 
@@ -364,7 +371,7 @@ The search-only Algolia rule canary compares rules-on and rules-off results with
 Assertion drift and check errors remain different failure classes.
 Local runs without credentials are inconclusive; CI requires credentials.
 
-### Observability
+## 9. Observability
 
 [src/observability.ts](src/observability.ts) owns operational events and the no-payload logging rule.
 `mcp_request` records access mode, status, timing, request ID, and a normalized Ray ID.
@@ -380,7 +387,7 @@ Skill-read events distinguish memo, colo cache, and upstream retrieval.
 Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages.
 The [observability skill](.agents/skills/cloudflare-observability-review/SKILL.md) owns investigation procedures.
 
-## 9. Evals
+## 10. Evals
 
 [eval/EVALS.md](eval/EVALS.md) defines the instruments, reporting rules, and denominator contracts.
 Routing evaluates catalog discovery through its committed gates.

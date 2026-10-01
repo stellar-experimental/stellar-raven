@@ -1,7 +1,7 @@
 # M1-C1 consequential gate — q-soroban-av-passkeys-talk (C1 ↔ B1)
 
 - Reviewer: Fable high, independent of author and coordinator. Read-only. No paid calls, edits, or Wrangler.
-- Criteria: `paid-comparison-review-criteria.md` (prepared before candidate results).
+- Criteria: [`paid-comparison-review-criteria.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/paid-comparison-review-criteria.md) (prepared before candidate results).
 - Decision: **verified-loss** (required key fact 2 present in baseline, absent in candidate; confirmed by transcript and live re-execution).
   Under the predeclared one-loss rule this blocks D3 and stops further candidate collections.
 

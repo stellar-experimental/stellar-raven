@@ -108,10 +108,10 @@ These are residuals of sk-027; a duplicate finding is unnecessary.
 
 ## Additional work
 
-1. **simple** — Put the decision K body-review task in `TODO.md`, and link it from `NEXT.md:153`.
-   The owner decision belongs in `NEXT.md`; its pending investigation belongs in the work queue.
+1. **simple** — Put the decision K body-review task in `TODO.md`, and link it from [`NEXT.md:153`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
+   The owner decision belongs in [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md); its pending investigation belongs in the work queue.
    `.agents/README.md:30` assigns own-repo follow-ups to `TODO.md`.
-   Current searches find the SCF body-review task only in `NEXT.md`.
+   Current searches find the SCF body-review task only in [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 2. **simple** — Add a complete sibling-check list to the golden closure.
    The current evidence names two Lab siblings and the removed URL search.

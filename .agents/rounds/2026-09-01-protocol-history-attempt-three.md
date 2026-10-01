@@ -23,7 +23,7 @@ Out of scope: closeout edits to `.agents/TODO.md`, [`.agents/NEXT.md`](https://g
 
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| Evidence analysis | Codex, GPT-5.6 Terra, high | `w1B:p2` | `2026-09-01-protocol-history-attempt-three/evidence-terra.md` | complete before brief authoring; recommends `HOLD`; names family 3 as the cheapest next measurement |
+| Evidence analysis | Codex, GPT-5.6 Terra, high | `w1B:p2` | [`2026-09-01-protocol-history-attempt-three/evidence-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/evidence-terra.md) | complete before brief authoring; recommends `HOLD`; names family 3 as the cheapest next measurement |
 | Mechanism brief | Claude, Fable 5, high | `w1B:p1` | this ledger; `…/brief-fable.md`; `…/brief-reconciliation-fable.md` | complete after two reconciliations; registers `clause-support-fit-v1` |
 | Independent brief review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-hold.md` | complete; verdict `BLOCK` |
 | Brief reconciliation | Claude, Fable 5, high | `w1B:p1` | `…/brief-reconciliation-fable.md` | complete |
@@ -62,7 +62,7 @@ from both.
 - Model: Grok 4.6
 - Effort: high; escalate to xhigh only after a high pass misses a real finding.
 - Report contract: verdict `PASS` or `BLOCK` with numbered findings. The first review is
-  `review-grok-hold.md`. The delta review is `review-grok-hold-delta.md`.
+  [`review-grok-hold.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold.md). The delta review is [`review-grok-hold-delta.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold-delta.md).
 
 ## Ledger
 
@@ -71,7 +71,7 @@ from both.
 Worktree `next-protocol-history-attempt-three` at `HEAD`
 `7c2c2857df1ed3696ec863eef3d2da80332c609c`, equal to `main`. `git status --porcelain` returned no
 tracked change. The untracked directory `.agents/rounds/2026-09-01-protocol-history-attempt-three/`
-already held `evidence-terra.md`. That file is 13,653 bytes. Its SHA-256 is
+already held [`evidence-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/evidence-terra.md). That file is 13,653 bytes. Its SHA-256 is
 `18c92bf50f79559fdb0217fef0c465a01cc5e24d7d88728ab8d8137bd0ca24d7`. Its own commands table
 records `mkdir -p` of that directory and read-only commands only.
 
@@ -181,13 +181,13 @@ Per-case results:
 - Seven controls carry a rare (`DF <= 8`) target token: `vote`, `upgrade`, `bug`, `incident`,
   `exploit`, `reviewing`, `kyc`, `mortem`.
 
-The complete per-case tables are in `brief-fable.md` section 3.2 and Appendix B. The raw
+The complete per-case tables are in [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/brief-fable.md) section 3.2 and Appendix B. The raw
 console outputs are session-local files in the scratchpad. They are not committed. The script is
 reproduced verbatim in the brief's Appendix A.
 
 ### 2026-09-01 — first brief authored: hold recorded
 
-Fable wrote the first `brief-fable.md`. It recorded a hold and left attempt three unused. Its
+Fable wrote the first [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/brief-fable.md). It recorded a hold and left attempt three unused. Its
 stated basis had four parts. It read the pure-fit readings as a class ceiling. It read the two
 zero-overlap positives as a bound on comparators. It cited the control-side coupling. Its
 disposition table marked Terra family 3 as not distinct. It pre-registered four reopen
@@ -207,7 +207,7 @@ contract change, and no closeout edit.
 
 ### 2026-09-01 — independent review returned BLOCK
 
-Grok wrote `review-grok-hold.md` with verdict `BLOCK`. It reproduced the two zero-overlap results
+Grok wrote [`review-grok-hold.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold.md) with verdict `BLOCK`. It reproduced the two zero-overlap results
 and the 32-question summary on the pinned inputs. It confirmed that no protected path changed.
 It found three blocking claims and four residual defects.
 
@@ -226,7 +226,7 @@ The review did not authorize closeout. Repair and one bounded delta review were 
 
 ### 2026-09-01 — reconciliation: measurement selected
 
-Fable rewrote `brief-fable.md` in full and wrote `brief-reconciliation-fable.md`. Every finding
+Fable rewrote [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/brief-fable.md) in full and wrote [`brief-reconciliation-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/brief-reconciliation-fable.md). Every finding
 B1 to B3 and R1 to R4 is reconciled there, one section per finding.
 
 Decision after reconciliation: register `clause-support-fit-v1`. It is Terra family 3 with one
@@ -278,18 +278,18 @@ Verification of the reconciliation lane:
   `npm` command ran. No model loaded. The retained cache was not opened. Network: none. Paid
   call: none. Cost: `$0`.
 
-The next gate is the bounded delta review in `review-grok-hold-delta.md`. No implementation,
+The next gate is the bounded delta review in [`review-grok-hold-delta.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold-delta.md). No implementation,
 run, fetch, or closeout is authorized before it passes.
 
 ### 2026-09-01 — bounded delta review returned BLOCK on D1
 
-Grok wrote `review-grok-hold-delta.md`. It found B1–B3 and R1–R4 repaired in substance. It
+Grok wrote [`review-grok-hold-delta.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold-delta.md). It found B1–B3 and R1–R4 repaired in substance. It
 confirmed the noisy-OR math, the `m = 0` sort, the union, and the cache pins against the frozen
 helpers. It ran 50 synthetic trials of `m = 0` against a stable descending sort with zero
 mismatches. It did not open the cache.
 
 It blocked on D1. Test 12 followed every relative specifier under `eval/`. That walk reaches
-[`run-rerank-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-rerank-fit.mjs), which calls `import("./rerank-scorer.mjs")` and
+[`run-rerank-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-rerank-fit.mjs), which calls [`import("./rerank-scorer.mjs")`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/rerank-scorer.mjs) and
 `require("onnxruntime-node/package.json")` inside `main()`. A faithful walk would fail on a
 correct referee. It listed five residual pins: D2, a local `shouldFail`; D3, the dynamic import of
 `src/catalog/search.ts`; D4, the missing [`rerank-retrieval.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/rerank-retrieval.mjs) hash; D5, the literal
@@ -297,8 +297,8 @@ correct referee. It listed five residual pins: D2, a local `shouldFail`; D3, the
 
 ### 2026-09-01 — second reconciliation applied
 
-Fable repaired `brief-fable.md` for D1 to D6 only. The second reconciliation section is appended
-to `brief-reconciliation-fable.md`.
+Fable repaired [`brief-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/brief-fable.md) for D1 to D6 only. The second reconciliation section is appended
+to [`brief-reconciliation-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/brief-reconciliation-fable.md).
 
 - D1: test 12 now walks top-level static `import` declarations only. It does not follow
   `import()` or `require()` calls. It does not enter `main()`. Section 10 states the same rule.
@@ -315,12 +315,12 @@ No formula, union, cache pin, or acceptance value changed. No protected path cha
 retained cache was not opened. No model loaded. Network: none. Paid call: none. Cost: `$0`.
 `git status --porcelain` still shows only the untracked round ledger and round directory.
 
-The next gate is the second bounded delta review in `review-grok-hold-delta-2.md`. It covers
+The next gate is the second bounded delta review in [`review-grok-hold-delta-2.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold-delta-2.md). It covers
 the repaired test and import lines only.
 
 ### 2026-09-01 — second bounded delta review returned PASS
 
-Grok wrote `review-grok-hold-delta-2.md` with verdict `PASS`. It reviewed D1 through D6 only.
+Grok wrote [`review-grok-hold-delta-2.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-hold-delta-2.md) with verdict `PASS`. It reviewed D1 through D6 only.
 It confirmed that every repair matches the reviewed contract.
 
 Test 12 now walks top-level static `import` declarations only. The local `shouldFail` reads the
@@ -341,7 +341,7 @@ Codex GPT-5.6 Sol high completed the reviewed section 11 write set. It wrote the
 - [`eval/vectorize/run-support-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-support-fit.mjs);
 - [`test/eval-vectorize-support-fit.test.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-support-fit.test.mjs);
 - the `eval:vectorize:support:run` script in `package.json`;
-- `2026-09-01-protocol-history-attempt-three/implementation-sol.md`.
+- [`2026-09-01-protocol-history-attempt-three/implementation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/implementation-sol.md).
 
 The implementation preserved the formula, union, cache pins, and acceptance table. It also
 preserved the result schema, local `shouldFail`, cache-only boundary, and one-referee rule.
@@ -359,7 +359,7 @@ Exact implementation validation results:
 
 | Command | Exit | Result |
 | --- | ---: | --- |
-| `./node_modules/.bin/vitest run test/eval-vectorize-support-fit.test.mjs` | 0 | 1 file passed; 18 tests passed; 1.34 seconds |
+| [`./node_modules/.bin/vitest run test/eval-vectorize-support-fit.test.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-support-fit.test.mjs) | 0 | 1 file passed; 18 tests passed; 1.34 seconds |
 | `npm run typecheck` | 0 | `tsc --noEmit` passed |
 | `npm test` | 0 | 99 files passed; 1,579 tests passed; 15.91 seconds |
 | `npm run build` | 0 | Wrangler dry run passed; total upload 6,990.49 KiB |
@@ -381,7 +381,7 @@ model and used no network or paid work. No commit was created.
 
 ### 2026-09-01 — independent implementation review returned PASS
 
-Grok wrote `review-grok-implementation.md` with verdict `PASS`. The review covered brief
+Grok wrote [`review-grok-implementation.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-implementation.md) with verdict `PASS`. The review covered brief
 sections 5 through 14. It started from the final brief and inspected the implementation files.
 
 The reviewer confirmed the noisy-OR fit and the unchanged negative rule. It confirmed the stable
@@ -456,7 +456,7 @@ This one terminal result spent attempt three.
 
 ### 2026-09-01 — independent result verification returned PASS
 
-Codex GPT-5.6 Terra high wrote `result-verification-terra.md` with verdict `PASS`.
+Codex GPT-5.6 Terra high wrote [`result-verification-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/result-verification-terra.md) with verdict `PASS`.
 It did not rerun the referee. It loaded no model, scored no pair, and used no network.
 
 The verifier independently decoded all 383,273 cached scores.
@@ -467,7 +467,7 @@ The report found zero discrepancies.
 
 ### 2026-09-01 — product closeout prepared
 
-Claude Fable 5 high wrote `closeout-fable.md`.
+Claude Fable 5 high wrote [`closeout-fable.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/closeout-fable.md).
 It mapped the terminal result to the existing queue rules.
 The proposal keeps the ranking defect open but trigger-only.
 It does not authorize a fourth attempt.
@@ -497,7 +497,7 @@ Final validation results:
 
 | Command | Result |
 | --- | --- |
-| `./node_modules/.bin/vitest run test/eval-vectorize-support-fit.test.mjs` | 1 file and 18 tests passed |
+| [`./node_modules/.bin/vitest run test/eval-vectorize-support-fit.test.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-support-fit.test.mjs) | 1 file and 18 tests passed |
 | `npm run typecheck` | passed |
 | `npm test` | 99 files and 1,579 tests passed |
 | `npm run build` | Wrangler dry run passed; total upload 6,990.49 KiB |
@@ -514,7 +514,7 @@ No command reran the support referee.
 
 ### 2026-09-01 — independent closeout review reconciled
 
-Grok 4.6 high wrote `review-grok-closeout.md` with verdict `BLOCK`.
+Grok 4.6 high wrote [`review-grok-closeout.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-closeout.md) with verdict `BLOCK`.
 The review confirmed the result, hashes, spent-box rule, and unchanged production surface.
 It found two stale attempt-three sentences in the eval README files.
 It also found two incomplete gate-failure lists and one premature Outcome status.
@@ -524,7 +524,7 @@ Both README files now say attempt three is spent.
 The TODO and vector README now include the protocol-version top-one failure.
 The ledger stayed pending during repair.
 
-Grok wrote `review-grok-closeout-delta.md` with verdict `PASS`.
+Grok wrote [`review-grok-closeout-delta.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-protocol-history-attempt-three/review-grok-closeout-delta.md) with verdict `PASS`.
 It confirmed all four documentation lines and the pending ledger state.
 No finding remains open.
 The reviewer opened no cache and did not rerun the referee.

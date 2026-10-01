@@ -14,7 +14,8 @@ Run `npm run deploy`. Do not run `wrangler deploy` directly, because the package
 checks:
 
 - `predeploy` runs `scripts/deploy-preflight.mjs`. It refuses a dirty working tree and a `HEAD`
-  that is not `origin/main`. Set `DEPLOY_ALLOW_UNCLEAN=1` only for a deliberate off-main deploy.
+  that is not `origin/main`. `DEPLOY_ALLOW_UNCLEAN=1` skips the whole preflight and deploys the
+  working tree as it is. Use it only for a deliberate off-main deploy.
 - `postdeploy` runs `scripts/check-usage-deployment.mjs`. It checks that the usage tail consumer is
   attached and that the collector's daily cleanup schedule exists. It skips with a notice when no
   Cloudflare credential is available.
@@ -32,8 +33,16 @@ shows `Authentication error [code: 10000]`. After more retries, it shows
 `Max auth failures reached [code: 9109]`. Neither message names the account, so check the active
 profile first.
 
-After a deploy, check production behavior. Run the checks in [`AGENTS.md`](../AGENTS.md) before
-a release.
+Before a release, run the checks in [`CONTRIBUTING.md`](../CONTRIBUTING.md). After a deploy:
+
+1. Record the Version ID that `npm run deploy` prints.
+2. Wait about one minute. A new route can return 404 while it propagates.
+3. Check that the landing page returns `200`, `GET /health` returns `200`, and an unauthenticated
+   `POST /mcp` returns a `401` JSON error.
+4. Check that `GET /health/skills` returns `200` after the next hourly canary run.
+
+The `live-drift-resolution` skill (`.agents/skills/live-drift-resolution/SKILL.md`, Step 8) uses
+the same checks for a catalog deploy.
 
 ## Named API keys
 
@@ -73,7 +82,7 @@ the telemetry query API.
 
 For limits and caps, read "Operating limits and caps" in
 [the architecture](../ARCHITECTURE.md#7-operating-limits-and-caps). For the event fields, read
-"Observability" in the same file.
+[section 9, "Observability"](../ARCHITECTURE.md#9-observability).
 
 The structured logs contain operational metadata only: counts, status, timing, exposed operation
 IDs, and pseudonymous subject and client joins. They do not contain queries, execute code, tool

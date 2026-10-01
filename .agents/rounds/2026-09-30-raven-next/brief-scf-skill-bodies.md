@@ -6,7 +6,7 @@ You are a read-only research lane for round `raven-next` 2026-09-30. Lead: `rave
 
 Read first:
 
-- `.agents/NEXT.md` decision K (what the owner must decide and the four criteria the read must feed).
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) decision K (what the owner must decide and the four criteria the read must feed).
 - `ecosystem-skills/README.md`, section "Adding a source", the "Admission bar" list.
 - `ecosystem-skills/catalog.json` entries whose `name` starts with `scf-` (twelve; note that
   `scf-fetch-external-doc` lives upstream at `skills/fetch-external-doc`).

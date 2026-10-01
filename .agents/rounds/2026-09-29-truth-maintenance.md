@@ -39,11 +39,11 @@ PR #182 merged and the production checks passed. Issue #180 is closed.
 The free routing gate passes against the existing numerical thresholds.
 The author and reviewer compared all 544 complete scored rows.
 No result ID, rank, score, accepted total, or holdout result changed.
-`drift-comparison.json` records the comparison.
+[`drift-comparison.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/drift-comparison.json) records the comparison.
 The manifest byte fingerprint changed; numerical acceptance rules did not change.
 
 The stored 100-case plan run keeps identical rows and summary grades.
-`plan-check.json` records the comparison.
+[`plan-check.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/plan-check.json) records the comparison.
 No paid answer-quality run or re-judging ran.
 This round makes no new answer-quality claim.
 
@@ -61,7 +61,7 @@ The register reopened clusters 017, 054, 114, 123, and the base-reserve numeric 
 The independent reviewer read every member and approved all five consistency entries.
 The helper applied the four cluster reviews; the owner applied the exact numeric-invariant attestation.
 The stamped hashes remain current. No entry remains reopened from this change.
-See `golden-register-independent-review.md` and `golden-register-review.json`.
+See `golden-register-independent-review.md` and [`golden-register-review.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/golden-register-review.json).
 
 The stale queue has no past-due case. Eighteen cases reach review dates by 2026-10-27.
 Existing dated TODOs remain. No freshness date was extended.
@@ -71,7 +71,7 @@ Two existing undated sibling amounts now have a named follow-up in `.agents/TODO
 
 The initial GitHub census found three open issues (#167, #180, #181) and no open Raven pull requests.
 It covered all 61 initial findings and 69 distinct upstream references with zero read errors.
-`upstream-state.json` preserves the census. `upstream-table.md` records each action.
+[`upstream-state.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/upstream-state.json) preserves the census. [`upstream-table.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/upstream-table.md) records each action.
 Routine recurrences stayed local. Untouched open issues received no reminders.
 
 | Issue or finding | Action | Remaining condition |
@@ -152,12 +152,12 @@ The current-source value mismatch remains independently verified.
 - `npm run improvements:probes`: seven recurring; zero fixed candidates, inconclusive results, or errors.
 - Staged tree and staged-addition secret scans: clean.
 - Exact finding snapshots published at `22ec28cbd6704fcde1acdaba9db7bfccea261161`.
-- Final scoped findings review: accepted; `final-findings-review.md` records each reconciled finding.
+- Final scoped findings review: accepted; [`final-findings-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/final-findings-review.md) records each reconciled finding.
 - Standardized filing completed. Exact public source blobs, issue bodies, and authors passed GitHub readback.
 - `sls-087`: https://github.com/Stellar-Light/stellarlight/issues/1738.
 - `sls-088`: https://github.com/Stellar-Light/stellarlight/issues/1739.
 - `sk-026`: https://github.com/Trustless-Work/trustlesswork-skill/issues/16.
-- `filed-findings.json` records the immutable source, exact posted bodies, and verified authors.
+- [`filed-findings.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/filed-findings.json) records the immutable source, exact posted bodies, and verified authors.
 - Production deployment and closure of #180: completed after the owner approved the release.
 
 ## Publication
@@ -194,8 +194,8 @@ The raw local and HTTP surface hashes differ.
 Their complete tool definitions match after sorting JSON object keys; their instruction hashes match exactly.
 This confirms a serialization-order difference, not a changed tool definition.
 The temporary verification credentials were revoked, and their local files were removed.
-`production-verification.json` records each acceptance result.
-`drift-resolution-comment.json` records the exact posted comment, its author, and the closed issue state.
+[`production-verification.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/production-verification.json) records each acceptance result.
+[`drift-resolution-comment.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-29-truth-maintenance/drift-resolution-comment.json) records the exact posted comment, its author, and the closed issue state.
 
 The final receipt commit changes documentation and acceptance evidence only.
 Production continues to identify the reviewed runtime commit above.

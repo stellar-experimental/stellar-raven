@@ -126,13 +126,13 @@ The new procedure is short of that example:
 - Step 5 points only at `live-drift-resolution` Step 1, the regenerate commands. Skill-description changes also need the routing gate in Step 4 of that skill, and a fingerprint update when the gate moves. PR #157 did that movement. Thresholds stayed put.
 - The phrase "in one PR" covers the pin, the catalog, the routing fingerprint, and the golden. The golden itself came from PR #164 and was activated in the #157 candidate.
 - No step says to record non-skill directories in `groups.json` `unpinnedUpstream`. `scripts/check-skills-drift.mjs:111-150` fails a cherry-picked source when a directory is neither pinned nor recorded, once that source already has an exclusion map. `source.path === "."` is still scanned. The empty-path early return on line 112 applies to a path of `""` (stellar-scout), where the repo is the skill. Line 115 skips the sibling scan when the exclusion map is empty. An operator who copies the README and leaves the map empty gets silence. An operator who records only some directories gets `DRIFT` for the rest.
-- Line 203 says an unadmitted candidate is recorded in `.agents/TODO.md` or a round ledger. Decision K for the SCF skills was recorded in `.agents/NEXT.md`.
+- Line 203 says an unadmitted candidate is recorded in `.agents/TODO.md` or a round ledger. Decision K for the SCF skills was recorded in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
-Exact fix: add a step to record every non-skill directory in `unpinnedUpstream`, including path `"."` sources. Point step 5 at the routing gate and `eval/gates.json` when descriptions change, and say thresholds move only when the movement is an intended improvement. Say the golden may land in the admission PR or in a reviewed activation of an already-written case. Name `.agents/NEXT.md` as a valid place for an unadmitted decision.
+Exact fix: add a step to record every non-skill directory in `unpinnedUpstream`, including path `"."` sources. Point step 5 at the routing gate and `eval/gates.json` when descriptions change, and say thresholds move only when the movement is an intended improvement. Say the golden may land in the admission PR or in a reviewed activation of an already-written case. Name [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) as a valid place for an unadmitted decision.
 
 ### 4. nit — decision K uses a catalog name whose upstream directory differs
 
-Location: `.agents/NEXT.md:155-160` and `ecosystem-skills/catalog.json:345-351`
+Location: [`.agents/NEXT.md:155-160`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) and `ecosystem-skills/catalog.json:345-351`
 
 The twelve `scf-*` catalog names are real.
 `git log -S 'scf-budget-builder' -- ecosystem-skills/catalog.json` shows `42be531d9d7b6d3b8194403e1c0140544045c6a0` at `2026-07-27T09:58:01-04:00` with subject `catalog: absorb Scout 1.8.28 and ecosystem skills drift (#43)`.

@@ -59,7 +59,7 @@ Tool versions: Node v24.13.0, npm 11.11.0, Wrangler 4.133.0, gitleaks 8.30.1.
 | Check | Result |
 |---|---|
 | `npm ci` into a dedicated `node_modules` | exit 0; 320 packages |
-| `npx vitest run test/eval-discovery-vectorize.test.mjs test/eval-vectorize-{clause,rerank,support}-fit.test.mjs` | 4 files, 77 tests passed |
+| <code>npx vitest run <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-discovery-vectorize.test.mjs">test/eval-discovery-vectorize.test.mjs</a> <a href="https://github.com/stellar-experimental/stellar-raven/tree/6dd9439461a286f5ca5f87722fb60f238c610d3d/test">test/eval-vectorize-{clause,rerank,support}-fit.test.mjs</a></code> | 4 files, 77 tests passed |
 | `npx vitest run` | 120 files; 2,160 passed, 4 skipped (after the PR #170 rebase) |
 | `npm run typegen` with the CI placeholder `.dev.vars` names | exit 0 |
 | `npx tsc --noEmit` on the regenerated `env.d.ts` | exit 0 |

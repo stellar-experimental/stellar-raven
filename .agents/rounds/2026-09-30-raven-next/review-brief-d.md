@@ -12,7 +12,7 @@ Read `.agents/skills/golden-truth/SKILL.md` (Steps 1 to 6 and Hard rules) and th
 Five case files under `eval/qa/corpus/battery/`, the generated `eval/qa/cases.json`, `sample.json`,
 `lifecycle-registry.json`, `consistency-register.json` (eight clusters re-stamped through
 `.agents/rounds/2026-09-30-raven-next/register-review-d.json`), two `TODO.md` items removed, and
-`NEXT.md` item 3.
+[`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) item 3.
 
 ## What to verify, independently and live
 

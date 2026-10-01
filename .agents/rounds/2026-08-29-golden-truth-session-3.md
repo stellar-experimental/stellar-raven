@@ -155,7 +155,7 @@ Route cards:
 - Lanes A–C. Worker CLI: Codex. Model: GPT-5.6 Sol. Effort: high. Reason: dense case authoring
   with verification and acting on gathered evidence; failure cost is gospel corruption, so a
   different-family reviewer gates it. Verified: `~/.codex/config.toml` pins `gpt-5.6-sol` /
-  `high`; [`research/agent-model-roster.md`](../model-roster.md) lists Sol efforts low–ultra. Fallback: Fable 5 high,
+  `high`; [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) lists Sol efforts low–ultra. Fallback: Fable 5 high,
   then Opus 5 high. Reviewer: Grok 4.6.
 - Lane R. Worker CLI: Grok. Model: grok-4.6. Effort: high. Reason: vendor-diverse assumption
   attack, independent re-derivation of high-stakes facts; differs from authors (Sol) and the

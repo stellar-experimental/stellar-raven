@@ -68,7 +68,6 @@ The summary groups counts by seed pool.
 
 The classifier never combines hits across repeated agent runs to claim recovery.
 The discovery measures do not establish final-answer correctness. Use [QA](../qa/README.md) for that measure.
-The Vectorize experiments measured NO-SHIP outcomes. Their implementation and commands are removed.
 
 ## Replay smoke record — 2026-07-10
 

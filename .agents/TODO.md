@@ -16,8 +16,8 @@ Open owner decisions are at the end of this file. Each one is listed once.
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
 2. Follow the upstream Docs and protocol pull requests for `sd-027`, `sd-034`, and `sd-037`.
-3. Refresh the golden freshness items and review dependency upgrades.
-4. Complete the private usage checks.
+3. Review dependency upgrades (Dependencies below).
+4. Complete the private usage checks ("Usage archive follow-up" below).
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -55,16 +55,6 @@ single-pass payload is acceptable and this item is closed with that evidence.
 Found by the [skill system audit](rounds/2026-09-30-skill-system-audit.md) and its independent
 reviews.
 
-### Read the Stellar Light SCF skill bodies
-
-Owner decision K asks whether to pin any of the twelve `scf-*` skills from
-`Stellar-Light/awesome-stellar-community-fund`. The fit so far is name-level only. Read each body
-against the four criteria of the admission bar in `ecosystem-skills/README.md` "Adding a source",
-including overlap with `skills.lumenloop.scf-submission-radar` and
-`skills.stellar-light.stellar-scout`.
-
-Done when: each of the twelve has a recorded verdict that decision K can use.
-
 ### Decide whether to track the skills.stellar.org Community section
 
 The `https://skills.stellar.org/` index has a Community section with skills that are not in the
@@ -85,35 +75,6 @@ infers the mode.
 
 Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers
 a cherry-picked source with no exclusions and one new upstream sibling.
-
-### Stage the index before the pin swap
-
-`ecosystem-skills/update.sh` moves `MANIFEST.json` and `catalog.json` into place before
-`build-index.mjs` runs, as two separate moves. An index failure leaves new pins with a stale
-`INDEX.md`. The README states this.
-
-Done when: the index is built from the staged files before the swap, or the swap rolls back on
-failure.
-
-### Cover source location in the pin-review digest
-
-`scripts/check-pin-review.mjs` `project()` digests the commit, skill names, file paths, and blob
-shas, but not `owner`, `repo`, or `path`. A location-only change moves transport URLs without a new
-attestation. Served bytes stay hash-verified at runtime, so this is a provenance gap. The checker
-applies one projection to the base and the head, so extending it re-keys the printed digests
-without detecting movement; only a later selection or location change needs a new `PIN-REVIEW.md`
-entry.
-
-Done when: the projection includes the location fields and a test proves a location-only change
-needs an attestation.
-
-### Remove the inactive private-archive branches from build-index.mjs
-
-`ecosystem-skills/build-index.mjs` still carries private-archive and credential-recovery branches.
-All accepted sources are public GitHub repositories, and `check-skills-drift.mjs` rejects other
-source types.
-
-Done when: the branches are removed and the index still rebuilds byte-identically.
 
 ## Tooling
 
@@ -140,28 +101,7 @@ copy, and the length refusal. Only after it passes, remove the source-spelling a
 `test/demo-page.test.ts`. Keep the CSP hash, emitted-reference, metadata, and truthful-example
 checks.
 
-## Golden freshness
-
-### Add dated reserve amounts to two sibling cases
-
-An independent review on 2026-09-29 found undated amounts in `q-asset-trustline-basics` and
-`q-asset-amm-fee-reserve`. The values agree with the current Mainnet reserve setting. Use
-`golden-truth` to add an answer-visible date or express those amounts as dated examples. Repeat the
-affected source and sibling checks before changing the case files. Evidence:
-`rounds/2026-09-29-truth-maintenance/golden-register-independent-review.md`.
-
-Done when: the cases carry dated amounts and the golden and register gates pass.
-
-### Refresh the two sibling freshness items from the September 14 golden review
-
-`q-defi-x402-on-stellar-what` records a 2026-07-10 Governing Board state; on 2026-09-14,
-https://stellar.org/x402 said SDF holds a seat on the Foundation's Governing Board.
-`q-gap-builders-person-empty` records a 114-profile builder directory; the 2026-09-14 live advisory
-said 183. Both are judge-facing text changes, so they need multi-class triangulation and an
-independent re-derivation. Evidence: `research/audits/2026-09-14-golden-freshness-review.md`
-Cases 5 and 6.
-
-Done when: both cases carry current, triangulated evidence and the corpus gates pass.
+## Golden truth
 
 ### Reconcile Soroswap API and contract scope in sibling grader notes
 
@@ -197,9 +137,15 @@ The stale bot closed issue https://github.com/stellar/stellar-protocol/issues/19
 author-owned fix is https://github.com/stellar/stellar-protocol/pull/2021. It adds the SLP list to
 `limits/README.md` and an SLP mention to the root README, and it offers to drop the table if the
 maintainers do not want to maintain it. Commit `65d35aebf3ae3d5b9094b36959c27d9b8540e2a0` answers
-the Copilot review; all four checks passed on 2026-09-29.
+the Copilot review; all four checks passed on 2026-09-29. On 2026-09-30, `leighmcculloch`
+(`MEMBER`) approved head `777561b2`
+(https://github.com/stellar/stellar-protocol/pull/2021#pullrequestreview-5358887566), but GitHub
+reports `mergeable_state: blocked`, so a second condition still holds the merge. The default-branch
+READMEs still lack the SLP index, and the finding stays `reported-upstream`. Do not post a reminder
+because of the approval.
 
-At the next improvements round, read the PR state and any review, and respond to requested changes.
+At the next improvements round, read the merge blocker, the PR state, and any new review, and
+respond to requested changes.
 The stale workflow marks a quiet PR after 30 days and closes it 30 days later. Do not post a
 keep-alive comment. If the PR closes unmerged, record the reason and keep the finding. If it merges,
 re-run the two README source checks before changing the finding.
@@ -362,18 +308,26 @@ shows no verified answer regression before release.
 
 ## Dependencies
 
-### Re-check the remaining test-pool dependency audit findings
+### Re-check the remaining dependency audit findings
 
-Found by the 2026-09-17 dependency audit (`research/audits/2026-09-17-dependency-audit/`).
-`@cloudflare/vitest-pool-workers` 0.22.0 pins its own test tools: nested `wrangler` 4.124.0,
-`miniflare` 5.20260815.0-alpha, and `sharp` 0.35.2 under miniflare (GHSA-rgj7-g3m4-5g8c). These are
-development tools only; the pool serves the `test:smoke` lane. npm offers only a pool downgrade to
-0.8.30, which breaks the vitest 4 smoke config. Do not use it or an override.
+Found by the 2026-09-17 dependency audit and rechecked on 2026-09-30
+(`research/audits/2026-09-17-dependency-audit/README.md`). Eight high findings remain:
+
+- `@cloudflare/vitest-pool-workers` 0.22.0 pins its own test tools: nested `wrangler` 4.124.0,
+  `miniflare` 5.20260815.0-alpha, and `sharp` 0.35.2 under miniflare (GHSA-rgj7-g3m4-5g8c). These
+  are development tools only; the pool serves the `test:smoke` lane. npm offers only a pool
+  downgrade to 0.8.30, which breaks the vitest 4 smoke config. Do not use it or an override.
+- `undici` 7.29.0 is high, and Dependabot scopes it `runtime` through `@ai-sdk/provider-utils`.
+  Both installed `miniflare` copies pin `7.29.0` exactly, and npm resolves the
+  `@ai-sdk/provider-utils` range `^7.28.0` onto that copy. 7.29.1 is patched. Wrangler 4.145.0
+  depends on a `miniflare` that pins `undici` 7.29.1, so a root Wrangler update clears the Wrangler
+  copy. The pool copy stays until the pool moves.
 
 Two local workerd runtimes coexist: `wrangler dev` and `npm run build` use one version, and the
 smoke pool and `@cloudflare/unenv-preset` use an older one.
 
-Done when: a pool release newer than 0.22.0 passes `npm run test:smoke` and clears these findings.
+Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`, and every installed
+`miniflare` pins an `undici` outside the advisory ranges (7.29.1 or later).
 
 ## Eval instruments
 
@@ -658,15 +612,24 @@ Safe default: no spend.
 ### K. Decide exposure for the Stellar Light SCF skills
 
 Question: pin some, all, or none of the twelve `scf-*` skills from
-`Stellar-Light/awesome-stellar-community-fund` (MIT). They are in the directory snapshot in
-`ecosystem-skills/catalog.json`, but no pin decision exists. SCF work is a main Raven use case.
-Name-level fit only: `scf-live-context`, `scf-prescreen-checker`, `scf-claim-verifier`, and
-`scf-competitor-analyst` could fit a read-only gateway; `scf-fetch-external-doc` (network fetches;
-upstream directory `skills/fetch-external-doc`) and `scf-round-reviewer` (CSV export input) likely
-do not. Overlap to resolve: the exposed `skills.lumenloop.scf-submission-radar` and
-`skills.stellar-light.stellar-scout` already cover SCF positioning and pitch drafting. The repository
-uses the standard `skills/` layout, so pinning needs no `update.sh` code change. Evidence needed:
-the body read in "Read the Stellar Light SCF skill bodies", judged against the four criteria of the
-admission bar in `ecosystem-skills/README.md` "Adding a source".
+`Stellar-Light/awesome-stellar-community-fund` (MIT; the copyright line names LumenLoop). They are
+in the directory snapshot in `ecosystem-skills/catalog.json`, but no pin decision exists. SCF work
+is a main Raven use case. Overlap to resolve: the exposed `skills.lumenloop.scf-submission-radar`
+and `skills.stellar-light.stellar-scout` already cover SCF positioning and pitch drafting. The
+repository uses the standard `skills/` layout, so pinning needs no `update.sh` code change.
 
-Safe default: not pinned.
+Evidence: the body read in `.agents/rounds/2026-09-30-raven-next/scf-skill-bodies-astra.md`
+(upstream HEAD `b9a1509f`), judged against the admission bar in `ecosystem-skills/README.md`
+"Adding a source". Verdicts: eleven `fit` as reference content, and one `no fit`
+(`scf-round-reviewer`, which depends on an absent `CLAUDE.md`, local CSV files, and external skill
+packages). Caveats the decision must weigh:
+
+- Four bodies link to root `docs/` files, and the submission drafter requires the root template.
+  The standard `skills/` selector does not pin either.
+- `scf-live-context` identifies the round from an open RFP row. That conflicts with the pinned
+  Scout body and the current `scout.getRfps` schema, a content defect to resolve before admission.
+- `scf-fetch-external-doc` and the referral, tranche, and round bodies carry credential, sharing,
+  or install prompts that admission must record.
+- The fetch skill's frontmatter name is `fetch-external-doc`.
+
+Safe default: not pinned, with this decision recorded.

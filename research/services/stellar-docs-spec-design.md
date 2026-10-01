@@ -23,7 +23,7 @@ on **id (w=12), name (w=10), service (w=8), description (w=5), kind (w=2)** with
    coverage gate on long natural-language questions (including function words — "how do I",
    "what is", "which" — because the gate counts every query token).
 
-This mirrors the codemode `OpenApiConnector` philosophy (research/codemode.md §5): a service is
+This mirrors the codemode `OpenApiConnector` philosophy ([research/codemode.md](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/codemode.md) §5): a service is
 not one generic tool but **one typed operation per intent**, with the spec itself as greppable
 data. Lumenloop/stellar-light get this for free from their OpenAPI specs; the docs corpus has no
 spec, so we author one.
