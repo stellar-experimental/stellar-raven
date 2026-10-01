@@ -71,27 +71,43 @@ full `/v1/skills` set observable.
   skills.
 - **New skills are visible.** A skill that `groups.json` does not file goes to an "Uncategorized"
   section of `INDEX.md`. `update.sh` also prints it.
-- **Skipped skills are recorded.** A cherry-picked source pins only the skills in a pick list in
-  `update.sh`. `openzeppelin-stellar` picks 3 Stellar skills from a multi-chain repository. A
+- **Skipped skills are recorded.** `sources.json` defines each source's selection mode and pick list.
+  `update.sh` and `check-skills-drift.mjs` read the same definitions.
+  `openzeppelin-stellar` picks 3 Stellar skills from a multi-chain repository. A
   later run of `update.sh` does not find a new upstream sibling. For this reason,
   `groups.json` `unpinnedUpstream` records each skipped sibling with a reason.
   `check-skills-drift.mjs` fails on every run while an upstream directory is neither pinned nor
-  recorded. The check lists a source only when its `unpinnedUpstream` map is not empty. A new
-  cherry-picked source must therefore record at least its first exclusion.
+  recorded. The check lists every source with `mode: "pick"`, including sources with no exclusions.
+  The modes `all` and `root` do not need this sibling check.
 - **Complete directory snapshot.** `catalog.json` holds the full stellarlight directory. It
   includes SDKs, MCP servers, and CLIs that are not `SKILL.md` skills, but Raven does not download
   them. `build-index.mjs` reads this file directly. `MANIFEST.json` holds no second copy.
-- **Swap last.** `update.sh` stages `MANIFEST.json`, `catalog.json`, and the `INDEX.md` that it
-  builds from them in a temporary tree. It moves the three files into place only after four steps
+- **Community source directory snapshot.** `community.json` records Community names and links from `stellar/stellar-dev-skill main`.
+  The drift check reads the exported `ECOSYSTEM_CARDS` array in
+  [`site/src/data/skills.ts`](https://github.com/stellar/stellar-dev-skill/blob/main/site/src/data/skills.ts).
+  The site's [generator](https://github.com/stellar/stellar-dev-skill/blob/main/site/scripts/generate-llms-txt.mjs)
+  uses the same array for the `Community Built` listing in `llms.txt`.
+  The 2026-10-01 check found 30 entries, including candidates absent from `catalog.json`.
+  This check measures `stellar/stellar-dev-skill main` directory drift, not deployed-site drift.
+  Source changes can precede deployment or never deploy.
+  The check parses literal titles and links without executing upstream code.
+  It ignores descriptions, including Markdown bullets and headings, and the snapshot date.
+  An empty or missing array, invalid syntax, or unsupported entry identity fails the check.
+  Any `ECOSYSTEM_CARDS` reference outside its declaration also fails the check.
+  `build-index.mjs` renders the snapshot as discovery links.
+  Each candidate needs a separate pin and exposure review before Raven can serve it.
+  To refresh only this directory, run `node scripts/lib/stellar-community.mjs ecosystem-skills/community.json`, then `node ecosystem-skills/build-index.mjs`.
+- **Swap last.** `update.sh` stages `MANIFEST.json`, `catalog.json`, `community.json`, and `INDEX.md`
+  in a temporary tree. It moves the four files into place only after four steps
   pass. Every source resolves. Every selection validates. The body diff prints. The index builds.
   A failure before that point leaves the committed files unchanged.
 
-  The swap is three same-filesystem renames from a sibling `.swap.<pid>/` directory. That
-  directory holds copies of the previous three files. A rollback trap restores them if a rename
+  The swap uses four same-filesystem renames from a sibling `.swap.<pid>/` directory.
+  That directory holds copies of the previous four files. A rollback trap restores them if a rename
   fails. The swap is not one atomic transaction. But it never leaves a new manifest next to an old
   catalog or index.
 - **Deterministic except timestamps.** Two runs against the same upstream produce byte-identical
-  output, except these timestamp fields: `MANIFEST.synced_at`, `catalog.fetched_at`, and their
+  output, except these timestamp fields: `MANIFEST.synced_at`, `catalog.fetched_at`, `community.fetched_at`, and their
   rendered copies in `INDEX.md` (the "synced …" and "fetched …" text).
 - **Verifiable provenance.** `MANIFEST.json` pins a full commit SHA for every GitHub source.
   Anyone can verify it independently.
@@ -107,9 +123,10 @@ node build-index.mjs           # just rebuild the index (e.g. after editing grou
 
 1. It resolves a commit for each source and walks its tree.
 2. It records the path, size, and blob hash of every file. It drops skills that upstream deleted.
+   It snapshots both public directories.
 3. It builds the index from the staged files with
-   `build-index.mjs --manifest … --catalog … --out …`.
-4. It swaps `MANIFEST.json`, `catalog.json`, and `INDEX.md` into place.
+   `build-index.mjs --manifest … --catalog … --community … --out …`.
+4. It swaps `MANIFEST.json`, `catalog.json`, `community.json`, and `INDEX.md` into place.
 
 Every step before the swap fails closed. Each of these conditions aborts the run before the swap:
 
@@ -187,15 +204,19 @@ in the round ledger. The
 
 **Automated drift detection (CI).** The daily `refresh.yml` workflow runs
 `node scripts/check-skills-drift.mjs`. The script compares every pin in `MANIFEST.json` against
-upstream in two ways:
+upstream in three ways:
 
 - For each GitHub source, it finds the latest commit that touches the pinned path.
 - It projects the live stellarlight directory again, without volatile fields, and compares the
   result with `catalog.json`.
+- It projects Community names and links from `stellar/stellar-dev-skill main` and compares them with `community.json`.
+  This source-directory check does not establish deployed-site drift.
 
 Drift fails the run and goes into the same drift issue as the inventory checks. The workflow only
 detects drift. CI never runs `update.sh`, because skills are prompt input and a person must review
-upstream edits. On drift, run `./update.sh` locally, read the skill diffs, re-pin, and commit.
+upstream edits. For source drift, run `./update.sh` locally, read the skill diffs, re-pin, and commit.
+For Community-only drift, use the two directory refresh commands above.
+The checker labels both paths when both kinds of drift occur.
 The commit pin makes live fetching safe: an upstream edit cannot reach the model until someone
 re-pins. The script also runs standalone (`node scripts/check-skills-drift.mjs [--json]`, exit 1
 on drift).
@@ -227,15 +248,15 @@ Trustless Work admission is the worked example. Its round ledger is
 **Steps.** The pin, the catalog, the fingerprint, and the QA activation land in one admission pull
 request. A new QA case must already exist as `proposed` from an earlier commit (step 6).
 
-1. Add a `pin_github` line to `update.sh` and a row to the Sources table above. Add a pick list
+1. Add a source definition to `sources.json` and a row to the Sources table above. Use `mode: "pick"`
    when the repository is multi-chain or mixed. A new repository layout also needs selector and
    link code. For example, Trustless Work uses the repo-root skill-dir mode.
 2. Add the repository to `improvements/intake.json` (`services.skills.default.repos` and
    `sourceRepos`). Add its license to `THIRD-PARTY-NOTICES.md`.
 3. Run `./update.sh`, file the new skills in `groups.json`, and record the `sel:` digest in
    `PIN-REVIEW.md`. For a cherry-picked source, list every upstream sibling directory that you do
-   not pin under `groups.json` `unpinnedUpstream`, with a reason. `check-skills-drift.mjs` lists a
-   source only when that map is not empty.
+   not pin under `groups.json` `unpinnedUpstream`, with a reason.
+   `check-skills-drift.mjs` lists every source with `mode: "pick"`, even when that map is empty.
 4. Add an `exposed` row for each skill to `research/skill-exposure-inventory.json`.
    `test/skill-exposure-classification.test.ts` requires it.
 5. Rebuild the generated artifacts as in
