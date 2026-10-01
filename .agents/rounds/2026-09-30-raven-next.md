@@ -11,7 +11,7 @@ review. Then it goes through a PR, CI, a squash merge, and a deploy. Production 
 a receipt here close it.
 
 Some actions need the owner's approval first. They are upstream filing or comments, paid
-evaluation, exposure or policy changes, Algolia writes, and any `NEXT.md` owner decision. Any
+evaluation, exposure or policy changes, Algolia writes, and any [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) owner decision. Any
 destructive git action also needs it.
 
 ## Survey evidence (2026-09-30, about 20:50Z to 21:05Z)
@@ -83,7 +83,7 @@ Agent tooling on this host:
   models older. Grok `1.0.44` defaults to `grok-4.7` with a 256k context. It also lists
   `grok-4.7-build-fast`, `grok-4.6`, and `grok-4.5`. Claude Code `2.1.286` accepts `fable`,
   `opus`, and `sonnet`. OpenCode is `1.18.32`.
-- `research/agent-model-roster.md` was last verified 2026-08-25. Since then the Codex default
+- [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) was last verified 2026-08-25. Since then the Codex default
   moved from `gpt-5.6-sol` to `gpt-6.1-sol`. The Grok default moved from `grok-4.6` to
   `grok-4.7`. The Grok context figure moved from 500k to 256k. The CLI versions moved.
   `AGENTS.md` routes "Terra high" for routine work; the catalog now calls `gpt-5.6-terra` older.
@@ -107,7 +107,7 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
 1. **Record the PR #184 release receipt.** `grep 9f5a4151 .agents/ research/` finds nothing; the
    skill-system-audit ledger ends with "stay open until the PR merges and deploys". Value: the
    audit round's definition of done. Effort: 15 min. `simple`.
-2. **Refresh `research/agent-model-roster.md` and the `AGENTS.md` lane names.** The defaults, the
+2. **Refresh [`research/agent-model-roster.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/agent-model-roster.md) and the `AGENTS.md` lane names.** The defaults, the
    CLI versions, and the Grok context figure changed since 2026-08-25 (evidence above).
    `AGENTS.md` names a Terra lane; the catalog now describes that model as older. Value: correct
    reviewer selection for every future gate. Effort: 1 h. Roster facts: `simple`. Lane wording
@@ -125,8 +125,8 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
    moderate audit findings and the `ip-address` Dependabot alert. The `undici` alert and the
    eight high findings remain until the relevant pins change. Effort: 1 h with `typecheck`,
    `test`, `build`, `test:smoke`. `simple`. Broader dependency work stays separately gated.
-5. **Stale pointers in `PLAN.md` and `NEXT.md`.** `PLAN.md` §7 calls the September 14 audit "the
-   latest reviewed drift". `NEXT.md` item 4 still asks to "coordinate the separately gated history
+5. **Stale pointers in `PLAN.md` and [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).** `PLAN.md` §7 calls the September 14 audit "the
+   latest reviewed drift". [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) item 4 still asks to "coordinate the separately gated history
    cleanup". `TODO.md` closed that on 2026-09-17. Value: handoff accuracy. Effort: 10 min. `simple`.
 6. **Skill tooling hardening from `TODO.md`.** Three items. Remove the inactive private-archive
    branches from `build-index.mjs`, with a byte-identical rebuild check. Add `owner`, `repo`, and
@@ -165,7 +165,7 @@ Each item: evidence, value, effort, label (`simple` or `needs-decision`).
     maintainer approval on 2026-09-29. It is still `blocked` and unmerged. This PR records that in
     the `TODO.md` item. `sd-037` stays `reported-upstream` until the two README source checks show the
     fix. No reminder comment. Issue #167 stays blocked on a general intent mechanism. The
-    September 17 routing and source-authority work (`NEXT.md` item 1) stays open.
+    September 17 routing and source-authority work ([`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) item 1) stays open.
 14. **stellarDocs `hitsPerPage` default.** Three operations pass the value through and document
     `default: 5`, but an omitted value returns 20 hits (`TODO.md`, Adapters). Either choice changes
     what an agent sees, so the item asks for a measurement first. `needs-decision` (adapter
@@ -409,6 +409,6 @@ table with line-level evidence is `scf-skill-bodies-astra.md` in this round dire
 
 Cross-cutting facts for the owner: four bodies link to root `docs/` files that the selector does not
 pin; the LICENSE is MIT with a LumenLoop copyright line; the lane did not execute any workflow or
-validate award rules against the handbook. Decision K in `NEXT.md` now points at this evidence.
+validate award rules against the handbook. Decision K in [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now points at this evidence.
 The `TODO.md` body-read item is closed.
 

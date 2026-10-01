@@ -17,9 +17,9 @@
  * Second channel: trace spans (observability.traces in wrangler.jsonc).
  * Handler + host-side fetches are auto-instrumented; the sandbox boundary has
  * a custom span in src/executor/run.ts (Worker Loader isn't auto-traced).
- * Rule of thumb: logEvent for facts to query later (what happened), spans for
- * timing attribution (where the time went). Same no-payload discipline; spans
- * bill from the same event quota as logs (research/observability-cloudflare.md).
+ * Use logEvent for operational facts and spans for timing attribution.
+ * Both follow the no-payload rule. ARCHITECTURE.md defines telemetry fields;
+ * usage/README.md defines the separate Tail Worker collection contract.
  */
 
 export function logEvent(evt: string, fields: Record<string, unknown>): void {

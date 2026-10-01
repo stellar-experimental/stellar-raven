@@ -16,7 +16,7 @@ Do not treat the Docs source corrections as search-index fixes.
 The Docs report’s live checks hold.
 `ll-004` and `wai-001` hold.
 Issue `#40` stays open for authenticated production copy acceptance only.
-`.agents/NEXT.md` now ranks that remaining `#40` check.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now ranks that remaining `#40` check.
 The Saved Keypairs goldens and `sd-049` `fixed-upstream` record now match the 2026-09-09T03:14:02Z reconciliation.
 See the later final verdict: **PASS** for that golden and retirement delta.
 The later resolver-cleanup check is also **PASS**.
@@ -33,14 +33,14 @@ The later resolver-cleanup check is also **PASS**.
 Reviewed files:
 
 - `.agents/TODO.md`
-- `.agents/NEXT.md`
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md)
 - `improvements/lumenloop/ll-004-partner-items-hidden-from-tools.md`
 - `improvements/workers-ai-provider/wai-001-moonshotai-catalog-slug-registry.md`
 - `improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md`
 - `improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md`
 - `improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md`
 - `improvements/INDEX.md` as generated output
-- `.agents/rounds/2026-09-08-docs-index-execution-astra.md`
+- [`.agents/rounds/2026-09-08-docs-index-execution-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-docs-index-execution-astra.md)
 - `.agents/rounds/2026-09-08-maintenance-execution.md` as authority context only
 
 Excluded until a later named report:
@@ -53,9 +53,9 @@ No credential value entered this report.
 
 ## Findings
 
-### H1. `NEXT.md` still ranks the completed midnight check and omits `sd-039`
+### H1. [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) still ranks the completed midnight check and omits `sd-039`
 
-**Location:** `.agents/NEXT.md` lines 4, 79, 113, and 125.
+**Location:** [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) lines 4, 79, 113, and 125.
 
 **Observed:**
 
@@ -66,7 +66,7 @@ No credential value entered this report.
 - Line 127 still treats all 55 reported findings as silent until new evidence exists.
 
 `.agents/TODO.md` lines 16–42 already include `sd-039`, cite PR #2723, and set the next check after `2026-09-09T12:05Z`.
-The Docs report at `.agents/rounds/2026-09-08-docs-index-execution-astra.md` lines 105–116 and 157–166 records that the midnight slot passed with no newer completed crawl.
+The Docs report at [`.agents/rounds/2026-09-08-docs-index-execution-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-docs-index-execution-astra.md) lines 105–116 and 157–166 records that the midnight slot passed with no newer completed crawl.
 
 This reviewer re-read the crawler and index at `2026-09-09T03:00:55Z`:
 
@@ -79,9 +79,9 @@ This reviewer re-read the crawler and index at `2026-09-09T03:00:55Z`:
 Algolia’s schedule page states that `12:00 am` means midnight UTC.
 The observed completed run started at 12:00 UTC.
 The midnight expression and the noon start still disagree.
-The `00:00Z` action in `NEXT.md` is therefore not the next check.
+The `00:00Z` action in [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) is therefore not the next check.
 
-**Consequence:** An agent that follows `NEXT.md` will skip `sd-039`, rerun a window that already failed, and treat the three findings as part of the silent 55.
+**Consequence:** An agent that follows [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) will skip `sd-039`, rerun a window that already failed, and treat the three findings as part of the silent 55.
 
 **Repair:** Rank `sd-039`, `sd-042`, and `sd-047` together.
 Point the next action at `2026-09-09T12:05Z` and the Astra report.
@@ -122,7 +122,7 @@ Its remaining search claim matches this review’s `managed Channels` hits.
 
 ### M1. The current handoff still says the round has no review gate
 
-**Location:** `.agents/NEXT.md` line 6.
+**Location:** [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) line 6.
 
 **Observed:** The file now describes the 2026-09-08 maintenance as active.
 The same header still says `The round has no review gate.`
@@ -151,7 +151,7 @@ Move the original page ask under a historical heading.
 
 ### L1. Proposed Docs replies are factually supported; keep the targets distinct
 
-**Location:** `.agents/rounds/2026-09-08-docs-index-execution-astra.md` lines 127–148.
+**Location:** [`.agents/rounds/2026-09-08-docs-index-execution-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-docs-index-execution-astra.md) lines 127–148.
 
 **Observed:** The drafts were not posted.
 This reviewer re-checked the cited GitHub state with `gh api`:
@@ -234,7 +234,7 @@ Keep the finding open until a published package passes the local reproduction.
 ### Queue authority that already matches the evidence
 
 `TODO.md` correctly keeps the three Docs findings open, names the noon checkpoint, and withholds operator writes.
-Decision B and decision F in `NEXT.md` now record owner authority.
+Decision B and decision F in [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now record owner authority.
 Paid QA, golden blockers, and deployment remain blocked.
 `improvements:lint` reports 71 findings: 55 reported, 13 verified, 3 declined.
 
@@ -278,7 +278,7 @@ Root repaired the first-review findings. This reviewer re-read the exact delta. 
 
 ### H1 — confirmed repaired
 
-`.agents/NEXT.md` now names `sd-039`, `sd-042`, and `sd-047` together.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now names `sd-039`, `sd-042`, and `sd-047` together.
 The next check is after `2026-09-09T12:05Z`, not `2026-09-09T00:00Z`.
 Lines 114–116 point at the Astra report and keep `#130` and `#132` open.
 Lines 128–131 carve those three out of the silence rule.
@@ -292,7 +292,7 @@ Each puts the old page defect under `## Original content finding` in past tense.
 
 ### M1 — confirmed repaired
 
-`.agents/NEXT.md` line 6 now says the 2026-09-03 closeout completed its review.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) line 6 now says the 2026-09-03 closeout completed its review.
 It says the active maintenance execution still requires independent review.
 
 ### M2 — confirmed repaired
@@ -335,12 +335,12 @@ Independent local rerun of the five-file suite:
 
 This is not an authenticated production copy check.
 The queue item does not claim one.
-`.agents/NEXT.md` still does not rank this remaining check. Add it under trigger-only or human-gated work so the ranked handoff matches `TODO.md`.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) still does not rank this remaining check. Add it under trigger-only or human-gated work so the ranked handoff matches `TODO.md`.
 
 ## Independent Saved Keypairs re-derivation (`sd-049` cluster)
 
 Golden-truth skill read first.
-This cluster did not read `.agents/rounds/2026-09-08-filing-preparation-sol.md` or the dirty `sd-049` evidence.
+This cluster did not read [`.agents/rounds/2026-09-08-filing-preparation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-filing-preparation-sol.md) or the dirty `sd-049` evidence.
 No secrets were used. No key was generated or imported. No signing or submission ran. No paid call ran.
 
 Observation time: **2026-09-09T03:08:04Z**.
@@ -564,7 +564,7 @@ This reviewer does not edit those goldens or findings in this lane.
 
 ### NEXT `#40` rank
 
-Earlier text said `.agents/NEXT.md` omitted the remaining `#40` check.
+Earlier text said [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) omitted the remaining `#40` check.
 Root added it under Trigger-only:
 
 > Playground #40: use an authorized authenticated production session to copy an existing answer without a new paid chat request.
@@ -649,7 +649,7 @@ Keep as provenance: the two goldens, `cases.json`, `sample.json`, and dated roun
 Clear at resolver time:
 
 - `.agents/TODO.md` still lists `sd-049` among the thirteen verified filing findings
-- `.agents/NEXT.md` still lists `sd-049` in the filing wave, owner map, and B9 caution
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) still lists `sd-049` in the filing wave, owner map, and B9 caution
 - `improvements/intake.json` still has the `sd-049` override
 
 Those queue rows are expected until the resolver deletes the active file and writes `improvements/resolved.json`.

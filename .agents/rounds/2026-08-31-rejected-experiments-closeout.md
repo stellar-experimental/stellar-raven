@@ -96,5 +96,5 @@ load-bearing mechanism, gate, and trigger facts.
 
 ## Outcome
 
-The next work uses the current queue order in `.agents/NEXT.md`.
+The next work uses the current queue order in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 This record preserves the evidence without preserving either rejected implementation.

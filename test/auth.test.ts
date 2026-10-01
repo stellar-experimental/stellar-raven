@@ -1,5 +1,5 @@
 /**
- * Unit tests for the WorkOS-backed OAuth wiring (research/auth-workos.md):
+ * Unit tests for the WorkOS-backed OAuth wiring (docs/operations.md):
  *
  *  - the named API-key and local-dev bypasses;
  *  - REAL workers-oauth-provider behavior built from oauthProviderOptions()

@@ -297,7 +297,7 @@ After the five core rows pass, reconcile every active reference below.
 11. Update `eval/qa/corpus/battery/retail-consumer/q-eco-xbull-wallet.json`.
 12. Update `eval/qa/corpus/battery/protocol-core/q-pc-l2-payment-channels-starlight.json`.
 13. Regenerate `eval/qa/cases.json` with `npm run eval:qa:compile`.
-14. Reconcile the current `.agents/rounds/2026-09-08-improvements-followups.md` ledger.
+14. Reconcile the current [`.agents/rounds/2026-09-08-improvements-followups.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-improvements-followups.md) ledger.
 15. Supersede the current `sls023-review-fable.md` routing statement in the parent ledger.
 16. Post and read back a commit-pinned resolution comment on `stellarlight#494`.
 17. Post and read back the same resolution evidence on `stellar-scout#9`.

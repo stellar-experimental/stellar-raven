@@ -28,7 +28,7 @@ No other changed case file altered `question`, `golden.*`, `tags`, or `surface`.
 Ledger rule vs this diff:
 
 - Fable `conversions-copy-review.md` → exact replacement string: **24/24**.
-- `/tmp/raven-qadeep/gt2/review-bN-partM.md` → `program-log.md § Session 2 › Batch N › Part M review (gt2-grok-rev)`: **25/25**.
+- `/tmp/raven-qadeep/gt2/review-bN-partM.md` → [`program-log.md § Session 2 › Batch N › Part M review (gt2-grok-rev)`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/program-log.md): **25/25**.
 - `/tmp/raven-qadeep/review-judge.md` → `research/qa-deep-dive-2026-08-25/review-judge.md`: **1/1**.
 - `grep conversions-copy-review|/tmp/raven-qadeep` over the 54 files: **0 leftovers**.
 - Every touched case has at least one `Live re-check 2026-08-30` line (243 such lines).

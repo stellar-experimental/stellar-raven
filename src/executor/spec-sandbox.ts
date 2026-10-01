@@ -13,7 +13,7 @@
  *    normalizeCode applied to the LLM code, wrapper returns the truncated
  *    string.
  *
- * Deliberate deltas (documented in research/super-spec-design.md §5):
+ * Provider and spec behavior (see ARCHITECTURE.md):
  *  - `includeRequest` is always false — our execute keeps per-operation fns
  *    (lumenloop.* / scout.* / stellarDocs.*) instead of a generic
  *    codemode.request; the search sandbox is read-only over spec data with

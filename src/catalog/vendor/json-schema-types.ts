@@ -3,7 +3,7 @@
  *   upstream sources: src/utils.ts + src/json-schema-types.ts
  *   (shipped as dist/json-schema-types-D_m9tVnI.js in the published package)
  *
- * Why vendored instead of imported (PLAN §6 "vendor if churn bites"):
+ * Why this module is vendored instead of imported:
  *   1. The package's main entry (`dist/index.js`) imports `cloudflare:workers`,
  *      so it cannot be loaded from plain Node — but src/catalog/search.ts must
  *      be importable from vitest and the eval CLI (frozen search contract).

@@ -113,7 +113,7 @@ Residual from todo 808 comment 2203: `eval/gates.json` still points at a machine
 baseline file. The current `baselineResults` value is
 `routing-2026-07-04T15-58-31-434Z.json` (`eval/gates.json:1-8`). The earlier full audit called this
 accepted-by-design but noted that re-baselining on another machine loses the evidence file unless
-that cited result is also preserved somewhere (`research/audits/2026-07-03-full-audit.md:171-179`).
+that cited result is also preserved somewhere ([`research/audits/2026-07-03-full-audit.md:171-179`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-03-full-audit.md)).
 If we build an R2 observability sink, it should also park gate-baseline evidence objects.
 
 ## Proposed R2 extension

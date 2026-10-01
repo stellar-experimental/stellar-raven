@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build-catalog.mjs — deterministic catalog builder (PLAN §2).
+ * build-catalog.mjs — deterministic catalog builder. See ARCHITECTURE.md.
  *
  * Reads the three inventory snapshots (inventory/*.json) + the skill pin set
  * (ecosystem-skills/MANIFEST.json) and emits catalog/manifest.json — the unified
@@ -31,9 +31,8 @@ import {
 } from "../src/catalog/extract-routing-phrases.ts";
 import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
 import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
-// The runnable-skill allowlist-as-data (research/skill-run-design.md §2/§5):
-// the SAME registry the runtime dispatch and the super-spec emitter consume,
-// so the exposed runnable surface cannot drift between emitters.
+// src/skills/README.md defines the runnable-skill contract.
+// Runtime dispatch and both emitters use the same registry to preserve the exposed callable contract.
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
@@ -738,7 +737,7 @@ function buildScout(inv) {
 
 // ---------------------------------------------------------------------------
 // Stellar Docs (Algolia) — 12 authored operations from specs/stellar-docs.json
-// Mapping recipe: research/services/stellar-docs-spec-design.md §7.
+// docs/stellar-docs.md defines the authored query mappings.
 // ---------------------------------------------------------------------------
 
 function buildStellarDocs(spec) {
@@ -988,16 +987,11 @@ function sha256Json(value) {
 }
 
 // ---------------------------------------------------------------------------
-// Runnable skills — attach `runnable: true` + the runner's schemas to the
-// matching skill entries (research/skill-run-design.md §5: a contract
-// broadening on the EXISTING kind:"skill" entry, never a second entry/kind —
-// one skill, one id, two affordances). Fail-loud drift guards in every
-// direction, mirroring assertRetirementNamesResolve /
-// assertLumenloopExclusionsResolve: registry keys and declared ops are
-// exact-match data pinned to the emitted surface, so upstream drift breaks
-// the BUILD, never surfaces as a runtime TypeError dressed up as a runner
-// bug. Exported for the guard tests (test/catalog.test.ts); main() below is
-// gated so importing this module never builds.
+// Runnable skills attach `runnable: true` and runner schemas to existing skill entries.
+// src/skills/README.md defines the read and run contract for each exact skill ID.
+// Registry keys and declared operations must resolve exactly against the emitted surface.
+// An invalid runner or operation fails the build.
+// Guard tests import attachRunnableSkills without running the catalog builder.
 // ---------------------------------------------------------------------------
 
 export function attachRunnableSkills(entries, registry = RUNNERS) {
@@ -1263,8 +1257,7 @@ async function main() {
       `${lumenloop.skills.filter((s) => s.set !== "partner").length} public/mirrored, ` +
       `${lumenloop.skills.filter((s) => s.set === "partner").length} partner name-only stubs)`
   );
-  // Transparency, inclusion side: name the runnable skills the build attached
-  // (the registry is the allowlist-as-data — design §2).
+  // List the registered runnable skills. See src/skills/README.md for the registry contract.
   console.log(`  runnable skills: [${Object.keys(RUNNERS).sort().join(", ")}]`);
 }
 

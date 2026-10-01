@@ -49,7 +49,7 @@ I then wrote adversarial probes and a temporary test file.
 I deleted every temporary file. The tree is clean.
 
 The stop audit lives only in the root checkout.
-This branch does not carry `post-candidate-stop-audit-sol.md`.
+This branch does not carry [`post-candidate-stop-audit-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/post-candidate-stop-audit-sol.md).
 I read the root copy and edited nothing there.
 
 ## Commands

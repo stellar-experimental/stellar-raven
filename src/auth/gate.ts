@@ -1,6 +1,6 @@
 /**
  * Auth gate — OAuthProvider wiring plus the local-dev bypass
- * (research/auth-workos.md).
+ * (ARCHITECTURE.md).
  *
  * Everything at /mcp is WorkOS-backed OAuth EXCEPT:
  *  1. Named API keys — `Authorization: Bearer <name>:<token>`, validated
@@ -106,21 +106,11 @@ export function allowDevUnauthenticated(
 }
 
 /**
- * workers-oauth-provider 0.10.2 serves RFC 8414 metadata only at the EXACT
- * path `/.well-known/oauth-authorization-server` (verified in its dist —
- * re-checked on the 0.10.1 → 0.10.2 upgrade; still the only well-known path it
- * answers besides `/.well-known/oauth-protected-resource`).
- * Two families of client requests are aliased onto that path:
- *  1. the RFC 8414 §3.1 path-suffixed form (`.../oauth-authorization-server/mcp`)
- *     — our issuer has no path component, so only non-conforming clients that
- *     wrongly append the resource path send this;
- *  2. OIDC discovery `/.well-known/openid-configuration` (exact + suffixed) —
- *     RFC 8414 §5 lets an OAuth-only AS publish its metadata there too, and
- *     the MCP spec (2025-11-25) requires clients to support both mechanisms;
- *     some clients probe only this one (spec-compliance review in
- *     research/auth-workos.md).
- * (The RFC 9728 `/.well-known/oauth-protected-resource/mcp` form IS handled
- * natively by the lib — no alias needed there.)
+ * Alias supported authorization metadata requests to the provider's exact
+ * /.well-known/oauth-authorization-server path. The issuer has no path.
+ * Accept path-suffixed RFC 8414 requests and OIDC discovery aliases.
+ * The provider handles protected-resource metadata separately.
+ * See ARCHITECTURE.md for the request and authorization flow.
  */
 export function isAuthServerMetadataAlias(url: URL): boolean {
   return (

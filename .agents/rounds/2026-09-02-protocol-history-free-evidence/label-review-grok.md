@@ -6,7 +6,7 @@ Scope: frozen protocol-history controls.
 Target operation: `scout.searchResearch`.
 
 This review does not change contracts, labels, code, or generated files.
-This review does not change `TODO.md` or `NEXT.md`.
+This review does not change `TODO.md` or [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 ## 1. Methods
 

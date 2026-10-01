@@ -1,37 +1,7 @@
-# Skill discovery: what is still open after de-vendoring
+# Skill discovery measurements
 
-_Status: the content-ownership question is CLOSED (shipped 2026-07-30). Two narrower questions
-survive and are measurable. This file used to be a 23 KB decision memo weighing four candidate
-shapes; the decision was made, so the memo is gone and this is the residue._
-
-## Closed — do not re-open without new evidence
-
-**"Should Raven own, pin, clone, section, index, bundle, and serve skill content?"** Answered: it
-owns the catalog and the safety boundary; maintainers own the bytes.
-
-What shipped is essentially the old M2 shape ("metadata catalog plus allowlisted on-demand load"),
-with one improvement on the design that was written here: it loads from a **commit-pinned**
-address rather than a mutable canonical URL, so freshness is a deliberate act rather than a
-property of whenever the fetch happened.
-
-- `ecosystem-skills/skills/**` (604 KiB) and `src/skills/bundle.json` (389 KiB) are gone.
-  `MANIFEST.json` — commit SHA per source, git blob hash per file — is the whole artifact.
-- `codemode.skill.read` fetches from `raw.githubusercontent.com` at the pinned commit and verifies
-  a SHA-256 (security) plus the git blob hash (provenance) before serving. The model calls an exact
-  skill/file id and never supplies a URL; the transport shape is allowlisted at catalog load
-  (https, exactly that host, 40-hex commit in the path).
-- Section entries survived but became addresses: heading only, no body excerpt, no body-derived
-  keywords. The searchable projection was byte-identical across the change, so routing did not move.
-- **The owner rule, 2026-07-30: serve, do not store.** A durable owned mirror (R2, a committed
-  copy, a bundled copy) is out of scope by decision — it would make Raven the source of record.
-  Availability is an accepted risk that is now actively detected from both sides: upstream-side
-  loss by the daily `check-mirrors --fetch`, Cloudflare-side by the hourly in-Worker canary
-  (`src/skills/canary.ts`). See `ARCHITECTURE.md` §6. Do not "solve" it with an R2 mirror.
-- Responses forward the content and nothing else — no license text or notice, by decision.
-
-Also closed by that work: the old M0 (bundled corpus) no longer exists as a baseline, and M3
-(official-live / community-link hybrid) was a fallback for licensing problems that did not
-materialize.
+Two measurements govern possible reductions to the skill read surface.
+[The skill reference](../src/skills/README.md) describes content ownership and retrieval.
 
 ## Still open — question 1: does the read surface earn its place?
 
@@ -125,7 +95,7 @@ decision is two things to keep in sync and still nothing that fires.
 - [ADR-0003: build-time exposure filtering](../research/decisions/0003-build-time-exposure-filtering.md)
 - [ADR-0005: skill sections leave search](../research/decisions/0005-skills-form-sections-out-of-search.md)
 - [Skills-form A/B results](../eval/README.md)
-- [Skill exposure inventory](../research/skill-exposure-inventory.md)
+- [Skill exposure inventory](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/skill-exposure-inventory.md)
 - `ARCHITECTURE.md` §6 — the shipped retrieval design, the review gate, the availability posture
 - `THIRD-PARTY-NOTICES.md` — the serve-not-store position
 - Adversarial review 2026-07-30: Solo todos 1275–1278, 1280

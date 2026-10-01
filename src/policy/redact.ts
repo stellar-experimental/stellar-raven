@@ -1,6 +1,6 @@
 /**
  * Response redaction hook — scrub any accidental secret echo from data that
- * flows toward the sandbox/model (PLAN §4 result hygiene).
+ * flows toward the sandbox/model (ARCHITECTURE.md result hygiene).
  *
  * Upstreams should never echo our keys, but "should" is not a control: this
  * is a cheap belt-and-braces pass over the SERIALIZED result. Values shorter

@@ -33,22 +33,21 @@ The extracted section text establishes the `Result<Address, ConversionError>` re
 
 Evidence files:
 
-- [Source and index counts](2026-09-16-docs-resolutions/priority-recheck.json).
-- [Complete affected section extracts](2026-09-16-docs-resolutions/priority-sections.json).
-- [Original Quickstart search and example check](2026-09-16-docs-resolutions/sd044-recheck.json).
+- [Source and index counts](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/priority-recheck.json).
+- [Complete affected section extracts](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/priority-sections.json).
+- [Original Quickstart search and example check](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/sd044-recheck.json).
 
 ## Reproduction
 
 Run from a configured repository root. Each script reads `.dev.vars` without printing credentials.
 
-```sh
-./node_modules/.bin/esbuild .agents/rounds/2026-09-16-docs-resolutions/scripts/priority-source-index-recheck.ts --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-source-index.mjs
+<pre><code>./node_modules/.bin/esbuild <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-source-index-recheck.ts">.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-source-index-recheck.ts</a> --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-source-index.mjs
 node /tmp/raven-docs-source-index.mjs
-./node_modules/.bin/esbuild .agents/rounds/2026-09-16-docs-resolutions/scripts/priority-index-section-extract.ts --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-sections.mjs
+./node_modules/.bin/esbuild <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-index-section-extract.ts">.agents/rounds/2026-09-16-docs-resolutions/scripts/priority-index-section-extract.ts</a> --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-sections.mjs
 node /tmp/raven-docs-sections.mjs
-./node_modules/.bin/esbuild .agents/rounds/2026-09-16-docs-resolutions/scripts/sd044-search-recheck.ts --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-quickstart.mjs
+./node_modules/.bin/esbuild <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/scripts/sd044-search-recheck.ts">.agents/rounds/2026-09-16-docs-resolutions/scripts/sd044-search-recheck.ts</a> --bundle --platform=node --format=esm --outfile=/tmp/raven-docs-quickstart.mjs
 node /tmp/raven-docs-quickstart.mjs
-```
+</code></pre>
 
 ## Golden reconciliation
 
@@ -64,10 +63,10 @@ The final report records the corrected merge SHA and measured timestamps.
 Earlier observations in that dated report describe pre-landing state.
 This ledger records the final candidate state.
 
-- [Independent source matrix](2026-09-16-docs-resolutions/sd045-golden-matrix.json).
-- [Golden and provenance approval](2026-09-16-docs-resolutions/freighter-golden-review.json).
+- [Independent source matrix](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/sd045-golden-matrix.json).
+- [Golden and provenance approval](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/freighter-golden-review.json).
 - [Full independent review](2026-09-16-docs-resolutions/docs-review.md).
-- [Unchanged saved plan results](2026-09-16-docs-resolutions/plan-invariance.json).
+- [Unchanged saved plan results](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/plan-invariance.json).
 
 The saved plan run produced identical rows and totals before and after this change.
 Only the run timestamp and checkout path changed.
@@ -81,7 +80,7 @@ The resolver then wrote five receipts and removed the five active findings.
 `improvements/intake.json` and the generated index match those receipts.
 The active index now contains 56 findings.
 
-[Posted comment URLs](2026-09-16-docs-resolutions/posted-resolution-comments.json) preserve the upstream verification references.
+[Posted comment URLs](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-docs-resolutions/posted-resolution-comments.json) preserve the upstream verification references.
 The parent will close Raven #158–#162 after this commit lands.
 The #162 closure will correct its handoff year to February 5, 2024.
 

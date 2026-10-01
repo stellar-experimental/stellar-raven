@@ -5,9 +5,6 @@ description: Resolve a "Live service drift detected" issue — the daily CI that
 
 # Live service drift resolution — stellar-raven-codemode
 
-This skill is agent-agnostic: a plain-markdown runbook. Claude Code invokes it as a skill;
-Codex or any other CLI agent can be pointed at this file directly.
-
 Boundary: this resolves live **service surface** drift. If the user asks whether repo truth is
 current across evals, golden answers, improvements, upstream issues, or PRs, use
 `truth-maintenance` as the coordinator and this skill as only the drift lane.
@@ -28,20 +25,17 @@ that added a callable operation ships an unvetted surface; re-baselining a gate 
 didn't touch routing hides a real regression behind a moved goalpost. The whole skill exists to
 make that one call correctly and prove it.
 
-Bindings that change (which CI repo, which secret store) live in
-[`AGENTS.md`](../../../AGENTS.md), especially
-[`Coordination`](../../../AGENTS.md#coordination) and [`Hard rules`](../../../AGENTS.md#hard-rules),
-not here. This runbook is the procedure.
-
 ## Step 0 — read the issue, don't trust its summary
 
-The drift issue is auto-filed by a bot and includes a diffstat and the exact regen commands. Read
-it for the *shape* (which files, roughly how big), but treat its framing as a starting point, not
-a verdict — the whole point of the steps below is to derive the truth from the actual diff.
+The drift issue is auto-filed by a bot. It links this runbook, lists the minimum checks before
+close, and gives a diffstat of the generated files. Read it for the *shape* (which files, roughly
+how big), but treat its framing as a starting point, not a verdict — the whole point of the steps
+below is to derive the truth from the actual diff.
 
 ## Step 1 — regenerate from live services
 
-Run the full pipeline (same order the issue prints). Each step feeds the next:
+Run the full pipeline in this order (the daily refresh workflow runs the first four). Each step
+feeds the next:
 
 ```
 node scripts/refresh-inventory.mjs      # re-fetch live upstream → inventory/*.json
@@ -283,8 +277,7 @@ changed, the routing gate may legitimately move:
 npm run eval:compile && npm run eval:routing
 ```
 
-- The gate prints `GATE PASS — legacy <N> within band and skills lane at/above floor (baseline …)`
-  or fails with the deltas. The baseline it compares against lives in `eval/gates.json`.
+- The gate prints a `GATE PASS …` line with the baseline it used, or fails with the deltas. The baseline it compares against lives in `eval/gates.json`.
 - **Re-baseline ONLY when a routing-relevant text change is the cause and the movement is an
   intended improvement** — e.g. a bump that genuinely reworded an operation
   `summary`/`description` or curated `x-routing`.
@@ -350,15 +343,12 @@ clean bump — spawn an **independent reviewer** to verify or refute the "safe t
 before committing. This mirrors the repo's independent-review rule in
 [`AGENTS.md` “Coordination”](../../../AGENTS.md#coordination).
 
-- Route pane and agent mechanics through the global `herdr` skill; split one pane per lane for the
-  reviewer lane and select model/effort explicitly per `AGENTS.md`. Spawn a *different* agent with
-  an explicit adversarial brief: do NOT
+- Follow the review gate in [`AGENTS.md`](../../../AGENTS.md#coordination) for spawning and
+  reviewer choice. Spawn a *different* agent with an explicit adversarial brief: do NOT
   trust the maintainer's summary; re-derive the drift class from the actual `git diff`, re-run the
   guards and gate, check ADR-0003 exposure and secrets, and return a verdict with file:line
-  evidence. Prefer different vendor from author. Put brief in the round ledger and have reviewer
-  append findings.
-- Reviewer ≠ author is the invariant. Let it run to completion; reconcile every finding before
-  committing. Wait for the reviewer with `herdr agent wait <name>` rather than polling.
+  evidence. Prefer a different vendor from the author. Put the brief in the round ledger and have
+  the reviewer append findings. Reconcile every finding before committing.
 
 ## Step 7 — close out
 
@@ -386,7 +376,7 @@ keeps fetching the OLD commit until you deploy the new one. Closing the drift lo
 - Verify live: the deploy prints a new Version ID and the updated routes; a quick liveness check
   confirms the roll-out. **Give the edge ~1 minute first.** A just-deployed route can 404 for about
   a minute, including on cache-busted URLs — that is propagation, not a routing bug. Re-check before
-  debugging it; the 2026-07-30 `/terms` deploy burned time on exactly that. The public landing pages
+  debugging it. The public landing pages
   should return `200`; unauthenticated `/mcp`
   should return the expected auth error (`401` JSON), unless the check includes a valid bearer
   token. Note the Version ID in the close-out record.

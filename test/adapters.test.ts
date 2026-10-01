@@ -2,7 +2,7 @@
  * Adapter unit tests — recorded live fixtures (test/fixtures/, captured
  * 2026-07-02 from one real call each, free ops only), replayed through an
  * injected FetchLike. Per service: one success, one soft-empty, one error —
- * the three-way outcome discipline (PLAN §4: soft-empty ≠ error ≠ data).
+ * the three-way outcome contract in ARCHITECTURE.md: soft-empty ≠ error ≠ data.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";

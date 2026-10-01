@@ -8,7 +8,7 @@
 - Inputs: `golden-corrections/proposed/*.json` (v2 LOBSTR, v3 Aquarius, v3 Soroswap),
   `golden-corrections/frozen/*.json`, `golden-corrections/lint-summary.json`, the worktree
   `repo/` on branch `fix/routing-generalization` at `d4cac5a9` with its dirty diff, and
-  `scf-root-public-fields.json`. Prior blind pass: `lobstr-blind-review.md`.
+  `scf-root-public-fields.json`. Prior blind pass: [`lobstr-blind-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/lobstr-blind-review.md).
 
 ## Reviewed hashes (SHA-256, from golden-corrections/README.md, files unchanged at review time)
 
@@ -56,7 +56,7 @@ HTML carries both totals. Raw fetch of https://communityfund.stellar.org/project
 - Independence: two curl reads of one SDF page are one class A witness. They support the
   source-relative basis correction. They do not corroborate any amount for pinning (numeric bar: two
   independent classes, one primary). No amount may enter judge-facing text.
-- Correction to `lobstr-blind-review.md` (§1, §2 row 7, §3): "per-project paid amounts are not
+- Correction to [`lobstr-blind-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/lobstr-blind-review.md) (§1, §2 row 7, §3): "per-project paid amounts are not
   published" is wrong. SDF publishes a project-level paid total in the public payload. Per-tranche
   and per-award paid amounts remain unpublished. All other blind-pass findings stand.
 - Recorded oddities, not to pin: `lastAwardedRound` is 17 although SCF #22 is later; `totalPaid`
@@ -195,8 +195,8 @@ Findings:
 - sk-022/sk-025 evidence cites `2026-09-17T01-33-03-variantA.json`; the file exists at
   `eval/qa/results/` in the worktree, so the pointer resolves once committed.
 - ARCHITECTURE.md "Routing admission" matches `rejectsRoutingIntent` in `src/catalog/search.ts:439`.
-- Content survival of relocated round files: 15 of 17 byte-identical. `d3-review.md` gained a
-  three-line status header only. `paid-plan-review.md` was rewritten (new title, expanded inputs; the
+- Content survival of relocated round files: 15 of 17 byte-identical. [`d3-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/d3-review.md) gained a
+  three-line status header only. [`paid-plan-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/paid-plan-review.md) was rewritten (new title, expanded inputs; the
   original title and verdict lines are gone) while the `.agents/rounds/` copy is deleted.
   Non-blocking fix: keep the original text intact below the new status header.
 - Nit: the third canonical-source unit test reads the live `improvements/intake.json` and asserts
@@ -264,8 +264,8 @@ disclosure below.
   vendor short-token prefix matching"), "Reconcile source-authority guidance for full-description
   clients", "Reconcile Soroswap API and contract scope in sibling grader notes". Each has a Done-when.
 - **Relocated reviews.** `research/audits/…/paid-plan-review.md` = original text verbatim, preceded by a
-  three-line status header, followed by the expanded reconciliation. `d3-review.md` = original plus a
-  three-line status header. `lobstr-blind-review.md` copy = original plus a three-line supersession
+  three-line status header, followed by the expanded reconciliation. [`d3-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/d3-review.md) = original plus a
+  three-line status header. [`lobstr-blind-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/lobstr-blind-review.md) copy = original plus a three-line supersession
   header. `golden-and-pipeline-review.md` copy = byte-identical to the /tmp original.
 - **Unit test.** Root reports the intake-coupled canonical-source test was replaced with a generic
   fixture and focused tests pass; accepted as reported (not re-run in this pass).
@@ -331,7 +331,7 @@ non-custodial identity retained with dated evidence." Question, keyFacts, answer
 ### 5.6 Verdict
 
 Golden corrections: ACCEPT as applied, subject to blocker 1 (index regeneration) and the judge-blind
-row narrowing in §5.5. Pipeline: ACCEPT; `paid-plan-review.md` content survival is resolved and the
+row narrowing in §5.5. Pipeline: ACCEPT; [`paid-plan-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-17-routing-audit/paid-plan-review.md) content survival is resolved and the
 intake-coupled test nit is resolved per root's report.
 
 ## 6. Completion gate — final delta verdict (2026-09-17, ~22:12 local)

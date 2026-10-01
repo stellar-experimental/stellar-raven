@@ -1,5 +1,5 @@
 /**
- * skills.lumenloop.stellar-ecosystem-digest — runnable core (design §4.2).
+ * skills.lumenloop.stellar-ecosystem-digest — runnable core (src/skills/README.md).
  *
  * Mechanizes the digest playbook's mechanical passes (window math, mode
  * routing, dedup, projection); the judgment passes (quotes, expansion) stay
@@ -18,7 +18,7 @@
  * items: []); ok: false only when it errored. Unexpected upstream shapes are
  * treated as that call erroring — fields are never guessed.
  *
- * Live payload shapes this projection matches (captured 2026-07-06, fixtures
+ * Payload shapes this projection matches (fixtures
  * in test/fixtures/skill-runners/): semantic search is adapter-normalized to
  * one `items` list with a canonical `collection` per row; entity mode remains
  * a distinct type-keyed contract and adds proposals/scf_submissions keys,
@@ -36,8 +36,7 @@ const CONTENT_TYPES = ["articles", "av", "events", "research"] as const;
 type ContentType = (typeof CONTENT_TYPES)[number];
 const DAY_MS = 86_400_000;
 
-// ---- tiny shape helpers (duplicated across runners deliberately — the §12
-// import lint forbids helper modules) ---------------------------------------
+// Keep shape helpers local: the import contract permits only ./types.ts.
 const rec = (v: unknown): Record<string, unknown> | null =>
   v !== null && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : null;
 const arr = (v: unknown): unknown[] | null => (Array.isArray(v) ? v : null);
@@ -231,7 +230,7 @@ export const stellarEcosystemDigest: SkillRunner = {
   },
 
   async run(input, ops) {
-    // Defaults first — the pipeline never injects schema defaults (design §4).
+    // Defaults first — the pipeline never injects schema defaults (src/skills/README.md).
     const subject = typeof input["subject"] === "string" ? input["subject"] : "";
     const subjectType: "theme" | "entity" = input["subjectType"] === "entity" ? "entity" : "theme";
     const days = typeof input["days"] === "number" ? input["days"] : 30;
@@ -305,7 +304,7 @@ export const stellarEcosystemDigest: SkillRunner = {
             ? []
             : null;
 
-    // No `calls` key here — runSkill attaches the host ledger (design §6).
+    // No `calls` key here — runSkill attaches the host ledger (src/skills/README.md).
     return {
       subject,
       subjectType,

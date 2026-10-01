@@ -178,7 +178,7 @@ It ships PRs #173 and #174. PRs #175 to #177 change records only.
   `npm run build`: dry run completed.
 - `npx wrangler deploy --define __RAVEN_SOURCE_REVISION__:"72e43415…"` with the `sdf` profile.
   Version `5e7c88fe-5774-4c92-bdb2-46515ab8ea28`, deployment `80d232f5-9139-4df5-9929-aac1a8b9a673`,
-  100% traffic at `2026-09-21T17:09:47.21443Z`. Record: [deployment.json](2026-09-21-improvements-followup/deployment.json).
+  100% traffic at `2026-09-21T17:09:47.21443Z`. Record: [deployment.json](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-21-improvements-followup/deployment.json).
 - Public reads after the deployment: `/` 200, `/playground` 200, unauthenticated `GET` and `POST /mcp` 401.
   `/health/skills`: `ok: true`, 64 checked, `checkedAt` `2026-09-21T17:08:09.753Z`. That canary ran before the
   deployment, so it is not a post-deployment check.

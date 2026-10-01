@@ -2,18 +2,14 @@
  * harness-guards.mjs — pre-spend and pre-aggregate guards shared by every
  * agent-spawning eval lane.
  *
- * Three failure modes these guards exist for, all observed:
+ * Guard requirements:
  *
- * 1. An answering agent spawned inside this repository reads AGENTS.md and
- *    CLAUDE.md as project instructions. Those files describe the measurement
- *    itself, so the agent under test is told how the lane grades it. The
- *    2026-08-26 connector round recorded exactly that leak in both arms
- *    (`.agents/rounds/2026-08-26-connectors-contract.md`).
- * 2. A lane that loses rows still prints a clean percentage. The denominator
- *    shrinks silently and the aggregate reads as full coverage.
- * 3. Paid runners silently ignored unsupported CLI syntax. The 2026-09-02
- *    residual-flag review recorded spend and comparability failures
- *    (`.agents/rounds/2026-09-02-residual-optional-flag-guards/review-opus.md`).
+ * 1. Spawn answering agents outside the repository so project instructions
+ *    cannot reveal the measurement contract to the agent under test.
+ * 2. Require every selected row before printing an aggregate. Missing rows
+ *    must not silently shrink the denominator.
+ * 3. Reject unsupported CLI syntax before a paid call so measurement flags
+ *    cannot be silently ignored.
  *
  * PURITY: no fs, no spawn, no clock, no network. Callers create their own
  * temporary directories and pass the path in.

@@ -1,7 +1,10 @@
-import {
-  ARTIFACT_CUSTOM_METADATA_MAX_BYTES,
-  artifactCustomMetadataByteLength
-} from "../../src/artifacts/store.ts";
+// R2 counts UTF-8 bytes in both metadata keys and values, with an 8192-byte limit.
+export function metadataBytes(metadata: Record<string, string>): number {
+  return Object.entries(metadata).reduce(
+    (sum, [key, value]) => sum + Buffer.byteLength(key, "utf8") + Buffer.byteLength(value, "utf8"),
+    0
+  );
+}
 
 type Stored = {
   body: string;
@@ -27,7 +30,7 @@ export class MemoryR2Bucket {
 
   async put(key: string, body: string, options?: R2PutOptions): Promise<R2Object> {
     const customMetadata = options?.customMetadata ? { ...options.customMetadata } : {};
-    if (artifactCustomMetadataByteLength(customMetadata) > ARTIFACT_CUSTOM_METADATA_MAX_BYTES) {
+    if (metadataBytes(customMetadata) > 8192) {
       const error = new Error("MetadataTooLarge: custom metadata exceeds 8192 bytes");
       error.name = "MetadataTooLarge";
       throw error;

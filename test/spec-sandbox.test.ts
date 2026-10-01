@@ -9,7 +9,8 @@
  * string), so beyond asserting its shape we EVALUATE it directly under Node —
  * exercising the real in-sandbox behavior: lazy $ref resolution (cache,
  * cycles, external refs), and the in-sandbox truncation. The Dynamic Worker
- * transport itself is covered by test/live/run-live-spec-search.mjs.
+ * transport runs in test/smoke/executor.test.ts. The manual live scripts
+ * additionally check service traffic against an existing local server.
  */
 import { describe, expect, it } from "vitest";
 import {
@@ -66,13 +67,6 @@ async function runWrapped(code: string, spec: unknown = FIXTURE_SPEC): Promise<u
 }
 
 describe("createSpecSandboxCode — source generation", () => {
-  it("inlines the serialized spec and provides codemode.spec()", () => {
-    const source = createSpecSandboxCode("async () => 1", serializeSpecForSandbox(FIXTURE_SPEC));
-    expect(source).toContain('const __rawSpec = {"openapi":"3.1.0"');
-    expect(source).toContain("spec: async () => (__resolvedSpec ??= __resolveRefs(__rawSpec, __rawSpec))");
-    expect(source).toContain("__truncateResponse(await (async () => 1)())");
-  });
-
   it("escapes </ in the spec (script-injection hygiene, upstream behavior)", () => {
     const serialized = serializeSpecForSandbox({ note: "</script>alert(1)" });
     expect(serialized).not.toContain("</");
@@ -81,11 +75,9 @@ describe("createSpecSandboxCode — source generation", () => {
     expect(JSON.parse(serialized)).toEqual({ note: "</script>alert(1)" });
   });
 
-  it("normalizes LLM code: markdown fences are stripped before wrapping", () => {
+  it("executes code inside Markdown fences", async () => {
     const fenced = "```js\nasync () => 42\n```";
-    const source = createSpecSandboxCode(fenced, serializeSpecForSandbox({}));
-    expect(source).not.toContain("```");
-    expect(source).toContain("await (async () => 42)()");
+    expect(await runWrapped(fenced, {})).toBe("42");
   });
 });
 

@@ -13,8 +13,9 @@ are refused, not used. See `THIRD-PARTY-NOTICES.md` at the repo root.
 
 In **this** repo the pin set is what the unified catalog builds from: each skill becomes a
 searchable catalog entry, and each of its `##` sections becomes an exposed exact-id entry with
-`searchable: false` — readable via `skill.read`, out of search since the 2026-07-13 skills-form
-A/B (see `PLAN.md` §3) — subject to the manifest allowlist.
+`searchable: false`. Sections are readable through `skill.read` but stay out of search
+([ADR-0005](../research/decisions/0005-skills-form-sections-out-of-search.md)). The manifest
+allowlist applies to both.
 
 ## Layout
 
@@ -49,14 +50,13 @@ Every source is **public**, and each source's upstream `LICENSE`/`NOTICE` file n
 in `MANIFEST.json` (`license_files`) at the same pinned commit — see `THIRD-PARTY-NOTICES.md` at
 the repo root for the license map.
 
-The LumenLoop API exposes 14 skills total (`GET /v1/skills`): the 8 public ones (identical to the
-GitHub repo) and 6 partner-set ones. Only the public set is mirrored. The partner set (the
-`lumenloop-api-*` onboarding family, served from a private repo via a credentialed archive
-endpoint) was retired from catalog exposure 2026-07-03 and its mirror source was **removed
-entirely 2026-07-06**: partner-tier content must not live in this public repo, and this mirror
-staying credential-free is what guarantees future (including agent-run) re-pins can never pull it
-back in. The partner skills survive only as name-only stubs in `inventory/lumenloop.json` so the
-`/v1/skills` union stays observable.
+The LumenLoop API exposes 14 skills (`GET /v1/skills`): the 8 public ones (identical to the
+GitHub repo) and 6 partner-set ones. Raven pins only the public set. The partner set (the
+`lumenloop-api-*` onboarding family) comes from a private repository through a credentialed
+endpoint, so it has no pin source here. Partner-tier content must not live in this public
+repository. Because the re-pin uses no credentials, no re-pin can pull it in. The partner skills
+appear only as name-only stubs in `inventory/lumenloop.json`, so the `/v1/skills` union stays
+observable.
 
 ## Design choices
 
@@ -83,10 +83,10 @@ back in. The partner skills survive only as name-only stubs in `inventory/lumenl
   `catalog.json`, and the `INDEX.md` built from those staged files — and only moves the three
   into place after every source resolved, every selection validated, the body diff printed, and
   the index built. A failure before that point leaves the committed pins, catalog, and index
-  untouched. The swap itself is three same-directory renames guarded by a rollback trap: the
-  staged files are first moved beside their targets, the previous three files are kept next to
-  them, and a failed rename puts the previous files back. The swap is not one atomic
-  transaction, but it does not leave a new manifest beside an old catalog or index.
+  untouched. The swap is three same-filesystem renames from a sibling `.swap.<pid>/` directory.
+  Copies of the previous three files wait there, and a rollback trap restores them if any rename
+  fails. The swap is not one atomic transaction, but it never leaves a new manifest beside an old
+  catalog or index.
 - **Deterministic except timestamps.** Back-to-back runs against the same upstream produce
   byte-identical output **except the timestamp fields**: `MANIFEST.synced_at`,
   `catalog.fetched_at`, and their rendered copies in `INDEX.md`
@@ -149,11 +149,12 @@ Two guard classes can fail the catalog build loudly — both mean "a human must 
 nothing silently changes exposure":
 
 - **Retirement guard** (`assertRetirementNamesResolve`, `scripts/build-catalog.mjs`): the
-  deny-listed skills (`RETIRED_ONBOARDING_SKILLS` — now only `lumenloop-mcp-connect`; the
-  lumenloop-api onboarding family was retired 2026-07-03 and then removed from the mirror
-  entirely 2026-07-06, surviving only in the scrub regex in `src/skills/scrub.ts`) are pinned by upstream NAME. If a
-  sync renames or removes one, the build fails instead of silently un-retiring it: retire the
-  new name, or drop the entry if the skill is gone.
+  deny-listed pinned skills (`RETIRED_ONBOARDING_SKILLS` in `scripts/exposure.mjs`, which holds
+  `lumenloop-mcp-connect`) are matched by upstream NAME. If a sync renames or removes one, the
+  build fails instead of silently un-retiring it: retire the new name, or drop the entry if the
+  skill is gone. The unpinned partner family is listed separately in
+  `RETIRED_PARTNER_ONBOARDING_SKILLS` (`scripts/exposure.mjs`), and `src/skills/scrub.ts` removes
+  references to it at read time.
 - **Orphaned description notes** (`scripts/description-notes.mjs`): catalog notes are exact-match
   data keyed on upstream tool, operation, or skill IDs. A rename orphans the note and fails every
   affected generator. Skill description overrides change only host discovery text and do not
@@ -181,8 +182,8 @@ source is public, and keeping the re-pin credential-free is a deliberate publish
 ## Adding a source
 
 A new source changes what the model reads. Treat it as an exposure decision, not a re-pin. The
-Trustless Work admission (PR #157, `.agents/rounds/2026-09-16-trustless-work/`) is the worked
-example; `git show --stat 58954b67` lists every file it touched.
+Trustless Work admission is the worked example: its round ledger is
+[`.agents/rounds/2026-09-16-trustless-work-acceptance.md`](../.agents/rounds/2026-09-16-trustless-work-acceptance.md).
 
 Admission bar — answer each in the round's source review before any pin lands:
 
@@ -229,9 +230,9 @@ must already exist as `proposed` from an earlier commit (step 6).
 8. Get an independent review from a reviewer who differs from both the author and the orchestrator
    (`AGENTS.md`), record it in a round ledger, and deploy with the owner's approval.
 
-A candidate that is not admitted still needs a recorded decision — an open owner question in
-`.agents/NEXT.md`, a work item in `.agents/TODO.md`, or a round ledger — so the directory snapshot
-never hides an unmade choice.
+A candidate that is not admitted still needs a recorded decision — an open owner decision or a
+work item in `.agents/TODO.md`, or a round ledger — so the directory snapshot never hides an unmade
+choice.
 
 ## Source of truth
 

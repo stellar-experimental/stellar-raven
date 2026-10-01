@@ -1,5 +1,5 @@
 /**
- * Adapter dispatch — one clean client per service (PLAN §1 adapters/ layer).
+ * Adapter dispatch — one clean client per service (ARCHITECTURE.md adapter dispatch).
  * Selection is by the entry's `service` field, which the catalog schema
  * constrains to the known set; anything else is an error-as-data.
  */

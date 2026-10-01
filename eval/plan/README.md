@@ -1,7 +1,7 @@
 # Multi-tool plan eval — grading the PLAN, not just the answer
 
 The golden Q→A eval (`eval/qa/`) judges the final answer. Real questions, though, often need
-**many tools plus follow-up calls** (Solo todo 799): SCF questions legitimately span scout AND
+**many tools plus follow-up calls**: SCF questions legitimately span scout AND
 lumenloop, project lookups span scout AND lumenloop, OpenZeppelin-Soroban questions live in the
 skills bundle — and specific answers demand a broad→detail call progression, not one-shot
 routing. This eval re-grades an existing results file's per-row tool `transcript` on three axes:
@@ -14,7 +14,7 @@ routing. This eval re-grades an existing results file's per-row tool `transcript
 
 **Anti-overfitting is a hard rule:** every acceptable-set entry derives from *documented service
 coverage* — `research/services/lumenloop.md`, `research/services/stellar-light.md`,
-`research/services/stellar-docs-algolia.md`, `catalog/manifest.json` — never from what agents
+`docs/stellar-docs.md`, `catalog/manifest.json` — never from what agents
 happened to pick in past runs. Each rule carries a `why` citing its coverage source.
 
 ## Run
@@ -64,11 +64,16 @@ coverage doc) beat all rules.
 
 ## Op extraction and classes
 
-Execute inputs are parsed with a regex over the stored `{code}`:
-`\b(lumenloop|scout|stellarDocs)\.(\w+)\s*\(` plus `codemode.skill.read` → service `skills` and
-`codemode.search/catalog/spec/describe` → `meta-discovery` (always on-plan, excluded from the
-touched set; a `codemode.search` or top-level MCP search call counts as the broad half for
-`skills`, which has no broad op of its own).
+The grader extracts direct service calls from stored execute `{code}` inputs with this regex:
+`\b(lumenloop|scout|stellarDocs)\.(\w+)\s*\(`.
+It also recognizes `codemode.skill.read`, `codemode.skill.run`, and their supported aliases as `skills` calls.
+It expands a captured `skill.run` ID through the runner registry's declared operations.
+Each expansion carries `via: <skillId>`. These declarations do not prove which host calls actually ran.
+An absent registry, unknown ID, or missing ID leaves the call unexpanded.
+
+The grader also extracts direct tools named `mcp__<server>__<service>_<operation>` from per-operation transcripts.
+It treats `codemode.search/catalog/spec/describe` as `meta-discovery`, outside the touched service set.
+A `codemode.search` or top-level MCP search supplies the broad step for a later skill call.
 
 `op-classes.json` is **generated** — rebuild with `node eval/plan/build-op-classes.mjs` after a
 catalog change; never hand-edit. It classes every catalog operation as `broad` (returns
@@ -85,8 +90,7 @@ so misclassification stays visible.
 - **Acceptable-sets are category-granular** (refined by the golden `service` label and a few id
   overrides). Individual questions inside a category can still have tighter or looser true sets;
   `offPlanServices` is therefore informational, never an automatic penalty.
-- **Legacy runs are truncated**: before the 2026-07-02 `run-qa.mjs` patch, ALL tool inputs were
-  sliced to 600 chars, so execute code is cut mid-script. Such rows are flagged
+- **Truncated inputs**: stored runs can contain execute code cut at 600 characters. Such rows are flagged
   (`truncatedInputs` per row, `truncatedRows` in the summary) — their op sets undercount and
   progression may read false. Re-run the QA eval for full-fidelity plan grading.
 - **Progression is order-only**: a broad call before a detail call counts even if the detail call

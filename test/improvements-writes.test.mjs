@@ -1,61 +1,43 @@
-import { execFileSync, spawnSync } from "node:child_process";
-import { chmodSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
-import {
-  INDEX_PATH,
-  listFindingFiles,
-  parseFinding,
-  renderIndex,
-  writeFindingFrontmatter,
-  writeIndex,
-} from "../scripts/improvements-lib.mjs";
+import { parseFinding, renderIndex, writeFindingFrontmatter, writeIndex } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
-
-// Fixtures live in the repo's gitignored `tmp/`, not in os.tmpdir(): the filer refuses to post a
-// finding that resolves outside the repository, so an out-of-tree fixture would be stopped by THAT
-// gate before it reached the post-filing recovery paths these tests exercise.
-const FIXTURE_ROOT = path.join(ROOT, "tmp");
-mkdirSync(FIXTURE_ROOT, { recursive: true });
-
 const fixtures = [];
+const issueUrl = "https://github.com/stellar/stellar-docs/issues/4242";
+const findingRelative = "improvements/stellar-docs/sd-995-write-fixture.md";
 
 afterEach(() => {
-  for (const dir of fixtures.splice(0)) {
-    // A permission test may have left the directory read-only; restore it so cleanup can run.
-    try {
-      chmodSync(dir, 0o755);
-    } catch {
-      // already writable, or already gone
-    }
-    rmSync(dir, { recursive: true, force: true });
-  }
+  for (const directory of fixtures.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
 
-function fixtureDir(prefix) {
-  const dir = mkdtempSync(path.join(FIXTURE_ROOT, prefix));
-  fixtures.push(dir);
-  return dir;
-}
-
-function writeFixtureFinding(dir, { id = "sd-995", status = "verified", extraEvidence = [] } = {}) {
-  const file = path.join(dir, `${id}-write-fixture.md`);
-  writeFileSync(
-    file,
-    `---
-id: ${id}
+function fixture(status = "verified") {
+  const root = realpathSync(mkdtempSync(path.join(tmpdir(), "improvements-writes-")));
+  fixtures.push(root);
+  const at = (relative) => path.join(root, relative);
+  for (const directory of ["scripts/lib", "improvements/stellar-docs", "bin", "tmp", "subdirectory"]) {
+    mkdirSync(at(directory), { recursive: true });
+  }
+  for (const name of ["improvements-lib.mjs", "improvements-index.mjs", "improvements-file-issue.mjs", "improvements-resolve.mjs", "lib/shared.mjs"]) {
+    cpSync(path.join(ROOT, "scripts", name), at(`scripts/${name}`));
+  }
+  const file = at(findingRelative);
+  writeFileSync(file, `---
+id: sd-995
 service: stellar-docs
 status: ${status}
 discovered: 2026-08-13
 upstreamTitle: Exercise the tracked local write path after filing
 evidence:
   - isolated write fixture
-${extraEvidence.map((entry) => `  - ${entry}\n`).join("")}---
+---
 
 ## Finding
 
-The local write path must stay atomic and forward-recoverable.
+The local write must stay atomic.
 
 ## Evidence
 
@@ -63,273 +45,232 @@ Fixture.
 
 ## Recommendation
 
-Keep the write order replayable by hand.
-`,
-  );
-  return file;
+Keep the write order recoverable.
+`);
+  writeFileSync(at("improvements/intake.json"), JSON.stringify({ findings: { "sd-995": { repo: "stellar/stellar-docs" } } }));
+  writeFileSync(at("improvements/resolved.json"), JSON.stringify({ entries: [] }));
+  writeFileSync(at("improvements/INDEX.md"), "old index\n");
+  writeFileSync(at("bin/gh"), `#!${process.execPath}
+import { appendFileSync } from "node:fs";
+const args = process.argv.slice(2);
+appendFileSync(process.env.STUB_CALLS, args.slice(0, 2).join(" ") + "\\n");
+if (args[0] === "label") console.log("0");
+else if (args[0] === "issue" && args[1] === "create") console.log(${JSON.stringify(issueUrl)});
+else if (args[0] === "issue" && args[1] === "view") {
+  if (process.env.FAIL_READBACK) process.exit(1);
+  console.log(${JSON.stringify(issueUrl)});
+} else { console.error("STUB_GH_UNEXPECTED"); process.exit(42); }
+`, { mode: 0o755 });
+  writeFileSync(at("bin/git"), `#!${process.execPath}
+import { readFileSync } from "node:fs";
+if (process.argv[2] === "log") console.log("a".repeat(40));
+else if (process.argv[2] === "show") process.stdout.write(readFileSync(process.env.STUB_FINDING));
+else { console.error("STUB_GIT_UNEXPECTED"); process.exit(42); }
+`, { mode: 0o755 });
+  writeFileSync(at("fail-write.mjs"), `import fs from "node:fs";
+import { syncBuiltinESMExports } from "node:module";
+const rename = fs.renameSync;
+const unlink = fs.unlinkSync;
+fs.renameSync = (from, to) => {
+  if (to === process.env.FAIL_RENAME) throw new Error("injected rename failure");
+  return rename(from, to);
+};
+fs.unlinkSync = (file) => {
+  if (file === process.env.FAIL_UNLINK) throw new Error("injected unlink failure");
+  return unlink(file);
+};
+syncBuiltinESMExports();
+`);
+  function run(script, args = [], options = {}) {
+    const result = spawnSync(process.execPath, ["--import", at("fail-write.mjs"), at(`scripts/${script}`), ...args], {
+      cwd: options.subdirectory ? at("subdirectory") : root,
+      encoding: "utf8",
+      env: {
+        PATH: at("bin"), TMPDIR: at("tmp"), STUB_FINDING: file, STUB_CALLS: at("gh-calls"),
+        ...options.env
+      }
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.stderr).not.toMatch(/STUB_(GH|GIT)_UNEXPECTED/);
+    return result;
+  }
+  const fileIssue = (options) => run("improvements-file-issue.mjs", ["--file", file, "--repo", "stellar/stellar-docs"], options);
+  const resolve = (options) => run("improvements-resolve.mjs", [
+    "--file", file, "--repo", "stellar/stellar-docs", "--resolved", "2026-08-14",
+    "--live-recheck", "fixture recheck", "--review-evidence", "fixture review",
+    "--references-reviewed", "--upstream-comment-na"
+  ], options);
+  return { at, file, run, fileIssue, resolve };
 }
 
-// A `gh` stub that files "successfully". `$1 $2` selects the sub-command, so the label probe, the
-// create, and the read-back are answered separately and the real `gh` is never reachable.
-function writeGhStub(dir, { readBack = "https://github.com/stellar/stellar-docs/issues/4242", readBackExit = 0 } = {}) {
-  const bin = path.join(dir, "bin");
-  mkdirSync(bin, { recursive: true });
-  writeFileSync(
-    path.join(bin, "gh"),
-    `#!/bin/sh
-if [ "$1" = "label" ]; then echo 0; exit 0; fi
-if [ "$1" = "issue" ] && [ "$2" = "create" ]; then echo "https://github.com/stellar/stellar-docs/issues/4242"; exit 0; fi
-if [ "$1" = "issue" ] && [ "$2" = "view" ]; then echo "${readBack}"; exit ${readBackExit}; fi
-echo "STUB_GH_UNEXPECTED $*" >&2
-exit 42
-`,
-    { mode: 0o755 },
-  );
-  return `${bin}:${process.env.PATH}`;
-}
+function readJson(file) { return JSON.parse(readFileSync(file, "utf8")); }
 
-function runFiler(findingPath, stubPath) {
-  return spawnSync(
-    process.execPath,
-    ["scripts/improvements-file-issue.mjs", "--file", findingPath, "--repo", "stellar/stellar-docs"],
-    { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubPath } },
-  );
+function expectNoTemporaryFiles(f) {
+  expect(readdirSync(f.at("improvements")).sort()).toEqual(["INDEX.md", "intake.json", "resolved.json", "stellar-docs"]);
+  expect(readdirSync(f.at("improvements/stellar-docs"))).toEqual(existsSync(f.file) ? [path.basename(f.file)] : []);
 }
 
 describe("improvements index writes", () => {
-  test("writeIndex emits exactly renderIndex bytes and reports the finding count", () => {
-    const findings = listFindingFiles().map(parseFinding);
-    const dir = fixtureDir("improvement-index-parity-");
-    const destination = path.join(dir, "INDEX.md");
-
-    const count = writeIndex(findings, destination);
-
-    expect(count).toBe(findings.length);
-    expect(readFileSync(destination, "utf8")).toBe(renderIndex(findings));
-    // The committed index is the same bytes, so the direct call and the entrypoint agree.
-    expect(readFileSync(destination, "utf8")).toBe(readFileSync(INDEX_PATH, "utf8"));
+  test("writeIndex emits renderIndex bytes and reports the finding count", () => {
+    const f = fixture();
+    const findings = [parseFinding(f.file)];
+    const output = f.at("direct-index.md");
+    expect(writeIndex(findings, output)).toBe(1);
+    expect(readFileSync(output, "utf8")).toBe(renderIndex(findings));
   });
 
-  test("the index entrypoint and a direct writeIndex call produce identical bytes", () => {
-    const before = readFileSync(INDEX_PATH, "utf8");
-    const output = execFileSync(process.execPath, ["scripts/improvements-index.mjs"], {
-      cwd: ROOT,
-      encoding: "utf8",
-    });
-
-    expect(output).toMatch(/^wrote improvements\/INDEX\.md \(\d+ findings\)$/m);
-    expect(readFileSync(INDEX_PATH, "utf8")).toBe(before);
+  test("the isolated entrypoint writes the index and is deterministic", () => {
+    const f = fixture();
+    const result = f.run("improvements-index.mjs");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toMatch(/wrote improvements\/INDEX.md \(1 findings\)/);
+    const first = readFileSync(f.at("improvements/INDEX.md"), "utf8");
+    expect(first).toContain("sd-995");
+    expect(f.run("improvements-index.mjs").status).toBe(0);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe(first);
+    expectNoTemporaryFiles(f);
   });
 
-  test("writeIndex replaces atomically and leaves no temporary sibling", () => {
-    const findings = listFindingFiles().map(parseFinding);
-    const dir = fixtureDir("improvement-index-atomic-");
-    const destination = path.join(dir, "INDEX.md");
+  test("the committed index matches an isolated rebuild of the current findings", () => {
+    const f = fixture();
+    rmSync(f.at("improvements"), { recursive: true });
+    cpSync(path.join(ROOT, "improvements"), f.at("improvements"), { recursive: true });
+    const committed = readFileSync(path.join(ROOT, "improvements/INDEX.md"), "utf8");
+    const result = f.run("improvements-index.mjs");
+    expect(result.status, result.stderr).toBe(0);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe(committed);
+  });
 
+  test("writeIndex replaces atomically and cleans up a failed replacement", () => {
+    const f = fixture();
+    const findings = [parseFinding(f.file)];
+    const directory = f.at("atomic");
+    mkdirSync(directory);
+    const destination = path.join(directory, "INDEX.md");
     writeIndex(findings, destination);
     writeIndex(findings, destination);
-    expect(readdirSync(dir)).toEqual(["INDEX.md"]);
-
-    // A destination that cannot be replaced must fail loudly and clean up after itself, rather
-    // than leaving a half-written index or a stray temporary file for the next command to read.
-    const blocked = path.join(dir, "blocked");
-    mkdirSync(blocked);
-    const blockedIndex = path.join(blocked, "INDEX.md");
-    mkdirSync(blockedIndex);
-    expect(() => writeIndex(findings, blockedIndex)).toThrow();
-    expect(statSync(blockedIndex).isDirectory()).toBe(true);
-    expect(readdirSync(blocked)).toEqual(["INDEX.md"]);
-  });
-
-  // The regeneration is a direct call now. A subprocess would report only an exit code, so the
-  // operator-facing failure text below could not name what actually broke.
-  test("no improvements script re-spawns the index entrypoint", () => {
-    for (const script of ["improvements-file-issue.mjs", "improvements-resolve.mjs"]) {
-      const source = readFileSync(path.join(ROOT, "scripts", script), "utf8");
-      expect(source).not.toContain("improvements-index.mjs");
-      expect(source).toContain("writeIndex(");
-    }
-  });
-
-  // CWD-independence: the resolver used to compute the intake path from process.cwd(), so running
-  // it from a subdirectory wrote (or failed to find) the wrong file.
-  test("the resolver addresses intake through the exported repo-anchored path", () => {
-    const source = readFileSync(path.join(ROOT, "scripts", "improvements-resolve.mjs"), "utf8");
-    expect(source).toContain("INTAKE_PATH");
-    expect(source).not.toContain('path.resolve("improvements/intake.json")');
-    expect(source).not.toContain("writeFileSync(");
+    expect(readdirSync(directory)).toEqual(["INDEX.md"]);
+    rmSync(destination);
+    mkdirSync(destination);
+    expect(() => writeIndex(findings, destination)).toThrow();
+    expect(statSync(destination).isDirectory()).toBe(true);
+    expect(readdirSync(directory)).toEqual(["INDEX.md"]);
   });
 });
 
-describe("improvements finding writes", () => {
-  test("writeFindingFrontmatter replaces atomically and leaves no temporary sibling", () => {
-    const dir = fixtureDir("improvement-frontmatter-atomic-");
-    const file = writeFixtureFinding(dir);
-
-    writeFindingFrontmatter(parseFinding(file), {
-      status: "reported-upstream",
-      evidenceAppend: "upstream issue filed 2026-08-13: https://github.com/stellar/stellar-docs/issues/4242",
-    });
-
-    const updated = readFileSync(file, "utf8");
-    expect(updated).toContain("status: reported-upstream");
-    expect(updated).toContain(
-      "  - upstream issue filed 2026-08-13: https://github.com/stellar/stellar-docs/issues/4242",
-    );
-    expect(updated).toContain("## Recommendation");
-    expect(readdirSync(dir)).toEqual([path.basename(file)]);
+describe("improvements filing writes and recovery", () => {
+  test("frontmatter replacement retains the body without temporary files", () => {
+    const f = fixture();
+    writeFindingFrontmatter(parseFinding(f.file), { status: "reported-upstream", evidenceAppend: issueUrl });
+    expect(readFileSync(f.file, "utf8")).toContain("status: reported-upstream");
+    expect(readFileSync(f.file, "utf8")).toContain("## Recommendation");
+    expectNoTemporaryFiles(f);
   });
 
-  test("a failed frontmatter write leaves the finding byte-identical", () => {
-    if (process.getuid?.() === 0) return; // root ignores the directory mode this case depends on
-    const dir = fixtureDir("improvement-frontmatter-fail-");
-    const file = writeFixtureFinding(dir);
-    const before = readFileSync(file, "utf8");
-    const finding = parseFinding(file);
-
-    chmodSync(dir, 0o555);
-    expect(() => writeFindingFrontmatter(finding, { status: "reported-upstream" })).toThrow();
-    chmodSync(dir, 0o755);
-
-    expect(readFileSync(file, "utf8")).toBe(before);
-    expect(readdirSync(dir)).toEqual([path.basename(file)]);
-  });
-});
-
-// Everything here runs after `gh issue create` has already exited 0, so an issue exists upstream.
-// The messages must say that and must not invite a re-run, which is what files a duplicate.
-describe("improvements filing recovery text", { timeout: 30_000 }, () => {
-  test("a filing regenerates the index in-process and records the issue", () => {
-    const dir = fixtureDir("improvement-filed-ok-");
-    const file = writeFixtureFinding(dir);
-    const indexBefore = readFileSync(INDEX_PATH, "utf8");
-
-    const result = runFiler(file, writeGhStub(dir));
-
-    expect(result.stderr).not.toContain("STUB_GH_UNEXPECTED");
-    expect(result.status).toBe(0);
-    expect(result.stdout.trim()).toBe("https://github.com/stellar/stellar-docs/issues/4242");
-
-    const updated = readFileSync(file, "utf8");
-    expect(updated).toContain("status: reported-upstream");
-    expect(updated).toMatch(
-      /- upstream issue filed \d{4}-\d{2}-\d{2}: https:\/\/github\.com\/stellar\/stellar-docs\/issues\/4242/,
-    );
-    // The fixture is not under improvements/, so the regenerated index must be unchanged bytes.
-    expect(readFileSync(INDEX_PATH, "utf8")).toBe(indexBefore);
+  test("filing records the issue and rebuilds the index", () => {
+    const f = fixture();
+    const result = f.fileIssue();
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout.trim()).toBe(issueUrl);
+    expect(readFileSync(f.file, "utf8")).toContain("status: reported-upstream");
+    expect(readFileSync(f.file, "utf8")).toMatch(/upstream issue filed \d{4}-\d{2}-\d{2}:/);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toContain("reported-upstream");
+    expect(readFileSync(f.file, "utf8")).toContain(issueUrl);
+    expectNoTemporaryFiles(f);
   });
 
-  test("a failed read-back reports the possible issue and forbids a re-run", () => {
-    const dir = fixtureDir("improvement-readback-fail-");
-    const file = writeFixtureFinding(dir);
-    const before = readFileSync(file, "utf8");
-
-    const result = runFiler(file, writeGhStub(dir, { readBack: "", readBackExit: 1 }));
-
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain("read-back failed");
-    expect(result.stderr).toContain("may already exist upstream");
+  test.each(["readback", "finding"])("a %s failure preserves the finding and warns about duplicate filing", (boundary) => {
+    const f = fixture();
+    const before = readFileSync(f.file, "utf8");
+    const env = boundary === "readback" ? { FAIL_READBACK: "1" } : { FAIL_RENAME: f.file };
+    const result = f.fileIssue({ env });
+    expect(result.status, result.stderr).toBe(1);
+    expect(result.stderr).toContain(boundary === "readback" ? "read-back failed" : "the local finding was not updated");
+    expect(result.stderr).toContain("already exist");
     expect(result.stderr).toContain("Do not re-run this command");
     expect(result.stderr).toContain("files a duplicate");
-    // The forward repair must be actionable: the URL, the file, the field, and the follow-up command.
-    expect(result.stderr).toContain("https://github.com/stellar/stellar-docs/issues/4242");
+    expect(result.stderr).toContain(issueUrl);
     expect(result.stderr).toContain("status: reported-upstream");
     expect(result.stderr).toContain("npm run improvements:index");
-    expect(readFileSync(file, "utf8")).toBe(before);
+    expect(readFileSync(f.file, "utf8")).toBe(before);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe("old index\n");
+    expectNoTemporaryFiles(f);
   });
 
-  test("a failed local write reports the filed issue and forbids a re-run", () => {
-    if (process.getuid?.() === 0) return; // root ignores the directory mode this case depends on
-    const dir = fixtureDir("improvement-localwrite-fail-");
-    const file = writeFixtureFinding(dir);
-    const before = readFileSync(file, "utf8");
-    const stubPath = writeGhStub(dir);
+  test("an index failure retains the filing and the dedupe guard refuses another issue", () => {
+    const f = fixture();
+    const result = f.fileIssue({ env: { FAIL_RENAME: f.at("improvements/INDEX.md") } });
+    expect(result.status, result.stderr).toBe(1);
+    for (const message of ["improvements/INDEX.md was not regenerated", "the finding records it", "dedupe guard refuses another filing", "npm run improvements:index", "npm run improvements:lint"]) {
+      expect(result.stderr).toContain(message);
+    }
+    expect(result.stderr).not.toContain("files a duplicate");
+    expect(readFileSync(f.file, "utf8")).toContain(issueUrl);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe("old index\n");
+    const calls = readFileSync(f.at("gh-calls"), "utf8");
+    expect(f.fileIssue().status).toBe(2);
+    expect(readFileSync(f.at("gh-calls"), "utf8")).toBe(calls);
+    expectNoTemporaryFiles(f);
+  });
+});
 
-    // The stub lives under this directory, so read+execute must survive the mode change.
-    chmodSync(dir, 0o555);
-    const result = runFiler(file, stubPath);
-    chmodSync(dir, 0o755);
+describe("improvements resolution writes and recovery", () => {
+  test("resolution from a subdirectory updates the repo intake, receipt, finding, and index", () => {
+    const f = fixture("fixed-upstream");
+    const result = f.resolve({ subdirectory: true });
+    expect(result.status, result.stderr).toBe(0);
+    expect(readJson(f.at("improvements/resolved.json")).entries).toHaveLength(1);
+    expect(readJson(f.at("improvements/intake.json")).findings).toEqual({});
+    expect(existsSync(f.file)).toBe(false);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).not.toContain("sd-995");
+    expect(readdirSync(f.at("subdirectory"))).toEqual([]);
+    expectNoTemporaryFiles(f);
+  });
 
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain("the local finding was not updated");
-    expect(result.stderr).toContain("already exists upstream");
-    expect(result.stderr).toContain("Do not re-run this command");
-    expect(result.stderr).toContain("files a duplicate");
-    expect(result.stderr).toContain("previous content");
+  test("a receipt failure leaves every active record intact", () => {
+    const f = fixture("fixed-upstream");
+    const before = readFileSync(f.file, "utf8");
+    const result = f.resolve({ env: { FAIL_RENAME: f.at("improvements/resolved.json") } });
+    expect(result.status, result.stderr).toBe(1);
+    expect(readJson(f.at("improvements/resolved.json")).entries).toEqual([]);
+    expect(readJson(f.at("improvements/intake.json")).findings).toHaveProperty("sd-995");
+    expect(readFileSync(f.file, "utf8")).toBe(before);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe("old index\n");
+    expectNoTemporaryFiles(f);
+  });
+
+  test.each(["intake", "deletion", "index"])("a %s failure preserves the receipt and reports each remaining repair", (boundary) => {
+    const f = fixture("fixed-upstream");
+    const before = readFileSync(f.file, "utf8");
+    const env = boundary === "deletion" ? { FAIL_UNLINK: f.file }
+      : { FAIL_RENAME: f.at(`improvements/${boundary === "intake" ? "intake.json" : "INDEX.md"}`) };
+    const result = f.resolve({ env });
+    expect(result.status, result.stderr).toBe(1);
+    const receipts = readJson(f.at("improvements/resolved.json")).entries;
+    expect(receipts).toHaveLength(1);
+    expect(receipts[0]).toMatchObject({ id: "sd-995", resolved: "2026-08-14", sourceCommit: "a".repeat(40) });
+    expect(readJson(f.at("improvements/intake.json")).findings).toEqual(boundary === "intake" ? { "sd-995": { repo: "stellar/stellar-docs" } } : {});
+    expect(existsSync(f.file)).toBe(boundary !== "index");
+    if (boundary !== "index") expect(readFileSync(f.file, "utf8")).toBe(before);
+    expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe("old index\n");
+    expect(result.stderr).toContain("Do not re-run the resolver");
     expect(result.stderr).toContain("npm run improvements:index");
-    expect(readFileSync(file, "utf8")).toBe(before);
-  });
-
-  // The three post-filing branches must not warn identically, because they do not carry the same
-  // risk. Read-back and frontmatter failures leave local state with no record of the issue, so a
-  // re-run really would file a duplicate. The index failure happens AFTER the frontmatter recorded
-  // the issue, so the finding is already reported-upstream and the dedupe guard refuses another
-  // filing — telling the operator a re-run files a duplicate there would be untrue.
-  //
-  // The index branch cannot be forced without mutating the tracked improvements tree, so its
-  // contract is asserted on the message itself.
-  test("the index-failure message is truthful and asks only for the index repair", () => {
-    const source = readFileSync(path.join(ROOT, "scripts", "improvements-file-issue.mjs"), "utf8");
-    const branch = source.slice(
-      source.indexOf("try {\n  writeIndex();"),
-      source.indexOf("function renderBody"),
-    );
-
-    expect(branch).toContain("improvements/INDEX.md was not regenerated");
-    expect(branch).toContain("the finding records it");
-    expect(branch).toContain("a re-run is unnecessary");
-    expect(branch).toContain("dedupe guard refuses another filing");
-    expect(branch).toContain("npm run improvements:index");
-    expect(branch).toContain("npm run improvements:lint");
-    // The claim that must not appear here: the finding already records the issue.
-    expect(branch).not.toContain("files a duplicate");
-    expect(branch).not.toContain("Do not re-run this command");
-  });
-
-  test("the branches before the local write keep the stronger duplicate warning", () => {
-    const source = readFileSync(path.join(ROOT, "scripts", "improvements-file-issue.mjs"), "utf8");
-    // Read-back failure and frontmatter failure, in order, up to the index branch.
-    const branches = source.slice(
-      source.indexOf("const verify = spawnSync"),
-      source.indexOf("try {\n  writeIndex();"),
-    );
-
-    expect(branches.match(/Do not re-run this command/g)).toHaveLength(2);
-    expect(branches.match(/files a duplicate/g)).toHaveLength(2);
-  });
-
-  // The intake write is the FIRST step after the receipt lands, so its failure leaves the widest
-  // residue: the receipt exists, but the override and the active finding both still describe the
-  // finding as open. The repair therefore needs four parts, not two. Like the other post-receipt
-  // branches, it cannot be forced without mutating the tracked improvements tree, so the contract
-  // is asserted on the message itself.
-  test("the resolver's intake-write failure names the receipt, both residues, and the full repair", () => {
-    const source = readFileSync(path.join(ROOT, "scripts", "improvements-resolve.mjs"), "utf8");
-    const branch = source.slice(
-      source.indexOf("if (intake.findings?.[id])"),
-      source.indexOf("try {\n  unlinkSync(finding.file);"),
-    );
-
-    // State: the receipt landed, and both later steps are still outstanding.
-    expect(branch).toContain("the resolved receipt is written");
-    expect(branch).toContain("improvements/intake.json still holds this finding's override");
-    expect(branch).toContain("the active finding ${finding.relPath} still exists");
-    // A re-run is refused, so the operator must not be sent back to the resolver.
-    expect(branch).toContain("Do not re-run the resolver");
-    expect(branch).toContain("refuses a receipt that already exists");
-    // The forward repair: clear the override, delete the finding, then regenerate and lint.
-    expect(branch).toContain("remove the ${id} override from improvements/intake.json");
-    expect(branch).toContain("delete ${finding.relPath}");
-    expect(branch).toContain("npm run improvements:index");
-    expect(branch).toContain("npm run improvements:lint");
-  });
-
-  test("the resolver's post-receipt failures refuse a re-run and give the repair", () => {
-    const source = readFileSync(path.join(ROOT, "scripts", "improvements-resolve.mjs"), "utf8");
-    const branch = source.slice(source.indexOf("try {\n  unlinkSync(finding.file);"));
-    expect(branch).toContain("was not deleted");
-    expect(branch).toContain("improvements/INDEX.md was not regenerated");
-    expect(branch.match(/Do not re-run the resolver/g)).toHaveLength(2);
-    expect(branch.match(/npm run improvements:index/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(result.stderr).toContain("npm run improvements:lint");
+    if (boundary === "intake") {
+      expect(result.stderr).toContain("remove the sd-995 override");
+      expect(result.stderr).toContain(`active finding ${findingRelative} still exists`);
+      expect(result.stderr).toContain(`delete ${findingRelative}`);
+    } else if (boundary === "deletion") {
+      expect(result.stderr).toContain("was not deleted");
+      expect(result.stderr).toContain(`delete ${findingRelative}`);
+    } else {
+      expect(result.stderr).toContain("improvements/INDEX.md was not regenerated");
+    }
+    // Restore the retired input only to reach the receipt dedupe guard on a second invocation.
+    if (!existsSync(f.file)) writeFileSync(f.file, before);
+    const retry = f.resolve();
+    expect(retry.status).toBe(2);
+    expect(retry.stderr).toContain("already exists in improvements/resolved.json");
+    expectNoTemporaryFiles(f);
   });
 });

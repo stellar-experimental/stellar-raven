@@ -1,6 +1,6 @@
 # Soroban core matrix — stale-gospel refresh
 
-Round: `.agents/rounds/2026-09-01-stale-gospel-refresh.md`
+Round: [`.agents/rounds/2026-09-01-stale-gospel-refresh.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-stale-gospel-refresh.md)
 Lane: Soroban privacy, migration, and Reflector
 Worker: Claude (Fable 5.1), high effort, research only
 Observed: 2026-09-02 between 00:42 and 00:48 UTC (all "observed" dates below are 2026-09-02 unless stated)

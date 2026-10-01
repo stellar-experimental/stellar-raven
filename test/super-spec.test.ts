@@ -11,7 +11,8 @@
  */
 import { describe, expect, it } from "vitest";
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, cpSync, mkdtempSync, rmSync, symlinkSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { EXCLUDED_SCOUT_OPS } from "../scripts/exposure.mjs";
@@ -102,10 +103,27 @@ function outputBlock(entry: (typeof manifest.entries)[number]): string | undefin
 describe("build determinism", () => {
   it("the checked-in artifact is current, and two rebuilds are byte-identical", () => {
     const before = readFileSync(SPEC_PATH);
-    execFileSync("node", [join(ROOT, "scripts", "build-super-spec.mjs")], { cwd: ROOT });
-    const first = readFileSync(SPEC_PATH);
-    execFileSync("node", [join(ROOT, "scripts", "build-super-spec.mjs")], { cwd: ROOT });
-    const second = readFileSync(SPEC_PATH);
+    const isolatedRoot = mkdtempSync(join(tmpdir(), "super-spec-test-"));
+    let first: Buffer;
+    let second: Buffer;
+    try {
+      // Copy only builder inputs and dependencies. Credentials never enter the fixture.
+      for (const directory of ["scripts", "src", "inventory", "ecosystem-skills", "catalog", "specs"]) {
+        cpSync(join(ROOT, directory), join(isolatedRoot, directory), { recursive: true });
+      }
+      cpSync(join(ROOT, "package.json"), join(isolatedRoot, "package.json"));
+      symlinkSync(join(ROOT, "node_modules"), join(isolatedRoot, "node_modules"), "dir");
+      const build = () => execFileSync(process.execPath, [join(isolatedRoot, "scripts", "build-super-spec.mjs")], {
+        cwd: isolatedRoot,
+        stdio: "pipe"
+      });
+      build();
+      first = readFileSync(join(isolatedRoot, "specs", "super-spec.json"));
+      build();
+      second = readFileSync(join(isolatedRoot, "specs", "super-spec.json"));
+    } finally {
+      rmSync(isolatedRoot, { recursive: true, force: true });
+    }
     expect(Buffer.compare(first, second)).toBe(0);
     expect(
       Buffer.compare(before, first),

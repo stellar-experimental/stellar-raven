@@ -84,7 +84,7 @@ small vanilla browser client.
 
 ## Fit with current playground
 
-The current design in [`research/demo-playground-design.md`](../research/demo-playground-design.md)
+The current design in [`research/demo-playground-design.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/demo-playground-design.md)
 remains valid for the Raven-funded path: same-worker stateless SSE, WorkOS access, AI Gateway,
 per-turn tool/step/output caps, whole-turn abort, and best-effort hourly throttling.
 

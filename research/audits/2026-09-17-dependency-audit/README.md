@@ -21,7 +21,7 @@ Before: 8 findings (7 high, 1 moderate). After: 7 findings (7 high).
 - The `@cloudflare/workers-types` floor rises from `^5.20260825.1` to `^5.20260916.1`. Wrangler 4.133.0 declares
   that peer requirement. The lockfile resolves 5.20260917.1.
 - `@huggingface/transformers` stays at 4.2.0. The Vectorize runtime migration must happen first.
-- `eval/vectorize/build-clause-artifact.mjs` now takes the artifact `runtime.version` from `MODEL.runtime`.
+- [`eval/vectorize/build-clause-artifact.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/build-clause-artifact.mjs) now takes the artifact `runtime.version` from `MODEL.runtime`.
   It no longer repeats the version as a separate literal.
 
 The change does not use a forced audit fix, an override, or a downgrade of the pool.
@@ -59,7 +59,7 @@ Tool versions: Node v24.13.0, npm 11.11.0, Wrangler 4.133.0, gitleaks 8.30.1.
 | Check | Result |
 |---|---|
 | `npm ci` into a dedicated `node_modules` | exit 0; 320 packages |
-| `npx vitest run test/eval-discovery-vectorize.test.mjs test/eval-vectorize-{clause,rerank,support}-fit.test.mjs` | 4 files, 77 tests passed |
+| <code>npx vitest run <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-discovery-vectorize.test.mjs">test/eval-discovery-vectorize.test.mjs</a> <a href="https://github.com/stellar-experimental/stellar-raven/tree/6dd9439461a286f5ca5f87722fb60f238c610d3d/test">test/eval-vectorize-{clause,rerank,support}-fit.test.mjs</a></code> | 4 files, 77 tests passed |
 | `npx vitest run` | 120 files; 2,160 passed, 4 skipped (after the PR #170 rebase) |
 | `npm run typegen` with the CI placeholder `.dev.vars` names | exit 0 |
 | `npx tsc --noEmit` on the regenerated `env.d.ts` | exit 0 |

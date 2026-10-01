@@ -13,8 +13,8 @@ Playground changes. It does not perform Connectors Directory work outside this r
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
 | Orchestration and capture | Codex, Sol lane | `w16:pB` | decision, queue, idea, and skill records | completed |
-| Independent product and closure review | Claude Fable 5, xhigh | `w16:pE` (`decision-fable-x`) | `research/audits/2026-08-28-human-review/fable-review.md` | pass |
-| Supplemental implementation audit | GPT-5.6-Sol, xhigh | `w16:pD` (`decision-sol`) | `research/audits/2026-08-28-human-review/sol-review.md` | pass |
+| Independent product and closure review | Claude Fable 5, xhigh | `w16:pE` (`decision-fable-x`) | [`research/audits/2026-08-28-human-review/fable-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-08-28-human-review/fable-review.md) | pass |
+| Supplemental implementation audit | GPT-5.6-Sol, xhigh | `w16:pD` (`decision-sol`) | [`research/audits/2026-08-28-human-review/sol-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-08-28-human-review/sol-review.md) | pass |
 
 Fable was selected as the independent gate for product, API, interface, and closure judgment. Sol
 was selected for a supplemental dense eval and implementation audit. The Sol audit does not serve
@@ -39,7 +39,7 @@ order.
 | 10 | Test the policy against product reality with an independent Fable review. | this ledger and Fable review |
 | 11 | Report provider safeguards separately from model-authored safety behavior. | decision record and `.agents/TODO.md` |
 | 12 | Separate answer, retry, safety, harness, and provider outcomes. | decision record and `.agents/TODO.md` |
-| 13 | Track Connectors Directory work as blocked externally. Do no portal, credential, account, or submission work here. | Connectors round addendum and `.agents/NEXT.md` |
+| 13 | Track Connectors Directory work as blocked externally. Do no portal, credential, account, or submission work here. | Connectors round addendum and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) |
 | 14 | Keep every warning observable. Remove only demonstrated cruft without weakening truth checks. | `.agents/TODO.md` |
 | 15 | Use several independent models for warning classification and reconcile disagreements. | `.agents/TODO.md` |
 | 16 | Keep `sources.locate` deferred behind a measured, recovery-first reopening rule. | source-delivery idea |
@@ -129,7 +129,7 @@ order.
   list` confirmed `decision-sol` in `w16:pD` and `decision-fable-x` in `w16:pE` were idle; the owner
   confirmed the remaining frontier and authorized durable capture followed by both reviews.
 - Before durable capture, the Q16–Q20 reconciliation reached acceptance from both xhigh decision-
-  shape reviewers. The appendix in `research/audits/2026-08-28-human-review/fable-review.md`
+  shape reviewers. The appendix in [`research/audits/2026-08-28-human-review/fable-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-08-28-human-review/fable-review.md)
   preserves those verdicts. The final diff reviews remain a separate capture-quality gate.
 - `2026-08-29T02:57:19Z` — Fable returned `CHANGES-REQUESTED` with six required capture fixes and
   nine non-blocking findings. Sol returned `CHANGES-REQUESTED` with five implementation-contract
@@ -145,5 +145,5 @@ order.
 
 The 21 confirmed decisions have durable destinations. The independent Fable gate passed, and the
 supplemental Sol audit passed. No original grill question remains open. Queued implementation stays
-in `.agents/TODO.md` and `.agents/NEXT.md`. Deferred ideas and externally blocked work remain in
+in `.agents/TODO.md` and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md). Deferred ideas and externally blocked work remain in
 their recorded locations. This round is closed.

@@ -31,12 +31,14 @@
  *
  * Outputs eval/results/routing-<timestamp>.json and console tables. With
  * `--dump-ranked <file>` also writes { caseId: [hitId, ...] } (ordered top-5 per
- * graded case, all lanes) for direct rank/membership diffs between builds
- * (research/skill-run-design.md §10.1a); grading is unchanged by the flag.
+ * case in the legacy, extended, skills, and protocol-history lanes).
+ * Compare these IDs to check rank and membership differences between builds.
+ * See eval/README.md for the routing contract. The flag does not change grading.
  *
  * Gate enforcement (eval/gates.json): every run prints a gate verdict — legacy 338
  * strict within ±bandPct of the baselined top-1/3/5 counts, skills lane top-1 at or
- * above its floor. Advisory by default; `--gate` (what CI passes) exits 1 on breach.
+ * above its floor, and holdout floors plus a forbidden-capture ceiling.
+ * Advisory by default; `--gate` (what CI passes) exits 1 on breach.
  * A changed denominator always breaches: lanes never merge, so a different n means
  * the gate must be re-baselined explicitly, not silently absorbed.
  *
@@ -126,12 +128,12 @@ function gateEvidenceFailures(gateConfig) {
   }
   return failures;
 }
-// --dump-ranked <file>: additionally write { caseId: [hitId, ...] } — the ordered
-// top-5 hit ids per graded case across ALL lanes (legacy + extended + skills).
-// This is the §10.1a rank/membership-identity artifact (research/skill-run-design.md):
-// diff two dumps (main vs feature build) — empty diff proves the routing invariant
-// directly, which the ±band gate alone cannot. Grading and normal output are
-// byte-identical whether or not the flag is passed.
+// --dump-ranked <file> writes ordered top-5 hit IDs by case ID for the legacy,
+// extended, skills, and protocol-history lanes. See eval/README.md for the
+// routing contract and eval/gates.json for gate inputs and thresholds.
+// An empty diff between dumps proves rank and membership identity for these
+// lanes. A passing threshold gate alone does not prove that identity.
+// The flag does not change grading or the normal result artifact.
 const DUMP_RANKED_PATH = (() => {
   const i = process.argv.indexOf("--dump-ranked");
   if (i === -1) return null;
@@ -449,7 +451,7 @@ async function main() {
     throw new Error(`--gate passed but ${GATES} is missing`);
   }
 
-  // --- ranked-id dump (--dump-ranked): every graded case, every lane, in grade order --
+  // Ranked-ID dump for the legacy, extended, skills, and protocol-history lanes.
   if (DUMP_RANKED_PATH) {
     const ranked = {};
     for (const r of [...perCase, ...extendedPerCase, ...skillsPerCase, ...protocolHistoryPerCase]) {

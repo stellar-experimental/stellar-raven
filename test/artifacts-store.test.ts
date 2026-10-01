@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  ARTIFACT_CUSTOM_METADATA_MAX_BYTES,
   ARTIFACT_MAX_BYTES,
   ARTIFACT_TTL_MS,
   artifactCustomMetadataByteLength,
@@ -10,7 +9,7 @@ import {
   type ArtifactPutInput
 } from "../src/artifacts/store.ts";
 import { redactSecrets } from "../src/policy/redact.ts";
-import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
+import { MemoryR2Bucket, metadataBytes } from "./helpers/memory-r2.ts";
 
 function input(overrides: Partial<ArtifactPutInput> = {}): ArtifactPutInput {
   return {
@@ -35,6 +34,26 @@ function largeLedger(count: number) {
     ms: 10 + i
   }));
 }
+
+describe("R2 custom metadata boundary", () => {
+  it.each([
+    { key: "k", value: "x".repeat(8191) },
+    { key: "é", value: "😀".repeat(2047) + "é" }
+  ])("accepts exactly 8192 UTF-8 bytes and rejects one extra byte: $key", async ({ key, value }) => {
+    const bucket = new MemoryR2Bucket();
+    const metadata = { [key]: value };
+    expect(metadataBytes(metadata)).toBe(8192);
+    await expect(bucket.put("accepted", "body", { customMetadata: metadata })).resolves.toBeDefined();
+    await expect(bucket.put("rejected", "body", {
+      customMetadata: { [key]: value + "x" }
+    })).rejects.toMatchObject({ name: "MetadataTooLarge" });
+    expect(bucket.objects.has("rejected")).toBe(false);
+  });
+
+  it("counts multibyte keys and values in the store byte counter", () => {
+    expect(artifactCustomMetadataByteLength({ "é": "😀", a: "中" })).toBe(10);
+  });
+});
 
 describe("artifact store", () => {
   it("roundtrips JSON, strings, undefined, and fallback text without guessing", async () => {
@@ -216,16 +235,16 @@ describe("artifact store", () => {
 
     const stored = [...realBucket.objects.values()][0];
     if (!stored) throw new Error("missing stored object");
-    expect(artifactCustomMetadataByteLength(stored.customMetadata)).toBeLessThanOrEqual(
-      ARTIFACT_CUSTOM_METADATA_MAX_BYTES
+    expect(metadataBytes(stored.customMetadata)).toBeLessThanOrEqual(
+      8192
     );
 
     const preFixMetadata = {
       ...stored.customMetadata,
       opLedger: JSON.stringify(ledger)
     };
-    expect(artifactCustomMetadataByteLength(preFixMetadata)).toBeGreaterThan(
-      ARTIFACT_CUSTOM_METADATA_MAX_BYTES
+    expect(metadataBytes(preFixMetadata)).toBeGreaterThan(
+      8192
     );
 
     const ledgerMetadata = stored.customMetadata.opLedger;

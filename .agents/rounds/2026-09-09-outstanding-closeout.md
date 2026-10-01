@@ -47,10 +47,10 @@ An invalid state returned 400. ACTA returned the now-documented `package-release
 Etherfuse returned nine registry assets and project coverage `declared=9, tracked=9, served=8, complete=true`.
 `CETESZ` has no supply, which explains the eight served products.
 The current issuer TOML declares the same nine assets; SHA-256 `f9b923ae30b0abf176c6abb9acf8787c6251221e6dfb480263a8501b44b85afe`.
-Terra independently reproduced the service checks in `2026-09-09-upstream-sweep-terra.md`.
+Terra independently reproduced the service checks in [`2026-09-09-upstream-sweep-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-upstream-sweep-terra.md).
 These upstream fixes do not establish Raven catalog acceptance.
 
-Terra independently rejected the full source candidate in `2026-09-09-scout-drift-terra.md`.
+Terra independently rejected the full source candidate in [`2026-09-09-scout-drift-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-scout-drift-terra.md).
 Root preserved its 17 changed files in local stash commit `5d9d35bed804064482a66ba8f8f76b71f5759327`.
 The working runtime returned to accepted Scout `1.9.1` and the previous stellar-light skill pin.
 This rejects the source candidate, not the independently verified upstream fixes.
@@ -118,7 +118,7 @@ Each resolution comment was posted by `kalepail` and read back byte-for-byte:
 | `sk-023` | https://github.com/stellar/stellar-dev-skill/issues/125#issuecomment-5606819192 | https://github.com/stellar/stellar-dev-skill/pull/129#issuecomment-5606819499 | https://github.com/stellar-experimental/stellar-raven/issues/140#issuecomment-5606819822 |
 | `sk-024` | https://github.com/stellar/stellar-dev-skill/issues/126#issuecomment-5606820137 | https://github.com/stellar/stellar-dev-skill/pull/128#issuecomment-5606820497 | https://github.com/stellar-experimental/stellar-raven/issues/138#issuecomment-5606820777 |
 
-Grok's final cleanup review passed in `2026-09-09-skill-retirement-cleanup-grok.md`.
+Grok's final cleanup review passed in [`2026-09-09-skill-retirement-cleanup-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-skill-retirement-cleanup-grok.md).
 Root verified the merged-main receipts and closed handoffs #136, #138, and #140 as completed.
 Live improvements lint passed for all 64 remaining findings.
 The seven active probes all reproduced their recorded defects; none failed or returned an inconclusive result.
@@ -148,7 +148,7 @@ Shared resolving PR comment: https://github.com/Stellar-Light/stellarlight/pull/
 The resolver wrote three complete receipts and removed the active files and index rows.
 No intake overrides or probes existed for these three findings.
 The active queue now has 61 findings. Lint passed.
-Terra's final cleanup review passed in `2026-09-09-scout-retirement-cleanup-terra.md`.
+Terra's final cleanup review passed in [`2026-09-09-scout-retirement-cleanup-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-scout-retirement-cleanup-terra.md).
 Root verified the merged-main receipts and closed handoffs #144, #145, and #146 as completed.
 Drift #141 stays open for Raven routing acceptance.
 The verified update is https://github.com/stellar-experimental/stellar-raven/issues/141#issuecomment-5606920659.
@@ -157,16 +157,16 @@ The verified update is https://github.com/stellar-experimental/stellar-raven/iss
 
 #124 requires a general repair that preserves authorized gates. #40 requires authenticated production copying.
 
-Sol's accepted-source diagnosis is `2026-09-09-search-124-sol.md`.
+Sol's accepted-source diagnosis is [`2026-09-09-search-124-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-sol.md).
 The two leaderboard queries admit the correct operation, but final service diversity removes it.
 The RFP query remains dependent on accepted source wording; the Blend query has no unconditional repository intent.
 Root authorized one source-identical selector experiment, with unchanged scoring, thresholds, labels, and exposure.
-Sol owns its narrow source/test files and `2026-09-09-search-124-implementation-sol.md`.
+Sol owns its narrow source/test files and [`2026-09-09-search-124-implementation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-implementation-sol.md).
 An independent review and all existing gates must pass before any release.
 This is not authority to accept the rejected Scout surface.
 Grok's design review accepted the general selector but rejected the example-length query threshold.
 The experiment must require independent description coverage instead, before its measurement freeze.
-The design report is `2026-09-09-search-124-design-grok.md`.
+The design report is [`2026-09-09-search-124-design-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-design-grok.md).
 
 For #40, root opened an owned production tab and requested an existing authenticated answer from the owner.
 The tab still showed the sign-in page on recheck. Root did not accept Terms or send a paid chat request.
@@ -201,7 +201,7 @@ Each comment author is `kalepail`.
 ## Search experiment acceptance
 
 Sol completed the bounded accepted-source experiment without changing scorer admission or scores.
-Its report is `2026-09-09-search-124-implementation-sol.md`.
+Its report is [`2026-09-09-search-124-implementation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-implementation-sol.md).
 Grok 4.6 high independently passed the implementation and both original leaderboard triggers.
 Its report is `2026-09-09-search-124-final-grok.md`.
 The reviewer differs from the author and orchestrator.
@@ -331,4 +331,4 @@ Remaining work belongs in [the structured-routing TODO](../TODO.md#preserve-stru
 Issue #141 still needs a fresh source-acceptance decision against current accepted main and the existing intent checks.
 This retirement does not accept Scout 1.9.49 or weaken an evaluation gate.
 The separate OAuth branch remained unmerged at this retirement checkpoint.
-Its subsequent implementation and review are recorded in [the OAuth completion ledger](2026-09-10-oauth-consent.md).
+Its subsequent implementation and review are recorded in [the OAuth completion ledger](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-10-oauth-consent.md).

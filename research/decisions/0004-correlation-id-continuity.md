@@ -7,6 +7,11 @@ Updated: 2026-07-04
 
 Accepted.
 
+Implementation status: identity grouping uses `subjectHash` and secret-keyed `clientHash`.
+Operational events exclude raw query, code, result, answer, and provider-error content.
+The [current architecture](../../ARCHITECTURE.md) defines this contract.
+The dated follow-up proposals below do not authorize raw identity or payload logging.
+
 ## Decision
 
 Remove `correlationId` from the MCP tool contract:

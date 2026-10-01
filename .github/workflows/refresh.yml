@@ -38,10 +38,48 @@ permissions:
 env:
   # Assignment subscribes the maintainer to later plain comments without requiring repo watch.
   # Do not replace it with a bot @mention: delivery is undocumented and would direct-ping daily.
-  REFRESH_ISSUE_ASSIGNEE: kalepail # Future maintainer changes belong in this one place.
+  REFRESH_ISSUE_ASSIGNEE: ${{ vars.REFRESH_ISSUE_ASSIGNEE || (github.repository == 'stellar-experimental/stellar-raven' && 'kalepail' || github.repository_owner) }}
+  RAVEN_SERVICE_URL: ${{ vars.RAVEN_SERVICE_URL || 'https://raven.stellar.org' }}
 
 jobs:
+  configuration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      contents: read
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    steps:
+      - name: Check live refresh configuration
+        id: check
+        env:
+          LUMENLOOP_API_KEY: ${{ secrets.LUMENLOOP_API_KEY }}
+          ALGOLIA_APPLICATION_ID_DOCS: ${{ secrets.ALGOLIA_APPLICATION_ID_DOCS }}
+          ALGOLIA_API_KEY_DOCS: ${{ secrets.ALGOLIA_API_KEY_DOCS }}
+          ALGOLIA_APPLICATION_ID_SITE: ${{ secrets.ALGOLIA_APPLICATION_ID_SITE }}
+          ALGOLIA_API_KEY_SITE: ${{ secrets.ALGOLIA_API_KEY_SITE }}
+          REPOSITORY: ${{ github.repository }}
+          CONFIGURED_SERVICE_URL: ${{ vars.RAVEN_SERVICE_URL }}
+        run: |
+          configured=true
+          for name in LUMENLOOP_API_KEY ALGOLIA_APPLICATION_ID_DOCS ALGOLIA_API_KEY_DOCS ALGOLIA_APPLICATION_ID_SITE ALGOLIA_API_KEY_SITE; do
+            if [ -z "${!name}" ]; then
+              if [ "$REPOSITORY" = "stellar-experimental/stellar-raven" ]; then
+                echo "::error::$name is absent. The live refresh requires this secret."
+                exit 1
+              fi
+              configured=false
+              echo "::notice::$name is absent. The live refresh will skip."
+            fi
+          done
+          if [ "$REPOSITORY" != "stellar-experimental/stellar-raven" ] && [ -z "$CONFIGURED_SERVICE_URL" ]; then
+            configured=false
+            echo "::notice::Set RAVEN_SERVICE_URL to your fork's service URL. The live refresh will skip."
+          fi
+          printf 'configured=%s\n' "$configured" >> "$GITHUB_OUTPUT"
   refresh:
+    needs: configuration
+    if: needs.configuration.outputs.configured == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -85,7 +123,7 @@ jobs:
           # job timeout instead of producing the `error` state, so the
           # check-error path below would never run.
           code=$(curl -sS --connect-timeout 5 --max-time 20 -o canary.json \
-            -w '%{http_code}' https://raven.stellar.org/health/skills || echo "000")
+            -w '%{http_code}' "${RAVEN_SERVICE_URL%/}/health/skills" || echo "000")
           cat canary.json || true
           echo
           # Classifier lives in a tested script, not inline here: YAML-embedded
@@ -202,11 +240,13 @@ jobs:
           canary_state='${{ steps.canary.outputs.state }}'
           canary_error=false
           case "$canary_state" in clean|failing|stale) ;; *) canary_error=true; canary_state=error ;; esac
-          echo "skills_error=$skills_error" >> "$GITHUB_OUTPUT"
-          echo "algolia_rule_error=$algolia_rule_error" >> "$GITHUB_OUTPUT"
-          echo "pins_error=$pins_error" >> "$GITHUB_OUTPUT"
-          echo "gospel_error=$gospel_error" >> "$GITHUB_OUTPUT"
-          echo "canary_error=$canary_error" >> "$GITHUB_OUTPUT"
+          {
+            echo "skills_error=$skills_error"
+            echo "algolia_rule_error=$algolia_rule_error"
+            echo "pins_error=$pins_error"
+            echo "gospel_error=$gospel_error"
+            echo "canary_error=$canary_error"
+          } >> "$GITHUB_OUTPUT"
           # DOMAIN states only. A check error must not open a drift issue: it
           # has no section to contribute, so it would file a body that is just a
           # header — and the dedicated fail-on-*-check-error steps below already
@@ -217,6 +257,8 @@ jobs:
             echo "drift=false" >> "$GITHUB_OUTPUT"
           else
             echo "drift=true" >> "$GITHUB_OUTPUT"
+            # Markdown backticks stay literal in the report.
+            # shellcheck disable=SC2016
             {
               echo '### Live service drift detected'
               echo

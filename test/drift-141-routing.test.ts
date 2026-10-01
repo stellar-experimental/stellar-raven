@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { dirname, isAbsolute, join } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   loadManifest,
@@ -9,17 +9,15 @@ import {
   type Catalog
 } from "../src/catalog/search.ts";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const experimentalManifest = process.env.RAVEN_ROUTING_MANIFEST;
-const manifestPath = experimentalManifest
-  ? (isAbsolute(experimentalManifest) ? experimentalManifest : join(ROOT, experimentalManifest))
-  : join(ROOT, "catalog", "manifest.json");
-// Load during collection so test activation can depend on the exposed surface.
-const catalog: Catalog = loadManifest(JSON.parse(readFileSync(manifestPath, "utf8")));
-const exposesRwa = catalog.entries.some((entry) => entry.id === "scout.getRwaAssets");
+import { rwaEntry } from "./fixtures/rwa-routing.ts";
 
-function ids(query: string): string[] {
-  return searchCatalog(catalog, { query, limit: 5 }).map((hit) => hit.id);
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const catalog: Catalog = loadManifest(JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8")));
+// The fixture adds one inventory operation only for admission tests. Production exposure stays closed.
+const rwaCatalog = loadManifest({ ...catalog, entries: [...catalog.entries, rwaEntry] });
+
+function ids(query: string, source = catalog): string[] {
+  return searchCatalog(source, { query, limit: 5 }).map((hit) => hit.id);
 }
 
 describe("issue #141 routing acceptance", () => {
@@ -158,18 +156,17 @@ describe("issue #141 routing acceptance", () => {
   });
 
   it("keeps RWA excluded from the accepted-policy manifest", () => {
-    if (experimentalManifest) return;
     expect(catalog.entries.some((entry) => entry.id === "scout.getRwaAssets")).toBe(false);
   });
 
-  it.runIf(exposesRwa)("separates RWA discovery from implementation", () => {
+  it("separates RWA discovery from implementation", () => {
     for (const query of [
       "Which tokenized real-world assets are live on Stellar?",
       "Show verified tokenized treasury funds and their issuers on Stellar.",
       "Are tokenized bonds and real estate assets live on Stellar?",
       "Is Franklin Templeton BENJI actually issued on Stellar?"
     ]) {
-      expect(ids(query), query).toContain("scout.getRwaAssets");
+      expect(ids(query, rwaCatalog), query).toContain("scout.getRwaAssets");
     }
     for (const query of [
       "How do I get test XLM from Friendbot?",
@@ -181,16 +178,19 @@ describe("issue #141 routing acceptance", () => {
       "How do I build a tokenization contract on Stellar?",
       "Walk me through issuing a new custom token on Stellar from scratch."
     ]) {
-      expect(ids(query), query).not.toContain("scout.getRwaAssets");
+      expect(ids(query, rwaCatalog), query).not.toContain("scout.getRwaAssets");
     }
   });
 
-  it.runIf(exposesRwa).each([
+  // These three documented admission defects keep RWA outside the production surface.
+  // Execute each desired assertion. An unexpected pass requires review and removal of .fails.
+  // See src/policy/scout-exposure.ts and .agents/TODO.md.
+  it.fails.each([
     "Simulate a transfer of a tokenized bond through Stellar RPC.",
     "How do I read a wallet balance for tokenized treasury assets?",
     "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?"
   ])("keeps mixed implementation intent out of RWA discovery: %s", (query) => {
-    expect(ids(query)).not.toContain("scout.getRwaAssets");
+    expect(ids(query, rwaCatalog)).not.toContain("scout.getRwaAssets");
   });
 
   it("keeps fresh intent controls separate", () => {

@@ -5,7 +5,7 @@
  * Shape notes the runner projection depends on: rows sit under `items` with a
  * `pagination` sibling, and the slim event rows here carry NO start_at (only
  * created_at/status) — the runner projects startAt as null when absent.
- * Refresh via the live-drift runner checklist (research/skill-run-design.md §11 row 18).
+ * Refresh fixtures after the live-drift checks in .agents/skills/live-drift-resolution/SKILL.md.
  */
 export default {
   ok: true as const,

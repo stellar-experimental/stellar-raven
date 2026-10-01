@@ -40,9 +40,9 @@ The reviewer inspected these surfaces:
   `eval/qa/re-judge.mjs`, `eval/qa/run-p6-judge-self-test.mjs`, `eval/qa/run-qa.mjs`,
   `eval/qa/judge.mjs`, `eval/qa/paired-verdict.mjs`, and `eval/qa/spend-budget.mjs`;
 - the four paired-contract test files and the five paired-lane test files;
-- `.agents/NEXT.md`, `.agents/TODO.md`, and `.agents/rounds/2026-09-03-truth-maintenance.md`;
-- `revised-impact-measurement-fable.md` revision 3, `final-synthesis-review-sol.md`,
-  `launch-contract-repair-sol.md`, and `paired-capacity-check-terra.md`;
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), `.agents/TODO.md`, and [`.agents/rounds/2026-09-03-truth-maintenance.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance.md);
+- `revised-impact-measurement-fable.md` revision 3, [`final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md),
+  [`launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md), and [`paired-capacity-check-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md);
 - the authoritative artifact `/private/tmp/paired-capacity-live-v2-2026-09-04.json`;
 - the complete branch diff from `2ee801f` (171 files, 63 commits);
 - `.agents/skills/run-evals/SKILL.md` and the other live instruction surfaces.
@@ -90,7 +90,7 @@ that the owner authorization record stays outside the plan. Keep the full contra
 
 ### C1 — Medium — The repair report makes a false tree-identity claim
 
-Location: `.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md:67-68`.
+Location: [`.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md:67-68`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md).
 
 Evidence:
 
@@ -100,7 +100,7 @@ Evidence:
 - The trees differ.
 - `git diff --stat e5c835e 1847ffd` reports one changed file.
 - That file is
-  `.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md` at 486 added lines.
+  [`.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md) at 486 added lines.
 - The parent of `e5c835e` is `bd8d2d2`. The parent of `1847ffd` is `f766893`.
 - Commit `f766893` added that review report.
 - Every code path is byte-identical between the two commits.
@@ -114,18 +114,18 @@ underlying conclusion still holds, because only one Markdown record differs.
 Smallest repair:
 
 Replace the sentence. State that the two trees differ only by
-`final-synthesis-review-sol.md`, and that every code file is byte-identical.
+[`final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md), and that every code file is byte-identical.
 
 ### C2 — Low — The recorded full-suite test count does not reproduce
 
-Location: `.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md:71`.
+Location: [`.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md:71`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md).
 
 Evidence:
 
 - The report records 1,961 passing tests in the first complete run.
 - The reviewer ran the full suite at `52e34c6` and measured 108 files and 1,971 tests.
 - The ledger records 1,971 tests for the orchestrator run at `dc0761d`.
-- `.agents/NEXT.md:36` also records 1,971 tests.
+- [`.agents/NEXT.md:36`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) also records 1,971 tests.
 - The code trees of `e5c835e` and `1847ffd` are identical, per C1.
 - No test enumerates `.agents/rounds` files dynamically.
 - The report itself records sandbox `listen EPERM` and GPG restrictions in that lane.
@@ -151,7 +151,7 @@ Evidence:
 - Commit `52e34c6` is a documentation-only child of `dc0761d`.
 - Its diff touches six files, all under `.agents`.
 - The contract file hashes are identical at both commits.
-- `.agents/NEXT.md:16-17` uses the safer phrase "contains the work through `dc0761d`".
+- [`.agents/NEXT.md:16-17`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) uses the safer phrase "contains the work through `dc0761d`".
 
 Consequence:
 
@@ -160,7 +160,7 @@ build the manifest there. The substance holds either way, because the code is id
 
 Smallest repair:
 
-Use the `.agents/NEXT.md` phrasing at line 690. Say that the branch contains the work through
+Use the [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) phrasing at line 690. Say that the branch contains the work through
 `dc0761d`.
 
 ### R1 — Medium — A failed re-judge never persists the after-identity or the guard
@@ -221,7 +221,7 @@ Report the first differing index with its expected and actual values.
 
 ### R3 — Low — The capacity evidence shows a wrapper that the frozen array excludes
 
-Location: `.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md:86-90`.
+Location: [`.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md:86-90`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md).
 
 Evidence:
 
@@ -319,7 +319,7 @@ per-service allocation. The landed supervisor rejects a 150-ID plan, so this gap
 
 ## Contract file hashes at the reviewed snapshot
 
-The reviewer recomputed every hash in `launch-contract-repair-sol.md`. All eleven matched.
+The reviewer recomputed every hash in [`launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md). All eleven matched.
 
 | File | SHA-256 | Matches |
 | --- | --- | --- |
@@ -424,13 +424,13 @@ stored-judge cap therefore covers collection and judging on one ledger.
 
 Every paid, filing, golden, and owner action stays blocked. The reviewer checked each class.
 
-- Paid: `.agents/NEXT.md:112-123` blocks the paired subset, the stopped arms, the live-data method,
+- Paid: [`.agents/NEXT.md:112-123`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) blocks the paired subset, the stopped arms, the live-data method,
   the digest method, and four named rejudges. Revision 3 states that the general round approval is
   not the strict authorization.
-- Filing: `.agents/NEXT.md:106-110` blocks all ten verified findings. `improvements/INDEX.md` shows
+- Filing: [`.agents/NEXT.md:106-110`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) blocks all ten verified findings. `improvements/INDEX.md` shows
   57 `reported-upstream`, 10 `verified`, and 3 `declined-upstream`. That total is 70. No record has
   a filed state.
-- Golden: `.agents/NEXT.md:125-132` blocks B1 to B11 and the row-review adjudication. The three
+- Golden: [`.agents/NEXT.md:125-132`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) blocks B1 to B11 and the row-review adjudication. The three
   reviewed commits changed no file under `eval/qa/corpus`.
 - Owner: decisions A to J each carry a safe default of no spend, no filing, and no deployment.
   Decision 5, the concurrent-load acceptance, stays open in revision 3 and in the handoff.
@@ -453,8 +453,8 @@ serialization repair is `795fa41`. The Scout exposure comments belong to the dri
 
 The first branch commit `884c0e3` squashes many lanes into one change. It carries the super-spec
 compaction, the drift artifacts, and 26 round reports. That shape is a historical property of this
-round. It has its own recorded reviews, including `spec-review-terra.md` and
-`reviewability-audit-sol.md`. The reviewer raises no new finding against it.
+round. It has its own recorded reviews, including [`spec-review-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/spec-review-terra.md) and
+[`reviewability-audit-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/reviewability-audit-sol.md). The reviewer raises no new finding against it.
 
 The reviewer scanned the changed eval code for reviewability debt. It found no `TODO`, no `FIXME`,
 no compatibility shim, no dead path, and no session narrative. The supervisor rejects v1 plans
@@ -510,7 +510,7 @@ The reviewer verified these claims independently.
 - The branch `codex/tm-final-synthesis` stops at `cbdfc5b` and contains none of those four commits.
 - The capacity artifact SHA-256 is `f94663390187a52a89007ca22a23530c873cb8e00b4117bece045265a56c2423`.
 - It completed at `2026-09-04T10:25:17.815Z` and expires at `2026-09-05T10:25:17.815Z`.
-- Every latency figure, service count, and vector hash in `paired-capacity-check-terra.md` matches
+- Every latency figure, service count, and vector hash in [`paired-capacity-check-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md) matches
   the artifact bytes.
 - The full validation figures match: 1,971 unit tests, 83 smoke tests, 0 lint errors, 62 lint
   warnings, 70 findings, and corpus content `c5d0c804…7b43e`.
@@ -523,19 +523,19 @@ S1 is closed. Revision 3 names `1847ffd` as the final supervisor contract. The l
 lists `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`. Finding C3 records one remaining stale branch
 label.
 
-S2 is closed. `.agents/NEXT.md` now titles the block "Completed repair work". The block states that
+S2 is closed. [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now titles the block "Completed repair work". The block states that
 the round stays open. The ledger keeps four checklist items unchecked.
 
-S3 is closed. `.agents/NEXT.md:12-15` labels production as the last recorded deployment state from
+S3 is closed. [`.agents/NEXT.md:12-15`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) labels production as the last recorded deployment state from
 2026-09-02. It states that nobody re-verified the live Worker.
 
 ## Preserved historical verdicts
 
 The reviewer changed no earlier verdict. These records stay as written.
 
-- `final-synthesis-review-sol.md` keeps `CHANGES-REQUIRED` on revision 2.
-- `revised-impact-measurement-review-sol.md` keeps `CHANGES-REQUIRED` on revision 1.
-- `paired-collection-supervisor-review-opus.md` keeps its `CHANGES-REQUIRED` and `PASS` sequence.
+- [`final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md) keeps `CHANGES-REQUIRED` on revision 2.
+- [`revised-impact-measurement-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-review-sol.md) keeps `CHANGES-REQUIRED` on revision 1.
+- [`paired-collection-supervisor-review-opus.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-collection-supervisor-review-opus.md) keeps its `CHANGES-REQUIRED` and `PASS` sequence.
 - The v1 capacity run keeps its provisional status. It cannot enter a v2 plan.
 - Sol measured 164 tests across five paired-lane files at `b5dca1c`. The reviewer measured 191 at
   `52e34c6`. Commit `1847ffd` added the difference. Sol's figure was correct at its own snapshot.
@@ -571,10 +571,10 @@ scope.
 
 ## Blockers before `CLOSEOUT-OK`
 
-1. Repair C1 in `launch-contract-repair-sol.md`.
-2. Repair C2 in `launch-contract-repair-sol.md`.
+1. Repair C1 in [`launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md).
+2. Repair C2 in [`launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md).
 3. Repair C3 in `revised-impact-measurement-fable.md`.
-4. Record the L1 skill repair as a machine-ready item in `.agents/NEXT.md`.
+4. Record the L1 skill repair as a machine-ready item in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 Findings R1, R2, and R3 need no action before launch. Record them as follow-up items.
 
@@ -601,7 +601,7 @@ remain the historical record of the review at `52e34c6`.
 Reviewed commit: `352e517ee8552de063b3963abb25321b801bdfa7`, "eval: repair final launch contract
 findings".
 
-Repair report: `.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-repair-sol.md`.
+Repair report: [`.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-launch-contract-repair-sol.md).
 
 Previous snapshot: `2cc8e3a`, which carries the review above.
 
@@ -705,8 +705,8 @@ prose into one truth owner. That is the correct repair shape.
 
 ## C1 — Closed
 
-`launch-contract-repair-sol.md:67-69` now states the exact difference. It says that the trees at
-`e5c835e` and `1847ffd` differ only by `final-synthesis-review-sol.md`. It says that every code
+[`launch-contract-repair-sol.md:67-69`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md) now states the exact difference. It says that the trees at
+`e5c835e` and `1847ffd` differ only by [`final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md). It says that every code
 file is byte-identical.
 
 The reviewer confirmed both statements. `git diff --stat e5c835e 1847ffd` reports one changed file.
@@ -714,7 +714,7 @@ That file is the review report. No code file differs.
 
 ## C2 — Closed
 
-`launch-contract-repair-sol.md:71` now reads "1,961 passed in the restricted sandbox measurement".
+[`launch-contract-repair-sol.md:71`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md) now reads "1,961 passed in the restricted sandbox measurement".
 The count no longer presents itself as a plain result.
 
 The reviewer measured 1,974 passing tests at `352e517`. The suite grew by three tests since the
@@ -845,7 +845,7 @@ contains the index and `(truncated)`. The message does not contain the tail.
 
 ## R3 — Closed
 
-`paired-capacity-check-terra.md:85-88` now separates the wrapper from the frozen array. It states
+[`paired-capacity-check-terra.md:85-88`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md) now separates the wrapper from the frozen array. It states
 that `/usr/bin/env -i` is an environment-hygiene wrapper. It states that the signed
 `capacity.command` records the unwrapped array. It states that the supervisor validates the
 artifact bytes and the unwrapped array.
@@ -857,8 +857,8 @@ A reader can now compare the signed command with the evidence record without con
 Every paid, filing, golden, owner, merge, and deployment action stays blocked. The reviewer checked
 each class again at `352e517`.
 
-- `.agents/NEXT.md:113` keeps the filing block. `.agents/NEXT.md:119` keeps the paid block.
-  `.agents/NEXT.md:132` keeps the human-judgment block. `.agents/NEXT.md:141` keeps the merge and
+- [`.agents/NEXT.md:113`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the filing block. [`.agents/NEXT.md:119`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the paid block.
+  [`.agents/NEXT.md:132`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the human-judgment block. [`.agents/NEXT.md:141`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the merge and
   deployment block.
 - `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
   `declined-upstream`. That total is 70. No record moved to a filed state.
@@ -879,7 +879,7 @@ Locations:
 
 - `.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md:24`
 - `.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md:684`
-- `.agents/rounds/2026-09-03-truth-maintenance.md:483`
+- [`.agents/rounds/2026-09-03-truth-maintenance.md:483`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance.md)
 
 Evidence:
 
@@ -889,7 +889,7 @@ Evidence:
   unreviewed and unapproved".
 - The review above lists revision 3 in its scope. It verified P1 to P3 and S1 to S3 against
   revision 3. It raised C3 against revision 3.
-- `.agents/NEXT.md:28` and `.agents/NEXT.md:36-37` now say that the final Opus review inspected
+- [`.agents/NEXT.md:28`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) and [`.agents/NEXT.md:36-37`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now say that the final Opus review inspected
   and checked revision 3.
 - Ledger line 364 and ledger line 596 now say that the final Opus review inspected revision 3.
 - The repair updated the second pair of surfaces and not the first.
@@ -911,7 +911,7 @@ Replace the three sentences. State that the final Opus review inspected revision
 
 ### N2 — Low — The ledger checklist validation covers `dc0761d` only
 
-Location: `.agents/rounds/2026-09-03-truth-maintenance.md:346-356`.
+Location: [`.agents/rounds/2026-09-03-truth-maintenance.md:346-356`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance.md).
 
 Evidence:
 
@@ -1020,7 +1020,7 @@ The three reported locations now record both review stages.
   3, first withheld `LAUNCH-OK` on L1, and granted it after repair.
 - `revised-impact-measurement-fable.md:686-687` replaces the old blocker with the same two-stage
   statement.
-- `.agents/rounds/2026-09-03-truth-maintenance.md:484` now records the Opus review and its
+- [`.agents/rounds/2026-09-03-truth-maintenance.md:484`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance.md) now records the Opus review and its
   appended confirmation.
 
 No live surface still says that nobody reviewed revision 3. The reviewer searched `.agents` and
@@ -1028,8 +1028,8 @@ No live surface still says that nobody reviewed revision 3. The reviewer searche
 
 ## N2 — Closed
 
-The ledger checklist at `.agents/rounds/2026-09-03-truth-maintenance.md:355-356` now records the
-final repair run of 108 files and 1,974 tests. `.agents/NEXT.md:46-47` records the same result.
+The ledger checklist at [`.agents/rounds/2026-09-03-truth-maintenance.md:355-356`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance.md) now records the
+final repair run of 108 files and 1,974 tests. [`.agents/NEXT.md:46-47`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) records the same result.
 
 The reviewer re-ran the full suite at `02a070c`. It passed 108 files and 1,974 tests with zero
 skipped tests. The recorded claim reproduces.
@@ -1047,7 +1047,7 @@ The reviewer confirmed the two changed contract files keep the hashes recorded i
 above. They are `caecb039…761ad1e5` and `d17c2a55…f11ebc678`. A launch plan must still recompute
 both at its own launch revision.
 
-Three matches remain inside `final-synthesis-review-sol.md`. All three sit in dated review text
+Three matches remain inside [`final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md). All three sit in dated review text
 whose header names its author, branch, and `dc0761d` snapshot. They are historical evidence. The
 reviewer left them, as the preservation rule requires.
 
@@ -1080,13 +1080,13 @@ document that reports its own review state. This section closes it.
 
 Every paid, filing, golden, merge, deployment, and owner decision stays blocked.
 
-- `.agents/NEXT.md:114`, `:120`, `:133`, and `:142` keep the four blocked classes.
+- [`.agents/NEXT.md:114`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), `:120`, `:133`, and `:142` keep the four blocked classes.
 - `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
   `declined-upstream`. No record moved to a filed state. The commit changed no `improvements` file.
 - Revision 3 still says that it authorizes nothing. Its signature line at line 626 still offers
   `AUTHORIZED` or `NOT AUTHORIZED`.
 - Owner decisions A to J stay open. Decision 5, the concurrent-load acceptance, stays open.
-- The handoff keeps the safe default of no spend at `.agents/NEXT.md:179`.
+- The handoff keeps the safe default of no spend at [`.agents/NEXT.md:179`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 ## Commands and results
 

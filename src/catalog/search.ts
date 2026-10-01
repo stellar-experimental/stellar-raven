@@ -76,7 +76,7 @@ export type SearchHit = {
   description: string;
   /**
    * Rendered TypeScript signature — operation entries and runnable-skill
-   * entries (research/skill-run-design.md §5: a runnable skill's hit carries
+   * entries (src/skills/README.md: a runnable skill's hit carries
    * the `codemode.skill.run("<id>", …)` callable line, the adoption surface
    * of that design). Input type and callable envelope line are always full;
    * an output type block over COMPACT_OUTPUT_THRESHOLD chars is stubbed down
@@ -239,7 +239,7 @@ export function catalogServices(catalog: Catalog): readonly string[] {
  *      bad ident, yielding a searchable-but-uncallable operation. Throwing here
  *      makes a builder regression fail loudly at load, not silently at call;
  *  (d) a `runnable` entry is kind:"skill" and carries BOTH schemas
- *      (research/skill-run-design.md §5) — the flag advertises a callable
+ *      (src/skills/README.md) — the flag advertises a callable
  *      contract, so a runnable entry without schemas (or on a non-skill kind)
  *      is a builder bug that would render a broken signature and validate
  *      nothing at dispatch.
@@ -604,7 +604,7 @@ function compactOutputStub(entry: CatalogEntry, typeName: string): string {
  * input/output type declarations plus the callable line the model can use
  * inside `execute` (e.g. `lumenloop.search_directory(input): Promise<...>`;
  * for a runnable skill, `codemode.skill.run("<id>", input): Promise<...>` —
- * research/skill-run-design.md §5: skill.run is a CALL, so its rendered line
+ * src/skills/README.md: skill.run is a CALL, so its rendered line
  * spells the same service-call envelope union operations do; there is no
  * third shape to teach). Non-runnable skills and sections still render no
  * signature — their affordance is skill.read, not a call.
@@ -1141,31 +1141,22 @@ function prioritizeDatedSemanticForFreshness(
 }
 
 /**
- * Ranked search over the catalog, with pagination facts. Pure; results
- * sorted by score desc, then id asc for determinism (within a tier — see
- * below).
+ * Ranked catalog search with bounded page membership and pagination facts.
+ * Gated candidates establish the first page and its diversity selection.
+ * A short page uses the complete ungated pool to fill open slots.
+ * A full page admits targeted ungated candidates for replacement rules.
+ * Structured intent and vocabulary witnesses can preserve candidates from
+ * either tier. Some replacements change service counts.
  *
- * src/catalog/scoring.ts wraps the vendored lexical scorer with query stopword
- * filtering, kind weighting, per-service diversity in the returned set);
- * rationale documented there.
+ * Membership is fixed before tier interleaving and freshness ordering.
+ * Interleaving uses the common score scale and TIER_INTERLEAVE_MARGIN.
+ * Freshness can move a selected dated-semantic operation before exact lanes.
+ * Returned order therefore defines ranking; scores alone do not.
  *
- * Tiered gate-rescue backfill: tier 1 is the pipeline above. When tier 1
- * leaves the page short (fewer than
- * `limit` gate-passing candidates exist — measured: 58/122 extended-lane
- * questions, all >20 tokens, gated to ZERO) is the same pipeline re-run with
- * the coverage gate bypassed (scoring.ts lever 5) and its novel hits
- * appended to complete membership, then the fixed page is stably interleaved:
- * a tier-2 hit never outranks a tier-1 hit unless its ungated score is >=
- * TIER_INTERLEAVE_MARGIN times the gated hit's score. The drift guard in
- * test/scoring.test.ts proves scoreEntryUngated equals scoreEntry wherever
- * the gate passes, so hit.score is a common scale across the seam. The
- * tier-2 page is drawn at `limit + 10` so diversity quotas are computed over
- * a wider slate before the tier-1 duplicates are removed.
- *
- * `total` and `truncated`: total counts tier-1 candidates when tier 1 fills
- * the page. Targeted full-page replacements do not expand this count. When
- * tier 1 leaves space, total also counts novel tier-2 candidates because the
- * complete tier-2 pool supplies page membership.
+ * A full gated page keeps the gated candidate count as total. Targeted
+ * replacements do not expand it. A short page also counts novel candidates
+ * from the complete ungated pool. truncated equals total > hits.length.
+ * See src/catalog/README.md for the admission and selection rules.
  */
 export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): SearchPage {
   // Number.isFinite, not `?? DEFAULT`: `codemode.search` inside the sandbox
@@ -1249,7 +1240,7 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     // Search-hit rendering mode: oversized output type blocks become stubs
     // (COMPACT_OUTPUT_THRESHOLD above) — the full signature is describe's job.
     // Runnable-skill hits render one too (the skill.run callable line, the
-    // §10 adoption surface) AND keep availableSections below — one skill, one
+    // src/skills/README.md) AND keep availableSections below — one skill, one
     // id, two affordances (read + run).
     const signature = renderSignature(entry, { compactOversizedOutput: true });
     if (signature) hit.signature = signature;

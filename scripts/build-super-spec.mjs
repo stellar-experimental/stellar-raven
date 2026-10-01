@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 /**
  * build-super-spec.mjs — deterministic unified "super spec" builder.
- * Design rationale: research/super-spec-design.md.
+ * ARCHITECTURE.md describes the generated specification and sandbox boundary.
  *
  * Emits specs/super-spec.json: ONE OpenAPI-3.1-STYLE document covering every
  * service this MCP fronts — lumenloop, scout, stellarDocs — plus a synthetic
  * `skills` core service. `execute` exposes this document in its Dynamic
- * Worker sandbox as `codemode.spec()`. The retired code-shaped search runner
- * keeps the same document available for controlled A/B work.
+ * Worker sandbox as `codemode.spec()`.
  *
- * Dialect (see design doc §1):
+ * Dialect (see ARCHITECTURE.md):
  *  - paths keyed by namespaced callable name: `/{service}/{operation}`
  *    (e.g. "/lumenloop/search_directory", "/scout/searchProjects");
  *  - operationId = the exact catalog id ("lumenloop.search_directory") —
@@ -52,10 +51,8 @@ import { compactResponseSchema } from "./lib/super-spec-compaction.ts";
 import { RETIRED_ONBOARDING_SKILLS, scrubNonExposedRefs } from "./exposure.mjs";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
-// The runnable-skill allowlist-as-data (research/skill-run-design.md §5):
-// the SAME registry scripts/build-catalog.mjs attaches to the manifest, so
-// the two model-facing surfaces cannot drift (native type stripping, as for
-// build-catalog.mjs's src/ imports).
+// src/skills/README.md defines the shared runnable-skill registry contract.
+// The catalog and specification emit the same registry schemas through native TypeScript type stripping.
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
 import { isOversizedOutputBlock } from "../src/catalog/output-compaction.ts";
@@ -516,14 +513,9 @@ function buildSkillIndex(manifest, exposed, texts) {
 }
 
 /**
- * The runnable-skill index for /skills/run_skill x-runnable-index — the same
- * self-contained-index pattern as /skills/list_skills' x-skill-index (design
- * §5). Descriptions come from the manifest entries (the exposed prose);
- * schemas from the RUNNERS registry (the source build-catalog.mjs attached —
- * one origin, so spec and manifest cannot disagree). Both-direction drift
- * guards mirror runSkill's assertRunnersWired: a stale manifest (or a runner
- * added without a rebuild) breaks THIS build, never ships a spec advertising
- * a contract the deployed dispatch would refuse.
+ * Build /skills/run_skill x-runnable-index from manifest descriptions and registered runner schemas.
+ * src/skills/README.md defines the shared callable contract.
+ * Registry drift fails the build before the specification can advertise an unsupported runner.
  */
 function buildRunnableIndex(catalogManifest) {
   const runnableEntries = catalogManifest.entries.filter((e) => e.runnable === true);

@@ -1,6 +1,6 @@
 /**
- * Lumenloop adapter — one generic invoker for all 21 tools
- * (research/services/lumenloop.md: uniform `POST /v1/tools/{name}` + Bearer).
+ * Lumenloop adapter — generic invocation of manifest operations
+ * (ARCHITECTURE.md: host-side `POST /v1/tools/{name}` + Bearer).
  *
  * Envelope mapping (the doc's "normalize per-tool, never assume data.results"):
  *  - HTTP 2xx + success:true + meta.format "json" | "blocks" → { ok, data }

@@ -150,7 +150,7 @@ This catalog branch does not implement that runtime follow-up.
 - `node scripts/build-catalog.mjs`: PASS.
 - `npm run spec:build`: PASS.
 - Generated A/V contract assertion: PASS.
-- `npm exec vitest run test/catalog.test.ts test/super-spec.test.ts test/eval-vectorize-rerank-fit.test.mjs test/eval-vectorize-support-fit.test.mjs`: PASS, 94 tests.
+- <code>npm exec vitest run test/catalog.test.ts test/super-spec.test.ts <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-rerank-fit.test.mjs">test/eval-vectorize-rerank-fit.test.mjs</a> <a href="https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-support-fit.test.mjs">test/eval-vectorize-support-fit.test.mjs</a></code>: PASS, 94 tests.
 - `npm run eval:routing -- --gate`: PASS.
 - `npm run eval:protocol-history`: FAIL, diagnostic only. Final: 4/8 and 2/4.
 - `npm run improvements:index`: PASS. It wrote 66 findings.

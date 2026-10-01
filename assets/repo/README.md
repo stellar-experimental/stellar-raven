@@ -1,9 +1,9 @@
 # assets/repo/ - repository presentation assets
 
-This directory holds assets used by the repository's GitHub presentation. Nothing here is served
-by the Worker. The live site's images and fonts are generated code: `/og.png` is produced by
-`src/og.ts`, site SVGs live in `src/site.ts`, and fonts live in `src/fonts.ts`.
+This directory holds images for the repository's GitHub page. The Worker does not serve them.
+The live site's images and fonts are generated code: `src/og.ts` produces `/og.png`, `src/site.ts`
+holds the site SVGs, and `src/fonts.ts` holds the fonts.
 
 ## Contents
 
-- `Gemini_Generated_Image_v5uajdv5uajdv5ua.png` - README hero banner.
+- `banner.png` - the README banner.

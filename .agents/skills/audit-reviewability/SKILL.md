@@ -9,8 +9,8 @@ Protect the human attention budget. Judge each artifact by truth, durable value,
 Judge the artifact without guessing whether a human or model wrote it.
 
 Read [`references/audit-rubric.md`](references/audit-rubric.md) completely before classifying
-candidates. For disputed rules or skill maintenance, read
-[`research/reviewability-audit-2026-08-18.md`](../../../research/reviewability-audit-2026-08-18.md).
+candidates. Its last section explains why each rule exists; read it for disputed rules or skill
+maintenance.
 
 ## Choose the mode and scope
 

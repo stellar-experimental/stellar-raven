@@ -113,7 +113,7 @@ and left line 36.
 **Fix.** Replace "≈30 ecosystem entries across sources/kinds" with "entry count in `INDEX.md`", matching
 the README fix.
 
-### F7 — should-fix — `.agents/NEXT.md:153-162` — decision K omits the bar's duplication criterion and the repo's idle state
+### F7 — should-fix — [`.agents/NEXT.md:153-162`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) — decision K omits the bar's duplication criterion and the repo's idle state
 
 **What is wrong.** Decision K is framed fairly on what it states: twelve skills (verified:
 `skills/*/SKILL.md` = 12 at `main`), MIT (verified via `gh api`), entered the snapshot in PR #43 on
@@ -133,8 +133,8 @@ needed.
 ### F8 — nit — `ecosystem-skills/README.md:203` — the "recorded decision" sentence does not name where K lives
 
 The sentence says a non-admitted candidate needs a decision "in `.agents/TODO.md` or a round ledger."
-Decision K is in `.agents/NEXT.md`, which `.agents/README.md` names as the home of open owner decisions.
-Add `.agents/NEXT.md` (owner decisions) to the sentence.
+Decision K is in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), which `.agents/README.md` names as the home of open owner decisions.
+Add [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) (owner decisions) to the sentence.
 
 ### F9 — nit — `.agents/rounds/2026-09-30-skill-system-audit.md` — the deploy id is only in the brief
 
@@ -144,7 +144,7 @@ The brief cites production deploy `c4d27b61-e0f0-47a4-a6fe-6ce298fb1b81`; the le
 2026-09-30T19:49:09.958Z with version `c4d27b61-e0f0-47a4-a6fe-6ce298fb1b81` at 100%. Record the id and
 the check in the ledger's Outcome or review section.
 
-### F10 — nit — `.agents/NEXT.md:3` — header stamp not refreshed
+### F10 — nit — [`.agents/NEXT.md:3`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) — header stamp not refreshed
 
 PR #183 edited items 1 and 3 and added decision K, but the file still says "Updated 2026-09-17". Bump to
 2026-09-30 and name this round.
@@ -168,7 +168,7 @@ adding live Solo paths. It is still a retired tracker id in an operational file.
    (`git show 58954b67 --stat`) as the acceptance check.
 2. `simple` — Update sk-027 evidence per F5 and re-run `npm run improvements:index` and
    `npm run improvements:lint`. Whether to comment on issue #14 is the owner's call.
-3. `simple` — Fix `update.sh:36` (F6), NEXT.md header (F10), and the README decision sentence (F8).
+3. `simple` — Fix `update.sh:36` (F6), [NEXT.md](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) header (F10), and the README decision sentence (F8).
 4. `needs-decision` — Decision K: read the twelve SCF bodies against all four admission criteria and
    record the overlap verdict (F7). Two of the twelve fail on a name read alone; the other ten need a
    body read, and `scf-live-context` maps cleanly onto `scout.getRfps`/`scout.searchResearch`.
@@ -222,7 +222,7 @@ adding live Solo paths. It is still a retired tracker id in an operational file.
   dates the latter 2026-09-15). 28 references to `ecosystem-skills/skills/` remain, as the ledger says.
 - **AGENTS.md.** `.agents/skills/` holds eight skills; the runbook list now names all eight, and the
   `retrieval-system-audit` line matches its frontmatter description.
-- **NEXT.md item 1 and 3, TODO.md.** `inventory/stellar-light.json` `openapiVersion 1.9.54`; the
+- **[NEXT.md](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) item 1 and 3, TODO.md.** `inventory/stellar-light.json` `openapiVersion 1.9.54`; the
   2026-09-29 ledger records PR #182 merged and deployed. The narrowed TODO item quotes the freshness
   review's Case 5 sibling note (board seat, `q-defi-x402-on-stellar-what`, 2026-07-10) and Case 6 sibling
   note (114 vs 183 builders, `q-gap-builders-person-empty`) exactly. Ledger pointer resolves to
@@ -245,5 +245,5 @@ adding live Solo paths. It is still a retired tracker id in an operational file.
 - **Deploy.** Newest deployment version `c4d27b61-e0f0-47a4-a6fe-6ce298fb1b81`, created
   2026-09-30T19:49:09.958Z, 100% (`wrangler deployments list`, read-only).
 - **Trustless Work round records.** `source-review.md`, `independent-review.md`, and
-  `final-metadata-review.md` support steps 1, 2, 3, 4, and 7 of "Adding a source" as written; only the
+  [`final-metadata-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-trustless-work/final-metadata-review.md) support steps 1, 2, 3, 4, and 7 of "Adding a source" as written; only the
   items in F1–F4 diverge.

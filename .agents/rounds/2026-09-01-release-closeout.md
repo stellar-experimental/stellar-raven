@@ -328,7 +328,7 @@ The advisory is outside this release diff and does not block this merge.
 
 Claude Opus 5 at high completed separate standards and specification reviews.
 Both reviews returned `PASS`.
-The reports are `final-standards-opus.md` and `final-spec-opus.md` in this round directory.
+The reports are [`final-standards-opus.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-release-closeout/final-standards-opus.md) and [`final-spec-opus.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-release-closeout/final-spec-opus.md) in this round directory.
 
 Opus was the final-review fallback for this change.
 Sol was ineligible because Sol authored and orchestrated the work.

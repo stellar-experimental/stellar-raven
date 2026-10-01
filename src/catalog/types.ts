@@ -1,32 +1,16 @@
 /**
- * Catalog types — the unified, machine-generated index that `search` ranks
- * (PLAN §2 as a starting sketch, deliberately trimmed).
+ * Types for the generated catalog that search ranks and execute dispatches.
+ * scripts/build-catalog.mjs emits catalog/manifest.json; loadManifest validates
+ * it before use. See src/catalog/README.md for search and exposure contracts.
  *
- * One entry per callable surface: every service operation, every skill, and
- * every skill section. `scripts/build-catalog.mjs` generates
- * `catalog/manifest.json`; `loadManifest` (src/catalog/search.ts) validates it
- * against `catalogSchema` before anything trusts it.
+ * Entries represent service operations, whole skills, and section addresses.
+ * Schemas supply argument validation and rendered callable signatures.
+ * Host-only transport supplies request mappings; provenance identifies inputs.
  *
- * Field rationale (what earns its place for a two-tool search+execute MCP):
- *  - id / service / kind / description → the search scorer's input fields.
- *  - inputSchema / outputSchema        → rendered into the TS `signature`
- *    returned with operation and runnable-skill hits, and execute-side arg
- *    validation — the model never owns URLs/args, PLAN §4.
- *  - transport                         → what the adapters need to actually
- *    place the call.
- *  - provenance                        → where the entry came from + snapshot
- *    time, so drift is attributable to an inventory refresh.
- *
- * Deliberately absent:
- *  - policy/auth/cost — exposure is filtered at BUILD time (ADR-0003): the
- *    manifest is the exposed surface, so every entry in it is callable or
- *    readable and a runtime allow/deny layer has nothing to express.
- *    Exclusions (paid ops, write endpoints, retired skills, upstream skill
- *    twins) live as data + reasons in scripts/build-catalog.mjs.
- *  - raven-next's `resultShape` (evidence/soft-empty/error paths): search
- *    never reads it, and execute-phase normalizers are per-service code, not
- *    per-entry data. Likewise the stellarDocs corpus taxonomy: it lives in
- *    specs/stellar-docs.json and ships to the model inside the super spec.
+ * The manifest is the exposed surface under ADR-0003.
+ * src/policy/scout-exposure.ts and scripts/exposure.mjs own exclusion data.
+ * Runtime entries need no allow/deny fields. Per-service adapters normalize
+ * responses; specs/stellar-docs.json owns the docs mapping and taxonomy.
  */
 import { z } from "zod";
 
@@ -211,7 +195,7 @@ const catalogEntryBaseSchema = z.object({
    */
   searchable: z.literal(false).optional(),
   /**
-   * Runnable-skill marker (research/skill-run-design.md §5): literal `true`
+   * Runnable-skill marker (src/skills/README.md): literal `true`
    * ONLY on the kind:"skill" entries whose data-gathering core also ships as
    * a bundled host-side runner (src/skills/runners/), callable inside
    * `execute` via `codemode.skill.run(id, input)`. A deliberate contract

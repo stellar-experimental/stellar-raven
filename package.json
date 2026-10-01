@@ -11,7 +11,7 @@
     "dev": "wrangler dev --host localhost",
     "dev:eval": "node scripts/run-eval-server.mjs",
     "mcp-key": "node scripts/mcp-key.mjs",
-    "mcp:surface": "esbuild scripts/report-mcp-surface.mjs --bundle --platform=node --format=esm --log-level=silent --outfile=/tmp/stellar-raven-mcp-surface-report.mjs && node /tmp/stellar-raven-mcp-surface-report.mjs",
+    "mcp:surface": "node scripts/run-mcp-surface.mjs",
     "mcp:surface:live": "node eval/report-live-surface.mjs",
     "prebuild": "node scripts/build-micro-map.mjs",
     "build": "wrangler deploy --dry-run --outdir dist",
@@ -25,16 +25,6 @@
     "eval:compile": "node eval/compile-routing.mjs",
     "eval:discovery:agent": "node eval/discovery/run-agent-discovery.mjs",
     "eval:discovery:replay": "node eval/discovery/run-replay.mjs",
-    "eval:vectorize:build": "node eval/vectorize/build-artifact.mjs",
-    "eval:vectorize:run": "node eval/vectorize/run-frontier.mjs",
-    "eval:vectorize:clauses:build": "node eval/vectorize/build-clause-artifact.mjs",
-    "eval:vectorize:clauses:preflight": "node eval/vectorize/preflight-clause-model.mjs",
-    "eval:vectorize:clauses:run": "node eval/vectorize/run-clause-fit.mjs",
-    "eval:vectorize:rerank:fetch": "node eval/vectorize/fetch-rerank-model.mjs",
-    "eval:vectorize:rerank:preflight": "node eval/vectorize/preflight-rerank-model.mjs",
-    "eval:vectorize:rerank:run": "node eval/vectorize/run-rerank-fit.mjs",
-    "eval:vectorize:support:run": "node eval/vectorize/run-support-fit.mjs",
-    "eval:vectorize:serve": "node eval/vectorize/serve-frontier.mjs",
     "micro-map:build": "node scripts/build-micro-map.mjs",
     "eval:routing": "node eval/run-routing.mjs",
     "eval:protocol-history": "node eval/run-protocol-history.mjs",
@@ -85,12 +75,16 @@
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.22.0",
     "@cloudflare/workers-types": "^5.20260916.1",
-    "@huggingface/transformers": "4.2.0",
     "@modelcontextprotocol/client": "2.0.0",
     "@modelcontextprotocol/sdk": "1.30.0",
     "@types/node": "^26.3.0",
+    "esbuild": "0.28.1",
+    "miniflare": "5.20260815.0-alpha",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11",
     "wrangler": "4.133.0"
+  },
+  "engines": {
+    "node": ">=24 <25"
   }
 }

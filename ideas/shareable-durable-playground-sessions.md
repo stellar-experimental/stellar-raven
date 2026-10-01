@@ -464,7 +464,7 @@ composer, and atomic private fork on first non-author send.
 ## Repository references
 
 - [`ARCHITECTURE.md`](../ARCHITECTURE.md) — current stateless playground and demo caps.
-- [`research/demo-playground-design.md`](../research/demo-playground-design.md) — current WorkOS,
+- [`research/demo-playground-design.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/demo-playground-design.md) — current WorkOS,
   SSE, history-clamp, cost, and trace decisions.
 - [`src/server.ts`](../src/server.ts) — exact playground routing and current no-session boundary.
 - [`src/demo/auth.ts`](../src/demo/auth.ts) — signed demo cookie and bounded login return state.

@@ -6,13 +6,13 @@ Model: Claude Fable 5.1 at `xhigh`
 Orchestrator: root Codex
 
 Artifact: `/private/tmp/stellar-raven-tm-runner/eval/qa/results/2026-09-04T05-40-51-variantA.json`
-Plan: `.agents/rounds/2026-09-03-truth-maintenance.md` (frozen paired method)
+Plan: [`.agents/rounds/2026-09-03-truth-maintenance.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance.md) (frozen paired method)
 
 Revision 2 reconciles revision 1 against three later records:
 
-- `post-candidate-stop-audit-sol.md` (fail-closed audit, verdict `STOP`)
-- `post-candidate-scout-drift-terra.md` (Scout `1.9.23` to `1.9.30` drift classification)
-- `candidate-row-review-scout-lumenloop-sol.md`, `candidate-row-review-stellar-docs-terra.md`,
+- [`post-candidate-stop-audit-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/post-candidate-stop-audit-sol.md) (fail-closed audit, verdict `STOP`)
+- [`post-candidate-scout-drift-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/post-candidate-scout-drift-terra.md) (Scout `1.9.23` to `1.9.30` drift classification)
+- [`candidate-row-review-scout-lumenloop-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/candidate-row-review-scout-lumenloop-sol.md), [`candidate-row-review-stellar-docs-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/candidate-row-review-stellar-docs-terra.md),
   and `candidate-row-review-skills-none-fable.md` (service-sharded reviews of every row)
 
 Revision 1 called the artifact an internally valid single-interval current-quality measurement.

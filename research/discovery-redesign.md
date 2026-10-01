@@ -13,7 +13,7 @@ taxonomy) — the "matching Questions → services/tools" redesign thread.
 ADRs, `ideas/architecture-explorations.md`) plus three independent adversarial Codex
 reviewers spawned via Solo, each attacking one slice with read-only repo access. The full
 reviews are vendored at
-[`research/audits/discovery-redesign-reviews-2026-07-09/`](./audits/discovery-redesign-reviews-2026-07-09/README.md).
+[`research/audits/discovery-redesign-reviews-2026-07-09/`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/discovery-redesign-reviews-2026-07-09/README.md).
 All four assessments converged; nothing below rests on a single reviewer's claim.
 
 ## 1. TL;DR

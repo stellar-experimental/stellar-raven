@@ -21,11 +21,11 @@
  *   /\b(lumenloop|scout|stellarDocs)\.(\w+)\s*\(/  → service op
  *   codemode.skill.read / codemode.skill_read      → service "skills"
  *   codemode.skill.run("<id>") / codemode.skill_run → service "skills" op
- *     "skill.run" (skillId captured); when the runner registry exists
- *     (src/skills/runners/index.ts — research/skill-run-design.md §10), each
- *     skill.run is EXPANDED with that runner's declared constituent ops so
- *     coverage credits a runnable-skill run (e.g. the digest) with the services it actually
- *     touched. Registry absent (pre-feature builds) → no expansion, noted.
+ *     "skill.run" (skillId captured). The registry at src/skills/runners/index.ts
+ *     supplies declared constituent operations; src/skills/README.md defines
+ *     that contract. Expansion credits those declarations for coverage and
+ *     progression. It does not prove which host calls ran. An absent registry
+ *     leaves skill.run calls unexpanded and records a note.
  *   codemode.search|catalog|spec|describe          → service "meta-discovery"
  * meta-discovery (and the top-level MCP search tool) is always on-plan and
  * excluded from the touched-service set. Rows whose execute inputs look
@@ -85,14 +85,11 @@ export function extractExecuteOps(inputStr) {
 }
 
 /**
- * Load the skill-run runner registry (src/skills/runners/index.ts) as a plain
- * { runnableId: [declaredOpId, ...] } map, or null with a note when it cannot
- * be loaded. GRACEFUL DEGRADATION IS THE CONTRACT here: the eval instruments
- * land BEFORE the feature (research/skill-run-design.md §13 step 1), so the
- * baseline side of the A/B runs with no registry — extraction still records
- * skill.run calls, they just don't expand. Node ≥ 22.6 strips the registry's
- * types natively (it is node-clean by design, §2); any import failure also
- * degrades rather than failing the grade.
+ * Load src/skills/runners/index.ts as { runnableId: [declaredOpId, ...] }.
+ * See src/skills/README.md for the declared-operation contract.
+ * An absent or invalid registry returns null with a note. The grader still
+ * counts skill.run calls but does not expand them. The import uses Node's
+ * native TypeScript stripping; import failures also return null with a note.
  */
 export async function loadRunnerOps(repoRoot = path.resolve(PLAN_DIR, "..", "..")) {
   const registryPath = path.join(repoRoot, "src", "skills", "runners", "index.ts");
@@ -116,11 +113,11 @@ export async function loadRunnerOps(repoRoot = path.resolve(PLAN_DIR, "..", ".."
 }
 
 /**
- * Expand each skill.run op through the registry's declared ops: the original
- * entry is kept and the runner's constituent ops are inserted after it (each
- * marked via: <skillId>) so touched-service coverage and progression see the
- * work the run actually performed. No registry / unknown id / no captured id
- * → the op passes through unexpanded.
+ * Keep each skill.run entry and insert its declared constituent operations
+ * after it, marked via: <skillId>. See src/skills/README.md for the registry
+ * contract. These declarations support coverage and progression grading;
+ * they do not establish observed host calls. An absent registry, unknown ID,
+ * or missing captured ID leaves the entry unexpanded.
  */
 export function expandSkillRuns(ops, runnerOps) {
   if (!runnerOps) return ops;

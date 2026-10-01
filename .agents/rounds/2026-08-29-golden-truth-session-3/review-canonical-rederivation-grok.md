@@ -2,7 +2,7 @@
 
 Date: 2026-08-29
 Lane: reviewer R2 (canonical re-derivation)
-Rule followed: did not read case `truth` blocks, this round ledger, `program-log.md`, or `improvements/` before writing these findings.
+Rule followed: did not read case `truth` blocks, this round ledger, [`program-log.md`](../../../eval/qa/reviewed/2026-08-27-golden-truth/program-log.md), or `improvements/` before writing these findings.
 
 Live Mainnet probe used as class C/F for protocol version and base reserve:
 

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
  * analyze-composition.mjs — per-case composition/adoption analysis over a QA
- * results file's tool transcripts (research/skill-run-design.md §10 — the
- * skill.run ship gate's composition instrument, landed BEFORE the feature so
- * both sides of the A/B are measured with identical tooling).
+ * results file's tool transcripts. See src/skills/README.md for the runner
+ * registry, declared-operation contract, and host call ledger.
  *
  * Usage:
  *   node eval/qa/analyze-composition.mjs <results-file.json>
@@ -14,9 +13,9 @@
  *   - op-call counts, extracted grade-plan-style (imports extractExecuteOps
  *     from eval/plan/grade-plan.mjs — one extractor, no drift); skill.run
  *     calls are expanded through the runner registry's declared ops
- *     (loadRunnerOps) so before/after constituent work is comparable. The
- *     registry ships AFTER this instrument — absent registry degrades
- *     gracefully (no expansion; noted in the output).
+ *     (loadRunnerOps). See src/skills/README.md for those declarations. They
+ *     do not prove which host calls ran. An absent registry leaves calls
+ *     unexpanded and records a note in the output.
  *   - truncation-footer detection + skill.run `calls`-array ok/error/softEmpty
  *     tallies from execute RESULTS — requires results captured whole (the
  *     run-qa.mjs whole-execute-results patch; older files degrade to "n/a").
@@ -33,7 +32,7 @@ import { extractExecuteOps, expandSkillRuns, loadRunnerOps } from "../plan/grade
 import { assertNotPlaygroundQuarantine } from "../playground/artifact-contract.mjs";
 
 /**
- * §10 adoption signal: any skill.run/skill_run call in an execute input.
+ * Adoption signal: any skill.run/skill_run call in an execute input.
  * The leading \b keeps this trigger-identical to grade-plan's OP_RE run branch
  * (`mycodemode.skill.run(` must not flip adoption while skillRunCalls stays 0).
  * Shared limitation with all regex op extraction: call syntax inside strings
@@ -54,7 +53,7 @@ const CONSOLE_MARKER = "\n\n--- console (";
 
 const isExecuteEntry = (t) => (t?.tool ?? "").endsWith("execute");
 
-/** A host-ledger call record per skill-run-design §6: { op, ok, errorKind?, ms }. */
+/** Host call ledger from src/skills/README.md: { op, ok, errorKind?, ms }. */
 const isCallEntry = (c) => c !== null && typeof c === "object" && typeof c.op === "string" && typeof c.ok === "boolean";
 
 /**

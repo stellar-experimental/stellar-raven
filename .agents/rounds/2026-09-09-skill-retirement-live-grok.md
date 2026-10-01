@@ -165,7 +165,7 @@ PR https://github.com/stellar/stellar-dev-skill/pull/128 merged `d987f9ff8c4b8fc
 | `improvements/INDEX.md` | now `fixed-upstream` | regenerate on drain |
 | finding files + probes | active `fixed-upstream` | delete via resolver |
 | `.agents/TODO.md` | production-acceptance item | close after receipts |
-| `.agents/NEXT.md` L119 | deploy/retirement trigger | remove after receipts |
+| [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) L119 | deploy/retirement trigger | remove after receipts |
 | `ecosystem-skills/PIN-REVIEW.md` L242 | historical `03b2f8e8` still-repro | keep |
 | Raven #136, #138, #140 | open; 17:11 comments predate this read | root comments after snapshots |
 | stellar-dev #124, #125, #126 | closed; no production-recheck comment | root comments after snapshots |

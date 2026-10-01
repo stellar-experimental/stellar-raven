@@ -1,6 +1,9 @@
 # ADR-0008: Human-review follow-up separates truth, measurement, recovery, and Playground scope
 
-- Status: accepted by the owner (2026-08-28); golden lifecycle implemented 2026-08-29
+- Status: accepted by the owner (2026-08-28); golden lifecycle implemented 2026-08-29.
+- Implementation status: the Playground enforces the 8,000-character user-message ceiling.
+  Recovery v2 was rejected and did not ship.
+  The truth and measurement decisions remain accepted; [the work queue](../../.agents/TODO.md) owns deferred recovery work.
 - Driver: the 21-item human-review grill recorded in
   `.agents/rounds/2026-08-28-human-review-grill.md`
 - Decision-shape review: Claude Fable 5 xhigh and GPT-5.6-Sol xhigh reached acceptance before

@@ -2,11 +2,12 @@
  * Catalog builder tests — determinism, entry counts, schema validity,
  * build-time exposure filtering (ADR-0003: the manifest IS the exposed
  * surface; exclusions never emit). Runs scripts/build-catalog.mjs for real
- * (offline; it only reads inventory/ + ecosystem-skills/).
+ * with temporary output. A warm skill cache avoids pinned GitHub downloads.
  */
-import { describe, expect, it, beforeAll } from "vitest";
+import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, type Catalog } from "../src/catalog/search.ts";
@@ -34,16 +35,19 @@ const VALID_ALIAS_RECEIPTS = [
   }
 ] as const;
 
+const outputDir = mkdtempSync(join(tmpdir(), "catalog-test-"));
+const outputPath = join(outputDir, "manifest.json");
+afterAll(() => rmSync(outputDir, { recursive: true, force: true }));
+
 function runBuilder(): string {
-  execFileSync(process.execPath, [join(ROOT, "scripts", "build-catalog.mjs")], {
+  execFileSync(process.execPath, [join(ROOT, "scripts", "build-catalog.mjs"), "--out", outputPath], {
     cwd: ROOT,
     stdio: "pipe"
   });
-  return readFileSync(MANIFEST_PATH, "utf8");
+  return readFileSync(outputPath, "utf8");
 }
 
-// Capture the committed bytes BEFORE beforeAll rebuilds (which overwrites the
-// file) — otherwise the staleness evidence is destroyed. Mirrors super-spec.test.ts.
+// Compare temporary builds with the committed artifact without replacing it.
 const committed = readFileSync(MANIFEST_PATH, "utf8");
 
 let raw: string;
@@ -280,7 +284,7 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter(pred).length;
 
     // Lumenloop: 18 exposed operations of 21 inventory tools — request_research
-    // (metered paid trigger; PLAN §8: off by default) plus its read half
+    // (metered paid trigger; excluded under the AGENTS.md hard rules) plus its read half
     // research_result and list_my_research (account-scoped dead ends without
     // the trigger) are excluded at build time and never emitted (ADR-0003).
     // list_research stays: public editorial pieces, independent of the paid lane.

@@ -8,8 +8,8 @@ This reviewer is not the author and is not the orchestrator.
 No source edit, gate edit, paid call, Wrangler use, inventory refresh, or external write.
 This file is the only write.
 
-Compared against `.agents/rounds/2026-09-09-search-124-design-grok.md`.
-Author report `.agents/rounds/2026-09-09-search-124-implementation-sol.md` is complete and was read.
+Compared against [`.agents/rounds/2026-09-09-search-124-design-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-design-grok.md).
+Author report [`.agents/rounds/2026-09-09-search-124-implementation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-124-implementation-sol.md) is complete and was read.
 This lane treats that report as context, not proof.
 
 Independent catalog check versus `origin/main` (`58898790348b05601bc70b992507f0a8ba6aed0c`):

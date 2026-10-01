@@ -3,7 +3,7 @@
 Status: design accepted 2026-07-06 — adversarial review passed
 (APPROVE-WITH-CHANGES, codex gpt-5.5 high reasoning; findings incorporated
 below, full review archived at
-`research/audits/demo-playground-design-review-2026-07-06.md`); promoted from
+[`research/audits/demo-playground-design-review-2026-07-06.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/demo-playground-design-review-2026-07-06.md)); promoted from
 `ideas/agent-playground.md` (Solo todo 847). Research run: 7 parallel lanes
 (live Cloudflare API model catalog, Cloudflare docs sweep, cloudflare/agents +
 agents-starter code inventory, Perplexity + Parallel web sweeps, codex gpt-5.5

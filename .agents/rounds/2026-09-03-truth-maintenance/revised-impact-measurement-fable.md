@@ -7,14 +7,14 @@ Revision history:
 
 - Revision 1 was written on branch `codex/tm-impact-plan` at `898063e` and committed as `f101cee`.
   The round branch carries it as `74e756d`.
-- The independent review `revised-impact-measurement-review-sol.md` (Codex Sol high, commit
+- The independent review [`revised-impact-measurement-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-review-sol.md) (Codex Sol high, commit
   `3ac5bac`) returned `CHANGES-REQUIRED` with findings S1 to S6 and P1 to P7.
 - Revision 2 was written in worktree `/private/tmp/stellar-raven-tm-final-synthesis` on branch
   `codex/tm-final-synthesis` at `e0df186`. It was committed as `b5dca1c`.
-- The independent review `final-synthesis-review-sol.md` (Codex Sol high, commit `f766893`)
+- The independent review [`final-synthesis-review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/final-synthesis-review-sol.md) (Codex Sol high, commit `f766893`)
   returned `CHANGES-REQUIRED` on revision 2 with findings P1 to P3 and S1 to S3.
 - Sol repaired P1 to P3 in the launch contract. Commit `1847ffd` is the launch-enforcement base.
-  The report is `launch-contract-repair-sol.md`. The authoritative v2 capacity evidence is commit
+  The report is [`launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md). The authoritative v2 capacity evidence is commit
   `dc0761d`.
 - Revision 3 is this file. It was written in worktree `/private/tmp/stellar-raven-tm-final-docs-repair`
   on branch `codex/tm-final-docs-repair` at `dc0761d`. The actual whole-round branch
@@ -36,7 +36,7 @@ public Scout changelog read for revision 1 on 2026-09-04.
 | P2 capacity | The plan binds the exact free capacity command, the instrument bytes, the artifact bytes, a fixed schedule, fixed thresholds, and a 24-hour freshness window. The authoritative v2 `PASS` artifact is recorded below. |
 | P3 denominator | The plan records `selected.count: 200` and `selected.activeCorpusCount: 500`. It records all four corpus hashes. Both runner worktrees recompute every one. Any mismatch stops the launch. |
 | S1 stale claims | Commit `1847ffd` is the launch-enforcement base, not the final supervisor bytes. The reviewed R1/R2 repair is the current diagnostic layer. Commits `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d` are in the round record. Every provisional hash below is recomputed at `dc0761d`. |
-| S2 round state | The round stays open. `NEXT.md` lists completed repair work, not a completed round. |
+| S2 round state | The round stays open. [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) lists completed repair work, not a completed round. |
 | S3 production label | Production is described as the last recorded deployment state from 2026-09-02. Nobody verified the live Worker during this documentation pass. |
 
 The revision 2 changes from revision 1 (S1 to S6, P1 to P7 of the first review) stand as written.
@@ -61,11 +61,11 @@ than 22 hours without a Scout release. Scout shipped 30 spec versions in the sev
 | Fact | Value | Source |
 | --- | --- | --- |
 | Stopped candidate arm | 500 rows, about 11.19 h wall, `$190.1686672` (`$130.17` agent, `$60.00` judge) | artifact `2026-09-04T05-40-51-variantA.json`, SHA-256 `e629666b…5904f7` |
-| Stopped arm status | diagnostic and non-comparable; Scout changed from `1.9.23` to `1.9.30` inside the arm | `post-candidate-stop-audit-sol.md` |
+| Stopped arm status | diagnostic and non-comparable; Scout changed from `1.9.23` to `1.9.30` inside the arm | [`post-candidate-stop-audit-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/post-candidate-stop-audit-sol.md) |
 | Per-row answering time | mean 44 s, p50 36 s, p90 85 s | same artifact, `attempts.agent[].durationMs` |
 | Per-row judge time | about 36 s | same artifact, wall minus agent time |
 | Per-row cost | mean `$0.38`; agent `$0.26`; judge `$0.12`; p90 `$0.61`; max `$1.20` | same artifact |
-| Executor fault in that arm | 380 of 500 rows and 493 occurrences of `Could not serialize object`; repaired by `795fa41` | row reviews; `envelope-serialization-fix-terra.md` |
+| Executor fault in that arm | 380 of 500 rows and 493 occurrences of `Could not serialize object`; repaired by `795fa41` | row reviews; [`envelope-serialization-fix-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/envelope-serialization-fix-terra.md) |
 | Scout spec cadence | `spec@1.9.0` on 2026-08-28 to `spec@1.9.30` on 2026-09-04: 30 releases in 7 days, mean gap 5.6 h | live `https://stellarlight.xyz/api/changelog`, 232 entries, read 2026-09-04 |
 | Scout burst | `1.9.23` at 22:35Z on 09-03 to `1.9.30` by 04:34Z on 09-04: 7 releases in 6 h | stop audit |
 | Scout quiet days | 0 releases on 08-22 and 08-30 (both weekend days); 1 on 08-23 | live changelog per-day counts |
@@ -181,7 +181,7 @@ Both arms share every value below. The manifest records each value before spend.
 | Supervisor and control bytes | `eval/qa/paired-collection-supervisor.mjs` and `eval/qa/paired-collection-control.mjs` SHA-256 values; the executing copies and both runner copies must match |
 | Runner and printer bytes | `eval/qa/run-qa.mjs` and `eval/qa/paired-verdict.mjs` SHA-256 values, equal across arms |
 
-Provisional contract hashes at `dc0761d` are in `launch-contract-repair-sol.md`. The launch
+Provisional contract hashes at `dc0761d` are in [`launch-contract-repair-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/launch-contract-repair-sol.md). The launch
 revision recomputes every one.
 
 ### Launch manifest fields
@@ -299,7 +299,7 @@ The plan binds the free two-agent capacity check as a fixed contract:
 - The supervisor verifies the artifact bytes against `capacity.artifactSha256`. It verifies the
   executing instrument and both runner copies against `capacity.instrumentSha256`.
 
-The authoritative v2 artifact is recorded in `paired-capacity-check-terra.md`:
+The authoritative v2 artifact is recorded in [`paired-capacity-check-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md):
 
 | Item | Value |
 | --- | --- |

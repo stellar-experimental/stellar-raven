@@ -128,12 +128,12 @@ Stale statements corrected to match the tree (each verified in the current diff)
   `../raven-golden-qa` retired (corpora vendored at `eval/corpus/`).
 - `README.md` — repo-rename note (repo `stellar-raven`, worker keeps the
   `stellar-raven-codemode` name), `raven.stellar.buzz` alias documented.
-- `research/codemode.md` — ephemeral-sources banner: the scratchpad clone and the
+- [`research/codemode.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/codemode.md) — ephemeral-sources banner: the scratchpad clone and the
   raven-next `agents-docs/` mirror are gone/transient; re-verify against
   `github.com/cloudflare/agents` directly.
 - `research/prior-art.md` — retired-sources banner: siblings retired, reuse shortlist
   fully consumed, no new dependencies on sibling paths.
-- `research/super-spec-design.md` — ADR-0001 status banner (the code-shaped `search` the
+- [`research/super-spec-design.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/super-spec-design.md) — ADR-0001 status banner (the code-shaped `search` the
   doc was written around is retired; the artifact and its build/test contract are current);
   §5 deltas 4 and 7 updated (two-tool shape; the split throw/warn/write-through guard
   contract); the test-coverage list corrected to the two-tool reality.

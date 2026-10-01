@@ -405,19 +405,19 @@ Do not edit only the generated bundle.
 
 ## Research records
 
-- `research/audits/2026-09-14-improvements-review.md:126`
+- [`research/audits/2026-09-14-improvements-review.md:126`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-09-14-improvements-review.md)
   - This pre-merge audit says to keep the narrowed residual.
   - Preserve it as dated history, or add a clear supersession note under repository policy.
-- `research/audits/2026-07-11-gt54-tooling-retention-lab-cctp.md:180`
+- [`research/audits/2026-07-11-gt54-tooling-retention-lab-cctp.md:180`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-11-gt54-tooling-retention-lab-cctp.md)
   - This is the original discovery record.
   - Preserve it as historical evidence.
 
 ## Round ledgers
 
-- `.agents/rounds/2026-09-09-upstream-sweep-terra.md:114`
-- `.agents/rounds/2026-09-16-truth-maintenance/improvements.md:275`
-- `.agents/rounds/2026-09-16-truth-maintenance/improvements.md:318`
-- `.agents/rounds/2026-09-03-truth-maintenance/remaining-work-audit-terra.md:26`
+- [`.agents/rounds/2026-09-09-upstream-sweep-terra.md:114`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-upstream-sweep-terra.md)
+- [`.agents/rounds/2026-09-16-truth-maintenance/improvements.md:275`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/improvements.md)
+- [`.agents/rounds/2026-09-16-truth-maintenance/improvements.md:318`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/improvements.md)
+- [`.agents/rounds/2026-09-03-truth-maintenance/remaining-work-audit-terra.md:26`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/remaining-work-audit-terra.md)
 
 These files record prior states. Preserve them as dated historical ledgers.
 
