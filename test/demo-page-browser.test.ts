@@ -3,10 +3,10 @@ import { Window, type HTMLButtonElement } from "happy-dom";
 import { demoPage } from "../src/demo/page";
 import { DEMO_CAPS } from "../src/demo/budget";
 
-it("runs the Playground page through submit, streaming, copy, and length refusal offline", async () => {
+function createOfflineWindow() {
   // A separate window runs the complete emitted page, including its inline script.
   // No global DOM replacement or browser download is needed by the Node suite.
-  const window = new Window({
+  return new Window({
     url: "https://playground.test/playground",
     settings: {
       enableJavaScriptEvaluation: true,
@@ -23,6 +23,10 @@ it("runs the Playground page through submit, streaming, copy, and length refusal
       }
     }
   });
+}
+
+it("runs the Playground page through submit, streaming, copy, and length refusal offline", async () => {
+  const window = createOfflineWindow();
   const encoder = new TextEncoder();
   let controller!: ReadableStreamDefaultController<Uint8Array>;
   const stream = new ReadableStream<Uint8Array>({ start(value) { controller = value; } });
@@ -124,6 +128,44 @@ it("runs the Playground page through submit, streaming, copy, and length refusal
     expect(send.disabled).toBe(false);
   } finally {
     // Clear the page's copy-feedback timers even after a failed assertion.
+    await window.happyDOM.close();
+  }
+});
+
+it("shows a stream error, stalls the open tool card, and enables Send again", async () => {
+  const window = createOfflineWindow();
+  const encoder = new TextEncoder();
+  let controller!: ReadableStreamDefaultController<Uint8Array>;
+  const stream = new ReadableStream<Uint8Array>({ start(value) { controller = value; } });
+  const fetch = vi.fn(async () => new Response(stream, {
+    headers: { "content-type": "text/event-stream" }
+  }));
+  Object.defineProperty(window, "fetch", { value: fetch });
+  const frame = (value: object) => encoder.encode(`data: ${JSON.stringify(value)}\n\n`);
+
+  try {
+    window.document.write(demoPage({ authenticated: true }));
+    const document = window.document;
+    const input = document.querySelector("textarea")!;
+    const send = document.querySelector<HTMLButtonElement>("#send")!;
+    input.value = "Explain Stellar assets.";
+    input.dispatchEvent(new window.Event("input", { bubbles: true }));
+    send.click();
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(send.disabled).toBe(true);
+
+    controller.enqueue(frame({ type: "tool-start", id: "search-error", tool: "search", input: { query: "assets" } }));
+    await vi.waitFor(() => expect(document.querySelector(".tcard .st")?.textContent).toBe("running"));
+    controller.enqueue(frame({ type: "error", message: "The test stream failed." }));
+    // Keep the stream open until the assertions pass. The error frame itself
+    // must finish the turn, without relying on the end-of-stream fallback.
+    await vi.waitFor(() => {
+      expect(document.querySelector("#sysnote")?.textContent).toBe("The test stream failed.");
+      expect(document.querySelector(".tcard .st")?.textContent).toBe("stalled");
+      expect(send.disabled).toBe(false);
+    });
+    controller.close();
+  } finally {
     await window.happyDOM.close();
   }
 });
