@@ -75,8 +75,6 @@ infers the mode.
 Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers
 a cherry-picked source with no exclusions and one new upstream sibling.
 
-## Tooling
-
 ## Golden truth
 
 ### Reconcile Soroswap API and contract scope in sibling grader notes
