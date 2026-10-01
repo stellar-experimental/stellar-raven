@@ -80,8 +80,7 @@ vendor-diverse tier; Codex and Claude Fable authored the changes.
 
 ## Outcome
 
-- Verification: every finding is closed, except VP-2 (decided: no change) and N2-style data strings
-  already decided in the 2026-09-30 round.
+- Verification: every finding is closed, except VP-2 (decided: no change).
 - Deferred work done: `scripts/diff-inventory.mjs` replaces the inline drift programs; the Playground
   page runs offline in a Happy DOM test.
 - Code scanning now covers JavaScript/TypeScript. Seven real alerts are fixed with regression tests
