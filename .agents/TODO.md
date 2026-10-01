@@ -16,7 +16,6 @@ Open owner decisions are at the end of this file. Each one is listed once.
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
 2. Follow the upstream Docs and protocol pull requests for `sd-027`, `sd-034`, and `sd-037`.
-3. Complete the private usage checks ("Usage archive follow-up" below).
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -439,17 +438,6 @@ item, but do not count them until condition 3 holds. No trigger authorizes imple
 
 Done when: the full section 8 trigger fires and the owner approves a phase-zero study, or the owner
 retires the program.
-
-## Usage archive follow-up
-
-### Verify scheduled collection and cleanup
-
-The usage collector shipped on 2026-09-11. After its release, verify the next scheduled canary and
-the daily retention cleanup in private storage. The hourly usage-health workflow detects stale
-canaries and possible collection gaps. Keep production counts and request identifiers out of this
-public task queue.
-
-Done when: private operational checks confirm the scheduled canary and cleanup succeeded.
 
 ## Owner decisions
 
