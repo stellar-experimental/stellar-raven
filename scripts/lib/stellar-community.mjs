@@ -90,7 +90,7 @@ export function compareCommunity(localEntries, liveEntries) {
   return notes.join("; ");
 }
 
-const escapeCell = (value) => value.replace(/\|/g, "\\|").replace(/[\r\n]/g, " ").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
+const escapeCell = (value) => value.replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/[\r\n]/g, " ").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 
 export function communityIndex(snapshot) {
   return [

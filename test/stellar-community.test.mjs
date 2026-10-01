@@ -63,4 +63,9 @@ describe("Community directory projection", () => {
     expect(index).not.toContain("skills.stellar.org snapshot");
     expect(index).not.toMatch(/`skills\./);
   });
+
+  it("escapes backslashes before table and link characters", () => {
+    const index = communityIndex({ source: COMMUNITY_URL, fetched_at: "date", entries: [{ title: "A\\| B\\", url: "https://example.com/one" }] }).join("\n");
+    expect(index).toContain("| A\\\\\\| B\\\\ | [Source](https://example.com/one) |");
+  });
 });
