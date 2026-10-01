@@ -310,11 +310,6 @@ exceptions to make its examples pass. Evidence:
 Done when: a general mechanism passes frozen routing controls and independently reviewed answer
 checks.
 
-### Reconcile source-authority guidance for full-description clients
-
-Phase 1 corrects the description and adds Playground dollar accounting. Independent review and measurement remain required before release.
-See [the authority plan](rounds/2026-10-01-backlog-closeout/authority-plan.md) for controls, commands, budgets, and release conditions.
-
 ### Reconcile the QA answering prompt with out-of-scope goldens
 
 The answering prompt asks for a plain, brief out-of-scope answer at `eval/qa/run-qa.mjs:749` and
