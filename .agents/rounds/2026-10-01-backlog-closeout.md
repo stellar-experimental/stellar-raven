@@ -67,3 +67,6 @@ release. Each branch gets an independent review by a model that did not author i
     the defect. `sd-048` stays open for the separate S-box degree conflict.
   - The lane's draft audit file had no current consumer under `.agents/README.md` "Retention", so
     it is not committed. This entry and the commit message hold the evidence.
+- Protocol 29 activated on Mainnet at ledger 64717645 (2026-10-01T17:00:07Z), found by the golden
+  review. Corpus impact check: no golden states a current protocol version as an undated fact.
+  `q-edge-fresh-latest-protocol-version` gates a dated live lookup, not the number. No edit needed.
