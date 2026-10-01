@@ -40,7 +40,8 @@ release. Each branch gets an independent review by a model that did not author i
   temporary worktree); decisions D and G use the retained review reports.
 - Usage scheduled checks (TODO item removed): every nightly retention cleanup run since 2026-09-12
   succeeded (Cloudflare GraphQL `workersInvocationsScheduled`), and the last 30 hourly usage-health
-  runs succeeded. The private record is `audits/2026-10-01-usage-scheduled-checks.md` in the evidence
+  runs succeeded. Those runs executed the check, because `USAGE_REPORT_TOKEN` exists (the workflow
+  skips only without it); the latest printed "Usage archive healthy". The private record is `audits/2026-10-01-usage-scheduled-checks.md` in the evidence
   folder.
 - Decision K: not pinned. Three independent reviews (Claude Fable 5.1, Grok 4.7, and GPT-6-Astra,
   all at high effort) concluded "pin none now". The reviews are in `2026-10-01-backlog-closeout/`.
