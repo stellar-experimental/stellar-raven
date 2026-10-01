@@ -1,0 +1,83 @@
+name: Dependency audit
+
+# Runs `npm audit` against the committed package-lock.json and keeps exactly one open issue
+# (label `dependency-audit`) in step with the findings. This repository uses issues, not
+# Dependabot pull requests, for dependency advisories.
+#
+# The report is deterministic (scripts/summarize-npm-audit.mjs): its first line carries a
+# fingerprint of the normalized findings, so the issue is edited only when the findings change.
+#   findings, no open issue      -> open one
+#   findings, fingerprint differs -> replace the body and add one comment
+#   findings, fingerprint same    -> no change
+#   no findings, open issue       -> comment and close
+# An npm error or a malformed report fails the run before the issue step, so a failed audit
+# can never close the issue as clean. No secret is needed; a fork can run it unchanged.
+
+on:
+  schedule:
+    - cron: "41 6 * * *" # daily 06:41 UTC, after the refresh workflow
+  push:
+    branches: [main]
+    paths: [package.json, package-lock.json]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: dependency-audit
+  cancel-in-progress: false
+
+env:
+  # Same maintainer assignment rule as refresh.yml.
+  AUDIT_ISSUE_ASSIGNEE: ${{ vars.REFRESH_ISSUE_ASSIGNEE || (github.repository == 'stellar-experimental/stellar-raven' && 'kalepail' || github.repository_owner) }}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: npm audit
+        # npm exits 1 for findings and for errors alike; the summary step tells them apart.
+        run: npm audit --json > npm-audit.json || true
+      - name: summarize findings
+        id: summary
+        run: node scripts/summarize-npm-audit.mjs npm-audit.json --out npm-audit-report.md --commit "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - name: sync the dependency-audit issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINDINGS: ${{ steps.summary.outputs.findings }}
+          FINGERPRINT: ${{ steps.summary.outputs.fingerprint }}
+        run: |
+          if ! gh label list --search dependency-audit --json name --jq '.[].name' | grep -Fxq dependency-audit; then
+            gh label create dependency-audit --color B60205 --description "npm audit findings in package-lock.json"
+          fi
+          existing=$(gh issue list --label dependency-audit --state open --json number --jq '.[0].number // empty')
+          if [ "$FINDINGS" -gt 0 ]; then
+            if [ -z "$existing" ]; then
+              created=$(gh issue create --title "npm audit findings" --label dependency-audit --body-file npm-audit-report.md)
+              gh issue edit "$created" --add-assignee "$AUDIT_ISSUE_ASSIGNEE" \
+                || echo "::warning::Could not assign $AUDIT_ISSUE_ASSIGNEE to new issue $created"
+              echo "Opened $created ($FINDINGS findings)."
+            else
+              current=$(gh issue view "$existing" --json body --jq '.body' | head -n 1 | sed -n 's/.*npm-audit-report fingerprint=\([0-9a-f]\{64\}\).*/\1/p')
+              if [ "$current" = "$FINGERPRINT" ]; then
+                echo "Findings unchanged; issue #$existing left as is."
+              else
+                gh issue edit "$existing" --body-file npm-audit-report.md
+                gh issue comment "$existing" --body "The findings changed at commit \`$GITHUB_SHA\`. The issue body shows the current report."
+                echo "Updated issue #$existing ($FINDINGS findings)."
+              fi
+            fi
+          elif [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "\`npm audit\` reports no vulnerable packages at commit \`$GITHUB_SHA\`. Closing."
+            gh issue close "$existing" --reason completed
+            echo "Closed issue #$existing."
+          else
+            echo "No findings and no open issue."
+          fi
