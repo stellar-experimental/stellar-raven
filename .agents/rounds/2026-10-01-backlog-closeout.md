@@ -130,9 +130,9 @@ release. Each branch gets an independent review by a model that did not author i
   receipt probe with an unknown charge.
 - Retained evidence and its current consumers: `scf-review-*.md` (ADR-0010);
   `owner-adjudications.md` (TODO monitor, H items, prompt-conflict item);
-  `golden-owner-judgments.md` and `golden-followups.md` (case provenance, `sd-054`);
-  `paired-*` files (TODO decision A); `sd-measure/evidence/` and `sd-measure/review-result.md` (`sls-089`). The other
-  `sd-measure/` files and `authority-*.md` have no current consumer. They stay only while this
-  ledger is open. This ledger stays open until decision A runs; prune the
-  folder then under `.agents/README.md` "Retention". Keep `sd-measure/evidence/` while `sls-089` is open. The upstream issue
-  links to three of its files on `main`.
+  `golden-owner-judgments.md` and `golden-followups.md` (case provenance, `sd-054`); `paired-*`
+  files (TODO decision A); `sd-measure/evidence/` and `sd-measure/review-result.md` (`sls-089`). The
+  other `sd-measure/` files and `authority-*.md` have no current consumer. They stay only while this
+  ledger is open. This ledger stays open until decision A runs; prune the folder then under
+  `.agents/README.md` "Retention". Keep `sd-measure/evidence/` while `sls-089` is open. The upstream
+  issue links to three of its files on `main`.
