@@ -124,6 +124,14 @@ judge call. Reported cost reduces the ledger, exhaustion stops the next call, an
 retains incomplete and unattempted IDs. A budgeted call with no reported cost invalidates the
 method. Record the real CLI path, version, and hash.
 
+**Pin the immutable executable, not a self-updating launcher.** A CLI launcher such as
+`~/.local/bin/claude` is a link that any other session on the machine can move during an update.
+Put a private directory first on `PATH` that holds only a link to the versioned file, turn off the
+CLI's auto-update in the collection shell (for Claude Code, `DISABLE_AUTOUPDATER=1`), freeze the
+environment identity in that shell, and re-verify the binary and environment before each paid
+command. A changed pin stops the method before the next paid call; never re-derive the expected
+value after a mismatch.
+
 `run-qa.mjs` and `run-agent-discovery.mjs` use fail-closed CLI syntax: every value flag requires the
 spaced `--flag value` form, `--no-judge` is the only boolean flag, and both runners reject every
 equals form, unknown flag, stray argument, missing required value, and duplicate before any paid
