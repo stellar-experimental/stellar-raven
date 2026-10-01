@@ -85,6 +85,9 @@ Same-service replacement preserves the first result for that service and require
 Evidence can use complete description-plus-phrase coverage or targeted vocabulary with input-enum witnesses.
 The directory witness uses source-repeated, discriminative vocabulary and a separate matching input enum.
 A targeted candidate can also replace another service's later result when its own service has quota space.
+The replaced result must follow the first selected result.
+Its service must have more than one selected result, and it must lack targeted intent evidence.
+The lowest-scored eligible result is replaced.
 This cross-service replacement can change service counts.
 [search.ts](search.ts) owns the precise witness and victim rules.
 
