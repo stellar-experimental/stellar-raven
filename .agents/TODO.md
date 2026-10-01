@@ -337,6 +337,26 @@ budget enforcement covers both costs. Do not add a parallel evaluation runner.
 Done when: one consistent authority rule reaches the relevant client, with no verified answer
 regression.
 
+### Reconcile the QA answering prompt with out-of-scope goldens
+
+The answering prompt asks for a plain, brief out-of-scope answer at `eval/qa/run-qa.mjs:749` and
+`:767`. The goldens and rubric require decision support, acknowledgment, or alternatives. Evidence:
+`q-edge-oos-solana-vs-aptos` requires a comparison framework after an honest coverage limit.
+`q-n3-wallet-hacked-support-redirect` requires acknowledgment of the user's loss.
+`eval/qa/README.md:220` rejects a bare refusal when the golden requires further helpful behavior.
+Pattern 2 in [the Skills
+report](rounds/2026-09-03-truth-maintenance/candidate-row-review-skills-none-fable.md) names this
+measurement-contract tension.
+
+Current state: the delegated October 1 adjudication preserves both the prompt and the goldens. The
+owner can veto that adjudication. [The decision
+record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md) records the conflict. A prompt
+change needs a separate reviewed decision and measurement.
+
+Done when: a reviewed decision either changes the prompt with a measured before/after on the
+out-of-scope cases, or records why the prompt stays. Land this change before the first paired arm or
+after the second. A change to run-qa.mjs or judge.mjs changes the implementation hash.
+
 ### Monitor Raven capability-boundary offers
 
 Case `q-n3-missing-funds-account-support` offered a later Raven lookup by G-address or transaction
@@ -344,24 +364,88 @@ hash. Raven exposes no account-scoped lookup, and the answer used no tool. Contr
 `q-jutsu-check-account-history` asks for public lookup guidance that another service can perform; a
 valid mechanism must not suppress it.
 
-Current state: monitor-only by owner decision on 2026-09-03. A free scan of 338 local result files
-found six unsupported offers (five in this trap case, one in the Friendbot case) and no shipped
-prose that advertises an account or transaction lookup
-(`.agents/rounds/2026-09-01-next-actionable-blocks/raven-free-evidence.md`). The prompt-wording
-mechanism was withdrawn, and both capability-boundary authorizations are spent. Owner decision G
-asks whether a third candidate case counts. The design record from closed PR #103 is at commit
-`fb9a35eb` (`git fetch origin pull/103/head`).
+Current state: monitor-only by owner decision on 2026-09-03 (rounds/2026-09-03-owner-decisions.md).
+The delegated October 1 adjudication confirmed `q-n3-wallet-hacked-support-redirect` as the third
+distinct case. The free cause audit found seven unsupported offers among 44 stored no-tool answers.
+It also confirmed the September 4 recurrence from the retained shard report. The current source
+inventory identifies no causal shipped instruction or exposed account lookup. Keep the monitor; the
+audit grants no prompt change, product change, or further spend.
 
-Reopen a free cause audit after any production occurrence, any transcript with an attempted
-account-scoped operation, any direct model-facing prose that advertises the capability, or a
-confirmed third distinct QA case. A fired trigger allows free scans, inventory, plan writing, and
-independent plan review. A focused diagnostic needs its own bounded authorization, and a headline
-sample needs a separate authorization after that. Any plan names the surface owner and an
-observable product hypothesis, uses a mechanism that reaches no-tool answers, and includes the
-trap, the control, the environment pin, and a pre-registered product gate. Do not add another
-QA-prompt wording layer or copy case facts into a prompt.
+The September 4 run also had five correct zero-tool refusals that described unexposed coverage
+("on-chain data", "network state"). They are context for this monitor, not trigger events.
+
+Evidence: [delegated adjudications](rounds/2026-10-01-backlog-closeout/owner-adjudications.md). The
+prompt-wording mechanism was withdrawn, and both capability-boundary authorizations are spent. The
+design record from closed PR #103 is at commit `fb9a35eb` (`git fetch origin pull/103/head`).
+
+Reopen a free cause audit after any of these events:
+
+- Any production occurrence.
+- Any transcript with an attempted account-scoped operation.
+- Any direct model-facing prose that advertises the capability.
+- A new distinct QA case beyond the three already reviewed.
+
+A fired trigger allows free scans, inventory, plan writing, and independent plan review.
+A focused diagnostic needs its own bounded authorization.
+A headline sample needs a separate authorization after that.
+Any plan names the surface owner and an observable product hypothesis.
+The plan uses a mechanism that reaches no-tool answers.
+The plan includes the trap, the control, the environment pin, and a pre-registered product gate.
+
+Do not add another QA-prompt wording layer or copy case facts into a prompt.
 
 Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
+
+### Record QA attempt timestamps beside existing identity captures
+
+The September 4 candidate audit reconstructed intervals from durations because rows lack absolute
+start and end timestamps. The current runner records attempt durations and identity captures with
+case IDs, attempt numbers, and vector hashes. The delegated resolution of owner decision H
+(2026-10-01, owner veto open) schedules this remaining metadata work
+([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
+
+Done when: saved attempts have start and end timestamps linked to the existing identity captures.
+Tests cover success, retry, guard failure, and partial collection without changing order, spending,
+grades, or comparability rules. Land this change before the first paired arm or after the second. A
+change to run-qa.mjs or judge.mjs changes the implementation hash.
+
+### Diagnose stable-row evidence omissions without changing judge inputs
+
+The September 4 candidate audit found transcript-supported claims that judges called unsupported.
+`attachTranscriptEvidenceDiagnostics` skips stable rows, and the pack builder also omits stable-row
+evidence. Removing only the diagnostic condition would leave an empty pack. The delegated resolution
+of owner decision H (2026-10-01, owner veto open) schedules an offline diagnostic design
+([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
+
+Done when: a separate diagnostic inspects saved stable-row claims against saved execute evidence and
+reports bounded support or uncertainty. Tests cover supported claims, unsupported claims, truncated
+evidence, and missing transcripts. The change preserves judge inputs, grades, saved source
+artifacts, rubric, pack version, and comparison denominators. Land this change before the first
+paired arm or after the second. A change to run-qa.mjs or judge.mjs changes the implementation hash.
+
+### Label skipped-panel uncertainty in flip reports
+
+The September 4 candidate audit found 64 boundary rows whose panel escalation reached the cap. The
+judge records the skipped escalation, but flip analysis needs a visible confidence distinction. The
+delegated resolution of owner decision H (2026-10-01, owner veto open) schedules a reporting change
+([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
+
+Done when: flip reports (eval/qa/re-judge.mjs --flips-vs and the paired report) identify rows with
+panelEscalationSkipped: "max-panel-cases" separately. Tests cover both arms, absent metadata, and
+actual panel results. The report preserves all selected IDs, grades, panel caps, and comparison
+denominators.
+
+### Measure planning text in saved final answers
+
+The September 4 candidate audit found 155 possible planning preambles among 500 answers with a broad
+regular expression. The answering prompt already prohibits this text, so additional prompt wording
+lacks support. The delegated resolution of owner decision H (2026-10-01, owner veto open) schedules
+an offline metric with reviewed positive and negative examples
+([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
+
+Done when: a reproducible diagnostic reports reviewed planning-text matches and its false-positive
+limits. Tests distinguish planning text from legitimate explanations of uncertainty and quoted
+examples. The metric changes no answer, judge grade, prompt, or release gate.
 
 ### Resolve paired-QA design before promotion
 
@@ -516,62 +600,6 @@ the current corpus first; the per-case truth metadata owns current dispute statu
   the Aquarius ICE documentation.
 
 Safe default: no golden change.
-
-### D. Adjudicate the candidate row-review disagreements
-
-Question: for each row below, does the recorded grade stand? Evidence: the raw transcripts in the
-stopped 2026-09-04 candidate artifact and the three shard reports. A paid rejudge needs its own
-small authorization. No artifact is rewritten, and no grade change affects any claim, because the
-artifact is diagnostic.
-
-- Judge-artifact sentences: `q-comp-finclusive-caas`, `q-edge-scf-v7-centralization-myths`,
-  `q-ti-stellar-lab-usage-and-new-ui`, `q-ti-scout-refresh-cached-rows`.
-- Nine disputed `correct` grades from the Scout and Lumenloop shard, listed in the ledger.
-- Two disputed avoid matches: `q-edge-send-me-free-xlm`, `q-soroban-x402-auth-entry-signing`.
-- Two three-way ties resolved to wrong: `q-eco-dex-saturation`, `q-eco-stablecoins-on-stellar`.
-- Two trap goldens with tone or scope requirements to confirm: `q-edge-oos-solana-vs-aptos` and
-  `q-n3-wallet-hacked-support-redirect`.
-
-Safe default: no rejudge spend; grades stand as diagnostic values.
-
-### G. Confirm the Raven capability-boundary third case
-
-Question: does `q-n3-wallet-hacked-support-redirect` count as the third distinct QA case with an
-unsupported account-lookup offer? In the stopped artifact `2026-09-04T05-40-51-variantA.json`, the
-row offered to trace funds through Horizon or Stellar Expert queries, which Raven does not expose,
-and made no tool call. Evidence:
-`.agents/rounds/2026-09-03-truth-maintenance/candidate-row-review-skills-none-fable.md`. A confirmed
-trigger allows a free cause audit only. No prompt, paid diagnostic, or product change follows from
-confirmation.
-
-Safe default: not confirmed.
-
-### H. Select harness follow-ups from the candidate audit
-
-Question: which of these recorded candidates become TODO items? Evidence:
-`.agents/rounds/2026-09-03-truth-maintenance/post-candidate-measurement-fable.md` and
-`candidate-row-review-skills-none-fable.md`.
-
-- Store per-row start and end timestamps and a per-row identity vector in the result schema.
-- Record per-turn cost in `agent.usage.perTurn`.
-- Add a serialization hint to the sandbox error path.
-- Randomize row order or interleave categories in long live runs.
-- Give the judge source-basis evidence on stable rows, or state that stable-row specifics are
-  unverifiable.
-- Remove the stable-row gate that hides wrong-claim rows from `evidenceSupportCheck`.
-- Treat boundary rows skipped by the panel cap as low confidence in flip analysis.
-- Add a harness metric for planning text that leaks into final answers.
-- Record capability self-description drift in zero-tool refusals.
-
-Safe default: none scheduled.
-
-### I. Decide the optional one-row rubric `v2.10` rejudge
-
-Question: is the one-row rubric `v2.10` rejudge of `q-eco-stellar-wallets-list` still useful before
-the next paired collection? It is judge-contract evidence only, and it is paid, so it needs its own
-small authorization.
-
-Safe default: no spend.
 
 ### K. Decide exposure for the Stellar Light SCF skills
 
