@@ -149,19 +149,11 @@ into one of three classes **per service**:
 > not just the routing tuple:
 >
 > ```
-> node -e '
-> const cp=require("child_process");
-> const sortDeep=v=>Array.isArray(v)?v.map(sortDeep):v&&typeof v==="object"
->   ?Object.fromEntries(Object.keys(v).sort().map(k=>[k,sortDeep(v[k])])):v;
-> const load=(rev,p)=>JSON.parse(cp.execFileSync("git",["show",`${rev}:${p}`],{encoding:"utf8",maxBuffer:1e9}));
-> const [a,b]=[load(process.argv[1],process.argv[3]),load(process.argv[2],process.argv[3])];
-> const eq=(x,y)=>JSON.stringify(sortDeep(x))===JSON.stringify(sortDeep(y));
-> console.log("paths identical:",eq(a.openapi.paths,b.openapi.paths));
-> console.log("components identical:",eq(a.openapi.components,b.openapi.components));
-> ' HEAD WORKING inventory/<service>.json
+> node scripts/diff-inventory.mjs deep HEAD:inventory/<service>.json inventory/<service>.json
 > ```
 >
-> Both must print `true`. Anything else is at least routing-relevant and may be operation-surface.
+> Both checks must print `true`. A failed check means at least routing-relevant drift.
+> The change can also affect the operation surface.
 
 Runner-affecting is machine-checkable, never eyeballed — the runner registry
 (`src/skills/runners/index.ts`, `RUNNERS`) is the allowlist-as-data:
@@ -184,69 +176,22 @@ class from the upstream changelog's self-description ("routing-neutral", "additi
 changelog is a *claim to verify*, not evidence. Derive the class from the actual diff:
 
 ```
-# added/removed/renamed operations — compare the path·method set old vs new:
 SERVICE=<svc>
-git show "HEAD:inventory/${SERVICE}.json" | node -e '
-const fs = require("fs");
-const doc = JSON.parse(fs.readFileSync(0, "utf8"));
-const methods = new Set(["get","post","put","patch","delete","options","head"]);
-for (const [path, ops] of Object.entries(doc.openapi?.paths ?? {})) {
-  for (const method of Object.keys(ops ?? {})) {
-    if (methods.has(method)) console.log(`${method.toUpperCase()} ${path}`);
-  }
-}
-' | sort > "/tmp/${SERVICE}.surface.old"
-node -e '
-const fs = require("fs");
-const doc = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
-const methods = new Set(["get","post","put","patch","delete","options","head"]);
-for (const [path, ops] of Object.entries(doc.openapi?.paths ?? {})) {
-  for (const method of Object.keys(ops ?? {})) {
-    if (methods.has(method)) console.log(`${method.toUpperCase()} ${path}`);
-  }
-}
-' "inventory/${SERVICE}.json" | sort > "/tmp/${SERVICE}.surface.new"
-diff -u "/tmp/${SERVICE}.surface.old" "/tmp/${SERVICE}.surface.new"
-# empty = no surface change
-
-# routing-relevant text — compare per-op operationId+summary+description+x-routing old vs new:
-git show "HEAD:inventory/${SERVICE}.json" | node -e '
-const fs = require("fs");
-const doc = JSON.parse(fs.readFileSync(0, "utf8"));
-const methods = new Set(["get","post","put","patch","delete","options","head"]);
-const norm = v => String(v ?? "").replace(/\s+/g, " ").trim();
-const sortDeep = v => Array.isArray(v)
-  ? v.map(sortDeep)
-  : v && typeof v === "object"
-    ? Object.fromEntries(Object.keys(v).sort().map(k => [k, sortDeep(v[k])]))
-    : v;
-const stable = v => JSON.stringify(sortDeep(v ?? null));
-for (const [path, ops] of Object.entries(doc.openapi?.paths ?? {})) {
-  for (const [method, op] of Object.entries(ops ?? {})) {
-    if (methods.has(method)) console.log(`${method.toUpperCase()} ${path} :: ${norm(op.operationId)} :: ${norm(op.summary)} :: ${norm(op.description)} :: ${stable(op["x-routing"])}`);
-  }
-}
-' | sort > "/tmp/${SERVICE}.text.old"
-node -e '
-const fs = require("fs");
-const doc = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
-const methods = new Set(["get","post","put","patch","delete","options","head"]);
-const norm = v => String(v ?? "").replace(/\s+/g, " ").trim();
-const sortDeep = v => Array.isArray(v)
-  ? v.map(sortDeep)
-  : v && typeof v === "object"
-    ? Object.fromEntries(Object.keys(v).sort().map(k => [k, sortDeep(v[k])]))
-    : v;
-const stable = v => JSON.stringify(sortDeep(v ?? null));
-for (const [path, ops] of Object.entries(doc.openapi?.paths ?? {})) {
-  for (const [method, op] of Object.entries(ops ?? {})) {
-    if (methods.has(method)) console.log(`${method.toUpperCase()} ${path} :: ${norm(op.operationId)} :: ${norm(op.summary)} :: ${norm(op.description)} :: ${stable(op["x-routing"])}`);
-  }
-}
-' "inventory/${SERVICE}.json" | sort > "/tmp/${SERVICE}.text.new"
-diff -u "/tmp/${SERVICE}.text.old" "/tmp/${SERVICE}.text.new"
-# empty diff = the "no routing-relevant text changes" claim is TRUE at our ingest, not just upstream's word
+# Compare the path and method set for added, removed, or renamed operations:
+node scripts/diff-inventory.mjs surface "HEAD:inventory/${SERVICE}.json" "inventory/${SERVICE}.json"
+# Compare operationId, summary, description, and x-routing for each operation:
+node scripts/diff-inventory.mjs text "HEAD:inventory/${SERVICE}.json" "inventory/${SERVICE}.json"
 ```
+
+The script reads a Git `<ref>:<path>` source or a working file path.
+It resolves paths from the repository root.
+The `surface` and `text` modes print sorted removed (`-`) and added (`+`) rows.
+An empty result means that comparison found no change.
+The `text` mode normalizes whitespace and sorts object keys in `x-routing`.
+The `deep` mode compares complete paths and shared components without normalizing text or changing array order.
+Run all three modes before you claim provenance/data drift.
+Exit codes are `0` for equal, `1` for drift, and `2` for an input or command error.
+Classify drift when a command exits `1`; correct errors when it exits `2`.
 
 ## Step 3 — operation surface changed → policy decision
 
@@ -274,10 +219,12 @@ An operation description and `x-routing` block are lexical routing fuel. If a
 changed, the routing gate may legitimately move:
 
 ```
-npm run eval:compile && npm run eval:routing
+npm run eval:compile && npm run eval:routing -- --gate
 ```
 
-- The gate prints a `GATE PASS …` line with the baseline it used, or fails with the deltas. The baseline it compares against lives in `eval/gates.json`.
+- The `--gate` flag enforces the thresholds in `eval/gates.json`.
+  The command prints `GATE PASS …` when the checks pass.
+  It exits with a nonzero code when a threshold or gate evidence check fails.
 - **Re-baseline ONLY when a routing-relevant text change is the cause and the movement is an
   intended improvement** — e.g. a bump that genuinely reworded an operation
   `summary`/`description` or curated `x-routing`.
