@@ -38,7 +38,7 @@ if (!upstream || !out) {
   console.error("usage: capture-proxy.mjs --upstream <url> --out <capture.jsonl> [--port N]");
   process.exit(1);
 }
-const upstreamUrl = new URL(upstream);
+const upstreamOrigin = new URL(upstream).origin;
 mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
 
 const server = http.createServer(async (req, res) => {
@@ -66,8 +66,9 @@ const server = http.createServer(async (req, res) => {
     return;
   }
   try {
-    const target = new URL(req.url, upstreamUrl);
-    if (target.origin !== upstreamUrl.origin) throw new Error("upstream origin mismatch");
+    const validatedPathAndQuery = req.url;
+    const target = upstreamOrigin + validatedPathAndQuery;
+    if (new URL(target).origin !== upstreamOrigin) throw new Error("upstream origin mismatch");
     const upstreamResponse = await fetch(target, {
       redirect: "manual",
       method: req.method,
