@@ -71,7 +71,8 @@ describe("skill bodies are not vendored", () => {
 
   it("holds the committed skills-derived text to a routing-descriptions budget", () => {
     // Canary, not a style rule: the ~18 frontmatter descriptions are what
-    // routing scores (measured, see PLAN §3); everything else is a heading. If
+    // routing scores (see research/decisions/0005-skills-form-sections-out-of-search.md).
+    // Everything else is a heading. If
     // this leaps, body text has crept back into a committed artifact.
     // Currently ~11.6 KB (7.5 KB of frontmatter descriptions + headings); the
     // pre-change catalog carried 33.7 KB with excerpts and keyword bags.

@@ -77,18 +77,21 @@ Identity caveats:
 - Rotating `MCP_SERVER_SECRET` creates a temporary split: old grants retain
   old props while new grants derive new user/client hashes. Demo cookies
   rotate too.
-- A wrong admin bearer token intentionally falls through to the provider and
+- A wrong named API key intentionally falls through to the OAuth provider and
   appears as `accessMode = "oauth-rejected"`; do not derive identity from
-  rejected credentials.
+  rejected credentials. A valid key appears as `accessMode = "api-key"`.
 - OAuth-provider `OPTIONS /mcp` preflights emit no `mcp_request` app event.
 
 ## Live Probe
 
-Generate a known request when needed. Load the production admin token without
-echoing it:
+Generate a known request when needed. Use a named API key (`Authorization: Bearer
+<name>:<token>`). An operator creates one with
+`npm run mcp-key -- create <name> --out <file>`, which writes the credential to a
+mode-`0600` file. Read it from that file without echoing it, and do not load `.env`
+into the shell:
 
 ```sh
-set -a; . ./.env; set +a
+RAVEN_KEY_FILE=<path to the credential file>
 MARK="raven-live-telemetry-$(date +%s)"
 BODY=$(node -e 'const m=process.argv[1]; console.log(JSON.stringify({
   jsonrpc:"2.0", id:0, method:"initialize",
@@ -96,7 +99,7 @@ BODY=$(node -e 'const m=process.argv[1]; console.log(JSON.stringify({
   clientInfo:{name:m, version:"0.0.0"}}
 }))' "$MARK")
 curl -i -sS https://raven.stellar.org/mcp \
-  -H "Authorization: Bearer $MCP_ADMIN_TOKEN_PRODUCTION" \
+  -H "Authorization: Bearer $(cat "$RAVEN_KEY_FILE")" \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
   --data "$BODY" |
@@ -170,7 +173,7 @@ Skill bodies are fetched from their pinned upstream at read time, not bundled
 - `retrievals` counts distinct pinned files a call fetched (a `##` section read
   costs 1; N companion files cost N+1). Fields carry no body text and no caller
   identity — the id is a public catalog id.
-- First reading (2026-07-30): upstream 61-80 ms, memo 0 ms.
+- Expect an `upstream` read in tens of milliseconds and a `memo` hit near 0 ms.
 
 **A NEW field VALUE is not filterable immediately.** Filtering
 `evt = "skill_read"` returned zero for ~20 minutes after the first one was ever
@@ -294,14 +297,14 @@ Privacy-sensitive fields already present in platform logs:
 
 ## Measurement Traps
 
-Each of these produced a confidently wrong conclusion in a real investigation
-(2026-07-27 production health review). They are silent: the query succeeds, the
-number looks plausible, and nothing signals the error.
+Each of these produced a confidently wrong conclusion in a real investigation.
+They are silent: the query succeeds, the number looks plausible, and nothing
+signals the error.
 
 - **Do not sum request counts without filtering `$metadata.type`.** App JSON log
   rows (`cf-worker`) inherit their invocation's status, so grouping every row by
-  `$workers.event.response.status` counts logging volume, not requests. A 7-day
-  total of ~36k collapsed to ~15k once filtered to `cf-worker-event`. Filter to
+  `$workers.event.response.status` counts logging volume, not requests. The
+  unfiltered total can be more than double the real request count. Filter to
   the invocation type before quoting any request total or rate.
 - **`search`/`demo-search` `truncated` is catalog pagination, not byte
   truncation.** It means `total > hits.length` — more catalog entries matched
@@ -312,8 +315,7 @@ number looks plausible, and nothing signals the error.
   block.
 - **`recoveryAdviceDelivered` is a host delivery latch, not model compliance.**
   It is set when the checkpoint becomes visible in the tool result, not when the
-  model acts on it. Never infer model behavior from it. (Renamed from
-  `recoveryAdviceConsumed` for exactly this reason.)
+  model acts on it. Never infer model behavior from it.
 - **`evidenceState` on a `demo-step` is per-step.** The final answering step
   makes no tool calls, so `evidenceState: "none"` there is structural and does
   NOT mean the turn lacked evidence — earlier steps hold it.
@@ -321,17 +323,14 @@ number looks plausible, and nothing signals the error.
   execute results.** It is computed from the full pre-truncation value, so a
   zero count can never demonstrate that truncation dropped something.
 - **A single wide-window `view: "events"` query returns a tiny, unrepresentative
-  slice — it is NOT "all the matching events under `limit`."** Measured
-  2026-08-06 on the same filter (`cf-worker-event`, `path = /authorize`,
-  `limit: 500`): one flat 7-day query returned **4** events; the identical
-  filter run over twenty-eight consecutive 6-hour windows returned **416**. Not
-  a 10x ABR ratio — roughly 100x, and the 4 survivors looked like a plausible
-  complete set, which is what makes this lethal. A returned count far below
-  `limit` is therefore NOT evidence that few events matched. Slice any window
-  wider than ~6h and sum, and never conclude "this never happens" from a flat
-  multi-day query. This trap produced a confidently wrong "zero POST /authorize
-  in the retention window" — the real number was 173, of which 31 were the
-  failure being investigated.
+  slice — it is NOT "all the matching events under `limit`."** On one filter
+  (`cf-worker-event`, `path = /authorize`, `limit: 500`), a flat 7-day query
+  returned about 1% of the events that the same filter returned over
+  consecutive 6-hour windows. The few survivors looked like a plausible complete
+  set, which is what makes this lethal. A returned count far below `limit` is
+  therefore NOT evidence that few events matched. Slice any window wider than
+  ~6h and sum, and never conclude "this never happens" from a flat multi-day
+  query.
 - **ABR sampling is not an iid sample of the filtered set.** `abr_level` is 1
   for windows of about 12h or less and 10 for wider ones; concatenating windows
   at different levels biases any ratio computed across them. Query in equal,
@@ -347,10 +346,10 @@ number looks plausible, and nothing signals the error.
   frames, same telemetry, no marker — and gateway logs will not settle it either,
   because the demo sets `collectLog: false`. The tell is arithmetic: a repeat
   that returns byte-identical answer text at a latency no inference could
-  produce. Measured 2026-08-06 before the fix: a 3-step agentic turn replayed
-  4567 identical chars in 1041 ms, a one-step turn in 129 ms. `demoModelSettings`
-  now sends `cf-aig-skip-cache: true` on every demo request, so repeats are
-  independent again — but any run predating that, and any NEW measured surface
+  produce: a multi-step agentic turn that returns thousands of identical
+  characters in about one second is a replay. `demoModelSettings` sends
+  `cf-aig-skip-cache: true` on every demo request, so demo repeats are
+  independent — but any older stored run, and any NEW measured surface
   that talks to a gateway, needs the header or the same trap returns. Compare
   repeat latency AND output length before trusting a p50.
 

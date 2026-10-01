@@ -1,5 +1,5 @@
 /**
- * RUNNERS — the runnable-skill allowlist-as-data (design §2/§5), keyed by
+ * RUNNERS — the runnable-skill allowlist-as-data (src/skills/README.md), keyed by
  * EXACT catalog skill id. One source of truth consumed by:
  *  - the catalog builder (scripts/build-catalog.mjs — attaches runnable: true
  *    + schemas to the matching skill entries, fail-loud drift guards),
@@ -15,7 +15,7 @@
  * exposure.mjs holds EXCLUSIONS (things never emitted); runnability is an
  * inclusion feature whose source of truth must sit with the schemas and code
  * it describes. Node-clean by construction: runner modules import only
- * ./types.ts (design §12 lint), so `node` type stripping loads this registry
+ * ./types.ts (src/skills/README.md), so `node` type stripping loads this registry
  * exactly the way build-catalog.mjs already loads extract-keywords.ts.
  *
  * Retire a runner by deleting its module and registry entry, then rebuild.

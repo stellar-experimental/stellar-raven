@@ -5,7 +5,7 @@
 This round authors and reviews the attempt-two measurement brief for block 3.
 The subject is the held protocol-history routing defect in `.agents/TODO.md`.
 Attempt one, `clause-fit-hysteresis-v1`, ended as a reviewed measured `FAIL` on 2026-08-31.
-Its record is `.agents/rounds/2026-08-31-eval-routing-next.md`.
+Its record is [`.agents/rounds/2026-08-31-eval-routing-next.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-31-eval-routing-next.md).
 
 The brief defines one measurement-only experiment: `cross-encoder-fit-v1`.
 The experiment uses a pinned local cross-encoder and the frozen clause set from attempt one.
@@ -142,7 +142,7 @@ The fetch printed these five byte SHA-256 values:
 - `tokenizer.json`: `48564c5c7d3fa64d85d95e65414a542385f88b0f128fd8d4163fd7a57f2be05c`
 - `onnx/model_quantized.onnx`: `dd98f3e67837d23210a6b7550c08cced4f61845b940ac45be3565840a10f3244`
 
-The three small-file hashes now appear in `preflight-rerank-model.mjs`.
+The three small-file hashes now appear in [`preflight-rerank-model.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/preflight-rerank-model.mjs).
 No preflight ran. No model loaded. No referee ran.
 The bounded pin review is the next gate.
 
@@ -245,9 +245,9 @@ The one-referee accounting passed: one cache file, one result file, no second re
 
 The terminal outcome is a verified `FAIL`. Attempt two of the three-attempt box is spent.
 Attempt three remains unused. It requires its own reviewed brief with a distinct mechanism.
-The closeout applied the record to `eval/vectorize/README.md` (new dated section),
+The closeout applied the record to [`eval/vectorize/README.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/README.md) (new dated section),
 `eval/README.md` (attempt-two pointer), `.agents/TODO.md` (dated attempt accounting on the
-open routing item), and `.agents/NEXT.md` (block state).
+open routing item), and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) (block state).
 Result and cache JSON stay local and uncommitted, preserved under
 `/Users/kalepail/.cache/stellar-raven/eval-results/cross-encoder-fit-v1-2026-08-31/`.
 
@@ -255,7 +255,7 @@ Result and cache JSON stay local and uncommitted, preserved under
 
 Grok wrote `review-grok-final.md` with an initial `BLOCK` on two stale queue instructions.
 `.agents/TODO.md` still ordered an attempt-two brief after recording that attempt as spent.
-`.agents/NEXT.md` also told the next agent to start that completed brief.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) also told the next agent to start that completed brief.
 Both instructions were repaired without changing the harness, hashes, tables, or frozen contracts.
 Grok appended a bounded delta verdict of `PASS`.
 

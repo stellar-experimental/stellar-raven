@@ -1345,7 +1345,7 @@ describe("codemode fns", () => {
     expect(r.error.message).toMatch(/super spec is not wired/i);
   });
 
-  it("skill_read serves bundled content", async () => {
+  it("skill_read serves pinned source content", async () => {
     const r = (await codemode.skill_read!("skills.lumenloop.stellar-project-dossier", {})) as {
       ok: boolean;
       content?: string;

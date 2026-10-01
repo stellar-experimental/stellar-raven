@@ -68,9 +68,9 @@ This activation does not retarget that plan. A later collection needs a fresh re
 
 The final Grok metadata review accepted staged diff `91a7152767ab85af37b45601dc836c7eb34f45729b3e2ad8354ea273fda2e0c7`.
 
-The [final review](2026-09-16-trustless-work/final-metadata-review.md) records the completed activation check.
+The [final review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-trustless-work/final-metadata-review.md) records the completed activation check.
 
-The parent then added this review and the [credentialed probe result](2026-09-16-trustless-work/parent-auth-probes.log).
+The parent then added this review and the [credentialed probe result](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-trustless-work/parent-auth-probes.log).
 
 Both credentialed findings still reproduce. Together, all seven registered probes report recurrence without errors.
 

@@ -1,6 +1,8 @@
 # ADR-0007: Evidence-poor recovery guidance stays structural, advisory, and bounded
 
-- Status: accepted (2026-07-14)
+- Status: accepted (2026-07-14). The structural, advisory, bounded principle remains active.
+- Scope clarification: the [catalog reference](../../src/catalog/README.md) defines the implemented advice conditions and ordering.
+  These include unresolved one-token queries on gated pages and canonical anchors for proper-name identity questions.
 - Driver: production Playground rays `a1b328e51c12dec9` and `a1b32a611df3dec9`
 - Review: Fable 5 first review and delta review, Grok 4.5 adversarial review, GPT-5.6-Sol
   implementation-shape audit

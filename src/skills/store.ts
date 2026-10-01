@@ -1,30 +1,16 @@
 /**
- * Skills store — exact-match, partial retrieval over the pinned ecosystem
- * skills (PLAN §3).
+ * Exact-ID reads over pinned ecosystem skills; see src/skills/README.md.
  *
- * `codemode.skill.read(name, { sections? })` resolves through the CATALOG,
- * not the filesystem: `name` must be an exact catalog id (a `skills.*` skill
- * id — the form `search` returns — or a skill-section id from a hit's
- * `availableSections`; sections stay exact-id readable), and content comes
- * from the entry's `transport: { url, sha }` — the upstream file at the commit pinned in
- * ecosystem-skills/MANIFEST.json, fetched and hash-verified by
- * src/skills/source.ts (bodies are neither vendored in this repo nor shipped
- * in the Worker bundle). Exposure is decided at build time (ADR-0003):
- * everything in the catalog is readable; anything excluded simply has no
- * entry and fails exact-match resolution here.
+ * codemode.skill.read resolves catalog addresses, not filesystem paths.
+ * transport carries { type: "file", url, sha, sha256 }; source.ts verifies
+ * both digests and scrubs excluded references before serving content.
+ * Bodies are forwarded, not bundled or kept in a durable owned mirror.
+ * Build-time exposure supplies every readable entry under ADR-0003.
+ * Unknown IDs fail with a suggestion, never fuzzy resolution or an alias.
  *
- * Retrieval failure (upstream down, pin no longer resolvable, hash mismatch,
- * scrub drift-guard trip) is an ordinary error envelope — this module never
- * throws toward the sandbox, and never serves bytes that failed a check.
- *
- * Exact-match discipline (ADR wrong-entity lesson, CLAUDE.md rules): no
- * fuzzy resolution and no aliases anywhere — unknown ids fail with a
- * suggestion, never a silent redirect.
- *
- * Section addressing matches the catalog builder's slugs: `##`-heading
- * sections by slug (or exact heading text), extra .md files as
- * `file:<relpath>`. Unknown sections fail the whole read and list what
- * exists — never a silent partial answer.
+ * Heading sections accept slugs or exact heading text. Companion Markdown
+ * files use file:<relpath>. Unknown or uncataloged sections fail the read.
+ * Transport, integrity, pin, scrub, and deadline failures return envelopes.
  */
 import type { Catalog, CatalogEntry } from "../catalog/types.ts";
 import { lastIdSegment } from "../catalog/id.ts";
@@ -232,11 +218,9 @@ function fileRef(entry: CatalogEntry | undefined): SkillPin | undefined {
 }
 
 /**
- * Bound EVERY skill.read against the executor's 60s wall clock. Without this a
- * multi-file read of a slow upstream (each file retried once at 8s) can outlast
- * `execute` itself, killing the run instead of returning the `skills` error
- * envelope this module promises. Not cancellation — in-flight fetches continue
- * detached and harmlessly populate the cache.
+ * Bound one file load. A whole read can await the main file before starting
+ * concurrent companion loads, so this race is not an aggregate read deadline.
+ * In-flight fetches continue after the race and can populate the cache.
  */
 function withDeadline<T>(work: Promise<T>, label: string): Promise<T> {
   return Promise.race([
@@ -317,12 +301,8 @@ export async function readSkill(
   const loaded = await load(source, ref, entry.id);
   if ("ok" in loaded) return loaded; // an error result
 
-  // Upstream frontmatter is forwarded, not stripped. It is where a source
-  // states its own licence and author — OpenZeppelin's three skills declare
-  // `license: AGPL-3.0-only` there, and stripping it removed the only licence
-  // statement from everything this server served. Forwarding upstream's own
-  // bytes costs ~140 tokens on a whole read and authors nothing of our own.
-  // Frontmatter carries no `##` heading, so sectionize is unaffected.
+  // Preserve upstream frontmatter because it can contain the license and author.
+  // Frontmatter has no ## heading and does not change section addressing.
   const body = loaded.text;
   const bySlug = sectionize(body);
   const sectionEntries = sectionEntriesOf(catalog, entry.id);
@@ -375,10 +355,8 @@ export async function readSkill(
       : { ok: true, id: entry.id, url: ref.url, content, availableSections };
   }
 
-  // Resolve every requested `file:` companion FIRST, and fetch them
-  // concurrently. Sequentially awaiting each one made an N-file read cost N
-  // round trips (with retries, a 4-file read could outlast the executor's own
-  // 60s timeout and kill the run instead of returning an envelope).
+  // Resolve requested companion pins before starting their concurrent loads.
+  // Each companion has its own file deadline; invalid pins fail the read.
   const fileWants = requested.filter((w) => w.startsWith("file:"));
   const filePins = new Map<string, SkillPin>();
   for (const want of fileWants) {

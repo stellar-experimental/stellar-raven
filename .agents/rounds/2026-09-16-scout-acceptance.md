@@ -67,12 +67,12 @@ The parent completed the final request-local admission cache and repeat measurem
 
 ## Evidence
 
-- [Source integration](2026-09-16-truth-maintenance/source-integration.md)
-- [Source review](2026-09-16-truth-maintenance/source-integration-review.md)
+- [Source integration](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/source-integration.md)
+- [Source review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/source-integration-review.md)
 - [Light pin review](2026-09-16-truth-maintenance/light-pin-excluded-rwa-review.md)
-- [Quality repair](2026-09-16-truth-maintenance/scout-quality-repair-report.md)
-- [Runtime integration](2026-09-16-truth-maintenance/scout-final-runtime-integration-report.md)
-- [Deferred routing work](2026-09-16-truth-maintenance/scout-routing-deferrals.md)
+- [Quality repair](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-quality-repair-report.md)
+- [Runtime integration](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-final-runtime-integration-report.md)
+- [Deferred routing work](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-routing-deferrals.md)
 
 ## Release gates
 
@@ -85,9 +85,9 @@ The drift closure does not claim RWA acceptance.
 
 ## Final review evidence
 
-- [Semantic acceptance](2026-09-16-truth-maintenance/scout-final-release-review.md)
+- [Semantic acceptance](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-final-release-review.md)
 - [Modifier-scope acceptance](2026-09-16-truth-maintenance/scout-clause-repair-independent-review.md)
-- [Code repair acceptance](2026-09-16-truth-maintenance/scout-final-code-repair-review.md)
+- [Code repair acceptance](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-final-code-repair-review.md)
 
 Both protocol-history v2 contracts remain `source-expired`; neither contract scored a question.
 A new contract epoch remains separate work. No contract was repinned.
@@ -96,7 +96,7 @@ The final routing gate, evaluation self-test, and secret scan passed.
 The independent metadata review found no weaker threshold or hash mismatch.
 The final timing review accepted both measurements after the modifier-scope repair.
 
-- [Metadata review](2026-09-16-truth-maintenance/scout-final-metadata-review.md)
-- [Final timing review](2026-09-16-truth-maintenance/scout-final-timing-review.md)
+- [Metadata review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-final-metadata-review.md)
+- [Final timing review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-truth-maintenance/scout-final-timing-review.md)
 
-The [release record](2026-09-16-scout-release.md) contains production and cleanup evidence.
+The [release record](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-scout-release.md) contains production and cleanup evidence.

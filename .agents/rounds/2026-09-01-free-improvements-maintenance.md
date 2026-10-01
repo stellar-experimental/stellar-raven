@@ -2,7 +2,7 @@
 
 ## Scope
 
-This round completes the next free block from `.agents/NEXT.md`.
+This round completes the next free block from [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 It reads three upstream issue states, runs free Scout readings, and reviews the deletion candidates.
 It creates no paid eval, deployment, production edit, or Algolia write.
 Untouched upstream issues stay quiet.
@@ -67,7 +67,7 @@ Untouched upstream issues stay quiet.
 - Reason: This lane needs coupled golden, provenance, lifecycle, and generated-artifact changes.
 - Authorization: Local edits and required generators only. No external or production write is allowed.
 - Reviewer: A separate final-diff reviewer remains required.
-- Report contract: `.agents/rounds/2026-09-01-free-improvements-maintenance/closeout-sol.md`.
+- Report contract: [`.agents/rounds/2026-09-01-free-improvements-maintenance/closeout-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-free-improvements-maintenance/closeout-sol.md).
 
 ## Upstream state table
 
@@ -95,7 +95,7 @@ Untouched upstream issues stay quiet.
 - Fable 5 high found two medium record-truth issues and six lower findings in the safe preflight.
 - This round reconciled F1 through F8 before the safe checkpoint.
 - Fable 5 high passed the final PR review after all actionable findings were reconciled.
-  See `.agents/rounds/2026-09-01-free-improvements-maintenance/fable-final-review.md`.
+  See [`.agents/rounds/2026-09-01-free-improvements-maintenance/fable-final-review.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-free-improvements-maintenance/fable-final-review.md).
 
 ## Orchestrator recheck for resolved `sls-074`
 
@@ -174,7 +174,7 @@ No sibling retains the obsolete `U32Val` or `sd-036` grading claim.
 - Moved future evidence into the round ledger and eventual resolved receipt.
 - Preserved the monitor, cadence, thresholds, evidence fields, and spend gate.
 - Kept `sls-082` reserved for a later distinct defect.
-- This phase did not edit `.agents/NEXT.md`; the later resolution closeout rewrote it.
+- This phase did not edit [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md); the later resolution closeout rewrote it.
 
 ## Resolution closeout
 
@@ -218,7 +218,7 @@ The recovery monitor now cites the retired `sls-080` receipt.
 Its monitor, cadence, thresholds, evidence requirements, and spend gate did not change.
 `sls-082` remains reserved for a distinct future Scout defect.
 
-`.agents/NEXT.md` now records no unconditional agent-actionable block.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now records no unconditional agent-actionable block.
 The production and Raven capability choices remain owner-blocked.
 The paired, recovery, protocol-history, `sources.locate`, Friendbot, and short-token programs remain conditional.
 The queue-documentation phase made no additional finding lifecycle change.

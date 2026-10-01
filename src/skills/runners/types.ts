@@ -1,27 +1,19 @@
 /**
- * Runner module contract (research/skill-run-design.md §2) — the shape every
- * `codemode.skill.run` runner exports and the only module a runner may import.
+ * Runner module contract; see src/skills/README.md.
+ * Runners execute reviewed first-party TypeScript on the host.
+ * They receive input and declared operation closures, without an environment.
+ * runSkill narrows the shared facade and records the host-owned call ledger.
+ * The model sandbox is a separate boundary and does not confine runners.
  *
- * Runners are first-party, repo-committed TypeScript executed HOST-side at the
- * adapter trust tier (design §2/§7 — no isolate; the sandbox contains
- * model-authored code, and runners are not that). Their entire capability
- * surface is the `OpsFacade` parameter: one wrapped closure per emitted
- * catalog operation, narrowed by `runSkill` (src/skills/run.ts) to the
- * runner's declared `ops` before the runner ever sees it. No secrets
- * parameter exists and none may be added — adapters hold the keys host-side.
- *
- * Import discipline (design §12 lint, enforced by test): a runner module's
- * import specifiers are ⊆ {"./types.ts"} — no helper modules, each runner is
- * self-contained. This file must stay types-only and node-clean so the
- * catalog builder and the eval composition analyzer can load runner modules
- * under plain `node` type stripping (no cloudflare:workers anywhere in the
- * dependency cone).
+ * Runner imports are limited to ./types.ts. Keep this module types-only and
+ * Node-compatible so builders and composition instruments can load the registry.
+ * Import checks and fetch-stub tests support review, not sandbox confinement.
  */
 import type { AdapterResult } from "../../adapters/types.ts";
 
 /**
  * Re-exported so runner modules can type their envelopes while honoring the
- * §12 import lint (specifiers ⊆ {"./types.ts"}).
+ * runner import check (specifiers ⊆ {"./types.ts"}).
  */
 export type { AdapterResult };
 
@@ -40,24 +32,24 @@ export type OpsFacade = Record<
 export type SkillRunner = {
   /**
    * Exact catalog operation ids this runner may call — allowlist-as-data for
-   * the sub-facade, the build-time drift guard (design §5), the plan grader,
+   * the sub-facade, the build-time drift guard (src/skills/README.md), the plan grader,
    * and the live-drift classifier. A call to an undeclared op has no facade
    * fn and fails loudly (a runner bug, surfaced as an error envelope).
    */
   ops: string[];
   /**
    * JSON Schema for `skill.run` input, authored inside the bounded
-   * src/policy/validate.ts dialect (design §4 note: no oneOf, no $ref).
+   * src/policy/validate.ts dialect (src/skills/README.md: no oneOf, no $ref).
    * `default` values are documentation only — validateArgs ignores
    * annotation keywords and nothing injects them; each runner materializes
    * its own defaults in the first lines of `run()`.
    */
   inputSchema: Record<string, unknown>;
   /**
-   * JSON Schema for the `data` payload — the contract, the §12 test oracle,
+   * JSON Schema for the `data` payload — the contract, the runner test oracle,
    * and the signature source. It declares `calls`, but runners never author
    * that key: runSkill attaches it from the host-owned ledger, overwriting
-   * anything runner-set (design §6 — runner code never owns the audit trail).
+   * anything runner-set (src/skills/README.md — runner code never owns the audit trail).
    */
   outputSchema: Record<string, unknown>;
   /**

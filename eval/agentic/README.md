@@ -146,12 +146,16 @@ lifting lumenloop any-hit to 87.5%/75% and medium primary to 37.5%; the boundary
 
 ## Re-run
 
-1. `npx wrangler dev --port 8788 --host localhost` (any port; `--host localhost` is required —
-   without it wrangler presents request.url as the custom-domain host and the
-   `DEV_ALLOW_UNAUTHENTICATED` loopback gate 401s everything)
+This collector requires the **Claude Code Workflow tool**.
+The host supplies `args`, `phase`, `parallel`, `agent`, and `log`.
+The repository has no standalone Node launcher for this workflow.
+Keep the fixed 30-case sample and grading contract when comparing runs.
+
+1. Reuse the running development server. Read its bound URL from the existing server output.
+   The proxy example assumes `http://localhost:8788`; substitute the actual bound URL.
 2. Start the harness-owned capture proxy in front of it:
    `node eval/agentic/capture-proxy.mjs --upstream http://localhost:8788 --port 8789 --out eval/agentic/results/capture-<stamp>.jsonl`
-3. Invoke the Workflow tool with `eval/agentic/workflow-agentic-routing.js` and args
+3. Invoke the Claude Code Workflow tool with `eval/agentic/workflow-agentic-routing.js` and args
    `{"port": 8789, "cases": [...]}` — the PROXY port, so every agent exchange is captured —
    where cases come from `sample.json` (`node -e` slim mapping: id/question/expected_service).
 4. Save the returned `{summary, rows}` under `results/` (git-ignored), then reconcile the

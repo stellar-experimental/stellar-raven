@@ -5,7 +5,6 @@ import {
   type WeightedScorableEntry
 } from "../src/catalog/scoring.ts";
 import {
-  ROUTING_PHRASE_TOKEN_CAP,
   extractRoutingExclusions,
   extractRoutingPhrases
 } from "../src/catalog/extract-routing-phrases.ts";
@@ -113,14 +112,6 @@ describe("routing phrase extraction", () => {
       { field: "useWhen", tokens: ["first", "usage"] },
       { field: "purpose", tokens: ["last", "purpose"] }
     ]);
-  });
-
-  it("never truncates a source phrase", () => {
-    const tooLong = Array.from(
-      { length: ROUTING_PHRASE_TOKEN_CAP + 1 },
-      (_, index) => `token${index}`
-    ).join(" ");
-    expect(extractRoutingPhrases({ purpose: [tooLong] })).toEqual([]);
   });
 
   it("removes route targets from negative intent", () => {

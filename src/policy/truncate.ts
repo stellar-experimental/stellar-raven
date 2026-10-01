@@ -1,6 +1,6 @@
 /**
  * Result truncation for model-facing output (configured token budget, default
- * ~6k, with an actionable footer; PLAN §4 / research/codemode.md §9 item 7).
+ * ~6k, with an actionable footer; ARCHITECTURE.md output boundaries).
  *
  * Why not import codemode's `truncateResult`: it IS importable inside the
  * Worker, but the package's main entry imports `cloudflare:workers`, which

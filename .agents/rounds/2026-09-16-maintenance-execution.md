@@ -27,7 +27,7 @@ Its aggregate scores improve, but the unchanged full routing gate still fails.
 The changed fingerprint and old upper bands still reject the unchanged routing gate.
 Independent review found additional mixed-intent captures and a person-advisory defect.
 The author repairs those defects without changing labels or acceptance thresholds.
-The coordinator's [ablation report](2026-09-16-maintenance-execution/routing-ablation-report.md) separates source and scoring effects.
+The coordinator's [ablation report](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/routing-ablation-report.md) separates source and scoring effects.
 None of these experimental results accepts the Scout source.
 Grok completed an interim review and identified an RFP miss and short-prefix false matches.
 The implementation agent then stopped after three automatic approval rejections.
@@ -36,25 +36,25 @@ The coordinator told the agent not to repeat the denied edits or change the base
 The agent must complete the unchanged acceptance checks and independent review before proposing those updates again.
 The coordinator informed the user of the rejection and its stated reason.
 
-The coordinator also reviewed the [Stellar Light pin dependencies](2026-09-16-maintenance-execution/light-pin-impact.md).
-Four [public RWA schema probes](2026-09-16-maintenance-execution/rwa-live-schema-probes.json) confirm the request-state enum behavior.
+The coordinator also reviewed the [Stellar Light pin dependencies](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/light-pin-impact.md).
+Four [public RWA schema probes](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/rwa-live-schema-probes.json) confirm the request-state enum behavior.
 Those probes do not establish routing acceptance.
 
-The independent Grok review accepted the [skill-reference filter](2026-09-16-scout-skill-filter.md).
+The independent Grok review accepted the [skill-reference filter](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-scout-skill-filter.md).
 The filter has a separate local commit, `e1ea4abfa62ee68070bbe905962284fc3118ebfc`.
 It does not accept the newer Light pin or the RWA operation.
 The final drift candidate must combine the accepted source helper and this filter before final measurements.
 
-The [runtime audit](2026-09-16-maintenance-execution/scout-runtime-golden-impact.md) found no required active golden correction.
+The [runtime audit](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/scout-runtime-golden-impact.md) found no required active golden correction.
 It confirmed 30 changed operation objects and nine changed component schemas.
 The generic adapter supports the new read operation without a special handler.
 An exposed RWA collection needs the `broad` plan classification and staged QA coverage.
-The [proposal draft](2026-09-16-maintenance-execution/scout-rwa-proposed-case.json) remains outside the active corpus.
+The [proposal draft](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/scout-rwa-proposed-case.json) remains outside the active corpus.
 The accepted manifest does not expose its declared surface.
 
 Current combined scoring experiments improve the strict aggregate results.
 The unchanged fingerprint and old upper bands still reject the candidate.
-The [fresh parent controls](2026-09-16-maintenance-execution/scout-parent-fresh-probes.json) found two additional mixed-intent RWA captures.
+The [fresh parent controls](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/scout-parent-fresh-probes.json) found two additional mixed-intent RWA captures.
 Independent review must distinguish those controls from the original unrelated-query acceptance checks.
 No source, count, schema, or numeric gate received acceptance from these experiments.
 The first independent combined review used the code-only result instead of the source candidate.
@@ -62,7 +62,7 @@ The coordinator rejected that comparison and requested the correct variant revie
 The coordinator also found dropped Trustless Work override and guard code in the experimental catalog builder.
 The author restored those accepted contracts. All nine focused Trustless Work tests now pass.
 The corrected independent review uses the RWA-inclusive measurement and confirms 345 ordered-list changes.
-The [test diagnosis](2026-09-16-maintenance-execution/scout-test-contract-review.md) separates behavior defects from changed contracts.
+The [test diagnosis](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/scout-test-contract-review.md) separates behavior defects from changed contracts.
 The copied interim reports are not acceptance records.
 
 The copied test diagnosis incorrectly says no full suite proves 19 failures.
@@ -138,7 +138,7 @@ Its two CI checks passed on `cd87615f`. All five review threads are resolved wit
 PR #165 merged the independently reviewed filter as `bb37bc502080c94c3f3b5223ffcdf584d4b0e29d`.
 All four checks passed on `b31718accde52c89dd57f0bf8441fb8e433b31a6`.
 The latest GitHub read lists only issue #141 as open.
-The [upstream follow-up](2026-09-16-maintenance-execution/upstream-pr-followup.json) still lists four unmerged external PRs.
+The [upstream follow-up](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/upstream-pr-followup.json) still lists four unmerged external PRs.
 The later independent review found unresolved author actions in Docs PRs #2837 and #2844.
 The user has Docs push permission, but neither PR meets its review gate.
 PR #2837 also retains an explicit author hold.
@@ -155,16 +155,16 @@ Both PRs still require maintainer approval. PR #2837 also retains its author hol
 The [#2837 handoff](https://github.com/stellar/stellar-docs/pull/2837#issuecomment-5705124276) records the remaining author decisions.
 The [#2844 handoff](https://github.com/stellar/stellar-docs/pull/2844#issuecomment-5705124464) records the applied wording suggestions.
 Both comments were read back from GitHub.
-The [patch identities](2026-09-16-maintenance-execution/docs-repair-patch-identities.json) identify their exact reviewed content.
-See the [readiness review](2026-09-16-maintenance-execution/upstream-docs-pr-readiness.md).
-The coordinator captured [production search controls](2026-09-16-maintenance-execution/production-search-before.json) before deployment.
+The [patch identities](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/docs-repair-patch-identities.json) identify their exact reviewed content.
+See the [readiness review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/upstream-docs-pr-readiness.md).
+The coordinator captured [production search controls](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/production-search-before.json) before deployment.
 Those calls used only catalog search and made no provider request.
 
 The free `sls-080` monitor passed through authenticated production Raven MCP.
 No existing local server was available. The transport difference is explicit in the evidence.
 The returned `MaxSupportedProtocolVersion` value was `28`.
 The source at returned ref `84553bb4dc6d0c0300d052f76cb745178ede0be1` also contains `28`.
-The [monitor record](2026-09-16-maintenance-execution/sls-080-monitor.json) preserves the response timestamp and source path.
+The [monitor record](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/sls-080-monitor.json) preserves the response timestamp and source path.
 One free provider request ran. No answering model or judge model ran.
 
 ## Accepted release
@@ -172,15 +172,15 @@ One free provider request ran. No answering model or judge model ran.
 The clean deployment checkout passed preflight with `HEAD == origin/main` at `bb37bc50`.
 The deployment used the existing `sdf` profile and retained all usage bindings.
 Worker version `06222885-f873-4164-8e99-9fc5f2b9a5f2` receives 100% traffic.
-The [deployment record](2026-09-16-maintenance-execution/deployment-bb37bc50.json) records its ID and HTTP checks.
+The [deployment record](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/deployment-bb37bc50.json) records its ID and HTTP checks.
 
 Authenticated production reads verified all 28 new sections across 22 pinned files.
 All section fingerprints match local verified content. The main body hash also matches its pinned source.
 All 282 catalog IDs, services, kinds, and descriptions match the committed catalog.
 The new escrow query ranks the new skill first. Five unrelated controls remain byte-identical.
-See the [content comparison](2026-09-16-maintenance-execution/production-content-comparison.json).
+See the [content comparison](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/production-content-comparison.json).
 The [production comment](https://github.com/stellar-experimental/stellar-raven/pull/157#issuecomment-5704435949) was read back.
-The [hourly canary](2026-09-16-maintenance-execution/production-canary-after.json) passed at `2026-09-16T21:07:47.104Z`.
+The [hourly canary](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/production-canary-after.json) passed at `2026-09-16T21:07:47.104Z`.
 It checked all 64 current pinned files. The existing production comment now records this result.
 Scout remains 1.9.1. RWA remains unexposed.
 
@@ -216,7 +216,7 @@ The coordinator preserved the rejected drift candidate and all initial branches.
 - Open: both Docs PRs need maintainer approval. PR #2837 also retains its author hold.
 - Record review: Sol high reviewed all 60 files in PR #166 and requested two ledger corrections.
 - Record review: Sol high confirmed both corrections at `5b75eaec`; the repair delta has no new finding.
-- Record review: the [acceptance record](2026-09-16-maintenance-execution/maintenance-record-repair-review.md) preserves that completed review.
+- Record review: the [acceptance record](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-maintenance-execution/maintenance-record-repair-review.md) preserves that completed review.
 - Retained: owned panes `w3G:pZ`, `w3G:p0`, and `w3G:p11` support the remaining work.
 
 The completed worktree removals are recorded above. These temporary worktrees remain available for the active review:
@@ -237,7 +237,7 @@ Reconcile these paths after the active drift review. Preserve each unique dirty 
 
 ## Scout release completion
 
-The [Scout release record](2026-09-16-scout-release.md) supersedes the earlier temporary-worktree state.
+The [Scout release record](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-16-scout-release.md) supersedes the earlier temporary-worktree state.
 Production serves `022970d5`. All 17 search checks and the full catalog projection match the reviewed files.
 All four pinned Scout files match verified local reads.
 The coordinator removed three clean detached controls after ancestry checks.

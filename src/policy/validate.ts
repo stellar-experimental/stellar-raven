@@ -1,6 +1,6 @@
 /**
  * Small JSON-Schema argument validator — args are validated against the
- * entry's `inputSchema` BEFORE any network call (PLAN §4: model code never
+ * entry's `inputSchema` BEFORE any network call (ARCHITECTURE.md: model code never
  * owns endpoints/args).
  *
  * Why hand-rolled and not zod-from-JSON-Schema: zod v4 converts zod→JSON

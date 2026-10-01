@@ -2,7 +2,7 @@
  * Playground answer-copy tests — the behavior half of the feature.
  *
  * DEMO_COPY_CORE is the copy action's source, split out of the page IIFE so it
- * can be evaluated and driven here (same trick as demo-scroll-core.test.ts for
+ * can be evaluated and driven here (same trick as demo-markdown-commit.test.ts for
  * mdCommitIndex). The page has no DOM library in its test lane, so this file
  * carries a minimal fake node — enough for createElement/appendChild/
  * insertBefore/nextSibling/addEventListener, which is all the core touches.

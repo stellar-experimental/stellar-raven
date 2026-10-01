@@ -8,7 +8,7 @@
  * to their first 2 items. The live type-keyed response is shown after the
  * adapter's forward-only normalization: one similarity-ranked `items` list,
  * canonical source collection per row, collection counts, and metadata.
- * Refresh via the live-drift runner checklist (research/skill-run-design.md §11 row 18).
+ * Refresh fixtures after the live-drift checks in .agents/skills/live-drift-resolution/SKILL.md.
  */
 export default {
   ok: true as const,

@@ -16,8 +16,8 @@
 /** Lumenloop account-mutation surfaces — excluded if they ever appear in inventory. */
 export const LUMENLOOP_ACCOUNT_OP_RE = /(^|_)(key|keys|webhook|webhooks|topup|top_?up)(_|$)/;
 
-// request_research is the paid deep-research trigger — excluded until the
-// budget-gate + dedup feature is deliberately built (PLAN §8: off by default).
+// request_research stays excluded under the AGENTS.md hard rules.
+// Exposure requires approval, elicitation, budget enforcement, partner-detail persistence, and deduplication.
 // Named explicitly (not just via the metered flag) so an upstream re-pricing
 // cannot silently expose it.
 //

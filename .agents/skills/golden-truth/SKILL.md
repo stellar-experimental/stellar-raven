@@ -3,10 +3,7 @@ name: golden-truth
 description: "Change the golden Q→A corpus without codifying lies: classify the truth domain, triangulate across independent source classes, encode disputed or unverifiable facts honestly, and land provenance-bearing edits to the owned per-case corpus. Use when editing eval golden answers, key facts, avoid clauses, sources, grader notes, or truth metadata."
 ---
 
-# Golden gospel-truth verification — how to change the golden corpus without codifying lies
-
-This skill is agent-agnostic: a plain-markdown runbook. Claude Code invokes it as a skill;
-Codex or any other CLI agent can be pointed at this file directly.
+# Golden truth verification
 
 ## North star
 
@@ -73,35 +70,31 @@ later owner decision.
 
 ## Step 2 — know your source classes (independence is between CLASSES)
 
-Tool names below are examples from current agent environments, not a Claude-only contract.
-Use the available equivalent or tool discovery in the active agent when a named MCP tool is
-not present.
+The classes name capabilities, not tools. Use whatever tool in the active agent provides each
+capability.
 
 - **A. Official primary docs/sites** — developers.stellar.org, service owners' own docs
-  (WebFetch, `mcp__parallel-search__web_fetch`).
+  (a web fetch tool).
 - **B. Source code / repos** — the implementation is the ground truth for limits and
-  behavior (`mcp__github__search_code` / `get_file_contents`, `mcp__deepwiki__ask_question`).
+  behavior (GitHub code search and file reads, or DeepWiki).
 - **C. Live service APIs** — production probes through this server's own `execute`/`search`
   or direct Lumenloop / Stellar Light calls. **The aggregator being checked NEVER counts as
   corroboration for its own claims** — if the claim came from Scout, probing Scout again is
   re-reading the same witness.
   Use a documented read path for a read-only probe. Treat provisioning, issuing, and creation
   endpoints as side effects, including endpoints that use `GET`.
-- **D. General-web research** — `mcp__perplexity__perplexity_search/ask/research/reason`;
-  `mcp__parallel-search__web_search_preview`; `mcp__parallel-task__createDeepResearch` for
-  analyst-grade single topics; the `parallel-cli` bin (`~/.local/bin/parallel-cli` —
-  search / research / enrich) for scripted sweeps. These are metered/paid — that is the
-  point: gospel is worth expensive verification. (Paid **Lumenloop** research stays gated
-  and off — that rule is unchanged.)
-- **E. Docs search index** — `mcp__stellar-docs__algolia_*`: checks BOTH the fact and its
-  discoverability; an authoritative page missing from the index is an `improvements/`
-  finding.
+- **D. General-web research** — web search, answer, and deep-research tools, including
+  scripted sweeps. These are metered/paid — that is the point: gospel is worth expensive
+  verification. (Paid **Lumenloop** research stays gated and off.)
+- **E. Docs search index** — the Stellar Docs Algolia index, through the `stellarDocs.*`
+  operations or a direct read-only query: checks BOTH the fact and its discoverability; an
+  authoritative page missing from the index is an `improvements/` finding.
 - **F. Empirical execution** — for executable claims (CLI commands, address derivation,
   XDR decoding, API parameters), RUN the thing on testnet/live free ops rather than
   reading about it. The strongest evidence class for how-to facts — "the command is real,
   not a doc guess": docs can describe behavior that shipped differently, so run it.
 
-Two perplexity hits are ONE class. Corroboration = agreement across classes. These letters
+Two hits from the same web-search provider are ONE class. Corroboration = agreement across classes. These letters
 are the `class` values in `truth.sources[]` and corroboration evidence rows.
 
 ## Step 3 — corroboration thresholds by claim criticality
@@ -140,8 +133,7 @@ mandatory (a stranger must be able to re-walk the trail); "unverifiable" is an h
 useful verdict — never stretch weak evidence; when two agents disagree, run a targeted
 follow-up probe — never coin-flip, never average.
 
-Route pane and agent mechanics through the global `herdr` skill; split one pane per lane for the
-verification lanes and select model/effort explicitly per `AGENTS.md`. Lane-specific rule: create
+Spawn verification lanes as `AGENTS.md` "Coordination" describes. Lane-specific rule: create
 or reuse the round ledger, assign one independent agent per claim cluster, and have workers append
 matrices directly. Author edits owned case files only after reconciling matrices.
 For broad corpus-health or drift-refresh work, let `truth-maintenance` coordinate this lane
@@ -181,9 +173,9 @@ score/result rationales — "the judge failed this case" is never a reason to ch
 Refresh `truth.asOf` for volatile facts and set a new staggered, quarter-granular
 `truth.reverifyBy` on `scheduled` cases so the stale queue drips instead of cliffing.
 
-**Sibling-consistency sweep (required on every change).** The dominant drift mechanism
-observed in the ancestor corpora was a correction pass fixing one file while its topical
-sibling kept the old fact — producing goldens that cannot both be true. Before closing a
+**Sibling-consistency sweep (required on every change).** The dominant drift mechanism is a
+correction pass that fixes one file while its topical sibling keeps the old fact — producing
+goldens that cannot both be true. Before closing a
 gospel change: enumerate other cases touching the same entity/topic (grep the battery files
 for the entity names and key numbers), confirm the changed fact doesn't contradict them, and
 record the sweep (cases checked, verdict) in `truth.verified.evidence` or the round
@@ -260,7 +252,7 @@ the CI lint enforces the fields exist, the reviewer checks they're true.
 - Disputed facts are never pinned. Unverifiable facts are never claimed.
 - Volatile facts always carry `asOf` in the golden text, `truth.asOf` in metadata, and
   (when `scheduled`) a `truth.reverifyBy` date the CI stale gate can enforce.
-- Paid Lumenloop research stays gated/off; perplexity/parallel spend is expected and
+- Paid Lumenloop research stays gated/off; general-web research spend is expected and
   appropriate here. Never print or commit secrets.
 - Traps must punish claims that are FALSE per this skill's verification — a trap that
   punishes a possibly-true claim is a judge artifact factory (the avoid-clause artifact

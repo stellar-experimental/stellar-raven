@@ -158,7 +158,7 @@ Its existing source-contract expiry requires separate reconciliation; this round
 
 ## Evidence and pilot collection
 
-The dated evidence lives in [research/audits/2026-09-17-routing-audit](../../../research/audits/2026-09-17-routing-audit/).
+The dated evidence lives in [research/audits/2026-09-17-routing-audit](../../research/audits/2026-09-17-routing-audit/).
 The final code review passed runtime and measurement changes. Its evidence placement and review-status findings are resolved.
 
 M1-B1 produced `2026-09-17T01-33-03-variantA.json`: 16 answers, 48 accounted calls, cost $5.8820244.

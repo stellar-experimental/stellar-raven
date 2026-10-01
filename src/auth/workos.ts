@@ -1,6 +1,6 @@
 /**
  * WorkOS AuthKit handler — the OAuthProvider `defaultHandler`
- * (research/auth-workos.md).
+ * (ARCHITECTURE.md).
  *
  * This server IS its own OAuth 2.1 authorization server:
  * @cloudflare/workers-oauth-provider implements /token, /register, PKCE, and
@@ -9,7 +9,7 @@
  * the whole hop is a redirect to /user_management/authorize plus one POST to
  * /user_management/authenticate.
  *
- * Identity hygiene (prior art ADR-0016 lesson): the WorkOS access token is
+ * Identity hygiene: the WorkOS access token is
  * dropped right after the code exchange — never stored, never in props. The
  * only human identity that moves forward is `subject`, a peppered hash of
  * the WorkOS user id (colon-free hex; the provider's opaque tokens use `:`

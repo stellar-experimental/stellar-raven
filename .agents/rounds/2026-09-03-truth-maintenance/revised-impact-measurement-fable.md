@@ -36,7 +36,7 @@ public Scout changelog read for revision 1 on 2026-09-04.
 | P2 capacity | The plan binds the exact free capacity command, the instrument bytes, the artifact bytes, a fixed schedule, fixed thresholds, and a 24-hour freshness window. The authoritative v2 `PASS` artifact is recorded below. |
 | P3 denominator | The plan records `selected.count: 200` and `selected.activeCorpusCount: 500`. It records all four corpus hashes. Both runner worktrees recompute every one. Any mismatch stops the launch. |
 | S1 stale claims | Commit `1847ffd` is the launch-enforcement base, not the final supervisor bytes. The reviewed R1/R2 repair is the current diagnostic layer. Commits `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d` are in the round record. Every provisional hash below is recomputed at `dc0761d`. |
-| S2 round state | The round stays open. `NEXT.md` lists completed repair work, not a completed round. |
+| S2 round state | The round stays open. [`NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) lists completed repair work, not a completed round. |
 | S3 production label | Production is described as the last recorded deployment state from 2026-09-02. Nobody verified the live Worker during this documentation pass. |
 
 The revision 2 changes from revision 1 (S1 to S6, P1 to P7 of the first review) stand as written.

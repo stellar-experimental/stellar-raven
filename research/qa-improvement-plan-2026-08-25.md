@@ -92,7 +92,7 @@ the WisdomTree identifier fix is a **repo-side golden repair**, not an upstream 
 
 ## 5. Radical options, priced honestly (Grok matrix + Kimi SOTA survey)
 
-Kimi's survey (`kimi-k3.md` Part 1, citations verified live) maps the field onto this
+Kimi's survey ([`kimi-k3.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/kimi-k3.md) Part 1, citations verified live) maps the field onto this
 system: hybrid retrieval pays when vocabulary mismatch is common; rerankers pay on
 small catalogs where precision at ranks 1–3 decides; rewrite/aliasing beats HyDE for
 short-description catalogs; CRAG-style broaden-or-abstain is a contract change, not

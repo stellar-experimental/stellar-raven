@@ -16,16 +16,10 @@
 //     which would otherwise appear in hostnames) is asserted absent from every
 //     output before writing; URLs use `{ALGOLIA_APPLICATION_ID_DOCS}` placeholders.
 //
-// Authored config (NOT fetched — preserved verbatim across refreshes):
-//   LUMENLOOP_PARTNER_TOOLS — the partner-lane tool names hidden from GET
-//   /v1/tools even with a partner key (the union quirk,
-//   research/services/lumenloop.md); the tool union count is validated against
-//   GET /v1/me `tools.available` every run so drift fails loudly.
-// Skills are NOT authored the same way: GET /v1/skills already LISTS the
-// partner-set skills (marking them available:false), so the union comes from
-// that list — no name list to maintain. The count guard is tools-only: GET
-// /v1/me carries `tools.available` but exposes NO skills count/list to assert
-// against, so there is nothing to check the skill union against.
+// LUMENLOOP_PARTNER_TOOLS supplies names hidden by GET /v1/tools.
+// The union count must match GET /v1/me tools.available. See ARCHITECTURE.md.
+// GET /v1/skills lists partner skills with available:false, so skills need no authored name list.
+// GET /v1/me supplies no skill count for a corresponding check.
 //
 // PUBLISH-SAFETY (2026-07-06, go-public cleanup): partner-lane tools and
 // partner-set skills are persisted as NAME-ONLY stubs (`partner_stub: true`)
@@ -44,16 +38,13 @@ const INVENTORY_DIR = join(ROOT, "inventory");
 // ---------------------------------------------------------------------------
 // Authored config — Lumenloop partner lane
 // ---------------------------------------------------------------------------
-// GET /v1/tools hides partner-tier tools even with a partner key. These names
-// come from research/services/lumenloop.md (verified live 2026-07-01); the
-// script unions them with GET /v1/tools and asserts the tool union count
-// equals GET /v1/me `tools.available`. (Skills differ — see the header note:
-// GET /v1/skills already lists them, so no authored skill name list exists.)
+// Union authored partner names with GET /v1/tools and validate GET /v1/me tools.available.
+// ARCHITECTURE.md describes the inventory and exposure boundaries.
 const LUMENLOOP_BASE = "https://api.lumenloop.com/v1";
 const LUMENLOOP_PARTNER_TOOLS = ["list_my_research", "request_research", "research_result"];
 
 // ---------------------------------------------------------------------------
-// Stellar Docs (Algolia) — index name for the settings drift probe
+// Stellar Docs (Algolia) — index name for the settings drift probe. See docs/stellar-docs.md.
 // ---------------------------------------------------------------------------
 const STELLAR_DOCS_INDEX = "crawler_Stellar Docs - Docusaurus";
 
@@ -332,7 +323,7 @@ export function normalizeScoutStatus(status) {
 }
 
 // ---------------------------------------------------------------------------
-// Stellar Docs (Algolia)
+// Stellar Docs (Algolia) — docs/stellar-docs.md defines the endpoint and credential boundaries.
 // ---------------------------------------------------------------------------
 async function refreshStellarDocs() {
   const appId = requireEnv("ALGOLIA_APPLICATION_ID_DOCS");

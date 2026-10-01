@@ -1,6 +1,6 @@
 /**
  * Stellar Light / Scout adapter — keyless HTTP per the entry's transport
- * (research/services/stellar-light.md).
+ * (ARCHITECTURE.md: manifest-owned transport and exposure).
  *
  * Call shape: path templates (`/api/hackathons/{slug}`) are filled from args;
  * remaining args become the query string for GET or the JSON body for POST.
@@ -12,7 +12,7 @@
  * would misrepresent single-item and analytics endpoints (measured truth in
  * the research doc, not a generic shape).
  *
- * Error mapping (per-service normalizer, PLAN §4):
+ * Error mapping (per-service normalizer, ARCHITECTURE.md):
  *  - 400 `{error, hint?, valid*}`      → kind "error" + hint + valid lists.
  *  - 404 unknown slug                  → kind "soft-empty" ("discover the
  *    slug from the list endpoint first" — a miss, not a failure).

@@ -1,5 +1,5 @@
 /**
- * Call guard — runs host-side BEFORE any adapter call (PLAN §4): validates
+ * Call guard — runs host-side BEFORE any adapter call (ARCHITECTURE.md): validates
  * args against the entry's inputSchema. That is the whole job. Exposure is
  * decided at BUILD time (ADR-0003) — everything in the manifest is callable,
  * so there is no runtime allow/deny to check here.

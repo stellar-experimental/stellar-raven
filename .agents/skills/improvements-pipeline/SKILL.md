@@ -137,11 +137,9 @@ A finding can legitimately become `fixed-upstream` before anyone files it. If th
 longer reproduces, do not create a ceremonial issue merely to make every record have a URL. Add dated
 live evidence and, when discoverable, record the pre-existing upstream issue/PR that explains the fix.
 
-Current owner map (confirmed 2026-07-13): `lumenloop/lumenloop-backend` owns Lumenloop API and
-content-pipeline findings, while `lumenloop/stellar-ecosystem-db` owns committed directory-record
-corrections. For Stellar Light, `Stellar-Light/stellarlight` owns API/data/discovery behavior,
-`Stellar-Light/stellar-scout` owns the Scout skill, and `Stellar-Light/scout-mcp` owns the MCP wrapper.
-Official Stellar skill findings target `stellar/stellar-dev-skill`.
+`improvements/intake.json` is the owner map: per-service repositories and per-finding overrides.
+`npm run improvements:lint -- --live` verifies each repository in it. Read it instead of a list in
+prose.
 
 When adding or editing a finding, run:
 
@@ -156,9 +154,9 @@ Use `npm run improvements:lint -- --live` when intake repos were added, renamed,
 
 `stellar-docs` findings split into content gaps and search-mechanism gaps. Content gaps (a page is
 stale/wrong/missing) stay upstream on the docs repo. Search-mechanism gaps (ranking, tokenization,
-synonym/vocabulary, crawler config) are now directly remediable with the operator Algolia
-credentials in `.env` — write, crawler, and analytics tiers documented in
-`research/services/stellar-docs-algolia.md`. Reach for the direct lever only when it clears the bar:
+synonym/vocabulary, crawler config) are directly remediable with the operator Algolia
+credentials in `.env` — write, crawler, and analytics tiers and their guardrails are documented
+in `docs/stellar-docs.md`. Reach for the direct lever only when it clears the bar:
 
 - **General mechanism only.** No per-page/per-query rules or synonyms — the same anti-overfitting
   rule the eval loop enforces. The single load-bearing rule (`raven-promote-stellar-cli-install`) is
@@ -188,10 +186,9 @@ or when a user asks whether previous improvements were resolved.
      they are notification signals to verify, not proof of a fix.
 2. Build a deterministic state table in the round ledger:
 
-```
-| finding | trigger evidence | upstream ref | ref state | PR checks/reviews | live re-check | action |
-|---|---|---|---|---|---|---|
-```
+| finding | trigger | upstream ref | ref state | PR checks/reviews/blocker | live re-check | repo action | next wake-up |
+|---|---|---|---|---|---|---|---|
+| `<id>` | eval stamp / probe / drift fact | issue/PR URL | open/closed/merged/stale/unknown | pass/fail/requested-changes/none | fixed/still-repro/inconclusive | no-op/status edit/successor/own todo | dated `.agents/TODO.md` entry |
 
 3. For each issue/PR, inspect current upstream state with the GitHub MCP tools or `gh`:
    title, open/closed/merged state, close reason, linked PRs/issues, latest maintainer
@@ -211,8 +208,7 @@ or when a user asks whether previous improvements were resolved.
    **For byte-exact claims, use `gh api … --jq .body`, not the GitHub MCP `issue_read` tool.** That
    tool HTML-escapes bodies and strips autolinks and HTML comments, so a lane checking exact text
    through it will report phantom missing URLs and phantom `&gt;`/`&#39;` entities that are not in
-   the real body. Two such false positives were raised and disproved during the 2026-07-31
-   verification round.
+   the real body.
 
    **Silence is the default on untouched open issues.** Do not add reminder, status-chasing,
    backlink-only, recurrence-only, or "still reproducible" comments when there is no indication that

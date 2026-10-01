@@ -16,8 +16,8 @@ paid call. It authorizes no production edit and no corpus-label edit. It authori
 frozen-contract edit, no gate edit, and no generated-artifact edit. The brief lane writes only
 this ledger and its files under the round directory.
 
-Out of scope: closeout edits to `.agents/TODO.md`, `.agents/NEXT.md`, `eval/README.md`, and
-`eval/vectorize/README.md`. Those need a separate authorization after the review gates.
+Out of scope: closeout edits to `.agents/TODO.md`, [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), `eval/README.md`, and
+[`eval/vectorize/README.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/README.md). Those need a separate authorization after the review gates.
 
 ## Lanes
 
@@ -35,7 +35,7 @@ Out of scope: closeout edits to `.agents/TODO.md`, `.agents/NEXT.md`, `eval/READ
 | Referee | deterministic Node runner; no model | `w1B:p2` | one local result under `eval/vectorize/results/` | complete; measured `FAIL` |
 | Result verification | Codex, GPT-5.6 Terra, high | `w1B:p2` | `…/result-verification-terra.md` | complete; verdict `PASS` |
 | Product closeout | Claude, Fable 5, high | `w1B:p1` | `…/closeout-fable.md` | complete; queue proposal reconciled below |
-| Closeout | root orchestrator | current pane | `.agents/TODO.md`, `.agents/NEXT.md`, README sections | documentation and validation complete |
+| Closeout | root orchestrator | current pane | `.agents/TODO.md`, [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), README sections | documentation and validation complete |
 | Independent closeout review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-closeout.md` | complete; verdict `BLOCK` on C1; C2 and C3 residual |
 | Bounded closeout delta | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-closeout-delta.md` | complete; verdict `PASS` |
 
@@ -93,11 +93,11 @@ This entry authorizes brief authoring only.
 | `eval/run-routing.mjs` | `7b1e396b7db74dc7028bd6b6d1dd7fb51e9b6401f084a6bb0d58a326420eeed0` |
 | `eval/run-protocol-history.mjs` | `bfaaf48969676492529b83a0fad19473891e0b359e47cedeeaa8ccfb616f68c0` |
 | `eval/self-test.mjs` | `7543b7f7d818d12426c57bf65d6d7d87777994400995729abcacfe828aec9d0b` |
-| `eval/vectorize/artifacts/qwen3-embedding-0.6b-q8-c25a394-clauses.json` | `e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4` |
-| `eval/vectorize/clause-config.mjs` | `39e0b2c42d845913541231dce90b8ecd0e949adc11c50eefea015b7cb291932e` |
-| `eval/vectorize/clause-retrieval.mjs` | `a99e32319d27fe66c92887299971da257a1938073dececc095e7201c29c27cd9` |
-| `eval/vectorize/rerank-config.mjs` | `2cb45a972ee6fc89f7bed13c795124a3a9e19485731b9e28c5538a5b12d4fe4d` |
-| `eval/vectorize/run-rerank-fit.mjs` | `788a6df923c1ac844fc83b428bfe52a531cf1e134274a0d9e894adc34066487f` |
+| [`eval/vectorize/artifacts/qwen3-embedding-0.6b-q8-c25a394-clauses.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/artifacts/qwen3-embedding-0.6b-q8-c25a394-clauses.json) | `e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4` |
+| [`eval/vectorize/clause-config.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/clause-config.mjs) | `39e0b2c42d845913541231dce90b8ecd0e949adc11c50eefea015b7cb291932e` |
+| [`eval/vectorize/clause-retrieval.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/clause-retrieval.mjs) | `a99e32319d27fe66c92887299971da257a1938073dececc095e7201c29c27cd9` |
+| [`eval/vectorize/rerank-config.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/rerank-config.mjs) | `2cb45a972ee6fc89f7bed13c795124a3a9e19485731b9e28c5538a5b12d4fe4d` |
+| [`eval/vectorize/run-rerank-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-rerank-fit.mjs) | `788a6df923c1ac844fc83b428bfe52a531cf1e134274a0d9e894adc34066487f` |
 | `src/catalog/search.ts` | `04a9aa3d87451fc263aa4ee3df9b31ab8f05c0fcbe8371af5f31c7ed6458f846` |
 | `src/catalog/scoring.ts` | `b8c84cb0c73b89e1ae624bb449bc305fac313e03ee844026763c8735fe8ef548` |
 | `src/catalog/vendor/search-scoring.ts` | `718924d10533ea49d472602f600ece0e4d7a0aae3e9e0ca5a95d9a8c6e611b14` |
@@ -238,7 +238,7 @@ scores no pair.
 
 New facts recorded for the decision, all from read-only offline commands:
 
-- `loadClauseSource()` from `eval/vectorize/clause-config.mjs` rebuilt 683 clauses at `HEAD`.
+- `loadClauseSource()` from [`eval/vectorize/clause-config.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/clause-config.mjs) rebuilt 683 clauses at `HEAD`.
   It reported 608 positive and 75 negative clauses over 79 entries. Its three input hashes and
   its `clauseSetSha256` `cc5df2e4d89522c580626cfc21727b927494f5f528f42acfa035187a211d89e5` match
   the artifact.
@@ -274,7 +274,7 @@ Verification of the reconciliation lane:
 - Files written by this lane: this ledger, `…/brief-fable.md`, and
   `…/brief-reconciliation-fable.md`. No other path.
 - Commands run: `cat`, `sed`, `ls`, `grep`, `wc`, `shasum -a 256`, `git status`, `node -e` over
-  `clause-config.mjs` and the battery JSON files, and the corrected strict audit script. No
+  [`clause-config.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/clause-config.mjs) and the battery JSON files, and the corrected strict audit script. No
   `npm` command ran. No model loaded. The retained cache was not opened. Network: none. Paid
   call: none. Cost: `$0`.
 
@@ -289,10 +289,10 @@ helpers. It ran 50 synthetic trials of `m = 0` against a stable descending sort 
 mismatches. It did not open the cache.
 
 It blocked on D1. Test 12 followed every relative specifier under `eval/`. That walk reaches
-`run-rerank-fit.mjs`, which calls `import("./rerank-scorer.mjs")` and
+[`run-rerank-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-rerank-fit.mjs), which calls `import("./rerank-scorer.mjs")` and
 `require("onnxruntime-node/package.json")` inside `main()`. A faithful walk would fail on a
 correct referee. It listed five residual pins: D2, a local `shouldFail`; D3, the dynamic import of
-`src/catalog/search.ts`; D4, the missing `rerank-retrieval.mjs` hash; D5, the literal
+`src/catalog/search.ts`; D4, the missing [`rerank-retrieval.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/rerank-retrieval.mjs) hash; D5, the literal
 `result.experiment` string; D6, noisy-OR is not a calibrated probability.
 
 ### 2026-09-01 — second reconciliation applied
@@ -305,7 +305,7 @@ to `brief-reconciliation-fable.md`.
 - D2: section 11 adds a local `shouldFail` that inspects the support-fit reading only. Test 18
   names it. The referee does not import the attempt-two export.
 - D3: section 10 names the one dynamic import of `src/catalog/search.ts`.
-- D4: section 2 pins `eval/vectorize/rerank-retrieval.mjs` at
+- D4: section 2 pins [`eval/vectorize/rerank-retrieval.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/rerank-retrieval.mjs) at
   `26aa40f9d98f52684cc96c6f4bf28295c9d22a48a82d4e8ea285801522160116`. `shasum -a 256` on this
   `HEAD` returned that value.
 - D5: section 9 states that `result.experiment` is the literal string `clause-support-fit-v1`.
@@ -338,8 +338,8 @@ the cache open.
 
 Codex GPT-5.6 Sol high completed the reviewed section 11 write set. It wrote these paths:
 
-- `eval/vectorize/run-support-fit.mjs`;
-- `test/eval-vectorize-support-fit.test.mjs`;
+- [`eval/vectorize/run-support-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-support-fit.mjs);
+- [`test/eval-vectorize-support-fit.test.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-support-fit.test.mjs);
 - the `eval:vectorize:support:run` script in `package.json`;
 - `2026-09-01-protocol-history-attempt-three/implementation-sol.md`.
 
@@ -351,8 +351,8 @@ File SHA-256 values:
 
 | Path | SHA-256 |
 | --- | --- |
-| `eval/vectorize/run-support-fit.mjs` | `fbc059e455f5685b2a3866e766462ef35a80aecc63ad346eceba663c1b3004b5` |
-| `test/eval-vectorize-support-fit.test.mjs` | `c2ee273d4c4682280ad6aff3c34c43d414e94459416687116a4437ab79af84b7` |
+| [`eval/vectorize/run-support-fit.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/run-support-fit.mjs) | `fbc059e455f5685b2a3866e766462ef35a80aecc63ad346eceba663c1b3004b5` |
+| [`test/eval-vectorize-support-fit.test.mjs`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/test/eval-vectorize-support-fit.test.mjs) | `c2ee273d4c4682280ad6aff3c34c43d414e94459416687116a4437ab79af84b7` |
 | `package.json` | `01b850a3f15d32c452ee113c72f590769c33132ad6e6ced76046a6a41201d8d1` |
 
 Exact implementation validation results:
@@ -472,7 +472,7 @@ It mapped the terminal result to the existing queue rules.
 The proposal keeps the ranking defect open but trigger-only.
 It does not authorize a fourth attempt.
 
-The closeout updates `.agents/TODO.md`, `.agents/NEXT.md`, and both eval README files.
+The closeout updates `.agents/TODO.md`, [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), and both eval README files.
 The next ranked block is a new Raven capability-boundary diagnostic plan.
 Repository tooling remains monitor-only until its free Horizon probe returns `28`.
 The protocol-history box reopens only through triggers T1 to T4 in brief section 16.

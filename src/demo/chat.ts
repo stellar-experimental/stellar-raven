@@ -1,30 +1,16 @@
 /**
- * POST /playground/chat — the stateless SSE chat turn.
+ * POST /playground/chat serves one stateless SSE turn.
+ * Validate method, same-origin headers, authorization, and the bounded body
+ * before consuming the best-effort KV allowance or starting a model turn.
+ * The AI binding uses the configured gateway and the production tool contract.
  *
- * Gauntlet order: method → CSRF/origin (Origin must equal the request
- * origin; Sec-Fetch-Site, when present, must be "same-origin" — "same-site"
- * is rejected on purpose, the worker serves two same-site custom domains) →
- * auth (signed demo cookie, or the loopback-only dev bypass shared with
- * /mcp) → body validation (size-capped BEFORE parse; a malformed body must
- * not burn a throttle slot) → best-effort KV throttle. Only then does a
- * model turn start: streamText over the AI binding — routed through the AI
- * Gateway whose spend-limit rule is the mandatory account-level cost
- * backstop — with the two demo tools, the production
- * SERVER_INSTRUCTIONS + playground preamble as system prompt, and
- * fullStream translated to DemoFrame SSE events. The whole turn is bounded
- * by one abort signal: client disconnect (stream cancel) or the turn
- * timeout stops model + tool spend, not just frame delivery.
- * tool-start/tool-result frames are emitted by the tools themselves
- * (src/demo/tools.ts); here only token/step/done/error mapping remains
- * (part names re-verified against ai v7's TextStreamPart union: text-delta,
- * reasoning-delta, start-step, tool-error, abort, error, finish — all
- * unchanged from v6).
- * The switch below is over a discriminated union, so a renamed part is a type
- * error rather than a silent no-op. The demo tests use a model stub, so the
- * real AI tool loop runs without provider network access.
+ * Client disconnect and the whole-turn timeout share one abort signal.
+ * Tools emit their start/result frames; this module maps model stream parts.
+ * The discriminated TextStreamPart union makes unsupported names type errors.
+ * Tests use a model stub and require no provider network access.
  *
- * WORKER-ONLY MODULE: imports src/demo/tools.ts (→ src/executor/run.ts →
- * cloudflare:workers). Route coverage lives in test/smoke/server.test.ts.
+ * Worker-only: demo/tools.ts loads the Worker executor.
+ * Assembled route coverage lives in test/smoke/server.test.ts.
  */
 import { stepCountIs, streamText, type ToolSet } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
@@ -86,9 +72,8 @@ const DEV_SUBJECT = "dev-loopback";
 const TOOL_BUDGET_MESSAGE =
   "The demo hit its tool/step budget before the model produced a final answer. The trace above shows the completed tool work, but the answer may be incomplete; ask a narrower follow-up.";
 /**
- * Whole-turn ceiling.
- * Worst legitimate turn: 3 model steps + 1 sandbox execute; generous so it
- * only trips hung provider streams, not slow-but-live turns.
+ * Whole-turn ceiling for model streaming and tool execution.
+ * The shared abort signal also includes client disconnection.
  */
 const TURN_TIMEOUT_MS = 120_000;
 /**
@@ -260,7 +245,7 @@ async function runTurn(
     const workersai = createWorkersAI({
       binding: env.AI,
       // Gateway routing is mandatory. Spend and rate limits are account-side
-      // configuration; verify them live as described in ARCHITECTURE.md §7.
+      // configuration; verify them live as described in ARCHITECTURE.md operating limits.
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK),
       // Register one plugin for each wire format. OpenAI-compatible vendors
       // share one plugin, while Anthropic and Google use distinct plugins.

@@ -103,7 +103,7 @@ The mocked binding recorded zero calls. All 16 demo model-config tests passed.
 PR #639 changes the private, source-bundled gateway-core registry and carries a provider patch changeset.
 The private gateway-core package requires no separate public package release.
 
-Docs verification completed at `2026-09-09T02:48Z`; its report is `2026-09-08-docs-index-execution-astra.md`.
+Docs verification completed at `2026-09-09T02:48Z`; its report is [`2026-09-08-docs-index-execution-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-docs-index-execution-astra.md).
 All three source corrections pass. All three original production search triggers still reproduce.
 The latest completed crawl ended at `2026-09-08T12:03:10.118Z`, before both deployments.
 The configured midnight schedule conflicts with the observed noon start; the cause remains unknown.
@@ -136,12 +136,12 @@ Nine configured recurrence probes reproduced their findings. This does not mean 
 | sd-037 | Source-standard finding | Stellar protocol #1981 open | Last activity is stale-bot notice | State check confirms no maintainer action | Recheck after 2026-09-13; no keep-alive |
 | Thirteen verified findings | Individual original triggers | Filing preparation in progress | Independent review and exact dry runs remain required | Pending author report | File supported, nonduplicate findings only |
 
-The filing author report is `2026-09-08-filing-preparation-sol.md`.
+The filing author report is [`2026-09-08-filing-preparation-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-filing-preparation-sol.md).
 It supports twelve new issues and recommends no filing for sd-049.
 The coordinator independently read all twelve rendered bodies. Their source snapshots remain absent until the evidence commit is public.
 Pre-filing prose checks found an overbroad ll-030 absence claim, missing sk-022 cross-link, and sk-024 source attribution ambiguity.
 The author corrected those claims before independent filing review.
-Grok independently passed nine candidates and found three blockers in `2026-09-08-filing-independent-review-grok.md`.
+Grok independently passed nine candidates and found three blockers in [`2026-09-08-filing-independent-review-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-filing-independent-review-grok.md).
 The root confirmed that existing Docs issue #2561 already requests the sd-050 correction.
 Its author is `oceans404`; its state is open. The finding now records that issue as reported upstream.
 No duplicate issue or reminder comment was posted.
@@ -191,7 +191,7 @@ The source-parity monitor passes. This is not a Docs-first recovery recurrence o
 ## Own-repo todos
 
 The triage statement that NEXT.md was missing was incorrect.
-The file exists at `.agents/NEXT.md`; TODO.md uses a sibling-relative reference.
+The file exists at [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md); TODO.md uses a sibling-relative reference.
 Correct stale handoff statements without creating a duplicate file or inventing settled owner decisions.
 Reconcile ll-004 prose against its latest recurrence and a fresh safe listing check.
 Keep protocol-history, recovery, paid-QA, and exposure programs within their existing authority.
@@ -223,7 +223,7 @@ The isolated search advisory passed independent review and all checks in PR #137
 It merged as `f6d31dc07705bc16d83696fc234506534b1e2b5e` and deployed Worker Version `b8e5dd1d-d965-401d-92dd-96091639a1a7`.
 This later release used the approved #109 production-acceptance workflow. The maintenance snapshot above made no deployment.
 The seven production names passed exact before/after ranking and advisory checks. Issue #109 closed.
-Use `2026-09-08-search-advisory-closeout.md` and `2026-09-09-search-advisory-production-after.json` for the complete release evidence.
+Use [`2026-09-08-search-advisory-closeout.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-search-advisory-closeout.md) and [`2026-09-09-search-advisory-production-after.json`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-search-advisory-production-after.json) for the complete release evidence.
 Issue #124 retains its measured blockers and preserved worktree. No broader scoring repair deployed.
 
 New handoff #136 arrived after upstream skill PR #127 deployed.
@@ -234,7 +234,7 @@ Mainnet reports protocol 27. Upstream deployment run `34308521287` completed suc
 The finding remains active until a reviewed Raven source refresh passes its original trigger and retirement gates.
 No additional upstream correction is requested. The acknowledged result is https://github.com/stellar-experimental/stellar-raven/issues/136#issuecomment-5595645949.
 The root verified the posted body and author byte-for-byte. Handoff #136 remains open.
-Independent report: `2026-09-09-sk021-handoff-review-grok.md`.
+Independent report: [`2026-09-09-sk021-handoff-review-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-sk021-handoff-review-grok.md).
 
 The final active queue remains 70 findings: 67 reported upstream and three declined upstream.
 The remaining production and source gates stay in TODO. Paid QA remains unauthorized.

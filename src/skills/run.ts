@@ -12,7 +12,7 @@
  * (belt: unreachable once assertRunnersWired runs at provider build);
  * (6) execute with a recording sub-facade under a host deadline.
  *
- * The host owns the audit trail (research/skill-run-design.md §6). Each
+ * The host owns the audit trail (src/skills/README.md). Each
  * declared operation's facade function is
  * wrapped to append { op, ok, errorKind?, ms } to a ledger this module owns.
  * `calls` on the output, the error path's `error.details`, and the
@@ -46,8 +46,8 @@ import { nearestSkillId } from "./store.ts";
 import type { OpsFacade, SkillRunner } from "./runners/types.ts";
 
 /**
- * Host-side runner deadline (design §2): generous for ≤ 6 statically bounded
- * free calls, and independent of whether the outer executor's 60 s wall
+ * Host-side runner deadline; declared calls remain bounded by each runner.
+ * This deadline is independent of whether the outer executor's 60 s wall
  * clock covers host dispatch time (that outer timeout remains the hard stop).
  */
 export const RUNNER_DEADLINE_MS = 30_000;
@@ -75,7 +75,7 @@ const err = (
 
 /**
  * Build the per-run recording sub-facade: ONLY the runner's declared ops
- * (design §2 — even an exposed-but-undeclared op has no fn here and fails
+ * (src/skills/README.md — even an exposed-but-undeclared op has no fn here and fails
  * loudly), each wrapped to append to the host-owned ledger before returning
  * the untouched envelope. Namespace/fn naming mirrors the sandbox surface:
  * first id segment → service namespace, terminal segment → fn name.
@@ -157,7 +157,7 @@ function canonicalJson(value: unknown): string {
 }
 
 /**
- * Startup wiring assertion (design §5/§11 row 5) — called at provider build,
+ * Startup wiring assertion (src/skills/README.md) — called at provider build,
  * THROWS on any mismatch so the first execute fails loudly, never silently:
  *  - every registry key resolves to an emitted skill entry with runnable: true;
  *  - every manifest-runnable entry has a bundled runner;
@@ -225,7 +225,7 @@ export async function runSkill(
   const ledger: CallRecord[] = [];
   let outputSchemaOk = true;
 
-  /** Single exit point: every outcome logs one flat skill_run event (§8). */
+  /** Single exit point: every outcome logs one flat skill_run event. */
   const finish = (id: string, result: AdapterResult): AdapterResult => {
     logEvent("skill_run", {
       id,
@@ -333,7 +333,7 @@ export async function runSkill(
   // Expected-condition failure returned as data (ambiguity, soft-empty
   // anchor, anchor error): pass the envelope through, but the attribution is
   // host-owned — error.details carries the LEDGER's calls, whatever the
-  // runner put there (design §6).
+  // runner put there (src/skills/README.md).
   const runnerError = asErrorEnvelope(raw);
   if (runnerError) {
     return finish(

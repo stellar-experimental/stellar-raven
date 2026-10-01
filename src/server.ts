@@ -1,19 +1,11 @@
 /**
- * Worker entry — stateless remote MCP server (PLAN §1).
+ * Stateless Worker entry; ARCHITECTURE.md defines routes and authorization.
+ * Each /mcp request creates a fresh server through createMcpHandler.
+ * No Durable Object or server-side MCP session stores request state.
  *
- * A fresh McpServer is created per request and served over streamable HTTP at
- * /mcp via `createMcpHandler` from agents/mcp (research/codemode.md §6).
- * No Durable Objects; no session state.
- *
- * Auth (research/auth-workos.md): /mcp is wrapped by
- * @cloudflare/workers-oauth-provider — this server is its own OAuth 2.1
- * authorization server (opaque tokens in OAUTH_KV; /token, /register, and
- * the .well-known discovery docs come from the lib), with WorkOS AuthKit as
- * the upstream IdP behind /authorize + /callback (src/auth/workos.ts).
- * Two bypasses, checked BEFORE the provider:
- *  1. named API key — bearer credentials backed by OAUTH_KV;
- *  2. local dev — DEV_ALLOW_UNAUTHENTICATED=true from `.dev.vars` only, AND
- *     only on a loopback hostname (a deployed var is inert on the public domain).
+ * Named API-key and loopback-dev checks run before the OAuth provider.
+ * The provider owns tokens and clients; WorkOS authenticates the person.
+ * Only host code receives credentials and authorized grant properties.
  */
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
 import { createMcpHandler } from "agents/mcp";
@@ -90,7 +82,7 @@ export function resolveArtifactOwner(
   return undefined;
 }
 
-// Stateless: fresh McpServer per request (research/codemode.md §6). Used
+// Stateless: fresh McpServer per request (ARCHITECTURE.md). Used
 // both as the provider's /mcp apiHandler (token already validated there)
 // and directly for the two bypasses.
 export const mcpHandler = {

@@ -170,7 +170,7 @@ Only the skill index changed. The second index build produced the same bytes.
 The index SHA-256 is `6f7491771b2514e0e23fa4701c54a5f415717ff89bdea13a9b9aab16826360b1`.
 No generator, runtime code, threshold, or source pin changed in that repair.
 Astra medium independently reproduced the generator output in memory and confirmed the exact index hash.
-The bounded check is `2026-09-09-pin-index-check-astra.md`.
+The bounded check is [`2026-09-09-pin-index-check-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-09-pin-index-check-astra.md).
 CI must pass before merge. Production deployment still requires owner approval.
 
 PR #142 merged at `2026-09-09T17:04:43Z` as `9a3e1857b02870fc09d9469edf0a2917b807b8ed`.

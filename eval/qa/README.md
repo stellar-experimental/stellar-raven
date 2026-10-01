@@ -45,7 +45,7 @@ Categories (= directory names = `tags.category`): `protocol-core`, `soroban`, `t
 `assets-anchors-seps`, `defi-ecosystem`, `scf-grants-builders`, `compliance-rwa-payments`,
 `history-org-tokenomics`, `retail-consumer`, `edge-behavior`.
 
-Lanes never merge: the main battery, the canonical live lane (the 15-case live-data-canonical-v3 contract; historically named live-10 before the 2026-07-12 expansion), and the opt-in digest-supplement-2
+Lanes never merge: the main battery, the canonical live lane (the 15-case live-data-canonical-v3 contract), and the opt-in digest-supplement-2
 are separate scopes with separate denominators (`eval/EVALS.md`). The live contracts are frozen
 whole-file contracts — `eval/self-test.mjs` asserts contract name, ordered membership, and
 `caseContentDigest`; changing live case content requires a version bump and digest update.
@@ -143,7 +143,12 @@ Every gospel change (question, `golden.*`, judge-facing tags) goes through the
 npm run eval:qa:compile
 
 # Paid judge behavior self-test: seven judge calls; reports call count and total cost; no MCP server
-npm run eval:qa:selftest
+npm run eval:qa:selftest -- \
+  --runner-revision <commit> \
+  --claude-path <absolute-path> \
+  --expect-claude-binary-sha256 <sha256> \
+  --expect-claude-environment-sha256 <sha256> \
+  --out eval/qa/results/<stamp>-p6-selftest.json
 
 # Corpus lint (deterministic, offline)
 npm run eval:qa:lint                       # surface/manifest, numeric invariants, avoid phrasing,
@@ -283,8 +288,9 @@ The runner rejects every equals form, unknown flag, and stray argument before an
 `--ids` accepts only one spaced `--ids a,b,c` form.
 The runner rejects `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
 The `--judge-stored` mode rejects `--ids`; use `re-judge.mjs --ids` for stored rows.
-Use `--surface per-operation` for the isolated 50-operation architecture instrument
-(`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
+Use `--surface per-operation` for the isolated 60-operation architecture instrument: 18 Lumenloop, 30 Scout, and 12 Docs operations.
+[`plain-operation-harness.mjs`](plain-operation-harness.mjs) defines its operation contract.
+`compare-architecture-ab.mjs` compares its results. Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`
 for triage, the verdict's `{rubric, packVersion, promptSha256}` stamps, and the evidence-pack
@@ -515,7 +521,7 @@ Every push/PR (`.github/workflows/ci.yml`):
   `truth.verified` changed in the same diff with non-empty `evidence` + `rootCause` (score-only
   rationales rejected; `freshness-drift` allowed). Local/pre-push equivalent for every lane:
   `npm run eval:qa:lint -- --since <ref>`.
-- `eval:selftest` asserts the live v2 contracts (name, ordered membership, content digest).
+- `eval:selftest` checks `live-data-canonical-v3` and `live-digest-supplement-v2`: names, ordered membership, and content digests.
 
 CI deliberately does **not** run `eval:qa:selftest`. That command spawns the live `claude` CLI
 once per `SELF_TEST_CANDIDATES` entry — seven paid judge calls at the current candidate count —
@@ -524,6 +530,9 @@ so it is a manual paid gate owned by
 server, and it also checks 15 offline `promptSha256` fixtures, but it is not free: it prints
 `expected`, `actual`, `reportedCosts`, `missingCosts`, and `totalCostUsd`. Run it only when the
 judging rubric, prompt, evidence pack, or judge adapter changes.
+The wrapper requires a clean worktree at `--runner-revision` and all four identity flags shown above.
+It checks runner, executable, and environment identity before and after judging.
+Use a new `--out` path to retain the method record. Existing output or temporary output paths fail.
 
 The daily refresh workflow (`refresh.yml`) also runs `lint-corpus --stale`, so a `reverifyBy`
 date passing fires within 24 h, not on the next unrelated PR. Remedies are auditable either
@@ -608,8 +617,10 @@ Reviewers stay blind to desired score movement. Corpus-health results stay separ
 
 ## Judging rubric and score comparability
 
-`judge.mjs` grades factual agreement with the golden answer + keyFacts, one headless
-`claude -p --model claude-sonnet-5` call per grade. For non-trap cases, **correct** requires all
+`judge.mjs` grades factual agreement with the golden answer and keyFacts through the headless Claude CLI.
+The default judge model is `claude-sonnet-5`.
+The [judge-tier contract](#judge-tier-contract) selects one vote or an automatic three-vote panel.
+Explicit panels use two or three votes. For non-trap cases, **correct** requires all
 or all-but-trivial key facts and no wrong claim or fired avoid. Non-trap **partial** permits
 omissions or minor slips only when no avoid fires. For trap cases, **correct** requires every
 behavior required by the current golden and empty `wrongClaims` and `avoidMatches`. Trap
@@ -720,37 +731,11 @@ finalizes, and no resume spends a second paid call on it.
   passes (pairwise score disagreement 15.6%). Isolated single-run score movement at or below
   that scale is variance until confirmed by live transcript review or a repeated mechanism.
   Read `wrong` counts before `correct` counts; compare variants on the same sample.
-- **Denominator note**: the owned battery is **500 cases as of 2026-08-28** (499 as of 2026-08-19; the 2026-08-28 block added `q-scf-resolve-passport-superseded-slug`). The retrieval audit
-  added five service-semantics cases to the 492-case corpus. The current maintenance change added
-  two broad `scout.hackathonBrief` cases to the 497-case corpus. Commit `6e1f979` previously added two
-  Soroban cases to the 490-case corpus. The 2026-07-11 baseline remains a historical
-  484-case denominator, and the 490-case results remain 490-denominated. Neither denominator is
-  retroactively relabeled. The approximately 469-case pre-rebuild aggregates are also archival
-  (see the history doc). Per-id comparisons remain valid for continuing cases under the same
-  rubric/pack tuple.
-- **Deterministic sample history**: the sampler code and N=30 contract did not change. Six new
-  cases added three members to the Scout stratum and three to LumenLoop. Because the algorithm
-  uses even-spaced picks over each id-sorted service stratum, the 490-case compile retained 25
-  sample ids and replaced five: removed `q-defi-liquid-staking-whitespace`,
-  `q-hist-quantum-preparedness-plan`, `q-scf-current-hackathons-compare-live`,
-  `q-scf-rfps-hackathons-live`, and `q-ti-explain-repo-payload-status`; added
-  `q-defi-defindex-honest`, `q-hist-meridian-2026-corrected-venue`, `q-scf-current-round`,
-  `q-scf-sdf-bug-bounty`, and `q-ti-openzeppelin-relayer`. None of the six new cases itself
-  entered sample-30. The 490→492 expansion retained 24 sample ids and replaced six. Removed:
-  `q-protocol-27-cap-0071`, `q-protocol-quorum-slice-vs-quorum`, `q-raph-offramp-xlm-usdc`,
-  `q-sep-38-quotes`, `q-sor-build-target-wasm32v1`, and `q-sor-scval-conversion`; added:
-  `q-protocol-accounts-signers-thresholds`, `q-protocol-scp-consensus-algorithm`,
-  `q-raph-phishing-pending-claim`, `q-sep-41-token-interface`,
-  `q-sor-classic-dex-from-contract`, and `q-sor-sep41-transfer-vs-transferfrom`. Compare
-  aggregate headline runs across either the 484→490 or 490→492 boundary only on an explicit
-  common-id set, or disclose that sample membership changed.
-  The 492→497 compile retained 9 sample ids and replaced 21. Two new cases entered sample-30:
-  `q-gap-vet-pitch-vertical-null` and `q-ti-scout-refresh-cached-rows`. Use a common-id set for
-  comparisons across this boundary, or disclose the sample change.
-  The 497→499 compile retained 28 sample ids and replaced two. It removed
-  `q-edge-noinfo-exact-tvl-figure` and `q-scf-total-distributed`; it added
-  `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
-  across this boundary, or disclose the sample change.
+- **Denominators:** [lifecycle-registry.json](lifecycle-registry.json) owns current battery membership.
+  Use each artifact's selected IDs and content identity to establish its denominator.
+  The sampler allocates cases by service, sorts IDs within each service, and makes evenly spaced selections.
+  Corpus growth can change sample membership. Use matched IDs or disclose the change before comparing aggregates.
+  The [historical membership record](#corpus-and-sample-membership-record--2026-08-28) preserves earlier compilation boundaries.
 
 ### Measurement shares
 
@@ -1729,42 +1714,21 @@ Solo todos 1737 through 1748 track the accepted own-repository, golden-truth, an
 Verified finding `sk-017` already owns the Passkey Kit legacy-label issue, so this round does not
 duplicate it. Ledgers 828 through 831 retain the accepted monitor-only items.
 
-## Current baseline of record
+## Baseline records
 
-The 2026-07-11 post-rebuild baseline is recorded in
-[`reviewed/2026-07-super-corpus-baseline.md`](./reviewed/2026-07-super-corpus-baseline.md).
-It ran the designed deterministic headline sample-30 plus the separately denominated canonical
-live (live-data-canonical-v3, then 10-case) and digest-2 contracts with `claude-sonnet-5` answering and judging under v2.4/p3.
-Results stamps: `2026-07-11T15-36-44-variantA.json`,
-`2026-07-11T15-50-19-variantA.json`, and `2026-07-11T15-52-51-variantA.json`.
-Raw results were 8C/18P/4W, 8C/2P/0W, and 2C/0P/0W respectively; live review calibrated the
-canonical lane to 9C/1P/0W. Results JSONs remain local-only evidence.
+The [headline baseline record](reviewed/2026-07-super-corpus-baseline.md) owns the sample-30 baseline and its separate diagnostic results.
+Its canonical live lane used `live-data-canonical-v2`, with 10 cases.
+The [canonical live baseline](reviewed/2026-07-12-live-v3-baseline.md) owns the 15-case `live-data-canonical-v3` baseline.
+Compare aggregate scores only within the same contract and denominator.
+Use matched case IDs and content for comparisons across contracts.
 
-The 2026-08-30 same-100 five-track run above is a later diagnostic checkpoint. It is not a
-checkpoint against this sample-30 headline baseline, and it does not replace this baseline.
+The [tier-interleave review](reviewed/2026-07-11-tier-interleave-round.md) records a headline checkpoint.
+The [answering-model review](reviewed/2026-07-12-answering-model-ab.md) records a separate model comparison.
+These records do not change the baseline contract or authorize a new collection.
 
-The most recent checkpoint against this baseline is the 2026-07-11 tier-interleave round
-([`reviewed/2026-07-11-tier-interleave-round.md`](./reviewed/2026-07-11-tier-interleave-round.md),
-stamps `2026-07-11T21-44-47-variantA.json` headline, `2026-07-11T21-55-31-variantA.json` canonical
-live lane (then 10-case), `2026-07-11T21-59-10-variantA.json` digest-2; same v2.4/p3 + `claude-sonnet-5` contract and
-the same 30 sample ids). Raw were 12C/14P/4W, 10C/0P/0W, and 0C/2P/0W; reviewed (re-judging every
-flip) were 12C/14P/4W, 10C, and 2C — 5 confirmed stable gains and 2 confirmed regressions vs the
-baseline headline. The super-corpus baseline above remains the baseline of record; the tier-interleave
-round is a checkpoint, not a re-baseline.
+## Re-judge stored results
 
-The canonical live-data lane moved to the frozen 15-case `live-data-canonical-v3` contract on
-2026-07-12 (the v2 ten carried byte-identical under an independent projection digest, plus five
-behavioral additions). Its baseline of record is
-[`reviewed/2026-07-12-live-v3-baseline.md`](./reviewed/2026-07-12-live-v3-baseline.md)
-(stamp `2026-07-12T08-04-12-variantA.json`: raw 11C/3P/1W, reviewed 12C/2P/1W; carried-ten
-reviewed 9C/1P). v3 aggregates are 15-case-denominated and never compared to v2's 10-case
-aggregates; per-id comparison stays valid for the carried ten. A 2×3 answering-model A/B
-(Opus 4.8 / Fable 5 / Sonnet-5 control, two replicates each, blind cross-vendor adjudication)
-is recorded in
-[`reviewed/2026-07-12-answering-model-ab.md`](./reviewed/2026-07-12-answering-model-ab.md) —
-verdict inconclusive: zero strict adjudicated recoveries for either stronger arm, so the
-persistent partial mass is not simply answering-model-bound and no default-model change follows.
-Re-judges now persist as `meta.resultSchema: "qa-rejudge-v1"` artifacts. They do not stamp
+Re-judges persist as `meta.resultSchema: "qa-rejudge-v1"` artifacts. They do not stamp
 `qa-five-track-v1` or emit T1 through T5. Their `attempts.judgeCalls[]` records panel votes rather
 than QA method attempts. Use `eval/qa/re-judge.mjs <results> --ids a,b`
 or `--flips-vs <baseline-results>` re-judges identical saved input behind casesSha256 identity
@@ -1784,19 +1748,16 @@ failure records a failed guard with `attestationCompleted: false` and keeps the 
 Pin the corpus revision when the battery has moved since collection — otherwise the identity
 guard compares saved rows against today's working tree and refuses.
 
-**Corpus pinning is not pack identity.** `--cases-ref` fixes only the case snapshot. The guard
-also compares the judge tuple (model / rubric / pack), and the evidence pack is currently `p6`
-while the 2026-08-14 artifacts were collected under `p3`. That mismatch refuses on its own, so
-this example is necessarily a **non-identical** re-judge — it produces a loudly labeled side
-artifact, and its verdicts are NOT identical-input evidence and can never be cited as judge
-variance:
+**Corpus pinning is not pack identity.** `--cases-ref` fixes only the case snapshot.
+The guard also compares the judge model, rubric, and pack. The current pack is `p6`.
+A saved `p3` artifact does not match a `p6` re-judge, even with the same cases.
+The following dry run records a non-identical comparison. Its verdicts cannot establish identical-input judge variance.
 
 ```sh
-# NON-IDENTICAL re-judge of two rows: corpus pinned to the collecting commit, but the pack
-# moved p3 → p5 since collection. Paid: one judge call per row.
-node eval/qa/re-judge.mjs eval/qa/results/2026-08-14T03-56-23-variantA.json \
-  --ids q-pc-sponsored-reserves,q-protocol-operation-types-list \
-  --cases-ref 7072688 \
+# Non-identical re-judge: the saved pack is p3 and the current pack is p6.
+node eval/qa/re-judge.mjs eval/qa/results/<stamp>-variantA.json \
+  --ids <id-a,id-b> \
+  --cases-ref <collecting-commit> \
   --allow-non-identical \
   --dry-run
 ```
@@ -1806,11 +1767,8 @@ Use `--max-budget-usd <usd> --claude-path <path>` first.
 Then add `--expect-agent-binary-sha256 <sha256>` and
 `--expect-agent-environment-sha256 <sha256>`.
 
-Without `--allow-non-identical`, the dry run reports `"wouldRefuse": true` with the offending
-tuple (`packVersion: "p3"` vs `"p5"`), and a real run fails with
-`refusing non-identical re-judge: judge tuple differs (…)`. Drop `--allow-non-identical` only
-when the source artifact's tuple still matches the current one — then the re-judge is genuinely
-identical-input.
+Without `--allow-non-identical`, a tuple mismatch reports `"wouldRefuse": true` during a dry run.
+A paid run refuses before judging. Remove the override only when the source and current tuples match.
 
 **Effective score and agreement.** `re-judge.mjs` compares the **effective** score — `judgeScore`
 when a verdict is a consistency error, the recorded score otherwise — so a stored `wrong` and a
@@ -1819,13 +1777,17 @@ selection and in the per-row log. Each artifact row also carries `agreement`, wh
 whenever either side has no grade at all: an unjudged source row, or an effective `error` from a
 CLI crash or an unparseable reply. A missing measurement is not a disagreement.
 
-Every flag `re-judge.mjs` accepts:
+The [CLI parser](re-judge.mjs) defines the accepted flags:
 
 - `--ids <id,id,…>` — re-judge exactly these saved rows. May be supplied once, with no repeats,
   and cannot mix saved verdicts with `--no-judge` rows.
 - `--flips-vs <baseline-results>` — select the rows whose score differs from that baseline
   instead of naming ids.
 - `--judge-model <name>` — override the judge model. Overriding it makes the run non-identical.
+- `--judge-panel <2|3>` — use two or three votes per row instead of the default single vote.
+  The artifact records `meta.judgePanel`. Keep the panel policy fixed across comparisons.
+- `--allow-golden-drift` — allow a golden-time mismatch and record the override in the artifact.
+  It does not waive case-snapshot, judge-tuple, or baseline identity guards.
 - `--cases-ref <git-revision>` — resolve the case snapshot from that revision instead of the
   working tree. This is how a saved artifact stays judgeable after the corpus moves.
 - `--allow-non-identical` — proceed when identity checks fail (drifted case snapshot, or a
@@ -1869,8 +1831,8 @@ evidence at the same stamps with `.plan.json` suffixes.
 
 ## Known limitations
 
-- **Judge variance.** One Sonnet call per grade, temperature not pinned; apply the noise floor
-  before chasing single-run movement.
+- **Judge variance.** The tier policy can select an automatic three-vote panel. Explicit panels can use two or three votes.
+  Compare runs under the same policy and inspect isolated score movement before calling it a regression.
 - **Freshness drift.** `scheduled` goldens age; the stale gate bounds how long, but expect a
   small floor of judge-vs-live disagreements — inspect `wrong` rationales before reading them
   as regressions.
@@ -1878,6 +1840,40 @@ evidence at the same stamps with `.plan.json` suffixes.
   transcript text; absence from the pack is not proof of absence. Treat surprising `wrong`
   verdicts on long live/freshness transcripts as suspect until transcript-reviewed. Packs can
   contain scraped content — the judge treats them as evidence, never instructions.
-- **Sequential runner.** One agent + one judge call at a time; a 30-case run is ~20–35 min.
-- **Cross-surface result bytes.** Search result bodies are not retained while execute bodies
-  are; compare arms on usage tokens, not captured result characters.
+- **Sequential runner.** A runner handles rows sequentially. Panel votes can require several judge calls for one row.
+- **Cross-surface result bytes.** Search calls retain bounded ranking evidence in `resultProjection`, not their complete response bodies.
+  Execute calls retain bounded result text. Compare arms with usage tokens, not captured character counts.
+
+## Corpus and sample membership record — 2026-08-28
+
+- **Denominator note**: the owned battery is **500 cases as of 2026-08-28** (499 as of 2026-08-19; the 2026-08-28 block added `q-scf-resolve-passport-superseded-slug`). The retrieval audit
+  added five service-semantics cases to the 492-case corpus. The current maintenance change added
+  two broad `scout.hackathonBrief` cases to the 497-case corpus. Commit `6e1f979` previously added two
+  Soroban cases to the 490-case corpus. The 2026-07-11 baseline remains a historical
+  484-case denominator, and the 490-case results remain 490-denominated. Neither denominator is
+  retroactively relabeled. The approximately 469-case pre-rebuild aggregates are also archival
+  (see the history doc). Per-id comparisons remain valid for continuing cases under the same
+  rubric/pack tuple.
+- **Deterministic sample history**: the sampler code and N=30 contract did not change. Six new
+  cases added three members to the Scout stratum and three to LumenLoop. Because the algorithm
+  uses even-spaced picks over each id-sorted service stratum, the 490-case compile retained 25
+  sample ids and replaced five: removed `q-defi-liquid-staking-whitespace`,
+  `q-hist-quantum-preparedness-plan`, `q-scf-current-hackathons-compare-live`,
+  `q-scf-rfps-hackathons-live`, and `q-ti-explain-repo-payload-status`; added
+  `q-defi-defindex-honest`, `q-hist-meridian-2026-corrected-venue`, `q-scf-current-round`,
+  `q-scf-sdf-bug-bounty`, and `q-ti-openzeppelin-relayer`. None of the six new cases itself
+  entered sample-30. The 490→492 expansion retained 24 sample ids and replaced six. Removed:
+  `q-protocol-27-cap-0071`, `q-protocol-quorum-slice-vs-quorum`, `q-raph-offramp-xlm-usdc`,
+  `q-sep-38-quotes`, `q-sor-build-target-wasm32v1`, and `q-sor-scval-conversion`; added:
+  `q-protocol-accounts-signers-thresholds`, `q-protocol-scp-consensus-algorithm`,
+  `q-raph-phishing-pending-claim`, `q-sep-41-token-interface`,
+  `q-sor-classic-dex-from-contract`, and `q-sor-sep41-transfer-vs-transferfrom`. Compare
+  aggregate headline runs across either the 484→490 or 490→492 boundary only on an explicit
+  common-id set, or disclose that sample membership changed.
+  The 492→497 compile retained 9 sample ids and replaced 21. Two new cases entered sample-30:
+  `q-gap-vet-pitch-vertical-null` and `q-ti-scout-refresh-cached-rows`. Use a common-id set for
+  comparisons across this boundary, or disclose the sample change.
+  The 497→499 compile retained 28 sample ids and replaced two. It removed
+  `q-edge-noinfo-exact-tvl-figure` and `q-scf-total-distributed`; it added
+  `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
+  across this boundary, or disclose the sample change.

@@ -1,27 +1,18 @@
 /**
- * Execute runner — wires @cloudflare/codemode's DynamicWorkerExecutor
- * (research/codemode.md §2) to the sandbox surface from providers.ts.
+ * Worker-only execution runner; see ARCHITECTURE.md for the output contract.
+ * @cloudflare/codemode imports cloudflare:workers. Worker paths such as
+ * src/server.ts and src/demo/tools.ts can load this module; plain Node cannot.
+ * Keep it outside the runtime imports of src/mcp/tools.ts.
  *
- * WORKER-ONLY MODULE: `@cloudflare/codemode`'s main entry imports
- * `cloudflare:workers`, so this file must only be imported from src/server.ts
- * (never from src/mcp/tools.ts, which unit tests load under plain Node).
- * The import works fine inside the Worker — verified against 0.4.2 — so we
- * use the shipped executor rather than a hand-rolled loader: it already does
- * module synthesis, console capture, per-namespace Proxy dispatch, JSON+
- * binary codec, eager isolate disposal, and `globalOutbound: null`.
+ * Each execute call gets a fresh Dynamic Worker through LOADER.
+ * globalOutbound: null blocks model-code network access; the timeout is 60s.
+ * The executor interface does not expose cpuMs or subRequests limits.
+ * Console output and the returned value cross separate redacted boundaries.
  *
- * Sandbox contract per call:
- *  - fresh isolate via env.LOADER.load() (one-shot; billing note PLAN §1)
- *  - globalOutbound: null → fetch()/connect() throw (secrets stay host-side)
- *  - 60s wall-clock timeout inside the sandbox
- *  - result = the value returned by the model's async arrow function
- *  - console.* buffered and returned as logs
- *
- * Output hygiene (PLAN §4): per-call results are already redacted in the
- * providers; the FINAL result + logs are redacted again and truncated to
- * ~6k tokens with an actionable footer before crossing the tool boundary.
- * Known limitation: codemode's executor doesn't expose Worker `limits`
- * ({cpuMs, subRequests}) — we rely on its timeout + plan defaults.
+ * The final result receives truncation and reserved-marker escaping.
+ * Truncation or source metadata adds a bounded source-basis footer.
+ * Only a truncated result with an owner can receive a stored artifact.
+ * Logs and errors have independent model-output caps and are not persisted.
  */
 import { tracing } from "cloudflare:workers";
 import { DynamicWorkerExecutor } from "@cloudflare/codemode";
@@ -347,7 +338,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     // Count of skill.run dispatches this run (attempted, whatever the
     // outcome) — stamped on the codemode.execute span below so runnable-skill
     // usage is visible in the trace waterfall; per-run outcomes live in the
-    // skill_run log events the host dispatch emits (design §8).
+    // skill_run log events the host dispatch emits (src/skills/README.md).
     let skillRuns = 0;
     const opLedger: OpLedgerCall[] = [];
     let artifactReadStats: ArtifactReadStats = { count: 0, bytes: 0 };
@@ -376,7 +367,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       codemodeDiscovery: options.codemodeDiscovery
     });
     // Custom span because the Worker Loader isolate is NOT auto-instrumented
-    // (research/observability-cloudflare.md §2) — without it the sandbox run
+    // (ARCHITECTURE.md) — without it the sandbox run
     // is invisible in the trace waterfall between the handler span and the
     // adapter fetch spans. No-op when tracing is off/unsampled; ends on throw.
     const outcome = await tracing.enterSpan("codemode.execute", async (span) => {
@@ -532,8 +523,8 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
   };
 }
 
-// Serialized once per isolate — each search call injects ~180KB of spec JSON
-// into its sandbox source (upstream re-stringifies per call; identical bytes).
+// Cache serialization for the experimental spec-search runner only.
+// The production codemode.spec helper uses resolved-object provider RPC.
 let cachedSerializedSpec: string | undefined;
 function getSerializedSpec(): string {
   cachedSerializedSpec ??= serializeSpecForSandbox(superSpecJson);
@@ -541,18 +532,11 @@ function getSerializedSpec(): string {
 }
 
 /**
- * The code-shaped spec-search runner — NOT registered as a top-level tool
- * since ADR-0001 (research/decisions/0001-search-tool-shape.md): the shipped
- * `search` is the host-side ranked query, and discovery-in-code lives inside
- * `execute` (codemode.spec()/search/catalog). Kept so a code-shaped tool can
- * be re-exposed for future A/Bs (eval/qa/run-qa.mjs --search-tool).
- *
- * Mirrors openApiMcpServer's search tool:
- * LLM code wrapped by createSpecSandboxCode (codemode.spec() over the super
- * spec, in-sandbox truncation), executed in a fresh Dynamic Worker with NO
- * providers (search is read-only over spec data; no service calls, no
- * secrets), result passed through sandboxResponseText host-side. Logs are
- * deliberately dropped — upstream's search ignores them too.
+ * Experimental spec-search runner for explicit evaluation callers.
+ * Production search uses host-ranked catalog queries under ADR-0001.
+ * This runner injects the serialized spec into a networkless Dynamic Worker
+ * with no service providers. It applies spec-sandbox output shaping and drops
+ * console logs. It is not registered as a production MCP tool.
  */
 export function createSpecSearchRunner(env: Env): SpecSearchRunner {
   const executor = new DynamicWorkerExecutor({

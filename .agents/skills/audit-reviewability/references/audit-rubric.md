@@ -14,6 +14,7 @@ Use this rubric to classify candidates. A signal starts an inspection. Evidence 
 8. Human work and agent instructions
 9. Candidate searches
 10. Finding decision table
+11. Why these rules exist
 
 ## Core invariants
 
@@ -257,3 +258,49 @@ before reporting them.
 | Only a phrase or length signal exists | Do not report a finding |
 
 Account for every candidate. Record uncertain cases as risks rather than silently deleting them.
+
+## Why these rules exist
+
+The rules come from practitioner reports about generated documentation in pull requests and from
+code-review research. The reports are testimony, not controlled studies. The studies cover
+particular organizations and samples. Neither justifies a universal line limit or comment ratio.
+
+Principles derived from that evidence:
+
+1. Reviewer attention is the scarce resource. Comment count is only one consumer of it.
+2. Permanent artifacts are poor scratch memory. Rejected alternatives left in them act as negative
+   context for later readers and model passes.
+3. Generation moves the bottleneck to verification. Small, self-contained changes protect review
+   quality better than faster summaries of large changes.
+4. Uneven commentary creates false salience. Heavily documented recent code draws more weight than
+   it deserves.
+5. Readability and tests are complementary controls.
+6. Artifact quality is provenance-independent.
+
+Tensions to keep, not resolve to an extreme:
+
+- More context can help a model. Keep it only when it is verified, durable, canonical, and
+  reviewable by humans.
+- Deleting all comments reduces noise, but it can erase contracts, niche knowledge, and human work.
+  Classify each comment.
+- Tests and live checks reduce reliance on source reading. They cannot prove every requirement or
+  replace accountable human understanding.
+- Hard limits protect review throughput. They are intake gates, not semantic judgments.
+- Style markers correlate with generated text, and they also produce false accusations against
+  human writers. Audit concrete harm.
+- Some historical facts matter. Put them in changelogs or ADRs, not in current-state comments.
+
+References:
+
+- [PEP 8](https://peps.python.org/pep-0008/): contradictory comments are worse than no comments.
+- [Google small-change guide](https://google.github.io/eng-practices/review/developer/small-cls.html)
+  and [Modern code review at Google](https://research.google/pubs/modern-code-review-a-case-study-at-google).
+- [Characteristics of useful code reviews (Microsoft)](https://www.microsoft.com/en-us/research/publication/characteristics-of-useful-code-reviews-an-empirical-study-at-microsoft):
+  changes that span more files receive a lower share of useful comments.
+- [Code-comment inconsistency (ICPC 2019)](https://dl.acm.org/doi/10.1109/ICPC.2019.00019).
+- [More Code, Less Reuse](https://doi.org/10.1145/3793302.3793622): more redundancy in
+  agent-generated pull requests in the studied sample.
+- [Accretive Editing](https://justindfuller.com/programming/accretive-editing): replace obsolete
+  prose instead of appending a correction.
+- The practitioner discussion:
+  [Hacker News item 49337050](https://news.ycombinator.com/item?id=49337050).

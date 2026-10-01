@@ -12,12 +12,9 @@ permissions:
   contents: read
 
 jobs:
-  # Server-side backstop for the pre-commit hook (scripts/scan-secrets.mjs).
-  # Runs on every push/PR regardless of GitHub plan — unlike GitHub push
-  # protection, which needs paid Secret Protection on private repos. Once this
-  # repo is public, GitHub's native secret scanning (+ .github/secret_scanning.yml)
-  # layers on top of this. Zero-dep: no npm install, full history checkout so it
-  # can scan what actually landed.
+  # The public repository uses GitHub secret scanning and push protection.
+  # The local hook and this CI job also run scripts/scan-secrets.mjs.
+  # This job needs no npm installation and scans all tracked files.
   secrets:
     runs-on: ubuntu-latest
     steps:
@@ -92,13 +89,10 @@ jobs:
       # Offline enforced (miniflare outboundService wall) — auth/keys are
       # test-only fakes from its config, so no repo secrets are needed.
       - run: npm run test:smoke
-      # Deterministic eval gates (eval/EVALS.md): the grader's own fixture suite
-      # (eval/lib/*.mjs is not covered by vitest) + the routing gate — legacy 338
-      # within ±1% of eval/gates.json, skills lane top-1 at/above its floor.
-      # Both offline: searchCatalog over the committed manifest, no live services.
-      # (`eval:qa:selftest` is deliberately NOT here: the judge self-test spawns
-      # the live `claude` CLI to grade fixtures, so it is a run-evals manual gate,
-      # not an offline CI step — see .agents/skills/run-evals/SKILL.md.)
+      # Offline evaluation checks include the grader fixtures and three routing gates.
+      # eval/gates.json owns the legacy, skills, and holdout thresholds.
+      # The judge self-test uses the live Claude CLI and stays outside CI.
+      # See .agents/skills/run-evals/SKILL.md for its manual gate.
       - run: npm run eval:selftest
       - run: npm run eval:qa:lint -- --stale --enforce-floors
       - run: npm run eval:qa:register -- --check
@@ -117,16 +111,11 @@ jobs:
       # Generated artifacts must match their sources exactly (they are rebuilt,
       # never hand-edited). op-classes reads the freshly-rebuilt
       # catalog/manifest.json (so it runs after build-catalog).
-      # Deliberately NOT gated here: src/og.ts and src/fonts.ts. Both are
-      # committed generated artifacts, but their generators fetch IBM Plex from
-      # github.com/google/fonts at unpinned URLs and shell out to ImageMagick,
-      # so gating would trade a flaky network dependency for staleness in a
-      # social-preview image and a font blob — cosmetic surfaces with no policy,
-      # data, or exposure impact. Consequence to accept knowingly: an edit to
-      # scripts/lib/dither-globe.mjs regenerates the gated globes while og.ts
-      # keeps the old one, so /og.png stops mirroring the playground backdrop
-      # its own header claims to match. Rerun `npm run site:og && npm run
-      # site:fonts` by hand when touching the globe or FACES list.
+      # Font and social-image generation use unpinned remote font sources.
+      # site:fonts fetches Google Fonts CSS and font bytes.
+      # site:og downloads GitHub fonts and uses ImageMagick.
+      # Their operator-generated outputs stay outside the CI byte-sync gate.
+      # Regenerate og.ts after globe changes and fonts.ts after FACES changes.
       - name: generated artifacts in sync
         run: |
           node scripts/build-catalog.mjs

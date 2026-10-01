@@ -5,11 +5,12 @@ Four things live here. Keep them separate.
 | path | holds | lifetime |
 |---|---|---|
 | `skills/` | repeatable task workflows (`<name>/SKILL.md`) | durable |
-| `TODO.md` | the own-repo work queue | until each item is done |
-| `NEXT.md` | the ranked handoff for the next work block | until that block is done |
-| `rounds/` | one dated ledger per multi-lane round | durable record |
+| `model-roster.md` | the map from `AGENTS.md` model tiers to exact model IDs | durable; update when a CLI catalog changes |
+| `TODO.md` | the own-repo work queue, its priorities, and open owner decisions | until each item is done |
+| `rounds/` | one dated ledger per multi-lane round | until reconciliation; retain only cited evidence or a unique durable decision |
 
-`.claude/skills` is a committed symlink to `skills/`. Codex scans `skills/` repo-scoped.
+`.claude/skills` is a committed symlink to `skills/`. Codex scans `skills/` repo-scoped. Each skill
+is a plain-Markdown runbook, so any agent can read it directly.
 
 ## Why these are files
 
@@ -27,7 +28,19 @@ Two consequences follow.
 ## Where a given note goes
 
 - Upstream service defect → `improvements/<collection>/` (see `improvements/README.md`).
-- Own-repo fix, gap, or follow-up → `TODO.md`.
+- Own-repo fix, gap, follow-up, or owner decision → `TODO.md`.
 - Evidence from a dated investigation → `research/audits/` or `eval/qa/reviewed/`.
-- The working ledger of a round in progress → `rounds/<YYYY-MM-DD>-<slug>.md`.
+- The working ledger of a round in progress → `rounds/<YYYY-MM-DD>-<slug>.md` (see
+  `rounds/README.md`).
 - A durable design decision → `research/decisions/`.
+
+## Retention
+
+- Keep one ledger while a round runs.
+- At closure, move open work to `TODO.md` and durable rules to the nearest current guide or ADR.
+- Keep a dated ledger only while a current artifact needs its evidence.
+- Keep a raw report only when a current artifact cites it or needs it to interpret retained evidence.
+- Delete other briefs, intermediate reviews, raw outputs, and completed ledgers after reconciliation.
+- A link from another historical record does not establish a retention need.
+- Preserve historical content through Git; do not rewrite it to describe current tools.
+- Record the retained evidence and its current consumer in the round's Outcome section.

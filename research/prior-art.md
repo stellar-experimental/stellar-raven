@@ -353,7 +353,7 @@ can vanish (checkpoint if stateful).
   (passIf/failIf/inconclusiveIf/canonicalFacts/discriminator) and `skillsAny` labels using our
   ecosystem-skill names; `boxy.json` is a 21-question live-data discrimination set
   (`liveSource: true`). Their question *content* was already reconciled into the 538 upstream
-  (see `eval/corpus/raven-next/research/golden/_meta/_prior-art/`); the rubric machinery, skill
+  (see [`eval/corpus/raven-next/research/golden/_meta/_prior-art/`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/corpus/raven-next/research/golden/_meta/_prior-art/)); the rubric machinery, skill
   labels, and 8 still-deferred candidates remain unconsumed (Solo todo 818). Plus
   `jutsu_stellar_questions_export/` (real user questions; already mined upstream into +144
   goldens). The raw deduped pool was **removed** from this repo for privacy (it contained

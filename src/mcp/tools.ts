@@ -13,12 +13,11 @@
  *                imports @cloudflare/codemode (→ cloudflare:workers),
  *                which plain-Node vitest cannot load; without a runner
  *                the tool degrades to an error-as-data explanation.
- *                Errors never cross the tool boundary as throws (PLAN §4).
+ *                Errors never cross the tool boundary as throws (ARCHITECTURE.md).
  *
- * The `execute` description mirrors upstream's REQUEST_TYPES template
- * (node_modules/@cloudflare/codemode/dist/mcp.js), adapted to the
- * multi-service super spec; deltas are documented in
- * research/super-spec-design.md §5.
+ * The execute description uses the upstream REQUEST_TYPES structure with
+ * manifest-backed service helpers. ARCHITECTURE.md defines the spec RPC and
+ * output contract; src/skills/README.md defines runnable skill behavior.
  */
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/server";
@@ -228,13 +227,10 @@ export const executeInputSchema = {
     )
 };
 
-// Runnable-skill sentences (research/skill-run-design.md §11 row 13) — one
-// each in SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION, SERVER_INSTRUCTIONS, and
-// the search nextSteps text below. Leave-with-the-feature rule: if the
-// runnable set ever returns to zero, those sentences leave in the SAME change
-// (ADR-0003 spirit — consumers are never told about, and never sold, what
-// the gateway cannot do). Exported (with EXECUTE_DESCRIPTION) so the /demo
-// playground drives the exact production tool contract.
+// Runnable helpers must describe the manifest's runnable set consistently
+// across tool descriptions, SERVER_INSTRUCTIONS, and search nextSteps.
+// Remove that guidance if the set is empty; ADR-0003 forbids absent surfaces.
+// The Playground uses the same exported tool contract.
 // One official upstream documentation URL per source family, appended to the
 // END of both tool descriptions.
 //
@@ -479,7 +475,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       const runExecute = options.runExecute;
       if (!runExecute) {
         // No runner injected (plain-Node tests / misconfigured server):
-        // error as data, never a throw (PLAN §4).
+        // error as data, never a throw (ARCHITECTURE.md).
         logEvent("execute_unavailable", { codeChars: args.code.length });
         return {
           isError: true,

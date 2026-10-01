@@ -7,7 +7,7 @@ Status: complete
 ## Scope
 
 This round records the decisions from the Ask Matt review and the following document grill.
-It resolves two owner-blocked items in `.agents/NEXT.md`.
+It resolves two owner-blocked items in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 The round makes no production routing change. It authorizes no paid eval or deployment.
 
@@ -116,7 +116,7 @@ replaced it. No Grok output informed this decision.
 ## Verification
 
 Terra high implemented the v2 evaluator and contract pins. Its report is
-`.agents/rounds/2026-09-03-owner-decisions/implementation-terra.md`.
+[`.agents/rounds/2026-09-03-owner-decisions/implementation-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-owner-decisions/implementation-terra.md).
 
 The Fable repository review did not start. Its approval covered only the bounded summary, so no
 private repository content was sent. A separate local Sol high agent completed the implementation
@@ -128,8 +128,8 @@ unchanged in one v2 boundary role. The closure review returned `PASS` with no op
 
 Review records:
 
-- `.agents/rounds/2026-09-03-owner-decisions/review-sol.md`
-- `.agents/rounds/2026-09-03-owner-decisions/review-sol-closure.md`
+- [`.agents/rounds/2026-09-03-owner-decisions/review-sol.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-owner-decisions/review-sol.md)
+- [`.agents/rounds/2026-09-03-owner-decisions/review-sol-closure.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-owner-decisions/review-sol-closure.md)
 
 The final v2 diagnostic wrote the local trace
 `eval/results/protocol-history-2026-09-03T14-39-45-624Z.json` and returned the expected diagnostic

@@ -2,11 +2,10 @@
 
 ## Principle
 
-This MCP server's own tuning ceiling is limited. But running evals against it gives
-outsized leverage for **discovering gaps and errors in the upstream surfaces and
-provider package it depends on**. From now on, a primary artifact of every eval run is a recorded,
-evidence-backed improvement recommendation set for those services. This directory is
-that collection.
+Tuning this MCP server alone has a low ceiling. Evals against it are better at **finding gaps and
+errors in the upstream surfaces and the provider package that Raven depends on**. A primary
+artifact of every eval run is a set of evidence-backed improvement recommendations for those
+services. This directory holds that set.
 
 ## Collections
 
@@ -17,11 +16,10 @@ that collection.
 - `stellar-docs/` — findings about the Stellar Docs search surface (Algolia index):
   ranking, tokenization, vocabulary coverage. Docs-content findings also belong
   here when the indexed source content is stale, ambiguous, or missing a current
-  explanation needed by grounded agents (for example `sd-007`). As of 2026-07-09 we
-  hold operator Algolia credentials (write / crawler / analytics — see
-  `research/services/stellar-docs-algolia.md`), so some `stellar-docs` findings now have
-  a **direct-remediation** path in addition to filing upstream; see "Resolution paths"
-  below for which findings that applies to and the bar it must clear.
+  explanation needed by grounded agents (for example `sd-037`). Raven's operator holds Algolia
+  credentials (write, crawler, and analytics; see [`docs/stellar-docs.md`](../docs/stellar-docs.md)).
+  Some `stellar-docs` findings therefore have a **direct-remediation** path in addition to filing
+  upstream. "Resolution paths" below says which findings qualify and the bar they must clear.
 - `skills/` — findings about the **upstream skill sources** pinned in
   `ecosystem-skills/MANIFEST.json`. Recommendations target the source repos. Bodies are not
   vendored here (they are fetched from the pinned commit and hash-verified), so there is no
@@ -86,7 +84,7 @@ evidence:
 ## Upstream filing channels
 
 `reported-upstream` means a GitHub issue (or equivalent) exists with the service owner.
-Known channels (issue access confirmed 2026-07-09):
+Known channels:
 
 - `stellar-light-scout/` and `skills/` (Scout-sourced) findings → the Stellar-Light org:
   - <https://github.com/Stellar-Light/stellarlight> — the discovery-layer service behind
@@ -100,7 +98,7 @@ Known channels (issue access confirmed 2026-07-09):
   <https://github.com/stellar/stellar-docs>; pure Algolia ranking/tokenization findings may still
   need search-owner triage when that repository cannot plausibly own the behavior.
 - `lumenloop/` API/content findings → <https://github.com/lumenloop/lumenloop-backend>
-  (authenticated issue access confirmed 2026-07-13). Directory-record corrections belong in
+  (authenticated issue access). Directory-record corrections belong in
   <https://github.com/lumenloop/stellar-ecosystem-db>; skill-content findings remain in
   <https://github.com/lumenloop/lumenloop-skills>. Record the exact issue URL in the finding.
 - `workers-ai-provider/` findings → <https://github.com/cloudflare/ai>.
@@ -114,8 +112,8 @@ issue opens with an automated-content notice and a durable `generated-by-stellar
 links the exact public finding, and includes a resolution handoff back to this repository. Find
 Raven-filed issues across repositories with `gh search issues --match body
 '"generated-by-stellar-raven"'` — the quoted form is required, since an unquoted query tokenizes and
-matches unrelated repositories. Issues filed before 2026-07-30 predate the disclosure and are not
-backfilled; the marker identifies filings from that date forward, not the whole historical corpus.
+matches unrelated repositories. Older Raven-filed issues predate the notice and carry no marker,
+so a marker search does not find every Raven filing.
 The filer applies the `raven` label when the target repository provides it; every body retains Raven
 provenance when that label is unavailable.
 When upstream work is deployed, maintainers can open the **Upstream improvement ready for
@@ -137,15 +135,15 @@ existing resolving issue/PR when one can be found without inventing a ceremonial
 
 ## Resolution paths (stellar-docs: upstream vs. direct Algolia)
 
-Filing upstream is still the default. But `stellar-docs` findings split by root cause, and one class
-is now directly remediable with the operator Algolia credentials in `.env`
-(`research/services/stellar-docs-algolia.md`):
+Filing upstream is the default. But `stellar-docs` findings split by root cause, and the operator
+can fix one class directly with the Algolia credentials in `.env`
+([`docs/stellar-docs.md`](../docs/stellar-docs.md)):
 
-- **Content gaps** — a page is stale, wrong, ambiguous, or missing (e.g. `sd-007`, `sd-008`). These
+- **Content gaps** — a page is stale, wrong, ambiguous, or missing (e.g. `sd-004`, `sd-037`). These
   stay **upstream** on `stellar/stellar-docs`. Do not "fix" them by rewriting index records; the
   crawler would overwrite it and we would be diverging a shared corpus from its source.
 - **Search-mechanism gaps** — ranking, tokenization, synonym/vocabulary, or crawler-config issues
-  (`sd-003`; `sd-001` and `sd-006` are resolved precedents). These we *can* now remediate directly (a general rule/synonym, an
+  (`sd-003`; `sd-001` and `sd-006` are resolved precedents). The operator can remediate these directly (a general rule/synonym, an
   index-settings change, a crawler-config fix + reindex), subject to a hard bar:
   - a **general mechanism only** — no per-page/per-query rules or synonyms (same anti-overfitting
     rule the eval loop enforces);
@@ -161,8 +159,8 @@ is now directly remediable with the operator Algolia credentials in `.env`
   resolved `sd-006` precedent retain separate canaries. The `sd-001` canary reports drift, while the
   load-bearing `sd-006` rule canary fails on drift.
 
-**Analytics as evidence.** The Search Analytics / usage keys give us aggregated top-query and
-no-result-query reports — a new, low-risk evidence source. Use them to quantify a finding's prevalence
+**Analytics as evidence.** The Search Analytics and usage keys give aggregated top-query and
+no-result-query reports. They are a low-risk evidence source. Use them to quantify a finding's prevalence
 (stronger than the eval corpus's approximation) and to surface content/vocabulary gaps we would
 otherwise never see. Cite the analytics query and window in `evidence`.
 

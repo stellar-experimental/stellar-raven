@@ -7,7 +7,7 @@
  * proposals/scf_submissions (no research), rows carry NO summary field, and
  * scf_submissions rows have no url — the digest runner keeps only its four
  * output types and projects missing summaries as "".
- * Refresh via the live-drift runner checklist (research/skill-run-design.md §11 row 18).
+ * Refresh fixtures after the live-drift checks in .agents/skills/live-drift-resolution/SKILL.md.
  */
 export default {
   ok: true as const,

@@ -1,6 +1,6 @@
 # QA miss analysis — where the errors and failures come from
 
-Date: 2026-08-25. Round: `.agents/rounds/2026-08-25-qa-quality-deep-dive.md`.
+Date: 2026-08-25. Round: [`.agents/rounds/2026-08-25-qa-quality-deep-dive.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-25-qa-quality-deep-dive.md).
 Question: the headline QA score sits near 65% half-credit. Where do the misses come
 from, are they consistent, and are they legitimate?
 
@@ -11,10 +11,10 @@ orchestrator live probes through Raven itself. Lane reports live beside this fil
 | lane | report | assignment |
 | --- | --- | --- |
 | Claude Fable (`fable`, effort max) | `fable-max.md` | golden-truth legitimacy + judge audit, all 55 misses |
-| Codex (`gpt-5.6-sol`, max) | `sol-max.md` | pipeline stage forensics off transcripts |
-| Grok (`grok-4.6`, xhigh) | `grok-xhigh.md` | assumption attack + independent re-answer of 10 goldens |
-| Codex (`gpt-5.6-terra`, max) | `terra-max.md` | service coverage gap map against the committed manifest |
-| OpenCode (`moonshotai/kimi-k3`) | `kimi-k3.md` | external SOTA survey + fresh-eyes cold audit of six failed cases |
+| Codex (`gpt-5.6-sol`, max) | [`sol-max.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/sol-max.md) | pipeline stage forensics off transcripts |
+| Grok (`grok-4.6`, xhigh) | [`grok-xhigh.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/grok-xhigh.md) | assumption attack + independent re-answer of 10 goldens |
+| Codex (`gpt-5.6-terra`, max) | [`terra-max.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/terra-max.md) | service coverage gap map against the committed manifest |
+| OpenCode (`moonshotai/kimi-k3`) | [`kimi-k3.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/kimi-k3.md) | external SOTA survey + fresh-eyes cold audit of six failed cases |
 
 ## 1. What the number actually is
 
@@ -116,7 +116,7 @@ Notable specific illegitimate-or-contested findings worth reading in full:
 
 - **Garbled golden identifiers**: the WisdomTree CRDT golden's issuer/SAC addresses do
   not match live Horizon/stellar.toml (Grok verified character-by-character;
-  `grok-xhigh.md` §2). This golden would fail against reality today.
+  [`grok-xhigh.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/grok-xhigh.md) §2). This golden would fail against reality today.
 - **Boilerplate dating key facts**: 19 of 31 live cases carry "makes the as-of date
   visible" style key facts. Correct rate with them: 26%. Without: 83%
   (Fable §3). The answering prompt never asks for dates.

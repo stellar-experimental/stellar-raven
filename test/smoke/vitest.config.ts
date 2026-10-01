@@ -7,10 +7,10 @@
  * unit suite stays plain-Node and fast; this lane boots workerd. Run it with
  * `npm run test:smoke`.
  *
- * Offline by design: tests only exercise paths that never leave the worker —
- * sandbox wiring, envelope guard, policy refusals, route dispatch. Auth
- * values are test-only fakes injected via miniflare bindings (no .dev.vars
- * dependency, no real secrets).
+ * Worker execution is offline. Setup fetches pinned GitHub files if the local cache is cold.
+ * Tests exercise sandbox wiring, envelope guards, policy refusals, and route dispatch.
+ *
+ * Miniflare injects test authentication values. The tests do not require real service credentials.
  *
  * Note: pool-workers 0.18 (vitest 4) exposes `cloudflareTest` as a Vite
  * plugin — the old `defineWorkersConfig` / "/config" subpath is gone.

@@ -2,7 +2,7 @@
 
 ## Scope
 
-Block 1 from `.agents/NEXT.md`, with block 2 (dead provenance) folded into every touched case.
+Block 1 from [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), with block 2 (dead provenance) folded into every touched case.
 Branch `codex/golden-truth-session-3`, base `b933ddc` (`origin/main`). Worktree
 `~/.herdr/worktrees/stellar-raven-codemode/codex-golden-truth-session-3`.
 
@@ -40,7 +40,7 @@ long ∩ canonical-five 0; dead ∩ canonical 2 (`q-infra-horizon-vs-rpc`,
 
 Dead-provenance refs (94 files): 69 → the expired Fable report `conversions-copy-review.md`
 (unrecoverable), 27 → `/tmp/raven-qadeep/gt2/review-b{4,5}-part{1,2,3}.md` (summaries preserved
-in `program-log.md`), 1 → `/tmp/raven-qadeep/review-judge.md` (durable copy
+in [`program-log.md`](../../eval/qa/reviewed/2026-08-27-golden-truth/program-log.md)), 1 → `/tmp/raven-qadeep/review-judge.md` (durable copy
 `research/qa-deep-dive-2026-08-25/review-judge.md`).
 
 Corpus strkeys at baseline: 21 unique `G`/`C` strkeys across 11 case files.
@@ -145,9 +145,9 @@ checkout) if the grader can read it without writing there.
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
 | Orchestration | Claude Fable 5, high (`gt3-orch`) | `w1B:p1` | this ledger, TODO, NEXT, generated artifacts, commits, PR | completed |
-| A — strkey, then long-fact chunks `NN mod 3 = 0` | Codex `gpt-5.6-sol`, `model_reasoning_effort=high` (`gt3-sol-a`) | `w1B:p2` | strkey files; owned cases; `matrices-sol-a.md` | completed (17 chunks, conflict lane, corroboration rows, second-class subset) |
-| B — long-fact chunks `NN mod 3 = 1` | Codex `gpt-5.6-sol`, high (`gt3-sol-b`) | `w1B:p3` | owned cases; `matrices-sol-b.md` | completed (17 chunks, classification, sourcing-guard audit + rewords, register re-sweep, second-class subset) |
-| C — long-fact chunks `NN mod 3 = 2` | Codex `gpt-5.6-sol`, high (`gt3-sol-c`) | `w1B:p4` | owned cases; `matrices-sol-c.md` | completed (17 chunks, canonical five, targeted probes + dispositions, second-class subset) |
+| A — strkey, then long-fact chunks `NN mod 3 = 0` | Codex `gpt-5.6-sol`, `model_reasoning_effort=high` (`gt3-sol-a`) | `w1B:p2` | strkey files; owned cases; [`matrices-sol-a.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-a.md) | completed (17 chunks, conflict lane, corroboration rows, second-class subset) |
+| B — long-fact chunks `NN mod 3 = 1` | Codex `gpt-5.6-sol`, high (`gt3-sol-b`) | `w1B:p3` | owned cases; [`matrices-sol-b.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-b.md) | completed (17 chunks, classification, sourcing-guard audit + rewords, register re-sweep, second-class subset) |
+| C — long-fact chunks `NN mod 3 = 2` | Codex `gpt-5.6-sol`, high (`gt3-sol-c`) | `w1B:p4` | owned cases; [`matrices-sol-c.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-c.md) | completed (17 chunks, canonical five, targeted probes + dispositions, second-class subset) |
 | R — independent adversarial review + blind lanes | Grok `grok-4.6`, `--reasoning-effort high` (`gt3-grok-rev`) | `w1B:p5` | review files under `2026-08-29-golden-truth-session-3/review-*.md` only | completed: R1–R4 blind lanes, three part reviews, final review, two explicit re-checks; final verdict APPROVE |
 
 Route cards:
@@ -155,7 +155,7 @@ Route cards:
 - Lanes A–C. Worker CLI: Codex. Model: GPT-5.6 Sol. Effort: high. Reason: dense case authoring
   with verification and acting on gathered evidence; failure cost is gospel corruption, so a
   different-family reviewer gates it. Verified: `~/.codex/config.toml` pins `gpt-5.6-sol` /
-  `high`; `research/agent-model-roster.md` lists Sol efforts low–ultra. Fallback: Fable 5 high,
+  `high`; [`research/agent-model-roster.md`](../model-roster.md) lists Sol efforts low–ultra. Fallback: Fable 5 high,
   then Opus 5 high. Reviewer: Grok 4.6.
 - Lane R. Worker CLI: Grok. Model: grok-4.6. Effort: high. Reason: vendor-diverse assumption
   attack, independent re-derivation of high-stakes facts; differs from authors (Sol) and the
@@ -211,7 +211,7 @@ Route cards:
   SEP-31 from the supported list; sibling `q-asset-wallet-sdk-seps` carries the same claim. To be
   resolved through golden-truth in P2.
 - `2026-08-29T07:54Z` — Grok blind lane R1 landed:
-  `2026-08-29-golden-truth-session-3/review-corroboration-classification-grok.md`. All 56
+  [`2026-08-29-golden-truth-session-3/review-corroboration-classification-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/review-corroboration-classification-grok.md). All 56
   classified: 18 `grammar-only` (no-edit), 27 `negative-claim`, 11 `mixed` (row only for the listed
   sentences). Sol's independent classification runs in P2; disagreements go to a targeted probe.
 - `2026-08-29T07:56Z` — chunk-01 (sol-b) verified by the orchestrator: four cases DONE
@@ -225,7 +225,7 @@ Route cards:
   `q-anchor-sdp-vs-anchor-platform` CONFLICT on the Wallet SDK SEP-31 fact (other facts rewritten;
   that fact left long). Lint `--since origin/main` → `0 error(s), 461 warning(s)`. Driver sent
   chunk-05 to sol-c.
-- `2026-08-29T08:03Z` — Grok lane R3 landed: `review-sourcing-guard-grok.md`. 20 cases / 21 items:
+- `2026-08-29T08:03Z` — Grok lane R3 landed: [`review-sourcing-guard-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/review-sourcing-guard-grok.md). 20 cases / 21 items:
   18 keep-advisory, 3 reword (`q-defi-oracle-landscape-live` "permanently most established";
   `q-tool-go-sdk-ingest` regex false positive on "lacks ingestion support";
   `q-defi-market-making-kelp` "without dated repository evidence" lets a cited-but-false
@@ -251,7 +251,7 @@ Route cards:
   Latin America total is 20 on 2026-08-29 while the answer keeps its dated 2026-07-11 total of 19
   (no change; dated observation). Lint `--since origin/main` → `0 error(s), 439 warning(s)`.
   Driver sent chunk-08 to sol-c. Grok R4 still working.
-- `2026-08-29T08:09Z` — Grok lane R4 landed: `review-conflict-wallet-sdk-sep31-grok.md`. Verdict:
+- `2026-08-29T08:09Z` — Grok lane R4 landed: [`review-conflict-wallet-sdk-sep31-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/review-conflict-wallet-sdk-sep31-grok.md). Verdict:
   "Wallet SDK wraps SEP-31" is **contradicted** for `@stellar/typescript-wallet-sdk` (class A
   docs supported-SEP list omits SEP-31; class B source tree and reachable history never carried a
   Sep31 class — only a SEP-38 `context=sep31` string and a SEP-12 test customer type; Kotlin/
@@ -518,7 +518,7 @@ Route cards:
   Three-part long-fact review totals: 204 cases reviewed claim by claim, 192 PASS / 12 FAIL,
   every FAIL reconciled (10 owner fixes, 2 deferred into the P2 conflict lane).
 - `2026-08-29T09:55Z` — **Canonical-page lane (sol-c) verified** (`pack/reports/canonical.md`,
-  matrix in `matrices-sol-c.md`; reconciled against Grok R2 after the worker's own probe):
+  matrix in [`matrices-sol-c.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-c.md); reconciled against Grok R2 after the worker's own probe):
   - `q-protocol-base-reserve-min-balance`: lint-canonical caution added naming the official
     Sponsored Reserves page and `sd-043`, expiry "when sd-043 reaches fixed-upstream and the live
     page no longer carries that wording"; `sd-043` added to `rootCause`; Docs/Core provenance
@@ -543,7 +543,7 @@ Route cards:
   Lint `--since origin/main` → `0 error(s), 108 warning(s)`. sol-c idle, reserved for
   classification disagreements and review fixes.
 - `2026-08-29T10:02Z` — **Conflict lane (sol-a) verified** (`pack/reports/conflicts.md`; matrix in
-  `matrices-sol-a.md`). Nine cases, all DONE with ≥2 source classes, exact quotes, corroboration
+  [`matrices-sol-a.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-a.md)). Nine cases, all DONE with ≥2 source classes, exact quotes, corroboration
   rows, sibling sweeps, and avoid mirrors for the retired claims:
   - SEP-31 / Wallet SDK (`q-anchor-sdp-vs-anchor-platform`, `q-asset-wallet-sdk-seps`,
     `q-sep-wallet-seps-list`): wrap list corrected to SEP-10/12/24/38 (A: Wallet SDK intro page;
@@ -643,7 +643,7 @@ Route cards:
   `truth.*` (verified 895 fields, corroboration 49, sources 9, status/asOf/reverifyBy on the
   HackerOne case). Matrices mirrored into this directory (`matrices-sol-{a,b,c}.md`, 3,475
   lines). `npm run eval:qa:compile` → 500 cases, sha256 `3b9d0f2c…`. Grok final full-diff review
-  prompted (`pack/grok-final-brief.md`; report `review-final-grok.md`).
+  prompted (`pack/grok-final-brief.md`; report [`review-final-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/review-final-grok.md)).
 - `2026-08-29T11:05Z` — **Register reconciliation (part 1).** `npm run eval:qa:register` after
   the corpus edits: 130 cluster reopens (121 in `reopen` incl. none pre-existing at HEAD), 3
   numeric-invariant reopens plus the pre-existing `Protocol 27 Mainnet version` reopen (marker
@@ -660,7 +660,7 @@ Route cards:
   gitignored results dir) ran clean; the grader reads only `eval/plan/coverage-rules.json`, the
   op-class table, and the result rows, none of which this block touches, so plan grades are
   unchanged by construction (broad→detail used 2/4/2, skipped 13/9/4/1 error). Affected ids
-  written to `2026-08-29-golden-truth-session-3/affected-case-ids.md` (211 judge-facing, 13
+  written to [`2026-08-29-golden-truth-session-3/affected-case-ids.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/affected-case-ids.md) (211 judge-facing, 13
   metadata-only). Dead-provenance remainder: 47 untouched files still cite a temporary path
   (94 → 47); 0 touched files do.
 - `2026-08-29T11:25Z` — Gate dry run: `npm run typecheck` clean; `npm run build` (dry run) clean;
@@ -673,8 +673,8 @@ Route cards:
   single-predicate facts (81 and 81 chars); claims unchanged; both test files pass (23 tests);
   lint `--since origin/main --stale` → `0 error(s), 60 warning(s)`. Documentation drafted:
   `.agents/TODO.md` (closed: burn-down, audit, strkey, canonical-page, affected-id items; dead
-  provenance item updated to the 47-file remainder), `.agents/NEXT.md` rewritten,
-  `program-log.md` session-3 section appended.
+  provenance item updated to the 47-file remainder), [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) rewritten,
+  [`program-log.md`](../../eval/qa/reviewed/2026-08-27-golden-truth/program-log.md) session-3 section appended.
 - `2026-08-29T11:40Z` — **Register reconciliation (part 2).** sol-b re-swept the 11 gospel-touched
   clusters member by member (`register-resweep-sol-b.md`): 8 consistent, 3 `tension`
   (`cluster-017`, `cluster-114`: the encoded sd-043 Docs-vs-Core minimum-balance boundary;
@@ -683,7 +683,7 @@ Route cards:
   stated it; `tension` is an existing register verdict). The two clusters re-reopened by the
   same-day pin fixes were re-stamped. `npm run eval:qa:register` → `up to date; 0 reopened`;
   reopen count 0 in all three sections.
-- `2026-08-29T11:45Z` — **Grok final review** (`review-final-grok.md`): sections 1 (strkey; tried
+- `2026-08-29T11:45Z` — **Grok final review** ([`review-final-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/review-final-grok.md)): sections 1 (strkey; tried
   wrong-version/wrong-length/M/P keys), 2 (12 part-review reconciliations), 3 conflict lane,
   canonical lane, sourcing-guard rewords, 4 dead provenance, 5 parsed-JSON scope, 6 lint, 7
   five random re-derivations — all PASS. One FAIL: 62 corroboration rows added today carry a
@@ -707,7 +707,7 @@ Route cards:
   re-run (new rows with one evidence class, vs origin/main): **0 remaining** (62 → 0). Matrices
   re-mirrored. Lint `--since origin/main --stale` → `0 error(s), 60 warning(s)`. Grok re-review
   of the repaired finding requested against the complete current diff.
-- `2026-08-29T12:30Z` — **Grok re-check** (`review-final-recheck-grok.md`): single-class scan 0
+- `2026-08-29T12:30Z` — **Grok re-check** ([`review-final-recheck-grok.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/review-final-recheck-grok.md)): single-class scan 0
   PASS; 12 sampled repaired rows independent and resolving PASS; two re-worded keyFacts PASS;
   lint PASS; register FAIL — `cluster-018` kept a stale `reopened` marker next to its `tension`
   verdict. `VERDICT: APPROVE-WITH-FIXES` with the explicit guard "do not reopen the two-class
@@ -747,7 +747,7 @@ Route cards:
   0 long-fact). Baseline 475.
 - **Register:** reconciled; 0 reopen in all sections; 3 `tension` clusters name the encoded
   upstream disputes (sd-043, sd-004, sd-042).
-- **Affected ids:** `affected-case-ids.md` — 211 judge-facing, 13 metadata-only (224 files).
+- **Affected ids:** [`affected-case-ids.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/affected-case-ids.md) — 211 judge-facing, 13 metadata-only (224 files).
 - **Gates at close** (`b933ddc` base): `npm run eval:qa:compile` → 500 cases, sha256
   `f662edf34004…`; `npm run eval:qa:register` → up to date, 0 reopened; `node
   eval/qa/lint-corpus.mjs --since origin/main --stale` → 0 errors, 60 warnings, 0 `exceeds 90`;
@@ -769,7 +769,7 @@ Route cards:
 - `2026-08-29T12:50Z` — First commit attempt blocked by the pre-commit secret guard: gitleaks
   `generic-api-key` matched the case id `q-n3-generate-secret-key-refusal` inside one
   sibling-sweep evidence line (the export-secret-key sibling id followed by that case id and a
-  semicolon) in that case file, `cases.json`, and `matrices-sol-c.md` — a false positive on a case id.
+  semicolon) in that case file, `cases.json`, and [`matrices-sol-c.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-c.md) — a false positive on a case id.
   Fix: the two ids were reordered inside that one evidence line (no gospel change); artifacts
   regenerated (compile sha256 `3d889653fa11…`; register up to date, 0 reopened); lint
   `--since origin/main --stale` → 0 errors, 60 warnings; staged scan → "no leaks found";

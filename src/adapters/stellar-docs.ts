@@ -1,7 +1,7 @@
 /**
  * Stellar Docs adapter — hand-rolled Algolia REST client
- * (research/services/stellar-docs-algolia.md: ~50-line fetch core, 4 hosts,
- * escalating timeout, retry on network/5xx ONLY — never 4xx, never 429).
+ * (docs/stellar-docs.md: ordered hosts, escalating timeouts, and retries
+ * for network/5xx failures; terminal 4xx and 429 responses do not retry).
  *
  * Each stellarDocs catalog entry carries its execute mapping in
  * `transport.algolia` (authored in specs/stellar-docs.json):
@@ -17,8 +17,8 @@
  *    two-segment fallback when the page yields no records.
  *
  * `analytics:false` rides in baseParams on every entry (polite-tenant rule).
- * Zero hits after filtering → kind "soft-empty" ("not in the docs corpus" is
- * a meaningful signal on this index, per the research doc).
+ * No usable hits produce kind "soft-empty". A filtered candidate window
+ * cannot establish absence from the whole index or the wider ecosystem.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import {
@@ -490,9 +490,8 @@ export async function callStellarDocs(
       });
       clientFiltered = true;
     }
-    // An op that pins Algolia's hitsPerPage to over-fetch still owes the caller its own
-    // hitsPerPage, even when a conditional disabled the client filter
-    // (search_docs_in_category with category=meetings returned all 100 over-fetched hits).
+    // Apply the caller's hit limit even when a conditional disables the filter.
+    // The operation's over-fetch window must not become its returned page size.
     const overFetches =
       typeof mapping.fixedParams?.hitsPerPage === "number" && !("hitsPerPage" in (mapping.paramMap ?? {}));
     if (clientFiltered || overFetches) hits = hits.slice(0, requestedHits);

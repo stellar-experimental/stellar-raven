@@ -2,7 +2,7 @@
  * Shared adapter types — the uniform result envelope every service adapter
  * returns into the sandbox.
  *
- * Design (PLAN §4, "soft-empty ≠ error ≠ data"):
+ * Design (ARCHITECTURE.md, "soft-empty ≠ error ≠ data"):
  *  - Adapters NEVER throw toward the sandbox. Every outcome is a value:
  *      { ok: true,  data }                — real evidence
  *      { ok: false, error: AdapterError } — error OR soft-empty

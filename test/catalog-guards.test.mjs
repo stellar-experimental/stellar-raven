@@ -1,7 +1,7 @@
 /**
  * Builder drift-guard tests for the runnable-skill attachment
  * (scripts/build-catalog.mjs attachRunnableSkills / assertNoNonExposedRefs,
- * design research/skill-run-design.md §5/§12): a registry key with no emitted
+ * src/skills/README.md): a registry key with no emitted
  * skill entry throws; a declared op that resolves to no emitted operation
  * throws; a planted non-exposed reference inside a runnable schema trips the
  * ADR-0003 leak guard. A `.test.mjs` file (the test/plan-grade.test.mjs

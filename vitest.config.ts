@@ -1,10 +1,7 @@
 /**
- * Vitest config — exists ONLY to alias `cloudflare:workers` for plain-Node
- * unit tests. @cloudflare/workers-oauth-provider imports { WorkerEntrypoint }
- * from it (used solely for an `instanceof` check on class-style handlers),
- * which Node cannot resolve; the stub lets test/auth.test.ts construct a real
- * OAuthProvider and assert its actual emitted behavior. Everything else
- * (includes, environment) stays at vitest defaults.
+ * Plain-Node tests use a cloudflare:workers stub for OAuthProvider construction.
+ * The separate smoke configuration runs the assembled Worker in workerd.
+ * Exclusions keep worktree copies, smoke tests, and report-site tests out of this suite.
  */
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";

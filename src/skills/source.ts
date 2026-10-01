@@ -33,10 +33,10 @@
  * the forwarded markdown and nothing else — no license text, notice, or
  * wrapper is attached.
  *
- * Caching: an in-isolate memo keyed by (url, sha256) in front of the colo-wide
- * Cache API. Cached bytes are re-verified on every hit — the cache is a
- * transport, not a trust boundary — and cache WRITES are best-effort, so a
- * cache outage can never turn an already-verified body into a failed read.
+ * Caching: memo identity includes (url, sha256, sha). Memo hits reuse a
+ * verified, scrubbed promise. Colo cache hits receive fresh verification.
+ * Cache reads and writes are best-effort. Caches support forwarding and do
+ * not supply a trust boundary. See src/skills/README.md for the read contract.
  */
 import { scrubNonExposedRefs } from "./scrub.ts";
 
@@ -57,9 +57,9 @@ export type SkillSource = (pin: SkillPin) => Promise<{ text: string; from: Skill
 const FETCH_TIMEOUT_MS = 8000;
 
 /**
- * Ceiling for everything one skill.read does, across every file it touches.
- * Deliberately under the executor's 60s wall clock: a slow upstream must fail
- * as a `skills` error envelope, never by killing the whole execute run.
+ * Deadline for each file load through store.ts. Main-file and companion-file
+ * stages have separate races; this does not bound a whole read to 20s.
+ * A deadline returns a skill error without canceling an in-flight fetch.
  */
 export const SKILL_READ_DEADLINE_MS = 20_000;
 
@@ -157,15 +157,9 @@ export type SkillSourceDeps = {
    *  the colo cache entirely, which is what happens under plain Node. */
   cacheImpl?: () => Cache | undefined;
   /**
-   * Skip BOTH the memo and the colo cache and go to upstream every time.
-   *
-   * Only the availability canary sets this, and it is what makes the canary
-   * mean anything. Pinned URLs are cached `immutable` for a year, so a warm
-   * colo entry answers a read without touching the network — a canary that
-   * used the normal path would report "healthy" indefinitely while egress to
-   * GitHub was dead. (`check-mirrors --fetch` had exactly this bug at the build
-   * layer: 0 network requests against a warm cache.) Never set it on the
-   * serving path; the caches are the reason a read is 0 ms instead of 80.
+   * Bypass memo and colo caches for the availability canary.
+   * A warm immutable cache cannot prove current upstream reachability.
+   * Keep this disabled on the serving path, where caches reduce traffic.
    */
   bypassCaches?: boolean;
 };

@@ -6,17 +6,16 @@ The dated result sections preserve historical evidence; they do not describe the
 > **Start at [`eval/EVALS.md`](./EVALS.md)** — the one-page map of all eval instruments,
 > which numbers are gates vs diagnostics, and the rules that keep them targeted.
 
-Measures **search ROUTING accuracy, not answer quality**: given a real user question from
-the golden QA corpus, does `searchCatalog()` (src/catalog/search.ts, frozen contract in
-Solo scratchpad 514) surface an entry from the *correct service* near the top of its results?
+This instrument measures service routing through `searchCatalog()` in `src/catalog/search.ts`.
+It checks whether a question returns a result from the expected service near the top.
 
 - **top-1 / top-3 / top-5**: any hit whose `service` equals the case's `expected_service`
   at rank 1 / within the first 3 / within the first 5 (query = the raw question, `limit: 5`).
 - **card@5** (secondary, only for cases with operation-level `expected_cards`): any top-5
   hit whose id matches one of the expected capability-card labels under the tolerant
   normalizer below. Service-level cards of the form `<service>_mcp` (e.g.
-  `stellar_docs_mcp`) name a whole service, not an operation; they are retired from card@5
-  (see "Service-level cards retired from card@5" below) — a case carrying only those is not
+  `stellar_docs_mcp`) name a whole service, not an operation; card@5 excludes them
+  (see [Service-level cards](#service-level-cards)) — a case carrying only those is not
   card-graded, because service routing is already measured by top-1/3/5.
 
 Nothing here executes tools or grades prose answers — that is the separate `execute` Q→A
@@ -81,10 +80,10 @@ Implementation + unit fixtures: `eval/lib/grade.mjs`, `eval/self-test.mjs`.
 
 A `<service>_mcp` card names a service, not an operation. Card@5 excludes these cards because
 top-1/3/5 already measures service routing. A case with no operation-level card is not card-graded.
-Stellar Docs operation routing remains unmeasured until the corpus names specific Docs operations.
-This release defers those labels because the current reviewers already saw rankings and results.
-A later blind author must select operation labels from source questions and the Docs API contract.
-That author must not read the scorer, manifest ranking, or prior result traces before freezing labels.
+The legacy lane grades 27 Stellar Docs cases with operation-level labels.
+Other Docs cases can still carry service-only cards.
+New blind labels require source questions and the Docs API contract.
+The author must freeze those labels before reading scorer details or result traces.
 
 ## How to run
 
@@ -99,14 +98,16 @@ node eval/compile-routing.mjs            # optional arg: alternate corpus path
 node eval/run-routing.mjs
 ```
 
-`run-routing.mjs` also loads three **hand-authored** files at run time (deliberately not part
-of the compile step, so `node eval/compile-routing.mjs` can never wipe them):
-`eval/skills-cases.json` (the skills lane) and `eval/build-question-overlay.json` (the
-accept-either overlay), plus `eval/protocol-history-cases.json` (a diagnostic with eight
-positive cases and four direct-lookup controls). That in-run protocol-history lane remains the
-historical v1 contract. The standalone `npm run eval:protocol-history` command loads both v2
-protocol-history contracts. These files are optional. Without them, the run degrades to the
-legacy 338-case eval.
+`run-routing.mjs` loads four hand-authored supplements outside the compile step:
+
+- `skills-cases.json`: the skills gate.
+- `holdout-cases.json`: the blind holdout gate.
+- `build-question-overlay.json`: the accept-either diagnostic overlay.
+- `protocol-history-cases.json`: the v1 diagnostic with eight positives and four controls.
+
+The skills and holdout files are required gate inputs. Missing files fail the committed evidence check.
+The overlay and protocol-history diagnostic are optional. Their absence does not remove the compiled extended cases.
+The standalone `npm run eval:protocol-history` command reads both v2 protocol-history contracts.
 
 Zero new dependencies: `run-routing.mjs` imports `src/catalog/search.ts` directly (Node
 ≥ 23.6 native type stripping); if the direct import fails it transpiles the file (and its
@@ -116,7 +117,7 @@ npm scripts: `npm run eval:selftest` / `eval:compile` / `eval:routing` (QA lane:
 `eval:qa:compile` / `eval:qa:selftest` / `eval:qa`; plan: `eval:plan`).
 
 **Gate enforcement:** baselines are committed in `eval/gates.json` (legacy 338 top-1/3/5
-±1%, skills-lane top-1 floor). The gate record includes SHA-256 fingerprints for every gated
+±1%, skills-lane top-1 floor, and holdout top-1/3/5 floors plus a forbidden-capture ceiling). The gate record includes SHA-256 fingerprints for every gated
 data input and exact accepted lane totals. `eval:selftest` proves that a fresh clone resolves
 each input and matches each fingerprint. Every routing run verifies the same evidence, prints a
 `GATE PASS`/`GATE FAIL` verdict, and records it in the results JSON.
@@ -125,6 +126,9 @@ denominator into exit 1. CI runs `eval:selftest` + `eval:routing -- --gate` on e
 Re-baselining updates the fingerprints, totals, thresholds, timestamp, and decision note together.
 A raw result name can appear as optional `evidence.localTrace` context. It never defines the
 committed baseline because `eval/results/` is local-only.
+
+The Vectorize experiments measured NO-SHIP outcomes. Their implementation and commands are removed.
+Dated result sections below preserve their evidence.
 
 ## Baseline
 
@@ -793,7 +797,7 @@ Full record: `research/discovery-redesign.md` (plan+evidence), `research/p1-guid
 
 ## Vectorize frontier round (2026-07-10, todo 902): pinned harness landed, retrieval mode not shipped
 
-Full design, stamps, matrices, and decision: `eval/vectorize/README.md`. The round landed the
+Full design, stamps, matrices, and decision: [`eval/vectorize/README.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/README.md). The round landed the
 previously missing discovery prerequisites (≤3-search agent arm, 91-query replay lane, paired
 miss classification) and a local Qwen3-Embedding-0.6B reference harness pinned by model commit,
 runtime version, card hashes, and committed vectors. Pure lexical calibration reproduced
@@ -1172,20 +1176,20 @@ Three manifest-driven tiering replacements were also rejected. The closest candi
 routing gates and surfaced the named case at rank five. It increased blind hostile captures from
 6/9 to 8/9 and changed 15 of 495 rankings. The branch therefore ships measurement only.
 
-The reviewed clause-fit follow-up lives under `eval/vectorize/`.
+The reviewed clause-fit follow-up lives under [`eval/vectorize/`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/).
 Its 2026-08-31 local-only finish completed and measured `FAIL` under both frozen contracts.
-The experiment changed no production search code. See `eval/vectorize/README.md` for the pins.
+The experiment changed no production search code. See [`eval/vectorize/README.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/README.md) for the pins.
 
 The reviewed cross-encoder attempt two also completed on 2026-08-31 and measured a verified
 `FAIL`: every registered grid kept both frozen contracts at the lexical baseline while failing
 the routing gate. The experiment changed no production search code. Attempt three is spent.
-See `eval/vectorize/README.md` for the pins and tables.
+See [`eval/vectorize/README.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/README.md) for the pins and tables.
 
 The reviewed cache-only attempt three, `clause-support-fit-v1`, completed on 2026-09-01.
 It measured a verified `FAIL`. Multi-clause aggregation raised blind top-five recall to 10/11.
 It also raised blind control captures to 7/9 and failed the routing gate.
 The experiment changed no production search code. The three-attempt box is spent.
-See `eval/vectorize/README.md` for the pins and table.
+See [`eval/vectorize/README.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/vectorize/README.md) for the pins and table.
 
 PH2 completed on 2026-09-03 with additive v2 contracts. The v1 files remain byte-identical inputs
 for the three spent experiments and the historical lane inside `run-routing.mjs`. The standalone

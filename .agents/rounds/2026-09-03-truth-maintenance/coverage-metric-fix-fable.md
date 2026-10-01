@@ -177,7 +177,7 @@ An artifact nobody rewrites keeps its original bytes.
 
 I did not rewrite dated records.
 `eval/qa/README.md` tables dated 2026-08-28 and 2026-08-30, the 2026-08-25 round ledger, and
-`research/qa-deep-dive-2026-08-25/build-measure.md` still show coverage values.
+[`research/qa-deep-dive-2026-08-25/build-measure.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/build-measure.md) still show coverage values.
 The README section says to read them as invalid.
 The first README text used a date cutoff of 2026-09-04.
 That cutoff excluded the defective `2026-09-04T05-40-51-variantA` arm.

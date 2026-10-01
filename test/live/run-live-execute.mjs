@@ -1,69 +1,18 @@
 #!/usr/bin/env node
 /**
- * Live integration for the `execute` tool. It boots `wrangler dev`
- * (real Dynamic Worker sandbox + real service traffic, free ops only), calls
- * tools/call over /mcp, prints a trimmed transcript, kills the server.
- *
- * Run manually: node test/live/run-live-execute.mjs
- * (Deliberately not part of `npm test` — it needs network + .dev.vars keys.)
- *
- * Cases:
- *  1. multi-service fan-out — codemode.search mid-script, then Promise.all
- *     over one free op per service, plus a bundled skill read.
- *  2. progression — broad lumenloop.search_directory, then a deeper
- *     lumenloop.get_project parameterized by the first call's top slug.
- *  3. catalog() grep — filter the full catalog as data (service/kind counts).
- *  4. excluded op — scout.submitPartnerListing does not exist; unknown name throws.
- *  5. fetch() — must throw (globalOutbound: null).
- *  6. envelope guard — split contract: payload reads on the envelope
- *     (dir.projects / sp.meta) throw a pointer to r.data.*; r.data on a
- *     failed call is undefined plus a one-line [envelope] console warning;
- *     writes are write-through (dir.count = …); a raw envelope in the
- *     return value still serializes across the RPC boundary.
- * Plus: initialize must carry the server instructions (envelope contract).
+ * Manual live checks against an existing local server. The script never starts or stops a server.
+ * Run: node test/live/run-live-execute.mjs --base-url http://localhost:<port>
+ * These checks make real service calls and require the server's configured credentials.
+ * They are separate from npm test. The offline suite validates their catalog references.
  */
-import { spawn } from "node:child_process";
-import { setTimeout as sleep } from "node:timers/promises";
-
-const PORT = 8799;
-const BASE = `http://localhost:${PORT}`;
+import { existingServerUrl, isMain, mcpCall, parseRpc } from "./client.mjs";
 
 function trim(s, n = 900) {
   const t = typeof s === "string" ? s : JSON.stringify(s);
   return t.length > n ? `${t.slice(0, n)}… [trimmed ${t.length - n} chars]` : t;
 }
 
-async function mcpCall(name, args) {
-  const res = await fetch(`${BASE}/mcp`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json, text/event-stream"
-    },
-    body: JSON.stringify({
-      jsonrpc: "2.0",
-      id: 1,
-      method: "tools/call",
-      params: { name, arguments: args }
-    })
-  });
-  const text = await res.text();
-  // createMcpHandler answers SSE-framed; pull the data: payload(s).
-  const dataLines = text
-    .split("\n")
-    .filter((l) => l.startsWith("data:"))
-    .map((l) => l.slice(5).trim());
-  const payload = dataLines.length > 0 ? dataLines[dataLines.length - 1] : text;
-  const parsed = JSON.parse(payload);
-  if (parsed.error) return { isError: true, text: JSON.stringify(parsed.error) };
-  const result = parsed.result ?? {};
-  return {
-    isError: Boolean(result.isError),
-    text: (result.content ?? []).map((c) => c.text).join("\n")
-  };
-}
-
-const CASES = [
+export const CASES = [
   {
     label: "1. fan-out: codemode.search + one free op per service + skill read",
     code: `async () => {
@@ -72,7 +21,7 @@ const CASES = [
         scout.getStatus({}),
         lumenloop.search_directory({ query: "soroban defi", limit: 3 }),
         stellarDocs.search_docs({ query: "soroban storage", hitsPerPage: 3 }),
-        codemode.skill.read("skills.lumenloop-api.lumenloop-api-billing", { sections: ["pointers"] })
+        codemode.skill.read("skills.stellar-dev.standards")
       ]);
       console.log("discovery top hit:", discovery.hits[0] && discovery.hits[0].id);
       return {
@@ -82,7 +31,7 @@ const CASES = [
         lumenloopTop: dir.ok && dir.data.projects[0] ? dir.data.projects[0].slug : null,
         docsNbHits: docs.ok ? docs.data.nbHits : docs.error,
         docsTopUrl: docs.ok ? docs.data.hits[0].url : null,
-        skillSectionChars: skill.ok ? skill.sections[0].content.length : skill.error
+        skillChars: skill.ok ? skill.content.length : skill.error
       };
     }`
   },
@@ -116,6 +65,7 @@ const CASES = [
   },
   {
     label: "4. build-excluded op does not exist in the sandbox (unknown name fails loudly)",
+    expect: '"threw":true',
     code: `async () => {
       try {
         await scout.submitPartnerListing({ orgName: "Test Org", contactEmail: "test@example.com" });
@@ -127,6 +77,7 @@ const CASES = [
   },
   {
     label: "5. fetch() throws (globalOutbound: null)",
+    expect: '"threw":true',
     code: `async () => {
       try {
         await fetch("https://example.com");
@@ -220,92 +171,64 @@ const CASES = [
 ];
 
 async function main() {
-  console.log("booting wrangler dev …");
-  const server = spawn("npx", ["wrangler", "dev", "--port", String(PORT)], {
-    stdio: ["ignore", "pipe", "pipe"],
-    env: process.env
+  const BASE = existingServerUrl();
+  const health = await fetch(`${BASE}/health`);
+  if (!health.ok) throw new Error(`Server health check failed: HTTP ${health.status}`);
+
+  let failures = 0;
+
+  // initialize must carry the server instructions (workflow + envelope).
+  const initRes = await fetch(`${BASE}/mcp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json, text/event-stream" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 0,
+      method: "initialize",
+      params: {
+        protocolVersion: "2025-06-18",
+        capabilities: {},
+        clientInfo: { name: "live-test", version: "0.0.0" }
+      }
+    })
   });
-  let serverLog = "";
-  server.stdout.on("data", (d) => (serverLog += d));
-  server.stderr.on("data", (d) => (serverLog += d));
-
-  try {
-    let up = false;
-    for (let i = 0; i < 60; i++) {
-      await sleep(1000);
+  const initText = await initRes.text();
+  const init = parseRpc(initText);
+  const instructions = init.result?.instructions ?? "";
+  const hasEnvelopeContract = instructions.includes("r.data.projects");
+  console.log(`=== initialize carries instructions (envelope contract present: ${hasEnvelopeContract})`);
+  console.log(trim(instructions, 300));
+  console.log();
+  if (!hasEnvelopeContract) failures += 1;
+  for (const { label, code, tool, args, expect, check, checkSearch } of CASES) {
+    const started = Date.now();
+    const r = await mcpCall(BASE, tool ?? "execute", args ?? { code });
+    const ms = Date.now() - started;
+    let failReason = r.isError ? "isError" : null;
+    if (!failReason && expect && !r.text.includes(expect)) failReason = `missing expected ${expect}`;
+    if (!failReason && check) failReason = check(r.text);
+    if (!failReason && checkSearch) {
       try {
-        const res = await fetch(`${BASE}/health`);
-        if (res.ok) {
-          up = true;
-          break;
-        }
-      } catch {
-        /* not up yet */
+        failReason = checkSearch(JSON.parse(r.text).hits ?? []);
+      } catch (e) {
+        failReason = `unparseable search response: ${e.message}`;
       }
     }
-    if (!up) throw new Error(`wrangler dev never became healthy.\n${serverLog.slice(-2000)}`);
-    console.log("server healthy.\n");
-
-    let failures = 0;
-
-    // initialize must carry the server instructions (workflow + envelope).
-    const initRes = await fetch(`${BASE}/mcp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json, text/event-stream" },
-      body: JSON.stringify({
-        jsonrpc: "2.0",
-        id: 0,
-        method: "initialize",
-        params: {
-          protocolVersion: "2025-06-18",
-          capabilities: {},
-          clientInfo: { name: "live-test", version: "0.0.0" }
-        }
-      })
-    });
-    const initText = await initRes.text();
-    const initData = initText.split("\n").filter((l) => l.startsWith("data:")).map((l) => l.slice(5).trim());
-    const init = JSON.parse(initData[initData.length - 1] ?? initText);
-    const instructions = init.result?.instructions ?? "";
-    const hasEnvelopeContract = instructions.includes("r.data.projects");
-    console.log(`=== initialize carries instructions (envelope contract present: ${hasEnvelopeContract})`);
-    console.log(trim(instructions, 300));
+    console.log(`=== ${label} (${ms} ms, ${failReason ? `FAIL: ${failReason}` : "ok"})`);
+    console.log(trim(r.text));
     console.log();
-    if (!hasEnvelopeContract) failures += 1;
-    for (const { label, code, tool, args, expect, check, checkSearch } of CASES) {
-      const started = Date.now();
-      const r = await mcpCall(tool ?? "execute", args ?? { code });
-      const ms = Date.now() - started;
-      let failReason = r.isError ? "isError" : null;
-      if (!failReason && expect && !r.text.includes(expect)) failReason = `missing expected ${expect}`;
-      if (!failReason && check) failReason = check(r.text);
-      if (!failReason && checkSearch) {
-        try {
-          failReason = checkSearch(JSON.parse(r.text).hits ?? []);
-        } catch (e) {
-          failReason = `unparseable search response: ${e.message}`;
-        }
-      }
-      console.log(`=== ${label} (${ms} ms, ${failReason ? `FAIL: ${failReason}` : "ok"})`);
-      console.log(trim(r.text));
-      console.log();
-      if (failReason) failures += 1;
-    }
+    if (failReason) failures += 1;
+  }
 
-    if (failures > 0) {
-      console.error(`${failures} case(s) returned isError`);
-      process.exitCode = 1;
-    } else {
-      console.log("all live cases completed without tool errors.");
-    }
-  } finally {
-    server.kill("SIGTERM");
-    await sleep(1500);
-    if (!server.killed) server.kill("SIGKILL");
+  if (failures > 0) {
+    console.error(`${failures} check(s) failed`);
+    process.exitCode = 1;
+  } else {
+    console.log("all live cases completed without tool errors.");
   }
 }
 
-main().catch((e) => {
+if (isMain(import.meta.url)) main().catch((e) => {
   console.error(e);
   process.exit(1);
 });

@@ -137,7 +137,7 @@ Later optional work, new id `sls-082` if verified:
 | `improvements/stellar-light-scout/sls-080-explain-repo-deepwiki-answer-freshness.md` | active finding | delete only through the resolver |
 | `improvements/INDEX.md` | generated index | regenerate after resolve |
 | `.agents/TODO.md` | watch + recovery recurrence home | rewrite before resolve; do not leave recurrences in a deleted file |
-| `.agents/NEXT.md` | handoff still says `reported-upstream` | update after resolve |
+| [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) | handoff still says `reported-upstream` | update after resolve |
 | `.agents/rounds/2026-09-01-free-improvements-maintenance.md` | this round ledger | record the deferral |
 | `.agents/rounds/2026-08-31-rejected-experiments-closeout.md` | historical closeout | keep; dated record |
 | `.agents/rounds/2026-09-01-remaining-work-adversarial-audit*` | historical audits | keep |

@@ -40,7 +40,7 @@ The reviewer inspected these surfaces:
   `eval/qa/re-judge.mjs`, `eval/qa/run-p6-judge-self-test.mjs`, `eval/qa/run-qa.mjs`,
   `eval/qa/judge.mjs`, `eval/qa/paired-verdict.mjs`, and `eval/qa/spend-budget.mjs`;
 - the four paired-contract test files and the five paired-lane test files;
-- `.agents/NEXT.md`, `.agents/TODO.md`, and `.agents/rounds/2026-09-03-truth-maintenance.md`;
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), `.agents/TODO.md`, and `.agents/rounds/2026-09-03-truth-maintenance.md`;
 - `revised-impact-measurement-fable.md` revision 3, `final-synthesis-review-sol.md`,
   `launch-contract-repair-sol.md`, and `paired-capacity-check-terra.md`;
 - the authoritative artifact `/private/tmp/paired-capacity-live-v2-2026-09-04.json`;
@@ -125,7 +125,7 @@ Evidence:
 - The report records 1,961 passing tests in the first complete run.
 - The reviewer ran the full suite at `52e34c6` and measured 108 files and 1,971 tests.
 - The ledger records 1,971 tests for the orchestrator run at `dc0761d`.
-- `.agents/NEXT.md:36` also records 1,971 tests.
+- [`.agents/NEXT.md:36`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) also records 1,971 tests.
 - The code trees of `e5c835e` and `1847ffd` are identical, per C1.
 - No test enumerates `.agents/rounds` files dynamically.
 - The report itself records sandbox `listen EPERM` and GPG restrictions in that lane.
@@ -151,7 +151,7 @@ Evidence:
 - Commit `52e34c6` is a documentation-only child of `dc0761d`.
 - Its diff touches six files, all under `.agents`.
 - The contract file hashes are identical at both commits.
-- `.agents/NEXT.md:16-17` uses the safer phrase "contains the work through `dc0761d`".
+- [`.agents/NEXT.md:16-17`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) uses the safer phrase "contains the work through `dc0761d`".
 
 Consequence:
 
@@ -160,7 +160,7 @@ build the manifest there. The substance holds either way, because the code is id
 
 Smallest repair:
 
-Use the `.agents/NEXT.md` phrasing at line 690. Say that the branch contains the work through
+Use the [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) phrasing at line 690. Say that the branch contains the work through
 `dc0761d`.
 
 ### R1 — Medium — A failed re-judge never persists the after-identity or the guard
@@ -424,13 +424,13 @@ stored-judge cap therefore covers collection and judging on one ledger.
 
 Every paid, filing, golden, and owner action stays blocked. The reviewer checked each class.
 
-- Paid: `.agents/NEXT.md:112-123` blocks the paired subset, the stopped arms, the live-data method,
+- Paid: [`.agents/NEXT.md:112-123`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) blocks the paired subset, the stopped arms, the live-data method,
   the digest method, and four named rejudges. Revision 3 states that the general round approval is
   not the strict authorization.
-- Filing: `.agents/NEXT.md:106-110` blocks all ten verified findings. `improvements/INDEX.md` shows
+- Filing: [`.agents/NEXT.md:106-110`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) blocks all ten verified findings. `improvements/INDEX.md` shows
   57 `reported-upstream`, 10 `verified`, and 3 `declined-upstream`. That total is 70. No record has
   a filed state.
-- Golden: `.agents/NEXT.md:125-132` blocks B1 to B11 and the row-review adjudication. The three
+- Golden: [`.agents/NEXT.md:125-132`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) blocks B1 to B11 and the row-review adjudication. The three
   reviewed commits changed no file under `eval/qa/corpus`.
 - Owner: decisions A to J each carry a safe default of no spend, no filing, and no deployment.
   Decision 5, the concurrent-load acceptance, stays open in revision 3 and in the handoff.
@@ -523,10 +523,10 @@ S1 is closed. Revision 3 names `1847ffd` as the final supervisor contract. The l
 lists `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`. Finding C3 records one remaining stale branch
 label.
 
-S2 is closed. `.agents/NEXT.md` now titles the block "Completed repair work". The block states that
+S2 is closed. [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now titles the block "Completed repair work". The block states that
 the round stays open. The ledger keeps four checklist items unchecked.
 
-S3 is closed. `.agents/NEXT.md:12-15` labels production as the last recorded deployment state from
+S3 is closed. [`.agents/NEXT.md:12-15`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) labels production as the last recorded deployment state from
 2026-09-02. It states that nobody re-verified the live Worker.
 
 ## Preserved historical verdicts
@@ -574,7 +574,7 @@ scope.
 1. Repair C1 in `launch-contract-repair-sol.md`.
 2. Repair C2 in `launch-contract-repair-sol.md`.
 3. Repair C3 in `revised-impact-measurement-fable.md`.
-4. Record the L1 skill repair as a machine-ready item in `.agents/NEXT.md`.
+4. Record the L1 skill repair as a machine-ready item in [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 Findings R1, R2, and R3 need no action before launch. Record them as follow-up items.
 
@@ -857,8 +857,8 @@ A reader can now compare the signed command with the evidence record without con
 Every paid, filing, golden, owner, merge, and deployment action stays blocked. The reviewer checked
 each class again at `352e517`.
 
-- `.agents/NEXT.md:113` keeps the filing block. `.agents/NEXT.md:119` keeps the paid block.
-  `.agents/NEXT.md:132` keeps the human-judgment block. `.agents/NEXT.md:141` keeps the merge and
+- [`.agents/NEXT.md:113`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the filing block. [`.agents/NEXT.md:119`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the paid block.
+  [`.agents/NEXT.md:132`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the human-judgment block. [`.agents/NEXT.md:141`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) keeps the merge and
   deployment block.
 - `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
   `declined-upstream`. That total is 70. No record moved to a filed state.
@@ -889,7 +889,7 @@ Evidence:
   unreviewed and unapproved".
 - The review above lists revision 3 in its scope. It verified P1 to P3 and S1 to S3 against
   revision 3. It raised C3 against revision 3.
-- `.agents/NEXT.md:28` and `.agents/NEXT.md:36-37` now say that the final Opus review inspected
+- [`.agents/NEXT.md:28`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) and [`.agents/NEXT.md:36-37`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) now say that the final Opus review inspected
   and checked revision 3.
 - Ledger line 364 and ledger line 596 now say that the final Opus review inspected revision 3.
 - The repair updated the second pair of surfaces and not the first.
@@ -1029,7 +1029,7 @@ No live surface still says that nobody reviewed revision 3. The reviewer searche
 ## N2 — Closed
 
 The ledger checklist at `.agents/rounds/2026-09-03-truth-maintenance.md:355-356` now records the
-final repair run of 108 files and 1,974 tests. `.agents/NEXT.md:46-47` records the same result.
+final repair run of 108 files and 1,974 tests. [`.agents/NEXT.md:46-47`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) records the same result.
 
 The reviewer re-ran the full suite at `02a070c`. It passed 108 files and 1,974 tests with zero
 skipped tests. The recorded claim reproduces.
@@ -1080,13 +1080,13 @@ document that reports its own review state. This section closes it.
 
 Every paid, filing, golden, merge, deployment, and owner decision stays blocked.
 
-- `.agents/NEXT.md:114`, `:120`, `:133`, and `:142` keep the four blocked classes.
+- [`.agents/NEXT.md:114`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), `:120`, `:133`, and `:142` keep the four blocked classes.
 - `improvements/INDEX.md` still shows 57 `reported-upstream`, 10 `verified`, and 3
   `declined-upstream`. No record moved to a filed state. The commit changed no `improvements` file.
 - Revision 3 still says that it authorizes nothing. Its signature line at line 626 still offers
   `AUTHORIZED` or `NOT AUTHORIZED`.
 - Owner decisions A to J stay open. Decision 5, the concurrent-load acceptance, stays open.
-- The handoff keeps the safe default of no spend at `.agents/NEXT.md:179`.
+- The handoff keeps the safe default of no spend at [`.agents/NEXT.md:179`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md).
 
 ## Commands and results
 

@@ -210,7 +210,7 @@ Probe semantics (`scripts/improvements-run-probes.mjs`): `expect.contains` hit m
 - `sk-024` probe on live `main`: the needle is gone → probe miss. That matches the canonical fix. It does not prove the accepted pin is fixed.
 - `sk-023` probe on live `main`: the needle remains → probe hit. That is a **false recurrence**. The recommendation kept that bullet. Handoff #140 asked to repoint the probe. Parent owns that edit. Do not run an unfiltered probe drain on `sk-023` until the probe measures the original defect (absence of the scope sentence), not the kept bullet.
 
-`.agents/TODO.md` has open items for `#136` pin acceptance and `#138` verification. `.agents/NEXT.md` line 259 points at the `sk-021` gate. Historical round notes may keep the IDs.
+`.agents/TODO.md` has open items for `#136` pin acceptance and `#138` verification. [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) line 259 points at the `sk-021` gate. Historical round notes may keep the IDs.
 
 ## Residuals (not original-trigger recurrences)
 
@@ -240,7 +240,7 @@ For each of `sk-021`, `sk-023`, `sk-024`:
 - before delete: repoint or drop the `sk-023` probe so a last probe run cannot draft a false recurrence
 - close Raven `#136`, `#138`, `#140` after terminal receipts (parent posts the live result; this lane does not comment)
 - close TODO items `Accept the corrected Smart Contracts source before retiring sk-021` and `Verify new sk-024 handoff #138`
-- update `.agents/NEXT.md` only if it still names the gates
+- update [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) only if it still names the gates
 - add a **new** `PIN-REVIEW.md` entry for the accepted `sel:` digest; do not rewrite the 2026-09-08 entry
 - rebuild catalog/manifest from `update.sh`; do not hand-edit generated files
 

@@ -68,17 +68,17 @@ The reusable runner is `scripts/run-demo-model-gauntlet.mjs`.
 Raw traces and generated summaries:
 
 - `research/gauntlets/2026-07-07-demo-model-gauntlet.json`
-- `research/gauntlets/2026-07-07-demo-model-gauntlet-summary.md`
+- [`research/gauntlets/2026-07-07-demo-model-gauntlet-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-07-demo-model-gauntlet-summary.md)
 - `research/gauntlets/2026-07-07-demo-model-gauntlet-finalists.json`
-- `research/gauntlets/2026-07-07-demo-model-gauntlet-finalists-summary.md`
+- [`research/gauntlets/2026-07-07-demo-model-gauntlet-finalists-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-07-demo-model-gauntlet-finalists-summary.md)
 - `research/gauntlets/2026-07-07-anthropic-gemini-reprobe-normalized.json`
-- `research/gauntlets/2026-07-07-anthropic-gemini-reprobe-normalized-summary.md`
+- [`research/gauntlets/2026-07-07-anthropic-gemini-reprobe-normalized-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-07-anthropic-gemini-reprobe-normalized-summary.md)
 - `research/gauntlets/2026-07-07-gpt54-sonnet-headtohead.json`
-- `research/gauntlets/2026-07-07-gpt54-sonnet-headtohead-summary.md`
+- [`research/gauntlets/2026-07-07-gpt54-sonnet-headtohead-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-07-gpt54-sonnet-headtohead-summary.md)
 - `research/gauntlets/2026-07-07-demo-model-gauntlet-smoke.json`
-- `research/gauntlets/2026-07-07-demo-model-gauntlet-smoke-summary.md`
+- [`research/gauntlets/2026-07-07-demo-model-gauntlet-smoke-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-07-demo-model-gauntlet-smoke-summary.md)
 - `research/gauntlets/2026-07-07-demo-model-gauntlet-sonnet-smoke.json`
-- `research/gauntlets/2026-07-07-demo-model-gauntlet-sonnet-smoke-summary.md`
+- [`research/gauntlets/2026-07-07-demo-model-gauntlet-sonnet-smoke-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-07-demo-model-gauntlet-sonnet-smoke-summary.md)
 
 Representative commands:
 
@@ -128,9 +128,9 @@ Corrected Responses-mode result on the same eight-prompt workload:
 Artifacts:
 
 - `research/gauntlets/2026-07-08-demo-responses-low-compat.json`
-- `research/gauntlets/2026-07-08-demo-responses-low-compat-summary.md`
+- [`research/gauntlets/2026-07-08-demo-responses-low-compat-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-08-demo-responses-low-compat-summary.md)
 - `research/gauntlets/2026-07-08-demo-responses-reasoning-smoke.json`
-- `research/gauntlets/2026-07-08-demo-responses-reasoning-smoke-summary.md`
+- [`research/gauntlets/2026-07-08-demo-responses-reasoning-smoke-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-08-demo-responses-reasoning-smoke-summary.md)
 
 Representative corrected commands:
 
@@ -151,9 +151,9 @@ Earlier invalid-route result retained for audit trail:
 Artifacts:
 
 - `research/gauntlets/2026-07-08-demo-reasoning-effort-smoke.json`
-- `research/gauntlets/2026-07-08-demo-reasoning-effort-smoke-summary.md`
+- [`research/gauntlets/2026-07-08-demo-reasoning-effort-smoke-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-08-demo-reasoning-effort-smoke-summary.md)
 - `research/gauntlets/2026-07-08-demo-reasoning-default-baseline.json`
-- `research/gauntlets/2026-07-08-demo-reasoning-default-baseline-summary.md`
+- [`research/gauntlets/2026-07-08-demo-reasoning-default-baseline-summary.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/gauntlets/2026-07-08-demo-reasoning-default-baseline-summary.md)
 
 Representative commands:
 

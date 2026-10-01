@@ -37,7 +37,7 @@ compromised maintainer machine; volumetric denial of service.
 - Model-authored code runs in a Dynamic Worker isolate with **no network egress**
   (`globalOutbound: null`); all service traffic goes through host-side adapters that hold the
   secrets. Sandbox-escape or egress findings are the most valuable class of report here.
-- Auth design (WorkOS OAuth + named API-key gate) is documented in `ARCHITECTURE.md` and
-  `research/auth-workos.md`; `README.md` links to those operational details. The design does not
-  depend on secrecy, and reports that only restate documented behavior (e.g. that a key bypass
-  exists) are not vulnerabilities.
+- [ARCHITECTURE.md](ARCHITECTURE.md) documents the authentication design: WorkOS OAuth, named
+  API keys, and a development bypass that works only on `localhost`. The design does not depend on
+  secrecy. A report that only restates documented behavior, for example that named API keys or the
+  localhost-only bypass exist, is not a vulnerability.

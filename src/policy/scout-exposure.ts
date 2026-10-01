@@ -12,17 +12,14 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   "POST /api/partners/submit-listing",
   "POST /api/partners/assistant",
   "POST /api/partners/onboard",
-  // The accepted 1.9.1 surface keeps this excluded. Upstream 1.9.13 narrowed
-  // x-routing, but candidate response-schema keywords caused 90 unrelated
-  // captures. Expose it after a general scoring repair passes routing review.
+  // Keep quality excluded until its routing contract and a general scoring
+  // repair pass the routing gates and independent exposure review.
   "GET /api/quality",
-  // The accepted 1.9.1 surface keeps this excluded by a separate routing
-  // decision. Upstream 1.9.13 completed the issued response enum. Expose it
-  // only with an accepted current-surface routing review.
+  // Keep verification excluded until a routing-contract candidate passes
+  // the routing gates and independent exposure review.
   "GET /api/verify",
-  // The operation is useful for RWA discovery, but its first source candidate
-  // captured unrelated implementation queries. Keep it outside the accepted
-  // surface until the general routing repair and operation review both pass.
+  // RWA routing can capture unrelated implementation queries. Require a
+  // general routing repair and independent operation review before exposure.
   "GET /api/rwa"
 ]);
 

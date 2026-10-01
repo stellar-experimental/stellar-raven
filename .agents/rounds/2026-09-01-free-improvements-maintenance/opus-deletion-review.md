@@ -5,7 +5,7 @@
   round orchestration is a different agent, so the distinct-reviewer bar is met.
 - Method: read `AGENTS.md`, `.agents/skills/improvements-pipeline/SKILL.md`, `improvements/README.md`,
   and each finding in full. Every upstream ref, deployed source, and trigger below was executed
-  fresh by this lane. No other agent's report was read; `terra-evidence.md` in this directory was
+  fresh by this lane. No other agent's report was read; [`terra-evidence.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-01-free-improvements-maintenance/terra-evidence.md) in this directory was
   left unopened.
 - Writes: this file only. No comment was posted. No finding, intake entry, golden, generated file,
   or ledger was modified.
@@ -129,9 +129,9 @@ start still works.
 | `improvements/intake.json:111` override | **remove — automatic** | The resolver deletes the per-finding override itself. |
 | `improvements/INDEX.md:38` | **regenerate — automatic** | |
 | `research/services/stellar-docs-algolia.md:28,99` | **historical retention** | Dated research narrating the applied crawler change. `research/` is evidence, not an instruction layer. Leave it. |
-| `.agents/rounds/2026-08-28-improvements-hygiene.md`, `.agents/rounds/2026-09-01-remaining-work-adversarial-audit*/…`, `research/audits/2026-08-29-*/…` | **historical retention** | Dated round and audit records. Leave them. |
+| [`.agents/rounds/2026-08-28-improvements-hygiene.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-28-improvements-hygiene.md), `.agents/rounds/2026-09-01-remaining-work-adversarial-audit*/…`, `research/audits/2026-08-29-*/…` | **historical retention** | Dated round and audit records. Leave them. |
 | `test/improvements-file-issue.test.ts:567` | **retain — unrelated** | `escapesRepo("..hidden/sd-001.md")` is a path-traversal fixture string, not a reference to the finding. |
-| `.agents/TODO.md:49`, `.agents/NEXT.md:104`, this round ledger | **round bookkeeping** | Close at round closeout, not by the resolver. |
+| `.agents/TODO.md:49`, [`.agents/NEXT.md:104`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), this round ledger | **round bookkeeping** | Close at round closeout, not by the resolver. |
 
 Goldens: no golden case references `sd-001`. `q-protocol-24-whisk-incident` cites blog and
 `cap-0076.md` sources and its `truth.verified.rootCause` names eval-side compression plus a
@@ -232,10 +232,10 @@ supports `t` in {2, 3, 4, 8, 12, 16, 20, 24}, while `poseidon2.rs` accepts `t ==
 | `eval/qa/cases.json:29576,29662,29666-29668,29677` | **regenerate** | Generated; rebuild with `npm run eval:qa:compile` after the case edit. Never hand-edit. |
 | `improvements/intake.json:155` override | **remove — automatic** | |
 | `improvements/INDEX.md:49` | **regenerate — automatic** | |
-| `research/audits/2026-07-11-gt31-protocol-caps-reserves.md:88,113,137,171` | **historical retention** | The dated GT-31 audit that produced the finding. |
+| [`research/audits/2026-07-11-gt31-protocol-caps-reserves.md:88,113,137,171`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/audits/2026-07-11-gt31-protocol-caps-reserves.md) | **historical retention** | The dated GT-31 audit that produced the finding. |
 | `research/audits/2026-08-29-temp-artifact-reconciliation/{fable,sol}-review.md` | **historical retention** | Dated review records; the `>`-prefix note about `INDEX.md` is a separate own-repo generator nit. |
-| `.agents/rounds/2026-08-28-improvements-hygiene.md`, `2026-09-01-*` | **historical retention** | |
-| `.agents/TODO.md:49`, `.agents/NEXT.md:104` | **round bookkeeping** | |
+| [`.agents/rounds/2026-08-28-improvements-hygiene.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-08-28-improvements-hygiene.md), `2026-09-01-*` | **historical retention** | |
+| `.agents/TODO.md:49`, [`.agents/NEXT.md:104`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) | **round bookkeeping** | |
 
 Probes: no `probe` frontmatter.
 
@@ -339,8 +339,8 @@ The only `discord.gg` strings anywhere in the four trees are the two corrected `
 |---|---|---|
 | `improvements/INDEX.md:17` | **regenerate — automatic** | |
 | `ecosystem-skills/PIN-REVIEW.md:182,194,196` | **historical retention** | The dated re-pin record; line 194 quotes the old code as narrative evidence, which is correct and must stay. |
-| `eval/corpus/raven-next/research/golden/_dossiers/scf-grants-builders.md:272` | **historical retention — do not edit** | Read-only vendored prior art under `eval/corpus/`, protected by the `AGENTS.md` hard rule. It mentions both codes as historical text. |
-| `.agents/TODO.md:49`, `.agents/NEXT.md:104`, round ledgers, `research/audits/…` | **round bookkeeping / historical retention** | |
+| [`eval/corpus/raven-next/research/golden/_dossiers/scf-grants-builders.md:272`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/corpus/raven-next/research/golden/_dossiers/scf-grants-builders.md) | **historical retention — do not edit** | Read-only vendored prior art under `eval/corpus/`, protected by the `AGENTS.md` hard rule. It mentions both codes as historical text. |
+| `.agents/TODO.md:49`, [`.agents/NEXT.md:104`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md), round ledgers, `research/audits/…` | **round bookkeeping / historical retention** | |
 | `src/site.ts:833,1412` | **retain — already correct** | Both already use `stellardev`. |
 
 No intake override exists for `sk-020`. No `probe` frontmatter. No golden case references it.

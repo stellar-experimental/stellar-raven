@@ -18,8 +18,7 @@ lane verdicts, evidence, follow-ups, and cleaned-up spawned work.
 
 ## Orchestration contract
 
-Use the global `herdr` skill for spawning, monitoring, and cleanup: one pane per lane, split from
-your own pane. Select model and effort explicitly per `AGENTS.md`. This skill adds only
+Spawn one agent per lane as `AGENTS.md` "Coordination" describes. This skill adds only
 truth-maintenance lane structure.
 
 Open one ledger for the round at `.agents/rounds/<YYYY-MM-DD>-truth-maintenance.md`.
@@ -121,11 +120,8 @@ findings remain active while the trigger reproduces; they are not resolution sho
 
 ## Deterministic state table
 
-Use this table shape in the ledger for improvements/issues/PRs:
-
-| finding | trigger | upstream ref | ref state | PR checks/reviews/blocker | live re-check | repo action | next wake-up |
-|---|---|---|---|---|---|---|---|
-| `sls-005` | eval stamp / probe / drift fact | issue/PR URL | open/closed/merged/stale/unknown | pass/fail/requested-changes/none | fixed/still-repro/inconclusive | no-op/status edit/successor/own todo | dated `.agents/TODO.md` entry |
+Use the state table from the `improvements-pipeline` skill ("Upstream issue and PR follow-up",
+step 2) in the ledger for improvements, issues, and PRs.
 
 Only mark `fixed-upstream` when the live re-check of the original trigger passes. A closed
 GitHub issue or merged PR is evidence to inspect, not proof of resolution. If a PR is open

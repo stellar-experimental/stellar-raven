@@ -19,7 +19,7 @@ I read these instructions and records before the live checks:
 - `PLAN.md`
 - `ARCHITECTURE.md`
 - `.agents/TODO.md`
-- `.agents/rounds/2026-09-08-docs-index-execution-astra.md`
+- [`.agents/rounds/2026-09-08-docs-index-execution-astra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-08-docs-index-execution-astra.md)
 - `improvements/README.md`
 - `research/services/stellar-docs-algolia.md`
 - The improvements-pipeline, truth-maintenance, and golden-truth skills
@@ -321,7 +321,7 @@ They must remain unchanged.
 Current-state cleanup needs these files:
 
 - `.agents/TODO.md`
-- `.agents/NEXT.md`
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md)
 - `improvements/INDEX.md`
 - `improvements/intake.json`
 - `eval/qa/corpus/battery/tooling-infra/q-ti-openzeppelin-relayer.json`
@@ -349,7 +349,7 @@ Dated rounds and research audits remain historical evidence.
 Current-state cleanup needs these files:
 
 - `.agents/TODO.md`
-- `.agents/NEXT.md`
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md)
 - `improvements/INDEX.md`
 - `improvements/intake.json`
 - `eval/qa/corpus/battery/tooling-infra/q-infra-horizon-vs-rpc.json`
@@ -382,7 +382,7 @@ Dated rounds preserve real historical observations.
 Current-state cleanup needs these files:
 
 - `.agents/TODO.md`
-- `.agents/NEXT.md`
+- [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md)
 - `improvements/INDEX.md`
 - `eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json`
 - Generated `eval/qa/cases.json`
@@ -394,7 +394,7 @@ The event and root-cause link need a golden-truth refresh.
 
 The dated 2026-08-30 and 2026-08-31 contradiction rows are valid history.
 They should remain dated history after the refresh.
-`.agents/NEXT.md` also states that the Docs pages still conflict.
+[`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md) also states that the Docs pages still conflict.
 That current-state statement is now false.
 
 The final result must reach these references before resolution:

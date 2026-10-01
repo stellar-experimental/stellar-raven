@@ -1,87 +1,81 @@
-# Discovery Eval
+# Discovery evaluation
 
-Discovery instruments for the discovery redesign. The one-shot lane asks a narrower question than QA: if a naive agent makes exactly one live MCP `search` call with the user's question, did the returned catalog hits surface the right source family and at least one usable operation or skill? The paired agent lane allows a real headless agent at most three searches, and the replay lane replays search queries mined from prior eval agents.
+This instrument measures whether search results expose an expected source family and a usable operation or skill.
+The one-shot instrument makes one MCP search with the case question.
+The agent instrument allows at most three searches. The replay instrument uses stored queries from evaluation agents.
+The runners call the MCP server through HTTP. They do not import the search implementation.
 
-The runner talks to the real MCP server over HTTP and does not import `src/` search or scoring code. That keeps the lane pointed at the live product surface rather than an offline reimplementation.
+## Commands
 
-## Run
+Reuse the running server and substitute its bound URL.
 
 ```sh
 node eval/discovery/run-discovery.mjs --url http://localhost:8788
-SERVER_REVISION=$(git rev-parse HEAD)
-SURFACE_SHA256=<surfaceSha256 from eval/report-live-surface.mjs>
-AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
-AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
-MAX_BUDGET_USD=<approved total USD cap>
-node eval/discovery/run-agent-discovery.mjs --url http://localhost:8787 --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --max-budget-usd "$MAX_BUDGET_USD"
 node eval/discovery/run-replay.mjs --url http://localhost:8787
+
+# Paid agent collection requires an approved cap and pinned server, executable, and environment identities.
+node eval/discovery/run-agent-discovery.mjs \
+  --url http://localhost:8787 \
+  --server-revision <commit> \
+  --expect-sha256 <surface-sha256> \
+  --expect-agent-binary-sha256 <wrapper-sha256> \
+  --expect-agent-environment-sha256 <environment-sha256> \
+  --max-budget-usd <usd>
 ```
 
-`run-discovery.mjs` retains its historical `http://localhost:8788` default; the new agent and
-replay runners default to the repository's local server at `http://localhost:8787`.
-Every `--url` may include or omit `/mcp`. For non-local targets, provide the full named
-credential (`name:token`) through `RAVEN_MCP_BEARER_TOKEN`; the runner sends it as a bearer
-credential and never prints it.
+The one-shot runner defaults to `http://localhost:8788`.
+The agent and replay runners default to `http://localhost:8787`.
+Each `--url` accepts a base URL or a URL ending in `/mcp`.
+Remote one-shot and replay runs use `RAVEN_MCP_BEARER_TOKEN` with the full `name:token` credential.
+The runner sends that credential as a bearer token and does not print it.
 
-The paid `run-agent-discovery.mjs` lane accepts only a local `dev:eval` server. The free one-shot
-and replay lanes can still use an authenticated remote target.
+Paid agent collection requires a local server from `npm run dev:eval`, with a clean tree and a matching compiled revision.
+Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to prepare and approve that server.
+The runner disables user, project, and local settings and slash commands.
+It retains the explicit strict MCP configuration and permission bypass.
+Each row must report the `raven` MCP server as `connected`.
+A failed connection stops collection and suppresses aggregates.
 
-Start paid agent-discovery servers with `npm run dev:eval -- --port 8787`. This launcher requires
-a clean worktree and compiles its commit into MCP `serverInfo`. The agent runner disables all
-user, project, and local setting sources and slash commands. It keeps the explicit strict MCP
-configuration and the existing permission-bypass flag. It does not use Claude `--safe-mode`,
-because Claude Code 2.1.247 drops explicit MCP servers in that mode.
-Each row must report the explicit `raven` server as `connected`. The runner stops after the first
-failure and suppresses all aggregates.
+Every agent-runner flag requires one spaced value. The parser rejects unknown flags, equals forms, and stray arguments.
+The required flags bind the server revision, surface hash, executable hash, environment hash, and total budget.
+Each agent receives only the remaining budget authorization. Invalid, missing, or excessive cost reports fail the run.
+Artifacts record each authorization, cost report, and remaining amount under `eval/discovery/results/`.
 
-The paid runner requires one space-separated value for each required flag: the binary pin,
-environment pin, total budget, `--server-revision`, and `--expect-sha256`.
-It rejects missing, duplicate, and empty required flags before an agent starts.
-The paid runner uses fail-closed CLI syntax and has no boolean flags.
-Every supported flag requires one spaced value.
-It rejects every equals form, unknown flag, and stray argument before any paid call.
-Each agent receives only its remaining budget authorization.
-Missing, invalid, and excessive costs fail the run.
-The result artifact records every authorization, reported cost, and remaining amount.
+The agent defaults to `claude-sonnet-5` at medium effort and can use only `mcp__raven__search`.
+The runner grades at most the first three searches and records the observed call count.
+Zero searches or more than three searches invalidate final-selection credit.
+Use `--cases`, `--ids`, `--repeat`, `--model`, and `--effort` for explicit comparisons.
+Supply `--ids a,b,c` once. Duplicate `--ids` flags fail before a paid call.
 
-Results are written to `eval/discovery/results/<ISO-stamp>.json` and are local evidence, matching the existing eval results convention.
+## Inputs and grading
 
-The agent runner defaults to `claude-sonnet-5` at medium effort, launches non-interactively with
-permission bypass, and exposes only `mcp__raven__search`. It records the observed call count,
-grades at most the first three searches, and invalidates final-selection credit if the agent makes
-zero or more than three calls. `--ids` accepts only one spaced `--ids a,b,c` form.
-The runner rejects `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
-`--repeat N`, `--cases`, `--ids`, `--model`, and `--effort` support isolated A/Bs.
+[cases.json](cases.json) defines the 43 cases, seed pools, expected families, and accepted operation IDs.
+[mined-lumenloop-queries.json](mined-lumenloop-queries.json) contains 91 query occurrences across eight Lumenloop cases.
+`mine-agent-queries.mjs` reads queries from evaluation agents over committed questions. Raw user traffic is forbidden.
 
-`mine-agent-queries.mjs` builds `mined-lumenloop-queries.json` only from agent-generated queries over committed eval questions; raw user traffic is forbidden. The committed lane has 91 occurrences across the eight LumenLoop target cases from three retained historical agentic result files. Its deterministic register classifier reports 42 mixed (46.2%), 19 entity-only, and 30 capability queries. This does not recreate the unavailable July 9 160-query artifact's 66.3% mixed share; the different retained sample is recorded honestly rather than relabeled to match history.
+For each one-shot case, the runner calls `search` with the question and `limit: 8`.
+
+- `familyHit@3`: a rank 1–3 hit has a service in `expectedFamilies`.
+- `usableOp@5`: a rank 1–5 hit has an ID in `acceptableOps`.
+- Stored hits include rank, ID, service, kind, tier, score, and supported additional score fields.
+
+The summary groups counts by seed pool.
+`classify-misses.mjs` compares a one-shot artifact with an agent artifact:
+
+- `downstream`: the one-shot search found both the expected family and a usable operation.
+- `agent-behavior`: the one-shot search missed either measure, but one agent run found both.
+- `retrieval`: no individual agent run found both.
+
+The classifier never combines hits across repeated agent runs to claim recovery.
+The discovery measures do not establish final-answer correctness. Use [QA](../qa/README.md) for that measure.
+The Vectorize experiments measured NO-SHIP outcomes. Their implementation and commands are removed.
+
+## Replay smoke record — 2026-07-10
 
 Standalone replay smoke evidence against the existing Solo `dev` process:
 `2026-07-10T04-31-51-308Z-todo-902-smoke.json` (91/91 calls completed; family top-1
 20/91, family top-5 37/91, usable operation top-5 28/91). The result is local/gitignored by
 policy; its exact stamp and aggregate are retained here.
-
-## Seed Pools
-
-- `extended-strict-misses`: 12 cases selected from extended-lane strict top-5 misses when this pool was authored. Their source references remain in `cases.json`; membership does not track the current routing miss count.
-- `issue-9-exemplars`: vague/status/current-recommendation questions from GitHub issue #9's exemplar class, authored against exact manifest ids.
-- `lumenloop-agentic-misses`: the 8 LumenLoop-labelled cases (`expected_service: lumenloop`) from the real agentic run `eval/agentic/results/agentic-2026-07-04-drift.json` (local-only, gitignored). Ground truth is authored from each case's `expected_cards`, so `expectedFamilies` is `["lumenloop"]` for the seven LumenLoop-only-card cases and `["lumenloop","scout"]` only for `blend-tvl`, whose authoritative card list itself includes `scout_analyze`. This pool deliberately measures **LumenLoop-family** discovery: a miss means one-shot search did not surface the intended LumenLoop editorial/directory source, even in cases where Scout may still return a factually usable answer. Scout was dropped from `phoenix-scf` (SCF submission history is a LumenLoop-specific dataset Scout cannot serve).
-- `round-844-real-user`: representative real-user alias/error/tooling questions from the round-844 lane context in `eval/README.md`, using committed routing-corpus questions as durable refs.
-- `pr17-fold`: unique provisional seed cases folded from draft PR #17 (`kalepail/stellar-raven#17`) so that competing Phase-0 instrument can be superseded without losing Protocol 24, AP2/ACP, and RPC `getTransactions` exemplars.
-
-## Grading
-
-For each case, the runner calls `search` once with the case question and `limit: 8`.
-
-- `familyHit@3`: any rank 1-3 hit has `service` in `expectedFamilies`.
-- `usableOp@5`: any rank 1-5 hit has `id` in `acceptableOps`.
-- Raw rank 1-8 hits are recorded as `{ rank, id, service, kind, tier, score }` plus any additional score fields returned by the server that this runner knows to preserve.
-
-The summary reports overall counts and per-seed-pool counts. `classify-misses.mjs` pairs a one-shot result with an agent result:
-
-- `downstream`: one shot already surfaced both expected family@3 and usable op@5;
-- `agent-behavior`: one shot missed at least one metric, but one ≤3-search agent run surfaced both;
-- `retrieval`: no individual agent run surfaced both. Family and operation hits from different
-  repeated runs are never OR-combined into a recovery.
 
 ## Phase 0 Baseline
 

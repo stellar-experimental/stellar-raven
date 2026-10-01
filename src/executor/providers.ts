@@ -1,6 +1,6 @@
 /**
  * Sandbox surface — the namespaced globals LLM code sees inside `execute`
- * (PLAN §1). Pure module: no cloudflare:workers import, fully unit-testable;
+ * (ARCHITECTURE.md). Pure module: no cloudflare:workers import, fully unit-testable;
  * src/executor/run.ts feeds these providers to codemode's
  * DynamicWorkerExecutor, whose ResolvedProvider type they match structurally.
  *
@@ -50,8 +50,7 @@
  *     every kind carries a `usage` line naming the exact next call.
  *   codemode.skill.read(name, {sections?}) — pinned skill content, fetched
  *     from upstream at the pinned commit and hash-verified (src/skills/source.ts)
- *   codemode.skill.run(name, input)   — runnable-skill dispatch (research/
- *     skill-run-design.md §6): exact catalog id, input validated host-side
+ *   codemode.skill.run(name, input)   — runnable-skill dispatch (src/skills/README.md): exact catalog id, input validated host-side
  *     against the entry's schema, first-party runner executed HOST-side over
  *     the same wrapped op closures the service namespaces expose (policy
  *     identity by construction — buildOpsFns below); returns the service-call
@@ -265,7 +264,7 @@ export type ArtifactSandboxDeps = {
  * set-write-through contract, or skill results and service envelopes
  * decorate inconsistently.)
  *
- * `codemode.skill.run` (design §6) is read's sibling over the flat
+ * `codemode.skill.run` (src/skills/README.md) is read's sibling over the flat
  * `skill_run` dispatch. NO .data-trap inversion for run: unlike skill.read,
  * run is a CALL and RETURNS the service-call envelope
  * ({ ok: true, data } | { ok: false, error }), so the shared __guardEnvelope
@@ -388,7 +387,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
 
 /**
  * The per-op wrapped-closure builder — extracted from buildProviders (design
- * §11 row 6) so the SAME closures serve BOTH consumers: the sandbox service
+ * src/skills/README.md) so the SAME closures serve BOTH consumers: the sandbox service
  * namespaces (buildProviders) and the skill-run ops facade (runSkill's
  * sub-facade wraps these for the host call ledger). Policy identity holds by
  * construction: there is exactly one guard → callService → logEvent →
@@ -521,7 +520,7 @@ function catalogEntryView(entry: CatalogEntry) {
     inputSchema: entry.inputSchema,
     outputSchema: entry.outputSchema,
     ...(entry.retrievalProfile ? { retrievalProfile: entry.retrievalProfile } : {}),
-    // Runnable-skill affordance flag (design §5): present-and-true only, same
+    // Runnable-skill affordance flag (src/skills/README.md): present-and-true only, same
     // as the manifest — code-grep discovery (`entries.filter(e => e.runnable)`)
     // sees exactly what the catalog says, no third truth value.
     ...(entry.runnable === true ? { runnable: true as const } : {})
@@ -630,7 +629,7 @@ export function buildCodemodeProvider(
    */
   discovery?: boolean,
   /**
-   * The skill.run wiring (design §6): the shared ops facade from buildOpsFns
+   * The skill.run wiring (src/skills/README.md): the shared ops facade from buildOpsFns
    * — the SAME closures the service namespaces expose, so policy identity
    * holds by construction — plus the redaction-belt secrets. Threaded by
    * buildSandbox; when absent (a direct caller that never built ops),
@@ -1159,13 +1158,13 @@ export function buildSandbox(
     codemodeDiscovery?: boolean;
   }
 ): SandboxProvider[] {
-  // Runner-wiring assertion at provider build (design §5/§6): registry ↔
+  // Runner-wiring assertion at provider build (src/skills/README.md): registry ↔
   // manifest id sets both ways, deep schema equality per id, declared ops ⊆
   // emitted operation ids — THROWS so the first execute fails loudly instead
   // of validating input against a schema the bundled runner doesn't expect.
   assertRunnersWired(catalog, RUNNERS);
   // Ops built ONCE, fed to BOTH the sandbox service namespaces and the
-  // skill-run facade — the policy-identity-by-construction point (design §2).
+  // skill-run facade — the policy-identity-by-construction point (src/skills/README.md).
   const ops = buildOpsFns(catalog, env, deps);
   return [
     ...buildProviders(catalog, env, deps, ops),
