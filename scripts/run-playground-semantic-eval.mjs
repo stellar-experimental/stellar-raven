@@ -44,6 +44,9 @@ import {
   treeGenerationSha256
 } from "../eval/playground/artifact-contract.mjs";
 
+import { authorizeSpend, createSpendLedger, parseMaxBudgetUsd, recordSpend, spendLedgerRecord } from "../eval/qa/spend-budget.mjs";
+import { executableIdentity } from "../eval/lib/executable-identity.mjs";
+
 const DEFAULT_SAMPLE = 5;
 const DEFAULT_SEED = "playground-semantic-v1";
 const DEFAULT_TIMEOUT_MS = 150_000;
@@ -68,6 +71,7 @@ Options:
   --full                Select every case only when the selected contract has <=${MAX_CASES_PER_RUN_SUBJECT} cases
   --confirm-paid        Allow model-backed HTTP turns (required unless --dry-run)
   --no-judge            Capture turns but skip the paid QA judge call
+  --max-budget-usd USD  REQUIRED once per paid command; counts answer and judge costs
   --judge-model NAME    Existing QA judge model (default ${JUDGE_MODEL})
   --server-generation SHA
                         REQUIRED for model-backed runs: operator assertion of the loopback
@@ -84,25 +88,28 @@ Options:
 Examples:
   npm run eval:playground -- --dry-run
   npm run eval:playground -- --print-generation
-  npm run eval:playground -- --confirm-paid --server-generation <sha256> --round-cap-context <path> --sample 5 --seed baseline-a
-  npm run eval:playground -- --confirm-paid --server-generation <sha256> --round-cap-context <path> --ids q-aas-burn-clawback-redemption-mechanics
-  npm run eval:playground -- --confirm-paid --server-generation <sha256> --round-cap-context <path> --cases eval/qa/corpus/live/live-cases.json --full
+  npm run eval:playground -- --confirm-paid --max-budget-usd 10 --server-generation <sha256> --round-cap-context <path> --sample 5 --seed baseline-a
+  npm run eval:playground -- --confirm-paid --max-budget-usd 10 --server-generation <sha256> --round-cap-context <path> --ids q-aas-burn-clawback-redemption-mechanics
+  npm run eval:playground -- --confirm-paid --max-budget-usd 10 --server-generation <sha256> --round-cap-context <path> --cases eval/qa/corpus/live/live-cases.json --full
 `;
 }
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
   const out = {
     sample: DEFAULT_SAMPLE,
     sampleExplicit: false,
     seed: DEFAULT_SEED,
     timeoutMs: DEFAULT_TIMEOUT_MS
   };
+  const seen = new Set();
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
+    if (seen.has(arg)) throw new Error(`Duplicate argument: ${arg}`);
+    seen.add(arg);
     if (arg === "--help") out.help = true;
     else if (arg === "--full" || arg === "--confirm-paid" || arg === "--no-judge" || arg === "--dry-run" || arg === "--preflight" || arg === "--print-generation") {
       out[arg.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = true;
-    } else if (["--url", "--cases", "--ids", "--sample", "--seed", "--judge-model", "--server-generation", "--round-cap-context", "--timeout-ms", "--out-dir"].includes(arg)) {
+    } else if (["--max-budget-usd", "--url", "--cases", "--ids", "--sample", "--seed", "--judge-model", "--server-generation", "--round-cap-context", "--timeout-ms", "--out-dir"].includes(arg)) {
       const value = argv[++index];
       if (!value || value.startsWith("--")) throw new Error(`${arg} requires a value`);
       out[arg.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = value;
@@ -117,6 +124,10 @@ function parseArgs(argv) {
   if (!Number.isInteger(out.timeoutMs) || out.timeoutMs <= 0) throw new Error(`--timeout-ms must be a positive integer, got ${out.timeoutMs}`);
   if (out.serverGeneration && !/^[a-f0-9]{64}$/.test(out.serverGeneration)) {
     throw new Error("--server-generation must be a lowercase SHA-256");
+  }
+  out.maxBudgetUsd = parseMaxBudgetUsd(out.maxBudgetUsd);
+  if (out.confirmPaid && !out.dryRun && !out.preflight && !out.printGeneration && out.maxBudgetUsd === null) {
+    throw new Error("Paid runs require exactly one --max-budget-usd");
   }
   return out;
 }
@@ -340,7 +351,7 @@ async function readSse(body, onFrame, onParseError) {
   if (buffer.trim()) onParseError(`unterminated SSE event: ${buffer.slice(0, 300)}`);
 }
 
-async function runCase(item, { endpoint, timeoutMs, cookie }) {
+async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd }) {
   const started = Date.now();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -359,7 +370,8 @@ async function runCase(item, { endpoint, timeoutMs, cookie }) {
         "content-type": "application/json",
         origin: new URL(endpoint).origin,
         "sec-fetch-site": "same-origin",
-        cookie
+        cookie,
+        "x-raven-eval-max-budget-usd": String(maxBudgetUsd)
       },
       body: JSON.stringify({ messages: [{ role: "user", content: item.question }] }),
       signal: controller.signal
@@ -420,6 +432,9 @@ async function runCase(item, { endpoint, timeoutMs, cookie }) {
   }, {});
   return {
     answer: finalText,
+    costUsd: frames.filter((frame) => frame.type === "eval-cost").length === 1
+      ? frames.find((frame) => frame.type === "eval-cost").costUsd : null,
+    answerCost: frames.find((frame) => frame.type === "eval-cost") ?? null,
     transcript,
     frames,
     toolCalls,
@@ -453,7 +468,10 @@ function boundedCheckError(error) {
   return sanitizeGenerationCheckError(error);
 }
 
-function actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd }) {
+function actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd, ledger }) {
+  const answers = ledger.calls.filter((call) => call.method === "answer");
+  const answerCost = answers.length === counters.answerStarted && answers.every((call) => call.costUsd !== null)
+    ? Number(answers.reduce((sum, call) => sum + call.costUsd, 0).toFixed(12)) : null;
   return {
     accountingPolicy: "started-calls-count-conservatively; quarantine releases no authorization or reserve",
     actual: {
@@ -461,8 +479,8 @@ function actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJud
       judgeCallsStarted: counters.judgeStarted,
       reportedJudgeCalls,
       reportedJudgeCostUsd,
-      answerProviderCostUsd: null,
-      answerProviderCostSemantics: "not-emitted-by-playground-artifact",
+      answerProviderCostUsd: answerCost,
+      answerProviderCostSemantics: "gateway-reported-usd",
       observedAttemptedModels: null
     },
     selectedCaseIds,
@@ -478,6 +496,7 @@ function actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJud
  */
 export async function orchestratePlaygroundRun({
   cases,
+  maxBudgetUsd,
   treeAtStart,
   startMeta,
   judgeEnabled,
@@ -493,6 +512,9 @@ export async function orchestratePlaygroundRun({
   onRow = () => {},
   now = () => new Date().toISOString()
 }) {
+  if (maxBudgetUsd === undefined || maxBudgetUsd === null) throw new Error("maxBudgetUsd is required");
+  const ledger = createSpendLedger(maxBudgetUsd);
+  let budgetError = null;
   const rows = [];
   const selectedCaseIds = cases.map((item) => item.id);
   const attempted = [];
@@ -514,8 +536,9 @@ export async function orchestratePlaygroundRun({
           : "A required local working-tree generation check failed after spend; no mismatch or server change is claimed.",
       checkError: checkError ?? null
     };
-    const spend = actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd });
-    const artifact = buildQuarantine({ meta: startMeta, rows, treeAtStart, treeAtFinish, reason, spend });
+    const spend = actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd, ledger });
+    const budget = { ...spendLedgerRecord(ledger), status: "invalid", error: budgetError?.code ?? code };
+    const artifact = buildQuarantine({ meta: startMeta, rows, treeAtStart, treeAtFinish, reason, spend, budget });
     await writeQuarantineArtifact(artifact, { reason, spend, treeAtStart, treeAtFinish });
     return { kind: "quarantined", artifact, reason, spend };
   };
@@ -538,24 +561,37 @@ export async function orchestratePlaygroundRun({
   for (const [index, item] of cases.entries()) {
     const beforeAnswer = await checkpoint("before-answer", item, index);
     if (beforeAnswer) return beforeAnswer;
+    let authorization;
+    try { authorization = authorizeSpend(ledger, { method: "answer", id: item.id }); }
+    catch (error) { budgetError = error; break; }
     onAnswerStart({ item, index });
     counters.answerStarted += 1;
     attempted.push(item.id);
-    const run = await runAnswer(item);
+    let run;
+    try { run = await runAnswer(item, authorization.maxBudgetUsd); }
+    catch { run = { answer: "", costUsd: null, clientError: "answer-call-failed" }; }
     const row = makeRow(item, run, null);
     rows.push(row);
+    try { recordSpend(ledger, authorization, run.costUsd); }
+    catch (error) { budgetError = error; break; }
 
     const beforeJudge = await checkpoint("before-judge", item, index);
     if (beforeJudge) return beforeJudge;
     if (judgeEnabled && run.answer) {
+      try { authorization = authorizeSpend(ledger, { method: "judge", id: item.id }); }
+      catch (error) { budgetError = error; break; }
       counters.judgeStarted += 1;
-      const verdict = await judgeAnswer(item, run);
+      let verdict;
+      try { verdict = await judgeAnswer(item, run, authorization.maxBudgetUsd); }
+      catch { verdict = { score: "error", costUsd: null, rationale: "judge-call-failed" }; }
       judged.push(item.id);
       if (typeof verdict?.costUsd === "number" && Number.isFinite(verdict.costUsd) && verdict.costUsd >= 0) {
         reportedJudgeCalls += 1;
         reportedJudgeCostUsd += verdict.costUsd;
       }
       row.verdict = verdict;
+      try { recordSpend(ledger, authorization, verdict.costUsd); }
+      catch (error) { budgetError = error; break; }
     } else if (judgeEnabled) {
       row.verdict = await judgeAnswer(item, run);
     }
@@ -564,9 +600,26 @@ export async function orchestratePlaygroundRun({
 
   const final = await checkpoint("finalize", null, null);
   if (final) return final;
+  const incompleteCaseIds = cases.filter((item) => {
+    const row = rows.find((entry) => entry.id === item.id);
+    return budgetError?.id === item.id || !row?.answer || row.clientError || row.httpError || row.sseErrors?.length > 0 ||
+      (row.finishReason !== undefined && row.finishReason !== "stop") ||
+      (judgeEnabled && (!judged.includes(item.id) || !["correct", "partial", "wrong"].includes(row.verdict?.score)));
+  }).map((item) => item.id);
+  const budget = { ...spendLedgerRecord(ledger),
+    status: budgetError ? (budgetError.code === "budget-exhausted" ? "incomplete" : "invalid") : incompleteCaseIds.length ? "incomplete" : "complete",
+    error: budgetError?.code ?? null, selectedCaseIds, incompleteCaseIds,
+    unattemptedCaseIds: selectedCaseIds.filter((id) => !attempted.includes(id))
+  };
   const artifact = buildNormalArtifact(rows);
+  artifact.budget = budget;
+  artifact.meta ??= {};
+  artifact.meta.totalCostUsd = budget.reportedSpendUsd;
+  artifact.meta.totalAgentCostUsd = Number(ledger.calls.filter((call) => call.method === "answer").reduce((sum, call) => sum + (call.costUsd ?? 0), 0).toFixed(12));
+  artifact.meta.totalJudgeCostUsd = Number(ledger.calls.filter((call) => call.method === "judge").reduce((sum, call) => sum + (call.costUsd ?? 0), 0).toFixed(12));
+  if (budget.status !== "complete") { artifact.summary = null; artifact.nonPromotable = true; }
   await writeNormalArtifact(artifact, rows);
-  return { kind: "normal", artifact, rows };
+  return { kind: budget.status === "complete" ? "normal" : "budget-stopped", artifact, rows };
 }
 
 export async function writeAtomicQuarantine(outPath, artifact, {
@@ -609,7 +662,7 @@ export function formatQuarantineNotice({ writeFailed = false, path: quarantinePa
 }
 
 export function exitCodeForRunDisposition(result) {
-  return result?.kind === "quarantined" ? 1 : 0;
+  return result?.kind === "quarantined" || result?.kind === "budget-stopped" ? 1 : 0;
 }
 
 export class QuarantineNoticeEmittedError extends Error {
@@ -688,6 +741,7 @@ async function main() {
   }
   assertModelBackedRunInputs(args);
   const judgeModel = args.judgeModel ?? JUDGE_MODEL;
+  const judgeExecutable = args.noJudge ? null : executableIdentity("claude");
   const treeAtStart = await workingTreeSnapshot();
   if (args.serverGeneration !== treeAtStart.generationSha256) {
     throw new Error(
@@ -698,6 +752,7 @@ async function main() {
   const judge = {
     enabled: !args.noJudge,
     model: args.noJudge ? null : judgeModel,
+    executable: judgeExecutable,
     rubric: args.noJudge ? null : JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
     temperature: {
@@ -708,6 +763,7 @@ async function main() {
   const capContext = {
     demo: { ...DEMO_CAPS },
     evaluator: {
+      maxBudgetUsd: args.maxBudgetUsd,
       timeoutMs: args.timeoutMs,
       maxCasesPerRunSubject: MAX_CASES_PER_RUN_SUBJECT,
       selectedCases: cases.length,
@@ -764,6 +820,8 @@ async function main() {
       tags: item.tags,
       truth: { status: item.truth.status, ...(item.truth.asOf ? { asOf: item.truth.asOf } : {}) },
       answer: run.answer,
+      costUsd: run.costUsd,
+      answerCost: run.answerCost,
       transcript: run.transcript,
       frames: run.frames,
       toolCalls: run.toolCalls,
@@ -781,12 +839,13 @@ async function main() {
   };
   const result = await orchestratePlaygroundRun({
     cases,
+    maxBudgetUsd: args.maxBudgetUsd,
     treeAtStart,
     startMeta,
     judgeEnabled: !args.noJudge,
     snapshotTree: workingTreeSnapshot,
-    runAnswer: (item) => runCase(item, { endpoint, timeoutMs: args.timeoutMs, cookie }),
-    judgeAnswer: async (item, run) => {
+    runAnswer: (item, maxBudgetUsd) => runCase(item, { endpoint, timeoutMs: args.timeoutMs, cookie, maxBudgetUsd }),
+    judgeAnswer: async (item, run, maxBudgetUsd) => {
       if (!run.answer) {
         return {
           score: "error", missingFacts: [], wrongClaims: [],
@@ -795,7 +854,7 @@ async function main() {
         };
       }
       const transcriptEvidence = buildTranscriptEvidence({ ...item, candidateAnswer: run.answer, transcript: run.transcript });
-      return judgeCase({ ...item, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence }, { model: judgeModel });
+      return judgeCase({ ...item, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence }, { model: judgeModel, command: judgeExecutable.resolvedPath, maxBudgetUsd });
     },
     makeRow,
     buildNormalArtifact: (rows) => {

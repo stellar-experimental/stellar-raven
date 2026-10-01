@@ -16,18 +16,19 @@ const cases = [{ id: "a" }, { id: "b" }];
 function harness(
   snapshotTree: () => Promise<any>,
   calls: string[],
-  { quarantineWriteError = false, judgeEnabled = true, answer = (item: { id: string }) => ({ answer: `answer:${item.id}` }), verdict = () => ({ score: "pass", costUsd: 0.25 }) }:
+  { quarantineWriteError = false, judgeEnabled = true, answer = (item: { id: string }) => ({ answer: `answer:${item.id}` }), verdict = () => ({ score: "correct", costUsd: 0.25 }) }:
     { quarantineWriteError?: boolean; judgeEnabled?: boolean; answer?: (item: { id: string }) => any; verdict?: () => any } = {}
 ) {
   return orchestratePlaygroundRun({
     cases,
+    maxBudgetUsd: 10,
     treeAtStart: startTree,
     startMeta: { fixture: true },
     judgeEnabled,
     snapshotTree,
     runAnswer: async (item: { id: string }) => {
       calls.push(`answer:${item.id}`);
-      return answer(item);
+      return { costUsd: 0.1, ...answer(item) };
     },
     judgeAnswer: async (item: { id: string }) => {
       calls.push(`judge:${item.id}`);
@@ -35,7 +36,7 @@ function harness(
     },
     makeRow: (item: { id: string }, run: any, verdict: any) => ({ id: item.id, answer: run.answer, verdict }),
     buildNormalArtifact: (rows: any[]) => ({ rows }),
-    buildQuarantine: ({ rows, reason, spend }: any) => ({ rows: structuredClone(rows), reason, spend }),
+    buildQuarantine: ({ rows, reason, spend, budget }: any) => ({ rows: structuredClone(rows), reason, spend, budget }),
     writeNormalArtifact: async () => calls.push("write:normal"),
     writeQuarantineArtifact: async () => {
       calls.push("write:quarantine");
@@ -139,16 +140,19 @@ describe("playground quarantine lifecycle", () => {
       costlessSnapshots += 1;
       return costlessSnapshots === 3 ? changedTree : startTree;
     }, costlessCalls, { verdict: () => ({ score: "error" }) });
-    expect(costless.spend.actual).toMatchObject({ judgeCallsStarted: 1, reportedJudgeCalls: 0, reportedJudgeCostUsd: 0 });
+    expect(costless.kind).toBe("quarantined");
+    expect(costless.artifact.budget).toMatchObject({ missingCosts: 1 });
     expect(costless.spend.caseIdsJudged).toEqual(["a"]);
   });
 
-  it("does not broaden thrown answer or judge failures into quarantine artifacts", async () => {
+  it("retains thrown answer and judge failures as invalid budget results", async () => {
     const answerCalls: string[] = [];
-    await expect(harness(async () => startTree, answerCalls, { answer: () => { throw new Error("answer failed"); } })).rejects.toThrow(/answer failed/);
-    expect(answerCalls).toEqual(["start:a", "answer:a"]);
+    const answer = await harness(async () => startTree, answerCalls, { answer: () => { throw new Error("answer failed"); } });
+    expect(answer.artifact.budget).toMatchObject({ status: "invalid", incompleteCaseIds: ["a", "b"] });
+    expect(answerCalls).toEqual(["start:a", "answer:a", "write:normal"]);
     const judgeCalls: string[] = [];
-    await expect(harness(async () => startTree, judgeCalls, { verdict: () => { throw new Error("judge failed"); } })).rejects.toThrow(/judge failed/);
-    expect(judgeCalls).toEqual(["start:a", "answer:a", "judge:a"]);
+    const judge = await harness(async () => startTree, judgeCalls, { verdict: () => { throw new Error("judge failed"); } });
+    expect(judge.artifact.budget).toMatchObject({ status: "invalid", missingCosts: 1 });
+    expect(judgeCalls).toEqual(["start:a", "answer:a", "judge:a", "write:normal"]);
   });
 });

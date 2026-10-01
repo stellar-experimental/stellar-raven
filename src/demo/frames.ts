@@ -9,7 +9,10 @@
  * test under plain Node (test/demo-frames.test.ts).
  */
 
+import type { AnswerCost } from "./eval-cost.ts";
+
 export type DemoFrame =
+  | ({ type: "eval-cost" } & AnswerCost)
   | { type: "ready" }
   | { type: "token"; text: string }
   | { type: "thinking"; text: string }

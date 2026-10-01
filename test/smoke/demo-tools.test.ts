@@ -5,10 +5,18 @@ import { createDemoToolBudget, type DemoToolBudget } from "../../src/demo/budget
 import { prepareDemoStep } from "../../src/demo/steps";
 import type { DemoFrame } from "../../src/demo/frames";
 import type { ExecuteRunner } from "../../src/executor/run";
+import { EXECUTE_DESCRIPTION } from "../../src/mcp/tools";
 
 type ToolWithExecute = {
   execute: (args: Record<string, unknown>) => Promise<unknown>;
 };
+
+it("gives the Playground the complete description with the contradictory clause removed", () => {
+  const built = buildDemoTools({ env: env as unknown as Env, emit: () => {} });
+  expect(built.tools.execute).toMatchObject({ description: EXECUTE_DESCRIPTION });
+  expect(EXECUTE_DESCRIPTION).toContain("Skip it for single-step how-tos and debugging.\n- A few skills are RUNNABLE:");
+  expect(EXECUTE_DESCRIPTION).not.toContain("purely factual questions use docs first");
+});
 
 afterEach(() => {
   vi.restoreAllMocks();

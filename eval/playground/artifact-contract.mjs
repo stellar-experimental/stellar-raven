@@ -318,6 +318,12 @@ function assertExactKeys(value, expected, field, fail) {
  * recognises the two cheapest single-key tampering variants too.
  */
 export function assertNotPlaygroundQuarantine(value, label = "artifact") {
+  const requiresBudget = value?.meta?.capContext?.evaluator?.maxBudgetUsd !== undefined;
+  if (value?.meta && (requiresBudget || value?.budget) && (
+    value.budget?.status !== "complete" || value.budget?.missingCosts !== 0 || value.nonPromotable === true
+  )) {
+    throw new Error(`${label} is a non-promotable playground budget result; incomplete or invalid methods cannot be graded`);
+  }
   if (
     value?.artifactContract === PLAYGROUND_QUARANTINE_CONTRACT ||
     value?.quarantinedMeta?.artifactContract === PLAYGROUND_QUARANTINE_CONTRACT ||
@@ -330,7 +336,7 @@ export function assertNotPlaygroundQuarantine(value, label = "artifact") {
 }
 
 /** Build a distinct, non-promotable preservation artifact after attestation fails. */
-export function buildQuarantineArtifact({ meta, rows, treeAtStart, treeAtFinish, reason, spend }) {
+export function buildQuarantineArtifact({ meta, rows, treeAtStart, treeAtFinish, reason, spend, budget }) {
   const quarantinedMeta = {
     ...structuredClone(meta),
     artifactContract: PLAYGROUND_QUARANTINE_CONTRACT,
@@ -339,6 +345,7 @@ export function buildQuarantineArtifact({ meta, rows, treeAtStart, treeAtFinish,
   const quarantinedRows = structuredClone(rows);
   const artifact = {
     artifactContract: PLAYGROUND_QUARANTINE_CONTRACT,
+    ...(budget ? { budget } : {}),
     status: "quarantined-non-evidence",
     nonPromotable: true,
     allowedUses: QUARANTINE_ALLOWED_USES,
@@ -495,7 +502,13 @@ export function assertQuarantineArtifact(artifact) {
   if (actual.judgeCallsStarted < derived.actual.judgeCallsCompleted || derived.actual.judgeCallsCompleted < actual.reportedJudgeCalls) {
     fail("judge call accounting is not conservative");
   }
-  if (actual.answerProviderCostUsd !== null || actual.answerProviderCostSemantics !== "not-emitted-by-playground-artifact") {
+  if (actual.answerProviderCostSemantics === "gateway-reported-usd") {
+    const calls = artifact.budget?.calls?.filter((call) => call.method === "answer");
+    if (!calls || calls.length !== actual.answerCallsStarted) fail("answer cost ledger is required");
+    const complete = calls.every((call) => typeof call.costUsd === "number" && Number.isFinite(call.costUsd) && call.costUsd >= 0);
+    const total = complete ? Number(calls.reduce((sum, call) => sum + call.costUsd, 0).toFixed(12)) : null;
+    if (actual.answerProviderCostUsd !== total) fail("answer provider cost differs from its ledger");
+  } else if (actual.answerProviderCostUsd !== null || actual.answerProviderCostSemantics !== "not-emitted-by-playground-artifact") {
     fail("answer provider cost must remain explicitly unavailable");
   }
   if (actual.observedAttemptedModels !== null) fail("observed attempted models must remain unavailable");
