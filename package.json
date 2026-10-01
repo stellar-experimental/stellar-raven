@@ -79,12 +79,18 @@
     "@modelcontextprotocol/sdk": "1.30.0",
     "@types/node": "^26.3.0",
     "esbuild": "0.28.1",
-    "miniflare": "5.20260815.0-alpha",
+    "miniflare": "5.20260930.0-alpha",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11",
-    "wrangler": "4.133.0"
+    "wrangler": "4.145.0"
   },
   "engines": {
     "node": ">=24 <25"
+  },
+  "overrides": {
+    "@cloudflare/vitest-pool-workers": {
+      "miniflare": "5.20260930.0-alpha",
+      "wrangler": "4.145.0"
+    }
   }
 }

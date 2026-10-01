@@ -11,7 +11,7 @@ describe("usage site on the Workers runtime", () => {
     const source = readFileSync(new URL("../usage/report-site/src/server.js", import.meta.url), "utf8");
     const mf = new Miniflare({ workers: [{
       config: {
-        name: "usage-site-test", type: "worker", compatibilityDate: "2026-06-11",
+        name: "usage-site-test", compatibilityDate: "2026-06-11",
         manifest: { mainModule: "server.js", modules: {
           "server.js": { type: "esm", contents: source },
           "assets.js": { type: "esm", contents: "export default {};" },

@@ -16,8 +16,7 @@ Open owner decisions are at the end of this file. Each one is listed once.
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
 2. Follow the upstream Docs and protocol pull requests for `sd-027`, `sd-034`, and `sd-037`.
-3. Review dependency upgrades (Dependencies below).
-4. Complete the private usage checks ("Usage archive follow-up" below).
+3. Complete the private usage checks ("Usage archive follow-up" below).
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -308,26 +307,16 @@ shows no verified answer regression before release.
 
 ## Dependencies
 
-### Re-check the remaining dependency audit findings
+### Remove the vitest pool override when the pool updates
 
-Found by the 2026-09-17 dependency audit and rechecked on 2026-09-30
-(`research/audits/2026-09-17-dependency-audit/README.md`). Five high findings remain:
+`package.json` `overrides` points `@cloudflare/vitest-pool-workers` 0.22.0 at `miniflare`
+5.20260930.0-alpha and `wrangler` 4.145.0. Pool 0.22.0 pins `miniflare` 5.20260815.0-alpha and
+`wrangler` 4.124.0 exactly, and those carry high advisories through `undici` 7.29.0 and `sharp`
+0.35.2. Found by the `dependency-audit` issue on 2026-10-01. With the override, `npm audit` reports
+no findings, `npm run test:smoke` passes, and every package uses one `workerd` version.
 
-- `@cloudflare/vitest-pool-workers` 0.22.0 pins its own test tools: nested `wrangler` 4.124.0,
-  `miniflare` 5.20260815.0-alpha, and `sharp` 0.35.2 under miniflare (GHSA-rgj7-g3m4-5g8c). These
-  are development tools only; the pool serves the `test:smoke` lane. npm offers only a pool
-  downgrade to 0.8.30, which breaks the vitest 4 smoke config. Do not use it or an override.
-- `undici` 7.29.0 is high, and Dependabot scopes it `runtime` through `@ai-sdk/provider-utils`.
-  Both installed `miniflare` copies pin `7.29.0` exactly, and npm resolves the
-  `@ai-sdk/provider-utils` range `^7.28.0` onto that copy. 7.29.1 is patched. Wrangler 4.145.0
-  depends on a `miniflare` that pins `undici` 7.29.1, so a root Wrangler update clears the Wrangler
-  copy. The pool copy stays until the pool moves.
-
-Two local workerd runtimes coexist: `wrangler dev` and `npm run build` use one version, and the
-smoke pool and `@cloudflare/unenv-preset` use an older one.
-
-Done when: a pool release newer than 0.22.0 passes `npm run test:smoke`, and every installed
-`miniflare` pins an `undici` outside the advisory ranges (7.29.1 or later).
+Done when: a pool release pins patched `miniflare` and `wrangler` versions, the override is
+removed, and `npm audit` and `npm run test:smoke` still pass.
 
 ## Eval instruments
 

@@ -107,3 +107,13 @@ with 94 passed. `npm run secrets:scan -- --tree` reported clean.
 
 The independent review (GPT-6-Astra, high) reproduced the audit counts in isolated copies.
 It also found the 7.29.1 patch and the Wrangler 4.145.0 path recorded above.
+
+## Resolution 2026-10-01
+
+The `dependency-audit` issue (#192) reported five high findings. Wrangler moved to 4.145.0 and the
+direct `miniflare` to 5.20260930.0-alpha. Pool 0.22.0 is still the latest release and pins the old
+versions exactly, so an npm `overrides` entry points the pool at the same Wrangler and `miniflare`.
+This reverses the earlier "no override" guidance with evidence: `npm run test:smoke` passes (94),
+and `npm test` passes after one test dropped the `type` worker-config key that the new `miniflare`
+rejects. `npm update undici` then moved the shared copy to 7.30.0. `npm audit` reports no findings,
+and every package uses `workerd` 1.20260930.2. `.agents/TODO.md` tracks removing the override.
