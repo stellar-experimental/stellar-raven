@@ -85,6 +85,8 @@ vendor-diverse tier; Codex and Claude Fable authored the changes.
   page runs offline in a Happy DOM test.
 - Code scanning now covers JavaScript/TypeScript. Seven real alerts are fixed with regression tests
   (an eval capture-proxy host override, four super-linear regular expressions, index table escaping,
-  and credential redaction in refresh failure messages). Twelve are dismissed with reasons after the
-  next analysis.
+  and credential redaction in refresh failure messages). PR #198 also rewrote the proxy URL and the CSP
+  test's script extraction so CodeQL can verify them, which closed one test-only alert as well. After
+  the analysis on `9d71abf8`, 8 alerts were fixed and the other 11 were dismissed with the triage
+  reasons; 0 remain open.
 - Each branch passed the CI-equivalent gates before review, including `npm audit` with 0 findings.
