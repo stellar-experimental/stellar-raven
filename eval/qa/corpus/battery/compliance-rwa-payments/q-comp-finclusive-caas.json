@@ -19,7 +19,7 @@
       "Do NOT infer a FinClusive license from registry absence/presence or company marketing.",
       "Do NOT name MoneyGram, Bitso, Kado, or Nium as FinClusive partners without current primary evidence."
     ],
-    "notes": "2026-06-29 reviewed. SDF policy blog documents FinClusive CaaS for anchors (KYB/KYC, Travel Rule, BSA/USA PATRIOT Act) as a shared verification utility. Partner names (MoneyGram, Bitso, Biccos, Kado, Nium) per SDF/anchor materials. Specific licenses/approvals not asserted. Trap: putting the AML duty on the protocol.\nAlso good if the answer: FinClusive operates as a shared/reusable verification utility so a customer verified once can be reused across anchors (subject to consent).\nGolden cites: SDF policy blog (inclusion-through-compliance) and/or FinClusive materials.\nCORRECTION 2026-07-10: separate current operator claims, FinClusive's TPSP self-description, dated 2020 Biccos history, and role/jurisdiction-specific legal duties. Do not gate on unverified partner or licensing claims."
+    "notes": "2026-06-29 reviewed. A 2020 SDF policy article described FinClusive CaaS for anchors as a shared verification utility and named Biccos as a use case. Specific licenses/approvals not asserted. Trap: putting the AML duty on the protocol.\nAlso good if the answer: Describes the 2020 shared/reusable verification model as dated context: a customer verified once could be reused across anchors, subject to consent.\nGolden cites: SDF policy blog (inclusion-through-compliance) and/or FinClusive materials.\nCORRECTION 2026-07-10: separate current operator claims, FinClusive's TPSP self-description, dated 2020 Biccos history, and role/jurisdiction-specific legal duties. Do not gate on unverified partner or licensing claims."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -135,6 +135,12 @@
             "ref": "C: ecosystem-directory co-occurrence is not partner corroboration",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/policy/drive-inclusion-through-compliance",
+            "observedAt": "2026-10-01",
+            "note": "The article (published 2020-09-11) names Biccos four times: 'Use Case: Biccos FinClusive's partnership with Biccos provides a good example.' The recorded text search returned zero matches for MoneyGram, Bitso, Kado, and Nium."
           }
         ]
       },
@@ -171,14 +177,25 @@
             "ref": "https://dfpi.ca.gov/wp-content/uploads/sites/337/2022/09/FinClusive-comment-letter-8.1.22.pdf",
             "observedAt": "2026-08-31",
             "note": "Independent public-authority-hosted record (California DFPI, FinClusive comment letter dated 2022-08-01): 'FinClusive is a hybrid regulatory technology (Regtech) and financial technology (Fintech) company' providing 'a comprehensive and modernized full-stack financial crimes compliance (FCC) solution for bank and nonbank financial intermediaries'; it also states 'FinClusive is registered with FinCEN as a nonbank Money Services Business (MSB) and is in the process of obtaining money transmission licenses'. FinCEN registration is not state money-transmitter licensing, so this dated statement coexists with the current 'not a licensed Money Services Business' wording; it does not establish a license, which the avoid item already guards."
+          },
+          {
+            "class": "A",
+            "ref": "https://finclusive.com/company/operating-provisions",
+            "observedAt": "2026-10-01",
+            "note": "'FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services provider'."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; class D sweep by the orchestrator)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
       "evidence": [
+        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy partner list 'Partner names (MoneyGram, Bitso, Biccos, Kado, Nium) per SDF/anchor materials', which avoid item 4 forbids. The SDF article line and the also-good line now carry the 2020 date that key fact 2 requires. Answer, keyFacts, and avoid are unchanged.",
+        "Live re-check 2026-10-01 (class A): https://stellar.org/blog/policy/drive-inclusion-through-compliance — published 2020-09-11; names Biccos as the use case; the recorded text search found no MoneyGram, Bitso, Kado, or Nium.",
+        "Live re-check 2026-10-01 (class A): https://finclusive.com/company/operating-provisions — 'not a bank ... not a licensed Money Services Business ... an exempt third party services provider'.",
+        "Live re-check 2026-10-01 (class A): https://finclusive.com/products/compliance-as-a-service — the product page still markets Compliance as a Service with KYC/KYB coverage.",
+        "Sibling sweep 2026-10-01: grep FinClusive|Biccos → q-crp-anchors-by-corridor names FinClusive only as one dated live partner-query match and makes no CaaS partner claim; q-pay-anchor-msb-licensing and q-pay-travel-rule-aid-flows keep the same entity and activity scope; no contradiction.",
         "Solo scratchpad 575 GT-07 primary and blind matrices",
         "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing",
         "Structural re-form (negative-predicate): shortened three facts, used positive taxonomy wording, and kept the CaaS-guarantee trap in golden.avoid; truth is unchanged.",
@@ -195,6 +212,7 @@
         "Second class 2026-08-31: class D web sweep ('FinClusive compliance-as-a-service third party service provider', 'FinClusive not a bank money services business', 'FinClusive Stellar anchor compliance rail') → the DFPI-hosted 2022-08-01 comment letter corroborates the Regtech/Fintech TPSP description and records a dated FinCEN MSB registration statement; added to the 2026-08-30 corroboration row. No judge-facing change."
       ],
       "rootCause": [
+        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
         "Historical partnership content became timeless product/legal authority.",
         "Unrelated ecosystem relationships were conflated with FinClusive partnerships.",
         "Technical anchor and legal regulated-person roles were collapsed.",

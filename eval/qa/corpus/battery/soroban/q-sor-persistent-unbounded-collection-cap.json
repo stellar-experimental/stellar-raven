@@ -16,7 +16,7 @@
       "Do NOT claim Persistent storage automatically shards a growing value across ledger entries.",
       "Do NOT freeze a universal byte limit or exact failure string."
     ],
-    "notes": "This case tests one Persistent value, not the separate Instance-storage DoS or nullifier-retention cases. Reward bounded one-entry layouts, composite per-item keys, or bounded chunks. The exact entry limit is network-controlled."
+    "notes": "This case tests one Persistent value, not the separate Instance-storage DoS or nullifier-retention cases. Reward bounded one-entry layouts, composite per-item keys, or bounded chunks. The exact entry limit is network-controlled. Avoid item 2 targets a byte limit stated as universal or permanent. A dated or attributed current figure is not that claim."
   },
   "tags": {
     "category": "soroban",
@@ -84,12 +84,35 @@
             "note": "Core compares each contract-data entry size with the configured maximum and rejects an oversized entry."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-10-01, the Mainnet contract-data entry limit is 65536 bytes (64 KiB), a validator-changeable network setting, and the official storage guide states the same figure with a dated check.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "stellar network settings --network mainnet --output json (stellar-cli 28.1.0); getLedgerEntries key AAAACAAAAAk= on https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-10-01",
+            "note": "contract_data_entry_size_bytes 65536; raw ledger entry XDR 000000080000000900010000 at latestLedger 64718335; network protocol version 29."
+          },
+          {
+            "class": "A",
+            "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/build/guides/storage/storage-strategies.mdx",
+            "observedAt": "2026-10-01",
+            "note": "'Max contract-data entry size | 65,536 B (64 KiB)'; 'Protocol 27, checked 2026-07-20. Network validators can change these values — re-verify with `stellar network settings --network mainnet`'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
       "evidence": [
+        "Owner decision C, question 2 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): an attributed, dated 64 KiB figure is true, so avoid item 2 must not fire on it. The note limits the trap to a limit stated as universal or permanent. Answer, keyFacts, and avoid are unchanged.",
+        "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", finding 2): this case is stable, so its grader note carries only the durable distinction. The dated observation stays in truth.corroboration.",
+        "Live check 2026-10-01 (class F): stellar network settings --network mainnet and getLedgerEntries on https://mainnet.sorobanrpc.com — contract_data_entry_size_bytes 65536 at ledger 64718335.",
+        "Live re-check 2026-10-01 (class A): https://developers.stellar.org/docs/build/guides/storage/storage-strategies at stellar-docs 109d95d1 — states 64 KiB with a dated check and says validators can change the value.",
+        "Sibling sweep 2026-10-01: grep 64 KiB|65536|65,536 → q-soroban-wasm-size-limit and q-soroban-wasm-language both state contract_data_entry_size_bytes=65536 as a validator-tunable setting distinct from the code cap; no contradiction.",
         "solo://proj/49/scratchpad/784#persistent-collection-limits",
         "Sibling sweep: q-soroban-resource-limits covers the generic limit; q-soroban-instance-storage-dos covers Instance storage; q-zk-nullifier-storage covers nullifier safety. No sibling owns one growing Persistent value.",
         "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
@@ -99,6 +122,7 @@
         "Sibling sweep 2026-08-29: grep unbounded Vec|unbounded Map|entry limit|bounded collection|split.*keys → q-n3-missing-funds-account-support, q-sor-doc-timestamping-manage-data, q-sor-persistent-unbounded-collection-cap, q-soroban-instance-storage-dos, q-soroban-wasm-size-limit; no contradiction."
       ],
       "rootCause": [
+        ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side avoid ambiguity; 'freeze a universal byte limit' did not separate a dated, attributed current figure from a universal claim",
         "eval-authoring",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]

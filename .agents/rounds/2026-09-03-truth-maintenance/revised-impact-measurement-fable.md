@@ -28,6 +28,17 @@ confirmation granted `LAUNCH-OK` after repair. Revision 3 authorizes nothing. I 
 started no server, used no network, and changed no code. The only live read behind this file is the
 public Scout changelog read for revision 1 on 2026-09-04.
 
+## Launch maintenance — 2026-10-01
+
+The [run sheet](../2026-10-01-backlog-closeout/paired-run-sheet.md) supplies the current launch commands.
+The supervisor keeps 200 selected IDs and accepts the signed plan's active corpus count.
+That count must be an integer of at least 200.
+Both runners must reproduce that count and all four corpus hashes.
+The dated 500-case counts and hashes below remain historical previews.
+The run sheet replaces the missing temporary stability register with a generated repository snapshot.
+The owner must confirm that new register pin when signing the plan.
+No paid run occurred during this maintenance.
+
 ## What changed from revision 2
 
 | Finding | Revision 3 change |
@@ -143,11 +154,11 @@ an independent review. It is the correct long-term shape. It is not the smallest
   with content `f0ffb53fb3a3312197310a9b157e7e6d6cbd66420d37596e8893fc6c763dcc0c`. The landed
   supervisor rejects a 150-ID plan. The fallback needs a reviewed constant change.
 - The plan records `selected.count: 200`, exactly 200 ordered `selected.ids`,
-  `selected.activeCorpusCount: 500`, `selected.idsSha256`, `selected.contentSha256`,
+  `selected.activeCorpusCount: <launch active count>`, `selected.idsSha256`, `selected.contentSha256`,
   `selected.casesFileSha256`, and `selected.activeCorpusIdsSha256`.
 - Both runner worktrees recompute all four hashes from their own `--cases` path. Each runner must
-  hold exactly 500 unique active IDs. Every selected ID must be active. Any mismatch stops the
-  launch before the first paid call.
+  hold exactly the pinned number of unique active IDs. Every selected ID must be active.
+  Any mismatch stops the launch before the first paid call.
 - The estimand covers the selected 200 IDs. It does not estimate all 500 IDs. The sampler
   stratifies by service only. It does not randomize cases or stratify freshness.
 - The affected-case stratum selects 496 of 500 cases. It cannot narrow the sample. Report it as a
@@ -163,7 +174,7 @@ Both arms share every value below. The manifest records each value before spend.
 | Candidate service revision | the same commit as the runner; adapter mode `verify-native`; the candidate server worktree must sit at this revision |
 | Baseline service revision | `90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0`; adapter mode `add-missing`; the baseline server worktree must sit at this revision |
 | Adapter | `eval/qa/exact-old-runtime-adapter.mjs` SHA-256 recomputed at the runner revision; one `--adapter-revision` shared by both arms |
-| Corpus | cases file SHA-256, selected content SHA-256, ordered 200-ID SHA-256, ordered 500-ID SHA-256; `selected.count: 200`; `selected.activeCorpusCount: 500`; each `--cases` path resolves inside its own runner worktree |
+| Corpus | cases file SHA-256, selected content SHA-256, ordered 200-ID SHA-256, ordered active-ID SHA-256; `selected.count: 200`; `selected.activeCorpusCount: <launch active count>`; each `--cases` path resolves inside its own runner worktree |
 | Answering and judge model | `claude-sonnet-5` |
 | Rubric and pack | `v2.10` and `p6` |
 | Variant, surface, search tool | `A`, `search-execute`, `search` |
@@ -192,7 +203,7 @@ uncommitted. The operator deletes it after success or failure. It must carry eve
 - `schema`: `qa-paired-collection-plan-v2`.
 - `deadlineMs`: `14400000`.
 - `selected.count: 200`, `selected.ids` (200 ordered IDs), `selected.idsSha256`,
-  `selected.contentSha256`, `selected.casesFileSha256`, `selected.activeCorpusCount: 500`,
+  `selected.contentSha256`, `selected.casesFileSha256`, `selected.activeCorpusCount: <launch active count>`,
   `selected.activeCorpusIdsSha256`.
 - `worktrees.baselineRunner`, `worktrees.candidateRunner`, `worktrees.baselineServer`,
   `worktrees.candidateServer`: four distinct roots in one repository.
@@ -463,8 +474,8 @@ Before the first paid call, stop when any item below holds:
 - The external authorization record does not name that hash, or does not state that the
   signature covers the hash and every command array.
 - Any hash in the pin table or the manifest differs from its recomputed value.
-- Either runner does not hold exactly 500 unique active IDs, or `selected.count` is not 200.
-- The ordered 200-ID, ordered 500-ID, content, or cases-file hash differs in either runner.
+- Either runner does not reproduce the pinned active count, or `selected.count` is not 200.
+- The ordered 200-ID, ordered active-ID, content, or cases-file hash differs in either runner.
 - The capacity artifact is missing, fails any fixed threshold, or is older than 86,400,000 ms.
 - The `--stable-sha256` probe fails or returns two different vectors.
 - The P6 `--out` path or `.tmp` path exists before P6 starts.
@@ -584,16 +595,18 @@ Methods and caps, one run each, no transfer, no resume, no automatic repeat, no 
   candidate flip rejudge          $15     (frozen command, --allow-empty)
   method maximum                  $273.50
 
-Denominator: explicit --ids, selected.count 200, activeCorpusCount 500.
+Denominator: explicit --ids, selected.count 200, activeCorpusCount <launch active count>.
   ordered-200 SHA-256: <recomputed at the launch revision>
   selected-content SHA-256: <recomputed>
-  cases-file SHA-256: <recomputed>   ordered-500 SHA-256: <recomputed>
+  cases-file SHA-256: <recomputed>   ordered-active SHA-256: <recomputed>
   Both runner worktrees recompute all four values.
 Tuple: claude-sonnet-5 / claude-sonnet-5 / v2.10 / p6 / stability-boundary-v1 / 0.75 / 34.
 Flags: --variant A --surface search-execute --search-tool search; --judge-panel absent.
 Baseline: 90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0, add-missing, surface <sha256>.
 Candidate and runner: <one clean 40-character revision>, verify-native, surface <sha256>.
-Register: /private/tmp/stellar-raven-tm-paired-stability.json <sha256>.
+Register: /private/tmp/stellar-raven-paired-launch/paired-stability-register.json <sha256>.
+  Source: .agents/rounds/2026-10-01-backlog-closeout/paired-stability-register.json.
+  Confirm the replacement pin at signature time.
 Adapter: <sha256>.  Probe: <sha256>.  Pre-arm vector: <sha256>.
 Claude path: <p6.claudePath>.  Binary: <sha256>.  Environment: <sha256>.
   Collection, stored-judge, P6, and flip pins are this same pair.

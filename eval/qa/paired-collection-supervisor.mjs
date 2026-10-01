@@ -38,7 +38,6 @@ const SHA256 = /^[a-f0-9]{64}$/;
 const REVISION = /^[a-f0-9]{40}$/;
 const ARMS = ["baseline", "candidate"];
 const SELECTED_CASE_COUNT = 200;
-const ACTIVE_CORPUS_COUNT = 500;
 const P6_MAX_AUTHORIZED_COST_USD = 3.5;
 const FLIP_REJUDGE_CAP_USD = 15;
 const CONTRACT_FILES = Object.freeze({
@@ -544,8 +543,9 @@ export function validatePairedCollectionPlan(plan, {
   validateHash(plan.selected.idsSha256, "selected.idsSha256");
   validateHash(plan.selected.contentSha256, "selected.contentSha256");
   validateHash(plan.selected.casesFileSha256, "selected.casesFileSha256");
-  if (plan.selected.activeCorpusCount !== ACTIVE_CORPUS_COUNT) {
-    throw new Error(`paired collection plan requires exactly ${ACTIVE_CORPUS_COUNT} active corpus IDs`);
+  if (!Number.isSafeInteger(plan.selected.activeCorpusCount) ||
+      plan.selected.activeCorpusCount < SELECTED_CASE_COUNT) {
+    throw new Error(`selected.activeCorpusCount must be an integer of at least ${SELECTED_CASE_COUNT}`);
   }
   validateHash(plan.selected.activeCorpusIdsSha256, "selected.activeCorpusIdsSha256");
   if (sha256(JSON.stringify(plan.selected.ids)) !== plan.selected.idsSha256) {
@@ -642,8 +642,8 @@ export function validatePairedCollectionPlan(plan, {
     }
     if (sha256(snapshot.bytes) !== plan.selected.casesFileSha256 ||
         sha256(JSON.stringify(snapshot.selected)) !== plan.selected.contentSha256 ||
-        snapshot.activeIds.length !== ACTIVE_CORPUS_COUNT ||
-        new Set(snapshot.activeIds).size !== ACTIVE_CORPUS_COUNT ||
+        snapshot.activeIds.length !== plan.selected.activeCorpusCount ||
+        new Set(snapshot.activeIds).size !== plan.selected.activeCorpusCount ||
         sha256(JSON.stringify(snapshot.activeIds)) !== plan.selected.activeCorpusIdsSha256) {
       throw new Error(`${arm} runner does not reproduce the frozen case hashes`);
     }
@@ -1084,7 +1084,7 @@ function spawnArm(plan, arm, cancellationFile) {
   const child = spawn(command[0], command.slice(1), {
     cwd: plan.worktrees[`${arm}Runner`],
     env: { ...process.env, QA_PAIRED_CANCELLATION_FILE: cancellationFile },
-    detached: true,
+    detached: false,
     stdio: ["ignore", "pipe", "pipe", "ipc"]
   });
   child.stdout.on("data", (chunk) => process.stderr.write(`[${arm}] ${chunk}`));
@@ -1120,7 +1120,7 @@ async function main() {
       plan,
       cancellationFile,
       terminate: (child, signal) => {
-        try { process.kill(-child.pid, signal); } catch {}
+        try { child.kill(signal); } catch {}
       }
     });
     process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`);

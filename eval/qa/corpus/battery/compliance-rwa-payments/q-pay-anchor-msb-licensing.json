@@ -18,7 +18,7 @@
       "Do NOT call FinCEN registration a license or ignore state/jurisdictional rules.",
       "Do NOT give definitive legal advice from an Anchor Directory label."
     ],
-    "notes": "Anchor responsibility model is first-party (anchors are regulated financial institutions; the protocol/SDF is not a licensee). Confidence raised draft->high on the durable framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Anchors must map licenses to every jurisdiction in which they onboard customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing."
+    "notes": "Grade the durable classification framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Each regulated participant maps its licenses to every jurisdiction in which it onboards customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -77,14 +77,24 @@
             "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+            "observedAt": "2026-10-01",
+            "note": "FIN-2019-G001: 'Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes'. Regulatory treatment follows the facts and circumstances of the activity, not the label."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
       "evidence": [
+        "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy line 'Anchor responsibility model is first-party (anchors are regulated financial institutions; the protocol/SDF is not a licensee)'. It told the judge the noun-based allocation that key fact 1, avoid item 1, and the 2026-07-10 CORRECTION line reject. One also-good line now names each regulated participant instead of anchors. Answer, keyFacts, and avoid are unchanged.",
+        "Live re-check 2026-10-01 (class A): https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — the guidance applies to the described business model, not to a product label.",
+        "Live re-check 2026-10-01 (class A): https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/learn/fundamentals/anchors.mdx — the anchors page describes on and off-ramps 'such as financial institutions or fintech companies'; it states no licensing allocation.",
+        "Sibling sweep 2026-10-01: q-pay-travel-rule-aid-flows, q-comp-finclusive-caas, q-crp-custodial-vs-noncustodial-wallets, q-crp-become-an-anchor-licensing, and q-comp-anchor-compliance-stack (cleaned in this change) all scope duties by entity and activity; no contradiction.",
         "Solo scratchpad 575 GT-11 primary/blind legal matrices",
         "Structural re-form (compound-predicate): Shortened two legal-classification facts under single predicates; the entity, activity, custody, route, jurisdiction, and infrastructure distinctions are unchanged.",
         "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering — FinCEN still assigns duties by the person's exchange, acceptance, and transmission activity plus applicable exceptions.",
@@ -92,6 +102,7 @@
         "Sibling sweep 2026-08-27: grep money-transmitter|MSB|FinCEN|anchor label → q-crp-become-an-anchor-licensing, q-crp-custodial-vs-noncustodial-wallets; no contradiction"
       ],
       "rootCause": [
+        ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
         "Stellar product-role terminology was promoted into a legal classification.",
         "Registration, licensing, custody, and multi-entity routes were collapsed.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"

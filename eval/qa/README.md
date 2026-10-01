@@ -379,12 +379,14 @@ Do not repeat guard failures, insufficient denominators, or candidate-only T4/T5
 
 [paired-collection-supervisor.mjs](paired-collection-supervisor.mjs) validates and runs the `qa-paired-collection-plan-v2` contract.
 Read that validator before preparing a plan; do not infer accepted fields from a prior result.
-The contract fixes 200 selected IDs from exactly 500 active IDs in each runner snapshot.
+The contract fixes 200 selected IDs.
+The plan pins `selected.activeCorpusCount` as an integer of at least 200.
+Each runner must reproduce that exact count and the ordered active-ID hash.
 It does not select from the current battery automatically.
 
 ```sh
 npm run eval:qa:paired:capacity -- --out /absolute/path/to/paired-capacity.json
-npm run eval:qa:paired:plan-sha256 -- --plan /absolute/path/to/paired-collection-plan.json
+npm run eval:qa:paired:plan-sha256 -- /absolute/path/to/paired-collection-plan.json
 npm run eval:qa:paired:collect -- \
   --plan /absolute/path/to/paired-collection-plan.json \
   --authorized-plan-sha256 <owner-authorized-canonical-sha256>
@@ -418,6 +420,9 @@ Keep the plan uncommitted and delete it after success or failure.
 Collection commands use explicit `--ids`, `--no-judge`, and the supervisor's arm flag; `--sample` is forbidden.
 The executable is the absolute `process.execPath`.
 The supervisor runs collection only. Run stored judging later with artifact paths from the successful receipt.
+The collection arms inherit the supervisor's process group; cancellation signals each recorded child directly.
+The launch operator owns group cleanup and verifies all surviving group members before signaling.
+After each stored judge, the operator requires complete judging evidence and unsuppressed aggregates before the next phase.
 Each arm collects under `$80`; stored judging raises the same cumulative ledger to `$120`.
 The two-arm cumulative cap is `$240`.
 

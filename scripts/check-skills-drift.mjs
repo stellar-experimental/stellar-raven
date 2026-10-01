@@ -5,11 +5,10 @@
 //
 // DETECTION ONLY. This script never modifies ecosystem-skills/ and must never be
 // replaced by an automated sync: mirrored skills are prompt input, so upstream
-// edits go through a human review gate. Remediation for any drift reported here:
-// run ecosystem-skills/update.sh locally, review the skill diffs (read them),
-// re-pin, commit.
+// edits go through a human review gate. Source drift needs a reviewed re-pin.
+// Community-only drift needs only a directory snapshot and index refresh.
 //
-// Plain Node 20+ (global fetch, node:fs only — no deps). Like
+// Node with installed repository dependencies. Like
 // scripts/refresh-inventory.mjs it reads .env at the repo root and overlays
 // process.env on top. No API keys are required: every mirrored source is
 // public (the credentialed lumenloop-api partner source was removed from the
@@ -26,7 +25,7 @@
 //     skills/ dir, so repo-path drift can be entirely in non-mirrored skills —
 //     still drift, since re-running update.sh would re-pin, but the note says so).
 //     A cherry-picked source also lists the upstream skill dirs it does NOT pin,
-//     because update.sh's pick list is hard-coded: a newly published sibling
+//     using the shared sources.json selection: a newly published sibling
 //     would otherwise never be pinned and nothing would ever mention it.
 //   - stellarlight catalog: GET the live directory and project it through the
 //     same field mapping update.sh's fetch_catalog uses, then deep-compare with
@@ -35,6 +34,9 @@
 //     request-scoped meta (generatedAt etc.) is dropped because only
 //     meta.counts, meta.validKinds and the per-skill projected fields are kept.
 //     "Drift" therefore means exactly: re-running update.sh would change catalog.json.
+//   - stellar/stellar-dev-skill main directory: project the literal ECOSYSTEM_CARDS
+//     names and links from the site source, then compare with community.json.
+//     No bodies are fetched, and upstream code is never executed.
 //
 // Exit codes (three-way, consumed as an enum by .github/workflows/refresh.yml):
 //   0 = every checked source clean;
@@ -49,6 +51,8 @@ import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { fetchJson, parseEnvFile, sortDeep } from "./lib/shared.mjs";
+import { readSourceDefinitions, sourceDefinition } from "./lib/skill-source-definitions.mjs";
+import { COMMUNITY_SOURCE, compareCommunity, fetchCommunityEntries } from "./lib/stellar-community.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JSON_MODE = process.argv.includes("--json");
@@ -93,12 +97,9 @@ const dirPrefix = (source) => (source.path === "." ? "" : source.path);
 /**
  * Upstream skill directories that are neither pinned nor explicitly excluded.
  *
- * Only openzeppelin-stellar cherry-picks today (3 Stellar skills out of a
- * multi-chain repo), and the pick list is hard-coded in update.sh. So a newly
- * published sibling — the repo already ships setup/upgrade/review per chain,
- * making a future `review-stellar-contracts` the obvious case — would never be
- * pinned, and re-running update.sh would not pull it in. Nothing else in the
- * lifecycle would mention it either.
+ * Cherry-picked sources use an explicit mode in update.sh's sources.json.
+ * Re-running update.sh keeps its fixed pick list. This check surfaces a new
+ * sibling even when no exclusion has ever been recorded for that source.
  *
  * Listing every unpinned directory on drift was not enough: it buried the one
  * new name among eight long-standing out-of-scope ones, and it vanished as soon
@@ -108,26 +109,26 @@ const dirPrefix = (source) => (source.path === "." ? "" : source.path);
  * pinned nor recorded is unclassified, and unclassified is a failure until a
  * human pins it or writes down why not.
  */
-async function unclassifiedSkillDirs(source, unpinnedUpstream) {
-  if (!source.path) return []; // root-mode: the repo IS the skill, nothing to enumerate
+async function unclassifiedSkillDirs(source, unpinnedUpstream, definition) {
+  if (definition.mode !== "pick") return [];
   const pinned = new Set((source.skills ?? []).map((skill) => skill.name));
   const excluded = new Set(Object.keys(unpinnedUpstream[source.id] ?? {}));
-  if (excluded.size === 0) return []; // not a cherry-picked source: update.sh pins every dir
   const parent = dirPrefix(source);
   const tree = await fetchJson(
-    `https://api.github.com/repos/${source.owner}/${source.repo}/contents${parent ? `/${parent}` : ""}`,
+    `https://api.github.com/repos/${source.owner}/${source.repo}/contents${parent ? `/${parent}` : ""}?ref=${encodeURIComponent(source.ref)}`,
     { headers: githubHeaders(), label: `github ${source.owner}/${source.repo}${parent ? `/${parent}` : ""} contents` },
   );
-  return (Array.isArray(tree) ? tree : [])
+  if (!Array.isArray(tree)) throw new Error(`github ${source.id}: contents response has no directory array`);
+  return tree
     .filter((entry) => entry.type === "dir" && !pinned.has(entry.name) && !excluded.has(entry.name))
     .map((entry) => entry.name)
     .sort();
 }
 
-async function checkGithubSource(source, unpinnedUpstream) {
+async function checkGithubSource(source, unpinnedUpstream, definition) {
   const [latest, unclassified] = await Promise.all([
     latestCommit(source.owner, source.repo, source.ref, dirPrefix(source)),
-    unclassifiedSkillDirs(source, unpinnedUpstream),
+    unclassifiedSkillDirs(source, unpinnedUpstream, definition),
   ]);
 
   // An unclassified sibling is drift in its own right, independent of the
@@ -135,7 +136,7 @@ async function checkGithubSource(source, unpinnedUpstream) {
   // silence this check exists to break.
   const unclassifiedNote = unclassified.length
     ? `upstream skill dir(s) neither pinned nor excluded: ${unclassified.join(", ")} — ` +
-      `pin them in ecosystem-skills/update.sh, or record why not under ` +
+      `add their picks to ecosystem-skills/sources.json, or record why not under ` +
       `unpinnedUpstream["${source.id}"] in ecosystem-skills/groups.json`
     : null;
 
@@ -261,8 +262,21 @@ async function checkStellarlightCatalog(localCatalog) {
 // ---------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------
-async function checkSource(source, unpinnedUpstream) {
-  if (source.type === "github") return checkGithubSource(source, unpinnedUpstream);
+async function checkCommunityCatalog(snapshot) {
+  const liveEntries = await fetchCommunityEntries();
+  const note = compareCommunity(snapshot.entries, liveEntries);
+  return {
+    id: "stellar-community-catalog",
+    source: COMMUNITY_SOURCE,
+    status: note ? "DRIFT" : "ok",
+    pinned: `${snapshot.entries.length} entries (snapshot ${snapshot.fetched_at})`,
+    upstream: `${liveEntries.length} entries (${COMMUNITY_SOURCE} source)`,
+    ...(note ? { note } : {})
+  };
+}
+
+async function checkSource(source, unpinnedUpstream, definitions) {
+  if (source.type === "github") return checkGithubSource(source, unpinnedUpstream, sourceDefinition(source, definitions));
   // "lumenloop-archive" (the credentialed partner source) is deliberately NOT
   // supported anymore — its reappearance in MANIFEST.json should fail here.
   throw new Error(`unknown source type "${source.type}" — teach scripts/check-skills-drift.mjs about it`);
@@ -270,22 +284,25 @@ async function checkSource(source, unpinnedUpstream) {
 
 async function main() {
   const manifest = JSON.parse(readFileSync(join(ROOT, "ecosystem-skills/MANIFEST.json"), "utf8"));
+  const definitions = readSourceDefinitions(join(ROOT, "ecosystem-skills/sources.json"));
   const localCatalog = JSON.parse(readFileSync(join(ROOT, "ecosystem-skills/catalog.json"), "utf8"));
+  const communityCatalog = JSON.parse(readFileSync(join(ROOT, "ecosystem-skills/community.json"), "utf8"));
   // Committed decisions about upstream skills we deliberately do not pin.
   const { unpinnedUpstream = {} } = JSON.parse(
     readFileSync(join(ROOT, "ecosystem-skills/groups.json"), "utf8"),
   );
 
-  // Independent checks run in parallel (manifest sources + the stellarlight
-  // catalog compare); each settles into a per-source result object, and the
+  // Independent checks run in parallel (manifest sources + directory
+  // comparisons); each settles into a per-source result object, and the
   // combined list is sorted by source id so output is deterministic regardless
   // of completion order.
   const checks = [
     ...manifest.sources.map((source) => ({
       id: source.id,
-      run: () => checkSource(source, unpinnedUpstream),
+      run: () => checkSource(source, unpinnedUpstream, definitions),
     })),
     { id: "stellarlight-catalog", run: () => checkStellarlightCatalog(localCatalog) },
+    { id: "stellar-community-catalog", run: () => checkCommunityCatalog(communityCatalog) },
   ];
   const settled = await Promise.allSettled(checks.map((check) => check.run()));
   const results = settled
@@ -323,11 +340,21 @@ async function main() {
     console.error(`\ncheck-skills-drift: ${errored.length} source(s) could not be checked — failing closed.`);
   }
   if (drifted.length) {
-    console.error(
-      `\ncheck-skills-drift: ${drifted.length} source(s) drifted from the pinned mirror.\n` +
-        "Remediation: run ecosystem-skills/update.sh locally, review the skill diffs " +
-        "(skills are prompt input — read them), re-pin, commit. Do NOT auto-sync from CI.",
-    );
+    console.error(`\ncheck-skills-drift: ${drifted.length} source(s) changed from the local snapshots.`);
+    if (drifted.some((entry) => entry.id !== "stellar-community-catalog")) {
+      console.error(
+        "Source remediation: run ecosystem-skills/update.sh locally. Review the skill diffs, re-pin, and commit.\n" +
+        "Change picks in ecosystem-skills/sources.json. Record exclusions in ecosystem-skills/groups.json.",
+      );
+    }
+    if (drifted.some((entry) => entry.id === "stellar-community-catalog")) {
+      console.error(
+        `Community remediation: refresh the ${COMMUNITY_SOURCE} directory snapshot and index. Review and commit.\n` +
+        "node scripts/lib/stellar-community.mjs ecosystem-skills/community.json\n" +
+        "node ecosystem-skills/build-index.mjs",
+      );
+    }
+    console.error("Never auto-sync from CI.");
   }
   if (skipped.length && !drifted.length && !errored.length) {
     console.error(`\ncheck-skills-drift: clean, but ${skipped.length} source(s) SKIPPED (see warning above).`);

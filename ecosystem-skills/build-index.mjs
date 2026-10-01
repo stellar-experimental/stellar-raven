@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 //
-// build-index.mjs — regenerate INDEX.md from MANIFEST.json, catalog.json, and groups.json.
+// build-index.mjs — regenerate INDEX.md from the pins, directory snapshots, and groups.json.
 //
 // For each pinned skill it reads SKILL.md from the pinned upstream commit
 // (scripts/lib/skill-mirror.mjs — fetched once into the gitignored working
@@ -15,10 +15,10 @@
 // Run automatically by update.sh; safe to run standalone after a sync.
 //
 // Usage:
-//   node build-index.mjs [--manifest <path>] [--catalog <path>] [--out <path>]
+//   node build-index.mjs [--manifest <path>] [--catalog <path>] [--community <path>] [--out <path>]
 //
-// The three paths default to the files beside this script. update.sh passes its
-// staged MANIFEST.json and catalog.json and an output path inside its work tree,
+// Paths default to the files beside this script. update.sh passes its
+// staged manifest and directory snapshots and an output path inside its work tree,
 // so the index is built and validated BEFORE any pinned file is swapped into
 // place; a failure here then leaves the committed pin set untouched.
 //
@@ -33,6 +33,7 @@ import { fileURLToPath } from "node:url";
 import { writeFileAtomic } from "../scripts/lib/shared.mjs";
 import { readSkillFile } from "../scripts/lib/skill-mirror.mjs";
 import { parseFrontmatter } from "../scripts/lib/skill-markdown.mjs";
+import { communityIndex } from "../scripts/lib/stellar-community.mjs";
 import {
   assertSkillDescriptionOverrideIdsResolve,
   skillDescription
@@ -50,10 +51,12 @@ function argPath(flag, fallback) {
 
 const MANIFEST_PATH = argPath("--manifest", join(DIR, "MANIFEST.json"));
 const CATALOG_PATH = argPath("--catalog", join(DIR, "catalog.json"));
+const COMMUNITY_PATH = argPath("--community", join(DIR, "community.json"));
 const OUT_PATH = argPath("--out", join(DIR, "INDEX.md"));
 
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
 const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8"));
+const community = JSON.parse(readFileSync(COMMUNITY_PATH, "utf8"));
 const { groups } = JSON.parse(readFileSync(join(DIR, "groups.json"), "utf8"));
 
 for (const src of manifest.sources) {
@@ -217,6 +220,7 @@ if (Array.isArray(catalog.entries)) {
   out.push("");
 }
 
+out.push(...communityIndex(community));
 writeFileAtomic(OUT_PATH, out.join("\n"));
 
 console.log(`${OUT_PATH === join(DIR, "INDEX.md") ? "INDEX.md" : OUT_PATH} written: ${categorized.size} categorized, ${uncategorized.length} uncategorized.`);
