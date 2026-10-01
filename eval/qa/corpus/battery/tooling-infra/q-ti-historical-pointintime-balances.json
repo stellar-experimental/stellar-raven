@@ -20,7 +20,7 @@
       "Do NOT use batch_run_date as exact state time or ignore deletion/recreation/network resets.",
       "Do NOT equate nominal XLM with spendable XLM or invent historical USD prices from ledger data."
     ],
-    "notes": "No single SQL is hard-gated because Hubble schemas evolve; rubric gates source class and reconstruction method.\nAlso good if the answer: Mentions public Horizon history truncation and why it is not enough for arbitrary historical snapshots.\nGolden cites: Hubble/BigQuery docs and a source requirement for external historical prices.\nGT-52 CORRECTION 2026-07-11: grade reconstruction invariants/provenance, not one volatile SQL table name. Exact versus reconstructed and nominal versus spendable must be explicit."
+    "notes": "No single SQL is hard-gated because Hubble schemas evolve; rubric gates source class and reconstruction method.\nAlso good if the answer: Mentions public Horizon history truncation and why it is not enough for arbitrary historical snapshots.\nGolden cites: Hubble/BigQuery docs and a source requirement for external historical prices.\nGT-52 CORRECTION 2026-07-11: grade reconstruction invariants/provenance, not one volatile SQL table name. Exact versus reconstructed and nominal versus spendable must be explicit.\nPRICE-SOURCE NOTE 2026-10-01: avoid item 3 targets a USD price with no named source or method. A named price source with a stated asset/quote method is not invented. Examples: an off-chain price feed, Hubble's Reflector price snapshot tables, or trade-implied prices from `history_trades` or `trade_agg` with the pair, quote asset, and time window stated. Treat a trade-implied stablecoin price as USD only when the answer states that assumption. 'External' in key fact 5 means a price source separate from balance state; it includes those Hubble price tables."
   },
   "tags": {
     "category": "tooling-infra",
@@ -99,12 +99,40 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-10-01, Hubble documents price-bearing tables that are separate from balance state: history_trades price_n/price_d, trade_agg daily average prices per asset pair, and Reflector USD price snapshot tables.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/reflector-prices-data-sdex-snapshot.mdx",
+            "observedAt": "2026-10-01",
+            "note": "'This table captures historical snapshots of the exchange price of assets minted on the Stellar network. Prices originate from the Reflector oracle contracts on Stellar.' Columns open_usd, high_usd, low_usd, close_usd per day."
+          },
+          {
+            "class": "A",
+            "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/trade-agg.mdx",
+            "observedAt": "2026-10-01",
+            "note": "avg_price_daily: 'The total amount of the asset being bought in all trades divided by the total amount of the asset being sold in all trades, within that day.' bronze/history-trades.mdx documents price_n and price_d."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-dbt-public/blob/4b29c2ea8e67756fb49b5875da765945cede79d3/models/intermediate/reflector_prices/int_reflector_prices__sdex.sql",
+            "observedAt": "2026-10-01",
+            "note": "The model decodes Reflector oracle price entries from contract_data_snapshot; models/intermediate/trades/int_trade_agg_day.sql builds the daily trade aggregates."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
       "evidence": [
+        "Owner decision C, question 4 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): a trade-implied price with a named table and a stated pair, quote asset, and window is a documented method, not an invented price. Avoid item 3 keeps its target: a USD price with no named source or method. Only golden.notes changed.",
+        "Live check 2026-10-01 (class A): stellar-docs 109d95d18fe151ac40cc2fd5f5cc769660e51fcc Hubble data dictionary — bronze/history-trades.mdx (price_n, price_d), gold/trade-agg.mdx (avg_price_daily), silver/reflector-prices-data-{sdex,cex,fex}-snapshot.mdx (USD OHLC from Reflector).",
+        "Live check 2026-10-01 (class B): stellar/stellar-dbt-public@4b29c2ea8e67756fb49b5875da765945cede79d3 — models/intermediate/reflector_prices and models/intermediate/trades implement those tables.",
+        "Sibling sweep 2026-10-01: grep Hubble|historical USD|price source|Reflector → q-ti-compute-token-lp-market-data (accepts an explicitly named last/mid/VWAP/oracle/route price method), q-infra-hubble-bigquery, q-ti-fetch-all-balances-classic-sac, q-crp-export-tx-history-taxes; none forbids a named trade or oracle price source; no contradiction.",
         "Solo scratchpad 575 GT-52 primary/blind matrices independently confirmed Hubble/latest-row/external-price separation; blind added exact reconstruction invariants.",
         "Sibling sweep checked Hubble, Galexie/ETL, historical events, and indexer choice cases; no sibling treats a ledger header or batch partition as a snapshot.",
         "Structural re-form (negative-predicate): split one long fact and tightened two others into five atomic positive facts; every reconstruction and provenance claim remains, so truth is unchanged",
@@ -115,6 +143,7 @@
         "Sibling sweep 2026-08-27: grep Hubble|batch_run_date|point-in-time|historical USD → q-infra-hubble-bigquery, q-infra-which-indexer, q-ti-fetch-all-balances-classic-sac; no contradiction"
       ],
       "rootCause": [
+        ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side avoid ambiguity; 'invent historical USD prices from ledger data' did not separate a fabricated price from a named, method-stated price source",
         "Eval-side historical-reconstruction incompleteness; vetted exact-ledger balance SQL/provenance remains a research candidate.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
