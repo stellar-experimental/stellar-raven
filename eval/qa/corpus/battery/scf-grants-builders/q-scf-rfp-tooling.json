@@ -20,7 +20,7 @@
       "Do NOT claim each brief has a published bounty or community vote.",
       "Do NOT claim the observed roster is permanent or complete."
     ],
-    "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated."
+    "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated.\nSCOPE NOTE 2026-10-01: do not gate the yes/no label or a category label. The SCF handbook defines the RFP Track as developer tooling. Scout labels the two briefs Infrastructure and Payments. Neither brief asks for a chain-data indexer; the x402 brief includes an off-chain discovery index. An answer that reports both open briefs and states that scope is correct. An answer that says no RFP is open is wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -89,12 +89,34 @@
             "note": "Scout reported currentRound=46, currentPhase=Submission, and one separate synthetic round row."
           }
         ]
+      },
+      {
+        "claim": "The SCF handbook defines the RFP Track as developer tooling, Scout labels the two open briefs Infrastructure and Payments, and the roster of two open briefs plus one synthetic scf-round-46 row is unchanged on 2026-10-01.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://github.com/stellar/scf-handbook/blob/7abdddd09fe05c6de47de300a5cde73caa61cb02/scf-awards/build-award/rfp-track.md",
+            "observedAt": "2026-10-01",
+            "note": "'The RFP (Request for Proposals) Track funds developer tooling that solves known problems in the ecosystem.' Current Open RFPs lists Stellar-compatible LayerZero DVN and X402 Facilitator with Bazaar (discovery) support; the x402 deliverables include a 'discovery catalog and search index'."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-10-01",
+            "note": "generatedAt 2026-10-01T17:56:10.444Z: counts open=2, syntheticRounds=1; layerzero-dvn categoryLabel Infrastructure; x402-facilitator-bazaar categoryLabel Payments; a separate Developer Tooling category exists and neither brief carries it; scf-round-46 Submission through 2026-11-08."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-09-03",
-      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+      "date": "2026-10-01",
+      "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
       "evidence": [
+        "Owner decision C, question 1 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the scope binding follows the canonical owner. The SCF handbook defines every RFP-track brief as developer tooling; the Scout category is an aggregator label. The yes/no label is not gated. Only golden.notes changed; answer, keyFacts, avoid, and dated roster are unchanged.",
+        "Live re-check 2026-10-01: https://github.com/stellar/scf-handbook/blob/7abdddd09fe05c6de47de300a5cde73caa61cb02/scf-awards/build-award/rfp-track.md — track definition and both Q3 briefs still published.",
+        "Live re-check 2026-10-01: https://stellarlight.xyz/api/rfps?status=open — two open briefs (Infrastructure, Payments) and one synthetic scf-round-46 row; #46 Submission through 2026-11-08.",
+        "Sibling sweep 2026-10-01: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP Track → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-build-tracks (says RFP funds published ecosystem tooling/service needs); none gates a tooling or indexing category label; no contradiction.",
         "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
         "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the rolling interest-to-invitation path.",
         "Sibling sweep 2026-09-03: q-scf-open-rfps and Build entry-flow cases remain consistent.",
@@ -110,6 +132,7 @@
         "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-current-round; no contradiction"
       ],
       "rootCause": [
+        ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side scope ambiguity between the RFP-track definition and each brief's Scout category",
         "freshness-drift",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"

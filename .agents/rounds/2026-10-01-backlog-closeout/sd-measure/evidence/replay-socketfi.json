@@ -1,0 +1,446 @@
+[
+ {
+  "label": "candidate query",
+  "id": "stellarDocs.search_soroban_contract_docs",
+  "args": {
+   "query": "custom account __check_auth signer authorization",
+   "hitsPerPage": 5,
+   "includeContent": true
+  },
+  "entryEqual": true,
+  "oldOk": true,
+  "newOk": true,
+  "kind": [
+   null,
+   null
+  ],
+  "msg": [
+   null,
+   null
+  ],
+  "differences": [],
+  "hits": [
+   5,
+   5
+  ],
+  "nbHits": [
+   12,
+   12
+  ],
+  "urls": [
+   "https://developers.stellar.org/docs/build/smart-contracts/example-contracts",
+   "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#custom-authentication-and-authorization",
+   "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#contract-structure-and-imports",
+   "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#complete-code",
+   "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#customaccountinterface-implementation"
+  ],
+  "contentChars": [
+   [
+    2301,
+    884,
+    762,
+    8011,
+    3133
+   ],
+   [
+    2301,
+    884,
+    762,
+    8011,
+    3133
+   ]
+  ],
+  "requireAuthMentions": [
+   1,
+   1
+  ],
+  "explanatory": [
+   0,
+   0
+  ],
+  "oldReqs": [
+   {
+    "path": "/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
+    "status": 200,
+    "attrs": [
+     "url",
+     "url_without_anchor",
+     "anchor",
+     "hierarchy",
+     "type",
+     "content"
+    ],
+    "n": null
+   }
+  ],
+  "newReqs": [
+   {
+    "path": "/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
+    "status": 200,
+    "attrs": [
+     "url",
+     "url_without_anchor",
+     "anchor",
+     "hierarchy",
+     "type",
+     "objectID"
+    ],
+    "n": null
+   },
+   {
+    "path": "/1/indexes/*/objects",
+    "status": 200,
+    "attrs": null,
+    "n": 5
+   }
+  ],
+  "envelopeNew": {
+   "ok": true,
+   "data": {
+    "hits": [
+     {
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts",
+      "anchor": "",
+      "type": "content",
+      "breadcrumb": "Example Contracts > Example Contracts",
+      "snippet": "Delegate **Auth** - A **custom** **account** contract that uses CAP-71 **auth** delegation to forward __**check**_**auth** to registered delegate **signers**",
+      "content": "The Stellar team has put together a large collection of example contracts to demonstrate use of smart contracts on Stellar. For many of these example contracts, we've written an accompanying tutorial that will walk you through the example contract and describe a bit more about its design.\r\nThe examples listed below are provided in a sequential manner. The first listed example contracts create a solid foundation of concepts that will be required during the later examples. While you are absolutely free to choose, read, and use any of the example contracts you like, please keep in mind that the order you see is intentional.\r\nStorage - Increment a counter and store the incremented value\r\nEvents - Publish events from a smart contract.\r\nSimple Account - A minimal contract account secured by a single ed25519 public key.\r\nComplex Account - Implement a contract account with multisig and custom authorization policies.\r\nBLS Signature - A contract account with BLS signature verification.\r\nDelegate Auth - A custom account contract that uses CAP-71 auth delegation to forward __check_auth to registered delegate signers.\r\nCustom Types - Define your own data structures in a smart contract.\r\nErrors - Define and generate errors in a smart contract.\r\nLogging - Debug a smart contract with logs.\r\nAuth - Implement authentication and authorization.\r\nCross Contract Calls - Call a smart contract from another smart contract.\r\nDeployer - Deploy and initialize a smart contract using another smart contract.\r\nAllocator - Use the allocator feature to emulate heap memory in a smart contract.\r\nAtomic Swap - Swap tokens atomically between authorized users.\r\nBatched Atomic Swaps - Swap a token pair among groups of authorized users.\r\nMint Lock - Implement a contract that can delegate minting with limits.\r\nTimelock - Lockup some token to be claimed by another user under set conditions.\r\nSingle Offer Sale - Make a standing offer to sell a token in exchange for another token.\r\nUpgradeable Contract - Upgrading Wasm Bytecode for a Deployed Contract.\r\nLiquidity Pool - Write a constant-product liquidity pool contract.\r\nTokens - Write a CAP-46-6 compliant token contract.\r\nFuzz Testing - Increase confidence in a contract's correctness with fuzz testing.\r\nWorkspace - Develop multiple contracts side-by-side."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#custom-authentication-and-authorization",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials",
+      "anchor": "custom-authentication-and-authorization",
+      "type": "content",
+      "breadcrumb": "Contract Authorization > Using __check_auth in interesting ways > Tutorial 1: time based restriction on token transfers​ > Code walkthrough​ > Custom authentication and authorization​",
+      "snippet": "have signed\r\nIterates through the **authorization** context to verify the **authorization** policy\r\n#[contractimpl]impl **Custom****Account**Interface for **Account**Contract",
+      "content": "Authenticates the signatures\r\nChecks if all required signers have signed\r\nIterates through the authorization context to verify the authorization policy\r\n#[contractimpl]impl CustomAccountInterface for AccountContract { type Error = AccError; type Signature = Vec&lt;Signature&gt;; #[allow(non_snake_case)] fn __check_auth( env: Env, signature_payload: Hash&lt;32&gt;, signatures: Vec&lt;Signature&gt;, auth_context: Vec&lt;Context&gt;, ) -&gt; Result&lt;(), AccError&gt; { authenticate(&amp;env, &amp;signature_payload, &amp;signatures)?; let tot_signers: u32 = env .storage() .instance() .get::&lt;_, u32&gt;(&amp;DataKey::SignerCnt) .unwrap(); let all_signed = tot_signers == signatures.len(); let curr_contract = env.current_contract_address(); for context in auth_context.iter() { verify_authorization_policy( &amp;env, &amp;context, &amp;curr_contract, all_signed, )?; } Ok(()) }}"
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#contract-structure-and-imports",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials",
+      "anchor": "contract-structure-and-imports",
+      "type": "content",
+      "breadcrumb": "Contract Authorization > Using __check_auth in interesting ways > Tutorial 1: time based restriction on token transfers​ > Code walkthrough​ > Contract structure and imports​",
+      "snippet": "#![no_std]use soroban_sdk::{ **auth**::{Context, **Custom****Account**Interface}, contract, contracterror, contractimpl, contracttype, symbol_short, Address, crypto::Hash",
+      "content": "#![no_std]use soroban_sdk::{ auth::{Context, CustomAccountInterface}, contract, contracterror, contractimpl, contracttype, symbol_short, Address, crypto::Hash, BytesN, Env, Symbol, Vec,};#[contract]struct AccountContract;#[contracttype]#[derive(Clone)]pub struct Signature { pub public_key: BytesN&lt;32&gt;, pub signature: BytesN&lt;64&gt;,}#[contracttype]#[derive(Clone)]enum DataKey { SignerCnt, Signer(BytesN&lt;32&gt;), TimeLimit(Address), LastTransferTime(Address),}#[contracterror]#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]#[repr(u32)]pub enum AccError { NotEnoughSigners = 1, NegativeAmount = 2, BadSignatureOrder = 3, UnknownSigner = 4, InvalidContext = 5, TimeLimitExceeded = 6,}const TRANSFER_FN: Symbol = symbol_short!(\"transfer\");"
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#complete-code",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials",
+      "anchor": "complete-code",
+      "type": "content",
+      "breadcrumb": "Contract Authorization > Using __check_auth in interesting ways > Tutorial 1: time based restriction on token transfers​ > Code walkthrough​ > Complete code​",
+      "snippet": "a single file for convenience:\r\n#![no_std]use soroban_sdk::{ **auth**::{Context, **Custom****Account**Interface}, contract, contracterror, contractimpl, contracttype, symbol",
+      "content": "Here are all the snippets stacked together in a single file for convenience:\r\n#![no_std]use soroban_sdk::{ auth::{Context, CustomAccountInterface}, contract, contracterror, contractimpl, contracttype, symbol_short, Address, BytesN, Env, Hash, Symbol, Vec,};#[contract]struct AccountContract;#[contracttype]#[derive(Clone)]pub struct Signature { pub public_key: BytesN&lt;32&gt;, pub signature: BytesN&lt;64&gt;,}#[contracttype]#[derive(Clone)]enum DataKey { SignerCnt, Signer(BytesN&lt;32&gt;), TimeLimit(Address), LastTransferTime(Address),}#[contracterror]#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]#[repr(u32)]pub enum AccError { NotEnoughSigners = 1, NegativeAmount = 2, BadSignatureOrder = 3, UnknownSigner = 4, InvalidContext = 5, TimeLimitExceeded = 6,}const TRANSFER_FN: Symbol = symbol_short!(\"transfer\");#[contractimpl]impl AccountContract { pub fn __constructor(env: Env, signers: Vec&lt;BytesN&lt;32&gt;&gt;) { for signer in signers.iter() { env.storage().instance().set(&amp;DataKey::Signer(signer), &amp;()); } env.storage() .instance() .set(&amp;DataKey::SignerCnt, &amp;signers.len()); } pub fn set_time(env: Env, token: Address, time_limit: u64) { env.current_contract_address().require_auth(); env.storage() .instance() .set(&amp;DataKey::TimeLimit(token), &amp;time_limit); }}#[contractimpl]impl CustomAccountInterface for AccountContract { type Error = AccError; type Signature = Vec&lt;Signature&gt;; #[allow(non_snake_case)] fn __check_auth( env: Env, signature_payload: Hash&lt;32&gt;, signatures: Vec&lt;Signature&gt;, auth_context: Vec&lt;Context&gt;, ) -&gt; Result&lt;(), AccError&gt; { authenticate(&amp;env, &amp;signature_payload, &amp;signatures)?; let tot_signers: u32 = env .storage() .instance() .get::&lt;_, u32&gt;(&amp;DataKey::SignerCnt) .unwrap(); let all_signed = tot_signers == signatures.len(); let curr_contract = env.current_contract_address(); for context in auth_context.iter() { verify_authorization_policy( &amp;env, &amp;context, &amp;curr_contract, all_signed, )?; } Ok(()) }}fn authenticate( env: &amp;Env, signature_payload: &amp;Hash&lt;32&gt;, signatures: &amp;Vec&lt;Signature&gt;,) -&gt; Result&lt;(), AccError&gt; { for i in 0..signatures.len() { let signature = signatures.get_unchecked(i); if i &gt; 0 { let prev_signature = signatures.get_unchecked(i - 1); if prev_signature.public_key &gt;= signature.public_key { return Err(AccError::BadSignatureOrder); } } if !env .storage() .instance() .has(&amp;DataKey::Signer(signature.public_key.clone())) { return Err(AccError::UnknownSigner); } env.crypto().ed25519_verify( &amp;signature.public_key, &amp;signature_payload.clone().into(), &amp;signature.signature, ); } Ok(())}fn verify_authorization_policy( env: &amp;Env, context: &amp;Context, curr_contract: &amp;Address, all_signed: bool,) -&gt; Result&lt;(), AccError&gt; { let contract_context = match context { Context::Contract(c) =&gt; { if &amp;c.contract == curr_contract { if !all_signed { return Err(AccError::NotEnoughSigners); } } c } Context::CreateContractHostFn(_) =&gt; return Err(AccError::InvalidContext), Context::CreateContractWithCtorHostFn(_) =&gt; return Err(AccError::InvalidContext), }; if contract_context.fn_name != TRANSFER_FN &amp;&amp; contract_context.fn_name != Symbol::new(env, \"approve\") { return Ok(()); } let current_time = env.ledger().timestamp(); let time_limit: Option&lt;u64&gt; = env.storage() .instance() .get::&lt;_, u64&gt;(&amp;DataKey::TimeLimit(contract_context.contract.clone())); if let Some(limit) = time_limit { let last_transfer_time: u64 = env.storage() .instance() .get::&lt;_, u64&gt;(&amp;DataKey::LastTransferTime(contract_context.contract.clone())) .unwrap_or(0); if current_time - last_transfer_time &lt; limit { return Err(AccError::TimeLimitExceeded); } env.storage() .instance() .set(&amp;DataKey::LastTransferTime(contract_context.contract.clone()), &amp;current_time); } Ok(())}mod test;\r\nThese are the test cases:\r\n#![cfg(test)]extern crate std;use ed25519_dalek::Keypair;use ed25519_dalek::Signer;use rand::thread_rng;use soroban_sdk::auth::ContractContext;use soroban_sdk::symbol_short;use soroban_sdk::testutils::Address as _;use soroban_sdk::testutils::AuthorizedFunction;use soroban_sdk::testutils::AuthorizedInvocation;use soroban_sdk::Val;use soroban_sdk::{ auth::Context, testutils::BytesN as _, vec, Address, BytesN, Env, IntoVal, Symbol,};use soroban_sdk::testutils::Ledger;use soroban_sdk::testutils::LedgerInfo;use crate::AccError;use crate::{AccountContract, AccountContractClient, Signature};fn generate_keypair() -&gt; Keypair { Keypair::generate(&amp;mut thread_rng())}fn signer_public_key(e: &amp;Env, signer: &amp;Keypair) -&gt; BytesN&lt;32&gt; { signer.public.to_bytes().into_val(e)}fn create_account_contract(e: &amp;Env, signers: Vec&lt;BytesN&lt;32&gt;&gt;) -&gt; AccountContractClient { AccountContractClient::new(e, &amp;e.register(AccountContract {}, (signers,)))}fn sign(e: &amp;Env, signer: &amp;Keypair, payload: &amp;BytesN&lt;32&gt;) -&gt; Val { Signature { public_key: signer_public_key(e, signer), signature: signer .sign(payload.to_array().as_slice()) .to_bytes() .into_val(e), } .into_val(e)}fn token_auth_context(e: &amp;Env, token_id: &amp;Address, fn_name: Symbol, amount: i128) -&gt; Context { Context::Contract(ContractContext { contract: token_id.clone(), fn_name, args: ((), (), amount).into_val(e), })}#[test]fn test_token_auth() { let env = Env::default(); env.mock_all_auths(); let mut signers = [generate_keypair(), generate_keypair()]; if signers[0].public.as_bytes() &gt; signers[1].public.as_bytes() { signers.swap(0, 1); } let account_contract = create_account_contract( &amp;env, vec![ &amp;env, signer_public_key(&amp;env, &amp;signers[0]), signer_public_key(&amp;env, &amp;signers[1]), ], ); let payload = BytesN::random(&amp;env); let token = Address::generate(&amp;env); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1000), ], ) .unwrap(); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1000), ], ) .unwrap(); // Add a time limit of 1000 seconds for the token. account_contract.set_time(&amp;token, &amp;1000); assert_eq!( env.auths(), std::vec![( account_contract.address.clone(), AuthorizedInvocation { function: AuthorizedFunction::Contract(( account_contract.address.clone(), symbol_short!(\"set_time\"), (token.clone(), 1000_u64).into_val(&amp;env), )), sub_invocations: std::vec![] } )] ); // Attempting a transfer within the time limit should fail. env.ledger().set(LedgerInfo { timestamp: 0, protocol_version: 1, sequence_number: 10, network_id: Default::default(), base_reserve: 10, min_temp_entry_ttl: 16, min_persistent_entry_ttl: 16, max_entry_ttl: 100_000, }); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1001) ], ) .err() .unwrap() .unwrap() == AccError::TimeLimitExceeded; // Simulate passing of time to allow the next transfer. env.ledger().set(LedgerInfo { timestamp: 1000, protocol_version: 1, sequence_number: 10, network_id: Default::default(), base_reserve: 10, min_temp_entry_ttl: 16, min_persistent_entry_ttl: 16, max_entry_ttl: 100_000, }); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1001), ], ) .unwrap();}"
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#customaccountinterface-implementation",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials",
+      "anchor": "customaccountinterface-implementation",
+      "type": "content",
+      "breadcrumb": "Contract Authorization > Using __check_auth in interesting ways > Tutorial 2: implementing a smart wallet (WebAuthn)​ > Code walkthrough​ > CustomAccountInterface implementation​",
+      "snippet": "This implements the core authentication logic for the WebAuthn wallet.\r\n#[contractimpl]impl **Custom****Account**Interface for Contract { // Defining the",
+      "content": "This implements the core authentication logic for the WebAuthn wallet.\r\n#[contractimpl]impl CustomAccountInterface for Contract { // Defining the error and signature types for the trait type Error = Error; type Signature = Signature; #[allow(non_snake_case)] fn __check_auth( env: Env, // The environment context signature_payload: Hash&lt;32&gt;, // The payload that needs to be signed signature: Signature, // The signature provided by the client auth_contexts: Vec&lt;Context&gt;, // Contexts for authentication ) -&gt; Result&lt;(), Error&gt; { // Destructure the signature into its components let Signature { id, mut authenticator_data, client_data_json, signature, } = signature; // Set the maximum time-to-live (TTL) for storage entries let max_ttl = env.storage().max_ttl(); // Try to retrieve the public key associated with the id from temporary storage let pk = match env.storage().temporary().get(&amp;id) { Some(pk) =&gt; { // Check if a session signer is trying to perform protected actions for context in auth_contexts.iter() { match context { // If the context is a contract call Context::Contract(c) =&gt; { // Ensure that the current contract is not performing restricted actions if c.contract == env.current_contract_address() &amp;&amp; (c.fn_name != symbol_short!(\"remove\") || (c.fn_name == symbol_short!(\"remove\") &amp;&amp; Bytes::from_val(&amp;env, &amp;c.args.get(0).unwrap()) != id)) { return Err(Error::NotPermitted); } } _ =&gt; {} // Allow other contexts (e.g., deploying new contracts) }; } // Extend the TTL for the temporary storage entry env.storage() .temporary() .extend_ttl(&amp;id, max_ttl - WEEK_OF_LEDGERS, max_ttl); pk // Return the public key } // If not found in temporary storage, try persistent storage None =&gt; { env.storage() .persistent() .extend_ttl(&amp;id, max_ttl - WEEK_OF_LEDGERS, max_ttl); env.storage().persistent().get(&amp;id).ok_or(Error::NotFound)? } }; // Extend the authenticator data with the SHA-256 hash of the client data JSON authenticator_data.extend_from_array(&amp;env.crypto().sha256(&amp;client_data_json).to_array()); // Verify the signature using the secp256r1 elliptic curve algorithm env.crypto() .secp256r1_verify(&amp;pk, &amp;env.crypto().sha256(&amp;authenticator_data), &amp;signature); // Parse the client data JSON, extracting the base64 URL encoded challenge let client_data_json = client_data_json.to_buffer::&lt;1024&gt;(); let client_data_json = client_data_json.as_slice(); let (client_data_json, _): (ClientDataJson, _) = serde_json_core::de::from_slice(client_data_json).map_err(|_| Error::JsonParseError)?; // Build the expected challenge from the signature payload let mut expected_challenge = [0u8; 43]; base64_url::encode(&amp;mut expected_challenge, &amp;signature_payload.to_array()); // Check that the challenge inside the client data JSON matches the expected challenge if client_data_json.challenge.as_bytes() != expected_challenge { return Err(Error::ClientDataJsonChallengeIncorrect); } // Extend the TTL for the instance storage env.storage() .instance() .extend_ttl(max_ttl - WEEK_OF_LEDGERS, max_ttl); Ok(()) // Return success }}"
+     }
+    ],
+    "nbHits": 12,
+    "nbPages": 1,
+    "page": 0,
+    "clientFiltered": true
+   }
+  }
+ },
+ {
+  "label": "baseline query 1",
+  "id": "stellarDocs.search_soroban_contract_docs",
+  "args": {
+   "query": "__check_auth custom account passkey",
+   "includeContent": true,
+   "hitsPerPage": 5
+  },
+  "entryEqual": true,
+  "oldOk": true,
+  "newOk": true,
+  "kind": [
+   null,
+   null
+  ],
+  "msg": [
+   null,
+   null
+  ],
+  "differences": [],
+  "hits": [
+   4,
+   4
+  ],
+  "nbHits": [
+   4,
+   4
+  ],
+  "urls": [
+   "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#policy-modification",
+   "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/delegate-auth#type-signature--",
+   "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/delegate-spending#what-this-does-not-give-you",
+   "https://developers.stellar.org/docs/build/guides/contract-accounts"
+  ],
+  "contentChars": [
+   [
+    3710,
+    1410,
+    1576,
+    919
+   ],
+   [
+    3710,
+    1410,
+    1576,
+    919
+   ]
+  ],
+  "requireAuthMentions": [
+   7,
+   7
+  ],
+  "explanatory": [
+   1,
+   1
+  ],
+  "oldReqs": [
+   {
+    "path": "/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
+    "status": 200,
+    "attrs": [
+     "url",
+     "url_without_anchor",
+     "anchor",
+     "hierarchy",
+     "type",
+     "content"
+    ],
+    "n": null
+   }
+  ],
+  "newReqs": [
+   {
+    "path": "/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
+    "status": 200,
+    "attrs": [
+     "url",
+     "url_without_anchor",
+     "anchor",
+     "hierarchy",
+     "type",
+     "objectID"
+    ],
+    "n": null
+   },
+   {
+    "path": "/1/indexes/*/objects",
+    "status": 200,
+    "attrs": null,
+    "n": 4
+   }
+  ],
+  "envelopeNew": {
+   "ok": true,
+   "data": {
+    "hits": [
+     {
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#policy-modification",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account",
+      "anchor": "policy-modification",
+      "type": "content",
+      "breadcrumb": "Example Contracts > Complex Account > How it Works​ > __check_auth​",
+      "snippet": "This should return `()` if authentication and authorization checks have // been **passed** and return an error (or panic) otherwise. // // `__**check**_**auth**",
+      "content": "#[contracttype]#[derive(Clone)]pub struct AccSignature { pub public_key: BytesN&lt;32&gt;, pub signature: BytesN&lt;64&gt;,}#[contracterror]#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]#[repr(u32)]pub enum AccError { NotEnoughSigners = 1, NegativeAmount = 2, BadSignatureOrder = 3, UnknownSigner = 4,}...#[contractimpl]impl CustomAccountInterface for AccountContract { type Signature = Vec&lt;AccSignature&gt;; type Error = AccError; // This is the 'entry point' of the account contract and every account // contract has to implement it. `require_auth` calls for the Address of // this contract will result in calling this `__check_auth` function with // the appropriate arguments. // // This should return `()` if authentication and authorization checks have // been passed and return an error (or panic) otherwise. // // `__check_auth` takes the payload that needed to be signed, arbitrarily // typed signatures (`Vec&lt;AccSignature&gt;` contract type here) and authorization // context that contains all the invocations that this call tries to verify. // // `__check_auth` has to authenticate the signatures. It also may use // `auth_context` to implement additional authorization policies (like token // spend limits here). // // Soroban host guarantees that `__check_auth` is only being called during // `require_auth` verification and hence this may mutate its own state // without the need for additional authorization (for example, this could // store per-time-period token spend limits instead of just enforcing the // limit per contract call). // // Note, that `__check_auth` function shouldn't call `require_auth` on the // contract's own address in order to avoid infinite recursion. #[allow(non_snake_case)] fn __check_auth( env: Env, signature_payload: Hash&lt;32&gt;, signatures: Self::Signature, auth_context: Vec&lt;Context&gt;, ) -&gt; Result&lt;(), AccError&gt; { // Perform authentication. authenticate(&amp;env, &amp;signature_payload, &amp;signatures)?; let tot_signers: u32 = env .storage() .instance() .get::&lt;_, u32&gt;(&amp;DataKey::SignerCnt) .unwrap(); let all_signed = tot_signers == signatures.len(); let curr_contract = env.current_contract_address(); // This is a map for tracking the token spend limits per token. This // makes sure that if e.g. multiple `transfer` calls are being authorized // for the same token we still respect the limit for the total // transferred amount (and not the 'per-call' limits). let mut spend_left_per_token = Map::&lt;Address, i128&gt;::new(&amp;env); // Verify the authorization policy. for context in auth_context.iter() { verify_authorization_policy( &amp;env, &amp;context, &amp;curr_contract, all_signed, &amp;mut spend_left_per_token, )?; } Ok(()) }}\r\n__check_auth is a special function that account contracts implement. It will be called by the Soroban environment every time require_auth or require_auth_for_args is called for the address of the account contract.\r\nHere it is implemented in two steps. First, authentication is performed using the signature payload and a vector of signatures. Second, authorization policy is enforced using the auth_context vector. This vector contains all the contract calls that are being authorized by the provided signatures.\r\n__check_auth is a reserved function and can only be called by the Soroban environment in response to a call to require_auth. Any direct call to __check_auth will fail. This makes it safe to write to the account contract storage from __check_auth, as it's guaranteed to not be called in unexpected context. In this example it's possible to persist the spend limits without worrying that they'll be exhausted via a bad actor calling __check_auth directly."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/delegate-auth#type-signature--",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/delegate-auth",
+      "anchor": "type-signature--",
+      "type": "content",
+      "breadcrumb": "Example Contracts > Delegate Auth > How it Works​ > __check_auth: get → verify → forward​",
+      "snippet": "Error::UnknownDelegate); }}for delegate in delegates.iter() { env.**custom**_**account**().delegate_**auth**(&amp;delegate);}\r\nTwo methods on env.**custom**_**account**",
+      "content": "let delegates = env.custom_account().get_delegated_signers();if delegates.is_empty() { return Err(Error::InsufficientDelegates);}for delegate in delegates.iter() { if !env.storage().persistent().has(&amp;ModularAccountDataKey::Signer(delegate.clone())) { return Err(Error::UnknownDelegate); }}for delegate in delegates.iter() { env.custom_account().delegate_auth(&amp;delegate);}\r\nTwo methods on env.custom_account() drive delegation. Both may only be called from within __check_auth; calling either outside of it panics.\r\nget_delegated_signers() -&gt; Vec&lt;Address&gt; returns the delegate addresses the user attached to the transaction's auth entry. These are unsanitized user input — the contract must verify each one is registered before forwarding.\r\ndelegate_auth(&amp;address) forwards the current __check_auth authorization context to address. Unlike require_auth, this does not start a new contract invocation and does not require a separate auth entry for the delegate in the transaction. Delegation is nestable: a delegate may further delegate.\r\nThe example first rejects an empty delegate list — since the account verifies no signature of its own, forwarding to nobody would leave it effectively unauthenticated. It then makes two passes: first it validates all delegates, then it forwards to each. This ensures that an invalid delegate causes the whole check to fail before any forwarding occurs."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/delegate-spending#what-this-does-not-give-you",
+      "url_without_anchor": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/delegate-spending",
+      "anchor": "what-this-does-not-give-you",
+      "type": "content",
+      "breadcrumb": "Agent Cookbook > Delegate spending > What this does not give you​",
+      "snippet": "not a CLI feature today. The CLI can deploy a **custom**-**account** contract and send funds to it, but it",
+      "content": "An allowance caps one spender's draw on one token from one owner, with a ledger deadline. It gives no rolling time window, no per-counterparty rule beyond that single spender, no allow-list of destinations the spender can pay out to, and no fiat-denominated limit. It has no notion of an agent session either: an allowance outlives however long you intended the agent to run, until its expiration ledger passes or you revoke it.\r\nNone of the other three patterns closes those gaps. A co-signed vault makes you approve each spend, which is a stronger control and a slower one; it does not encode a rule you can walk away from. Nothing here gives you a policy engine.\r\nTwo things look like controls and are not. Muxed accounts (M…) are labels on one key, not sub-identities: a payment to or from one works, and the same secret signs for every mux id, so they record which agent a payment was for and bound nothing. The CLI does not round-trip one either: keys add --public-key &lt;M_ADDRESS&gt; saves it, and keys address reads back the underlying G… with the mux id dropped. Smart wallets are not a CLI feature today. The CLI can deploy a custom-account contract and send funds to it, but it cannot sign that contract's authorization entry: contract invoke stops with Missing signing key for account C…, and the tx sign path leaves the entry unsigned so the transaction fails onchain inside __check_auth. Measured on testnet against a deployed v1 smart wallet holding real balance. Do not move funds into a contract account from the CLI expecting to move them out the same way."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/contract-accounts",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/contract-accounts",
+      "anchor": "",
+      "type": "content",
+      "breadcrumb": "Contract Accounts > Contract Accounts",
+      "snippet": "Contract **accounts** are smart contracts that act like **accounts**. They hold balances and use __**check**_**auth** to decide who can",
+      "content": "Contract accounts are smart contracts that act like accounts. They hold balances and use __check_auth to decide who can act and under what conditions.\r\nUse a contract account when:\r\nYou need custom authentication in the contract (passkeys/WebAuthn, hardware keys, or other signer checks).\r\nYou need on chain rules such as spend caps, allow lists, or timelocks.\r\nStay with a classic account when:\r\nYou want the simplest path: one private key, fund the account, no extra contract code or infrastructure.\r\nYou must interoperate with systems/tools that expect memos (for example, some exchanges require payments with memos from a G-address; contract account payments go through the Stellar Asset Contract as muxed transfers, so transfers from contracts are not supported by exchanges today).\r\nQuick links:\r\nSimple Account example\r\nComplex Account example\r\nContract authorization starter guide and Authorization fundamentals"
+     }
+    ],
+    "nbHits": 4,
+    "nbPages": 1,
+    "page": 0,
+    "clientFiltered": true
+   }
+  }
+ },
+ {
+  "label": "baseline query 2",
+  "id": "stellarDocs.search_soroban_contract_docs",
+  "args": {
+   "query": "custom account __check_auth require_auth",
+   "includeContent": true,
+   "hitsPerPage": 5
+  },
+  "entryEqual": true,
+  "oldOk": true,
+  "newOk": true,
+  "kind": [
+   null,
+   null
+  ],
+  "msg": [
+   null,
+   null
+  ],
+  "differences": [],
+  "hits": [
+   5,
+   5
+  ],
+  "nbHits": [
+   15,
+   15
+  ],
+  "urls": [
+   "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#contract-account",
+   "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#complete-code-1",
+   "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#policy-modification",
+   "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/delegate-auth#type-signature--",
+   "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#complete-code"
+  ],
+  "contentChars": [
+   [
+    1350,
+    12737,
+    3710,
+    1410,
+    8011
+   ],
+   [
+    1350,
+    12737,
+    3710,
+    1410,
+    8011
+   ]
+  ],
+  "requireAuthMentions": [
+   13,
+   13
+  ],
+  "explanatory": [
+   2,
+   2
+  ],
+  "oldReqs": [
+   {
+    "path": "/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
+    "status": 200,
+    "attrs": [
+     "url",
+     "url_without_anchor",
+     "anchor",
+     "hierarchy",
+     "type",
+     "content"
+    ],
+    "n": null
+   }
+  ],
+  "newReqs": [
+   {
+    "path": "/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query",
+    "status": 200,
+    "attrs": [
+     "url",
+     "url_without_anchor",
+     "anchor",
+     "hierarchy",
+     "type",
+     "objectID"
+    ],
+    "n": null
+   },
+   {
+    "path": "/1/indexes/*/objects",
+    "status": 200,
+    "attrs": null,
+    "n": 5
+   }
+  ],
+  "envelopeNew": {
+   "ok": true,
+   "data": {
+    "hits": [
+     {
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#contract-account",
+      "url_without_anchor": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+      "anchor": "contract-account",
+      "type": "content",
+      "breadcrumb": "Smart Contracts > Authorization > Soroban Authorization Framework​ > Account Abstraction​ > Types of Account Implementations​ > Contract Account​",
+      "snippet": "the **Custom****Account**Interface and __**check**_**auth** becomes a contract **account**. If any contract calls **require**_**auth** for the Address",
+      "content": "Corresponds to Address::Contract.\r\nThis is the extension point of account abstraction. A contract that implements the CustomAccountInterface and __check_auth becomes a contract account. If any contract calls require_auth for the Address of this contract, the Soroban host will call __check_auth with the corresponding arguments.\r\n__check_auth gets a signature payload, a list of signatures (in any user-defined format) and a list of the contract invocations that are being authorized by these signatures. Its responsibility is to perform the authentication via verifying the signatures and also (optionally) to apply a custom authorization policy. For example, a signature weight system similar to Stellar can be implemented, but it also can have customizable rules for the weights, e.g. to allow spending more than X units of token Y only given signature weight Z.\r\nContract accounts can also be treated as a custodial wallet. It holds the user's funds (token balances, NFTs etc.) and provides the user(s) with ways to authorize operations on these funds. Nothing prevents contract accounts from authorizing operations unrelated to balances; for example, they can perform administrative functions for tokens (contract accounts define what to do when require_auth is called).\r\nFor the exact interface and more details, see the Simple Account example."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#complete-code-1",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials",
+      "anchor": "complete-code-1",
+      "type": "content",
+      "breadcrumb": "Contract Authorization > Using __check_auth in interesting ways > Tutorial 2: implementing a smart wallet (WebAuthn)​ > Code walkthrough​ > Complete code​",
+      "snippet": "**auth**entication from the current contract address env.current_contract_address().**require**_**auth**(); // **Check** if the ID exists in temporary storage",
+      "content": "Here are all the snippets stacked together in a single file for convenience:\r\n#![no_std]use soroban_sdk::{ auth::{Context, CustomAccountInterface}, contract, contracterror, contractimpl, contracttype, crypto::Hash, panic_with_error, symbol_short, Bytes, BytesN, ContractExecutable, Env, FromVal, Symbol, Vec,};#[contract]pub struct Contract;// Error definitions for the contract#[contracterror]#[derive(Copy, Clone, Eq, PartialEq, Debug)]pub enum Error { NotFound = 1, NotPermitted = 2, ClientDataJsonChallengeIncorrect = 3, Secp256r1PublicKeyParse = 4, Secp256r1SignatureParse = 5, Secp256r1VerifyFailed = 6, JsonParseError = 7,}// Structure representing a WebAuthn signature#[contracttype]pub struct Signature { pub id: Bytes, pub authenticator_data: Bytes, pub client_data_json: Bytes, pub signature: BytesN&lt;64&gt;,}// Implementing the Contract struct with various methods#[contractimpl]impl Contract { // Method to add a new signer, potentially as an admin pub fn add(env: Env, id: Bytes, pk: BytesN&lt;65&gt;, mut admin: bool) -&gt; Result&lt;(), Error&gt; { // Check if the instance storage has the ADMIN_SIGNER_COUNT key if env.storage().instance().has(&amp;ADMIN_SIGNER_COUNT) { // Require authentication from the current contract address env.current_contract_address().require_auth(); } else { // If it's the first signer, ensure they are an admin admin = true; } // Get the maximum time-to-live (TTL) for the storage entries let max_ttl = env.storage().max_ttl(); // If the signer is an admin if admin { // Check if the ID exists in temporary storage if env.storage().temporary().has(&amp;id) { // Remove the ID from temporary storage env.storage().temporary().remove(&amp;id); } // Update the admin signer count by incrementing it Self::update_admin_signer_count(&amp;env, true); // Store the public key in persistent storage with the given ID env.storage().persistent().set(&amp;id, &amp;pk); // Extend the TTL for the persistent storage entry env.storage() .persistent() .extend_ttl(&amp;id, max_ttl - WEEK_OF_LEDGERS, max_ttl); } else { // If the signer is not an admin // Check if the ID exists in persistent storage if env.storage().persistent().has(&amp;id) { // Update the admin signer count by decrementing it Self::update_admin_signer_count(&amp;env, false); // Remove the ID from persistent storage env.storage().persistent().remove(&amp;id); } // Store the public key in temporary storage with the given ID env.storage().temporary().set(&amp;id, &amp;pk); // Extend the TTL for the temporary storage entry env.storage() .temporary() .extend_ttl(&amp;id, max_ttl - WEEK_OF_LEDGERS, max_ttl); } // Extend the TTL for the instance storage env.storage() .instance() .extend_ttl(max_ttl - WEEK_OF_LEDGERS, max_ttl); // Publish an event indicating a new signer has been added env.events() .publish((EVENT_TAG, symbol_short!(\"add\"), id, pk), admin); // Return Ok indicating success Ok(()) } // Method to remove a signer pub fn remove(env: Env, id: Bytes) -&gt; Result&lt;(), Error&gt; { // Require authentication from the current contract address env.current_contract_address().require_auth(); // Check if the ID exists in temporary storage if env.storage().temporary().has(&amp;id) { // Remove the ID from temporary storage env.storage().temporary().remove(&amp;id); } else if env.storage().persistent().has(&amp;id) { // If the ID exists in persistent storage, decrement the admin signer count Self::update_admin_signer_count(&amp;env, false); // Remove the ID from persistent storage env.storage().persistent().remove(&amp;id); } // Get the maximum time-to-live (TTL) for the storage entries let max_ttl = env.storage().max_ttl(); // Extend the TTL for the instance storage env.storage() .instance() .extend_ttl(max_ttl - WEEK_OF_LEDGERS, max_ttl); // Publish an event indicating a signer has been removed env.events() .publish((EVENT_TAG, symbol_short!(\"remove\"), id), ()); // Return Ok indicating success Ok(()) } // Method to update the contract with new WASM code pub fn update(env: Env, hash: BytesN&lt;32&gt;) -&gt; Result&lt;(), Error&gt; { // Require authentication from the current contract address env.current_contract_address().require_auth(); // Update the contract's WASM code with the new hash env.deployer() .update_current_contract(ContractExecutable::Wasm(hash)); // Get the maximum time-to-live (TTL) for the storage entries let max_ttl = env.storage().max_ttl(); // Extend the TTL for the instance storage env.storage() .instance() .extend_ttl(max_ttl - WEEK_OF_LEDGERS, max_ttl); // Return Ok indicating success Ok(()) } // Helper method to update the count of admin signers fn update_admin_signer_count(env: &amp;Env, add: bool) { // Get the current count of admin signers from instance storage, defaulting to 0 let count = env .storage() .instance() .get::&lt;Symbol, i32&gt;(&amp;ADMIN_SIGNER_COUNT) .unwrap_or(0) + if add { 1 } else { -1 }; // If the count is less than or equal to 0, trigger an error if count &lt;= 0 { panic_with_error!(env, Error::NotPermitted) } // Update the admin signer count in instance storage env.storage() .instance() .set::&lt;Symbol, i32&gt;(&amp;ADMIN_SIGNER_COUNT, &amp;count); }}// Implementing the core authentication logic for the WebAuthn wallet#[contractimpl]impl CustomAccountInterface for Contract { // Defining the error and signature types for the trait type Error = Error; type Signature = Signature; #[allow(non_snake_case)] fn __check_auth( env: Env, // The environment context signature_payload: Hash&lt;32&gt;, // The payload that needs to be signed signature: Signature, // The signature provided by the client auth_contexts: Vec&lt;Context&gt;, // Contexts for authentication ) -&gt; Result&lt;(), Error&gt; { // Destructure the signature into its components let Signature { id, mut authenticator_data, client_data_json, signature, } = signature; // Get the maximum time-to-live (TTL) for storage entries let max_ttl = env.storage().max_ttl(); // Try to retrieve the public key associated with the id from temporary storage let pk = match env.storage().temporary().get(&amp;id) { Some(pk) =&gt; { // Check if a session signer is trying to perform protected actions for context in auth_contexts.iter() { match context { // If the context is a contract call Context::Contract(c) =&gt; { // Ensure that the current contract is not performing restricted actions if c.contract == env.current_contract_address() &amp;&amp; (c.fn_name != symbol_short!(\"remove\") || (c.fn_name == symbol_short!(\"remove\") &amp;&amp; Bytes::from_val(&amp;env, &amp;c.args.get(0).unwrap()) != id)) { return Err(Error::NotPermitted); } } _ =&gt; {} // Allow other contexts (e.g., deploying new contracts) }; } // Extend the TTL for the temporary storage entry env.storage() .temporary() .extend_ttl(&amp;id, max_ttl - WEEK_OF_LEDGERS, max_ttl); pk // Return the public key } // If not found in temporary storage, try persistent storage None =&gt; { env.storage() .persistent() .extend_ttl(&amp;id, max_ttl - WEEK_OF_LEDGERS, max_ttl); env.storage().persistent().get(&amp;id).ok_or(Error::NotFound)? } }; // Extend the authenticator data with the SHA-256 hash of the client data JSON authenticator_data.extend_from_array(&amp;env.crypto().sha256(&amp;client_data_json).to_array()); // Verify the signature using the secp256r1 elliptic curve algorithm env.crypto() .secp256r1_verify(&amp;pk, &amp;env.crypto().sha256(&amp;authenticator_data), &amp;signature); // Parse the client data JSON, extracting the base64 URL encoded challenge let client_data_json = client_data_json.to_buffer::&lt;1024&gt;(); let client_data_json = client_data_json.as_slice(); let (client_data_json, _): (ClientDataJson, _) = serde_json_core::de::from_slice(client_data_json).map_err(|_| Error::JsonParseError)?; // Build the expected challenge from the signature payload let mut expected_challenge = [0u8; 43]; base64_url::encode(&amp;mut expected_challenge, &amp;signature_payload.to_array()); // Check that the challenge inside the client data JSON matches the expected challenge if client_data_json.challenge.as_bytes() != expected_challenge { return Err(Error::ClientDataJsonChallengeIncorrect); } // Extend the TTL for the instance storage env.storage() .instance() .extend_ttl(max_ttl - WEEK_OF_LEDGERS, max_ttl); Ok(()) // Return success }}// Define the Base64 URL alphabet as a constant byte array.const ALPHABET: &amp;[u8] = b\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_\";// The `encode` function takes a mutable reference to a destination byte array `dst` and a source byte array `src`.pub fn encode(dst: &amp;mut [u8], src: &amp;[u8]) { // Initialize destination index `di` and source index `si` to 0. let mut di: usize = 0; let mut si: usize = 0; // Calculate the length of the source array that is a multiple of 3. let n = (src.len() / 3) * 3; // Process the source array in chunks of 3 bytes. while si &lt; n { // Combine 3 bytes into a single 24-bit value. let val = (src[si] as usize) &lt;&lt; 16 | (src[si + 1] as usize) &lt;&lt; 8 | (src[si + 2] as usize); // Encode the 24-bit value into 4 Base64 characters. dst[di] = ALPHABET[val &gt;&gt; 18 &amp; 0x3F]; dst[di + 1] = ALPHABET[val &gt;&gt; 12 &amp; 0x3F]; dst[di + 2] = ALPHABET[val &gt;&gt; 6 &amp; 0x3F]; dst[di + 3] = ALPHABET[val &amp; 0x3F]; // Increment the source index by 3 and the destination index by 4. si += 3; di += 4; } // Calculate the remaining number of bytes in the source array. let remain = src.len() - si; // If there are no remaining bytes, return early. if remain == 0 { return; } // Initialize a 24-bit value with the remaining byte(s). let mut val = (src[si] as usize) &lt;&lt; 16; // If there are 2 remaining bytes, add the second byte to the 24-bit value. if remain == 2 { val |= (src[si + 1] as usize) &lt;&lt; 8; } // Encode the remaining bytes into 2 or 3 Base64 characters. dst[di] = ALPHABET[val &gt;&gt; 18 &amp; 0x3F]; dst[di + 1] = ALPHABET[val &gt;&gt; 12 &amp; 0x3F]; // If there are 2 remaining bytes, encode the third Base64 character. if remain == 2 { dst[di + 2] = ALPHABET[val &gt;&gt; 6 &amp; 0x3F]; }}#[cfg(test)]mod test { use std::println; extern crate std; use soroban_sdk::{ vec, Bytes, BytesN, Env, IntoVal, }; use crate::{Contract, ContractClient, Error, Signature}; #[test] fn test() { let env = Env::default(); let deployee_address = env.register(Contract, ()); let deployee_client = ContractClient::new(&amp;env, &amp;deployee_address); // Test data let id = Bytes::from_array( &amp;env, &amp;[243, 248, 216, 74, 226, 218, 85, 102, 196, 167, 14, 151, 124, 42, 73, 136, 138, 102, 187, 140], ); let pk = BytesN::from_array( &amp;env, &amp;[4, 163, 142, 245, 242, 113, 55, 104, 189, 52, 128, 238, 206, 174, 194, 177, 4, 100, 161, 243, 177, 255, 10, 53, 57, 194, 205, 45, 208, 10, 131, 167, 93, 44, 123, 126, 95, 219, 207, 230, 175, 90, 96, 41, 121, 197, 127, 180, 74, 236, 160, 0, 60, 185, 211, 174, 133, 215, 200, 208, 230, 51, 210, 94, 214], ); // Test adding a signer deployee_client.add(&amp;id, &amp;pk, &amp;true); // Test authentication let signature_payload = BytesN::from_array( &amp;env, &amp;[150, 22, 248, 96, 91, 4, 111, 72, 170, 101, 57, 225, 210, 199, 91, 29, 159, 227, 209, 6, 231, 63, 222, 209, 232, 57, 112, 98, 140, 118, 206, 245], ); let signature = Signature { authenticator_data: Bytes::from_array( &amp;env, &amp;[75, 74, 206, 229, 181, 139, 119, 89, 254, 159, 95, 149, 227, 164, 109, 143, 188, 228, 143, 219, 181, 216, 77, 123, 142, 172, 60, 20, 162, 154, 181, 187, 29, 0, 0, 0, 0], ), client_data_json: Bytes::from_array( &amp;env, &amp;[123, 34, 116, 121, 112, 101, 34, 58, 34, 119, 101, 98, 97, 117, 116, 104, 110, 46, 103, 101, 116, 34, 44, 34, 99, 104, 97, 108, 108, 101, 110, 103, 101, 34, 58, 34, 108, 104, 98, 52, 89, 70, 115, 69, 98, 48, 105, 113, 90, 84, 110, 104, 48, 115, 100, 98, 72, 90, 95, 106, 48, 81, 98, 110, 80, 57, 55, 82, 54, 68, 108, 119, 89, 111, 120, 50, 122, 118, 85, 34, 44, 34, 111, 114, 105, 103, 105, 110, 34, 58, 34, 104, 116, 116, 112, 115, 58, 47, 47, 112, 97, 115, 115, 107, 101, 121, 45, 107, 105, 116, 45, 100, 101, 109, 111, 46, 112, 97, 103, 101, 115, 46, 100, 101, 118, 34, 125], ), id: id.clone(), signature: BytesN::from_array( &amp;env, &amp;[74, 48, 29, 120, 181, 135, 255, 178, 105, 76, 82, 118, 29, 135, 193, 72, 123, 144, 138, 214, 125, 27, 33, 159, 169, 200, 151, 55, 7, 250, 111, 172, 86, 89, 162, 167, 148, 105, 144, 68, 21, 249, 61, 253, 80, 61, 54, 29, 14, 162, 12, 173, 206, 194, 144, 227, 11, 225, 74, 254, 191, 221, 103, 86], ), }; let result: Result&lt;(), Result&lt;Error, _&gt;&gt; = env.try_invoke_contract_check_auth( &amp;deployee_address, &amp;signature_payload, signature.into_val(&amp;env), &amp;vec![&amp;env], ); println!(\"{:?}\", result); assert!(result.is_ok()); }}"
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#policy-modification",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account",
+      "anchor": "policy-modification",
+      "type": "content",
+      "breadcrumb": "Example Contracts > Complex Account > How it Works​ > __check_auth​",
+      "snippet": "by the Soroban environment in response to a call to **require**_**auth**. Any direct call to __**check**_**auth** will fail",
+      "content": "#[contracttype]#[derive(Clone)]pub struct AccSignature { pub public_key: BytesN&lt;32&gt;, pub signature: BytesN&lt;64&gt;,}#[contracterror]#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]#[repr(u32)]pub enum AccError { NotEnoughSigners = 1, NegativeAmount = 2, BadSignatureOrder = 3, UnknownSigner = 4,}...#[contractimpl]impl CustomAccountInterface for AccountContract { type Signature = Vec&lt;AccSignature&gt;; type Error = AccError; // This is the 'entry point' of the account contract and every account // contract has to implement it. `require_auth` calls for the Address of // this contract will result in calling this `__check_auth` function with // the appropriate arguments. // // This should return `()` if authentication and authorization checks have // been passed and return an error (or panic) otherwise. // // `__check_auth` takes the payload that needed to be signed, arbitrarily // typed signatures (`Vec&lt;AccSignature&gt;` contract type here) and authorization // context that contains all the invocations that this call tries to verify. // // `__check_auth` has to authenticate the signatures. It also may use // `auth_context` to implement additional authorization policies (like token // spend limits here). // // Soroban host guarantees that `__check_auth` is only being called during // `require_auth` verification and hence this may mutate its own state // without the need for additional authorization (for example, this could // store per-time-period token spend limits instead of just enforcing the // limit per contract call). // // Note, that `__check_auth` function shouldn't call `require_auth` on the // contract's own address in order to avoid infinite recursion. #[allow(non_snake_case)] fn __check_auth( env: Env, signature_payload: Hash&lt;32&gt;, signatures: Self::Signature, auth_context: Vec&lt;Context&gt;, ) -&gt; Result&lt;(), AccError&gt; { // Perform authentication. authenticate(&amp;env, &amp;signature_payload, &amp;signatures)?; let tot_signers: u32 = env .storage() .instance() .get::&lt;_, u32&gt;(&amp;DataKey::SignerCnt) .unwrap(); let all_signed = tot_signers == signatures.len(); let curr_contract = env.current_contract_address(); // This is a map for tracking the token spend limits per token. This // makes sure that if e.g. multiple `transfer` calls are being authorized // for the same token we still respect the limit for the total // transferred amount (and not the 'per-call' limits). let mut spend_left_per_token = Map::&lt;Address, i128&gt;::new(&amp;env); // Verify the authorization policy. for context in auth_context.iter() { verify_authorization_policy( &amp;env, &amp;context, &amp;curr_contract, all_signed, &amp;mut spend_left_per_token, )?; } Ok(()) }}\r\n__check_auth is a special function that account contracts implement. It will be called by the Soroban environment every time require_auth or require_auth_for_args is called for the address of the account contract.\r\nHere it is implemented in two steps. First, authentication is performed using the signature payload and a vector of signatures. Second, authorization policy is enforced using the auth_context vector. This vector contains all the contract calls that are being authorized by the provided signatures.\r\n__check_auth is a reserved function and can only be called by the Soroban environment in response to a call to require_auth. Any direct call to __check_auth will fail. This makes it safe to write to the account contract storage from __check_auth, as it's guaranteed to not be called in unexpected context. In this example it's possible to persist the spend limits without worrying that they'll be exhausted via a bad actor calling __check_auth directly."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/delegate-auth#type-signature--",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/delegate-auth",
+      "anchor": "type-signature--",
+      "type": "content",
+      "breadcrumb": "Example Contracts > Delegate Auth > How it Works​ > __check_auth: get → verify → forward​",
+      "snippet": "Error::UnknownDelegate); }}for delegate in delegates.iter() { env.**custom**_**account**().delegate_**auth**(&amp;delegate);}\r\nTwo methods on env.**custom**_**account**",
+      "content": "let delegates = env.custom_account().get_delegated_signers();if delegates.is_empty() { return Err(Error::InsufficientDelegates);}for delegate in delegates.iter() { if !env.storage().persistent().has(&amp;ModularAccountDataKey::Signer(delegate.clone())) { return Err(Error::UnknownDelegate); }}for delegate in delegates.iter() { env.custom_account().delegate_auth(&amp;delegate);}\r\nTwo methods on env.custom_account() drive delegation. Both may only be called from within __check_auth; calling either outside of it panics.\r\nget_delegated_signers() -&gt; Vec&lt;Address&gt; returns the delegate addresses the user attached to the transaction's auth entry. These are unsanitized user input — the contract must verify each one is registered before forwarding.\r\ndelegate_auth(&amp;address) forwards the current __check_auth authorization context to address. Unlike require_auth, this does not start a new contract invocation and does not require a separate auth entry for the delegate in the transaction. Delegation is nestable: a delegate may further delegate.\r\nThe example first rejects an empty delegate list — since the account verifies no signature of its own, forwarding to nobody would leave it effectively unauthenticated. It then makes two passes: first it validates all delegates, then it forwards to each. This ensures that an invalid delegate causes the whole check to fail before any forwarding occurs."
+     },
+     {
+      "url": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials#complete-code",
+      "url_without_anchor": "https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials",
+      "anchor": "complete-code",
+      "type": "content",
+      "breadcrumb": "Contract Authorization > Using __check_auth in interesting ways > Tutorial 1: time based restriction on token transfers​ > Code walkthrough​ > Complete code​",
+      "snippet": "assert_eq!( env.**auth**s(), std::vec![( **account**_contract.address.clone(), **Auth**orizedInvocation { function: **Auth**orizedFunction::Contract(( **account**_contract.address.clone",
+      "content": "Here are all the snippets stacked together in a single file for convenience:\r\n#![no_std]use soroban_sdk::{ auth::{Context, CustomAccountInterface}, contract, contracterror, contractimpl, contracttype, symbol_short, Address, BytesN, Env, Hash, Symbol, Vec,};#[contract]struct AccountContract;#[contracttype]#[derive(Clone)]pub struct Signature { pub public_key: BytesN&lt;32&gt;, pub signature: BytesN&lt;64&gt;,}#[contracttype]#[derive(Clone)]enum DataKey { SignerCnt, Signer(BytesN&lt;32&gt;), TimeLimit(Address), LastTransferTime(Address),}#[contracterror]#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]#[repr(u32)]pub enum AccError { NotEnoughSigners = 1, NegativeAmount = 2, BadSignatureOrder = 3, UnknownSigner = 4, InvalidContext = 5, TimeLimitExceeded = 6,}const TRANSFER_FN: Symbol = symbol_short!(\"transfer\");#[contractimpl]impl AccountContract { pub fn __constructor(env: Env, signers: Vec&lt;BytesN&lt;32&gt;&gt;) { for signer in signers.iter() { env.storage().instance().set(&amp;DataKey::Signer(signer), &amp;()); } env.storage() .instance() .set(&amp;DataKey::SignerCnt, &amp;signers.len()); } pub fn set_time(env: Env, token: Address, time_limit: u64) { env.current_contract_address().require_auth(); env.storage() .instance() .set(&amp;DataKey::TimeLimit(token), &amp;time_limit); }}#[contractimpl]impl CustomAccountInterface for AccountContract { type Error = AccError; type Signature = Vec&lt;Signature&gt;; #[allow(non_snake_case)] fn __check_auth( env: Env, signature_payload: Hash&lt;32&gt;, signatures: Vec&lt;Signature&gt;, auth_context: Vec&lt;Context&gt;, ) -&gt; Result&lt;(), AccError&gt; { authenticate(&amp;env, &amp;signature_payload, &amp;signatures)?; let tot_signers: u32 = env .storage() .instance() .get::&lt;_, u32&gt;(&amp;DataKey::SignerCnt) .unwrap(); let all_signed = tot_signers == signatures.len(); let curr_contract = env.current_contract_address(); for context in auth_context.iter() { verify_authorization_policy( &amp;env, &amp;context, &amp;curr_contract, all_signed, )?; } Ok(()) }}fn authenticate( env: &amp;Env, signature_payload: &amp;Hash&lt;32&gt;, signatures: &amp;Vec&lt;Signature&gt;,) -&gt; Result&lt;(), AccError&gt; { for i in 0..signatures.len() { let signature = signatures.get_unchecked(i); if i &gt; 0 { let prev_signature = signatures.get_unchecked(i - 1); if prev_signature.public_key &gt;= signature.public_key { return Err(AccError::BadSignatureOrder); } } if !env .storage() .instance() .has(&amp;DataKey::Signer(signature.public_key.clone())) { return Err(AccError::UnknownSigner); } env.crypto().ed25519_verify( &amp;signature.public_key, &amp;signature_payload.clone().into(), &amp;signature.signature, ); } Ok(())}fn verify_authorization_policy( env: &amp;Env, context: &amp;Context, curr_contract: &amp;Address, all_signed: bool,) -&gt; Result&lt;(), AccError&gt; { let contract_context = match context { Context::Contract(c) =&gt; { if &amp;c.contract == curr_contract { if !all_signed { return Err(AccError::NotEnoughSigners); } } c } Context::CreateContractHostFn(_) =&gt; return Err(AccError::InvalidContext), Context::CreateContractWithCtorHostFn(_) =&gt; return Err(AccError::InvalidContext), }; if contract_context.fn_name != TRANSFER_FN &amp;&amp; contract_context.fn_name != Symbol::new(env, \"approve\") { return Ok(()); } let current_time = env.ledger().timestamp(); let time_limit: Option&lt;u64&gt; = env.storage() .instance() .get::&lt;_, u64&gt;(&amp;DataKey::TimeLimit(contract_context.contract.clone())); if let Some(limit) = time_limit { let last_transfer_time: u64 = env.storage() .instance() .get::&lt;_, u64&gt;(&amp;DataKey::LastTransferTime(contract_context.contract.clone())) .unwrap_or(0); if current_time - last_transfer_time &lt; limit { return Err(AccError::TimeLimitExceeded); } env.storage() .instance() .set(&amp;DataKey::LastTransferTime(contract_context.contract.clone()), &amp;current_time); } Ok(())}mod test;\r\nThese are the test cases:\r\n#![cfg(test)]extern crate std;use ed25519_dalek::Keypair;use ed25519_dalek::Signer;use rand::thread_rng;use soroban_sdk::auth::ContractContext;use soroban_sdk::symbol_short;use soroban_sdk::testutils::Address as _;use soroban_sdk::testutils::AuthorizedFunction;use soroban_sdk::testutils::AuthorizedInvocation;use soroban_sdk::Val;use soroban_sdk::{ auth::Context, testutils::BytesN as _, vec, Address, BytesN, Env, IntoVal, Symbol,};use soroban_sdk::testutils::Ledger;use soroban_sdk::testutils::LedgerInfo;use crate::AccError;use crate::{AccountContract, AccountContractClient, Signature};fn generate_keypair() -&gt; Keypair { Keypair::generate(&amp;mut thread_rng())}fn signer_public_key(e: &amp;Env, signer: &amp;Keypair) -&gt; BytesN&lt;32&gt; { signer.public.to_bytes().into_val(e)}fn create_account_contract(e: &amp;Env, signers: Vec&lt;BytesN&lt;32&gt;&gt;) -&gt; AccountContractClient { AccountContractClient::new(e, &amp;e.register(AccountContract {}, (signers,)))}fn sign(e: &amp;Env, signer: &amp;Keypair, payload: &amp;BytesN&lt;32&gt;) -&gt; Val { Signature { public_key: signer_public_key(e, signer), signature: signer .sign(payload.to_array().as_slice()) .to_bytes() .into_val(e), } .into_val(e)}fn token_auth_context(e: &amp;Env, token_id: &amp;Address, fn_name: Symbol, amount: i128) -&gt; Context { Context::Contract(ContractContext { contract: token_id.clone(), fn_name, args: ((), (), amount).into_val(e), })}#[test]fn test_token_auth() { let env = Env::default(); env.mock_all_auths(); let mut signers = [generate_keypair(), generate_keypair()]; if signers[0].public.as_bytes() &gt; signers[1].public.as_bytes() { signers.swap(0, 1); } let account_contract = create_account_contract( &amp;env, vec![ &amp;env, signer_public_key(&amp;env, &amp;signers[0]), signer_public_key(&amp;env, &amp;signers[1]), ], ); let payload = BytesN::random(&amp;env); let token = Address::generate(&amp;env); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1000), ], ) .unwrap(); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1000), ], ) .unwrap(); // Add a time limit of 1000 seconds for the token. account_contract.set_time(&amp;token, &amp;1000); assert_eq!( env.auths(), std::vec![( account_contract.address.clone(), AuthorizedInvocation { function: AuthorizedFunction::Contract(( account_contract.address.clone(), symbol_short!(\"set_time\"), (token.clone(), 1000_u64).into_val(&amp;env), )), sub_invocations: std::vec![] } )] ); // Attempting a transfer within the time limit should fail. env.ledger().set(LedgerInfo { timestamp: 0, protocol_version: 1, sequence_number: 10, network_id: Default::default(), base_reserve: 10, min_temp_entry_ttl: 16, min_persistent_entry_ttl: 16, max_entry_ttl: 100_000, }); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1001) ], ) .err() .unwrap() .unwrap() == AccError::TimeLimitExceeded; // Simulate passing of time to allow the next transfer. env.ledger().set(LedgerInfo { timestamp: 1000, protocol_version: 1, sequence_number: 10, network_id: Default::default(), base_reserve: 10, min_temp_entry_ttl: 16, min_persistent_entry_ttl: 16, max_entry_ttl: 100_000, }); env.try_invoke_contract_check_auth::&lt;AccError&gt;( &amp;account_contract.address, &amp;payload, vec![&amp;env, sign(&amp;env, &amp;signers[0], &amp;payload)].into(), &amp;vec![ &amp;env, token_auth_context(&amp;env, &amp;token, Symbol::new(&amp;env, \"transfer\"), 1001), ], ) .unwrap();}"
+     }
+    ],
+    "nbHits": 15,
+    "nbPages": 1,
+    "page": 0,
+    "clientFiltered": true
+   }
+  }
+ }
+]

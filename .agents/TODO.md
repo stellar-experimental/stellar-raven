@@ -23,67 +23,17 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Adapters
 
-### Apply the documented `hitsPerPage` default on the three stellarDocs operations that pass it through
+### Do not return a failed Scout backend read as data
 
-Found on 2026-09-21 by validating every stellarDocs operation against live responses.
-`search_docs`, `search_doc_titles`, and `search_meeting_notes` map `hitsPerPage` straight to Algolia
-and document `default: 5`. When the caller omits it, the adapter sends no value, so the index
-default applies and the call returns 20 hits. The over-fetching operations are not affected: they
-slice to the documented default. Logged external-harness calls omitted the field rarely, and never
-together with `includeContent: true`.
+Found on 2026-10-01 in the Stellar Docs adapter measurement. Under a parallel batch of 65
+`scout.searchProjects` calls, Scout returned HTTP 200 with `counts.total: 0`, no rows, and
+`meta.warnings` that begins "backend read failed" and reports a timeout. The adapter returned
+`ok` data. One answer then called two populated categories unused. A direct burst of the same
+65 requests reproduced one such response.
 
-Done when: the adapter sends the documented default, or the schema states the real default, and a
-test pins the behavior. Either choice changes what an agent sees, so measure it before shipping.
-
-### Fetch stellarDocs `content` only for the hits that are returned
-
-Found on 2026-09-19 while wiring `includeContent`
-([ledger](rounds/2026-09-19-stellardocs-include-content.md)). The eight client-filtered stellarDocs
-operations over-fetch 100 hits and keep at most 20. With `includeContent: true`, the adapter
-retrieves `content` for all 100. A 2026-09-21 measurement over 17 live queries found a larger
-upstream payload (median 93 KB to 145 KB) and no latency change. This is a payload cost, not a
-correctness defect. A two-pass design (filter without `content`, then fetch `content` for the kept
-hits) removes the waste.
-
-Done when: the upstream request carries `content` only for returned hits, or a measurement shows the
-single-pass payload is acceptable and this item is closed with that evidence.
-
-## Skill system
-
-Found by the [skill system audit](rounds/2026-09-30-skill-system-audit.md) and its independent
-reviews.
-
-### Decide whether to track the skills.stellar.org Community section
-
-The `https://skills.stellar.org/` index has a Community section with skills that are not in the
-Stellar Light directory snapshot, for example `soroban-common-mistakes`, `pollar-wallet-auth`,
-`sub-rosa`, `caatinga`, and `nirium-agentic-payments`. `ecosystem-skills/catalog.json` snapshots
-only `stellarlight.xyz/api/skills`, so these candidates are invisible to the drift check and
-`INDEX.md`.
-
-Done when: the index is either snapshotted beside `catalog.json` or recorded as out of scope with a
-reason.
-
-### Make the drift check's cherry-pick mode explicit
-
-`scripts/check-skills-drift.mjs` `unclassifiedSkillDirs` enumerates a source only when
-`groups.json` `unpinnedUpstream` has an entry for it. A new cherry-picked source with an empty map
-gets no sibling check. The README tells operators to record the first exclusion, but the code still
-infers the mode.
-
-Done when: the pick mode comes from the manifest or `update.sh` source definition, and a test covers
-a cherry-picked source with no exclusions and one new upstream sibling.
-
-## Golden truth
-
-### Reconcile Soroswap API and contract scope in sibling grader notes
-
-The September 17 golden audit found ambiguous SDEX routing notes in `q-eco-dex-saturation` and
-`q-defi-soroswap-vs-stellarx`. Soroswap API quotes can include SDEX, while its deployed aggregator
-lists three AMM adapters. Do not treat those surfaces as identical. Use the `golden-truth` workflow.
-
-Done when: independently verified notes preserve this distinction, and the corpus and sibling
-checks pass.
+Done when: a response whose own metadata reports a failed backend read does not resolve as
+`ok` data, a test pins the mapping, and the unread-parameter warning stays a success.
+Measure the change before release, because it alters what an agent sees.
 
 ## Improvements follow-up
 
@@ -102,6 +52,21 @@ status comment while the maintainers are working on the decision. History:
 
 Done when: each finding records the resulting live state, and any fixed finding completes the
 resolver gates.
+
+### File `sd-054` after the coordinator approves the upstream write
+
+`improvements/stellar-docs/sd-054-ledger-cadence-5-7-seconds-stale-after-protocol-28.md` is
+`verified` with a recurring probe. It asks for a precision update, not a contradiction fix. The
+Stellar Stack and Validators pages say "every 5-7 seconds". The sampled Mainnet intervals are
+about five seconds after Protocol 28. Both 199-delta post-upgrade samples contain five-second
+deltas. stellar/stellar-docs PR 2806 (merged 2026-09-08, closing issue 2805) set the current
+wording before Protocol 28 activated. The dry run of `npm run improvements:file` resolves
+`stellar/stellar-docs` and renders the issue body. Commit the finding before filing, so that the
+issue carries a commit-pinned snapshot. The 2026-10-01 follow-up lane had no authority to file
+([ledger](rounds/2026-10-01-backlog-closeout/golden-followups.md)).
+
+Done when: the issue is filed through `npm run improvements:file` and read back, or the owner
+decides not to file and the finding records that decision.
 
 ### Re-check `sd-037` after stellar-protocol PR #2021 receives a maintainer decision
 
@@ -244,18 +209,6 @@ Acceptance checks:
 Done when: all eleven acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
-### Scope the Stellar Docs miss messages to the query
-
-Found by the 2026-09-30 repository audit. Two soft-empty messages in `src/adapters/stellar-docs.ts`
-claim corpus absence: the page-sections miss says "the path is not in the docs index", and the
-ordinary search miss says "this topic is not in the docs corpus (zero is a reliable negative on this
-index)". The adapter searches a bounded, filtered window of the index, so a miss proves only that
-this query and window returned nothing (see `docs/stellar-docs.md`, "Result and absence
-semantics"). These strings are model-facing, so a change alters agent behavior.
-
-Done when: both messages use query-scoped language, a test pins the new wording, and a measured run
-shows no verified answer regression before release.
-
 ## Dependencies
 
 ### Remove the vitest pool override when the pool updates
@@ -284,6 +237,19 @@ Keep returning the full `Response` for existing raw-response callers.
 Do not remove the guard and dispatch without a captured log identifier.
 Add real-handler regressions for both named models and a fallback into a native model.
 Require an answer, captured log reads, and a complete numeric receipt in each regression.
+
+### Investigate missing source evidence in the p6 judge pack
+
+The 2026-10-01 adapter comparison found a disputed Beans Wrong grade in
+`eval/qa/results/2026-10-01T22-05-47-variantA.json` (`q-live-beans-cross-service-reconcile`).
+The raw transcript contains the founder story, lifecycle claims, release tag, and SDK commit date.
+The p6 pack omits those details, and the judges call them fabricated.
+The result records `evidenceSupportCheck.status: pack-omission` and `requiresReview: true`.
+The primary SDF article independently confirms the founder story.
+
+Trace the general evidence-selection boundary and propose a repair with replayable coverage.
+Do not change the frozen adapter-measurement artifacts or replace their original verdicts.
+Any repaired pack needs a separate reviewed measurement before it supports acceptance.
 
 ### Re-check the upstream codemode short-token repair
 
@@ -504,61 +470,10 @@ in a round ledger, `eval/qa/README.md`, or a decision record, then delete the de
 
 ### A. Authorize the supervised paired subset measurement
 
-Question: sign the authorization block in
-`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md` revision 3, or do
-not. The signed record lives outside the plan file and names the canonical plan SHA-256 printed by
-`npm run eval:qa:paired:plan-sha256`. The signature covers that hash and every command array in the
-plan. Any plan edit after the signature voids it. A general round approval is not this
-authorization.
+The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing the canonical plan hash.
+Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
 
-Answers needed first:
-
-1. Retire or retain the earlier `$882.50` plan. Recommended: retire.
-2. Denominator: 200 selected (recommended), 150 selected, or 500 under a reviewed deadline change.
-3. Two concurrent server pairs under the supervisor (recommended), or sequential Option B.
-4. Answer-only collection with stored judging (recommended).
-5. Accept the concurrent-load estimand. A capacity artifact passed the fixed technical gate; it
-   does not accept the estimand.
-6. Keep the whole-arm guard stop for this look. Decide Option E separately.
-7. Launch window: weekend UTC start, four-hour deadline, no retry in the same authorization.
-8. Product-loss margin: keep `0.08` as the experimental no-change radius (recommended), or accept
-   `0.05`, `0.10`, or another validated value. Print the `0.05` and `0.10` tables. The current
-   margin table is mixed-tuple calibration; a same-tuple pair recalibrates it.
-9. Keep the candidate-only T4 or T5 rule terminal.
-10. Run the P6 judge self-test once at `$3.50` through the exact frozen wrapper command.
-
-Method under that authorization: one supervised 200-ID answer-only pair, stored judging one arm
-after the other, one paired comparison, and two frozen flip rejudge commands with `--allow-empty`
-and Claude identity pins. Caps: P6 `$3.50`; collection `$80` per arm; stored judging cumulative
-`$120` per arm; two-arm cumulative `$240`; flip rejudges `$15` each; maximum `$273.50`. The launch
-command carries `--authorized-plan-sha256`. The capacity artifact must be at most 24 hours old at
-launch. The manifest stays uncommitted and is deleted after the run. The paired JSON, both flip
-batches, the recalibrated simulator output, and the all-row review go to the round ledger and
-`eval/qa/README.md` as a labeled paired diagnostic.
-
-Safe default: no spend.
-
-### C. Golden truth and product judgment blockers
-
-Evidence: `.agents/rounds/2026-09-03-truth-maintenance/golden-followup-fable.md`. No golden changes
-from these items without a `golden-truth` edit and independent review. Recheck each question against
-the current corpus first; the per-case truth metadata owns current dispute status.
-
-- `q-scf-rfp-tooling`: does "developer tooling or indexing infrastructure" bind by the RFP-track
-  definition or by each brief's Scout category?
-- `q-sor-persistent-unbounded-collection-cap`: does an attributed, dated 64 KiB docs figure trip
-  avoid item 2?
-- `q-protocol-ledger-close-time`: does key fact 1 keep the live multi-ledger sample requirement, or
-  accept a dated attributed Docs range? No exposed operation returns ledger close timestamps.
-- `q-ti-historical-pointintime-balances`: do trade-implied USD prices from Hubble trade rows count
-  as invented ledger-derived prices under avoid item 3?
-- Compliance cluster (`q-pay-anchor-msb-licensing`, `q-pay-travel-rule-aid-flows`,
-  `q-comp-finclusive-caas`, `q-crp-custodial-vs-noncustodial-wallets`,
-  `q-crp-become-an-anchor-licensing`): expand ADR-0008 beyond three cases with independent review,
-  or keep the goldens strict and route the gap to a coverage diagnostic?
-- `q-edge-metamask-evm-mental-model`: move the case from `stable` to `scheduled` with a re-verify
-  cadence? The answer carries a dated third-party Snap claim.
-- `q-defi-aquarius-what-is`: should key fact 3 bind on the tested surface? No exposed surface hosts
-  the Aquarius ICE documentation.
-
-Safe default: no golden change.
+After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
+or delete the round's launch scripts, `paired-stability-register.json`,
+`test/qa-paired-launch.test.mjs`, and `test/qa-paired-claude-pin.test.mjs` together. Both tests
+import the scripts from the round folder.

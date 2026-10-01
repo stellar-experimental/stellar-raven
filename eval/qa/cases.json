@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "6660138b1fde128646d390d80d99364848b0946b0f6a9e18320607c5e35c2bd4",
+  "corpusContentSha256": "325c4c399e5e8e859731b5ae779d3277d2beef9e98abc1ff1629727efe5efcc7",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 155,
-      "scheduled": 148,
-      "stable": 198
+      "scheduled": 150,
+      "stable": 196
     },
     "traps": {
       "ambiguous": 2,
@@ -5034,7 +5034,7 @@
           "Do NOT substitute clawback for SEP-8's Revocable requirement.",
           "Do NOT give categorical licensing/legal advice or claim Anchor Platform itself supplies compliance."
         ],
-        "notes": "Multi-hop how-to chaining SEP-10/12/24/8 + flags, verified against the individual SEP specs. Trap: scrambling SEP roles.\nAlso good if the answer: For regulated assets, a SEP-8 approval server gates the transaction before submission. | The asset's native flags (AUTH_REQUIRED / AUTH_CLAWBACK_ENABLED) enforce control at the ledger. | The anchor (a regulated financial institution) runs off-chain AML/sanctions screening; licensing burden is the anchor's, not Stellar's.\nGolden cites: developers.stellar.org anchor / Anchor Platform docs and the relevant SEP specs.\nCORRECTION 2026-07-10: grade a capability-driven matrix, not one mandatory sequence. SEP-10 G/M and SEP-45 C are account-scoped; SEP-6 auth is conditional; SEP-12 uses PUT for upload; SEP-8 is only for regulated assets and requires Required + Revocable; legal duties are actor/activity/jurisdiction-specific."
+        "notes": "Multi-hop how-to chaining SEP-10/12/24/8 + flags, verified against the individual SEP specs. Trap: scrambling SEP roles.\nAlso good if the answer: For regulated assets, a SEP-8 approval server gates the transaction before submission. | The asset's native flags (AUTH_REQUIRED / AUTH_REVOCABLE) enforce control at the ledger. | The regulated operator runs off-chain AML/sanctions screening; the network holds no licensing duty merely because it settles the transfer.\nGolden cites: developers.stellar.org anchor / Anchor Platform docs and the relevant SEP specs.\nCORRECTION 2026-07-10: grade a capability-driven matrix, not one mandatory sequence. SEP-10 G/M and SEP-45 C are account-scoped; SEP-6 auth is conditional; SEP-12 uses PUT for upload; SEP-8 is only for regulated assets and requires Required + Revocable; legal duties are actor/activity/jurisdiction-specific."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -5132,6 +5132,12 @@
                 "ref": "B/F: official reference flow",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/af35d0ccb5b492ddd2ebf09162ceab2600503130/ecosystem/sep-0008.md",
+                "observedAt": "2026-10-01",
+                "note": "SEP-8 v1.7.4: 'Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.' The recorded text search found no clawback requirement."
               }
             ]
           },
@@ -5156,15 +5162,25 @@
                 "ref": "A/D: applicable duties depend on actor, activity, product, route, and jurisdiction",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+                "observedAt": "2026-10-01",
+                "note": "FIN-2019-G001: 'Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes'. Regulatory treatment follows the facts and circumstances of the activity, not the label."
               }
             ],
             "note": "Legacy verdict: overbroad."
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3, sibling found by the sweep): two also-good lines contradicted this case's own avoid items and CORRECTION line. 'AUTH_REQUIRED / AUTH_CLAWBACK_ENABLED' is now 'AUTH_REQUIRED / AUTH_REVOCABLE' (avoid item 3). 'The anchor (a regulated financial institution) ... licensing burden is the anchor's' now names the regulated operator and states no categorical allocation (avoid item 4, key fact 5). Answer, keyFacts, and avoid are unchanged.",
+            "Live re-check 2026-10-01 (class B): https://github.com/stellar/stellar-protocol/blob/af35d0ccb5b492ddd2ebf09162ceab2600503130/ecosystem/sep-0008.md — 'Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.'",
+            "Live re-check 2026-10-01 (class A): https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — the guidance applies to the described business model, not to a product label.",
+            "Sibling sweep 2026-10-01: q-pay-anchor-msb-licensing, q-pay-travel-rule-aid-flows, q-comp-finclusive-caas (cleaned in this change), q-crp-become-an-anchor-licensing, and q-crp-custodial-vs-noncustodial-wallets all scope duties by entity and activity; no contradiction.",
             "Solo scratchpad 575 GT-07 primary and GT-08 blind reviews",
             "Structural re-form (negative-predicate): split the authentication and SEP-role fact, then shortened all facts with positive predicates; truth is unchanged.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/anchors — the anchor flow remains capability-driven across several SEP services.",
@@ -5176,6 +5192,7 @@
             "Sibling sweep 2026-08-27: grep SEP-45|SEP-12|SEP-8|Required + Revocable → q-sep-45-contract-auth, q-sep-12-kyc, q-sep-8-regulated-assets, q-comp-sep6-vs-sep12-roles, q-anchor-platform-what; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
             "Separate SEP descriptions were compressed into a false mandatory sequence.",
             "Optional clawback was substituted for SEP-8's normative Revocable flag.",
             "Technical platform roles were generalized into categorical legal advice.",
@@ -5719,7 +5736,7 @@
           "Do NOT infer a FinClusive license from registry absence/presence or company marketing.",
           "Do NOT name MoneyGram, Bitso, Kado, or Nium as FinClusive partners without current primary evidence."
         ],
-        "notes": "2026-06-29 reviewed. SDF policy blog documents FinClusive CaaS for anchors (KYB/KYC, Travel Rule, BSA/USA PATRIOT Act) as a shared verification utility. Partner names (MoneyGram, Bitso, Biccos, Kado, Nium) per SDF/anchor materials. Specific licenses/approvals not asserted. Trap: putting the AML duty on the protocol.\nAlso good if the answer: FinClusive operates as a shared/reusable verification utility so a customer verified once can be reused across anchors (subject to consent).\nGolden cites: SDF policy blog (inclusion-through-compliance) and/or FinClusive materials.\nCORRECTION 2026-07-10: separate current operator claims, FinClusive's TPSP self-description, dated 2020 Biccos history, and role/jurisdiction-specific legal duties. Do not gate on unverified partner or licensing claims."
+        "notes": "2026-06-29 reviewed. A 2020 SDF policy article described FinClusive CaaS for anchors as a shared verification utility and named Biccos as a use case. Specific licenses/approvals not asserted. Trap: putting the AML duty on the protocol.\nAlso good if the answer: Describes the 2020 shared/reusable verification model as dated context: a customer verified once could be reused across anchors, subject to consent.\nGolden cites: SDF policy blog (inclusion-through-compliance) and/or FinClusive materials.\nCORRECTION 2026-07-10: separate current operator claims, FinClusive's TPSP self-description, dated 2020 Biccos history, and role/jurisdiction-specific legal duties. Do not gate on unverified partner or licensing claims."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -5835,6 +5852,12 @@
                 "ref": "C: ecosystem-directory co-occurrence is not partner corroboration",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "A",
+                "ref": "https://stellar.org/blog/policy/drive-inclusion-through-compliance",
+                "observedAt": "2026-10-01",
+                "note": "The article (published 2020-09-11) names Biccos four times: 'Use Case: Biccos FinClusive's partnership with Biccos provides a good example.' The recorded text search returned zero matches for MoneyGram, Bitso, Kado, and Nium."
               }
             ]
           },
@@ -5871,14 +5894,25 @@
                 "ref": "https://dfpi.ca.gov/wp-content/uploads/sites/337/2022/09/FinClusive-comment-letter-8.1.22.pdf",
                 "observedAt": "2026-08-31",
                 "note": "Independent public-authority-hosted record (California DFPI, FinClusive comment letter dated 2022-08-01): 'FinClusive is a hybrid regulatory technology (Regtech) and financial technology (Fintech) company' providing 'a comprehensive and modernized full-stack financial crimes compliance (FCC) solution for bank and nonbank financial intermediaries'; it also states 'FinClusive is registered with FinCEN as a nonbank Money Services Business (MSB) and is in the process of obtaining money transmission licenses'. FinCEN registration is not state money-transmitter licensing, so this dated statement coexists with the current 'not a licensed Money Services Business' wording; it does not establish a license, which the avoid item already guards."
+              },
+              {
+                "class": "A",
+                "ref": "https://finclusive.com/company/operating-provisions",
+                "observedAt": "2026-10-01",
+                "note": "'FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services provider'."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; class D sweep by the orchestrator)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy partner list 'Partner names (MoneyGram, Bitso, Biccos, Kado, Nium) per SDF/anchor materials', which avoid item 4 forbids. The SDF article line and the also-good line now carry the 2020 date that key fact 2 requires. Answer, keyFacts, and avoid are unchanged.",
+            "Live re-check 2026-10-01 (class A): https://stellar.org/blog/policy/drive-inclusion-through-compliance — published 2020-09-11; names Biccos as the use case; the recorded text search found no MoneyGram, Bitso, Kado, or Nium.",
+            "Live re-check 2026-10-01 (class A): https://finclusive.com/company/operating-provisions — 'not a bank ... not a licensed Money Services Business ... an exempt third party services provider'.",
+            "Live re-check 2026-10-01 (class A): https://finclusive.com/products/compliance-as-a-service — the product page still markets Compliance as a Service with KYC/KYB coverage.",
+            "Sibling sweep 2026-10-01: grep FinClusive|Biccos → q-crp-anchors-by-corridor names FinClusive only as one dated live partner-query match and makes no CaaS partner claim; q-pay-anchor-msb-licensing and q-pay-travel-rule-aid-flows keep the same entity and activity scope; no contradiction.",
             "Solo scratchpad 575 GT-07 primary and blind matrices",
             "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing",
             "Structural re-form (negative-predicate): shortened three facts, used positive taxonomy wording, and kept the CaaS-guarantee trap in golden.avoid; truth is unchanged.",
@@ -5895,6 +5929,7 @@
             "Second class 2026-08-31: class D web sweep ('FinClusive compliance-as-a-service third party service provider', 'FinClusive not a bank money services business', 'FinClusive Stellar anchor compliance rail') → the DFPI-hosted 2022-08-01 comment letter corroborates the Regtech/Fintech TPSP description and records a dated FinCEN MSB registration statement; added to the 2026-08-30 corroboration row. No judge-facing change."
           ],
           "rootCause": [
+            ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
             "Historical partnership content became timeless product/legal authority.",
             "Unrelated ecosystem relationships were conflated with FinClusive partnerships.",
             "Technical anchor and legal regulated-person roles were collapsed.",
@@ -9486,7 +9521,7 @@
         "skills.stellar-dev.cross-chain"
       ],
       "golden": {
-        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delivered canonical Stellar USDC.\n- Allbridge Core used its native-liquidity/message path and also selected canonical Stellar USDC.\n- Squid's canonical-USDC quote used an **Intents/RFQ** provider, not Axelar.\n- An explicit Axelar quote delivered **USDC.axl**, a different contract representation—not Circle-native Stellar USDC.\n\nCCTP burns/mints native USDC; Axelar uses a validator/gateway interchain trust model; Allbridge Core adds liquidity-pool and messaging dependencies. Re-quote at execution time, inspect the messenger and destination issuer/SAC, verify fees/limits and Circle forwarder fields, use a Stellar destination address, and send a small test. MetaMask can be the EVM source wallet, but this audit did not verify MetaMask Bridge itself as the Stellar route. None of these observations is a safety guarantee.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delivered canonical Stellar USDC.\n- Allbridge Core used its native-liquidity/message path and also selected canonical Stellar USDC.\n- Squid's canonical-USDC quote used an **Intents/RFQ** provider, not Axelar.\n- An explicit Axelar quote delivered **USDC.axl**, a different contract representation—not Circle-native Stellar USDC.\n\nCCTP burns/mints native USDC; Axelar uses a validator/gateway interchain trust model; Allbridge Core adds liquidity-pool and messaging dependencies. Re-quote at execution time, inspect the messenger and destination issuer/SAC, verify fees/limits and Circle forwarder fields, use a Stellar destination address, and send a small test. MetaMask can be the EVM source wallet. On **2026-10-01**, MetaMask's support documentation described swaps from another chain into Stellar, and MetaMask's production bridge configuration listed Stellar as an active source and destination. The recorded Ethereum-to-Stellar quote requests returned no route, so this audit did not verify a MetaMask route, its messenger, or its destination token. None of these observations is a safety guarantee.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents source-supported content as a current or dated observation, not a memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -9495,11 +9530,11 @@
         ],
         "avoid": [
           "Do NOT claim an Axelar route currently yields Circle-native Stellar USDC without inspecting the destination token.",
-          "Do NOT claim MetaMask Bridge itself supports Stellar or recommend a route as safe without dated provider evidence.",
+          "Do NOT claim a MetaMask route to Stellar is safe or delivers Circle-native Stellar USDC without dated provider evidence.",
           "Do NOT treat quote-time fees, duration, or availability as permanent.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Routes and supported assets are freshness-sensitive; Phase 3 should re-check provider UIs/docs before accepting any specific route recommendation.\nAlso good if the answer: Clarifies that an ordinary MetaMask EVM account/custom-network flow cannot directly receive native Stellar assets; a dated third-party Stellar Snap exists but is separate from MetaMask Bridge and is not a safety endorsement. | Compares Axelar only with sourced evidence and labels alternative bridges such as Allbridge or CCTP accurately if used.\nGolden cites: Current bridge/provider docs and Stellar/Circle docs for native USDC/CCTP claims.\nCorrected 2026-07-10. Grade route/messenger/token-representation verification and dated safety reasoning, not one preferred provider or quote. GT-24 sibling repair: narrow the old absolute MetaMask statement to the ordinary EVM flow and keep the third-party Snap distinct from MetaMask Bridge."
+        "notes": "Routes and supported assets are freshness-sensitive; Phase 3 should re-check provider UIs/docs before accepting any specific route recommendation.\nAlso good if the answer: Clarifies that an ordinary MetaMask EVM account/custom-network flow cannot directly receive native Stellar assets; MetaMask's dated built-in Stellar support and the third-party Stellar Snap are wallet pathways, not a route verification or a safety endorsement. | Compares Axelar only with sourced evidence and labels alternative bridges such as Allbridge or CCTP accurately if used.\nGolden cites: Current bridge/provider docs and Stellar/Circle docs for native USDC/CCTP claims.\nCorrected 2026-07-10. Grade route/messenger/token-representation verification and dated safety reasoning, not one preferred provider or quote. GT-24 sibling repair: narrow the old absolute MetaMask statement to the ordinary EVM flow and keep the third-party Snap distinct from MetaMask Bridge.\nFRESHNESS UPDATE 2026-10-01: MetaMask documents swaps from another chain into Stellar. Accept a dated, attributed statement of that support; do not require it. That statement does not replace the route, messenger, and destination-token checks."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -9539,6 +9574,16 @@
             "class": "D",
             "ref": "https://core.api.allbridgecoreapi.net/token-info?filter=all",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://support.metamask.io/configure/networks/stellar/",
+            "note": "MetaMask's own support page; observed 2026-10-01 (last-modified 2026-09-30). Describes swaps from another chain into Stellar and the trustline requirement."
+          },
+          {
+            "class": "C",
+            "ref": "https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod",
+            "note": "MetaMask production remote configuration; observed 2026-10-01. bridgeConfig lists Stellar as an active bridge source and destination."
           }
         ],
         "corroboration": [
@@ -9571,12 +9616,73 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, MetaMask documents swaps from another chain into Stellar, and its production configuration enables Stellar accounts and lists Stellar as an active bridge source and destination.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://support.metamask.io/configure/networks/stellar/",
+                "observedAt": "2026-10-01",
+                "note": "'You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage.' 'A cross-chain swap (bridge) cannot create a trustline on your behalf.' HTTP last-modified 2026-09-30T11:52:44Z."
+              },
+              {
+                "class": "C",
+                "ref": "https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod",
+                "observedAt": "2026-10-01",
+                "note": "Fetched 2026-10-01T18:49Z. stellarAccounts {enabled: true, minimumVersion: '13.50.0'}; bridgeConfig.chains['20000000000002'] {isActiveSrc: true, isActiveDest: true}; bridgeConfig.chainRanking includes {chainId: 'stellar:pubnet', name: 'Stellar'}. The client=mobile response carries stellarAccounts {enabled: true, minimumVersion: '8.13.0'} and Stellar in bridgeConfigV2.chainRanking."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/MetaMask/core/blob/418b73c1cd5eb251c35fe6a0d1d14eb169c93d10/packages/bridge-controller/src/types.ts",
+                "observedAt": "2026-10-01",
+                "note": "ChainId.STELLAR = 20000000000002 ('Internal bridge / token-list id for Stellar pubnet'). constants/bridge.ts at the same commit: ALLOWED_BRIDGE_CHAIN_IDS includes XlmScope.Pubnet. The default bridge ranking omits Stellar when remote configuration is unavailable."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/MetaMask/metamask-extension/blob/ebd93b065869fb554d3246a13a2b73f3f749cfa5/CHANGELOG.md",
+                "observedAt": "2026-10-01",
+                "note": "'Added Stellar account support behind a feature flag (#45692)'; 'Added a warning banner for missing Stellar trustlines during cross-chain swaps (#45693)'. Release v13.50.0 was published 2026-09-25."
+              },
+              {
+                "class": "C",
+                "ref": "https://bridge.api.cx.metamask.io/getTokens?chainId=20000000000002",
+                "observedAt": "2026-10-01",
+                "note": "HTTP 200 with 34 Stellar tokens, including XLM and USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN."
+              }
+            ]
+          },
+          {
+            "claim": "A working MetaMask route from Ethereum USDC to Stellar, with a known messenger and destination token, exists as of 2026-10-01.",
+            "verdict": "unverifiable",
+            "evidence": [
+              {
+                "class": "F",
+                "ref": "https://bridge.api.cx.metamask.io/getQuote (srcChainId=1, destChainId=20000000000002)",
+                "observedAt": "2026-10-01",
+                "note": "Five recorded read-only quote requests returned HTTP 200 with zero quotes: two in a batch started 2026-10-01T18:49:33Z (100 Ethereum USDC to Stellar USDC and to XLM, destination the USDC issuer account) and three in a batch started 2026-10-01T18:49:54Z (100 Ethereum USDC to Stellar USDC, 100 Ethereum USDC to XLM, and 0.1 ETH to XLM, destination a funded account with no USDC trustline). A control request in the second batch from 100 Ethereum USDC to Solana USDC returned nine quotes. A request with destChainId 'stellar:pubnet' returned HTTP 429, and the probe stopped there. .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md (\"Recorded quote requests\") keeps every parameter, header, time, and count. Zero quotes on these requests do not prove that no route exists; the destination accounts, the minimal client headers, or the client version can explain them."
+              },
+              {
+                "class": "A",
+                "ref": "https://support.metamask.io/configure/networks/stellar/",
+                "observedAt": "2026-10-01",
+                "note": "The page describes the swap flow. It names no bridge provider, messenger, or destination-token representation for a swap into Stellar."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "MetaMask route review (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 2): the answer now reports what dated evidence supports. MetaMask documents swaps into Stellar and configures Stellar as an active bridge chain. The recorded quote requests returned no route, so the route, its messenger, and its destination token stay unverified. Avoid item 2 no longer bars the documented support claim; it bars a safety claim or a Circle-native USDC claim without dated provider evidence. The 2026-07-10 route observations for CCTP, Allbridge, Squid, and Axelar were not re-run and are unchanged, so truth.asOf stays 2026-07-10.",
+            "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, \"Review reconciliation\", finding 2): the retained quote evidence now carries the request parameters, times, and counts. The recovered session record shows five zero-quote requests, not three, so the answer no longer states a request count. The route conclusion is unchanged.",
+            "Live check 2026-10-01 (class A): https://support.metamask.io/configure/networks/stellar/ — 'You can swap from another chain directly into XLM or another token like USDC on Stellar using the Swap button on the MetaMask homepage.'",
+            "Live check 2026-10-01 (class C): https://client-config.api.cx.metamask.io/v1/flags?client=extension&distribution=main&environment=prod — stellarAccounts enabled from 13.50.0; bridgeConfig.chains['20000000000002'] isActiveSrc and isActiveDest true.",
+            "Source check 2026-10-01 (class B): MetaMask/core@418b73c1cd5eb251c35fe6a0d1d14eb169c93d10 bridge-controller types.ts and constants/bridge.ts; MetaMask/metamask-extension@ebd93b065869fb554d3246a13a2b73f3f749cfa5 CHANGELOG.md.",
+            "Empirical check 2026-10-01 (class F): https://bridge.api.cx.metamask.io/getQuote — five Ethereum-to-Stellar requests returned zero quotes; the Ethereum-to-Solana control returned nine. .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md (\"Recorded quote requests\") keeps the exact parameters. The result is inconclusive for route existence.",
+            "Sibling sweep 2026-10-01: grep MetaMask → q-edge-metamask-evm-mental-model (dates the same documented built-in support and keeps the third-party Snap distinct), q-edge-ambig-best-wallet, q-eco-nft-marketplace-whitespace, q-raph-xlm-network-role, q-soroban-contract-id-derivation (no MetaMask route claim); no contradiction.",
             "Solo scratchpad 575 GT-15 primary 3243 and blind 3246",
             "Quote-time checks: canonical Stellar USDC via CCTP/Allbridge Core/Squid Intents; explicit Axelar route produced USDC.axl",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -9590,6 +9696,8 @@
             "Sibling sweep 2026-08-29: grep CCTP|Axelar|Allbridge Core|intent/RFQ → q-cctp-v2-usdc-stellar, q-defi-allbridge-what-is, q-defi-bridge-evm-to-stellar-axelar, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction."
           ],
           "rootCause": [
+            "freshness-drift",
+            ".agents/TODO.md — Re-verify the MetaMask Bridge statements in q-defi-bridge-evm-to-stellar-axelar: the avoid item barred a support claim that MetaMask now documents",
             "eval-side route abstraction conflated provider brand, messenger, and destination token representation",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
@@ -12396,7 +12504,7 @@
           "Do NOT make an unsupported permanent shutdown or availability claim.",
           "Do NOT claim StellarX is an SDF-built product."
         ],
-        "notes": "Confusable-project trap encoded directly. Comparison across two project records. Grounded on Scout: Soroswap = first DEX + DEX AGGREGATOR on Soroban routing across AMMs + SDEX with a Route API (PaltaLabs). StellarX = a decentralized TRADING PLATFORM/UI on Stellar (with AMM access), built by Ultra Stellar (same team as LOBSTR/StellarTerm) — NOT an aggregator, NOT SDF.\nAlso good if the answer: Notes they are different categories: aggregation/routing vs a trading UI over Classic + AMM.\nGolden cites: Sources distinguishing Soroswap (aggregator) from StellarX (trading UI).\nGT-18 CORRECTION 2026-07-10: preserve product-layer boundaries and remove the inherited shutdown absolute."
+        "notes": "Confusable-project trap encoded directly. Comparison across two project records. Grounded on Scout: Soroswap (PaltaLabs) = a Soroban DEX plus DEX aggregator; 'first' is Soroswap's own wording, not independently proven. Its on-chain aggregator routes across Soroban AMM adapters only. Its Route API quotes can also include the classic SDEX. Do not merge those two layers. StellarX = a decentralized TRADING PLATFORM/UI on Stellar (with AMM access), built by Ultra Stellar (same team as LOBSTR/StellarTerm) — NOT an aggregator, NOT SDF.\nAlso good if the answer: Notes they are different categories: aggregation/routing vs a trading UI over Classic + AMM.\nGolden cites: Sources distinguishing Soroswap (aggregator) from StellarX (trading UI).\nGT-18 CORRECTION 2026-07-10: preserve product-layer boundaries and remove the inherited shutdown absolute."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -12488,12 +12596,49 @@
                 "observedAt": "2026-07-11"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, Soroswap's on-chain aggregator routes through three Soroban AMM adapters (Soroswap, Phoenix, Aqua) and excludes the classic SDEX, while Soroswap's API quotes can include SDEX liquidity.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "F",
+                "ref": "stellar contract invoke --id CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO --rpc-url https://mainnet.sorobanrpc.com --send no -- get_adapters",
+                "observedAt": "2026-10-01",
+                "note": "Simulation after ledger 64718335 returned three unpaused adapters: protocol_id 0, 1, and 2 (Soroswap, Phoenix, Aqua). No SDEX, Comet, or Sushi adapter."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/soroswap/aggregator/blob/84de10e0f8d26168b4a76f8c23b963e50917517c/public/mainnet.contracts.json",
+                "observedAt": "2026-10-01",
+                "note": "aggregator CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO with soroswap_adapter, phoenix_adapter, and aqua_adapter ids only."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx",
+                "observedAt": "2026-10-01",
+                "note": "'Stellar SDEX is not included as it is incompatible with Soroban-based smart contracts, and the Soroswap Aggregator only works with Soroban-based protocols.' api/index.mdx: 'Fetch quotes and optimal routes for token swaps across multiple protocols (Soroswap, Phoenix, Aqua and SDEX)'. The same aggregator page carries stale Testnet labels (cs-002), so it is not evidence for adapter status."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap",
+                "observedAt": "2026-10-01",
+                "note": "Scout's record now separates the layers: 'an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution. Its swap Route API returns quotes and optimal routing across Stellar DEXs, including the Stellar classic DEX (SDEX).'"
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Soroswap scope reconciliation (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the grader note merged Soroswap's Route API with its on-chain aggregator and stated 'first DEX' without attribution. The note now states both layers and attributes the chronology wording, as q-defi-soroswap-what-is does. Answer, keyFacts, and avoid are unchanged.",
+            "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", finding 2): this case is stable, so its grader note carries only the durable distinction. The dated observation stays in truth.corroboration.",
+            "Live check 2026-10-01 (class F): get_adapters simulation on CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO — three unpaused adapters, protocol_id 0, 1, 2.",
+            "Live check 2026-10-01 (class B): soroswap/aggregator@84de10e0f8d26168b4a76f8c23b963e50917517c public/mainnet.contracts.json — soroswap, phoenix, and aqua adapters only.",
+            "Live check 2026-10-01 (class A): soroswap/docs@1d7a3c8a85616918415056ad2a0f6d2177fc1948 concepts/aggregator.mdx ('Stellar SDEX is not included') and api/index.mdx ('Soroswap, Phoenix, Aqua and SDEX').",
+            "Live check 2026-10-01 (class C): https://stellarlight.xyz/api/projects/search?q=soroswap and ?q=stellarx — Scout separates Soroswap's on-chain aggregation from its Route API; StellarX remains a trading platform with AMM access.",
+            "Sibling sweep 2026-10-01: grep Soroswap|SDEX|aggregator|StellarX → q-defi-soroswap-what-is, q-eco-dex-saturation (reconciled in this change), q-defi-phoenix-what-is, q-edge-factcheck-soroswap-first-amm (attributes the 'first' wording), q-scf-history-soroswap; no contradiction.",
             "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
             "Sibling sweep: q-defi-soroswap-what-is and q-defi-stellarx-what-is",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-defi-stellarx-what-is",
@@ -12516,6 +12661,7 @@
             "Sibling sweep 2026-08-30: grep Soroswap|StellarX|Ultra Stellar|API routing → q-defi-soroswap-what-is, q-eco-dex-saturation, q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap, and related product cases; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Reconcile Soroswap API and contract scope in sibling grader notes: eval-side grader-note compression merged the API quote layer with the on-chain aggregator",
             "eval-authoring",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
             ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
@@ -13456,7 +13602,7 @@
           "Do NOT hard-code three serious players, equate a DEX tag with independent liquidity, or claim routing absorbs competitors.",
           "Do NOT exclude or include a product as a venue without a dated role/liquidity test."
         ],
-        "notes": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Grounded on Scout: serious AMM/DEX players = Soroswap (aggregator), Aquarius (AQUA AMM), Phoenix (AMM hub). Soroswap's aggregator routes across Soroswap/Phoenix/Aquarius + SDEX. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator. Small field — converging on a few anchors.\nAlso good if the answer: Notes StellarX is a trading UI (not an aggregator) and Comet is a reference/research implementation, not a high-traffic DEX. | Notes new AMM entrants tend to be absorbed into Soroswap's aggregation routing.\nGolden cites: Sources for the DEX/AMM landscape composition.\nGT-19 CORRECTION 2026-07-10: grade the explicit venue/role/usage criterion, not 'roughly three.' Directory DEX counts mix venues, routers, and UIs."
+        "notes": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Grounded on Scout: serious AMM/DEX players = Soroswap (aggregator), Aquarius (AQUA AMM), Phoenix (AMM hub). Soroswap's on-chain aggregator routes across its Soroban AMM adapters only. Soroswap's API quotes can also include classic SDEX liquidity. Do not treat those two layers as one. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator. Small field — converging on a few anchors.\nAlso good if the answer: Notes StellarX is a trading UI (not an aggregator) and Comet is a reference/research implementation, not a high-traffic DEX.\nGolden cites: Sources for the DEX/AMM landscape composition.\nGT-19 CORRECTION 2026-07-10: grade the explicit venue/role/usage criterion, not 'roughly three.' Directory DEX counts mix venues, routers, and UIs."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -13505,12 +13651,49 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, Soroswap's on-chain aggregator routes through three Soroban AMM adapters (Soroswap, Phoenix, Aqua) and excludes the classic SDEX, while Soroswap's API quotes can include SDEX liquidity.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "F",
+                "ref": "stellar contract invoke --id CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO --rpc-url https://mainnet.sorobanrpc.com --send no -- get_adapters",
+                "observedAt": "2026-10-01",
+                "note": "Simulation after ledger 64718335 returned three unpaused adapters: protocol_id 0, 1, and 2 (Soroswap, Phoenix, Aqua). No SDEX, Comet, or Sushi adapter."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/soroswap/aggregator/blob/84de10e0f8d26168b4a76f8c23b963e50917517c/public/mainnet.contracts.json",
+                "observedAt": "2026-10-01",
+                "note": "aggregator CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO with soroswap_adapter, phoenix_adapter, and aqua_adapter ids only."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx",
+                "observedAt": "2026-10-01",
+                "note": "'Stellar SDEX is not included as it is incompatible with Soroban-based smart contracts, and the Soroswap Aggregator only works with Soroban-based protocols.' api/index.mdx: 'Fetch quotes and optimal routes for token swaps across multiple protocols (Soroswap, Phoenix, Aqua and SDEX)'. The same aggregator page carries stale Testnet labels (cs-002), so it is not evidence for adapter status."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap",
+                "observedAt": "2026-10-01",
+                "note": "Scout's record now separates the layers: 'an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution. Its swap Route API returns quotes and optimal routing across Stellar DEXs, including the Stellar classic DEX (SDEX).'"
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Soroswap scope reconciliation (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the grader note merged Soroswap's API quotes with its on-chain aggregator. The note now states both layers. The 'absorbed into Soroswap's aggregation routing' also-good line is removed: it contradicts avoid item 1, and the live adapter set has no Sushi or Comet adapter. Answer, keyFacts, and avoid are unchanged.",
+            "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", finding 2): this case is stable, so its grader note carries only the durable distinction. The dated observation stays in truth.corroboration.",
+            "Live check 2026-10-01 (class F): get_adapters simulation on CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO — three unpaused adapters, protocol_id 0, 1, 2.",
+            "Live check 2026-10-01 (class B): soroswap/aggregator@84de10e0f8d26168b4a76f8c23b963e50917517c public/mainnet.contracts.json — soroswap, phoenix, and aqua adapters only.",
+            "Live check 2026-10-01 (class A): soroswap/docs@1d7a3c8a85616918415056ad2a0f6d2177fc1948 concepts/aggregator.mdx ('Stellar SDEX is not included') and api/index.mdx ('Soroswap, Phoenix, Aqua and SDEX').",
+            "Live check 2026-10-01 (class C): https://stellarlight.xyz/api/projects/search?q=soroswap — Scout's own text separates on-chain aggregation from the Route API.",
+            "Sibling sweep 2026-10-01: grep Soroswap|SDEX|aggregator|adapter → q-defi-soroswap-what-is (same layer split, same adapter set), q-defi-soroswap-vs-stellarx (reconciled in this change), q-defi-phoenix-what-is (Phoenix is one AMM source aggregated by Soroswap), q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap; no contradiction.",
             "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; the reviewers intentionally differed on venue membership because the inherited criterion is undefined.",
             "Structural re-form (negative-predicate): split the compound saturation requirement into two atomic positive facts; the counting criterion and all four role categories are unchanged.",
             "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current directory clustering still requires an explicit counting criterion before saturation analysis.",
@@ -13518,6 +13701,7 @@
             "Sibling sweep 2026-08-27: grep serious players|native venues|aggregators/routers|DEX saturation|independent liquidity → q-eco-defi-market-map, q-asset-sdex-vs-amm, and q-defi-soroswap-vs-stellarx; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Reconcile Soroswap API and contract scope in sibling grader notes: eval-side grader-note compression merged the API quote layer with the on-chain aggregator",
             "Role-taxonomy collapse and an undefined qualitative threshold became an exact competitor count.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
@@ -16161,19 +16345,19 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "As of 2026-09-03, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Panel Review. SCF #44 is the last concluded round. A grounded answer checks official awards state and Scout metadata.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
+        "answer": "As of 2026-10-01, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Notification & Award Distribution. SCF #44 is the last concluded round. A grounded answer checks official awards state and Scout metadata.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
         "keyFacts": [
           "Presents specific source-supported content as current or dated.",
           "Makes the as-of date visible for each changeable status or deadline.",
           "Reports SCF #46 in Submission in the dated example.",
           "Reports 2026-11-08 as SCF #46's submission deadline.",
-          "Places #45 in Panel Review and #44 as the last concluded round."
+          "Places #45 in Notification & Award Distribution and #44 as the last concluded round."
         ],
         "avoid": [
           "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
           "Do NOT invent a deadline time, timezone, notification date, or submission count."
         ],
-        "notes": "GT-23 refreshed 2026-09-03. Require a dated round, phase, and deadline. #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is concluded."
+        "notes": "GT-23 refreshed 2026-10-01. Require a dated round, phase, and deadline. #46 is in Submission through 2026-11-08. #45 is in Notification & Award Distribution. #44 is concluded."
       },
       "tags": {
         "category": "edge-behavior",
@@ -16187,23 +16371,23 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-09-03",
+        "asOf": "2026-10-01",
         "reverifyBy": "2026-11-10",
         "sources": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08, #45 was in Panel Review, and #44 was last concluded."
+            "note": "Official awards index observed 2026-10-01; SCF #46 was in Submission through 2026-11-08, #45 was in Notification & Award Distribution, and #44 was last concluded."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards state observed 2026-09-03; it showed the current #46/#45/#44 phase sequence."
+            "note": "Official awards state observed 2026-10-01; it showed the current #46/#45/#44 phase sequence."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live Scout result observed 2026-09-03; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and submission deadline 2026-11-08."
+            "note": "Live Scout result observed 2026-10-01; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, submission deadline 2026-11-08, and round 45 in Notification & Award Distribution."
           }
         ],
         "corroboration": [
@@ -16225,12 +16409,41 @@
               }
             ],
             "note": "Legacy verdict: confirmed-time-slice."
+          },
+          {
+            "claim": "As of 2026-10-01, SCF #46 is in Submission through 2026-11-08. #45 is in Notification & Award Distribution. #44 is last concluded.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-10-01",
+                "note": "Fetched 2026-10-01T18:48Z. Round cards: 'SCF #46 Submission, Deadline to submit: November 8, 2026'; 'SCF #45 Notification & Award Distribution, Deadline to submit: August 16, 2026'; 'SCF #44 Ended'; 'SCF #43 Ended'. The embedded round data carries the same three phase values."
+              },
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+                "observedAt": "2026-10-01",
+                "note": "'SCF #45 is currently in the Notification and Award Distribution phase.'"
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-10-01",
+                "note": "meta.generatedAt 2026-10-01T17:56:10.444Z; scfRound.currentRound 46, currentPhase Submission, submissionWindow.closes 2026-11-08, lastConfirmedRound 44; roundsInProgress lists round 45 in 'Notification & Award Distribution'. Scout names the official awards page as its verifyAt source, so this class is not fully independent of the official page."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-03",
-          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "SCF phase refresh (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 1): SCF #45 moved from Panel Review to Notification & Award Distribution. The answer, key fact 5, and the notes now report that phase as of 2026-10-01. The #46 Submission state, the 2026-11-08 deadline, and #44 as the last concluded round are unchanged. truth.reverifyBy is unchanged because the next known phase event is the #46 deadline.",
+            "Live check 2026-10-01 (class A): https://communityfund.stellar.org/awards — #46 Submission, deadline November 8, 2026; #45 Notification & Award Distribution; #44 Ended.",
+            "Live check 2026-10-01 (class A): https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — 'SCF #45 is currently in the Notification and Award Distribution phase.'",
+            "Live check 2026-10-01 (class C): https://stellarlight.xyz/api/rfps?status=open — currentRound 46, Submission through 2026-11-08; round 45 in Notification & Award Distribution; lastConfirmedRound 44.",
+            "Sibling sweep 2026-10-01: grep #45|Panel Review → q-scf-current-round (refreshed in this change), q-scf-open-rfps-live (its avoid item names #45 without a phase), q-scf-open-rfps, q-scf-rfp-tooling, q-scf-round-43-results, q-scf-total-distributed (no #45 phase claim); no contradiction.",
             "A: https://communityfund.stellar.org/awards confirmed #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded on 2026-09-03.",
             "C: https://stellarlight.xyz/api/rfps?status=open returned the same current-round state on 2026-09-03T15:39:35.870Z.",
             "Sibling sweep 2026-09-03: q-scf-current-round and the SCF phase invariant remain consistent.",
@@ -16695,24 +16908,24 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Stellar is not EVM-compatible, so it cannot be added through MetaMask's ordinary custom-EVM RPC/chain-ID flow, and native XLM is not an ERC-20 at a `0x` contract address. As of **2026-07-10**, MetaMask's Snaps directory lists a **third-party Stellar interoperability Snap**; treat it as community software, review its broad permissions/security posture, and re-check availability before relying on it. A Stellar-native wallet remains the straightforward path.\n\nXLM is Stellar's native asset with no issuer or trustline, but it has a deterministic, network-specific **Stellar Asset Contract** ID exposing the same XLM through the SEP-41 contract interface; that SAC is neither ERC-20 nor wrapped XLM. Issued classic assets use code+issuer and also have SACs; standalone SEP-41 contract tokens are a third model. Use a verified Stellar wallet/service and Stellar address for native XLM. Never send native Stellar assets to an EVM `0x` address; wrapped/bridged representations on other chains are separate assets with bridge/custody risk.",
+        "answer": "Stellar is not EVM-compatible, so it cannot be added through MetaMask's ordinary custom-EVM RPC/chain-ID flow, and native XLM is not an ERC-20 at a `0x` contract address. As of **2026-10-01**, MetaMask's own support documentation says MetaMask supports Stellar as a default network for XLM and trustline assets, and the MetaMask extension source includes a first-party Stellar wallet Snap. Availability can differ by app version, and MetaMask limits its Buy feature by region, so check the current app. A separate **third-party Stellar Snap** also remains listed in MetaMask's Snaps directory; treat it as community software and review its permissions. Stellar-native wallets remain an alternative.\n\nXLM is Stellar's native asset with no issuer or trustline, but it has a deterministic, network-specific **Stellar Asset Contract** ID exposing the same XLM through the SEP-41 contract interface; that SAC is neither ERC-20 nor wrapped XLM. Issued classic assets use code+issuer and also have SACs; standalone SEP-41 contract tokens are a third model. Use a verified Stellar wallet/service and Stellar address for native XLM. Never send native Stellar assets to an EVM `0x` address; wrapped/bridged representations on other chains are separate assets with bridge/custody risk.",
         "keyFacts": [
           "Describes MetaMask's ordinary EVM-network flow.",
-          "Dates the third-party Stellar Snap pathway.",
+          "Dates the MetaMask Stellar pathway it reports: built-in support or a Snap.",
           "Defines native XLM and its network-specific SAC ID.",
           "Defines classic issued assets and standalone contract tokens.",
           "Defines the ERC-20 and wrapped representation models."
         ],
         "avoid": [
-          "Do NOT say MetaMask can never access Stellar, present the Snap as MetaMask endorsement/safety, deny XLM's SAC, apply code+issuer to native XLM, or give an ERC-20/wrapped address as native XLM.",
-          "Do NOT send native Stellar assets to an EVM address or freeze the Snap's listing/install count as permanent."
+          "Do NOT say MetaMask can never access Stellar, present the third-party Snap as MetaMask endorsement/safety, deny XLM's SAC, apply code+issuer to native XLM, or give an ERC-20/wrapped address as native XLM.",
+          "Do NOT send native Stellar assets to an EVM address or freeze MetaMask's Stellar support state or a Snap listing as permanent."
         ],
-        "notes": "GT-24 2026-07-10: ordinary MetaMask EVM network-add flow does not support Stellar, but a dated third-party Stellar Snap exists. Native XLM has no issuer/trustline and is not ERC-20, yet has a deterministic network-specific SAC ID. Date Snap availability and do not gate install count.\nGT-24 CORRECTION 2026-07-10: current Snap and native-XLM/SAC evidence replace the incomplete EVM-only mental model."
+        "notes": "GT-24 2026-07-10: ordinary MetaMask EVM network-add flow does not support Stellar. Native XLM has no issuer/trustline and is not ERC-20, yet has a deterministic network-specific SAC ID.\nFRESHNESS UPDATE 2026-10-01: MetaMask's support page 'Navigate Stellar in MetaMask' says MetaMask supports Stellar as a default network, and the MetaMask extension source depends on a first-party Stellar wallet Snap. The older third-party `stellar-snap` remains listed. Key fact 2 accepts either dated pathway. General web sources lag this change; do not mark a dated, sourced statement of either pathway wrong. Do not gate an install count or a rollout percentage."
       },
       "tags": {
         "category": "edge-behavior",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -16721,6 +16934,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
+        "asOf": "2026-10-01",
+        "reverifyBy": "2026-12-16",
         "sources": [
           {
             "class": "A",
@@ -16746,6 +16961,16 @@
             "class": "D",
             "ref": "https://github.com/paulfears/StellarSnap",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://support.metamask.io/configure/networks/stellar/",
+            "note": "MetaMask's own support page for built-in Stellar support; observed 2026-10-01."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/MetaMask/metamask-extension/blob/ebd93b065869fb554d3246a13a2b73f3f749cfa5/package.json",
+            "note": "First-party @metamask/stellar-wallet-snap dependency; observed 2026-10-01."
           }
         ],
         "corroboration": [
@@ -16785,12 +17010,68 @@
               }
             ],
             "note": "Legacy verdict: confirmed-time-slice."
+          },
+          {
+            "claim": "As of 2026-10-01, MetaMask documents Stellar as a default network and ships a first-party Stellar wallet Snap dependency in its extension source; the third-party stellar-snap remains in MetaMask's verified Snaps registry; Stellar is still not an EVM network.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://support.metamask.io/configure/networks/stellar/",
+                "observedAt": "2026-10-01",
+                "note": "'MetaMask supports Stellar as a default network, allowing you to manage XLM and other assets.' The page covers trustlines, reserves, swaps, and sends. HTTP last-modified 2026-09-30T11:52:44Z. The page limits the Buy feature by region: 'Buying crypto in MetaMask is not available in every country or region.' It states no region limit for Stellar wallet support."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/MetaMask/metamask-extension/blob/ebd93b065869fb554d3246a13a2b73f3f749cfa5/package.json",
+                "observedAt": "2026-10-01",
+                "note": "Dependency '@metamask/stellar-wallet-snap': '^1.1.0' beside the Bitcoin, Solana, and Tron wallet Snaps. npm @metamask/stellar-wallet-snap: created 2026-08-24, latest 1.1.0."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/MetaMask/core/blob/418b73c1cd5eb251c35fe6a0d1d14eb169c93d10/packages/bridge-controller/src/constants/bridge.ts",
+                "observedAt": "2026-10-01",
+                "note": "ALLOWED_BRIDGE_CHAIN_IDS includes XlmScope.Pubnet. The commented-out Stellar entry ('Disabled until further notice') belongs to DEFAULT_CHAIN_RANKING. The default bridge ranking omits Stellar when remote configuration is unavailable. Actual client and route availability remain unverified."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/MetaMask/metamask-extension/blob/ebd93b065869fb554d3246a13a2b73f3f749cfa5/CHANGELOG.md",
+                "observedAt": "2026-10-01",
+                "note": "'Added Stellar account support behind a feature flag (#45692)'; 'Removed Stellar and Arc from the default bridge network list when remote configuration is unavailable (#44749)'. This proves implementation support, not availability in every installed client, so the golden attributes the claim to MetaMask documentation and tells the user to check the current app."
+              },
+              {
+                "class": "A",
+                "ref": "https://acl.execution.metamask.io/latest/registry.json",
+                "observedAt": "2026-10-01",
+                "note": "verifiedSnaps npm:stellar-snap — name Stellar, author Paul Fears, category interoperability, version 1.0.9. npm stellar-snap 1.0.9 published 2025-07-08, not deprecated."
+              },
+              {
+                "class": "A",
+                "ref": "https://support.metamask.io/configure/networks/how-to-use-non-evm-networks/",
+                "observedAt": "2026-10-01",
+                "note": "Snaps page still names only Solana and Bitcoin as native in its body text; its sidebar links 'Navigate Stellar in MetaMask'. A general web search on 2026-10-01 still returned 'MetaMask does not support Stellar' pages (class D lag)."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query:'MetaMask',hitsPerPage:6})",
+                "observedAt": "2026-10-01",
+                "note": "The recorded MetaMask query returned zero hits on 2026-10-01."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Owner decision C, question 6 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the case moves stable → scheduled with truth.asOf 2026-10-01 and truth.reverifyBy 2026-12-16. The re-check also found freshness drift: MetaMask now documents built-in Stellar support, so the answer, key fact 2, both avoid items, and the notes now cover the first-party pathway and keep the third-party Snap distinct. The asset-model paragraph and key facts 1, 3, 4, and 5 are unchanged.",
+            "Independent review fixes 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", findings 1 and 3): the bridge qualifier now uses the bounded description, the Docs-index statement is bound to the recorded query, and the answer's region caveat names the Buy feature, which is the only region limit the support page states.",
+            "Live check 2026-10-01 (class A): https://support.metamask.io/configure/networks/stellar/ — 'MetaMask supports Stellar as a default network, allowing you to manage XLM and other assets.'",
+            "Live check 2026-10-01 (class B): MetaMask/metamask-extension@ebd93b065869fb554d3246a13a2b73f3f749cfa5 package.json — '@metamask/stellar-wallet-snap': '^1.1.0'; MetaMask/snap-stellar-wallet README — 'The Stellar Snap allows MetaMask and dapps to support all Stellar-related networks and address types.'",
+            "Live re-check 2026-10-01: https://acl.execution.metamask.io/latest/registry.json and https://registry.npmjs.org/stellar-snap — the third-party Snap stays listed at 1.0.9; https://snaps.metamask.io/snap/npm/stellar-snap/ returns HTTP 200.",
+            "Qualifier 2026-10-01: MetaMask/core@418b73c1cd5eb251c35fe6a0d1d14eb169c93d10 bridge constants allow XlmScope.Pubnet. The default bridge ranking omits Stellar when remote configuration is unavailable. Actual client and route availability remain unverified. The extension changelog records Stellar account support behind a feature flag, so the golden attributes built-in support to MetaMask documentation and does not gate a rollout state.",
+            "Sibling sweep 2026-10-01: grep MetaMask → q-defi-bridge-evm-to-stellar-axelar (avoid item is scoped to claims without dated provider evidence; its Snap note stays true; flagged in .agents/TODO.md for its own re-verify), q-edge-ambig-best-wallet, q-eco-nft-marketplace-whitespace, q-raph-xlm-network-role, and q-soroban-contract-id-derivation (no MetaMask-Stellar support claim); no contradiction.",
+            "No saved answer was re-judged and no paid QA ran.",
             "Solo scratchpad 575 GT-24 primary 3263 and blind 3266; blind established the current Snap and derived native SAC IDs without moving assets.",
             "Structural re-form (long-fact): split the MetaMask pathway and asset-model distinctions into five short facts; truth unchanged.",
             "Live re-check 2026-08-29: https://support.metamask.io/configure/networks/how-to-use-non-evm-networks/ — MetaMask's official guidance distinguishes ordinary EVM network support from non-EVM access through Snaps.",
@@ -16801,6 +17082,8 @@
             "Sibling sweep 2026-08-29: grep Stellar Snap|network-specific SAC|ERC-20|wrapped representations → q-asset-deploy-sac-cli, q-asset-issue-asset-howto, q-asset-trustline-basics, q-asset-two-account-issuer, q-defi-bridge-evm-to-stellar-axelar, q-edge-ambig-stellar-token-meaning, q-edge-metamask-evm-mental-model, q-raph-usdc-onto-stellar, q-rwa-stellar-vs-erc20-regulated, q-sor-evm-to-soroban-porting, q-soroban-oz-token, q-soroban-token-transfer-pattern; no contradiction."
           ],
           "rootCause": [
+            "freshness-drift",
+            ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): a dated third-party product claim sat under tags.freshness stable with no truth.asOf or truth.reverifyBy",
             "No ordinary EVM-network support was conflated with no MetaMask pathway; ERC-20 address and SAC contract ID were conflated; code+issuer was overgeneralized to XLM.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
@@ -25755,7 +26038,7 @@
           "Do NOT call FinCEN registration a license or ignore state/jurisdictional rules.",
           "Do NOT give definitive legal advice from an Anchor Directory label."
         ],
-        "notes": "Anchor responsibility model is first-party (anchors are regulated financial institutions; the protocol/SDF is not a licensee). Confidence raised draft->high on the durable framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Anchors must map licenses to every jurisdiction in which they onboard customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing."
+        "notes": "Grade the durable classification framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Each regulated participant maps its licenses to every jurisdiction in which it onboards customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -25814,14 +26097,24 @@
                 "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+                "observedAt": "2026-10-01",
+                "note": "FIN-2019-G001: 'Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes'. Regulatory treatment follows the facts and circumstances of the activity, not the label."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy line 'Anchor responsibility model is first-party (anchors are regulated financial institutions; the protocol/SDF is not a licensee)'. It told the judge the noun-based allocation that key fact 1, avoid item 1, and the 2026-07-10 CORRECTION line reject. One also-good line now names each regulated participant instead of anchors. Answer, keyFacts, and avoid are unchanged.",
+            "Live re-check 2026-10-01 (class A): https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — the guidance applies to the described business model, not to a product label.",
+            "Live re-check 2026-10-01 (class A): https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/learn/fundamentals/anchors.mdx — the anchors page describes on and off-ramps 'such as financial institutions or fintech companies'; it states no licensing allocation.",
+            "Sibling sweep 2026-10-01: q-pay-travel-rule-aid-flows, q-comp-finclusive-caas, q-crp-custodial-vs-noncustodial-wallets, q-crp-become-an-anchor-licensing, and q-comp-anchor-compliance-stack (cleaned in this change) all scope duties by entity and activity; no contradiction.",
             "Solo scratchpad 575 GT-11 primary/blind legal matrices",
             "Structural re-form (compound-predicate): Shortened two legal-classification facts under single predicates; the entity, activity, custody, route, jurisdiction, and infrastructure distinctions are unchanged.",
             "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering — FinCEN still assigns duties by the person's exchange, acceptance, and transmission activity plus applicable exceptions.",
@@ -25829,6 +26122,7 @@
             "Sibling sweep 2026-08-27: grep money-transmitter|MSB|FinCEN|anchor label → q-crp-become-an-anchor-licensing, q-crp-custodial-vs-noncustodial-wallets; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
             "Stellar product-role terminology was promoted into a legal classification.",
             "Registration, licensing, custody, and multi-entity routes were collapsed.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
@@ -26147,7 +26441,7 @@
           "Do NOT treat FATF guidance as self-executing identical law everywhere or use one universal threshold.",
           "Do NOT conflate KYC with Travel Rule transmission."
         ],
-        "notes": "2026-06-29 reviewed. SDF-published responsibility framing: the originating org / licensed anchor holds Travel Rule/KYC; SDF disclaims control over independent orgs' fees in aid flows. Don't state a regulatory exemption as settled. Trap: putting the compliance duty on the protocol.\nAlso good if the answer: SDF explicitly disclaims control over fees and operations of independent organizations participating in aid flows. | KYC in aid contexts is handled off-chain and is contextual/proportionate to the recipient population.\nGolden cites: SDF aid/SDP docs or policy materials; reputable Travel-Rule reference where relevant.\nCORRECTION 2026-07-10: require an actor/route/custody/threshold/jurisdiction matrix and separate Travel Rule from KYC. Avoid categorical humanitarian exemptions or duties."
+        "notes": "2026-06-29 reviewed. Don't state a regulatory exemption as settled. Trap: putting the compliance duty on the protocol.\nAlso good if the answer: SDF explicitly disclaims control over fees and operations of independent organizations participating in aid flows. | KYC in aid contexts is handled off-chain and is contextual/proportionate to the recipient population.\nGolden cites: SDF aid/SDP docs or policy materials; reputable Travel-Rule reference where relevant.\nCORRECTION 2026-07-10: require an actor/route/custody/threshold/jurisdiction matrix and separate Travel Rule from KYC. Avoid categorical humanitarian exemptions or duties."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -26206,14 +26500,23 @@
                 "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers",
+                "observedAt": "2026-10-01",
+                "note": "The Travel Rule duties attach to the transmittor's financial institution and each intermediary financial institution: 'An intermediary financial institution must pass on all of the above listed information, as specified in the travel rule, it receives from a transmittor's financial institution or the preceding intermediary financial institution'."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "Grader-note cleanup (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 3): removed the legacy line 'SDF-published responsibility framing: the originating org / licensed anchor holds Travel Rule/KYC; SDF disclaims control over independent orgs' fees in aid flows'. It assigned the duty by label and merged Travel Rule with KYC, which avoid items 1 and 3 and the 2026-07-10 CORRECTION line reject. The also-good lines are unchanged. Answer, keyFacts, and avoid are unchanged.",
+            "Live re-check 2026-10-01 (class A): https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties attach to the transmittor's financial institution and intermediary financial institutions, by role in the transmittal.",
+            "Sibling sweep 2026-10-01: q-pay-anchor-msb-licensing, q-comp-finclusive-caas, q-crp-custodial-vs-noncustodial-wallets, q-crp-become-an-anchor-licensing, and q-comp-anchor-compliance-stack all scope duties by entity and activity; no contradiction.",
             "Solo scratchpad 575 GT-11 legal role/route matrices",
             "Structural re-form (negative-predicate): Shortened the duty-allocation fact and recast two comparison facts as positive requirements; truth unchanged",
             "Live re-check 2026-08-27: https://www.ecfr.gov/current/title-31/part-1010/section-1010.410 — the rule assigned different data and record duties by financial-institution role and applied a $3,000 threshold.",
@@ -26222,6 +26525,7 @@
             "Sibling sweep 2026-08-27: grep Travel Rule|VASP-to-unhosted|CDD/KYC|humanitarian aid → q-comp-anchor-compliance-stack, q-comp-finclusive-caas, q-hist-unhcr-stellar-aid-assist, q-pay-travel-rule-aid-flows; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Remove superseded legacy lines from the compliance grader notes: the 2026-07-10 correction added a CORRECTION line but left the legacy grounding line that it overrides",
             "Program roles and a network disclaimer were promoted into legal conclusions.",
             "CDD/KYC and intermediary Travel Rule duties were conflated.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
@@ -29992,20 +30296,20 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "Stellar ledgers currently close in roughly **5–7 seconds**, not a fixed 3–5-second consensus constant. In a 199-ledger Pubnet sample on 2026-07-10, deltas were 5–7 seconds (mean 5.839, median 6). CAP-0070 made timing/configuration adjustable; a configured target is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date cadence measurements and sample multiple ledgers.",
+        "answer": "As of **2026-10-01**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-10-01 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds, and official Docs pages still say every 5–7 seconds. CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
         "keyFacts": [
-          "Uses the current 5–7-second observed range with a dated multi-ledger sample.",
+          "States about 5 seconds, or the documented 5–7 seconds, with a date or source.",
           "Explains configurable target versus observed cadence and closeTime semantics."
         ],
         "avoid": [
-          "Do NOT state 3–5 seconds or exactly five seconds as an immutable guarantee based on one adjacent-ledger delta."
+          "Do NOT claim the close time is a fixed protocol constant or guaranteed for every ledger."
         ],
-        "notes": "Ledger close is roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
+        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-10-01, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). Official Docs pages still say every 5–7 seconds, which matched samples before Protocol 28. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -30014,6 +30318,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
+        "asOf": "2026-10-01",
+        "reverifyBy": "2026-12-15",
         "sources": [
           {
             "class": "A",
@@ -30039,6 +30345,16 @@
             "class": "C",
             "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
             "note": "Fresh consecutive-ledger samples on 2026-08-30 (two independent lanes)."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/ledger/64718000",
+            "note": "Independent ledger-header reader used for the 2026-10-01 cadence cross-check."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md",
+            "note": "Protocol 28 consensus change that coincides with the 5.0-second cadence."
           }
         ],
         "corroboration": [
@@ -30091,8 +30407,8 @@
             ]
           },
           {
-            "claim": "Stellar ledgers close every 3–5 seconds (the golden.avoid trap).",
-            "verdict": "contradicted",
+            "claim": "Through Protocol 27, Docs and multi-ledger samples contradicted a 3–5-second cadence: no sampled delta was below 5 s. The 3–5-second figure is retired Docs wording, not a current avoid item.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
@@ -30197,12 +30513,64 @@
                 "note": "Both corrected positive records are present. The original 3-5 seconds query no longer returns the stale Validators sentence."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, Mainnet ledgers close about every 5 seconds: the target is 5000 ms, a 199-delta sample was 5 s for every delta, and the mean has been 5.000 s since Protocol 28 activated at ledger 64458446 on 2026-09-16. Before Protocol 28 the mean was about 5.6 s. Official Docs pages still say every 5-7 seconds.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-10-01",
+                "note": "Ledgers 64718137–64718336 (17:41:07Z–17:57:42Z): 199 closed_at deltas, 5s×199; min 5 / max 5 / mean 5.0."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers/{sequence}",
+                "observedAt": "2026-10-01",
+                "note": "Mean close time per 15,000-ledger window: 5.000 s for every window from ledger 64463336 (2026-09-16T23:47:36Z) to 64718336; 5.396–5.702 s for the windows from 2026-09-01 to 2026-09-16. First protocol_version 28 ledger 64458446 closed 2026-09-16T17:00:06Z; first protocol_version 29 ledger 64717645 closed 2026-10-01T17:00:07Z."
+              },
+              {
+                "class": "C",
+                "ref": "https://api.stellar.expert/explorer/public/ledger/{sequence}",
+                "observedAt": "2026-10-01",
+                "note": "Independent reader of the same ledger headers: ledgers 64700000→64718000 mean 5.0 s (protocol 28→29); ledgers 64400000→64440000 mean 5.583 s (protocol 27)."
+              },
+              {
+                "class": "F",
+                "ref": "stellar network settings --network mainnet --output json (stellar-cli 28.1.0)",
+                "observedAt": "2026-10-01",
+                "note": "scp_timing.ledger_target_close_time_milliseconds 5000."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0083.md",
+                "observedAt": "2026-10-01",
+                "note": "Protocol version 28; 'This will improve SCP performance, as transaction set dissemination is costly and validators can safely make initial progress on consensus while waiting for transaction sets.' The cadence change coincides with this upgrade; this lane did not prove causation."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/learn/fundamentals/stellar-stack.mdx",
+                "observedAt": "2026-10-01",
+                "note": "'Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds.' docs/validators/README.mdx carries the same sentence; both rendered pages match. The range contains the observed 5 s, so this is loose current wording, not a canonical-page conflict."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-09",
-          "by": "Root integration after independent Sol high ingestion verification and blind Grok 4.6 high re-verification",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Owner decision C, question 3 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the re-check found freshness drift. Since Protocol 28 (ledger 64458446, 2026-09-16T17:00:06Z) Mainnet closes ledgers at a 5.0-second mean; the golden pinned a 5–7-second observed range from July and a sample requirement that no exposed operation can meet. The answer, key fact 1, the avoid item, and the notes now gate a dated or attributed cadence. tags.freshness moves stable → scheduled with truth.asOf 2026-10-01 and truth.reverifyBy 2026-12-15.",
+            "Live sample 2026-10-01 (class C): https://horizon.stellar.org/ledgers?order=desc&limit=200 — ledgers 64718137–64718336, 199 deltas, all 5 s.",
+            "Live windows 2026-10-01 (class C): https://horizon.stellar.org/ledgers/{sequence} at 15,000-ledger steps — 5.000 s mean for every window since 2026-09-16T23:47Z; 5.4–5.7 s before.",
+            "Independent reader 2026-10-01 (class C): https://api.stellar.expert/explorer/public/ledger/{64700000,64718000} — 5.0 s mean; {64400000,64440000} — 5.583 s mean.",
+            "Network setting 2026-10-01 (class F): stellar network settings --network mainnet — scp_timing.ledger_target_close_time_milliseconds 5000.",
+            "Docs re-check 2026-10-01 (class A): stellar-docs 109d95d18fe151ac40cc2fd5f5cc769660e51fcc docs/validators/README.mdx and docs/learn/fundamentals/stellar-stack.mdx — both still say every 5-7 seconds; rendered pages match.",
+            "Surface check 2026-10-01: catalog/manifest.json has no operation field named closed_at, closeTime, or close_time; no exposed operation returns ledger close timestamps.",
+            "The 3–5-second avoid clause is removed: 5 s is now the observed value, so a number trap on that range could punish a near-true claim. The former contradicted row is kept as a dated historical row.",
+            "Sibling sweep 2026-10-01: grep 5–7|~5 s|close time|17,280 → q-asset-path-payment-ops says one ledger close is about 5 s (consistent); q-sor-ttl-defaults-extend, q-sor-doc-timestamping-manage-data, q-ti-tx-too-late-resubmit, and q-quickstart-manual-ledger-close state no cadence figure; q-protocol-max-tx-set-size asserts no cadence; no contradiction.",
+            "No saved answer was re-judged and no paid QA ran.",
             ".agents/rounds/2026-09-09-docs-ingestion-sol.md",
             ".agents/rounds/2026-09-09-docs-retirement-review-grok.md",
             "Deployed Docs source: https://github.com/stellar/stellar-docs/blob/db501fe9f2d856f2b38c4da7bf57b325806fe842. Sol checked deployment runs 34242504493 and 34255828473 and the subsequent completed September 9 crawl.",
@@ -30211,6 +30579,7 @@
             "Sibling consistency sweep and register review: .agents/rounds/2026-09-09-truth-maintenance.md. No saved answer was re-judged and no paid QA ran."
           ],
           "rootCause": [
+            "freshness-drift",
             "improvements/resolved.json entry sd-047; source commit 176513cc5e058fa12ad81f607ea4ca0d514a659a",
             "The September 9 crawl ingested the deployed source correction; the former source/index conflict no longer applies."
           ]
@@ -35771,19 +36140,19 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer checks the live official awards state and Scout round metadata. It dates every volatile claim. As of 2026-09-03, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Panel Review. SCF #44 is the last concluded round.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
+        "answer": "A grounded answer checks the live official awards state and Scout round metadata. It dates every volatile claim. As of 2026-10-01, SCF #46 is the current round in Submission. Its submission deadline is 2026-11-08. SCF #45 is in Notification & Award Distribution. SCF #44 is the last concluded round.\n\nThe dated example is illustrative. A later answer must report the state supported at its observation time.",
         "keyFacts": [
           "Presents specific source-supported content as current or dated.",
           "Makes the as-of date visible for each changeable status or deadline.",
           "Reports SCF #46 in Submission in the dated example.",
           "Reports 2026-11-08 as SCF #46's submission deadline.",
-          "Places #45 in Panel Review and #44 as the last concluded round."
+          "Places #45 in Notification & Award Distribution and #44 as the last concluded round."
         ],
         "avoid": [
           "Do NOT call #45 current, say no round is in Submission, or treat #44 as current.",
           "Do NOT invent a deadline time, timezone, notification date, or submission count."
         ],
-        "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-09-03, #46 is in Submission through 2026-11-08. #45 is in Panel Review. #44 is the last concluded round. The fixed #43 result remains separate."
+        "notes": "Freshness item: grade a dated round, phase, and deadline from official and live sources. As of 2026-10-01, #46 is in Submission through 2026-11-08. #45 is in Notification & Award Distribution. #44 is the last concluded round. The fixed #43 result remains separate."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -35797,23 +36166,23 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-09-03",
+        "asOf": "2026-10-01",
         "reverifyBy": "2026-11-09",
         "sources": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08, #45 was in Panel Review, and #44 was last concluded."
+            "note": "Official awards index observed 2026-10-01; SCF #46 was in Submission through 2026-11-08, #45 was in Notification & Award Distribution, and #44 was last concluded."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-            "note": "Official SCF #45 detail page observed 2026-09-03; it showed #45 in Panel Review."
+            "note": "Official SCF #45 detail page observed 2026-10-01; it showed #45 in Notification and Award Distribution."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live Scout result observed 2026-09-03; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and submission deadline 2026-11-08."
+            "note": "Live Scout result observed 2026-10-01; currentRound=46, currentPhase=Submission, lastConfirmedRound=44, submission deadline 2026-11-08, and round 45 in Notification & Award Distribution."
           }
         ],
         "corroboration": [
@@ -35834,12 +36203,41 @@
                 "note": "Scout reported currentRound=46, currentPhase=Submission, lastConfirmedRound=44, and a 2026-11-08 submission deadline."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, SCF #46 is in Submission through 2026-11-08. #45 is in Notification & Award Distribution. #44 is last concluded.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-10-01",
+                "note": "Fetched 2026-10-01T18:48Z. Round cards: 'SCF #46 Submission, Deadline to submit: November 8, 2026'; 'SCF #45 Notification & Award Distribution, Deadline to submit: August 16, 2026'; 'SCF #44 Ended'; 'SCF #43 Ended'. The embedded round data carries the same three phase values."
+              },
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+                "observedAt": "2026-10-01",
+                "note": "'SCF #45 is currently in the Notification and Award Distribution phase.'"
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-10-01",
+                "note": "meta.generatedAt 2026-10-01T17:56:10.444Z; scfRound.currentRound 46, currentPhase Submission, submissionWindow.closes 2026-11-08, lastConfirmedRound 44; roundsInProgress lists round 45 in 'Notification & Award Distribution'. Scout names the official awards page as its verifyAt source, so this class is not fully independent of the official page."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-03",
-          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden follow-up lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md`",
           "evidence": [
+            "SCF phase refresh (.agents/rounds/2026-10-01-backlog-closeout/golden-followups.md, item 1): SCF #45 moved from Panel Review to Notification & Award Distribution. The answer, key fact 5, and the notes now report that phase as of 2026-10-01. The #46 Submission state, the 2026-11-08 deadline, and #44 as the last concluded round are unchanged. truth.reverifyBy is unchanged because the next known phase event is the #46 deadline.",
+            "Live check 2026-10-01 (class A): https://communityfund.stellar.org/awards — #46 Submission, deadline November 8, 2026; #45 Notification & Award Distribution; #44 Ended.",
+            "Live check 2026-10-01 (class A): https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — 'SCF #45 is currently in the Notification and Award Distribution phase.'",
+            "Live check 2026-10-01 (class C): https://stellarlight.xyz/api/rfps?status=open — currentRound 46, Submission through 2026-11-08; round 45 in Notification & Award Distribution; lastConfirmedRound 44.",
+            "Sibling sweep 2026-10-01: grep #45|Panel Review → q-edge-fresh-latest-scf-round (refreshed in this change), q-scf-open-rfps-live (its avoid item names #45 without a phase), q-scf-open-rfps, q-scf-rfp-tooling, q-scf-round-43-results, q-scf-total-distributed (no #45 phase claim); no contradiction.",
             "A: https://communityfund.stellar.org/awards confirmed #46 Submission through 2026-11-08, #45 Panel Review, and #44 as last concluded on 2026-09-03.",
             "C: https://stellarlight.xyz/api/rfps?status=open returned the same current-round state on 2026-09-03T15:39:35.870Z.",
             "Sibling sweep 2026-09-03: q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and all SCF register clusters remain consistent.",
@@ -37761,7 +38159,7 @@
           "Do NOT claim each brief has a published bounty or community vote.",
           "Do NOT claim the observed roster is permanent or complete."
         ],
-        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated."
+        "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two tooling briefs remain open. Scout returns one separate #46 row. The rolling interest path remains invitation-gated.\nSCOPE NOTE 2026-10-01: do not gate the yes/no label or a category label. The SCF handbook defines the RFP Track as developer tooling. Scout labels the two briefs Infrastructure and Payments. Neither brief asks for a chain-data indexer; the x402 brief includes an off-chain discovery index. An answer that reports both open briefs and states that scope is correct. An answer that says no RFP is open is wrong."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -37830,12 +38228,34 @@
                 "note": "Scout reported currentRound=46, currentPhase=Submission, and one separate synthetic round row."
               }
             ]
+          },
+          {
+            "claim": "The SCF handbook defines the RFP Track as developer tooling, Scout labels the two open briefs Infrastructure and Payments, and the roster of two open briefs plus one synthetic scf-round-46 row is unchanged on 2026-10-01.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/scf-handbook/blob/7abdddd09fe05c6de47de300a5cde73caa61cb02/scf-awards/build-award/rfp-track.md",
+                "observedAt": "2026-10-01",
+                "note": "'The RFP (Request for Proposals) Track funds developer tooling that solves known problems in the ecosystem.' Current Open RFPs lists Stellar-compatible LayerZero DVN and X402 Facilitator with Bazaar (discovery) support; the x402 deliverables include a 'discovery catalog and search index'."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-10-01",
+                "note": "generatedAt 2026-10-01T17:56:10.444Z: counts open=2, syntheticRounds=1; layerzero-dvn categoryLabel Infrastructure; x402-facilitator-bazaar categoryLabel Payments; a separate Developer Tooling category exists and neither brief carries it; scf-round-46 Submission through 2026-11-08."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-09-03",
-          "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Owner decision C, question 1 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): the scope binding follows the canonical owner. The SCF handbook defines every RFP-track brief as developer tooling; the Scout category is an aggregator label. The yes/no label is not gated. Only golden.notes changed; answer, keyFacts, avoid, and dated roster are unchanged.",
+            "Live re-check 2026-10-01: https://github.com/stellar/scf-handbook/blob/7abdddd09fe05c6de47de300a5cde73caa61cb02/scf-awards/build-award/rfp-track.md — track definition and both Q3 briefs still published.",
+            "Live re-check 2026-10-01: https://stellarlight.xyz/api/rfps?status=open — two open briefs (Infrastructure, Payments) and one synthetic scf-round-46 row; #46 Submission through 2026-11-08.",
+            "Sibling sweep 2026-10-01: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP Track → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-build-tracks (says RFP funds published ecosystem tooling/service needs); none gates a tooling or indexing category label; no contradiction.",
             "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
             "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the rolling interest-to-invitation path.",
             "Sibling sweep 2026-09-03: q-scf-open-rfps and Build entry-flow cases remain consistent.",
@@ -37851,6 +38271,7 @@
             "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-current-round; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side scope ambiguity between the RFP-track definition and each brief's Scout category",
             "freshness-drift",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
@@ -43523,7 +43944,7 @@
           "Do NOT claim Persistent storage automatically shards a growing value across ledger entries.",
           "Do NOT freeze a universal byte limit or exact failure string."
         ],
-        "notes": "This case tests one Persistent value, not the separate Instance-storage DoS or nullifier-retention cases. Reward bounded one-entry layouts, composite per-item keys, or bounded chunks. The exact entry limit is network-controlled."
+        "notes": "This case tests one Persistent value, not the separate Instance-storage DoS or nullifier-retention cases. Reward bounded one-entry layouts, composite per-item keys, or bounded chunks. The exact entry limit is network-controlled. Avoid item 2 targets a byte limit stated as universal or permanent. A dated or attributed current figure is not that claim."
       },
       "tags": {
         "category": "soroban",
@@ -43591,12 +44012,35 @@
                 "note": "Core compares each contract-data entry size with the configured maximum and rejects an oversized entry."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, the Mainnet contract-data entry limit is 65536 bytes (64 KiB), a validator-changeable network setting, and the official storage guide states the same figure with a dated check.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "F",
+                "ref": "stellar network settings --network mainnet --output json (stellar-cli 28.1.0); getLedgerEntries key AAAACAAAAAk= on https://mainnet.sorobanrpc.com",
+                "observedAt": "2026-10-01",
+                "note": "contract_data_entry_size_bytes 65536; raw ledger entry XDR 000000080000000900010000 at latestLedger 64718335; network protocol version 29."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/build/guides/storage/storage-strategies.mdx",
+                "observedAt": "2026-10-01",
+                "note": "'Max contract-data entry size | 65,536 B (64 KiB)'; 'Protocol 27, checked 2026-07-20. Network validators can change these values — re-verify with `stellar network settings --network mainnet`'."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Owner decision C, question 2 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): an attributed, dated 64 KiB figure is true, so avoid item 2 must not fire on it. The note limits the trap to a limit stated as universal or permanent. Answer, keyFacts, and avoid are unchanged.",
+            "Independent review fix 2026-10-01 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md, \"Review reconciliation\", finding 2): this case is stable, so its grader note carries only the durable distinction. The dated observation stays in truth.corroboration.",
+            "Live check 2026-10-01 (class F): stellar network settings --network mainnet and getLedgerEntries on https://mainnet.sorobanrpc.com — contract_data_entry_size_bytes 65536 at ledger 64718335.",
+            "Live re-check 2026-10-01 (class A): https://developers.stellar.org/docs/build/guides/storage/storage-strategies at stellar-docs 109d95d1 — states 64 KiB with a dated check and says validators can change the value.",
+            "Sibling sweep 2026-10-01: grep 64 KiB|65536|65,536 → q-soroban-wasm-size-limit and q-soroban-wasm-language both state contract_data_entry_size_bytes=65536 as a validator-tunable setting distinct from the code cap; no contradiction.",
             "solo://proj/49/scratchpad/784#persistent-collection-limits",
             "Sibling sweep: q-soroban-resource-limits covers the generic limit; q-soroban-instance-storage-dos covers Instance storage; q-zk-nullifier-storage covers nullifier safety. No sibling owns one growing Persistent value.",
             "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
@@ -43606,6 +44050,7 @@
             "Sibling sweep 2026-08-29: grep unbounded Vec|unbounded Map|entry limit|bounded collection|split.*keys → q-n3-missing-funds-account-support, q-sor-doc-timestamping-manage-data, q-sor-persistent-unbounded-collection-cap, q-soroban-instance-storage-dos, q-soroban-wasm-size-limit; no contradiction."
           ],
           "rootCause": [
+            ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side avoid ambiguity; 'freeze a universal byte limit' did not separate a dated, attributed current figure from a universal claim",
             "eval-authoring",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
@@ -50911,7 +51356,7 @@
           "Do NOT use batch_run_date as exact state time or ignore deletion/recreation/network resets.",
           "Do NOT equate nominal XLM with spendable XLM or invent historical USD prices from ledger data."
         ],
-        "notes": "No single SQL is hard-gated because Hubble schemas evolve; rubric gates source class and reconstruction method.\nAlso good if the answer: Mentions public Horizon history truncation and why it is not enough for arbitrary historical snapshots.\nGolden cites: Hubble/BigQuery docs and a source requirement for external historical prices.\nGT-52 CORRECTION 2026-07-11: grade reconstruction invariants/provenance, not one volatile SQL table name. Exact versus reconstructed and nominal versus spendable must be explicit."
+        "notes": "No single SQL is hard-gated because Hubble schemas evolve; rubric gates source class and reconstruction method.\nAlso good if the answer: Mentions public Horizon history truncation and why it is not enough for arbitrary historical snapshots.\nGolden cites: Hubble/BigQuery docs and a source requirement for external historical prices.\nGT-52 CORRECTION 2026-07-11: grade reconstruction invariants/provenance, not one volatile SQL table name. Exact versus reconstructed and nominal versus spendable must be explicit.\nPRICE-SOURCE NOTE 2026-10-01: avoid item 3 targets a USD price with no named source or method. A named price source with a stated asset/quote method is not invented. Examples: an off-chain price feed, Hubble's Reflector price snapshot tables, or trade-implied prices from `history_trades` or `trade_agg` with the pair, quote asset, and time window stated. Treat a trade-implied stablecoin price as USD only when the answer states that assumption. 'External' in key fact 5 means a price source separate from balance state; it includes those Hubble price tables."
       },
       "tags": {
         "category": "tooling-infra",
@@ -50990,12 +51435,40 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-10-01, Hubble documents price-bearing tables that are separate from balance state: history_trades price_n/price_d, trade_agg daily average prices per asset pair, and Reflector USD price snapshot tables.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/reflector-prices-data-sdex-snapshot.mdx",
+                "observedAt": "2026-10-01",
+                "note": "'This table captures historical snapshots of the exchange price of assets minted on the Stellar network. Prices originate from the Reflector oracle contracts on Stellar.' Columns open_usd, high_usd, low_usd, close_usd per day."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/stellar-docs/blob/109d95d18fe151ac40cc2fd5f5cc769660e51fcc/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/trade-agg.mdx",
+                "observedAt": "2026-10-01",
+                "note": "avg_price_daily: 'The total amount of the asset being bought in all trades divided by the total amount of the asset being sold in all trades, within that day.' bronze/history-trades.mdx documents price_n and price_d."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-dbt-public/blob/4b29c2ea8e67756fb49b5875da765945cede79d3/models/intermediate/reflector_prices/int_reflector_prices__sdex.sql",
+                "observedAt": "2026-10-01",
+                "note": "The model decodes Reflector oracle price entries from contract_data_snapshot; models/intermediate/trades/int_trade_agg_day.sql builds the daily trade aggregates."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-10-01",
+          "by": "2026-10-01 golden owner-judgment lane (Claude Fable 5.1, high); `.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md`",
           "evidence": [
+            "Owner decision C, question 4 (.agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md): a trade-implied price with a named table and a stated pair, quote asset, and window is a documented method, not an invented price. Avoid item 3 keeps its target: a USD price with no named source or method. Only golden.notes changed.",
+            "Live check 2026-10-01 (class A): stellar-docs 109d95d18fe151ac40cc2fd5f5cc769660e51fcc Hubble data dictionary — bronze/history-trades.mdx (price_n, price_d), gold/trade-agg.mdx (avg_price_daily), silver/reflector-prices-data-{sdex,cex,fex}-snapshot.mdx (USD OHLC from Reflector).",
+            "Live check 2026-10-01 (class B): stellar/stellar-dbt-public@4b29c2ea8e67756fb49b5875da765945cede79d3 — models/intermediate/reflector_prices and models/intermediate/trades implement those tables.",
+            "Sibling sweep 2026-10-01: grep Hubble|historical USD|price source|Reflector → q-ti-compute-token-lp-market-data (accepts an explicitly named last/mid/VWAP/oracle/route price method), q-infra-hubble-bigquery, q-ti-fetch-all-balances-classic-sac, q-crp-export-tx-history-taxes; none forbids a named trade or oracle price source; no contradiction.",
             "Solo scratchpad 575 GT-52 primary/blind matrices independently confirmed Hubble/latest-row/external-price separation; blind added exact reconstruction invariants.",
             "Sibling sweep checked Hubble, Galexie/ETL, historical events, and indexer choice cases; no sibling treats a ledger header or batch partition as a snapshot.",
             "Structural re-form (negative-predicate): split one long fact and tightened two others into five atomic positive facts; every reconstruction and provenance claim remains, so truth is unchanged",
@@ -51006,6 +51479,7 @@
             "Sibling sweep 2026-08-27: grep Hubble|batch_run_date|point-in-time|historical USD → q-infra-hubble-bigquery, q-infra-which-indexer, q-ti-fetch-all-balances-classic-sac; no contradiction"
           ],
           "rootCause": [
+            ".agents/TODO.md — Owner decisions C (golden truth and product judgment blockers): eval-side avoid ambiguity; 'invent historical USD prices from ledger data' did not separate a fabricated price from a named, method-stated price source",
             "Eval-side historical-reconstruction incompleteness; vetted exact-ledger balance SQL/provenance remains a research candidate.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]

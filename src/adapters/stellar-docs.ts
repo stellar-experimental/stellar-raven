@@ -33,6 +33,7 @@ import {
 const SERVICE = "stellarDocs";
 
 type AlgoliaHit = {
+  objectID?: string;
   url?: string;
   url_without_anchor?: string;
   anchor?: string;
@@ -152,18 +153,17 @@ async function classifyAlgoliaAttempt(
 }
 
 /**
- * Raw Algolia query with the documented retry ladder: try each host in order,
+ * Raw Algolia read request with the documented retry ladder: try each host in order,
  * timeout 2s x attempt-number, retry ONLY on network error / HTTP 5xx.
  * 4xx (and 429) surface immediately — they fail identically on every host.
  */
-async function algoliaQuery(
+async function algoliaRequest<T>(
   hosts: string[],
-  index: string,
+  path: string,
   headers: Record<string, string>,
   params: Record<string, unknown>,
   fetchImpl: FetchLike
-): Promise<{ ok: true; body: AlgoliaResponse } | { ok: false; message: string; status?: number }> {
-  const path = `/1/indexes/${encodeURIComponent(index)}/query`;
+): Promise<{ ok: true; body: T } | { ok: false; message: string; status?: number }> {
   let lastError = "no algolia hosts configured";
   for (let attempt = 0; attempt < hosts.length; attempt++) {
     const result = await classifyAlgoliaAttempt(
@@ -174,7 +174,7 @@ async function algoliaQuery(
       fetchImpl
     );
     if (result.kind === "success") {
-      return { ok: true, body: result.data as AlgoliaResponse };
+      return { ok: true, body: result.data as T };
     }
     if (result.kind === "terminal") {
       const message =
@@ -186,6 +186,67 @@ async function algoliaQuery(
     lastError = result.cause;
   }
   return { ok: false, message: `all algolia hosts failed: ${lastError}` };
+}
+
+function algoliaQuery(
+  hosts: string[],
+  index: string,
+  headers: Record<string, string>,
+  params: Record<string, unknown>,
+  fetchImpl: FetchLike
+) {
+  return algoliaRequest<AlgoliaResponse>(
+    hosts,
+    `/1/indexes/${encodeURIComponent(index)}/query`,
+    headers,
+    params,
+    fetchImpl
+  );
+}
+
+/** Read content only for retained records; keep the search metadata and snippets. */
+async function fetchHitContent(
+  hits: AlgoliaHit[],
+  hosts: string[],
+  index: string,
+  headers: Record<string, string>,
+  fetchImpl: FetchLike
+): Promise<{ ok: true; hits: AlgoliaHit[] } | { ok: false; message: string; status?: number }> {
+  const objectIDs = hits.map((hit) => hit.objectID);
+  if (objectIDs.some((id) => typeof id !== "string" || id.length === 0)) {
+    return { ok: false, message: "Algolia search hits lack record IDs for content retrieval" };
+  }
+  const res = await algoliaRequest<{ results: (AlgoliaHit | null)[] }>(
+    hosts,
+    "/1/indexes/*/objects",
+    headers,
+    {
+      requests: [...new Set(objectIDs)].map((objectID) => ({
+        indexName: index,
+        objectID,
+        attributesToRetrieve: ["objectID", "content"]
+      }))
+    },
+    fetchImpl
+  );
+  if (!res.ok) {
+    return res;
+  }
+  const records = res.body?.results;
+  if (!Array.isArray(records) || records.some((record) => !record || typeof record.objectID !== "string")) {
+    return { ok: false, message: "Algolia content retrieval returned missing or invalid records" };
+  }
+  const byID = new Map(records.map((record) => [record!.objectID, record!]));
+  if (objectIDs.some((id) => !byID.has(id))) {
+    return { ok: false, message: "Algolia content retrieval omitted a requested record" };
+  }
+  return {
+    ok: true,
+    hits: hits.map((hit) => {
+      const content = byID.get(hit.objectID)?.content;
+      return typeof content === "string" ? { ...hit, content } : hit;
+    })
+  };
 }
 
 /** Flatten hierarchy lvl0..lvl6 into a " > " breadcrumb. */
@@ -298,13 +359,15 @@ export async function callStellarDocs(
     "Content-Type": "application/json"
   };
 
+  const requestedHits = typeof args.hitsPerPage === "number" ? args.hitsPerPage : 5; // schema default
+
   // --- assemble params: baseParams → fixedParams → mapped args → conditionals
   const params: Record<string, unknown> = {
     ...(transport.baseParams ?? {}),
     ...(mapping.fixedParams ?? {})
   };
   for (const [argName, paramName] of Object.entries(mapping.paramMap ?? {})) {
-    const v = args[argName];
+    const v = argName === "hitsPerPage" ? requestedHits : args[argName];
     if (v !== undefined && v !== null) params[paramName] = v;
   }
 
@@ -342,8 +405,16 @@ export async function callStellarDocs(
     }
   }
 
-  const requestedHits =
-    typeof args.hitsPerPage === "number" ? args.hitsPerPage : 5; // schema default
+  const overFetches =
+    typeof mapping.fixedParams?.hitsPerPage === "number" && !("hitsPerPage" in (mapping.paramMap ?? {}));
+  const retrieveContentAfterFilter = !isPageSections && overFetches &&
+    Array.isArray(params.attributesToRetrieve) && params.attributesToRetrieve.includes("content");
+  if (retrieveContentAfterFilter) {
+    params.attributesToRetrieve = [...new Set([
+      ...(params.attributesToRetrieve as string[]).filter((attribute) => attribute !== "content"),
+      "objectID"
+    ])];
+  }
 
   try {
     if (isPageSections) {
@@ -461,7 +532,7 @@ export async function callStellarDocs(
       return errResult({
         service: SERVICE,
         kind: "soft-empty",
-        message: `no indexed sections found for ${String(args.path)} — the path is not in the docs index (check url_without_anchor from a search hit; auto-generated API-reference pages are not indexed)`,
+        message: `The page-section queries returned no matching records for ${String(args.path)} within their candidate windows. Check url_without_anchor from a search hit.`,
         hint:
           "This is a docs-index result only. For an open-world ecosystem identity or history question, corroborate with the broad Lumenloop or Scout families before drawing a wider negative conclusion."
       });
@@ -492,8 +563,6 @@ export async function callStellarDocs(
     }
     // Apply the caller's hit limit even when a conditional disables the filter.
     // The operation's over-fetch window must not become its returned page size.
-    const overFetches =
-      typeof mapping.fixedParams?.hitsPerPage === "number" && !("hitsPerPage" in (mapping.paramMap ?? {}));
     if (clientFiltered || overFetches) hits = hits.slice(0, requestedHits);
 
     if (hits.length === 0) {
@@ -502,14 +571,27 @@ export async function callStellarDocs(
         kind: "soft-empty",
         message:
           body.nbHits === 0
-            ? "zero hits — this topic is not in the docs corpus (zero is a reliable negative on this index)"
-            : "the index matched pages, but none in this operation's docs category — try stellarDocs.search_docs for a corpus-wide search",
+            ? "This query returned no hits in the docs index with the operation filters."
+            : "The returned candidate window contains no hits for this operation. Try stellarDocs.search_docs for a broader search.",
         status: 200,
         hint:
           body.nbHits === 0
             ? "Scope the negative to this docs index. For an open-world ecosystem identity or history question, corroborate with the broad Lumenloop or Scout families."
             : "Broaden once with stellarDocs.search_docs; if the question is about ecosystem identity or history rather than official technical wording, also consult a broad Lumenloop or Scout family."
       });
+    }
+
+    if (retrieveContentAfterFilter) {
+      const contentResult = await fetchHitContent(hits, hosts, transport.index, headers, fetchImpl);
+      if (!contentResult.ok) {
+        return errResult({
+          service: SERVICE,
+          kind: "error",
+          message: contentResult.message,
+          ...(contentResult.status !== undefined ? { status: contentResult.status } : {})
+        });
+      }
+      hits = contentResult.hits;
     }
 
     return okResult({

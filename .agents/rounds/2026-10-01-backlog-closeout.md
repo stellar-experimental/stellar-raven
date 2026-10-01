@@ -79,3 +79,16 @@ release. Each branch gets an independent review by a model that did not author i
   - G: the third distinct case is confirmed; the monitor stays; owner veto open.
   - H: four harness items scheduled, five candidates rejected; owner veto open.
   - I: skip the optional one-row rejudge before the next pair; owner veto open.
+- Stellar Docs adapter measurement (lane `sd-adapter`, GPT-6-Astra high; candidate
+  `36787b3a9b051fa366b7648ca201691715253fbc`, baseline `bcfa617ffcb6e58e6a7498a1e42135a059535402`).
+  Plan and review disposition: `2026-10-01-backlog-closeout/sd-measure/` (`plan.md`, SHA-256
+  `b1f014f1cec7a5de1ec53a4058b0abf284a9c0cca68613842b1a6d6cdffe2028`).
+  - Pre-spend review: Grok 4.7 high, LAUNCH-OK WITH FIXES; both fixes applied; delta review found one
+    script gap, fixed. Coordinator decisions: a separate detached baseline worktree, and a cost
+    exception under the owner's 2026-10-01 spend approval (no same-tuple stored run; hard caps
+    `$25`, `$20`, `$25`, `$20`, method cap `$90`).
+  - Free differential 1: INCOMPLETE (retained hits were headings only); preserved. Bounded
+    baseline-only coverage amendment: Grok GO DIFF 2 OK. Free differential 2: 101 of 101 input pairs
+    passed, with content equivalence in all nine branches.
+  - Paid run 1 stopped before spend: the Claude Code CLI auto-updated (2.1.286 to 2.1.287). The
+    executable re-pin to the immutable versioned file: GPT-6.1-Sol high, GO PAID 2 OK.
