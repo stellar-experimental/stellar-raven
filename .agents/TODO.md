@@ -311,7 +311,7 @@ shows no verified answer regression before release.
 ### Re-check the remaining dependency audit findings
 
 Found by the 2026-09-17 dependency audit and rechecked on 2026-09-30
-(`research/audits/2026-09-17-dependency-audit/README.md`). Eight high findings remain:
+(`research/audits/2026-09-17-dependency-audit/README.md`). Five high findings remain:
 
 - `@cloudflare/vitest-pool-workers` 0.22.0 pins its own test tools: nested `wrangler` 4.124.0,
   `miniflare` 5.20260815.0-alpha, and `sharp` 0.35.2 under miniflare (GHSA-rgj7-g3m4-5g8c). These

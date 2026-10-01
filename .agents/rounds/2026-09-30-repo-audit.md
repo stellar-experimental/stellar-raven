@@ -90,7 +90,7 @@ round relayed cross-lane requests (mostly comment pointers to the new docs and t
 - Tests: the three Vectorize experiment suites were deleted; the discovery assertions moved to
   `test/eval-discovery.test.mjs`. The four skipped RWA controls now always run against a test-local
   catalog: one passes and three are `it.fails` tripwires for the known routing defect.
-- Docs: `README.md` 153 → 78 lines; `ARCHITECTURE.md` 941 → 394 lines; new `CONTRIBUTING.md`,
+- Docs: `README.md` 153 → 78 lines; `ARCHITECTURE.md` 941 → 397 lines; new `CONTRIBUTING.md`,
   `docs/operations.md`, `docs/stellar-docs.md` (with the complete Algolia guardrails),
   `src/catalog/README.md`, `src/skills/README.md`, `test/README.md`, and `.agents/model-roster.md`.
   `NEXT.md` merged into `TODO.md`.
@@ -99,3 +99,51 @@ round relayed cross-lane requests (mostly comment pointers to the new docs and t
   unconfigured forks; `actionlint` passes with ShellCheck.
 - Source changes are comment-only; an esbuild comparison showed identical JavaScript for every
   changed TypeScript file.
+
+### Review, merge, and fixes
+
+- Checkpoint `5f0dcb1a`; every CI-equivalent gate passed on it.
+- Independent review at `5f0dcb1a`: Grok 4.7 high returned "ready after fixes" with four findings
+  (G1–G4); Claude Fable 5.1 high returned "ready after fixes" with sixteen (F1–F16). Both found
+  every `AGENTS.md` hard rule and the Algolia guardrails intact, and no unplanned loss of test
+  coverage (Fable compared all test names: 97 removed names are the planned Vectorize suites, two
+  duplicates, and renamed or rewritten tests).
+- `origin/main` moved during the round (#185–#189). Merge commit `49e04c16` kept this branch's
+  structure; the owning lanes ported `main`'s `NEXT.md`, `TODO.md`, roster, and
+  `ecosystem-skills/README.md` changes in follow-up round 2.
+- Follow-up round 2 (`878cfea3`) fixed the findings. The largest fixes: the refresh workflow fails on
+  this repository when a required secret is missing (F1, G1); the eval guides became current how-to
+  guides, with 13 cited dated sections moved verbatim to `eval/qa/reviewed/2026-09-30-*-guide-records.md`
+  and 49 uncited sections deleted (F4, G2); records passes restored 10 records that live artifacts
+  still cite (F2, F5, pass 3).
+- Decisions without change: F16 (synthetic gitleaks fixtures; the repository scanner passes); N2
+  (three data-file strings point one link away from moved guide text; `eval/gates.json` and the
+  register take part in hash checks); N3 (two end-of-file blank lines that came from `main`).
+- Verification at `878cfea3`: Grok "ready" (G1–G4 resolved, no new finding); Fable "ready" (15 of
+  16 resolved or decided, F11 closed by this section; no new medium or high finding; N1 fixed).
+
+### Local and memory changes (outside the repository)
+
+- Main checkout: deleted 293 MB of ignored outputs with owner approval — `dist/`, the skill cache,
+  `usage/report-site/dist/`, 547 routing outputs that no tracked text in `6dd94394` or `e9b62871`
+  names, and three raw August gauntlet JSON files behind tracked summaries. Kept `.wrangler/`, QA
+  results, the 62 cited routing outputs, and `eval/local-lanes/`.
+- Claude project memories: 16 stale files rewritten or merged; index at 29 entries. Codex: one ad-hoc
+  correction note. Owner question still open: the pre-purge history bundles were not found.
+
+## Outcome
+
+Done. The branch deletes 705 files (589 history-only round, research, and reviewed-eval records, 82
+unused prior-art authoring files, the Vectorize experiment, and completed-experiment scripts) and
+leaves 1,823 tracked files. Current docs were rewritten against the code: `README.md` 78 lines,
+`ARCHITECTURE.md` 397, `eval/README.md` 101, `eval/qa/README.md` 449. Runtime behavior is unchanged:
+`src/` edits are comment-only and no generated artifact changed, so no deploy is needed.
+
+Final gates on the merged tree: `secrets:scan --tree`, `typecheck`, `npm test` (122 files, 2,155
+passed, 3 expected failures), `test:smoke` (94), all builds, the generated-artifact diff,
+`check-pin-review`, `eval:selftest`, `eval:qa:lint -- --stale --enforce-floors`,
+`eval:qa:register -- --check`, `improvements:lint`, `eval:routing -- --gate`, `actionlint`, and
+`git diff --check origin/main` — all exit 0.
+
+Owner follow-ups: Dependabot security-update pull requests (off today); confirm "OpenAI Sites" and
+the Gemini banner provenance; the location of the pre-purge history bundles.
