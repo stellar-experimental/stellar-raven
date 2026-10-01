@@ -224,6 +224,20 @@ removed, and `npm audit` and `npm run test:smoke` still pass.
 
 ## Eval instruments
 
+### Extend Playground eval accounting to native and no-plugin model paths
+
+The [accounting coverage review](../research/audits/2026-10-01-playground-accounting-coverage.md) reproduced refusals for
+`@cf/moonshotai/kimi-k2.7-code` and `moonshotai/kimi-k3` before upstream access.
+Keep the guard until these paths support complete accounting.
+
+Done when: native and no-plugin chat calls request `returnRawResponse: true`, capture the log identifier,
+and preserve the shared settlement and budget checks.
+Return the response body stream or parsed JSON that the installed native parser expects.
+Keep returning the full `Response` for existing raw-response callers.
+Do not remove the guard and dispatch without a captured log identifier.
+Add real-handler regressions for both named models and a fallback into a native model.
+Require an answer, captured log reads, and a complete numeric receipt in each regression.
+
 ### Investigate missing source evidence in the p6 judge pack
 
 The 2026-10-01 adapter comparison found a disputed Beans Wrong grade in
@@ -261,23 +275,6 @@ exceptions to make its examples pass. Evidence:
 
 Done when: a general mechanism passes frozen routing controls and independently reviewed answer
 checks.
-
-### Reconcile source-authority guidance for full-description clients
-
-The September 17 audit found conflicting instructions in `EXECUTE_DESCRIPTION` and
-`AUTHORITY_RULES`. The former says all factual questions use Docs first; the latter assigns
-ecosystem facts to Scout or Lumenloop. The conflicting clause falls beyond Claude's 2,048-character
-tool-description clip, so a clipped-client QA run cannot measure its correction. Evidence:
-`research/audits/2026-09-17-routing-audit/direction-review.md`, section 8.
-
-Use the existing source-family rule when removing the contradictory clause. Measure a
-full-description client or Playground against protocol and ecosystem controls before release. Do
-not add operation lists, entity examples, or a new routing field. The existing Playground runner
-lacks answer-cost accounting and a judge dollar cap, so keep that comparison unlaunched until
-budget enforcement covers both costs. Do not add a parallel evaluation runner.
-
-Done when: one consistent authority rule reaches the relevant client, with no verified answer
-regression.
 
 ### Reconcile the QA answering prompt with out-of-scope goldens
 

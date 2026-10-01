@@ -53,6 +53,7 @@ import {
   type DemoProviderErrorTelemetry,
   type DemoUsage
 } from "./output.ts";
+import { createEvalCostBinding } from "./eval-cost.ts";
 import { DEMO_SYSTEM_PROMPT } from "./prompt.ts";
 import { demoOperationSummary, demoStepTelemetry, prepareDemoStep } from "./steps.ts";
 import { buildDemoTools } from "./tools.ts";
@@ -139,6 +140,17 @@ export async function handleDemoChat(
     );
   }
   const history = clampHistory(parsed.messages) as ChatMessage[];
+  const budgetHeader = request.headers.get("x-raven-eval-max-budget-usd");
+  let evalBudgetUsd: number | undefined;
+  if (budgetHeader !== null) {
+    if (!["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)) {
+      return reject(400, "eval_budget", "Evaluation accounting requires loopback.");
+    }
+    evalBudgetUsd = Number(budgetHeader);
+    if (!/^(?:\d+\.?\d*|\.\d+)$/.test(budgetHeader) || !Number.isFinite(evalBudgetUsd) || evalBudgetUsd <= 0) {
+      return reject(400, "eval_budget", "Evaluation budget must be positive.");
+    }
+  }
 
   const throttle = await demoThrottle(env.OAUTH_KV, subject);
   if (!throttle.allowed) {
@@ -192,7 +204,7 @@ export async function handleDemoChat(
   // turn is live (and defeats any intermediary that buffers empty responses).
   emit({ type: "ready" });
 
-  ctx.waitUntil(runTurn(env, emit, history, subject, turnSignal).finally(() => {
+  ctx.waitUntil(runTurn(env, emit, history, subject, turnSignal, evalBudgetUsd).finally(() => {
     // Mark an unexpected non-terminal exit as incomplete. The client and
     // gauntlet treat this reason as a failure instead of a normal stop.
     if (!emittedTerminal) emit({ type: "done", reason: "incomplete" });
@@ -212,9 +224,13 @@ async function runTurn(
   emit: (frame: DemoFrame) => void,
   messages: ChatMessage[],
   subject: string,
-  abortSignal: AbortSignal
+  abortSignal: AbortSignal,
+  evalBudgetUsd?: number
 ): Promise<void> {
   const t0 = Date.now();
+  const accounting = evalBudgetUsd === undefined ? null : createEvalCostBinding(
+    env.AI, env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK, evalBudgetUsd
+  );
   const toolBudget = createDemoToolBudget();
   const usageReports: DemoUsage[] = [];
   let finalText = "";
@@ -243,7 +259,7 @@ async function runTurn(
   });
   try {
     const workersai = createWorkersAI({
-      binding: env.AI,
+      binding: accounting?.binding ?? env.AI,
       // Gateway routing is mandatory. Spend and rate limits are account-side
       // configuration; verify them live as described in ARCHITECTURE.md operating limits.
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK),
@@ -260,7 +276,7 @@ async function runTurn(
     // registry cannot resolve. Keep it separate so other models retain their
     // provider SDK normalization.
     const unifiedRun = createWorkersAI({
-      binding: env.AI,
+      binding: accounting?.binding ?? env.AI,
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK)
     });
     const sessionAffinity = await demoSessionAffinity(subject);
@@ -291,9 +307,9 @@ async function runTurn(
       };
       try {
         // Vendors the plugin registry does not know (see DEMO_UNIFIED_RUN_PREFIXES)
-        // resolve through the plain binding instead. Same dispatch either way —
-        // binding.run(slug, body, { gateway }) — so the gateway's rate limit and
-        // spend rule still apply; only the SDK wrapper differs.
+        // resolve through binding.run instead. Registered plugins can use either
+        // binding.run or binding.gateway(id).run, according to their settings.
+        // Evaluation accounting intercepts both; Gateway limits apply to both.
         const viaUnifiedRun = demoUsesUnifiedRun(config.model);
         const settings = demoModelSettings(config.model, sessionAffinity, reasoningEffort);
         const result = streamText({
@@ -315,7 +331,8 @@ async function runTurn(
           temperature: demoTemperatureFor(config.model),
           ...demoAnthropicProviderOptions(config.model, reasoningEffort),
           ...demoOpenAiProviderOptions(config.model, openAiReasoningEffort),
-          abortSignal
+          abortSignal,
+          ...(accounting ? { maxRetries: 0 } : {})
         });
         for await (const part of result.fullStream) {
           switch (part.type) {
@@ -421,6 +438,7 @@ async function runTurn(
     );
     emit({ type: "error", message: errorText(e) });
   } finally {
+    if (accounting) emit({ type: "eval-cost", ...(await accounting.finish()) });
     const usage = sumDemoUsage(usageReports);
     const finalTelemetry = demoFinalTextTelemetry(finalText, finishReason);
     const terminalProviderError = demoTerminalProviderErrorTelemetry(

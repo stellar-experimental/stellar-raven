@@ -77,7 +77,7 @@ function testEnv(modelOverride?: string): Env {
   } as unknown as Env;
 }
 
-async function chatRequest(content: string, modelOverride?: string) {
+async function chatRequest(content: string, modelOverride?: string, evalBudget?: string) {
   const pending: Promise<unknown>[] = [];
   const ctx = {
     waitUntil(promise: Promise<unknown>) {
@@ -87,7 +87,8 @@ async function chatRequest(content: string, modelOverride?: string) {
   const response = await handleDemoChat(
     new Request("http://localhost/demo/chat", {
       method: "POST",
-      headers: { "content-type": "application/json", origin: "http://localhost" },
+      headers: { "content-type": "application/json", origin: "http://localhost",
+        ...(evalBudget === undefined ? {} : { "x-raven-eval-max-budget-usd": evalBudget }) },
       body: JSON.stringify({ messages: [{ role: "user", content }] })
     }),
     testEnv(modelOverride),
@@ -136,6 +137,23 @@ afterEach(() => {
 createWorkersAiStub.mockImplementation(() => modelStub);
 
 describe("demo chat provider failures", () => {
+  it("rejects an invalid evaluation cap before model execution", async () => {
+    for (const cap of ["0", "-1", "NaN", "Infinity", "1e3"]) {
+      const { response } = await chatRequest("hello", undefined, cap);
+      expect(response.status).toBe(400);
+    }
+    expect(modelStub).not.toHaveBeenCalled();
+  });
+
+  it("emits a missing-cost receipt after the terminal frame when no binding cost exists", async () => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    modelStub.mockReturnValueOnce(modelFor(textAnswer("answer")));
+    const { response, pending } = await chatRequest("hello", "openai/gpt-5.6-terra", "1");
+    const frames = sseFrames(await response.text());
+    await Promise.all(pending);
+    expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
+    expect(frames.at(-1)).toMatchObject({ type: "eval-cost", costUsd: null, calls: 0 });
+  });
   it("keeps provider telemetry when a fallback finishes stop without text", async () => {
     const { event: finalEvent } = await runChat([
       [{ type: "error", error: providerError("provider unavailable", 503) }],
