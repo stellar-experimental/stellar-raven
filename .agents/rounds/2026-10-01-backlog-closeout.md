@@ -70,3 +70,12 @@ release. Each branch gets an independent review by a model that did not author i
 - Protocol 29 activated on Mainnet at ledger 64717645 (2026-10-01T17:00:07Z), found by the golden
   review. Corpus impact check: no golden states a current protocol version as an undated fact.
   `q-edge-fresh-latest-protocol-version` gates a dated live lookup, not the number. No edit needed.
+- Decisions D, G, H, and I: resolved by lane `adjudicate` (GPT-6-Astra high) under the owner's
+  delegation; independent review by Claude Fable 5.1 high, ACCEPT WITH FIXES, all sixteen findings
+  applied. The record is `2026-10-01-backlog-closeout/owner-adjudications.md`; its current consumers
+  are the capability monitor, the four H follow-ups, and the prompt-conflict TODO item. It needs the
+  two September 3 candidate reports and the September 1 free-evidence report.
+  - D: leave all 19 recorded grades unchanged; the evidence supports five; owner veto open.
+  - G: the third distinct case is confirmed; the monitor stays; owner veto open.
+  - H: four harness items scheduled, five candidates rejected; owner veto open.
+  - I: skip the optional one-row rejudge before the next pair; owner veto open.
