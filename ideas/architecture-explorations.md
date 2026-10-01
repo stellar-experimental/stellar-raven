@@ -48,5 +48,3 @@ New experiments need the evaluation and authorization gates in [the evaluation m
   (rubric v2.4, 2026-07-07).
 - `extractLossDetail` regex in `src/policy/source-basis.ts` is coupled to the truncate.ts
   footer wording; a wording edit silently empties lossDetail with one indirect test on guard.
-- The 10.4MB `assets/repo/Gemini_Generated_Image_*.png` is documented as intentionally retained
-  (`assets/repo/README.md`) — revisit if page-weight or repo-size ever matters.

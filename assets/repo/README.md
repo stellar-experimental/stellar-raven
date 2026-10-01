@@ -6,4 +6,4 @@ holds the site SVGs, and `src/fonts.ts` holds the fonts.
 
 ## Contents
 
-- `banner.png` - the README banner. Google Gemini generated it.
+- `banner.png` - the README banner.

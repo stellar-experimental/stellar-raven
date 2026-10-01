@@ -145,5 +145,8 @@ passed, 3 expected failures), `test:smoke` (94), all builds, the generated-artif
 `eval:qa:register -- --check`, `improvements:lint`, `eval:routing -- --gate`, `actionlint`, and
 `git diff --check origin/main` — all exit 0.
 
-Owner follow-ups: Dependabot security-update pull requests (off today); confirm "OpenAI Sites" and
-the Gemini banner provenance; the location of the pre-purge history bundles.
+Owner follow-ups (answered 2026-10-01): no Dependabot security-update pull requests; the pre-purge
+history bundles were deleted by the owner, so pre-purge history is not recoverable; the global Codex
+Solo memory file was deleted. The banner's generator was only inferred from its original file name,
+so the docs now state no generator. The "OpenAI Sites" name, inferred from
+`usage/report-site/.openai/hosting.json`, waits for the owner.

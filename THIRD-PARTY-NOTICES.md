@@ -93,5 +93,4 @@ The fonts are © IBM Corp. and are licensed under the
 - `eval/corpus/` — project-authored corpora from this project's retired prior-art repositories,
   including questions adapted from reviewed external collections. See
   [`eval/corpus/PROVENANCE.md`](./eval/corpus/PROVENANCE.md).
-- `assets/repo/banner.png` — an AI-generated README banner. See
-  [`assets/repo/README.md`](./assets/repo/README.md).
+- `assets/repo/banner.png` — the README banner image.
