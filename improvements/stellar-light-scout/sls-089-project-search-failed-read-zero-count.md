@@ -13,6 +13,7 @@ evidence:
   - .agents/rounds/2026-10-01-backlog-closeout/sd-measure/evidence/scout-openapi-contract.json
   - https://stellarlight.xyz/api/openapi.json
   - .agents/rounds/2026-10-01-backlog-closeout/sd-measure/review-result.md
+  - Dedupe 2026-10-01 found no local finding and no Stellar-Light/stellarlight issue for a failed backend read, an incomplete-results warning, or a zero count after a timeout.
 ---
 
 ## Finding
@@ -52,6 +53,7 @@ The [burst capture](https://github.com/stellar-experimental/stellar-raven/blob/m
 Sequential controls before and after returned Tooling `184`, User-Facing App `407`, and Payments `303`.
 Those controls cover different filters from the failed Infrastructure request.
 The failure metadata itself proves the failed read.
+In the same burst, `category=Infrastructure&status=Live` returned `167`, so the category is not empty.
 
 One burst reproduced one failure. This observation does not estimate a failure rate.
 Earlier model traces contained eleven zero counts under a similar burst; this replay did not reproduce all eleven.
