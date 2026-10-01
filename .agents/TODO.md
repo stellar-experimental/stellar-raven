@@ -271,6 +271,20 @@ removed, and `npm audit` and `npm run test:smoke` still pass.
 
 ## Eval instruments
 
+### Extend Playground eval accounting to native and no-plugin model paths
+
+The [accounting coverage review](../research/audits/2026-10-01-playground-accounting-coverage.md) reproduced refusals for
+`@cf/moonshotai/kimi-k2.7-code` and `moonshotai/kimi-k3` before upstream access.
+Keep the guard until these paths support complete accounting.
+
+Done when: native and no-plugin chat calls request `returnRawResponse: true`, capture the log identifier,
+and preserve the shared settlement and budget checks.
+Return the response body stream or parsed JSON that the installed native parser expects.
+Keep returning the full `Response` for existing raw-response callers.
+Do not remove the guard and dispatch without a captured log identifier.
+Add real-handler regressions for both named models and a fallback into a native model.
+Require an answer, captured log reads, and a complete numeric receipt in each regression.
+
 ### Re-check the upstream codemode short-token repair
 
 The September 17 audit reproduced false routing across unrelated weather and billing operations.

@@ -307,9 +307,9 @@ async function runTurn(
       };
       try {
         // Vendors the plugin registry does not know (see DEMO_UNIFIED_RUN_PREFIXES)
-        // resolve through the plain binding instead. Same dispatch either way —
-        // binding.run(slug, body, { gateway }) — so the gateway's rate limit and
-        // spend rule still apply; only the SDK wrapper differs.
+        // resolve through binding.run instead. Registered plugins can use either
+        // binding.run or binding.gateway(id).run, according to their settings.
+        // Evaluation accounting intercepts both; Gateway limits apply to both.
         const viaUnifiedRun = demoUsesUnifiedRun(config.model);
         const settings = demoModelSettings(config.model, sessionAffinity, reasoningEffort);
         const result = streamText({

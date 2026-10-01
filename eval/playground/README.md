@@ -63,6 +63,31 @@ The current accounting path requires a provider transport that returns raw respo
 An unsupported transport stops before its provider call.
 Live cost reporting remains a measurement prerequisite; offline mocks cannot prove Gateway availability.
 
+### Supported accounting transports
+
+Evaluation accounting supports two raw-response paths in the installed `workers-ai-provider@4.0.0`:
+
+| Path | Supported configurations |
+|---|---|
+| `AI.gateway(id).run` | OpenAI Responses, OpenAI Chat, and Grok with the production transport settings |
+| `AI.run` with `returnRawResponse: true` | Plugin-based run transport, including Anthropic, Google, and explicit OpenAI Chat run transport |
+
+The configured OpenAI Responses primary and fallback share the same request accounting.
+Each Gateway dispatch must contain one entry; evaluation accounting rejects hidden server-side fallback entries.
+These statements describe dispatch coverage, not verified live cost availability for every vendor.
+
+Native Workers AI and no-plugin catalog paths remain unsupported under evaluation accounting.
+The installed native parser calls `AI.run` without `returnRawResponse`.
+This includes `@cf/moonshotai/kimi-k2.7-code` and the `moonshotai/kimi-k3` no-plugin path.
+A fallback into either path has the same limitation.
+The guard rejects these paths before any upstream call and explains the unsupported transport in an error frame.
+The receipt has zero counted calls and a null cost; the runner rejects that incomplete receipt.
+Ordinary requests without the evaluation budget header retain their existing model support.
+
+The [coverage review](../../research/audits/2026-10-01-playground-accounting-coverage.md) records the evidence and required extension.
+
+### Results and provenance
+
 Results retain `budget.selectedCaseIds`, `incompleteCaseIds`, and `unattemptedCaseIds`.
 The ledger records each authorization and reported cost.
 `meta.totalCostUsd` sums reported complete-call costs; invalid methods can have additional unknown costs.
