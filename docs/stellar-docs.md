@@ -31,7 +31,9 @@ The host uses `ALGOLIA_APPLICATION_ID_DOCS` and `ALGOLIA_API_KEY_DOCS`.
 These values remain outside model code and catalog output.
 The authored backend defines the index name and host templates.
 The host substitutes its application ID when constructing request hosts.
-Requests use `POST /1/indexes/<encoded-index>/query`.
+Search requests use `POST /1/indexes/<encoded-index>/query`.
+Content retrieval for retained category hits uses `POST /1/indexes/*/objects`.
+The host supplies the configured index and the record IDs from the search response.
 
 The adapter tries configured hosts in order.
 Attempt timeouts increase by 2s: 2s, 4s, 6s, and 8s for the four configured hosts.
@@ -53,7 +55,7 @@ The adapter assembles query parameters in this order:
 
 1. Backend `baseParams`.
 2. Operation `fixedParams`.
-3. Caller arguments named by `paramMap`.
+3. Caller arguments named by `paramMap`, with `hitsPerPage: 5` when that mapped argument is omitted.
 4. Matching `conditionalParams` overrides.
 
 A conditional override can delete a parameter or disable a client filter.
@@ -67,6 +69,16 @@ These operations can request 100 candidates and filter them by URL prefix.
 The adapter then applies the caller's `hitsPerPage` limit.
 That caller limit also applies when a conditional override disables the client filter.
 A client-filtered result can represent only a limited window of the index's matches.
+
+With `includeContent: true`, these operations first retrieve candidates without the full `content` attribute.
+The adapter filters and limits those candidates, then retrieves content only for the retained record IDs.
+This also applies when the meetings category disables the URL filter.
+The second request preserves the original hit order, snippets, metadata, and pagination values.
+Heading records can still omit content.
+An empty candidate selection needs no content request.
+A failed content request returns an error, using the same host retries as search.
+A missing retained record also returns an error; it does not establish corpus absence.
+Direct searches and page-section retrieval keep their existing content retrieval paths.
 
 The response reports shaped hits and Algolia pagination facts.
 `clientFiltered: true` marks results that passed through the URL-prefix filter.
@@ -98,6 +110,8 @@ Successful searches return `{ ok: true, data }`.
 Adapter failures return `{ ok: false, error }`.
 `error.kind` distinguishes `error` from `soft-empty`.
 No usable search or page-section matches produce `soft-empty`.
+Search miss messages describe the current query and operation filters.
+Page-section miss messages describe the derived queries and their candidate windows.
 
 A soft-empty response describes this query, index, and operation scope.
 A URL-filtered miss can arise when the returned candidate window contains no matching category record.

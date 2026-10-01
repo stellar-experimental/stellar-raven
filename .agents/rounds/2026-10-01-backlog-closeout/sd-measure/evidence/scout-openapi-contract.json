@@ -1,0 +1,112 @@
+{
+  "capturedAt": "2026-10-01T23:13:30.495338+00:00",
+  "url": "https://stellarlight.xyz/api/openapi.json",
+  "status": 200,
+  "documentSha256": "8722a8e20d3af940c66b317ebe80881c2b576ef621670c5376178e3767e62c36",
+  "version": "1.9.54",
+  "jsonPointers": {
+    "/components/schemas/Meta/properties/warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure \u2014 the request still succeeds; endpoints that shipped strict from day one return 400 instead."
+    },
+    "/paths/~1api~1projects~1search/get/responses/200": {
+      "description": "Project search results",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ProjectSearchResponse"
+          }
+        }
+      }
+    },
+    "/components/schemas/ProjectSearchResponse/properties/meta": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Meta"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "matchMode": {
+              "type": "string",
+              "enum": [
+                "strict",
+                "loose-1",
+                "loose-2",
+                "loose-3",
+                "majority",
+                "semantic",
+                "all"
+              ],
+              "description": "Tier of match relaxation that produced these results. `semantic` means NO keyword tier matched \u2014 every row is a vector-similarity fallback guess (each tagged `via: \"semantic\"`, confidence capped at medium): verify relevance before relying on them."
+            },
+            "matchModeLabel": {
+              "type": "string"
+            },
+            "didYouMean": {
+              "type": "object",
+              "description": "Present when the query as typed matched NOTHING and a fuzzy name lookup recovered exactly one project within a typo's distance \u2014 the results are for `to`, not for what was asked. Only fires for short (\u22642 token) queries against names of 5+ characters, and only when a single candidate wins outright, so it never guesses between similar names and never touches 3\u20134 character asset tickers. Relay the correction to the user rather than presenting the rows as a match for the original spelling.",
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "description": "The query as the caller typed it."
+                },
+                "to": {
+                  "type": "string",
+                  "description": "The project name actually searched."
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            },
+            "advisory": {
+              "type": "object",
+              "description": "Present when the page does NOT contain a keyword match for the query \u2014 either nothing was found at all, or `matchMode` is `semantic`, meaning every row is a vector neighbour rather than a match. In the semantic case the rows are still returned (a neighbour is occasionally the right answer for a conceptual query) but they must NOT be reported as the thing asked for: a query for a project name that lands here means we hold no project by that name. `suggestions[]` carries the endpoints that can still answer it (repo search for code-only entities, the research corpus for prose mentions).",
+              "properties": {
+                "summary": {
+                  "type": "string"
+                },
+                "suggestions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "why": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "anchorProfileBasis": {
+              "type": "string",
+              "description": "Present only when the page carries anchor rows: empty-field semantics for the anchorProfile join \u2014 empty capability arrays mean not-yet-profiled (see each profile's profileState), never a negative capability claim."
+            },
+            "scfCountBasis": {
+              "type": "string",
+              "description": "Counting basis for the SCF fields on rows: scfTotalAwardedUSD is the project's own SCF-page total (SDF's figure); scfRoundAwards carries each awarded round's official submission record, and the total can exceed the sum of round budgets (un-itemized top-ups)."
+            },
+            "semantic": {
+              "type": "boolean",
+              "description": "True when the keyword pass was thin and vector-similarity rows filled the page (each such row tagged via:'semantic'). Distinct from matchMode='semantic', which means NO keyword tier matched at all."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

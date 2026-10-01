@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-01",
+  "baseline": "bcfa617ffcb6e58e6a7498a1e42135a059535402",
+  "candidate": "36787b3a9b051fa366b7648ca201691715253fbc",
+  "collectionAndRejudgeArtifacts": [
+    {
+      "path": "eval/qa/results/2026-10-01T20-01-37-variantA.json",
+      "sha256": "f3d85942500b59ace24059e63e95deb34f6a341d3426c96beea2afa7e4175b05"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T20-39-44-variantA.json",
+      "sha256": "668ad978b9c34e24662f243d67f46a2867275c206cc2c099b20168ee818cb3d3"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T21-27-50-variantA.json",
+      "sha256": "0555249d0a300f3de179b585d454e28450aeb918aede879567af4159aac86fac"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T22-05-47-variantA.json",
+      "sha256": "840fae8a41e1c3eaa93da1a0f991a97dfeeca16bf19d6bf5afe13c62b9ca1c52"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T22-34-44-rejudge.json",
+      "sha256": "7977cfddb55a1e9c94fdbbee0e6e8b3d8c7c3146827b4cef92974291c4beeb91"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T22-37-55-rejudge.json",
+      "sha256": "0a020c1ca240f1d8dcbd9b34a70b2ee8db25d9acde8629ecad8fe463b0faf39d"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T22-44-19-rejudge.json",
+      "sha256": "82da73429d210a678fe18c2d2de48da7cfc528ccc94faa8b041ffd42d368bbd0"
+    },
+    {
+      "path": "eval/qa/results/2026-10-01T22-48-02-rejudge.json",
+      "sha256": "c73280d8fad853bd67a64fc43d7266d42d9c50ad1865fb83a077faebdb046296"
+    }
+  ],
+  "retainedEvidence": [
+    {
+      "path": "evidence/burst-burst-1790895846790.json",
+      "sha256": "cb2ecc23a91d762bcc154195bbfcc1cf8fc9867b40cde27a9e0d4c02b55ed470"
+    },
+    {
+      "path": "evidence/burst-seq-1790895810834.json",
+      "sha256": "dfc12cabd11a994165e8f452b034c8bc07ec885770406499bd3b8f621143368d"
+    },
+    {
+      "path": "evidence/burst-seq-1790895847511.json",
+      "sha256": "4b51b9a33d7d8a4c068f8da5565d09091d844e477d6c6b03b43896e2e638ef27"
+    },
+    {
+      "path": "evidence/burst.mjs",
+      "sha256": "173b7dbfc4756a8b9544e8248bd6c589004131878d4757e8ff050a802f4e2c43"
+    },
+    {
+      "path": "evidence/replay-socketfi.json",
+      "sha256": "94b668e9807a338dd5b613817e449ebd63e45ac6756afcfcf2ebdd159ed82568"
+    },
+    {
+      "path": "evidence/scout-openapi-contract.json",
+      "sha256": "368e457c482c0c2ecec8f3a3acfe793e15d355a36f8f1bde542982e5145ed953"
+    },
+    {
+      "path": "review-adapter.md",
+      "sha256": "6ac97c23951c387847b1fbd0e28d9b2c98a1a04b0aff32a84b00ad0ff152e133"
+    },
+    {
+      "path": "review-result.md",
+      "sha256": "80a7d3076a90c1ed1f922dce9737db4f4741fc49705d69863e5f6670e597aa13"
+    }
+  ]
+}

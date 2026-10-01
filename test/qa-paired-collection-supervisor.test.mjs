@@ -157,9 +157,9 @@ function reachFinalBarrier(plan, children) {
   }
 }
 
-function planFixture() {
+function planFixture(activeCorpusCount = 500) {
   const base = fixture();
-  const cases = Array.from({ length: 500 }, (_, index) => ({
+  const cases = Array.from({ length: activeCorpusCount }, (_, index) => ({
     id: `case-${String(index).padStart(3, "0")}`,
     question: `${index}?`,
     truth: { lifecycle: { state: "active", reviewState: "none" } }
@@ -355,7 +355,7 @@ function planFixture() {
       idsSha256: sha256(JSON.stringify(ids)),
       casesFileSha256: sha256(casesBytes),
       contentSha256: sha256(JSON.stringify(cases.slice(0, 200))),
-      activeCorpusCount: 500,
+      activeCorpusCount,
       activeCorpusIdsSha256: sha256(JSON.stringify(cases.map((item) => item.id)))
     },
     worktrees: base.plan.worktrees,
@@ -456,6 +456,29 @@ function planFixture() {
 }
 
 describe("paired QA collection supervisor", () => {
+  it.each([200, 501, 537])("accepts a pinned active corpus of %i cases", (count) => {
+    const { root, plan, inspectWorktree } = planFixture(count);
+    try {
+      expect(validatePairedCollectionPlan(plan, { inspectWorktree })).toBe(plan);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([undefined, null, "501", 199, 200.5, -1, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1])(
+    "rejects an invalid pinned active corpus count: %s", (count) => {
+      const { root, plan, inspectWorktree } = planFixture();
+      try {
+        plan.selected.activeCorpusCount = count;
+        expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(
+          /activeCorpusCount must be an integer of at least 200/
+        );
+      } finally {
+        rmSync(root, { recursive: true, force: true });
+      }
+    }
+  );
+
   it("enforces four worktrees and cumulative collection-to-judge caps", () => {
     const { root, plan, inspectWorktree } = planFixture();
     try {
@@ -1138,7 +1161,7 @@ describe("paired QA collection supervisor", () => {
     ["selected ID digest", (plan) => { plan.selected.idsSha256 = "0".repeat(64); }, /does not match selected.ids/],
     ["selected content digest", (plan) => { plan.selected.contentSha256 = "0".repeat(64); }, /frozen case hashes/],
     ["cases file digest", (plan) => { plan.selected.casesFileSha256 = "0".repeat(64); }, /frozen case hashes/],
-    ["active corpus count", (plan) => { plan.selected.activeCorpusCount = 499; }, /exactly 500 active corpus IDs/],
+    ["active corpus count", (plan) => { plan.selected.activeCorpusCount = 499; }, /frozen case hashes/],
     ["active corpus digest", (plan) => { plan.selected.activeCorpusIdsSha256 = "0".repeat(64); }, /frozen case hashes/]
   ])("rejects a mismatched corpus field: %s", (_label, mutate, expected) => {
     const { root, plan, inspectWorktree } = planFixture();
