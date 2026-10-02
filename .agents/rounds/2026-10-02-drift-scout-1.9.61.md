@@ -187,7 +187,10 @@ replace the shorter list.
 Verification pass on `35882740` (`verify-drift-astra.md`): findings 1, 2 (title cases), 4, and 5
 resolved; the fourth probe accepted as a tracked follow-up with the measured cause above; finding 3
 **not safe** while the contract contradiction stood. The alias normalization above answers it.
-Final verification: (pending)
+Final verification on `09c94e3d` (`final-drift-astra.md`): **safe with fixes**; the alias
+implementation resolved finding 3, and one scope defect remained: the TODO edit had removed two
+unrelated routing sections. `58a0ea29` restored them from `35882740` and gave the alias test valid
+queries. Final confirmation (`final2-drift-astra.md`): **safe to merge** once CI passes.
 
 ## Gates (Step 5)
 
@@ -201,4 +204,20 @@ Final verification: (pending)
 
 ## Receipt (Steps 7 and 8)
 
-(pending)
+- CI passed on `7d1a7f0f` (`secrets`, `Analyze` twice, `test`, `CodeQL`). GitHub merged #216 by
+  squash as `12beb68e44c190b5a93aef1e96d0da30969de78a` at 2026-10-02T15:24:29Z.
+- The main checkout carried someone else's uncommitted `ideas/` edit, so the deploy preflight
+  refused it there. The deploy ran from a clean detached worktree at `12beb68e`: preflight
+  `tree clean and HEAD == origin/main`; Worker Version ID `27bc3cbd-bd36-4105-9803-a52148b6be22`,
+  version created 2026-10-02T15:25:35.402Z, deployment created 2026-10-02T15:25:38.047Z, 100% of
+  traffic; upload 7253.14 KiB. The `postdeploy` hook passed.
+- Verification at 15:25:41Z: the nine public routes returned HTTP 200; unauthenticated `POST /mcp`
+  returned HTTP 401. Authenticated `execute` through the Raven connector at 15:26Z:
+  `scout.searchResearch({ sources: ["cap","sep"], perSource: 2 })` returned 4 results,
+  `scout.searchResearch({ source: "cap,sep", perSource: 1 })` returned 2 (the alias is honored
+  live), and `scout.listSkills({})` returned 62 entries with 19 `community` and a `meta.registry`.
+- Issue #215: receipt comment posted
+  (https://github.com/stellar-experimental/stellar-raven/issues/215#issuecomment-5955613696); the
+  issue stays open for the held title vocabulary.
+- Pane `w3W:p1F` closed; the drift and deploy worktrees removed; the branch deleted. This receipt
+  lands through a ledger-only PR and is not deployed.
