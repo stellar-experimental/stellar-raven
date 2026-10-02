@@ -170,6 +170,14 @@ An empty successful payload remains successful data with no positive rows.
 Neither form proves an open-world absence.
 The host ledger classifies empty success as inconclusive without changing the public envelope.
 
+Scout can return HTTP 200 with a failed-read element in the `meta.warnings` string array.
+The case-sensitive matcher requires the prefix `backend read failed`, followed by whitespace, a colon, or end of string.
+The adapter maps this response to `ok: false`, `kind: "error"`, and `status: 200`, even with rows.
+It preserves the first failed-read warning as the message and the full array under `error.details.warnings`.
+It advises one retry, then an inconclusive result.
+Other warnings remain in successful data, including unread-parameter warnings.
+Scout's `meta.error` response remains soft-empty unless a failed-read warning is also present.
+
 The provider prelude installs non-enumerable accessors to catch wrong-level reads.
 
 | Access | Successful envelope | Failed envelope |

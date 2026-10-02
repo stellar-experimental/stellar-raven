@@ -436,6 +436,35 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(outcome.operationSummary.candidateEvidence).toBeUndefined();
   });
 
+  it.each([{ projects: [] }, { projects: [{ name: "Wallet" }] }])(
+    "records a Scout failed-read warning as inconclusive even with rows: %j",
+    async ({ projects }) => {
+      const warning = "backend read failed: operation timed out";
+      vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+        const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
+        expect(url.pathname).toBe("/api/projects/search");
+        return Response.json({
+          projects,
+          meta: { counts: { returned: projects.length, total: projects.length }, warnings: [warning] }
+        });
+      });
+
+      const outcome = await run(`async () => {
+        const r = await scout.searchProjects({ q: "wallet", limit: 1 });
+        return r.ok ? { ok: true, projects: r.data.projects } : { ok: false, error: r.error };
+      }`);
+
+      expect(outcome.ok).toBe(true);
+      if (!outcome.ok) throw new Error(outcome.error);
+      expect(JSON.parse(outcome.result)).toMatchObject({
+        ok: false,
+        error: { service: "scout", kind: "error", status: 200, message: warning }
+      });
+      expect(outcome.operationSummary).toEqual({ total: 1, ok: 0, error: 1, softEmpty: 0 });
+      expect(outcome.evidenceSummary.kind).toBe("service-inconclusive");
+    }
+  );
+
   it("preserves allowlisted source metadata after a compact sandbox projection", async () => {
     vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
       const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
