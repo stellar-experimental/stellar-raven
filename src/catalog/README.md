@@ -50,6 +50,10 @@ The scorer also adds coverage, first-token, and exact-identity bonuses.
   An entry that already passes keeps its original score.
 - Section weighting uses 0.75 when an experiment enables section search.
 - Section-body keywords use a 0.4 blend when those keywords exist.
+- Each page title belongs to the Docs operation with the longest matching URL prefix.
+  Title keywords exclude service names and repeated prose shared by multiple other services.
+  A service supplies evidence through multiple searchable entries or an operation name.
+  Named topics and terms in Docs descriptions remain eligible for the existing Docs frequency filter.
 - Routing keywords use a 1.0 blend with routing-coherence and schema-witness checks.
 - Query aliases provide general forms such as `tx`, `txn`, `txs`, `acct`, and `addr`.
 - Acronym rescue runs after lexical coverage fails and requires a description acronym plus matching content outside its expanded span.

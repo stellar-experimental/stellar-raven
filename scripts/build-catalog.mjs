@@ -30,6 +30,7 @@ import {
   extractRoutingPhrases
 } from "../src/catalog/extract-routing-phrases.ts";
 import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
+import { canonicalRoutingToken } from "../src/catalog/scoring.ts";
 import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // src/skills/README.md defines the runnable-skill contract.
 // Runtime dispatch and both emitters use the same registry to preserve the exposed callable contract.
@@ -292,19 +293,77 @@ function validateAliasReceipt(receipt) {
 /**
  * Per-operation page-title bodies for stellarDocs: titles from
  * inventory/stellar-docs-titles.json scoped by each op's clientFilter URL
- * prefixes. Whole-corpus ops (no prefix filter) get none — vocabulary shared
- * by the whole surface distinguishes nothing.
+ * prefixes. Each matching path belongs to its longest prefix only. Whole-corpus
+ * ops get none. Drop namespace words and repeated cross-service prose, while
+ * preserving named topics and vocabulary in the owning service's descriptions.
  */
-function stellarDocsTitleExtras(entries, titlesSnapshot) {
+export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) {
+  const searchableEntries = catalogEntries.filter((entry) => entry.searchable !== false);
+  const services = new Set(searchableEntries.map((entry) => entry.service));
+  const namespaceTokens = new Set([...services].flatMap(tokenize).map(canonicalRoutingToken));
+  const nameTokens = new Set(searchableEntries
+    .flatMap((entry) => tokenize(entry.id.split(".").at(-1))).map(canonicalRoutingToken));
+  const descriptionTokensByService = new Map();
+  const entriesByServiceToken = new Map();
+  const operationNamesByService = new Map();
+  for (const entry of searchableEntries) {
+    const descriptionTokens = descriptionTokensByService.get(entry.service) ?? new Set();
+    for (const token of tokenize(entry.description).map(canonicalRoutingToken)) descriptionTokens.add(token);
+    descriptionTokensByService.set(entry.service, descriptionTokens);
+    const counts = entriesByServiceToken.get(entry.service) ?? new Map();
+    const tokens = new Set(tokenize([
+      entry.id, entry.service, entry.kind, entry.description,
+      ...(entry.keywords ?? []), ...(entry.routingKeywords ?? [])
+    ].join("\n")).map(canonicalRoutingToken));
+    for (const token of tokens) {
+      counts.set(token, (counts.get(token) ?? 0) + 1);
+    }
+    entriesByServiceToken.set(entry.service, counts);
+    if (entry.kind === "operation") {
+      const names = operationNamesByService.get(entry.service) ?? new Set();
+      for (const token of tokenize(entry.id.split(".").at(-1)).map(canonicalRoutingToken)) {
+        names.add(token);
+      }
+      operationNamesByService.set(entry.service, names);
+    }
+  }
+  const ownerByPrefix = new Map();
+  for (const entry of entries) {
+    for (const prefix of entry.transport?.algolia?.clientFilter?.prefixesAnyOf ?? []) {
+      const path = prefix.replace(/^https?:\/\/[^/]+/, "").replace(/\/$/, "");
+      const owner = ownerByPrefix.get(path);
+      if (owner && owner !== entry.id) throw new Error(`ambiguous title prefix ${path}: ${owner}, ${entry.id}`);
+      ownerByPrefix.set(path, entry.id);
+    }
+  }
+  const prefixes = [...ownerByPrefix].map(([path, id]) => ({ path, id }))
+    .sort((a, b) => b.path.length - a.path.length);
+  const titlesById = new Map();
+  for (const title of titlesSnapshot.titles) {
+    const owner = prefixes.find((prefix) => title.path === prefix.path || title.path.startsWith(`${prefix.path}/`));
+    if (!owner) continue;
+    const titles = titlesById.get(owner.id) ?? [];
+    titles.push(title.title);
+    titlesById.set(owner.id, titles);
+  }
   const out = new Map();
   for (const entry of entries) {
-    const prefixes = entry.transport?.algolia?.clientFilter?.prefixesAnyOf;
-    if (!Array.isArray(prefixes) || prefixes.length === 0) continue;
-    const pathPrefixes = prefixes.map((p) => p.replace(/^https?:\/\/[^/]+/, ""));
-    const titles = titlesSnapshot.titles
-      .filter((t) => pathPrefixes.some((p) => t.path.startsWith(p)))
-      .map((t) => t.title);
-    if (titles.length > 0) out.set(entry.id, [titles.join("\n")]);
+    const otherServices = [...services].filter((service) => service !== entry.service);
+    const titles = titlesById.get(entry.id) ?? [];
+    const distinctive = tokenize(titles.join("\n"))
+      .filter((token) => {
+        const canonical = canonicalRoutingToken(token);
+        if (namespaceTokens.has(canonical)) return false;
+        if (nameTokens.has(canonical)) return true;
+        if (descriptionTokensByService.get(entry.service)?.has(canonical)) return true;
+        // A single mention is not service-wide evidence. Require repeated
+        // entries or an operation name in at least two independent services.
+        // This remains stable when an unrelated service enters the catalog.
+        return otherServices.filter((service) =>
+            (entriesByServiceToken.get(service)?.get(canonical) ?? 0) > 1 ||
+            operationNamesByService.get(service)?.has(canonical)).length < 2;
+      });
+    if (distinctive.length > 0) out.set(entry.id, [distinctive.join(" ")]);
   }
   return out;
 }
@@ -1158,29 +1217,31 @@ async function main() {
 
   const stellarDocsEntries = buildStellarDocs(stellarDocsSpec);
   const scout = buildScout(stellarLight);
+  const lumenloopEntries = attachOperationKeywords(buildLumenloop(lumenloop));
+  // Curated routing vocabulary precedes schema keywords, which exclude it.
+  const scoutEntries = attachOperationKeywords(attachRoutingPhrases(
+    attachRoutingKeywords(scout.entries, scout.routingExtras), scout.routingPhraseExtras
+  ));
+  const skillEntries = buildSkills(skillsManifest, skillTexts, arm);
+  const titleExtras = stellarDocsTitleExtras(stellarDocsEntries, stellarDocsTitles, [
+    ...lumenloopEntries, ...scoutEntries, ...stellarDocsEntries, ...skillEntries
+  ]);
   // Runnable attachment runs over the FULLY assembled set: its declared-op
   // guard needs every service's operation entries in scope, not just skills.
   const entries = applySkillsFormArm(
     attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
       [
-        ...attachOperationKeywords(buildLumenloop(lumenloop)),
-        // Scout ops: x-routing vocabulary → routingKeywords (lever 7) first,
-        // then schema tokens → keywords with the routing tokens excluded.
-        ...attachOperationKeywords(
-          attachRoutingPhrases(
-            attachRoutingKeywords(scout.entries, scout.routingExtras),
-            scout.routingPhraseExtras
-          )
-        ),
+        ...lumenloopEntries,
+        ...scoutEntries,
         // Docs ops carry page-title vocabulary (hundreds of distinct frequency-1
         // tokens post-DF) — the default 64 cap truncates the alphabetical tail,
         // so they get a roomier cap. Still bounded: 12 ops × ≤256 short tokens.
         ...attachOperationKeywords(
           stellarDocsEntries,
-          stellarDocsTitleExtras(stellarDocsEntries, stellarDocsTitles),
+          titleExtras,
           { cap: 256 }
         ),
-        ...buildSkills(skillsManifest, skillTexts, arm)
+        ...skillEntries
       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
     ))),
     arm

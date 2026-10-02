@@ -16,3 +16,8 @@ export function attachRetrievalProfiles(
   entries: readonly Record<string, unknown>[],
   profiles?: Record<string, unknown>
 ): Array<Record<string, unknown>>;
+export function stellarDocsTitleExtras(
+  entries: readonly Record<string, unknown>[],
+  titlesSnapshot: { titles: readonly { path: string; title: string }[] },
+  catalogEntries: readonly Record<string, unknown>[]
+): Map<string, string[]>;

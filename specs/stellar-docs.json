@@ -790,7 +790,10 @@
         "conditionalParams": { "includeContent=true": { "attributesToRetrieve": ["url", "url_without_anchor", "anchor", "hierarchy", "type", "content"] } },
         "clientFilter": {
           "field": "url_without_anchor",
-          "prefixesAnyOf": ["https://developers.stellar.org/docs/tools"]
+          "prefixesAnyOf": [
+            "https://developers.stellar.org/docs/tools",
+            "https://developers.stellar.org/docs/tools/cli/agent-cli"
+          ]
         }
       },
       "verified": {
