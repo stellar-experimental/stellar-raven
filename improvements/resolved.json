@@ -778,6 +778,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/8ab7b88f95177022cd24c0d0acb6e619b19ea23c/improvements/stellar-docs/sd-051-protocol-20-mainnet-heading-date.md"
     },
     {
+      "id": "sd-052",
+      "title": "The generated CLI manual lists five placeholder languages as binding generators. Each command exits before generating bindings in Stellar…",
+      "service": "stellar-docs",
+      "discovered": "2026-09-04",
+      "resolved": "2026-10-02",
+      "repo": "stellar/stellar-cli",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-cli/issues/2722"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-cli/pull/2766"
+      ],
+      "liveRecheck": "2026-10-02 live page https://developers.stellar.org/docs/tools/cli/stellar-cli says \"Generate Python bindings (requires external plugin)\". Java, Flutter, Swift, and PHP use the same note. stellar 28.1.0 exits 1 for each command and links https://github.com/lightsail-network/stellar-contract-bindings.",
+      "reviewEvidence": "Distinct reviewer rev-grok-imp (Grok 4.7, high) re-derived the fix on 2026-10-02T02:02:01Z: issue 2722 closed by merged PR 2766 (d0b26d9f); live manual HTML sha256 73c3b5ff… carries the plugin note on all five languages; stellar 28.1.0 still exits 1 with the external-tool link; no other stellar-docs page lists the placeholder commands; no golden, register, research, or Algolia reference cites sd-052. Report: .agents/rounds/2026-10-02-raven-next-followup/review-improvements-grok.md. Resolution comment posted: https://github.com/stellar/stellar-cli/issues/2722#issuecomment-5944336604",
+      "sourceCommit": "e67f8d11bc4fb218a618516b16e32b1be01722be",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e67f8d11bc4fb218a618516b16e32b1be01722be/improvements/stellar-docs/sd-052-cli-bindings-placeholder-languages.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",
