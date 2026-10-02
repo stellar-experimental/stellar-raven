@@ -34,9 +34,9 @@ describe("documented argument aliases", () => {
   });
 
   it("leaves a single source, an explicit sources array, and other operations alone", () => {
-    const single = { q: "x", source: "cap" };
+    const single = { q: "base reserve", source: "cap" };
     expect(applyArgumentAliases("scout.searchResearch", single)).toBe(single);
-    const both = { q: "x", source: "cap,sep", sources: ["dev-docs"] };
+    const both = { q: "base reserve", source: "cap,sep", sources: ["dev-docs"] };
     expect(applyArgumentAliases("scout.searchResearch", both)).toBe(both);
     expect(guard(entry("scout.searchResearch"), both)).not.toBeNull();
     const other = { query: "a,b" };
@@ -45,7 +45,7 @@ describe("documented argument aliases", () => {
   });
 
   it("still rejects the comma form without the alias", () => {
-    expect(guard(entry("scout.searchResearch"), { q: "x", source: "cap,sep" })).not.toBeNull();
+    expect(guard(entry("scout.searchResearch"), { q: "base reserve", source: "cap,sep" })).not.toBeNull();
   });
 });
 
