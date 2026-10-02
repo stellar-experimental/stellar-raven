@@ -4,6 +4,9 @@ Research notes and possible future work. These notes are not committed product p
 
 - [Observability R2 Retention Plan](./observability-r2-retention.md) — an optional Logpush and R2
   archive for investigations that need history beyond the Workers Logs window.
+- [Retrieval Demand Report](./retrieval-demand-report.md) — the desired reading is the
+  question text an MCP caller sends. Public id counts are the safe layer under that extract.
+  Playground counts can sit beside them. Full prompts and execute code stay out.
 - [User-controlled Personalization](./per-user-mcp-observability.md) — deferred personalization
   with a separate store and explicit user controls.
   [The usage guide](../usage/README.md) describes the implemented private aggregate reports.
