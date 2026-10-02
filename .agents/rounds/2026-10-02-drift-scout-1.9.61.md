@@ -78,8 +78,10 @@ passes at top-5.
 Decision: re-baseline the fingerprint. `eval/gates.json` now carries the new manifest SHA-256
 (`6b8cc6ed28f125cc0ea7d3c65f7161d46fff23979de8bbc3294e108345eda196`), `baselinedAt`
 2026-10-02T14:28:39.540Z, the local trace name, and a dated note. The accepted legacy top-3 total
-records the measured 297. **The band center and every threshold stay unchanged** (legacy 298 ± 3,
-skills floor 17, holdout floors 12/26/29, ceiling 10). After the edit: `GATE PASS`.
+and the legacy top-3 band center both move to the measured 297: `npm run eval:selftest` requires
+the two to be equal, and CI caught the first attempt that kept the center at 298. Every other
+threshold is unchanged (legacy top-1 219 and top-5 326 ± 3, skills floor 17, holdout floors
+12/26/29, ceiling 10). After the edit: `eval:selftest` passes and the gate prints `GATE PASS`.
 
 Watch item, not fixed here: the agent-cli guide titles contribute generic words (`skills`,
 `output`, `model`, `authority`, `security`, `messages`, `spending`) to two docs operations. The
