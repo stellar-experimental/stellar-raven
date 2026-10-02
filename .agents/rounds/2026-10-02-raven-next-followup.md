@@ -134,9 +134,14 @@ merge and deploy as work completes unless something argues against it.
 ### Deploy of `main`
 
 Checks before the deploy: the `wrangler.jsonc` diff since the deployed commit is comments only; CI
-on `a1b76548` passed; #208 and #209 carry measured release verdicts; no paired launch is in
-progress (`/private/tmp/stellar-raven-paired-launch` absent), so the paired plan's merge and deploy
-freeze has not started.
+on `a1b76548` passed; #208 and #209 carry measured release verdicts.
+
+The paired plan freezes merges and deploys from its signature to the end of collection. The owner
+is the only signer, and the owner instructed this deploy on 2026-10-02. Supporting observations at
+03:09Z: `/private/tmp/stellar-raven-paired-launch` does not exist; no paired runner worktree
+exists; no Raven `wrangler` or `workerd` process runs on this host; `TODO.md` decision A still
+says to run "after signing the canonical plan hash". These observations do not prove that no
+signature exists elsewhere. The owner's instruction is the authority for this deploy.
 
 - `npm ci` then `npm run deploy` from a clean detached worktree at `a1b76548`. The preflight
   printed `tree clean and HEAD == origin/main`. Worker Version ID
@@ -152,8 +157,10 @@ This deploy shipped #190, #193, #194, #195, #197, #208, and #209.
 
 ### `ai` and `@ai-sdk/*` update: held, with a guard test
 
-The lead prepared a measured update: candidate commit `8f578ac8` (lockfile only), a live
-loop-check plan (`ai-bump-plan.md` in this round directory), and cap files. Nothing paid ran.
+The lead prepared a measured update. The candidate was commit
+`8f578ac8d53f16ee127f205bdec7a204cdf83e74` (lockfile only). Its lockfile diff is
+`ai-bump-lockfile.patch` in this round directory. The live loop-check plan is `ai-bump-plan.md`.
+Nothing paid ran.
 
 Source check by the lead: the changelog's tool-choice enforcement (`ccf98e7`) runs only for
 `toolChoice.type` `required` or `tool`; the Playground sets none. `ai` enters the Worker only
@@ -163,35 +170,59 @@ Plan and code review by `rev-astra-ai` (Codex frontier, `gpt-6-astra`, high, pan
 `NO-LAUNCH`, five findings (`review-ai-plan-astra.md`). The decisive one: `@ai-sdk/openai` 4.0.77
 defaults an omitted tool `strict` to `false`. A request-capture fixture showed BASE omits `strict`
 and CANDIDATE sends `"strict": false`. The lead confirmed it in the package source
-(`strict: tool.strict ?? false` against `...tool.strict != null ? { strict } : {}`) and in the
-OpenAI function-calling guide: with `strict` omitted, Responses attempts strict mode and
-normalizes the schema; `strict: false` opts out to best-effort function calling.
+(`strict: tool.strict ?? false` against `...tool.strict != null ? { strict } : {}`). The
+[OpenAI function-calling guide](https://developers.openai.com/api/docs/guides/function-calling#strict-mode)
+says that with `strict` omitted, Responses attempts strict mode and falls back to non-strict when
+it cannot convert the schema, and that `strict: false` opts out from the start. This is a
+confirmed request change with a possible behavior effect. No live run has shown which mode the
+server selects today.
 
 Decision (lead, under the owner's delegation): do not ship the update now.
 
-- It changes how the Playground model calls its two tools. That is a model-facing change, and
-  this repository measures those before release.
-- The update brings no fix this service needs. `npm audit` is at 0 findings on `main`.
-- A proper measurement is the reviewed two-repetition judged design, not the six-case screen the
-  lead drafted. The reviewer's other findings (receipt gate, current Gateway headroom, saved step
-  events, completion rule, replacement order) all point the same way.
+- It changes the tool request the Playground sends to the model. This repository measures
+  model-facing changes before release.
+- Nothing inspected shows an urgent defect that needs the update. `npm audit` is at 0 findings
+  on `main`. This does not prove that every fix in the update is irrelevant to the service.
+- The review allows the six-case answer-only screen for a bounded transport claim, once its
+  fixes are in. The lead chose a broader question: strictness can change answers, not only the
+  loop. For that question the lead recommends the judged, two-repetition design of the
+  2026-10-01 authority plan. This is the lead's choice, not a review requirement.
 - The owner's paired collection is scheduled for the weekend and freezes merges and deploys once
   signed. A dependency change with an open strictness decision should not land just before it.
 
-What landed instead: `test/demo-openai-tool-request.test.ts`. It sends the two Playground tool
-schemas through the production OpenAI Responses factory with a capturing `fetch`, and asserts that
-`strict` is not sent and that the parameter schemas match recorded hashes. It passes on `main` and
-fails on the updated lockfile (`expected … to not have property "strict"`), so the free gates now
-catch this class of change. `.agents/TODO.md` carries the upgrade item with the decision it needs.
+What landed instead: `test/smoke/demo-openai-tool-request.test.ts`. It takes the two tools from
+the production builder (`buildDemoTools`) and the model from the production OpenAI Responses
+factory, and captures the request with a stub `fetch`. It asserts that `strict` is not sent and
+that the parameter schemas match recorded hashes. It passes on `main`. It fails on the updated
+lockfile and when `src/demo/tools.ts` sets `strict` on a tool (both tried). The smoke lane now
+catches this class of change. `.agents/TODO.md` carries the upgrade item with the decision it needs.
 
 | review finding (`rev-astra-ai`) | disposition |
 | --- | --- |
-| 1. The artifact cannot prove the final-step rule; a single-model override tests no fallback | accepted; no launch. Recorded in the `TODO.md` item (saved `demo-step` events; primary-only claim) |
-| 2. Current Gateway headroom, receipt gate with usage, paired-window and server-slot checkpoints are missing | accepted; no launch. Recorded in the `TODO.md` item |
+| 1. The artifact cannot prove the final-step rule; a single-model override tests no fallback | accepted; no launch. The `TODO.md` item requires saved `demo-step` events. A future plan must state the primary-only scope or configure the fallback chain; the item does not record that yet |
+| 2. Current Gateway headroom, receipt gate with usage, paired-window and server-slot checkpoints are missing | accepted; no launch. The `TODO.md` item names them and points to the authority plan, which holds the detailed rules |
 | 3. Risk inventory omits active-path changes, first of all tool strictness | accepted; this is the reason for the hold. The guard test pins the strictness and the schemas |
 | 4. Completion must use the runner's complete-method state | accepted; applies to the future plan |
 | 5. Replacement order and consumption updates are ambiguous | accepted; the future plan follows the authority plan's order |
 
-The candidate branch `chore/ai-sdk-in-range-bump` was never pushed and is removed; the update is
-reproducible with `npm update ai @ai-sdk/anthropic @ai-sdk/google @ai-sdk/openai`.
+The lead never pushed the candidate branch `chore/ai-sdk-in-range-bump`. The lead removes the
+local branch and its worktree after this PR merges; `ai-bump-lockfile.patch` keeps the exact
+lockfile change. `npm update ai @ai-sdk/anthropic @ai-sdk/google @ai-sdk/openai` generates a new
+candidate from the versions available on that day; it does not replay this one.
+
+### Review of this PR (#213), `rev-astra-ai` (Codex frontier, `gpt-6-astra`, high)
+
+Verdict: accept with fixes (`review-guard-astra.md`).
+
+| finding | disposition |
+| --- | --- |
+| 1. The first test rebuilt the tools, so a production strictness change left it green | fixed: the guard moved to the smoke lane and uses `buildDemoTools`. Adding `strict: true` to the production search tool now fails it; so does the updated lockfile |
+| 2. The default-strictness statement needed its fallback case and should not claim observed behavior | fixed in the `TODO.md` item, this ledger, and the test comment; the guide is linked |
+| 3. The ledger overstated the earlier review and the `TODO.md` contents, and inferred "no freeze" from an absent directory | fixed: the judged design is the lead's choice; the disposition rows say what the item records; the freeze paragraph names the owner's instruction as the authority and the observations as support only |
+| 4. The branch-removal and replay claims did not match the evidence | fixed: the lockfile diff is preserved as `ai-bump-lockfile.patch`; the text states what `npm update` does |
+| 5. Long and passive sentences in the new prose | fixed in the `TODO.md` item and this section |
+
+The reviewer could not independently confirm the deploy's creation times, the 100% traffic share,
+or the route and connector results. Those are the lead's observations from
+`wrangler deployments status`, `curl`, and one authenticated `execute` at the times stated above.
 

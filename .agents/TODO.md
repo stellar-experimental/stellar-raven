@@ -209,26 +209,34 @@ removed, and `npm audit` and `npm run test:smoke` still pass.
 
 ### Upgrade `ai` and `@ai-sdk/*` past the OpenAI tool-strictness default change
 
-The lockfile holds `ai` 7.0.79 and `@ai-sdk/openai` 4.0.47. An in-range update to `ai` 7.0.127 and
-`@ai-sdk/openai` 4.0.83 passed typecheck, unit, build, and smoke on 2026-10-02 and was not shipped.
+The lockfile holds `ai` 7.0.79 and `@ai-sdk/openai` 4.0.47.
+On 2026-10-02, an in-range update to `ai` 7.0.127 and `@ai-sdk/openai` 4.0.83 passed the free gates.
+The lead held the update after an independent review.
 `@ai-sdk/openai` 4.0.77 changed an omitted tool `strict` from "not sent" to `strict: false`.
-The Playground tools set no `strict` (`src/demo/tools.ts`). With `strict` omitted, the OpenAI
-Responses API attempts strict mode and normalizes the schema; `strict: false` selects best-effort
-function calling. The update therefore changes how the Playground model calls `search` and
-`execute`. `test/demo-openai-tool-request.test.ts` now pins the request shape and fails on that
-update. The review also lists other active-path entries (stream error normalization, tool-output
-serialization, Responses usage handling, schema normalization).
-Evidence: `rounds/2026-10-02-raven-next-followup.md` and its `review-ai-plan-astra.md`.
+The Playground tools set no `strict` (`src/demo/tools.ts`).
 
-First decide the strictness explicitly in `src/demo/tools.ts`: keep the API default behavior or
-choose `strict: false`. An explicit `strict: true` is rejected by the API for schemas with optional
-fields, such as the `search` input. Then measure the update on the Playground with the reviewed
-design of `rounds/2026-10-01-backlog-closeout/authority-plan.md` (judge, two repetitions per arm,
-receipt gate, current Gateway headroom check, saved `demo-step` events). Do not run or merge it
-during the owner's paired collection window.
+The [OpenAI function-calling guide](https://developers.openai.com/api/docs/guides/function-calling#strict-mode) defines both cases.
+With `strict` omitted, Responses attempts strict mode and normalizes the schema.
+It falls back to non-strict function calling when it cannot convert the schema.
+With `strict: false`, it uses non-strict, best-effort function calling from the start.
+The update is a confirmed request change with a possible behavior effect.
+No live run has shown which mode the server selects today.
 
-Done when: the tools state their strictness on purpose, the update is measured with no routing or
-verified answer regression, and the request-shape test records the reviewed shape.
+`test/smoke/demo-openai-tool-request.test.ts` pins the request from the production tool builder.
+It fails on the updated lockfile and on any explicit `strict` in `src/demo/tools.ts`.
+The review also lists other active-path entries: stream error normalization, tool-output serialization, Responses usage handling, and schema normalization.
+Evidence: `rounds/2026-10-02-raven-next-followup.md`, its `review-ai-plan-astra.md`, and `ai-bump-lockfile.patch`.
+
+First decide the strictness on purpose in `src/demo/tools.ts`.
+The unchanged `search` schema does not meet the documented requirements for explicit `strict: true`: it has six properties and requires one.
+A schema with required fields that accept `null` can support strict mode.
+Then measure the update on the Playground.
+The lead recommends the judged, two-repetition design of `rounds/2026-10-01-backlog-closeout/authority-plan.md`, because strictness can change answers, not only the loop.
+That plan also supplies the receipt gate with usage correlation, the current Gateway headroom check, the server-slot rule, and the source-probe stop rule.
+Save `demo-step` events to check the final tools-disabled step.
+Do not run or merge the update during the owner's paired collection window.
+
+Done when: the tools state their strictness on purpose, a measurement shows no routing regression and no verified answer regression, and the request-shape test records the reviewed shape.
 
 ## Eval instruments
 
