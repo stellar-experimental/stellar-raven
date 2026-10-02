@@ -125,3 +125,73 @@ rule, with a report above: the `ai` and `@ai-sdk/*` bumps. Open for the owner: w
 those four packages on the free evidence or after a seeded Playground run, and when to deploy
 `main` (the list above). The dated golden checks from 2026-10-08 are not due. Panes `w3W:p1B` and
 `w3W:p1C` are closed.
+
+## Second pass, 2026-10-02 (after the owner's reply)
+
+The owner answered both open questions: use judgement on the `ai` update, paid tests allowed; and
+merge and deploy as work completes unless something argues against it.
+
+### Deploy of `main`
+
+Checks before the deploy: the `wrangler.jsonc` diff since the deployed commit is comments only; CI
+on `a1b76548` passed; #208 and #209 carry measured release verdicts; no paired launch is in
+progress (`/private/tmp/stellar-raven-paired-launch` absent), so the paired plan's merge and deploy
+freeze has not started.
+
+- `npm ci` then `npm run deploy` from a clean detached worktree at `a1b76548`. The preflight
+  printed `tree clean and HEAD == origin/main`. Worker Version ID
+  `92ccf13a-f2b7-49ed-bdad-61826e4389cc`, version created 2026-10-02T02:41:23.585Z, deployment
+  created 2026-10-02T02:41:25.960Z, 100% of traffic. The `postdeploy` hook passed.
+- Verification at 02:41:29Z: the nine public routes returned HTTP 200; unauthenticated
+  `POST /mcp` returned HTTP 401; `/health/skills` reported `checked: 64`.
+- Authenticated check through the Raven connector: `stellarDocs.search_docs`,
+  `search_doc_titles`, and `search_meeting_notes` each returned 5 hits with no `hitsPerPage`
+  argument (the #208 change is live); `scout.getStatus` returned apiVersion `1.9.54`.
+
+This deploy shipped #190, #193, #194, #195, #197, #208, and #209.
+
+### `ai` and `@ai-sdk/*` update: held, with a guard test
+
+The lead prepared a measured update: candidate commit `8f578ac8` (lockfile only), a live
+loop-check plan (`ai-bump-plan.md` in this round directory), and cap files. Nothing paid ran.
+
+Source check by the lead: the changelog's tool-choice enforcement (`ccf98e7`) runs only for
+`toolChoice.type` `required` or `tool`; the Playground sets none. `ai` enters the Worker only
+through `src/demo`.
+
+Plan and code review by `rev-astra-ai` (Codex frontier, `gpt-6-astra`, high, pane `w3W:p1D`):
+`NO-LAUNCH`, five findings (`review-ai-plan-astra.md`). The decisive one: `@ai-sdk/openai` 4.0.77
+defaults an omitted tool `strict` to `false`. A request-capture fixture showed BASE omits `strict`
+and CANDIDATE sends `"strict": false`. The lead confirmed it in the package source
+(`strict: tool.strict ?? false` against `...tool.strict != null ? { strict } : {}`) and in the
+OpenAI function-calling guide: with `strict` omitted, Responses attempts strict mode and
+normalizes the schema; `strict: false` opts out to best-effort function calling.
+
+Decision (lead, under the owner's delegation): do not ship the update now.
+
+- It changes how the Playground model calls its two tools. That is a model-facing change, and
+  this repository measures those before release.
+- The update brings no fix this service needs. `npm audit` is at 0 findings on `main`.
+- A proper measurement is the reviewed two-repetition judged design, not the six-case screen the
+  lead drafted. The reviewer's other findings (receipt gate, current Gateway headroom, saved step
+  events, completion rule, replacement order) all point the same way.
+- The owner's paired collection is scheduled for the weekend and freezes merges and deploys once
+  signed. A dependency change with an open strictness decision should not land just before it.
+
+What landed instead: `test/demo-openai-tool-request.test.ts`. It sends the two Playground tool
+schemas through the production OpenAI Responses factory with a capturing `fetch`, and asserts that
+`strict` is not sent and that the parameter schemas match recorded hashes. It passes on `main` and
+fails on the updated lockfile (`expected … to not have property "strict"`), so the free gates now
+catch this class of change. `.agents/TODO.md` carries the upgrade item with the decision it needs.
+
+| review finding (`rev-astra-ai`) | disposition |
+| --- | --- |
+| 1. The artifact cannot prove the final-step rule; a single-model override tests no fallback | accepted; no launch. Recorded in the `TODO.md` item (saved `demo-step` events; primary-only claim) |
+| 2. Current Gateway headroom, receipt gate with usage, paired-window and server-slot checkpoints are missing | accepted; no launch. Recorded in the `TODO.md` item |
+| 3. Risk inventory omits active-path changes, first of all tool strictness | accepted; this is the reason for the hold. The guard test pins the strictness and the schemas |
+| 4. Completion must use the runner's complete-method state | accepted; applies to the future plan |
+| 5. Replacement order and consumption updates are ambiguous | accepted; the future plan follows the authority plan's order |
+
+The candidate branch `chore/ai-sdk-in-range-bump` was never pushed and is removed; the update is
+reproducible with `npm update ai @ai-sdk/anthropic @ai-sdk/google @ai-sdk/openai`.
+

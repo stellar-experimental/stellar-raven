@@ -207,6 +207,29 @@ no findings, `npm run test:smoke` passes, and every package uses one `workerd` v
 Done when: a pool release pins patched `miniflare` and `wrangler` versions, the override is
 removed, and `npm audit` and `npm run test:smoke` still pass.
 
+### Upgrade `ai` and `@ai-sdk/*` past the OpenAI tool-strictness default change
+
+The lockfile holds `ai` 7.0.79 and `@ai-sdk/openai` 4.0.47. An in-range update to `ai` 7.0.127 and
+`@ai-sdk/openai` 4.0.83 passed typecheck, unit, build, and smoke on 2026-10-02 and was not shipped.
+`@ai-sdk/openai` 4.0.77 changed an omitted tool `strict` from "not sent" to `strict: false`.
+The Playground tools set no `strict` (`src/demo/tools.ts`). With `strict` omitted, the OpenAI
+Responses API attempts strict mode and normalizes the schema; `strict: false` selects best-effort
+function calling. The update therefore changes how the Playground model calls `search` and
+`execute`. `test/demo-openai-tool-request.test.ts` now pins the request shape and fails on that
+update. The review also lists other active-path entries (stream error normalization, tool-output
+serialization, Responses usage handling, schema normalization).
+Evidence: `rounds/2026-10-02-raven-next-followup.md` and its `review-ai-plan-astra.md`.
+
+First decide the strictness explicitly in `src/demo/tools.ts`: keep the API default behavior or
+choose `strict: false`. An explicit `strict: true` is rejected by the API for schemas with optional
+fields, such as the `search` input. Then measure the update on the Playground with the reviewed
+design of `rounds/2026-10-01-backlog-closeout/authority-plan.md` (judge, two repetitions per arm,
+receipt gate, current Gateway headroom check, saved `demo-step` events). Do not run or merge it
+during the owner's paired collection window.
+
+Done when: the tools state their strictness on purpose, the update is measured with no routing or
+verified answer regression, and the request-shape test records the reviewed shape.
+
 ## Eval instruments
 
 ### Extend Playground eval accounting to native and no-plugin model paths
