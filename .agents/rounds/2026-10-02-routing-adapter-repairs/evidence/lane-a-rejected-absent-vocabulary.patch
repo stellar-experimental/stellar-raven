@@ -1,0 +1,735 @@
+diff --git a/catalog/manifest.json b/catalog/manifest.json
+index 5d8b5f53..40fbc83b 100644
+--- a/catalog/manifest.json
++++ b/catalog/manifest.json
+@@ -25585,37 +25585,17 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "ecosystem",
+-        "proposals",
+-        "seps",
+-        "sdf",
+-        "architecture",
+-        "clients",
+         "delivery",
+         "guarantees",
+-        "configuration",
+-        "example",
+         "faq",
+-        "production",
+-        "server",
+-        "accounts",
+         "45",
+-        "cli",
+         "manual",
+         "deployment",
+         "embedded",
+-        "wallets",
+-        "making",
+-        "ready",
+         "monitoring",
+-        "security",
+-        "troubleshooting",
+         "picker",
+-        "analytics",
+-        "circle",
+         "dashboard",
+         "home",
+-        "distribution",
+         "receivers"
+       ],
+       "kind": "operation",
+@@ -25842,20 +25822,8 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "deploy",
+-        "within",
+-        "integrate",
+-        "comparison",
+-        "design",
+-        "considerations",
+-        "cctp",
+-        "tutorial",
+         "publish",
+-        "information",
+-        "quickstart",
+-        "usdt0",
+-        "layer",
+-        "zero"
++        "information"
+       ],
+       "kind": "operation",
+       "outputSchema": {
+@@ -26967,49 +26935,20 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "smart",
+-        "authorization",
+         "interactions",
+-        "tests",
+-        "simulation",
+-        "lifecycle",
+-        "environment",
+-        "errors",
+-        "debugging",
+-        "modes",
+-        "rust",
+         "dialect",
+         "persisting",
+-        "archival",
+-        "types",
+-        "built",
+         "fully",
+         "typed",
+-        "json",
+         "decentralized",
+-        "exchange",
+-        "signatures",
+         "master",
+         "fast",
+-        "cheap",
+         "0ut",
+         "0f",
+-        "control",
+         "quest",
+-        "migrate",
+-        "another",
+-        "chain",
+         "introduction",
+-        "summary",
+-        "soroban",
+         "hardhat",
+-        "solidity",
+-        "support",
+-        "via",
+         "solang",
+-        "audits",
+-        "poseidon",
+-        "host",
+         "software"
+       ],
+       "kind": "operation",
+@@ -27235,96 +27174,48 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "key",
+-        "parameters",
+-        "symbol",
+         "retrieve",
+-        "entry",
+-        "connecting",
+         "creating",
+         "visualizations",
+         "optimizing",
+-        "queries",
+-        "like",
+         "viewing",
+-        "metadata",
+         "backfill",
+-        "js",
+         "udf",
+-        "use",
+-        "source",
+-        "sdf",
+         "etl",
+         "curation",
+-        "architecture",
+         "scheduling",
+         "orchestration",
+-        "system",
+         "visualization",
+-        "public",
+         "dashboards",
+-        "apis",
+         "introduction",
+         "configuring",
+-        "filtering",
+         "installing",
+         "monitoring",
+         "prerequisites",
+         "upgrading",
+-        "error",
+-        "handling",
+-        "specific",
+-        "before",
+-        "stale",
+         "timeout",
+-        "failed",
+         "malformed",
+-        "standard",
+         "merge",
+         "allow",
+-        "trust",
+         "bump",
+-        "sequence",
+-        "change",
+-        "create",
+         "passive",
+         "sell",
+         "offer",
+         "manage",
+         "buy",
+-        "payment",
+-        "strict",
+         "receive",
+         "options",
+         "consistency",
+-        "arguments",
+-        "migrate",
+         "lake",
+-        "indexers",
+         "exporting",
+-        "setup",
+-        "example",
+-        "usages",
+-        "export",
+         "gcs",
+-        "backends",
+         "buffered",
+-        "backend",
+         "captive",
+-        "core",
+         "readers",
+-        "changes",
+-        "within",
+-        "range",
+-        "count",
+-        "each",
+         "archive",
+         "successful",
+         "processors",
+-        "transfer",
+-        "processor",
+-        "filter",
+-        "oracle"
++        "processor"
+       ],
+       "kind": "operation",
+       "outputSchema": {
+@@ -27549,77 +27440,39 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "asset",
+-        "add",
+-        "meta",
+-        "wasm",
+-        "argument",
+-        "types",
+-        "lifecycle",
++        "delegate",
++        "spending",
++        "output",
+         "uploaded",
+         "bytecode",
+         "extend",
+-        "instance",
+-        "ttl",
+-        "entry",
+         "restore",
+-        "archived",
+-        "keys",
+         "tx",
+-        "commands",
+-        "create",
+-        "claimable",
+-        "balance",
+         "op",
+         "upload",
+-        "smart",
+         "plugins",
+         "manual",
+-        "more",
+-        "analytics",
+-        "platforms",
+         "sandbox",
+-        "block",
+-        "explorers",
+         "jupyter",
+         "notebooks",
+         "insights",
+-        "status",
+-        "node",
+-        "operator",
+         "online",
+         "ide",
+-        "security",
+-        "chain",
+         "saved",
+         "keypairs",
+-        "requests",
+         "dashboard",
+-        "diff",
+-        "xdrs",
+-        "json",
+-        "toolings",
+-        "usage",
+         "container",
+-        "modes",
+         "ports",
+-        "service",
+         "options",
+         "cloud",
+         "deployment",
+         "digital",
+         "ocean",
+         "fly",
+-        "io",
+-        "debugging",
+         "diagnostic",
+         "viewing",
+-        "logs",
+-        "faucet",
+         "connect",
+-        "money",
+-        "gram",
+-        "own"
++        "gram"
+       ],
+       "kind": "operation",
+       "outputSchema": {
+@@ -27833,168 +27686,74 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "create",
+         "restoration",
+         "footprint",
+         "manually",
+         "restore",
+-        "java",
+-        "script",
+         "extend",
+-        "entry",
+-        "test",
+-        "extension",
+         "logic",
+         "interesting",
+-        "ways",
+-        "starter",
+         "basics",
+         "automating",
+-        "futurenet",
+         "reset",
+-        "add",
+-        "support",
+-        "verify",
+-        "trustlines",
+-        "patterns",
+-        "examples",
+-        "wallets",
+-        "making",
+         "installed",
+         "bytecode",
+         "deployer",
+-        "sac",
+-        "asset",
+         "organize",
+-        "error",
+-        "enum",
+         "extending",
+-        "deployed",
+         "upgrading",
+-        "write",
+-        "metadata",
+         "workspace",
+         "conversions",
+         "convert",
+-        "address",
+-        "other",
+-        "types",
+         "bytes",
+         "sc",
+         "val",
+-        "string",
+-        "dapp",
+         "comprehensive",
+-        "frontend",
+-        "dapps",
+         "initialize",
+-        "scripts",
+-        "develop",
+-        "templates",
+-        "implement",
+-        "spec",
+-        "work",
+-        "specs",
+-        "python",
+         "php",
+         "consume",
+         "previously",
+         "ingested",
+-        "ingest",
+-        "published",
+         "publish",
++        "replay",
++        "collect",
+         "analyzing",
+         "cost",
+         "efficiency",
+-        "freighter",
+         "connect",
+         "enable",
+-        "integrate",
+-        "react",
+         "prompt",
+-        "sign",
+-        "js",
+-        "xdrs",
+-        "key",
+-        "parameters",
+-        "symbol",
+         "retrieve",
+         "choose",
+-        "right",
+-        "use",
+-        "case",
+-        "migrate",
+-        "structures",
+         "strategies",
+-        "production",
+-        "coverage",
+         "differential",
+-        "fork",
+-        "snapshot",
+         "mocking",
+-        "within",
+-        "channel",
+-        "claimable",
+-        "balances",
+-        "clawbacks",
+-        "fee",
+         "bump",
+-        "install",
+-        "invoke",
+-        "function",
+-        "sdks",
+         "pooled",
+         "muxed",
+         "memos",
+         "receive",
+-        "signing",
+-        "invocations",
+-        "method",
+-        "sponsored",
+-        "reserves",
+-        "submit",
+-        "web",
+         "assembly",
+         "allocator",
+         "batched",
+-        "atomic",
+-        "swaps",
+-        "swap",
+         "bls",
+-        "signature",
+         "complex",
+         "delegate",
+-        "fuzz",
+-        "liquidity",
+-        "pool",
+         "logging",
+-        "mint",
+         "lock",
+         "simple",
+-        "single",
+         "offer",
+         "sale",
+-        "timelock",
+-        "upgradeable",
+         "increment",
+         "interactions",
+-        "lifecycle",
+-        "concepts",
+-        "modes",
+         "dialect",
+         "persisting",
+-        "built",
+         "fully",
+         "typed",
+-        "cookbook",
+-        "management",
+-        "meta",
+-        "argument",
++        "spending",
++        "output",
+         "uploaded",
+-        "keys",
+         "tx",
+-        "commands",
+-        "balance",
+         "op",
+         "upload",
+         "plugins",
+@@ -28215,61 +27974,25 @@
+         "type": "object"
+       },
+       "keywords": [
+-        "develop",
+-        "templates",
+         "creation",
+-        "toml",
+-        "10",
+-        "authentication",
+-        "hosted",
+-        "api",
+-        "setup",
+         "anchored",
+         "confirmation",
+         "modal",
+-        "contacts",
+         "manage",
+-        "trust",
+-        "querying",
+         "bindings",
+-        "walkthrough",
+         "prerequisites",
+-        "network",
+-        "ingestion",
+         "pipeline",
+         "cdp",
+-        "consumer",
+-        "sample",
+-        "recovery",
+-        "quote",
+-        "programmatic",
+         "uri",
+         "scheme",
+         "facilitate",
+         "delegated",
+-        "signing",
+-        "proofs",
+         "comprehensive",
+         "initialize",
+-        "scripts",
+-        "implement",
+-        "spec",
+-        "work",
+-        "specs",
+-        "java",
+-        "python",
+         "php",
+         "connect",
+-        "testnet",
+         "enable",
+-        "soroban",
+-        "integrate",
+-        "react",
+-        "prompt",
+-        "sign",
+-        "authorization",
+-        "entries",
+-        "xdrs"
++        "prompt"
+       ],
+       "kind": "operation",
+       "outputSchema": {
+@@ -28459,6 +28182,6 @@
+       }
+     }
+   ],
+-  "generatedAt": "2026-10-02T14:26:28Z",
++  "generatedAt": "2026-10-02T15:55:26.831Z",
+   "version": 1
+ }
+diff --git a/inventory/stellar-docs-titles.json b/inventory/stellar-docs-titles.json
+index a26726c7..eb2d379f 100644
+--- a/inventory/stellar-docs-titles.json
++++ b/inventory/stellar-docs-titles.json
+@@ -1,5 +1,5 @@
+ {
+-  "fetchedAt": "2026-09-16T20:51:36.112Z",
++  "fetchedAt": "2026-10-02T15:55:26.831Z",
+   "index": "crawler_Stellar Docs - Docusaurus",
+   "service": "stellar-docs",
+   "source": {
+@@ -395,6 +395,10 @@
+       "path": "/docs/build/guides/events/publish",
+       "title": "Publish events from a Rust contract"
+     },
++    {
++      "path": "/docs/build/guides/events/replay-ledger-close-meta",
++      "title": "Replay a ledger to collect its LedgerCloseMeta"
++    },
+     {
+       "path": "/docs/build/guides/fees",
+       "title": "Fees &amp; Metering"
+@@ -1835,6 +1839,62 @@
+       "path": "/docs/tools/cli",
+       "title": "Stellar CLI"
+     },
++    {
++      "path": "/docs/tools/cli/agent-cli",
++      "title": "Stellar CLI for Agents"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/build-and-submit-transactions",
++      "title": "Build and submit transactions"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
++      "title": "Check balances and metadata"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/delegate-spending",
++      "title": "Delegate spending"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
++      "title": "Pay for APIs with x402"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/send-tokens",
++      "title": "Send tokens"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/sign-messages",
++      "title": "Sign messages"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet",
++      "title": "USDT0 on mainnet"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/quickstart",
++      "title": "Quickstart"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/architecture",
++      "title": "Architecture"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/authority-model",
++      "title": "Authority &amp; Security Model"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/output-and-errors",
++      "title": "Output and errors"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/troubleshooting",
++      "title": "Troubleshooting"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/skills",
++      "title": "Skills"
++    },
+     {
+       "path": "/docs/tools/cli/cookbook",
+       "title": "Cookbook"
+@@ -2616,5 +2676,5 @@
+       "title": "11 posts tagged with \"protocol\""
+     }
+   ],
+-  "total": 651
++  "total": 666
+ }
+diff --git a/scripts/build-catalog.mjs b/scripts/build-catalog.mjs
+index 1fb531b9..d8bc644b 100644
+--- a/scripts/build-catalog.mjs
++++ b/scripts/build-catalog.mjs
+@@ -30,6 +30,7 @@ import {
+   extractRoutingPhrases
+ } from "../src/catalog/extract-routing-phrases.ts";
+ import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
++import { canonicalRoutingToken } from "../src/catalog/scoring.ts";
+ import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
+ // src/skills/README.md defines the runnable-skill contract.
+ // Runtime dispatch and both emitters use the same registry to preserve the exposed callable contract.
+@@ -295,7 +296,16 @@ function validateAliasReceipt(receipt) {
+  * prefixes. Whole-corpus ops (no prefix filter) get none — vocabulary shared
+  * by the whole surface distinguishes nothing.
+  */
+-function stellarDocsTitleExtras(entries, titlesSnapshot) {
++export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) {
++  // A title can distinguish docs operations locally while naming another
++  // service's routing intent. Only vocabulary absent from searchable catalog
++  // text can add title-derived routing keywords. Hidden sections do not compete.
++  const catalogTokens = new Set(catalogEntries
++    .filter((entry) => entry.searchable !== false)
++    .flatMap((entry) => tokenize([
++      entry.id, entry.service, entry.kind, entry.description,
++      ...(entry.keywords ?? []), ...(entry.routingKeywords ?? [])
++    ].join("\n")).map(canonicalRoutingToken)));
+   const out = new Map();
+   for (const entry of entries) {
+     const prefixes = entry.transport?.algolia?.clientFilter?.prefixesAnyOf;
+@@ -304,7 +314,9 @@ function stellarDocsTitleExtras(entries, titlesSnapshot) {
+     const titles = titlesSnapshot.titles
+       .filter((t) => pathPrefixes.some((p) => t.path.startsWith(p)))
+       .map((t) => t.title);
+-    if (titles.length > 0) out.set(entry.id, [titles.join("\n")]);
++    const distinctive = tokenize(titles.join("\n"))
++      .filter((token) => !catalogTokens.has(canonicalRoutingToken(token)));
++    if (distinctive.length > 0) out.set(entry.id, [distinctive.join(" ")]);
+   }
+   return out;
+ }
+@@ -1158,29 +1170,32 @@ async function main() {
+ 
+   const stellarDocsEntries = buildStellarDocs(stellarDocsSpec);
+   const scout = buildScout(stellarLight);
++  const lumenloopEntries = attachOperationKeywords(buildLumenloop(lumenloop));
++  const scoutEntries = attachOperationKeywords(attachRoutingPhrases(
++    attachRoutingKeywords(scout.entries, scout.routingExtras), scout.routingPhraseExtras
++  ));
++  const skillEntries = buildSkills(skillsManifest, skillTexts, arm);
++  const titleExtras = stellarDocsTitleExtras(stellarDocsEntries, stellarDocsTitles, [
++    ...lumenloopEntries, ...scoutEntries, ...stellarDocsEntries, ...skillEntries
++  ]);
+   // Runnable attachment runs over the FULLY assembled set: its declared-op
+   // guard needs every service's operation entries in scope, not just skills.
+   const entries = applySkillsFormArm(
+     attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
+       [
+-        ...attachOperationKeywords(buildLumenloop(lumenloop)),
++        ...lumenloopEntries,
+         // Scout ops: x-routing vocabulary → routingKeywords (lever 7) first,
+         // then schema tokens → keywords with the routing tokens excluded.
+-        ...attachOperationKeywords(
+-          attachRoutingPhrases(
+-            attachRoutingKeywords(scout.entries, scout.routingExtras),
+-            scout.routingPhraseExtras
+-          )
+-        ),
++        ...scoutEntries,
+         // Docs ops carry page-title vocabulary (hundreds of distinct frequency-1
+         // tokens post-DF) — the default 64 cap truncates the alphabetical tail,
+         // so they get a roomier cap. Still bounded: 12 ops × ≤256 short tokens.
+         ...attachOperationKeywords(
+           stellarDocsEntries,
+-          stellarDocsTitleExtras(stellarDocsEntries, stellarDocsTitles),
++          titleExtras,
+           { cap: 256 }
+         ),
+-        ...buildSkills(skillsManifest, skillTexts, arm)
++        ...skillEntries
+       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+     ))),
+     arm
+diff --git a/specs/super-spec.json b/specs/super-spec.json
+index 14f7ecb0..59115ae6 100644
+--- a/specs/super-spec.json
++++ b/specs/super-spec.json
+@@ -196,7 +196,7 @@
+     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
+     "title": "stellar-raven-codemode — unified super spec",
+     "version": "1.0.0",
+-    "x-generatedAt": "2026-10-02T14:26:28Z"
++    "x-generatedAt": "2026-10-02T15:55:26.831Z"
+   },
+   "openapi": "3.1.0",
+   "paths": {
+@@ -7179,7 +7179,7 @@
+   "x-generated": {
+     "builder": "scripts/build-super-spec.mjs",
+     "catalogEntries": 282,
+-    "generatedAt": "2026-10-02T14:26:28Z"
++    "generatedAt": "2026-10-02T15:55:26.831Z"
+   },
+   "x-services": {
+     "lumenloop": {

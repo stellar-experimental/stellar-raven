@@ -21,20 +21,6 @@ Binding spend rules: no paid method runs without its own written authorization, 
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
 
-## Adapters
-
-### Do not return a failed Scout backend read as data
-
-Found on 2026-10-01 in the Stellar Docs adapter measurement. Under a parallel batch of 65
-`scout.searchProjects` calls, Scout returned HTTP 200 with `counts.total: 0`, no rows, and
-`meta.warnings` that begins "backend read failed" and reports a timeout. The adapter returned
-`ok` data. One answer then called two populated categories unused. A direct burst of the same
-65 requests reproduced one such response.
-
-Done when: a response whose own metadata reports a failed backend read does not resolve as
-`ok` data, a test pins the mapping, and the unread-parameter warning stays a success.
-Measure the change before release, because it alters what an agent sees.
-
 ## Improvements follow-up
 
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
@@ -102,52 +88,6 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
 ## Routing
-
-### Keep docs page-title keywords from rescuing docs operations on generic words
-
-Found on 2026-10-02 while absorbing Scout 1.9.61 (`rounds/2026-10-02-drift-scout-1.9.61.md`). The
-Stellar Docs title snapshot gained a "Stellar CLI for Agents" section whose guide titles are short
-imperatives ("Send tokens", "Sign messages", "Delegate spending", "Output and errors", "Skills",
-"Authority & Security Model", "Pay for APIs with x402"). `scripts/build-catalog.mjs`
-`stellarDocsTitleExtras` turns those titles into `keywords` on `stellarDocs.search_sdk_cli_tools_docs`
-and `search_soroban_contract_docs`. `scoring.ts` `scoreWithKeywords` then rescues an operation into
-the gated tier on two keyword matches alone. The independent review measured the effect: for
-"How do x402, MPP, AP2, and ACP compare…", `stellarDocs.search_docs` (score 326, backfill) left the
-first five results and the sdk/cli operation entered at rank 5 with score 130; for "Stellar skills
-for signing messages", "Stellar skills for security auditing", and "Stellar authority skills",
-`scout.listSkills` fell below a docs operation. The title snapshot is therefore held at its
-2026-09-29 state in `inventory/stellar-docs-titles.json`, and the daily drift check will keep
-reporting it until this item lands.
-
-Repair the general mechanism, not the titles: for example, require a title-derived keyword to be
-distinctive across the whole catalog rather than within one service, exclude generic action and
-entity words from title extraction, or stop keyword-only rescue for title tokens. Measure with
-`npm run eval:routing -- --gate`, the extended lane, and the review's probe queries
-(`rounds/2026-10-02-drift-scout-1.9.61/review-drift-astra.md`, finding 2). Then absorb the title
-snapshot and re-baseline the fingerprint.
-
-Done when: the current title snapshot is absorbed with no graded regression and the probe queries
-keep `scout.listSkills` and `stellarDocs.search_docs` at or above their 2026-09-29 ranks.
-
-### Repair the matching that let an article carry `scout.listSkills` for one MCP discovery probe
-
-Found by the 2026-10-02 drift review (`rounds/2026-10-02-drift-scout-1.9.61/verify-drift-astra.md`).
-"Are there any model context protocol skills for Stellar?" lists `scout.listSkills` at rank 3
-(score 195) with the Scout 1.9.54 description and not in the first five with the 1.9.61 wording.
-The cause is not description length. The vendor scorer's prefix match
-(`src/catalog/vendor/search-scoring.ts:85`) let the query token `any` match the article `an` in
-the old phrase "an install", and the 60% token-coverage rule (`:129`) then admitted the entry
-(six of nine tokens). The new description drops that article; five of nine tokens no longer meet
-the rule. Neither description matches `model`, `context`, or `protocol`. "Are there any MCP skills
-for Stellar?", "What Stellar AI skills can I install?", and "List Stellar skills" are unchanged.
-
-Repair the general matching (for example, do not let a stopword-length prefix match count toward
-coverage, or let the expanded protocol name resolve to its abbreviation) and measure with the
-routing gate and this probe. Do not edit the mirrored upstream description and do not add a
-query-specific exception.
-
-Done when: the probe lists `scout.listSkills` in the first five results through a general rule,
-with no graded regression.
 
 ### `search` does not surface the research lane for protocol-history questions
 
