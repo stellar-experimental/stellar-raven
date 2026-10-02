@@ -23,6 +23,22 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Adapters
 
+### Decide how Raven treats the upstream `source` comma alias on `scout.searchResearch`
+
+Scout 1.9.61 documents that a comma in `source` is read like the new `sources` array
+(`inventory/stellar-light.json`, `GET /api/research`). Raven validates `source` against its
+single-value enum (`src/policy/validate.ts`), so `source: "cap,sep"` fails with "must be one of"
+before the adapter runs, while `sources: ["cap", "sep"]` works (live probe 2026-10-02: four
+results, two per source). The spec the sandbox reads therefore carries a parameter description the
+gateway does not honor. A catalog note that pointed callers to `sources` moved 12 graded routing
+rows in a trial, so description text is not the fix. Either accept the alias (split a comma-joined
+`source` into `sources` before validation, as a general rule for parameters that document the
+alias) or state the gateway contract in a lexically inert way. Found by the 2026-10-02 drift review
+(`rounds/2026-10-02-drift-scout-1.9.61/review-drift-astra.md`, finding 3).
+
+Done when: a caller who follows the upstream description gets the upstream result, or the shipped
+description matches Raven's validation, with a test either way.
+
 ### Do not return a failed Scout backend read as data
 
 Found on 2026-10-01 in the Stellar Docs adapter measurement. Under a parallel batch of 65
@@ -102,6 +118,45 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
 ## Routing
+
+### Keep docs page-title keywords from rescuing docs operations on generic words
+
+Found on 2026-10-02 while absorbing Scout 1.9.61 (`rounds/2026-10-02-drift-scout-1.9.61.md`). The
+Stellar Docs title snapshot gained a "Stellar CLI for Agents" section whose guide titles are short
+imperatives ("Send tokens", "Sign messages", "Delegate spending", "Output and errors", "Skills",
+"Authority & Security Model", "Pay for APIs with x402"). `scripts/build-catalog.mjs`
+`stellarDocsTitleExtras` turns those titles into `keywords` on `stellarDocs.search_sdk_cli_tools_docs`
+and `search_soroban_contract_docs`. `scoring.ts` `scoreWithKeywords` then rescues an operation into
+the gated tier on two keyword matches alone. The independent review measured the effect: for
+"How do x402, MPP, AP2, and ACP compare…", `stellarDocs.search_docs` (score 326, backfill) left the
+first five results and the sdk/cli operation entered at rank 5 with score 130; for "Stellar skills
+for signing messages", "Stellar skills for security auditing", and "Stellar authority skills",
+`scout.listSkills` fell below a docs operation. The title snapshot is therefore held at its
+2026-09-29 state in `inventory/stellar-docs-titles.json`, and the daily drift check will keep
+reporting it until this item lands.
+
+Repair the general mechanism, not the titles: for example, require a title-derived keyword to be
+distinctive across the whole catalog rather than within one service, exclude generic action and
+entity words from title extraction, or stop keyword-only rescue for title tokens. Measure with
+`npm run eval:routing -- --gate`, the extended lane, and the review's probe queries
+(`rounds/2026-10-02-drift-scout-1.9.61/review-drift-astra.md`, finding 2). Then absorb the title
+snapshot and re-baseline the fingerprint.
+
+Done when: the current title snapshot is absorbed with no graded regression and the probe queries
+keep `scout.listSkills` and `stellarDocs.search_docs` at or above their 2026-09-29 ranks.
+
+### Investigate why the longer `scout.listSkills` description loses one discovery probe
+
+Found by the same review. With the Scout 1.9.61 wording, "Are there any model context protocol
+skills for Stellar?" no longer lists `scout.listSkills` in the first five results (rank 3, score
+195 before; `scout.getSkill` at 141 appears instead). Restoring the old description restores the
+rank; the docs keywords are not the cause. The gate lanes do not contain this phrasing and the
+general discovery probes ("What Stellar AI skills can I install?", "List Stellar skills") are
+unchanged. Find the scoring term that penalizes the longer description and decide whether it is
+correct. Do not edit the mirrored upstream description.
+
+Done when: the cause is recorded and either the scorer is repaired with measurement or the probe
+is recorded as accepted.
 
 ### `search` does not surface the research lane for protocol-history questions
 
