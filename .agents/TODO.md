@@ -228,15 +228,24 @@ The review also lists other active-path entries: stream error normalization, too
 Evidence: `rounds/2026-10-02-raven-next-followup.md`, its `review-ai-plan-astra.md`, and `ai-bump-lockfile.patch`.
 
 First decide the strictness on purpose in `src/demo/tools.ts`.
-The unchanged `search` schema does not meet the documented requirements for explicit `strict: true`: it has six properties and requires one.
+The unchanged `search` schema does not meet the documented requirements for explicit `strict: true`.
+It has six properties and requires one.
 A schema with required fields that accept `null` can support strict mode.
+
 Then measure the update on the Playground.
-The lead recommends the judged, two-repetition design of `rounds/2026-10-01-backlog-closeout/authority-plan.md`, because strictness can change answers, not only the loop.
-That plan also supplies the receipt gate with usage correlation, the current Gateway headroom check, the server-slot rule, and the source-probe stop rule.
+The lead recommends the judged, two-repetition design of `rounds/2026-10-01-backlog-closeout/authority-plan.md`.
+Strictness can change answers, not only the loop.
+That plan also supplies the receipt gate with usage correlation and the current Gateway headroom check.
+It supplies the server-slot rule and the source-probe stop rule too.
 Save `demo-step` events to check the final tools-disabled step.
+
 Do not run or merge the update during the owner's paired collection window.
 
-Done when: the tools state their strictness on purpose, a measurement shows no routing regression and no verified answer regression, and the request-shape test records the reviewed shape.
+Done when:
+
+- the tools state their strictness on purpose;
+- a measurement shows no routing regression and no verified answer regression;
+- the request-shape test records the reviewed shape.
 
 ## Eval instruments
 

@@ -170,10 +170,11 @@ Plan and code review by `rev-astra-ai` (Codex frontier, `gpt-6-astra`, high, pan
 `NO-LAUNCH`, five findings (`review-ai-plan-astra.md`). The decisive one: `@ai-sdk/openai` 4.0.77
 defaults an omitted tool `strict` to `false`. A request-capture fixture showed BASE omits `strict`
 and CANDIDATE sends `"strict": false`. The lead confirmed it in the package source
-(`strict: tool.strict ?? false` against `...tool.strict != null ? { strict } : {}`). The
-[OpenAI function-calling guide](https://developers.openai.com/api/docs/guides/function-calling#strict-mode)
-says that with `strict` omitted, Responses attempts strict mode and falls back to non-strict when
-it cannot convert the schema, and that `strict: false` opts out from the start. This is a
+(`strict: tool.strict ?? false` against `...tool.strict != null ? { strict } : {}`).
+
+The [OpenAI function-calling guide](https://developers.openai.com/api/docs/guides/function-calling#strict-mode)
+defines both cases. With `strict` omitted, Responses attempts strict mode. It falls back to
+non-strict when it cannot convert the schema. `strict: false` opts out from the start. This is a
 confirmed request change with a possible behavior effect. No live run has shown which mode the
 server selects today.
 
@@ -191,11 +192,14 @@ Decision (lead, under the owner's delegation): do not ship the update now.
   signed. A dependency change with an open strictness decision should not land just before it.
 
 What landed instead: `test/smoke/demo-openai-tool-request.test.ts`. It takes the two tools from
-the production builder (`buildDemoTools`) and the model from the production OpenAI Responses
-factory, and captures the request with a stub `fetch`. It asserts that `strict` is not sent and
-that the parameter schemas match recorded hashes. It passes on `main`. It fails on the updated
-lockfile and when `src/demo/tools.ts` sets `strict` on a tool (both tried). The smoke lane now
-catches this class of change. `.agents/TODO.md` carries the upgrade item with the decision it needs.
+the production builder (`buildDemoTools`). It takes the model from the production OpenAI
+Responses factory. A stub `fetch` captures the request. The test asserts that `strict` is not sent
+and that the parameter schemas match recorded hashes.
+
+The test passes on `main`. It fails on the updated lockfile. It also fails when
+`src/demo/tools.ts` sets `strict` on a tool. The lead and the reviewer tried both cases. The smoke
+lane now catches this class of change. `.agents/TODO.md` carries the upgrade item with the
+decision it needs.
 
 | review finding (`rev-astra-ai`) | disposition |
 | --- | --- |
@@ -220,7 +224,7 @@ Verdict: accept with fixes (`review-guard-astra.md`).
 | 2. The default-strictness statement needed its fallback case and should not claim observed behavior | fixed in the `TODO.md` item, this ledger, and the test comment; the guide is linked |
 | 3. The ledger overstated the earlier review and the `TODO.md` contents, and inferred "no freeze" from an absent directory | fixed: the judged design is the lead's choice; the disposition rows say what the item records; the freeze paragraph names the owner's instruction as the authority and the observations as support only |
 | 4. The branch-removal and replay claims did not match the evidence | fixed: the lockfile diff is preserved as `ai-bump-lockfile.patch`; the text states what `npm update` does |
-| 5. Long and passive sentences in the new prose | fixed in the `TODO.md` item and this section |
+| 5. Long and passive sentences in the new prose | fixed in two passes: the verification (`verify-guard-astra.md`) listed the remaining long sentences and paragraphs in the `TODO.md` item and this section, and the lead split them |
 
 The reviewer could not independently confirm the deploy's creation times, the 100% traffic share,
 or the route and connector results. Those are the lead's observations from
