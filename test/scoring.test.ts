@@ -25,8 +25,13 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { scoreEntry, type ScorableEntry } from "../src/catalog/vendor/search-scoring.ts";
-import { scoreEntryUngated, scoreEntryWeighted } from "../src/catalog/scoring.ts";
-import { loadManifest } from "../src/catalog/search.ts";
+import {
+  prepareScoringQuery,
+  scoreEntryUngated,
+  scoreEntryWeighted,
+  scoreEntryWeightedUngated
+} from "../src/catalog/scoring.ts";
+import { loadManifest, searchCatalog } from "../src/catalog/search.ts";
 import { lastIdSegment } from "../src/catalog/id.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -67,6 +72,167 @@ const QUERY_BATTERY = [
   "anchor deposit SEP-24 interactive flow stuck pending trust",
   "x"
 ];
+
+describe("source-witnessed acronym rescue", () => {
+  const entry: ScorableEntry = {
+    id: "svc.lookup",
+    name: "lookup",
+    service: "svc",
+    kind: "operation",
+    description: "DNS registry"
+  };
+
+  it.each([
+    ["domain name system", "DNS"],
+    ["uniform resource locator", "URL"],
+    ["remote procedure call", "RPC"],
+    ["model context protocol", "MCP"]
+  ])("rejects pure %s collapse but accepts matching context", (query, acronym) => {
+    const source = { ...entry, description: `${acronym} registry` };
+    expect(scoreEntry(source, query)).toBeNull();
+    expect(scoreEntryWeighted(source, query)).toBeNull();
+    expect(scoreEntryWeighted(source, `${query} registry`)).toBe(
+      scoreEntryWeighted(source, `${acronym} registry`)
+    );
+    expect(scoreEntryWeighted(source, `${query} unrelated`)).toBeNull();
+  });
+
+  it.each(["dns registry", "DNSSEC registry", "ADNS registry", "DnsRegistry"])(
+    "does not infer an acronym from %s", (description) => {
+      expect(scoreEntryWeighted({ ...entry, description }, "domain name system registry")).toBeNull();
+    }
+  );
+
+  it("does not admit an acronym supplied only by derived keywords", () => {
+    expect(scoreEntryWeighted({
+      ...entry, description: "registry", keywords: ["DNS"], routingKeywords: ["DNS"]
+    }, "domain name system registry")).toBeNull();
+  });
+
+  it("does not join through stopwords or numbers, or reduce two-word spans", () => {
+    for (const query of ["domain of name system", "domain 2 name system", "domain system"]) {
+      expect(scoreEntryWeighted(entry, query), query).toBeNull();
+    }
+  });
+
+  it("preserves scores that already have sufficient lexical coverage", () => {
+    const source = { ...entry, description: "Domain name system and DNS registry" };
+    const query = "domain name system";
+    expect(scoreEntry(source, query)).not.toBeNull();
+    expect(scoreEntryWeighted(source, query)).toBe(scoreEntry(source, query));
+    expect(scoreEntryWeightedUngated(source, query)).toBe(scoreEntryUngated(source, query));
+  });
+
+  it("combines ordinary token aliases with acronym rescue", () => {
+    const source = { ...entry, description: "DNS account" };
+    const query = "domain name system acct";
+    expect(scoreEntryWeighted(source, query)).toBe(scoreEntryWeighted(source, "DNS account"));
+  });
+
+  it("preserves ungated scores when acronym forms exist", () => {
+    const query = "domain name system registry";
+    const prepared = prepareScoringQuery(query);
+    expect(scoreEntryWeighted(entry, query, prepared)).toBe(scoreEntryWeighted(entry, query));
+    expect(scoreEntryWeighted(entry, query, prepared)).not.toBeNull();
+    expect(scoreEntryWeightedUngated(entry, query, prepared)).toBe(
+      scoreEntryWeightedUngated(entry, query, { ...prepared, acronyms: [] })
+    );
+  });
+
+  it.each([
+    ["network operations team", "NOT"],
+    ["offer new endpoints", "ONE"],
+    ["account ledger lookup", "ALL"]
+  ])("rejects the ordinary English shout-word %s", (query, word) => {
+    const source = { ...entry, description: `${word} registry` };
+    expect(scoreEntryWeighted(source, `${query} registry`)).toBeNull();
+  });
+
+  it("bounds acronym preparation for long letter-only queries", () => {
+    const query = Array(120).fill("alpha bravo charlie delta echo foxtrot").join(" ");
+    expect(prepareScoringQuery(query).acronyms).toHaveLength(32);
+  });
+
+  it("does not promote SEP documentation for unrelated payment initials", () => {
+    const query = "send every payment";
+    const hits = searchCatalog(catalog, { query, limit: 5 });
+    expect(hits[0]?.id).not.toBe("stellarDocs.search_anchor_sep_docs");
+    const source = scorables.find((e) => e.id === "stellarDocs.search_anchor_sep_docs")!;
+    expect(scoreEntryWeighted(source, query)).toBeNull();
+  });
+
+  it.each([
+    ["stella", "stellarDocs.search_anchor_sep_docs"],
+    ["searc", "stellarDocs.search_anchor_sep_docs"],
+    ["toke", "stellarDocs.search_asset_token_docs"]
+  ])("rejects prefix-only acronym context %s", (context, id) => {
+    const query = `send every payment ${context}`;
+    const source = scorables.find((e) => e.id === id)!;
+    expect(scoreEntryWeighted(source, query)).toBeNull();
+    expect(searchCatalog(catalog, { query, limit: 5 })[0]?.id).not.toBe(id);
+  });
+
+  it("keeps exact canonical context matches", () => {
+    const source = { ...entry, description: "DNS anchors" };
+    expect(scoreEntryWeighted(source, "domain name system anchor")).not.toBeNull();
+  });
+
+  it("does not promote SAME as an acronym", () => {
+    const query = "send alpha model every lumenloop";
+    const hits = searchCatalog(catalog, { query, limit: 5 });
+    expect(hits[0]?.id).not.toBe("lumenloop.list_documents");
+    expect(hits.some((hit) => hit.id === "lumenloop.list_documents" && hit.tier === "gated")).toBe(false);
+  });
+
+  it.each(["description", "name"])(
+    "uses lowercase %s evidence from the whole catalog before service filters", (field) => {
+      const template = catalog.entries.find((e) => e.kind === "operation")!;
+      const source: typeof template = {
+        ...template, id: "scout.lookup", service: "scout", description: "BRAVE registry",
+        keywords: [], routingKeywords: [], routingPhrases: []
+      };
+      const query = "bring red apple very early registry";
+      const isolated = { ...catalog, entries: [source] };
+      expect(searchCatalog(isolated, { query })[0]?.tier).toBe("gated");
+      const ordinary: typeof template = {
+        ...source, id: field === "name" ? "lumenloop.brave" : "lumenloop.lookup", service: "lumenloop",
+        description: field === "description" ? "a brave example" : "an example"
+      };
+      const combined = { ...catalog, entries: [source, ordinary] };
+      const hits = searchCatalog(combined, { query, service: "scout" });
+      expect(hits[0]?.id).toBe(source.id);
+      expect(hits[0]?.tier).toBe("backfill");
+      // Cached vocabulary belongs to its catalog, not to a process-wide union.
+      expect(searchCatalog(isolated, { query })[0]?.tier).toBe("gated");
+    }
+  );
+
+  it("preserves the SAC entry's stronger ungated score", () => {
+    const cases = JSON.parse(readFileSync(join(ROOT, "eval/routing-cases.json"), "utf8"));
+    const query: string = cases.cases.find((c: { id: string }) => c.id === "q-soroban-sac-vs-custom-token").question;
+    const sourceEntry = catalog.entries.find((e) => e.id === "stellarDocs.search_asset_token_docs")!;
+    const source = { ...sourceEntry, name: lastIdSegment(sourceEntry.id) };
+    expect(scoreEntryWeightedUngated(source, query)).toBe(812);
+    expect(scoreEntryWeighted(source, query)).toBeNull();
+  });
+
+  it("returns skill discovery for the expanded protocol without an article match", () => {
+    const query = "Are there any model context protocol skills for Stellar?";
+    for (const options of [{ query, limit: 5 }, { query }]) {
+      const hits = searchCatalog(catalog, options);
+      expect(hits.slice(0, 5).some((hit) => hit.id === "scout.listSkills")).toBe(true);
+    }
+    const target = scorables.find((source) => source.id === "scout.listSkills")!;
+    expect(scoreEntryWeighted(target, query)).not.toBeNull();
+    expect(scoreEntryWeighted(target, query)).toBe(
+      scoreEntryWeighted(target, "Are there any MCP skills for Stellar?")
+    );
+    const withoutArticles = {
+      ...target, description: target.description.replace(/\b(?:a|an)\b/gi, "")
+    };
+    expect(scoreEntryWeighted(withoutArticles, query)).not.toBeNull();
+  });
+});
 
 describe("ungated replica ⇔ vendored scorer drift guard", () => {
   it("scores identically to the vendor on every gate-passing (entry, query) pair", () => {
