@@ -8,6 +8,7 @@
  * Section keywords blend at 0.4 when an experiment emits them.
  * Routing keywords blend at 1.0 with routing-coherence and schema checks.
  * Query aliases provide general canonical forms through QUERY_TOKEN_ALIASES.
+ * Acronym rescue contracts content-word spans when source text supplies the acronym.
  * The ungated replica keeps the scoring scale while removing the coverage gate.
  *
  * searchCatalogPage uses ungated scores for short-page filling and targeted
@@ -44,9 +45,16 @@ export type PreparedQueryForm = {
 
 type ScoringQueryForm = PreparedQueryForm & { effective: PreparedQueryForm };
 
+type AcronymForm = {
+  acronym: string;
+  contextTokens: readonly string[];
+  form: ScoringQueryForm;
+};
+
 export type PreparedScoringQuery = {
   original: ScoringQueryForm;
   canonical: ScoringQueryForm | null;
+  acronyms: readonly AcronymForm[];
 };
 
 /**
@@ -279,11 +287,63 @@ export function canonicalizeQuery(query: string): string | null {
   return cached;
 }
 
-export function prepareScoringQuery(query: string): PreparedScoringQuery {
+// Uppercase emphasis is not evidence of an acronym. Exclude closed-class
+// English plus common quantifiers, number words, and instruction emphasis.
+const ACRONYM_WORDS = new Set([
+  ...STOPWORDS,
+  "all", "one", "two", "three", "four", "five", "six", "seven", "eight",
+  "nine", "ten", "zero", "only", "none", "each", "every", "both", "other",
+  "either", "neither", "must", "may", "might", "shall", "never", "always",
+  "yes", "true", "false", "note", "use", "read", "write"
+]);
+const ACRONYM_FORM_LIMIT = 32;
+
+/**
+ * Try initialisms of contiguous content words, only when an entry supplies
+ * the uppercase acronym. No protocol-name dictionary or service mapping is
+ * needed. Three to six words bounds ambiguity and preparation work; stopwords
+ * and numeric tokens break a span rather than silently joining unrelated words.
+ * Keep content outside the span as independent evidence; cap prepared forms.
+ */
+function prepareAcronymForms(
+  query: string,
+  ordinaryWords: ReadonlySet<string>
+): PreparedScoringQuery["acronyms"] {
+  const tokens = tokenize(query);
+  const forms: AcronymForm[] = [];
+  for (let start = 0; start < tokens.length; start++) {
+    let acronym = "";
+    for (let end = start; end < Math.min(tokens.length, start + 6); end++) {
+      const token = tokens[end];
+      if (!token || STOPWORDS.has(token) || !/^[a-z]{2,}$/.test(token)) break;
+      acronym += token.charAt(0);
+      if (end - start < 2) continue;
+      if (ACRONYM_WORDS.has(acronym) || ordinaryWords.has(acronym)) continue;
+      const outside = [...tokens.slice(0, start), ...tokens.slice(end + 1)];
+      const contextTokens = outside.filter((t) => t.length >= 2 && !STOPWORDS.has(t));
+      if (contextTokens.length === 0) continue;
+      forms.push({
+        acronym: acronym.toUpperCase(),
+        contextTokens,
+        form: prepareQueryForm([
+          ...tokens.slice(0, start), acronym, ...tokens.slice(end + 1)
+        ].join(" "))
+      });
+      if (forms.length === ACRONYM_FORM_LIMIT) return forms;
+    }
+  }
+  return forms;
+}
+
+export function prepareScoringQuery(
+  query: string,
+  ordinaryWords: ReadonlySet<string> = ACRONYM_WORDS
+): PreparedScoringQuery {
   const canonical = canonicalizeQuery(query);
   return {
     original: prepareQueryForm(query),
-    canonical: canonical === null ? null : prepareQueryForm(canonical)
+    canonical: canonical === null ? null : prepareQueryForm(canonical),
+    acronyms: prepareAcronymForms(canonical ?? query, ordinaryWords)
   };
 }
 
@@ -309,6 +369,35 @@ function aliasMaxScore(
 }
 
 /**
+ * Acronyms can admit a gate-failed entry only with independent context and
+ * a score at least as high as its original ungated score. Existing gated
+ * scores stay unchanged. The ungated path never uses acronym forms.
+ */
+function acronymRescueScore(
+  entry: WeightedScorableEntry,
+  query: PreparedScoringQuery,
+): number | null {
+  let best = aliasMaxScore(entry, query, gatedEntryScorer);
+  if (best !== null || query.acronyms.length === 0) return best;
+  const ungated = aliasMaxScore(entry, query, ungatedEntryScorer);
+  // Only source description text can witness an acronym. Lowercase keyword
+  // fields and accidental initials in ordinary words cannot admit a variant.
+  const acronyms = new Set(entry.description.match(/\b[A-Z]{3,6}\b/g) ?? []);
+  const entryTokens = new Set(
+    tokenize(`${entry.id} ${entry.name} ${entry.description}`).map(canonicalRoutingToken)
+  );
+  for (const variant of query.acronyms) {
+    if (!acronyms.has(variant.acronym)) continue;
+    if (!variant.contextTokens.some((token) => entryTokens.has(canonicalRoutingToken(token)))) continue;
+    const alt = weightedScore(entry, variant.form, gatedEntryScorer);
+    if (alt !== null && (ungated === null || alt >= ungated)) {
+      best = best === null ? alt : Math.max(best, alt);
+    }
+  }
+  return best;
+}
+
+/**
  * Lexical score with a stopword-rescue fallback: score the FULL query first
  * (vendor semantics unchanged for every entry that passes the coverage
  * gate), and only when the gate fails retry with the stopword-filtered
@@ -317,14 +406,15 @@ function aliasMaxScore(
  * the vendor's 60% threshold — the rescue makes coverage a statement about
  * content words without disturbing rankings that already worked.
  * Alias-bearing queries additionally score under their canonicalized form
- * and take the maximum.
+ * and take the maximum. If lexical coverage still fails, source-witnessed
+ * acronym forms can rescue the entry without changing the vendor scorer.
  */
 export function scoreEntryWeighted(
   entry: WeightedScorableEntry,
   query: string,
   prepared = prepareScoringQuery(query)
 ): number | null {
-  return aliasMaxScore(entry, prepared, gatedEntryScorer);
+  return acronymRescueScore(entry, prepared);
 }
 
 /**

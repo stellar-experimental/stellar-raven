@@ -690,8 +690,30 @@ type PreparedSearchQuery = {
   routingRejections: Map<CatalogEntry, boolean>;
 };
 
-function prepareSearchQuery(query: string): PreparedSearchQuery {
-  const scoring = prepareScoringQuery(query);
+const ordinaryAcronymWordsCache = new WeakMap<Catalog, ReadonlySet<string>>();
+
+/**
+ * Lowercase prose elsewhere in the catalog distinguishes uppercase emphasis
+ * from acronym evidence. Preserve compounds and identifiers as whole tokens:
+ * `mcp-server`, `some_name`, and mixed-case names are not ordinary lowercase words.
+ * Cache by catalog identity so searches and filters share the same vocabulary.
+ */
+function ordinaryAcronymWords(catalog: Catalog): ReadonlySet<string> {
+  const cached = ordinaryAcronymWordsCache.get(catalog);
+  if (cached) return cached;
+  const words = new Set<string>();
+  for (const entry of catalog.entries) {
+    const text = `${lastIdSegment(entry.id)} ${entry.description}`;
+    for (const token of text.match(/[A-Za-z0-9_-]+/g) ?? []) {
+      if (/^[a-z]{3,6}$/.test(token)) words.add(token);
+    }
+  }
+  ordinaryAcronymWordsCache.set(catalog, words);
+  return words;
+}
+
+function prepareSearchQuery(catalog: Catalog, query: string): PreparedSearchQuery {
+  const scoring = prepareScoringQuery(query, ordinaryAcronymWords(catalog));
   return {
     scoring,
     aliasTokens: prepareAliasQuery(query),
@@ -1174,7 +1196,7 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     Math.min(Number.isFinite(requested) ? (requested as number) : DEFAULT_SEARCH_LIMIT, MAX_SEARCH_LIMIT)
   );
 
-  const query = prepareSearchQuery(opts.query);
+  const query = prepareSearchQuery(catalog, opts.query);
   const discriminativeTokens = discriminativeRoutingTokens(catalog);
   const gated = scoreCandidates(catalog, opts, scoreEntryWeighted, query);
   const gatedIds = new Set(gated.map((candidate) => candidate.entry.id));

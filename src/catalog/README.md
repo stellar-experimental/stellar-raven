@@ -52,6 +52,12 @@ The scorer also adds coverage, first-token, and exact-identity bonuses.
 - Section-body keywords use a 0.4 blend when those keywords exist.
 - Routing keywords use a 1.0 blend with routing-coherence and schema-witness checks.
 - Query aliases provide general forms such as `tx`, `txn`, `txs`, `acct`, and `addr`.
+- Acronym rescue runs after lexical coverage fails and requires a description acronym plus matching content outside its expanded span.
+  Context tokens require exact equality after canonical token conversion; prefixes do not qualify.
+  It rejects ordinary English emphasis words and prepares at most 32 forms.
+  Lowercase prose words from all catalog names and descriptions also exclude uppercase acronym witnesses.
+  Compound tokens such as `mcp-server` remain whole and do not count as ordinary lowercase words.
+  A new gated score cannot fall below the existing ungated score; ungated scores remain unchanged.
 - The ungated scorer removes the coverage gate while retaining the common scoring scale.
 
 Service diversity acts during selection, not field scoring.
