@@ -15,6 +15,7 @@ evidence:
   - .agents/rounds/2026-10-01-backlog-closeout/sd-measure/review-result.md
   - Dedupe 2026-10-01 found no local finding and no Stellar-Light/stellarlight issue for a failed backend read, an incomplete-results warning, or a zero count after a timeout.
   - upstream issue filed 2026-10-01: https://github.com/Stellar-Light/stellarlight/issues/1751
+  - 2026-10-02 recheck at Scout API 1.9.61 (inventory refresh): the contract gap persists. GET /api/projects/search still declares only a 200 ProjectSearchResponse. The release adds a RetryableError schema (HTTP 503 with retryAfterSeconds and an advisory) referenced by GET /api/research for 429 and 503; GET /api/hackathon-brief has description-only 400, 429, and 503 entries. Runtime recurrence was not re-tested; the burst trigger was not re-run. The upstream issue is open with no comment.
 ---
 
 ## Finding

@@ -1,16 +1,16 @@
 {
-  "changelogEntryCount": 260,
+  "changelogEntryCount": 267,
   "changelogLatest": {
-    "date": "2026-09-25",
-    "detail": "A partner running about 39,000 requests over two days reported three things. Stalls: research calls held open past 10 s while other routes answered; the embedding call had no timeout and the database driver waited its default 30 s for a server during a provider blip, so both now fail fast (8 s and 5 s, plus a 20 s socket bound) into the keyword fallback or a 503. Error bodies: every rate-limited 503 now carries Retry-After (seconds). Fallback: six sources (scf-handbook, paper, scf-proposal, lumenloop, incident, ec-developer-report) answered keyword on every query at zero load, because a source-scoped vector query kept only that source's rows out of a generic top-1,200 pool and small sources never reached it; the vector index now carries source as a filter field, so a source-scoped query is filtered inside the index, and when a fallback still happens the reason is stated in meta.warnings instead of a blanket vector unavailable. Query embeddings are memoised per instance, so one question fanned out across sources is embedded once. Headers are additive; no field, parameter or enum changed.",
-    "summary": "searchResearch: a 503 carries Retry-After; responses carry X-Scout-Match-Mode and Server-Timing headers; a keyword fallback says why in meta.warnings; small sources no longer fall back to keyword by construction.",
+    "date": "2026-10-02",
+    "detail": "Measured live: per source, multi vs scoped call, same row set 26 of 26 and same order 25 of 26; two scoped calls on different instances matched resultsHash 22 of 26 and the row set 25 of 26. Description-only change.",
+    "summary": "Correction to 1.9.60: a multi-source call returns each source's single-source rows, but its bySource resultsHash matches the single call's only when both reuse one query embedding. Scores can differ in the fourth decimal between calls that embed the query separately (two single-source calls on different instances do too), which can swap near-tied rows; compare row ids.",
     "surfaces": [
       "api"
     ],
-    "type": "changed",
-    "version": "spec@1.9.54"
+    "type": "fixed",
+    "version": "spec@1.9.61"
   },
-  "fetchedAt": "2026-09-29T19:23:05.279Z",
+  "fetchedAt": "2026-10-02T14:20:35.127Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -978,7 +978,7 @@
               "type": "string"
             },
             "warnings": {
-              "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+              "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
               "items": {
                 "type": "string"
               },
@@ -2823,6 +2823,22 @@
           ],
           "type": "object"
         },
+        "RequestError": {
+          "description": "The request itself was wrong (a 400): fix the call, do not retry it as is.",
+          "properties": {
+            "error": {
+              "type": "string"
+            },
+            "hint": {
+              "description": "How to correct the call.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "error"
+          ],
+          "type": "object"
+        },
         "ResearchResult": {
           "description": "One ranked research chunk from /api/research (best chunk per document).",
           "properties": {
@@ -2930,6 +2946,28 @@
           },
           "type": "object"
         },
+        "RetryableError": {
+          "description": "A failure the caller should retry: the read behind the answer failed (database, upstream, or this instance's rate window). Never a claim about the data; `advisory` says what the failure is NOT a claim about. Mirrors the Retry-After header in seconds.",
+          "properties": {
+            "advisory": {
+              "description": "What the failure is not a claim about, and what to do (retry after Retry-After, or where else to look).",
+              "type": "string"
+            },
+            "error": {
+              "description": "What failed, in one line.",
+              "type": "string"
+            },
+            "retryAfterSeconds": {
+              "description": "Seconds to wait before resending; the same value as the Retry-After header. 2 on database reads, 60 or 300 on the skills registry.",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "error",
+            "retryAfterSeconds"
+          ],
+          "type": "object"
+        },
         "Rfp": {
           "description": "An RFP row from /api/rfps. rowType discriminates real briefs from the synthetic live-round row — count/render briefs by filtering rowType === 'rfp'.",
           "properties": {
@@ -3000,7 +3038,7 @@
           "description": "One installable Stellar AI skill/tool from /api/skills — SDF's skills.stellar.org set, curated entries, and approved community submissions mapped onto one unified shape. Optional fields are OMITTED when not applicable (absent = not applicable, never null and never false).",
           "properties": {
             "argumentHint": {
-              "description": "SDF skills only — argument hint (e.g. '[payment task]'). Absent elsewhere.",
+              "description": "Registry entries only: argument hint (e.g. '[payment task]'). Absent elsewhere.",
               "type": "string"
             },
             "compatibility": {
@@ -3025,7 +3063,7 @@
               "type": "string"
             },
             "install": {
-              "description": "Primary install command (e.g. 'npx skills add stellar/{slug}'). Absent when the entry has no one-line install.",
+              "description": "Primary install command, e.g. 'npx skills add https://github.com/stellar/stellar-dev-skill' for the SDF set (the registry's own command) or 'npx skills add <that repository>' for a community-built entry. Absent when the entry has no one-line install.",
               "type": "string"
             },
             "installAlt": {
@@ -3058,7 +3096,11 @@
               "type": "string"
             },
             "rawUrl": {
-              "description": "Direct raw SKILL.md URL (SDF skills). Absent elsewhere.",
+              "description": "Direct raw SKILL.md URL for entries listed on skills.stellar.org (SDF authored and community-built). Absent elsewhere.",
+              "type": "string"
+            },
+            "registry": {
+              "description": "'skills.stellar.org' when the entry is listed on SDF's registry (either section), including a curated entry the registry lists under another name. Absent for entries we curate or host that the registry does not list.",
               "type": "string"
             },
             "repository": {
@@ -3070,6 +3112,7 @@
               "type": "string"
             },
             "source": {
+              "description": "Who stands behind the entry. sdf = SDF authored (the registry's Included Stellar Skills section). community = community-built: listed on skills.stellar.org under its author's maintenance and not reviewed by SDF (registry present), or an approved submission to this directory (registry absent). stellarlight and lumenloop = curated by those teams; external = an SDK, CLI or tool we list.",
               "enum": [
                 "sdf",
                 "stellarlight",
@@ -3097,7 +3140,7 @@
               "type": "array"
             },
             "userInvocable": {
-              "description": "SDF skills only — whether the skill is user-invocable in skills.stellar.org's sense. Absent elsewhere.",
+              "description": "Registry entries only (SDF authored and community-built): whether the skill is user-invocable in skills.stellar.org's sense. Absent elsewhere.",
               "type": "boolean"
             }
           },
@@ -3341,14 +3384,14 @@
         "name": "Stellar Light",
         "url": "https://stellarlight.xyz/scout"
       },
-      "description": "Read-only public API powering Stellar Scout. Aggregators, autonomous agents, and AI tools can call these endpoints directly without auth.\n\nAll endpoints are edge-cached. The same data is available via the @stellar-light/scout-mcp Model Context Protocol server (for human-driven clients) and via the @stellar-light/api-client TypeScript SDK (for autonomous aggregators).\n\nData sources merged behind these endpoints: the Stellarlight directory of curated Stellar projects + an indexed-and-scored GitHub repo index, Stellar Passport builder profiles, Electric Capital developer activity, Soroban audit corpus, SDF skills.stellar.org skill catalog, lumenloop ecosystem data, and primary research (SEPs, papers, dev docs, SCF Handbook). Live collection sizes are in GET /api/status (sources[]) — counts are intentionally not hardcoded here to avoid drift.\n\n## Routing metadata (description vs x-routing)\nOperation `description` fields are deliberately terse purpose statements: the operation's distinctive job plus its single sharpest disambiguation, nothing else. The machine-routing vocabulary that previously lived in description prose — category/product enumerations, synonym chains, example question phrasings — lives in each operation's `x-routing` extension: `{purpose, keywords[], useWhen[], notFor[], exampleQuestions[]}`. Lexical and embedding routers should score `x-routing` as separately-weighted fields rather than concatenating it into the description (broad prose descriptions were lexically capturing question families other operations answer); `notFor` entries name the operation to prefer, as '<question shape> -> <operationId>'.\n\n## Versioning\nEvery response carries an `X-API-Version` header (currently `1`). The number bumps only on a breaking response-shape change; additive fields don't bump it. Pin to a version by asserting the header. Breaking changes are announced before they ship.\n\n## Rate limits\nPer-IP, per-endpoint, per-minute floors on the cost-bearing routes (typically 60 requests a minute; `/api/research` 60 a minute), advertised on every response via `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset`, and on a 429 via `Retry-After`. Cache where `Cache-Control` allows and prefer `offset` pagination over hammering. A platform whose users share one egress IP (an agent runtime, an MCP host) can ask support@stellarlight.xyz for a partner key: sent as `Authorization: Bearer <key>` or `x-api-key`, it is metered per key instead of per IP, at 1,200 requests a minute and 200,000 a day. A 503 (store or index unavailable) carries `Retry-After` in seconds. `/api/research` also answers `X-Scout-Match-Mode` (`vector` or `keyword`, the same value as `meta.matchMode`) and `Server-Timing` (our wall time in ms), and when it falls back to keyword its `meta.warnings` says why.\n\n## Pagination\nList endpoints (`/api/projects/search`, `/api/builders`, `/api/rfps`) accept `limit` + `offset`. EVERY list response carries `meta.counts` with `returned` (this page) and `total`/`matched` (all rows matching the filter, pre-slice) — compare the two to tell a complete read from a truncated one, and page until `offset + returned >= total`. Two documented exceptions, both explicit rather than silent: `searchResearch` serves `total: null` with a `totalBasis` because similarity ranking has no crisp matching set, and `/api/changelog` additionally serves `returned`/`total` flat on `meta` for backward compatibility — those flat fields are DEPRECATED, read `meta.counts`.\n\n## Ordering & relevance\n`/api/projects/search` sorts by descending keyword `score` (token-overlap count) and exposes `meta.matchMode` (`strict` → `loose-1` → `majority` → `semantic`) so you know how much the query was relaxed. `semantic` means no keyword tier matched at all — the rows are vector-similarity guesses (`via: \"semantic\"`, confidence capped at medium), not keyword-confirmed answers. When `?type=` is present, TYPE DEFINES MEMBERSHIP (the full typed set, limit-independent) and q only ranks within it — matchMode reports `all` with an explicit label, because a tier would falsely claim q gated the set (sls-033). `corrected` means the rows matched ONLY through a known spelling correction (e.g. strupey → stroopy): the query token does not occur in the rows, so verify the identity before treating them as evidence about the queried name. `/api/research` sorts by descending vector-similarity `score` (0–1 cosine). Use these for cross-source ranking when merging with other aggregators.",
+      "description": "Read-only public API powering Stellar Scout. Aggregators, autonomous agents, and AI tools can call these endpoints directly without auth.\n\nAll endpoints are edge-cached. The same data is available via the @stellar-light/scout-mcp Model Context Protocol server (for human-driven clients) and via the @stellar-light/api-client TypeScript SDK (for autonomous aggregators).\n\nData sources merged behind these endpoints: the Stellarlight directory of curated Stellar projects + an indexed-and-scored GitHub repo index, Stellar Passport builder profiles, Electric Capital developer activity, Soroban audit corpus, SDF skills.stellar.org skill catalog, lumenloop ecosystem data, and primary research (SEPs, papers, dev docs, SCF Handbook). Live collection sizes are in GET /api/status (sources[]) — counts are intentionally not hardcoded here to avoid drift.\n\n## Routing metadata (description vs x-routing)\nOperation `description` fields are deliberately terse purpose statements: the operation's distinctive job plus its single sharpest disambiguation, nothing else. The machine-routing vocabulary that previously lived in description prose — category/product enumerations, synonym chains, example question phrasings — lives in each operation's `x-routing` extension: `{purpose, keywords[], useWhen[], notFor[], exampleQuestions[]}`. Lexical and embedding routers should score `x-routing` as separately-weighted fields rather than concatenating it into the description (broad prose descriptions were lexically capturing question families other operations answer); `notFor` entries name the operation to prefer, as '<question shape> -> <operationId>'.\n\n## Versioning\nEvery response carries an `X-API-Version` header (currently `1`). The number bumps only on a breaking response-shape change; additive fields don't bump it. Pin to a version by asserting the header. Breaking changes are announced before they ship.\n\n## Rate limits\nRate-limit counters are kept per serverless instance (every limited response carries X-RateLimit-Scope: instance), so X-RateLimit-Remaining and -Reset describe the instance that answered, not a global window. Per-IP, per-endpoint, per-minute floors on the cost-bearing routes (typically 60 requests a minute; `/api/research` 60 a minute), advertised on every response via `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset`, and on a 429 via `Retry-After`. Cache where `Cache-Control` allows and prefer `offset` pagination over hammering. A platform whose users share one egress IP (an agent runtime, an MCP host) can ask support@stellarlight.xyz for a partner key: sent as `Authorization: Bearer <key>` or `x-api-key`, it is metered per key instead of per IP, at 1,200 requests a minute and 200,000 a day. A 503 (store or index unavailable) carries `Retry-After` in seconds. `/api/research` also answers `X-Scout-Match-Mode` (`vector` or `keyword`, the same value as `meta.matchMode`) and `Server-Timing` (our wall time in ms), and when it falls back to keyword its `meta.warnings` says why.\n\n## Pagination\nList endpoints (`/api/projects/search`, `/api/builders`, `/api/rfps`) accept `limit` + `offset`. EVERY list response carries `meta.counts` with `returned` (this page) and `total`/`matched` (all rows matching the filter, pre-slice) — compare the two to tell a complete read from a truncated one, and page until `offset + returned >= total`. Two documented exceptions, both explicit rather than silent: `searchResearch` serves `total: null` with a `totalBasis` because similarity ranking has no crisp matching set, and `/api/changelog` additionally serves `returned`/`total` flat on `meta` for backward compatibility — those flat fields are DEPRECATED, read `meta.counts`.\n\n## Ordering & relevance\n`/api/projects/search` sorts by descending keyword `score` (token-overlap count) and exposes `meta.matchMode` (`strict` → `loose-1` → `majority` → `semantic`) so you know how much the query was relaxed. `semantic` means no keyword tier matched at all — the rows are vector-similarity guesses (`via: \"semantic\"`, confidence capped at medium), not keyword-confirmed answers. When `?type=` is present, TYPE DEFINES MEMBERSHIP (the full typed set, limit-independent) and q only ranks within it — matchMode reports `all` with an explicit label, because a tier would falsely claim q gated the set (sls-033). `corrected` means the rows matched ONLY through a known spelling correction (e.g. strupey → stroopy): the query token does not occur in the rows, so verify the identity before treating them as evidence about the queried name. `/api/research` sorts by descending vector-similarity `score` (0–1 cosine). Use these for cross-source ranking when merging with other aggregators.",
       "license": {
         "identifier": "MIT",
         "name": "MIT"
       },
       "summary": "Agent-native data layer for the Stellar ecosystem — projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.9.54"
+      "version": "1.9.61"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -4249,7 +4292,7 @@
                   }
                 }
               },
-              "description": "Unknown parameter or invalid value (params are never silently ignored)"
+              "description": "Unknown parameter (named with the supported set in hint) or invalid value; parameters are never silently ignored."
             }
           },
           "summary": "Enumerable registry of Stellar security-audit reports",
@@ -4582,6 +4625,13 @@
                             "deprecated": true,
                             "description": "Deprecated flat copy — read meta.counts.total.",
                             "type": "integer"
+                          },
+                          "warnings": {
+                            "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
                           }
                         },
                         "type": "object"
@@ -4814,7 +4864,7 @@
               "description": "Changed rows, newest-first per surface"
             },
             "400": {
-              "description": "Missing/invalid since, unknown param, or invalid surface — never silently ignored"
+              "description": "Missing or invalid since, an unknown parameter (named with the supported set in hint), or an invalid surface; never silently ignored."
             }
           },
           "summary": "Change feed: which rows moved since a given time",
@@ -10949,7 +10999,7 @@
               }
             },
             {
-              "description": "Optional source filter. Use 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when — protocol upgrade tags).",
+              "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
               "in": "query",
               "name": "source",
               "schema": {
@@ -11018,6 +11068,48 @@
               }
             },
             {
+              "description": "Several declared sources in one call, comma-separated (e.g. cap,sep,dev-docs); a comma in `source` is read the same way. Each source is searched exactly as `source=<one>&limit=<perSource>` would search it and its rows come back together, in the order given. meta.bySource carries each source's status, returned count, matchMode, sourceDocCount and resultsHash. The rows are the single-source call's rows; scores can differ in the fourth decimal between any two calls that embed the query separately (two single-source calls on different instances do too), which can swap near-tied rows, so compare row ids across separate calls. A source that cannot be read is named in meta.warnings and bySource while the others answer; no source readable is a 503. Counts as one request against the rate limit. No sourceAdvisory on this form.",
+              "explode": false,
+              "in": "query",
+              "name": "sources",
+              "schema": {
+                "items": {
+                  "enum": [
+                    "sdf-blog",
+                    "scf-handbook",
+                    "sep",
+                    "cap",
+                    "dev-docs",
+                    "paper",
+                    "scf-proposal",
+                    "lumenloop",
+                    "lumenloop-research",
+                    "repo-docs",
+                    "audit",
+                    "incident",
+                    "security-program",
+                    "sdf-org",
+                    "ec-developer-report",
+                    "release"
+                  ],
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "style": "form"
+            },
+            {
+              "description": "Rows per source when several sources are requested (default 8, max 25; `limit` is read when absent). With one source it is the same as `limit`.",
+              "in": "query",
+              "name": "perSource",
+              "schema": {
+                "default": 8,
+                "maximum": 25,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            {
               "$ref": "#/components/parameters/fields"
             }
           ],
@@ -11034,6 +11126,62 @@
                           },
                           {
                             "properties": {
+                              "bySource": {
+                                "description": "Present on a several-source call (`sources`): one entry per requested source, in the order given. resultsHash hashes this source's rows, the rows its single-source call (same q, limit=perSource) returns; across separate calls compare row ids, since scores can differ in the fourth decimal; status other than 200 means that source could not be read and its rows are missing (also named in meta.warnings).",
+                                "items": {
+                                  "properties": {
+                                    "error": {
+                                      "type": "string"
+                                    },
+                                    "matchMode": {
+                                      "enum": [
+                                        "vector",
+                                        "keyword"
+                                      ],
+                                      "type": "string"
+                                    },
+                                    "resultsHash": {
+                                      "type": "string"
+                                    },
+                                    "returned": {
+                                      "type": "integer"
+                                    },
+                                    "source": {
+                                      "enum": [
+                                        "sdf-blog",
+                                        "scf-handbook",
+                                        "sep",
+                                        "cap",
+                                        "dev-docs",
+                                        "paper",
+                                        "scf-proposal",
+                                        "lumenloop",
+                                        "lumenloop-research",
+                                        "repo-docs",
+                                        "audit",
+                                        "incident",
+                                        "security-program",
+                                        "sdf-org",
+                                        "ec-developer-report",
+                                        "release"
+                                      ],
+                                      "type": "string"
+                                    },
+                                    "sourceDocCount": {
+                                      "type": "integer"
+                                    },
+                                    "sourceEmpty": {
+                                      "type": "boolean"
+                                    },
+                                    "status": {
+                                      "description": "HTTP status of this source's read (200 = answered). Not dated: it describes this response only.",
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
                               "matchMode": {
                                 "description": "vector = similarity ranking over embeddings (conceptual, not literal keyword truth); keyword = vector search unavailable, coarse keyword match over title and content.",
                                 "enum": [
@@ -11062,9 +11210,54 @@
                                 "description": "The query as the server parsed it.",
                                 "type": "string"
                               },
-                              "scoreModel": {
-                                "description": "What `score` measures in this response (e.g. cosine similarity 0-1) — read it before comparing scores across sources.",
+                              "resultsHash": {
+                                "description": "sha256 of the `results` array. `generatedAt` changes on every call, the evidence does not; compare this to tell two reads apart.",
                                 "type": "string"
+                              },
+                              "scoreModel": {
+                                "description": "What `confidence.score` measures in this response; read it before comparing scores across sources.",
+                                "properties": {
+                                  "fields": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  },
+                                  "version": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "sourceAdvisory": {
+                                "description": "Present when stronger matches exist outside the requested `source`: the in-source top is a weak neighbour of the question. Not emitted for an empty source.",
+                                "properties": {
+                                  "corpusWideTopScore": {
+                                    "type": "number"
+                                  },
+                                  "corpusWideTopSource": {
+                                    "nullable": true,
+                                    "type": "string"
+                                  },
+                                  "inSourceTopScore": {
+                                    "type": "number"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "sourceDocCount": {
+                                "description": "How many documents the corpus holds for the `source` filter (present only on source-scoped calls). A consumer can skip a source below its per-source take before sending.",
+                                "type": "integer"
+                              },
+                              "sourceEmpty": {
+                                "description": "True when the `source` filter names a declared source that holds no documents yet. The page is an empty vector page (no keyword pass, no advisory): an empty source, not a miss. Drop the filter or pick another source.",
+                                "type": "boolean"
                               }
                             },
                             "type": "object"
@@ -11082,7 +11275,92 @@
                   }
                 }
               },
-              "description": "Research results"
+              "description": "Research results",
+              "headers": {
+                "Server-Timing": {
+                  "description": "Our own wall time per phase in milliseconds (init, embed, vector, rank, total), so a consumer can split our time from transfer time.",
+                  "schema": {
+                    "type": "string"
+                  }
+                },
+                "X-Scout-Match-Mode": {
+                  "description": "The retrieval mode that produced this page, the same value as meta.matchMode: `vector` or `keyword`.",
+                  "schema": {
+                    "enum": [
+                      "vector",
+                      "keyword"
+                    ],
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RequestError"
+                  }
+                }
+              },
+              "description": "The call is wrong: missing q, an unknown source, or audit-only filters on a non-audit source. Fix the call; do not retry it as is."
+            },
+            "429": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "This instance's per-minute window is spent. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from these headers is approximate; wait Retry-After and resend.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds until this instance's window resets.",
+                  "schema": {
+                    "type": "integer"
+                  }
+                },
+                "Server-Timing": {
+                  "description": "Our own wall time, as on a 200.",
+                  "schema": {
+                    "type": "string"
+                  }
+                },
+                "X-RateLimit-Scope": {
+                  "description": "Always `instance`: the counter is per serverless instance, not global.",
+                  "schema": {
+                    "enum": [
+                      "instance"
+                    ],
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "A read failed: the database handle could not be opened, or both the vector and the keyword stage threw. An outage, NOT an empty result: retry after Retry-After.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending (2 on database reads).",
+                  "schema": {
+                    "type": "integer"
+                  }
+                },
+                "Server-Timing": {
+                  "description": "Our own wall time, as on a 200.",
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           },
           "summary": "Vector search over the Stellar research corpus",
@@ -11453,6 +11731,13 @@
                             "description": "Where a team submits a NEW brief/idea (the SCF ideas board) — hand off here when asked how to propose one.",
                             "format": "uri",
                             "type": "string"
+                          },
+                          "warnings": {
+                            "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
                           }
                         },
                         "type": "object"
@@ -12281,7 +12566,7 @@
       },
       "/api/skills": {
         "get": {
-          "description": "Catalog of installable Stellar AI skills/tools — SDF's official skills.stellar.org set merged with curated and community entries. Each entry carries an `install` command, `kind` (skill-md | mcp-server | sdk | cli | agent-kit | tool), and repo/docs links; filter by `source`/`kind`. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.",
+          "description": "Catalog of installable Stellar AI skills/tools: both sections of SDF's skills.stellar.org registry (source=sdf for the SDF-authored set, source=community for Community Built entries, listed but not reviewed by SDF) merged with curated entries and approved submissions. Each entry carries `install`, `kind` (skill-md | mcp-server | sdk | cli | agent-kit | tool) and repo/docs links; filter by `source`/`kind`. meta.registry says what the registry listed, resolved and could not fetch. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.",
           "operationId": "listSkills",
           "parameters": [
             {
@@ -12347,6 +12632,33 @@
                               },
                               "matchModeLabel": {
                                 "type": "string"
+                              },
+                              "registry": {
+                                "description": "What the skills.stellar.org registry contributed to this page: listed = names in its llms.txt (both sections), served = those whose SKILL.md resolved, merged = registry copies replaced by a curated entry of the same skill, unreachable = listed names whose SKILL.md could not be fetched (named, never hidden). live=false means the registry did not answer and the SDF set came from a fallback list, so community-built entries are missing.",
+                                "properties": {
+                                  "listed": {
+                                    "type": "integer"
+                                  },
+                                  "live": {
+                                    "type": "boolean"
+                                  },
+                                  "merged": {
+                                    "type": "integer"
+                                  },
+                                  "served": {
+                                    "type": "integer"
+                                  },
+                                  "unreachable": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
                               },
                               "validKinds": {
                                 "description": "Every value the kind filter accepts (unknown values 400 with this list).",
@@ -12424,7 +12736,7 @@
       },
       "/api/skills/{name}": {
         "get": {
-          "description": "Full detail for ONE skill by slug or display name — metadata plus, for SDF official skills, the complete raw SKILL.md text (`.skill.content`, fetched live from skills.stellar.org). 404s with a hint to list /api/skills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.",
+          "description": "Full detail for ONE skill by slug or display name — metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (`.skill.content`, fetched live from where the registry links it). 404s with a hint to list /api/skills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.",
           "operationId": "getSkill",
           "parameters": [
             {
@@ -12745,7 +13057,7 @@
                   }
                 }
               },
-              "description": "Invalid sort or unknown query param"
+              "description": "Invalid sort, or an unknown query parameter (named with the supported set in hint); this registry rejects rather than ignores it."
             }
           },
           "summary": "Stellar stablecoins ranked by USD market cap",
@@ -13553,7 +13865,7 @@
       }
     ]
   },
-  "openapiVersion": "1.9.54",
+  "openapiVersion": "1.9.61",
   "operationCount": 38,
   "service": "stellar-light",
   "source": {
@@ -13565,7 +13877,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.9.54",
+    "apiVersion": "1.9.61",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

@@ -81,6 +81,7 @@ import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { callService } from "../adapters/index.ts";
 import type { AdapterEnv, FetchLike } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
+import { applyArgumentAliases } from "../policy/argument-aliases.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
 import type { SourceMetadataField, SourceMetadataPath } from "../policy/source-basis.ts";
 import { readSkill } from "../skills/store.ts";
@@ -412,8 +413,11 @@ export function buildOpsFns(
     // real manifest can't reach here with a bad one; this stays as a belt for
     // hand-built test catalogs that skip loadManifest.
     if (!VALID_IDENT.test(entry.service) || !VALID_IDENT.test(name)) continue;
-    (byService[entry.service] ??= {})[name] = async (args?: unknown) => {
+    (byService[entry.service] ??= {})[name] = async (rawArgs?: unknown) => {
       const t0 = Date.now();
+      // Documented upstream aliases first (policy/argument-aliases.ts), then
+      // validation of what will actually be sent.
+      const args = applyArgumentAliases(entry.id, rawArgs);
       const refused = guard(entry, args); // arg validation only (ADR-0003)
       if (refused) {
         // guard only ever returns the error variant; narrow for the compiler.

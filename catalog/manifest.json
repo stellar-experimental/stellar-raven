@@ -2262,8 +2262,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -2997,8 +2997,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -3533,8 +3533,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -4118,7 +4118,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -4160,8 +4160,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4584,6 +4584,13 @@
                 "deprecated": true,
                 "description": "Deprecated flat copy — read meta.counts.total.",
                 "type": "integer"
+              },
+              "warnings": {
+                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               }
             },
             "type": "object"
@@ -4601,8 +4608,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -4946,8 +4953,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -5281,7 +5288,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -5353,8 +5360,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -5619,7 +5626,7 @@
                 "type": "string"
               },
               "warnings": {
-                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                 "items": {
                   "type": "string"
                 },
@@ -5725,8 +5732,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6097,7 +6104,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -6155,8 +6162,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6673,8 +6680,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -7521,8 +7528,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -7842,7 +7849,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -8157,8 +8164,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -8541,7 +8548,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -8638,8 +8645,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -9158,8 +9165,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -9582,6 +9589,13 @@
                 "description": "Where a team submits a NEW brief/idea (the SCF ideas board) — hand off here when asked how to propose one.",
                 "format": "uri",
                 "type": "string"
+              },
+              "warnings": {
+                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               }
             },
             "type": "object"
@@ -9659,8 +9673,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -9973,7 +9987,7 @@
       }
     },
     {
-      "description": "Get one skill's full content. Full detail for ONE skill by slug or display name — metadata plus, for SDF official skills, the complete raw SKILL.md text (.skill.content, fetched live from skills.stellar.org). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
+      "description": "Get one skill's full content. Full detail for ONE skill by slug or display name — metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (.skill.content, fetched live from where the registry links it). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
       "id": "scout.getSkill",
       "inputSchema": {
         "properties": {
@@ -10101,8 +10115,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -10345,7 +10359,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -10583,8 +10597,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -10948,8 +10962,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -11790,8 +11804,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -12217,7 +12231,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -12248,8 +12262,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -12785,8 +12799,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -13003,7 +13017,7 @@
       }
     },
     {
-      "description": "List AI skills for Stellar builders. Catalog of installable Stellar AI skills/tools — SDF's official skills.stellar.org set merged with curated and community entries. Each entry carries an install command, kind (skill-md | mcp-server | sdk | cli | agent-kit | tool), and repo/docs links; filter by source/kind. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.\n\nCatalog note: this is the live ecosystem DIRECTORY — skills plus MCP servers, SDKs, and CLIs — for discovering what exists and fetching install metadata; most entries are not mirrored skills.",
+      "description": "List AI skills for Stellar builders. Catalog of installable Stellar AI skills/tools: both sections of SDF's skills.stellar.org registry (source=sdf for the SDF-authored set, source=community for Community Built entries, listed but not reviewed by SDF) merged with curated entries and approved submissions. Each entry carries install, kind (skill-md | mcp-server | sdk | cli | agent-kit | tool) and repo/docs links; filter by source/kind. meta.registry says what the registry listed, resolved and could not fetch. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.\n\nCatalog note: this is the live ecosystem DIRECTORY — skills plus MCP servers, SDKs, and CLIs — for discovering what exists and fetching install metadata; most entries are not mirrored skills.",
       "id": "scout.listSkills",
       "inputSchema": {
         "properties": {
@@ -13042,6 +13056,8 @@
         "lumenloop",
         "external",
         "filtered",
+        "served",
+        "unreachable",
         "valid",
         "kinds",
         "sources",
@@ -13051,6 +13067,7 @@
         "featured",
         "homepage",
         "alt",
+        "command",
         "raw",
         "repository",
         "tagline",
@@ -13110,7 +13127,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -13131,6 +13148,33 @@
                   },
                   "matchModeLabel": {
                     "type": "string"
+                  },
+                  "registry": {
+                    "description": "What the skills.stellar.org registry contributed to this page: listed = names in its llms.txt (both sections), served = those whose SKILL.md resolved, merged = registry copies replaced by a curated entry of the same skill, unreachable = listed names whose SKILL.md could not be fetched (named, never hidden). live=false means the registry did not answer and the SDF set came from a fallback list, so community-built entries are missing.",
+                    "properties": {
+                      "listed": {
+                        "type": "integer"
+                      },
+                      "live": {
+                        "type": "boolean"
+                      },
+                      "merged": {
+                        "type": "integer"
+                      },
+                      "served": {
+                        "type": "integer"
+                      },
+                      "unreachable": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
                   "validKinds": {
                     "description": "Every value the kind filter accepts (unknown values 400 with this list).",
@@ -13156,7 +13200,7 @@
               "description": "One installable Stellar AI skill/tool from /api/skills — SDF's skills.stellar.org set, curated entries, and approved community submissions mapped onto one unified shape. Optional fields are OMITTED when not applicable (absent = not applicable, never null and never false).",
               "properties": {
                 "argumentHint": {
-                  "description": "SDF skills only — argument hint (e.g. '[payment task]'). Absent elsewhere.",
+                  "description": "Registry entries only: argument hint (e.g. '[payment task]'). Absent elsewhere.",
                   "type": "string"
                 },
                 "compatibility": {
@@ -13181,7 +13225,7 @@
                   "type": "string"
                 },
                 "install": {
-                  "description": "Primary install command (e.g. 'npx skills add stellar/{slug}'). Absent when the entry has no one-line install.",
+                  "description": "Primary install command, e.g. 'npx skills add https://github.com/stellar/stellar-dev-skill' for the SDF set (the registry's own command) or 'npx skills add <that repository>' for a community-built entry. Absent when the entry has no one-line install.",
                   "type": "string"
                 },
                 "installAlt": {
@@ -13214,7 +13258,11 @@
                   "type": "string"
                 },
                 "rawUrl": {
-                  "description": "Direct raw SKILL.md URL (SDF skills). Absent elsewhere.",
+                  "description": "Direct raw SKILL.md URL for entries listed on skills.stellar.org (SDF authored and community-built). Absent elsewhere.",
+                  "type": "string"
+                },
+                "registry": {
+                  "description": "'skills.stellar.org' when the entry is listed on SDF's registry (either section), including a curated entry the registry lists under another name. Absent for entries we curate or host that the registry does not list.",
                   "type": "string"
                 },
                 "repository": {
@@ -13226,6 +13274,7 @@
                   "type": "string"
                 },
                 "source": {
+                  "description": "Who stands behind the entry. sdf = SDF authored (the registry's Included Stellar Skills section). community = community-built: listed on skills.stellar.org under its author's maintenance and not reviewed by SDF (registry present), or an approved submission to this directory (registry absent). stellarlight and lumenloop = curated by those teams; external = an SDK, CLI or tool we list.",
                   "enum": [
                     "sdf",
                     "stellarlight",
@@ -13253,7 +13302,7 @@
                   "type": "array"
                 },
                 "userInvocable": {
-                  "description": "SDF skills only — whether the skill is user-invocable in skills.stellar.org's sense. Absent elsewhere.",
+                  "description": "Registry entries only (SDF authored and community-built): whether the skill is user-invocable in skills.stellar.org's sense. Absent elsewhere.",
                   "type": "boolean"
                 }
               },
@@ -13265,8 +13314,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -13566,8 +13615,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -13885,8 +13934,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -14337,8 +14386,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -14728,8 +14777,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -15641,7 +15690,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -17035,8 +17084,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -17941,7 +17990,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -18448,8 +18497,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -18965,6 +19014,13 @@
             "minimum": 1,
             "type": "integer"
           },
+          "perSource": {
+            "default": 8,
+            "description": "Rows per source when several sources are requested (default 8, max 25; `limit` is read when absent). With one source it is the same as `limit`.",
+            "maximum": 25,
+            "minimum": 1,
+            "type": "integer"
+          },
           "protocol": {
             "description": "Audit-metadata filter: audited protocol/codebase name (substring match). Narrows results to audit-source chunks.",
             "type": "string"
@@ -18992,7 +19048,7 @@
             "type": "string"
           },
           "source": {
-            "description": "Optional source filter. Use 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when — protocol upgrade tags).",
+            "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
             "enum": [
               "sdf-blog",
               "scf-handbook",
@@ -19012,6 +19068,31 @@
               "release"
             ],
             "type": "string"
+          },
+          "sources": {
+            "description": "Several declared sources in one call, comma-separated (e.g. cap,sep,dev-docs); a comma in `source` is read the same way. Each source is searched exactly as `source=<one>&limit=<perSource>` would search it and its rows come back together, in the order given. meta.bySource carries each source's status, returned count, matchMode, sourceDocCount and resultsHash. The rows are the single-source call's rows; scores can differ in the fourth decimal between any two calls that embed the query separately (two single-source calls on different instances do too), which can swap near-tied rows, so compare row ids across separate calls. A source that cannot be read is named in meta.warnings and bySource while the others answer; no source readable is a 503. Counts as one request against the rate limit. No sourceAdvisory on this form.",
+            "items": {
+              "enum": [
+                "sdf-blog",
+                "scf-handbook",
+                "sep",
+                "cap",
+                "dev-docs",
+                "paper",
+                "scf-proposal",
+                "lumenloop",
+                "lumenloop-research",
+                "repo-docs",
+                "audit",
+                "incident",
+                "security-program",
+                "sdf-org",
+                "ec-developer-report",
+                "release"
+              ],
+              "type": "string"
+            },
+            "type": "array"
           }
         },
         "type": "object"
@@ -19026,13 +19107,21 @@
         "medium",
         "low",
         "informational",
+        "sources",
+        "per",
         "fields",
+        "error",
+        "results",
+        "hash",
+        "doc",
+        "empty",
         "model",
         "score",
-        "results",
+        "advisory",
+        "wide",
+        "top",
         "chunk",
         "content",
-        "doc",
         "kind",
         "guide",
         "article",
@@ -19091,7 +19180,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -19102,6 +19191,62 @@
               },
               {
                 "properties": {
+                  "bySource": {
+                    "description": "Present on a several-source call (`sources`): one entry per requested source, in the order given. resultsHash hashes this source's rows, the rows its single-source call (same q, limit=perSource) returns; across separate calls compare row ids, since scores can differ in the fourth decimal; status other than 200 means that source could not be read and its rows are missing (also named in meta.warnings).",
+                    "items": {
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "matchMode": {
+                          "enum": [
+                            "vector",
+                            "keyword"
+                          ],
+                          "type": "string"
+                        },
+                        "resultsHash": {
+                          "type": "string"
+                        },
+                        "returned": {
+                          "type": "integer"
+                        },
+                        "source": {
+                          "enum": [
+                            "sdf-blog",
+                            "scf-handbook",
+                            "sep",
+                            "cap",
+                            "dev-docs",
+                            "paper",
+                            "scf-proposal",
+                            "lumenloop",
+                            "lumenloop-research",
+                            "repo-docs",
+                            "audit",
+                            "incident",
+                            "security-program",
+                            "sdf-org",
+                            "ec-developer-report",
+                            "release"
+                          ],
+                          "type": "string"
+                        },
+                        "sourceDocCount": {
+                          "type": "integer"
+                        },
+                        "sourceEmpty": {
+                          "type": "boolean"
+                        },
+                        "status": {
+                          "description": "HTTP status of this source's read (200 = answered). Not dated: it describes this response only.",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
                   "matchMode": {
                     "description": "vector = similarity ranking over embeddings (conceptual, not literal keyword truth); keyword = vector search unavailable, coarse keyword match over title and content.",
                     "enum": [
@@ -19130,9 +19275,54 @@
                     "description": "The query as the server parsed it.",
                     "type": "string"
                   },
-                  "scoreModel": {
-                    "description": "What `score` measures in this response (e.g. cosine similarity 0-1) — read it before comparing scores across sources.",
+                  "resultsHash": {
+                    "description": "sha256 of the `results` array. `generatedAt` changes on every call, the evidence does not; compare this to tell two reads apart.",
                     "type": "string"
+                  },
+                  "scoreModel": {
+                    "description": "What `confidence.score` measures in this response; read it before comparing scores across sources.",
+                    "properties": {
+                      "fields": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "sourceAdvisory": {
+                    "description": "Present when stronger matches exist outside the requested `source`: the in-source top is a weak neighbour of the question. Not emitted for an empty source.",
+                    "properties": {
+                      "corpusWideTopScore": {
+                        "type": "number"
+                      },
+                      "corpusWideTopSource": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "inSourceTopScore": {
+                        "type": "number"
+                      },
+                      "note": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "sourceDocCount": {
+                    "description": "How many documents the corpus holds for the `source` filter (present only on source-scoped calls). A consumer can skip a source below its per-source take before sending.",
+                    "type": "integer"
+                  },
+                  "sourceEmpty": {
+                    "description": "True when the `source` filter names a declared source that holds no documents yet. The page is an empty vector page (no keyword pass, no advisory): an empty source, not a miss. Drop the filter or pick another source.",
+                    "type": "boolean"
                   }
                 },
                 "type": "object"
@@ -19253,8 +19443,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -20139,8 +20329,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-09-29T19:23:05.279Z",
-        "openapiVersion": "1.9.54",
+        "fetchedAt": "2026-10-02T14:20:35.127Z",
+        "openapiVersion": "1.9.61",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -20356,7 +20546,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -20375,7 +20565,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20395,7 +20585,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20416,7 +20606,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20437,7 +20627,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20458,7 +20648,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20479,7 +20669,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20500,7 +20690,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20521,7 +20711,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20542,7 +20732,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -20561,7 +20751,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20581,7 +20771,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20602,7 +20792,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20623,7 +20813,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20644,7 +20834,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20665,7 +20855,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20686,7 +20876,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20707,7 +20897,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -20726,7 +20916,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20746,7 +20936,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20767,7 +20957,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20788,7 +20978,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20809,7 +20999,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20830,7 +21020,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -20851,7 +21041,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21095,7 +21285,7 @@
       },
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "runnable": true,
@@ -21115,7 +21305,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21136,7 +21326,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21157,7 +21347,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21177,7 +21367,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21198,7 +21388,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21219,7 +21409,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21240,7 +21430,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21261,7 +21451,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21282,7 +21472,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21303,7 +21493,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21324,7 +21514,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21345,7 +21535,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21366,7 +21556,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21387,7 +21577,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21408,7 +21598,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21429,7 +21619,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21450,7 +21640,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21471,7 +21661,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21492,7 +21682,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -21511,7 +21701,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21531,7 +21721,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21552,7 +21742,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21573,7 +21763,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21594,7 +21784,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21615,7 +21805,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21636,7 +21826,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21657,7 +21847,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21678,7 +21868,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -21697,7 +21887,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21718,7 +21908,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21739,7 +21929,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21760,7 +21950,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21781,7 +21971,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21802,7 +21992,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -21821,7 +22011,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21841,7 +22031,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21862,7 +22052,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21883,7 +22073,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21904,7 +22094,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21925,7 +22115,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21946,7 +22136,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21967,7 +22157,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -21988,7 +22178,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "service": "skills",
@@ -22007,7 +22197,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22028,7 +22218,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22049,7 +22239,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22070,7 +22260,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "service": "skills",
@@ -22089,7 +22279,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22110,7 +22300,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22131,7 +22321,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22152,7 +22342,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22173,7 +22363,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22194,7 +22384,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "service": "skills",
@@ -22213,7 +22403,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22234,7 +22424,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22255,7 +22445,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22276,7 +22466,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22297,7 +22487,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "6f215af60eb60017ab1a933ce9d22a479cd42b26",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills"
       },
       "searchable": false,
@@ -22318,7 +22508,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -22337,7 +22527,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22357,7 +22547,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22377,7 +22567,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22398,7 +22588,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22419,7 +22609,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22440,7 +22630,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22461,7 +22651,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22482,7 +22672,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -22501,7 +22691,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22522,7 +22712,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22543,7 +22733,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22564,7 +22754,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22585,7 +22775,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22606,7 +22796,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22627,7 +22817,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22648,7 +22838,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22669,7 +22859,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22690,7 +22880,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22711,7 +22901,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22732,7 +22922,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22753,7 +22943,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -22772,7 +22962,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22792,7 +22982,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22812,7 +23002,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22832,7 +23022,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22853,7 +23043,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22874,7 +23064,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22895,7 +23085,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22920,7 +23110,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -22939,7 +23129,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22959,7 +23149,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22979,7 +23169,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -22999,7 +23189,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23020,7 +23210,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23041,7 +23231,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23062,7 +23252,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23083,7 +23273,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23104,7 +23294,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23125,7 +23315,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23146,7 +23336,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23167,7 +23357,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23188,7 +23378,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23212,7 +23402,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -23231,7 +23421,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23252,7 +23442,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23272,7 +23462,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23293,7 +23483,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23314,7 +23504,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23335,7 +23525,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23356,7 +23546,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23377,7 +23567,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23398,7 +23588,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23419,7 +23609,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23443,7 +23633,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -23462,7 +23652,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23483,7 +23673,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23504,7 +23694,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23525,7 +23715,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23546,7 +23736,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23566,7 +23756,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23586,7 +23776,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23606,7 +23796,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23627,7 +23817,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23648,7 +23838,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23669,7 +23859,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23690,7 +23880,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23711,7 +23901,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23735,7 +23925,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -23754,7 +23944,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23774,7 +23964,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23794,7 +23984,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23815,7 +24005,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23836,7 +24026,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23857,7 +24047,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23878,7 +24068,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23899,7 +24089,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23920,7 +24110,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23941,7 +24131,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23962,7 +24152,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -23983,7 +24173,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "service": "skills",
@@ -24002,7 +24192,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24023,7 +24213,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24044,7 +24234,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24065,7 +24255,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24086,7 +24276,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24107,7 +24297,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24128,7 +24318,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24149,7 +24339,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24170,7 +24360,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24191,7 +24381,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24212,7 +24402,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "65375fd2b2582af27fd267f912e8c6d01752120d",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/65375fd2b2582af27fd267f912e8c6d01752120d/skills"
       },
       "searchable": false,
@@ -24233,7 +24423,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "service": "skills",
@@ -24252,7 +24442,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24273,7 +24463,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24294,7 +24484,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24315,7 +24505,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24336,7 +24526,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24356,7 +24546,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24376,7 +24566,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24396,7 +24586,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24417,7 +24607,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24438,7 +24628,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24459,7 +24649,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24480,7 +24670,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24501,7 +24691,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24522,7 +24712,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24543,7 +24733,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24564,7 +24754,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "3b587aa9f23d21fc572f6e93cb6d11031dbc24e6",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Stellar-Light/stellar-scout/tree/3b587aa9f23d21fc572f6e93cb6d11031dbc24e6"
       },
       "searchable": false,
@@ -24585,7 +24775,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "service": "skills",
@@ -24604,7 +24794,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24625,7 +24815,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24646,7 +24836,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24666,7 +24856,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24686,7 +24876,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24706,7 +24896,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24726,7 +24916,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24746,7 +24936,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24766,7 +24956,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24786,7 +24976,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24806,7 +24996,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24826,7 +25016,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24846,7 +25036,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24866,7 +25056,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24886,7 +25076,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24906,7 +25096,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24926,7 +25116,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24946,7 +25136,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24966,7 +25156,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -24986,7 +25176,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25006,7 +25196,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25026,7 +25216,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25046,7 +25236,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25066,7 +25256,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25087,7 +25277,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25108,7 +25298,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25129,7 +25319,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -25150,7 +25340,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-09-29T19:23:49Z",
+        "fetchedAt": "2026-10-02T14:26:28Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28269,6 +28459,6 @@
       }
     }
   ],
-  "generatedAt": "2026-09-29T19:23:49Z",
+  "generatedAt": "2026-10-02T14:26:28Z",
   "version": 1
 }

@@ -17,12 +17,13 @@ evidence:
   - 2026-09-30 independent review (.agents/rounds/2026-09-30-skill-system-audit/) found more stale locations at the same commit. SKILL.md line 90 lists "Soroban / dapp / assets / data / agentic-payments / zk-proofs / standards". README.md line 76 links skills.stellar.org/soroban and line 78 links skills.stellar.org/anchors. references/api-reference.md line 196 builds an install URL at skills.stellar.org for every entry, including non-SDF entries.
   - 2026-09-30T20:23:11Z https://skills.stellar.org/soroban and https://skills.stellar.org/anchors returned HTTP 404. https://skills.stellar.org/skills/anchors/SKILL.md and https://stellarlight.xyz/api/skills/anchors returned HTTP 404. https://skills.stellar.org/skills/soroban/SKILL.md still returned HTTP 200 as an unlisted legacy file; the skills.stellar.org index lists smart-contracts, not soroban.
   - 2026-09-30 correction comment posted with the added locations and the revised recommendation, because the correction changes the proposed action: https://github.com/Stellar-Light/stellar-scout/issues/14#issuecomment-5919085549
+  - 2026-10-02 recheck: GET https://stellarlight.xyz/api/skills returned 62 entries (sdf 8, stellarlight 15, lumenloop 8, external 12, community 19) at Scout API 1.9.61. Upstream Stellar-Light/stellar-scout main is still 3b587aa9f23d21fc572f6e93cb6d11031dbc24e6, so the pinned skill text is unchanged and the finding still reproduces. Issue 14 is open with one comment.
 ---
 
 ## Finding
 
 The Scout skill describes `/api/skills` as a catalog of seven SDF skills.
-The live catalog has 43 entries from four sources and eight SDF skills.
+On 2026-09-30 the live catalog had 43 entries from four sources and eight SDF skills; on 2026-10-02 it has 62 entries from five sources (19 community-built entries from skills.stellar.org) and still eight SDF skills.
 The skill names `soroban` as an SDF skill.
 The live API returns HTTP 404 for `/api/skills/soroban`.
 The listed slug is `smart-contracts`.
