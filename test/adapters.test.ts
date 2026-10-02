@@ -175,6 +175,116 @@ describe("scout adapter", () => {
     );
   });
 
+  it.each([
+    { projects: [], counts: { returned: 0, total: 0 } },
+    { projects: [{ name: "Wallet" }], counts: { returned: 1, total: 1 } }
+  ])("maps a failed backend read to error regardless of returned rows: %j", async (payload) => {
+    const warning = "backend read failed: operation timed out";
+    const warnings = [
+      "Unknown parameter(s) ignored: unreadProbe. Results are NOT filtered by them.",
+      warning,
+      "backend read failed: secondary lookup timed out"
+    ];
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({
+        projects: payload.projects,
+        meta: { counts: payload.counts, warnings }
+      }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r).toEqual({
+      ok: false,
+      error: {
+        service: "scout",
+        kind: "error",
+        status: 200,
+        message: warning,
+        hint: "The Scout backend read failed transiently. Retry once. If the read still fails, report the result as inconclusive.",
+        details: { warnings }
+      }
+    });
+  });
+
+  it("keeps unread-parameter warnings visible in successful data", async () => {
+    const body = {
+      projects: [{ name: "Wallet" }],
+      meta: {
+        counts: { returned: 1, total: 1 },
+        warnings: [
+          "Unknown parameter(s) ignored: unreadProbe. Results are NOT filtered by them. Supported: q, category, type, status, scfAwarded, limit, offset."
+        ]
+      }
+    };
+    const { fetchImpl } = stubFetch(JSON.stringify(body), 200);
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r).toEqual({ ok: true, data: body });
+  });
+
+  it.each(["backend read failed", "backend read failed (timeout)"])(
+    "recognizes the failed-read warning family: %s",
+    async (warning) => {
+      const { fetchImpl } = stubFetch(
+        JSON.stringify({ projects: [], meta: { warnings: [warning] } }),
+        200
+      );
+      const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+      expect(r.ok).toBe(false);
+      if (r.ok) return;
+      expect(r.error).toMatchObject({ kind: "error", status: 200, message: warning });
+    }
+  );
+
+  it.each([
+    ["Keyword fallback used after vector search failed."],
+    ["Unknown parameter(s) ignored: backend read failed. Results are NOT filtered by them."],
+    ["backend read failedness is not the failure prefix"],
+    [null, { message: "backend read failed: timeout" }]
+  ])("does not mistake other warnings for a failed backend read: %j", async (...warnings) => {
+    const body = { projects: [{ name: "Wallet" }], meta: { warnings } };
+    const { fetchImpl } = stubFetch(JSON.stringify(body), 200);
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r).toEqual({ ok: true, data: body });
+  });
+
+  it("keeps a genuine empty search successful", async () => {
+    const body = { projects: [], meta: { counts: { returned: 0, total: 0 } } };
+    const { fetchImpl } = stubFetch(JSON.stringify(body), 200);
+    const r = await callScout(entry("scout.searchProjects"), { q: "missing" }, {}, fetchImpl);
+    expect(r).toEqual({ ok: true, data: body });
+  });
+
+  it("keeps meta.error as soft-empty with the advisory", async () => {
+    const advisory = { summary: "Supply a query or filter.", suggestions: ["Use q."] };
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({ projects: [], meta: { error: "no_query" }, advisory }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), {}, {}, fetchImpl);
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error).toMatchObject({
+      kind: "soft-empty",
+      status: 200,
+      code: "no_query",
+      message: advisory.summary,
+      details: advisory
+    });
+    expect(r.error.hint).toContain("Scope this miss to the requested Scout record.");
+  });
+
+  it("gives a failed backend read priority over meta.error", async () => {
+    const warning = "backend read failed: operation timed out";
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({ projects: [], meta: { error: "no_query", warnings: [warning] } }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), {}, {}, fetchImpl);
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error).toMatchObject({ kind: "error", status: 200, message: warning });
+  });
+
   it("passes non-JSON (CSV) through as { text, contentType } in the data payload", async () => {
     const { fetchImpl } = stubFetch("rank,slug\n1,soroswap\n", 200, "text/csv");
     const r = await callScout(entry("scout.getLeaderboard"), { format: "csv" }, {}, fetchImpl);
