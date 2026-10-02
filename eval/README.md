@@ -4,7 +4,7 @@ This instrument checks which services and operations `searchCatalog()` returns f
 It runs offline and does not execute service operations or grade final answers.
 Use the [evaluation map](EVALS.md) to select an instrument.
 
-The committed Scout inventory version is `1.9.54`.
+The committed Scout inventory version is `1.9.61`.
 [gates.json](gates.json) owns the accepted totals, thresholds, input hashes, and baseline decisions.
 
 ## How to run

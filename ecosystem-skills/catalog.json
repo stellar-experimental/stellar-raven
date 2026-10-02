@@ -1,15 +1,15 @@
 {
   "source": "https://stellarlight.xyz/api/skills",
-  "fetched_at": "2026-09-29T19:23:49Z",
+  "fetched_at": "2026-10-02T14:26:28Z",
   "counts": {
-    "returned": 43,
-    "total": 43,
+    "returned": 62,
+    "total": 62,
     "bySource": {
       "sdf": 8,
       "stellarlight": 15,
       "lumenloop": 8,
       "external": 12,
-      "community": 0
+      "community": 19
     }
   },
   "validKinds": [
@@ -21,6 +21,196 @@
     "tool"
   ],
   "entries": [
+    {
+      "name": "anchors",
+      "title": "Anchors",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Integrate with or build Stellar anchors (fiat on/off-ramps, deposits/withdrawals, KYC).",
+      "install": "npx skills add https://github.com/CheesecakeLabs/stellar-anchor-skill",
+      "repository": "https://github.com/CheesecakeLabs/stellar-anchor-skill",
+      "homepage": "https://github.com/CheesecakeLabs/stellar-anchor-skill/tree/main"
+    },
+    {
+      "name": "caatinga",
+      "title": "Caatinga",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Deploy and manage Soroban contract lifecycles with the Caatinga CLI (ctg).",
+      "install": "npx skills add https://github.com/Dione-b/caatinga-skill",
+      "repository": "https://github.com/Dione-b/caatinga-skill",
+      "homepage": "https://github.com/Dione-b/caatinga-skill/tree/master/skills/caatinga"
+    },
+    {
+      "name": "cogladius",
+      "title": "Cogladius",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Register an AI agent to earn XLM by completing on-chain tasks: one-call permissionless registration, task polling, solution submission, and payout from a non-c…",
+      "install": "npx skills add https://github.com/furkanyesildag/cogladius",
+      "repository": "https://github.com/furkanyesildag/cogladius",
+      "homepage": "https://github.com/furkanyesildag/cogladius/tree/main"
+    },
+    {
+      "name": "contextio-sdk",
+      "title": "Contextio SDK",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Integrate contextio-sdk: verifiable, non-custodial legal context binding (Legal Context Protocol / LCP) for Stellar treasury and payroll.",
+      "install": "npx skills add https://github.com/Eras256/Contextio",
+      "repository": "https://github.com/Eras256/Contextio",
+      "homepage": "https://github.com/Eras256/Contextio/tree/main/packages/sdk"
+    },
+    {
+      "name": "defindex-sdk",
+      "title": "DeFindex SDK",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Integrate DeFindex vaults on Stellar with the @defindex/sdk TypeScript package.",
+      "install": null,
+      "repository": "https://github.com/paltalabs/defindex-sdk",
+      "homepage": "https://github.com/paltalabs/defindex-sdk/tree/main"
+    },
+    {
+      "name": "discover",
+      "title": "MPP Discover",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Find and pay APIs from 90+ services with Stellar USDC through MPP Router — including OpenAI, Anthropic, DeepSeek, Perplexity, Exa, Firecrawl, and Tavily.",
+      "install": "npx skills add https://github.com/mpprouter/stellar-agent-wallet-skill",
+      "repository": "https://github.com/mpprouter/stellar-agent-wallet-skill",
+      "homepage": "https://github.com/mpprouter/stellar-agent-wallet-skill/tree/main/skills/discover"
+    },
+    {
+      "name": "eunomia-bounded-agent-treasury",
+      "title": "Eunomia Bounded Agent Treasury",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Give an AI agent a non-custodial, contract-bounded spending account on Stellar with Eunomia (formerly PRISM).",
+      "install": "npx skills add https://github.com/eunomia-finance/eunomia",
+      "repository": "https://github.com/eunomia-finance/eunomia",
+      "homepage": "https://github.com/eunomia-finance/eunomia/tree/main"
+    },
+    {
+      "name": "nirium-agentic-payments",
+      "title": "Nirium Agentic Payments",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Charge AI agents per API call on Stellar with the Nirium toolkit: scaffold a working x402 seller with nirium-cli in one command, charge per route with x402Serv…",
+      "install": "npx skills add https://github.com/nirium-protocol/nirium-sdk",
+      "repository": "https://github.com/nirium-protocol/nirium-sdk",
+      "homepage": "https://github.com/nirium-protocol/nirium-sdk/tree/main/skills/nirium-agentic-payments"
+    },
+    {
+      "name": "pmll",
+      "title": "PMLL",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Gives AI agents persistent spatial memory so they can retain long-term context, form symbiotic memory layers, and maintain durable state across sessions; suppo…",
+      "install": "npx skills add https://github.com/drQedwards/pmll",
+      "repository": "https://github.com/drQedwards/pmll",
+      "homepage": "https://github.com/drQedwards/pmll/tree/main"
+    },
+    {
+      "name": "pollar-wallet-auth",
+      "title": "Pollar Wallets & Fiat Ramps",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Add embedded Stellar wallets and local fiat on/off-ramps to a web or React Native app with @pollar/core and @pollar/react.",
+      "install": "npx skills add https://github.com/pollar-xyz/pollar",
+      "repository": "https://github.com/pollar-xyz/pollar",
+      "homepage": "https://github.com/pollar-xyz/pollar/tree/main/skills/pollar-wallet-auth"
+    },
+    {
+      "name": "rozo-checkout",
+      "title": "ROZO Checkout",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Pay for AI services with Stellar USDC — e.g.",
+      "install": "npx skills add https://github.com/RozoAI/rozo-checkout-skill",
+      "repository": "https://github.com/RozoAI/rozo-checkout-skill",
+      "homepage": "https://github.com/RozoAI/rozo-checkout-skill/tree/main"
+    },
+    {
+      "name": "rozo-intents",
+      "title": "ROZO Intents",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Send USDC and USDT across Stellar, Ethereum, Arbitrum, Base, BSC, Polygon, and Solana using natural language.",
+      "install": "npx skills add https://github.com/RozoAI/rozo-intents-skills",
+      "repository": "https://github.com/RozoAI/rozo-intents-skills",
+      "homepage": "https://github.com/RozoAI/rozo-intents-skills/tree/main"
+    },
+    {
+      "name": "setup-stellar-contracts",
+      "title": "OpenZeppelin Contracts",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Scaffold a Stellar smart contract project with OpenZeppelin's audited Stellar contract libraries.",
+      "install": "npx skills add https://github.com/OpenZeppelin/openzeppelin-skills",
+      "repository": "https://github.com/OpenZeppelin/openzeppelin-skills",
+      "homepage": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/main/skills/setup-stellar-contracts"
+    },
+    {
+      "name": "soroban-common-mistakes",
+      "title": "Soroban Common Mistakes",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Review Soroban contracts against 23 recurring security mistakes before shipping: missing authorization, storage and TTL pitfalls, arithmetic overflow, and unsa…",
+      "install": "npx skills add https://github.com/mariaelisaaraya/stellar-security-guide",
+      "repository": "https://github.com/mariaelisaaraya/stellar-security-guide",
+      "homepage": "https://github.com/mariaelisaaraya/stellar-security-guide/tree/main/skills/soroban-common-mistakes"
+    },
+    {
+      "name": "sozu-faucet",
+      "title": "Sozu Testnet USDC Faucet",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Claim Circle USDC on Stellar testnet with a PoW-gated CLI, using an existing C…/G… address or a newly generated G… wallet with a USDC trustline.",
+      "install": "npx skills add https://github.com/blessedux/agent-skills",
+      "repository": "https://github.com/blessedux/agent-skills",
+      "homepage": "https://github.com/blessedux/agent-skills/tree/main/sozu-faucet"
+    },
+    {
+      "name": "stellar-agent-search",
+      "title": "Stellar Agent Search",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Read-only, keyless MCP server that lets an AI agent discover, rank, and vet on-chain Stellar 8004 agents on mainnet by natural-language query, stopping before …",
+      "install": "npx skills add https://github.com/berkingurcan/stellar-agent-search",
+      "repository": "https://github.com/berkingurcan/stellar-agent-search",
+      "homepage": "https://github.com/berkingurcan/stellar-agent-search/tree/main/skills/mcp"
+    },
+    {
+      "name": "stellartools",
+      "title": "StellarTools",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Stripe-level payment infrastructure for Stellar.",
+      "install": "npx skills add https://github.com/payrouteshq/stellartools",
+      "repository": "https://github.com/payrouteshq/stellartools",
+      "homepage": "https://github.com/payrouteshq/stellartools/tree/main"
+    },
+    {
+      "name": "sub-rosa",
+      "title": "Sub Rosa",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Integrate sealed coordination into Stellar apps with @sub-rosa/sdk: run sealed-bid asset auctions with SAC escrow and atomic lot settlement, confidential propo…",
+      "install": "npx skills add https://github.com/karagozemin/Sub-Rosa",
+      "repository": "https://github.com/karagozemin/Sub-Rosa",
+      "homepage": "https://github.com/karagozemin/Sub-Rosa/tree/main/skills/sub-rosa"
+    },
+    {
+      "name": "trustless-work-dev",
+      "title": "Trustless Work Escrow",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Build escrow and milestone-based payment workflows on Stellar with the Trustless Work platform.",
+      "install": "npx skills add https://github.com/Trustless-Work/trustlesswork-skill",
+      "repository": "https://github.com/Trustless-Work/trustlesswork-skill",
+      "homepage": "https://github.com/Trustless-Work/trustlesswork-skill/tree/main/trustless-work-dev"
+    },
     {
       "name": "allbridge-sdk",
       "title": "Allbridge SDK",
@@ -223,72 +413,72 @@
     },
     {
       "name": "agentic-payments",
-      "title": "Agentic Payments",
+      "title": "Agent Payments (x402 + MPP)",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Agentic and machine-to-machine payments on Stellar.",
-      "install": "npx skills add stellar/agentic-payments",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/agentic-payments/"
     },
     {
       "name": "assets",
-      "title": "Assets",
+      "title": "Stellar Assets & SAC",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Stellar Assets (classic) + trustlines + Stellar Asset Contract (SAC) bridge to smart contracts.",
-      "install": "npx skills add stellar/assets",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/assets/"
     },
     {
       "name": "cross-chain",
-      "title": "Cross Chain",
+      "title": "Cross-Chain (CCTP, Axelar, LayerZero)",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Cross-chain interoperability for Stellar.",
-      "install": "npx skills add stellar/cross-chain",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/cross-chain/"
     },
     {
       "name": "dapp",
-      "title": "dApp",
+      "title": "Frontend & Wallets",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Stellar dApp / frontend development.",
-      "install": "npx skills add stellar/dapp",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/dapp/"
     },
     {
       "name": "data",
-      "title": "Data",
+      "title": "RPC & Horizon APIs",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Querying Stellar chain data via Stellar RPC (preferred) and Horizon (legacy).",
-      "install": "npx skills add stellar/data",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/data/"
     },
     {
       "name": "smart-contracts",
-      "title": "Smart Contracts",
+      "title": "Stellar Smart Contracts",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Stellar smart contract development (Rust, soroban-sdk).",
-      "install": "npx skills add stellar/smart-contracts",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/smart-contracts/"
     },
     {
       "name": "standards",
-      "title": "Standards",
+      "title": "SEPs, CAPs & Ecosystem",
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Stellar standards, ecosystem, and reference.",
-      "install": "npx skills add stellar/standards",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/standards/"
     },
     {
@@ -297,8 +487,8 @@
       "source": "sdf",
       "kind": "skill-md",
       "tagline": "Zero-knowledge proofs and privacy patterns on Stellar.",
-      "install": "npx skills add stellar/zk-proofs",
-      "repository": null,
+      "install": "npx skills add https://github.com/stellar/stellar-dev-skill",
+      "repository": "https://github.com/stellar/stellar-dev-skill",
       "homepage": "https://skills.stellar.org/skills/zk-proofs/"
     },
     {

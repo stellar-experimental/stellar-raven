@@ -155,7 +155,7 @@ The 2026-09-03 Scout routing attribution found eight real regressions from phras
 first-token truncation, generic schema-word coverage, substring coverage, and five weak gated rows.
 It also found valid leaderboard and RFP gains. Rejected search and Scout candidates are retired
 ([disposition](rounds/2026-09-09-outstanding-closeout.md#rejected-candidate-retirement--2026-09-10));
-the current accepted source is Scout 1.9.54. Use current main and a fresh source snapshot for any
+the current accepted source is Scout 1.9.61 (absorbed 2026-10-02). Use current main and a fresh source snapshot for any
 later authorized repair.
 
 Trigger only after the owner authorizes a general Raven scoring repair. This item does not

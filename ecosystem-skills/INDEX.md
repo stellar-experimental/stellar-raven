@@ -2,7 +2,7 @@
 
 # Stellar/Soroban ecosystem skills — index
 
-Directory of **21 agent skills** across **5 sources** · pinned 2026-09-29T19:23:49Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
+Directory of **21 agent skills** across **5 sources** · pinned 2026-10-02T14:26:28Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
 
 The **What it does** column is host-owned discovery text. Exact-ID overrides in `scripts/description-notes.mjs` can narrow upstream frontmatter for routing. They do not modify pinned source bytes. `codemode.skill.read` still applies its existing exposure scrub.
 
@@ -69,10 +69,29 @@ _Third-party Stellar platform skills — integrate hosted ecosystem services fro
 
 ## Ecosystem directory (stellarlight.xyz catalog snapshot)
 
-_The broader map of what exists across the Stellar agent-skill ecosystem — 43 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-09-29T19:23:49Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
+_The broader map of what exists across the Stellar agent-skill ecosystem — 62 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-10-02T14:26:28Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
 
 | Entry | Source | Kind |
 | --- | --- | --- |
+| `anchors` | `community` | `skill-md` |
+| `caatinga` | `community` | `skill-md` |
+| `cogladius` | `community` | `skill-md` |
+| `contextio-sdk` | `community` | `skill-md` |
+| `defindex-sdk` | `community` | `skill-md` |
+| `discover` | `community` | `skill-md` |
+| `eunomia-bounded-agent-treasury` | `community` | `skill-md` |
+| `nirium-agentic-payments` | `community` | `skill-md` |
+| `pmll` | `community` | `skill-md` |
+| `pollar-wallet-auth` | `community` | `skill-md` |
+| `rozo-checkout` | `community` | `skill-md` |
+| `rozo-intents` | `community` | `skill-md` |
+| `setup-stellar-contracts` | `community` | `skill-md` |
+| `soroban-common-mistakes` | `community` | `skill-md` |
+| `sozu-faucet` | `community` | `skill-md` |
+| `stellar-agent-search` | `community` | `skill-md` |
+| `stellartools` | `community` | `skill-md` |
+| `sub-rosa` | `community` | `skill-md` |
+| `trustless-work-dev` | `community` | `skill-md` |
 | `allbridge-sdk` | `external` | `sdk` |
 | `blend-sdk` | `external` | `sdk` |
 | `freighter-api` | `external` | `sdk` |
@@ -120,7 +139,7 @@ _The broader map of what exists across the Stellar agent-skill ecosystem — 43 
 ## Community directory (stellar/stellar-dev-skill main source snapshot)
 
 The snapshot lists 30 Community skills from [stellar/stellar-dev-skill main](https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/site/src/data/skills.ts).
-The snapshot date is 2026-10-01T18:32:51.402Z.
+The snapshot date is 2026-10-02T14:26:39.726Z.
 Source changes can precede deployment or never deploy.
 These links support discovery. Each skill needs a separate pin and exposure review before Raven can serve it.
 

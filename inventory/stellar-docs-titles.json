@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-16T20:51:36.112Z",
+  "fetchedAt": "2026-10-02T14:20:35.280Z",
   "index": "crawler_Stellar Docs - Docusaurus",
   "service": "stellar-docs",
   "source": {
@@ -394,6 +394,10 @@
     {
       "path": "/docs/build/guides/events/publish",
       "title": "Publish events from a Rust contract"
+    },
+    {
+      "path": "/docs/build/guides/events/replay-ledger-close-meta",
+      "title": "Replay a ledger to collect its LedgerCloseMeta"
     },
     {
       "path": "/docs/build/guides/fees",
@@ -1836,6 +1840,62 @@
       "title": "Stellar CLI"
     },
     {
+      "path": "/docs/tools/cli/agent-cli",
+      "title": "Stellar CLI for Agents"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/build-and-submit-transactions",
+      "title": "Build and submit transactions"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
+      "title": "Check balances and metadata"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/delegate-spending",
+      "title": "Delegate spending"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
+      "title": "Pay for APIs with x402"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/send-tokens",
+      "title": "Send tokens"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/sign-messages",
+      "title": "Sign messages"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet",
+      "title": "USDT0 on mainnet"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/quickstart",
+      "title": "Quickstart"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/reference/architecture",
+      "title": "Architecture"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/reference/authority-model",
+      "title": "Authority &amp; Security Model"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/reference/output-and-errors",
+      "title": "Output and errors"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/reference/troubleshooting",
+      "title": "Troubleshooting"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/skills",
+      "title": "Skills"
+    },
+    {
       "path": "/docs/tools/cli/cookbook",
       "title": "Cookbook"
     },
@@ -2616,5 +2676,5 @@
       "title": "11 posts tagged with \"protocol\""
     }
   ],
-  "total": 651
+  "total": 666
 }

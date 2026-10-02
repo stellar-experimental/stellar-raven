@@ -53,6 +53,44 @@
         ],
         "type": "object"
       },
+      "scout.RequestError": {
+        "description": "The request itself was wrong (a 400): fix the call, do not retry it as is.",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "hint": {
+            "description": "How to correct the call.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
+      "scout.RetryableError": {
+        "description": "A failure the caller should retry: the read behind the answer failed (database, upstream, or this instance's rate window). Never a claim about the data; `advisory` says what the failure is NOT a claim about. Mirrors the Retry-After header in seconds.",
+        "properties": {
+          "advisory": {
+            "description": "What the failure is not a claim about, and what to do (retry after Retry-After, or where else to look).",
+            "type": "string"
+          },
+          "error": {
+            "description": "What failed, in one line.",
+            "type": "string"
+          },
+          "retryAfterSeconds": {
+            "description": "Seconds to wait before resending; the same value as the Retry-After header. 2 on database reads, 60 or 300 on the skills registry.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "error",
+          "retryAfterSeconds"
+        ],
+        "type": "object"
+      },
       "scout.StatusResponse": {
         "properties": {
           "apiVersion": {
@@ -158,7 +196,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-09-29T19:23:49Z"
+    "x-generatedAt": "2026-10-02T14:26:28Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -2080,6 +2118,13 @@
                           "deprecated": true,
                           "description": "Deprecated flat copy — read meta.counts.total.",
                           "type": "integer"
+                        },
+                        "warnings": {
+                          "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
                         }
                       },
                       "type": "object"
@@ -2171,7 +2216,7 @@
             "description": "Changed rows, newest-first per surface"
           },
           "400": {
-            "description": "Missing/invalid since, unknown param, or invalid surface — never silently ignored"
+            "description": "Missing or invalid since, an unknown parameter (named with the supported set in hint), or an invalid surface; never silently ignored."
           }
         },
         "summary": "Change feed: which rows moved since a given time",
@@ -2893,7 +2938,7 @@
     },
     "/scout/getSkill": {
       "get": {
-        "description": "Full detail for ONE skill by slug or display name — metadata plus, for SDF official skills, the complete raw SKILL.md text (.skill.content, fetched live from skills.stellar.org). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
+        "description": "Full detail for ONE skill by slug or display name — metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (.skill.content, fetched live from where the registry links it). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
         "operationId": "scout.getSkill",
         "parameters": [
           {
@@ -3100,7 +3145,7 @@
                 }
               }
             },
-            "description": "Invalid sort or unknown query param"
+            "description": "Invalid sort, or an unknown query parameter (named with the supported set in hint); this registry rejects rather than ignores it."
           }
         },
         "summary": "Stellar stablecoins ranked by USD market cap",
@@ -3414,7 +3459,7 @@
                 }
               }
             },
-            "description": "Unknown parameter or invalid value (params are never silently ignored)"
+            "description": "Unknown parameter (named with the supported set in hint) or invalid value; parameters are never silently ignored."
           }
         },
         "summary": "Enumerable registry of Stellar security-audit reports",
@@ -3512,7 +3557,7 @@
     },
     "/scout/listSkills": {
       "get": {
-        "description": "Catalog of installable Stellar AI skills/tools — SDF's official skills.stellar.org set merged with curated and community entries. Each entry carries an install command, kind (skill-md | mcp-server | sdk | cli | agent-kit | tool), and repo/docs links; filter by source/kind. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.\n\nCatalog note: this is the live ecosystem DIRECTORY — skills plus MCP servers, SDKs, and CLIs — for discovering what exists and fetching install metadata; most entries are not mirrored skills.",
+        "description": "Catalog of installable Stellar AI skills/tools: both sections of SDF's skills.stellar.org registry (source=sdf for the SDF-authored set, source=community for Community Built entries, listed but not reviewed by SDF) merged with curated entries and approved submissions. Each entry carries install, kind (skill-md | mcp-server | sdk | cli | agent-kit | tool) and repo/docs links; filter by source/kind. meta.registry says what the registry listed, resolved and could not fetch. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.\n\nCatalog note: this is the live ecosystem DIRECTORY — skills plus MCP servers, SDKs, and CLIs — for discovering what exists and fetching install metadata; most entries are not mirrored skills.",
         "operationId": "scout.listSkills",
         "parameters": [
           {
@@ -4200,7 +4245,7 @@
             }
           },
           {
-            "description": "Optional source filter. Use 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when — protocol upgrade tags).",
+            "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
             "in": "query",
             "name": "source",
             "schema": {
@@ -4269,6 +4314,48 @@
             }
           },
           {
+            "description": "Several declared sources in one call, comma-separated (e.g. cap,sep,dev-docs); a comma in `source` is read the same way. Each source is searched exactly as `source=<one>&limit=<perSource>` would search it and its rows come back together, in the order given. meta.bySource carries each source's status, returned count, matchMode, sourceDocCount and resultsHash. The rows are the single-source call's rows; scores can differ in the fourth decimal between any two calls that embed the query separately (two single-source calls on different instances do too), which can swap near-tied rows, so compare row ids across separate calls. A source that cannot be read is named in meta.warnings and bySource while the others answer; no source readable is a 503. Counts as one request against the rate limit. No sourceAdvisory on this form.",
+            "explode": false,
+            "in": "query",
+            "name": "sources",
+            "schema": {
+              "items": {
+                "enum": [
+                  "sdf-blog",
+                  "scf-handbook",
+                  "sep",
+                  "cap",
+                  "dev-docs",
+                  "paper",
+                  "scf-proposal",
+                  "lumenloop",
+                  "lumenloop-research",
+                  "repo-docs",
+                  "audit",
+                  "incident",
+                  "security-program",
+                  "sdf-org",
+                  "ec-developer-report",
+                  "release"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Rows per source when several sources are requested (default 8, max 25; `limit` is read when absent). With one source it is the same as `limit`.",
+            "in": "query",
+            "name": "perSource",
+            "schema": {
+              "default": 8,
+              "maximum": 25,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
             "$ref": "#/components/parameters/scout.fields"
           }
         ],
@@ -4287,7 +4374,92 @@
                 }
               }
             },
-            "description": "Research results"
+            "description": "Research results",
+            "headers": {
+              "Server-Timing": {
+                "description": "Our own wall time per phase in milliseconds (init, embed, vector, rank, total), so a consumer can split our time from transfer time.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Scout-Match-Mode": {
+                "description": "The retrieval mode that produced this page, the same value as meta.matchMode: `vector` or `keyword`.",
+                "schema": {
+                  "enum": [
+                    "vector",
+                    "keyword"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RequestError"
+                }
+              }
+            },
+            "description": "The call is wrong: missing q, an unknown source, or audit-only filters on a non-audit source. Fix the call; do not retry it as is."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "This instance's per-minute window is spent. Counters are per serverless instance (X-RateLimit-Scope: instance), so a host-wide window read from these headers is approximate; wait Retry-After and resend.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until this instance's window resets.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-RateLimit-Scope": {
+                "description": "Always `instance`: the counter is per serverless instance, not global.",
+                "schema": {
+                  "enum": [
+                    "instance"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "A read failed: the database handle could not be opened, or both the vector and the keyword stage threw. An outage, NOT an empty result: retry after Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending (2 on database reads).",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Server-Timing": {
+                "description": "Our own wall time, as on a 200.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Vector search over the Stellar research corpus",
@@ -7007,7 +7179,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 282,
-    "generatedAt": "2026-09-29T19:23:49Z"
+    "generatedAt": "2026-10-02T14:26:28Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7019,7 +7191,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-09-29T19:23:05.279Z",
+      "fetchedAt": "2026-10-02T14:20:35.127Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -7050,7 +7222,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-09-29T19:23:49Z"
+      "syncedAt": "2026-10-02T14:26:28Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",
