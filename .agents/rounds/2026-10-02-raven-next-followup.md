@@ -230,3 +230,30 @@ The reviewer could not independently confirm the deploy's creation times, the 10
 or the route and connector results. Those are the lead's observations from
 `wrangler deployments status`, `curl`, and one authenticated `execute` at the times stated above.
 
+### Release of #213
+
+- Review: `rev-astra-ai` gave the final verdict `accept` at `41a74ec1` (`final-guard-astra.md`).
+  All five findings are closed.
+- CI passed (`secrets`, `Analyze` twice, `test`, `CodeQL`). GitHub merged the PR by squash as
+  `932ee86c3e713cb207688e9a0a0bf65f11cfca4c` at 2026-10-02T03:16:30Z.
+- `npm ci` then `npm run deploy` from the clean `main` checkout at `932ee86c`. The preflight
+  printed `tree clean and HEAD == origin/main`. Worker Version ID
+  `8a628307-f04f-405c-98b2-499143fd1996`, version created 2026-10-02T03:16:46.484Z, deployment
+  created 2026-10-02T03:16:49.159Z, 100% of traffic. The `postdeploy` hook passed. The upload
+  size equals the previous deploy (7226.05 KiB): the PR changed no Worker source.
+- Verification at 03:16:52Z: the nine public routes returned HTTP 200; unauthenticated
+  `POST /mcp` returned HTTP 401.
+- The lead closed pane `w3W:p1D` and removed the two worktrees and both local branches. The
+  candidate lockfile change remains as `ai-bump-lockfile.patch`.
+
+This receipt lands through a ledger-only PR. The lead does not deploy that PR; it changes nothing
+the Worker bundle reads.
+
+## Final state of this round
+
+Production runs Worker Version `8a628307-f04f-405c-98b2-499143fd1996`, built from `932ee86c`.
+Done: `sd-052` retired, `sk-028` filed, the type-only dependency update, the deploy of `main`, and
+the request-shape guard. Held on purpose: the `ai` and `@ai-sdk/*` update (`TODO.md`,
+Dependencies). Not due: the dated golden checks from 2026-10-08. The owner's paired collection
+freezes merges and deploys from its signature to the end of collection.
+
