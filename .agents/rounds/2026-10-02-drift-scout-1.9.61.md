@@ -221,3 +221,11 @@ queries. Final confirmation (`final2-drift-astra.md`): **safe to merge** once CI
   issue stays open for the held title vocabulary.
 - Pane `w3W:p1F` closed; the drift and deploy worktrees removed; the branch deleted. This receipt
   lands through a ledger-only PR and is not deployed.
+
+## Hold lifted — 2026-10-02
+
+The title-keyword derivation was repaired in `rounds/2026-10-02-routing-adapter-repairs.md` (lane
+A, PR #221): title tokens are filtered by catalog structure and each title path belongs to one docs
+operation. The live snapshot (666 titles) is absorbed there with zero graded routing changes, and
+#215 closes with that merge.
+

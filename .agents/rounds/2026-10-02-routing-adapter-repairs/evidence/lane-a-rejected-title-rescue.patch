@@ -1,0 +1,1281 @@
+diff --git a/catalog/manifest.json b/catalog/manifest.json
+index 5d8b5f53..82e9ff7a 100644
+--- a/catalog/manifest.json
++++ b/catalog/manifest.json
+@@ -25584,40 +25584,6 @@
+         ],
+         "type": "object"
+       },
+-      "keywords": [
+-        "ecosystem",
+-        "proposals",
+-        "seps",
+-        "sdf",
+-        "architecture",
+-        "clients",
+-        "delivery",
+-        "guarantees",
+-        "configuration",
+-        "example",
+-        "faq",
+-        "production",
+-        "server",
+-        "accounts",
+-        "45",
+-        "cli",
+-        "manual",
+-        "deployment",
+-        "embedded",
+-        "wallets",
+-        "making",
+-        "ready",
+-        "monitoring",
+-        "security",
+-        "troubleshooting",
+-        "picker",
+-        "analytics",
+-        "circle",
+-        "dashboard",
+-        "home",
+-        "distribution",
+-        "receivers"
+-      ],
+       "kind": "operation",
+       "outputSchema": {
+         "additionalProperties": false,
+@@ -25732,6 +25698,39 @@
+         ]
+       },
+       "service": "stellarDocs",
++      "titleKeywords": [
++        "ecosystem",
++        "proposals",
++        "seps",
++        "sdf",
++        "clients",
++        "delivery",
++        "guarantees",
++        "configuration",
++        "example",
++        "faq",
++        "production",
++        "server",
++        "accounts",
++        "45",
++        "cli",
++        "manual",
++        "deployment",
++        "embedded",
++        "wallets",
++        "making",
++        "ready",
++        "monitoring",
++        "security",
++        "troubleshooting",
++        "picker",
++        "analytics",
++        "circle",
++        "dashboard",
++        "home",
++        "distribution",
++        "receivers"
++      ],
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -25841,22 +25840,6 @@
+         ],
+         "type": "object"
+       },
+-      "keywords": [
+-        "deploy",
+-        "within",
+-        "integrate",
+-        "comparison",
+-        "design",
+-        "considerations",
+-        "cctp",
+-        "tutorial",
+-        "publish",
+-        "information",
+-        "quickstart",
+-        "usdt0",
+-        "layer",
+-        "zero"
+-      ],
+       "kind": "operation",
+       "outputSchema": {
+         "additionalProperties": false,
+@@ -25971,6 +25954,22 @@
+         ]
+       },
+       "service": "stellarDocs",
++      "titleKeywords": [
++        "deploy",
++        "within",
++        "integrate",
++        "comparison",
++        "design",
++        "considerations",
++        "cctp",
++        "tutorial",
++        "publish",
++        "information",
++        "quickstart",
++        "usdt0",
++        "layer",
++        "zero"
++      ],
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -26966,52 +26965,6 @@
+         ],
+         "type": "object"
+       },
+-      "keywords": [
+-        "smart",
+-        "authorization",
+-        "interactions",
+-        "tests",
+-        "simulation",
+-        "lifecycle",
+-        "environment",
+-        "errors",
+-        "debugging",
+-        "modes",
+-        "rust",
+-        "dialect",
+-        "persisting",
+-        "archival",
+-        "types",
+-        "built",
+-        "fully",
+-        "typed",
+-        "json",
+-        "decentralized",
+-        "exchange",
+-        "signatures",
+-        "master",
+-        "fast",
+-        "cheap",
+-        "0ut",
+-        "0f",
+-        "control",
+-        "quest",
+-        "migrate",
+-        "another",
+-        "chain",
+-        "introduction",
+-        "summary",
+-        "soroban",
+-        "hardhat",
+-        "solidity",
+-        "support",
+-        "via",
+-        "solang",
+-        "audits",
+-        "poseidon",
+-        "host",
+-        "software"
+-      ],
+       "kind": "operation",
+       "outputSchema": {
+         "additionalProperties": false,
+@@ -27126,6 +27079,51 @@
+         ]
+       },
+       "service": "stellarDocs",
++      "titleKeywords": [
++        "smart",
++        "authorization",
++        "interactions",
++        "tests",
++        "simulation",
++        "lifecycle",
++        "environment",
++        "debugging",
++        "modes",
++        "rust",
++        "dialect",
++        "persisting",
++        "archival",
++        "types",
++        "built",
++        "fully",
++        "typed",
++        "json",
++        "decentralized",
++        "exchange",
++        "signatures",
++        "master",
++        "fast",
++        "cheap",
++        "0ut",
++        "0f",
++        "control",
++        "quest",
++        "migrate",
++        "another",
++        "chain",
++        "introduction",
++        "summary",
++        "soroban",
++        "hardhat",
++        "solidity",
++        "support",
++        "via",
++        "solang",
++        "audits",
++        "poseidon",
++        "host",
++        "software"
++      ],
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -27234,98 +27232,6 @@
+         ],
+         "type": "object"
+       },
+-      "keywords": [
+-        "key",
+-        "parameters",
+-        "symbol",
+-        "retrieve",
+-        "entry",
+-        "connecting",
+-        "creating",
+-        "visualizations",
+-        "optimizing",
+-        "queries",
+-        "like",
+-        "viewing",
+-        "metadata",
+-        "backfill",
+-        "js",
+-        "udf",
+-        "use",
+-        "source",
+-        "sdf",
+-        "etl",
+-        "curation",
+-        "architecture",
+-        "scheduling",
+-        "orchestration",
+-        "system",
+-        "visualization",
+-        "public",
+-        "dashboards",
+-        "apis",
+-        "introduction",
+-        "configuring",
+-        "filtering",
+-        "installing",
+-        "monitoring",
+-        "prerequisites",
+-        "upgrading",
+-        "error",
+-        "handling",
+-        "specific",
+-        "before",
+-        "stale",
+-        "timeout",
+-        "failed",
+-        "malformed",
+-        "standard",
+-        "merge",
+-        "allow",
+-        "trust",
+-        "bump",
+-        "sequence",
+-        "change",
+-        "create",
+-        "passive",
+-        "sell",
+-        "offer",
+-        "manage",
+-        "buy",
+-        "payment",
+-        "strict",
+-        "receive",
+-        "options",
+-        "consistency",
+-        "arguments",
+-        "migrate",
+-        "lake",
+-        "indexers",
+-        "exporting",
+-        "setup",
+-        "example",
+-        "usages",
+-        "export",
+-        "gcs",
+-        "backends",
+-        "buffered",
+-        "backend",
+-        "captive",
+-        "core",
+-        "readers",
+-        "changes",
+-        "within",
+-        "range",
+-        "count",
+-        "each",
+-        "archive",
+-        "successful",
+-        "processors",
+-        "transfer",
+-        "processor",
+-        "filter",
+-        "oracle"
+-      ],
+       "kind": "operation",
+       "outputSchema": {
+         "additionalProperties": false,
+@@ -27440,6 +27346,97 @@
+         ]
+       },
+       "service": "stellarDocs",
++      "titleKeywords": [
++        "key",
++        "parameters",
++        "symbol",
++        "retrieve",
++        "entry",
++        "connecting",
++        "creating",
++        "visualizations",
++        "optimizing",
++        "queries",
++        "like",
++        "viewing",
++        "metadata",
++        "backfill",
++        "js",
++        "udf",
++        "use",
++        "source",
++        "sdf",
++        "etl",
++        "curation",
++        "scheduling",
++        "orchestration",
++        "system",
++        "visualization",
++        "public",
++        "dashboards",
++        "apis",
++        "introduction",
++        "configuring",
++        "filtering",
++        "installing",
++        "monitoring",
++        "prerequisites",
++        "upgrading",
++        "error",
++        "handling",
++        "specific",
++        "before",
++        "stale",
++        "timeout",
++        "failed",
++        "malformed",
++        "standard",
++        "merge",
++        "allow",
++        "trust",
++        "bump",
++        "sequence",
++        "change",
++        "create",
++        "passive",
++        "sell",
++        "offer",
++        "manage",
++        "buy",
++        "payment",
++        "strict",
++        "receive",
++        "options",
++        "consistency",
++        "arguments",
++        "migrate",
++        "lake",
++        "indexers",
++        "exporting",
++        "setup",
++        "example",
++        "usages",
++        "export",
++        "gcs",
++        "backends",
++        "buffered",
++        "backend",
++        "captive",
++        "core",
++        "readers",
++        "changes",
++        "within",
++        "range",
++        "count",
++        "each",
++        "archive",
++        "successful",
++        "processors",
++        "transfer",
++        "processor",
++        "filter",
++        "oracle"
++      ],
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -27548,79 +27545,6 @@
+         ],
+         "type": "object"
+       },
+-      "keywords": [
+-        "asset",
+-        "add",
+-        "meta",
+-        "wasm",
+-        "argument",
+-        "types",
+-        "lifecycle",
+-        "uploaded",
+-        "bytecode",
+-        "extend",
+-        "instance",
+-        "ttl",
+-        "entry",
+-        "restore",
+-        "archived",
+-        "keys",
+-        "tx",
+-        "commands",
+-        "create",
+-        "claimable",
+-        "balance",
+-        "op",
+-        "upload",
+-        "smart",
+-        "plugins",
+-        "manual",
+-        "more",
+-        "analytics",
+-        "platforms",
+-        "sandbox",
+-        "block",
+-        "explorers",
+-        "jupyter",
+-        "notebooks",
+-        "insights",
+-        "status",
+-        "node",
+-        "operator",
+-        "online",
+-        "ide",
+-        "security",
+-        "chain",
+-        "saved",
+-        "keypairs",
+-        "requests",
+-        "dashboard",
+-        "diff",
+-        "xdrs",
+-        "json",
+-        "toolings",
+-        "usage",
+-        "container",
+-        "modes",
+-        "ports",
+-        "service",
+-        "options",
+-        "cloud",
+-        "deployment",
+-        "digital",
+-        "ocean",
+-        "fly",
+-        "io",
+-        "debugging",
+-        "diagnostic",
+-        "viewing",
+-        "logs",
+-        "faucet",
+-        "connect",
+-        "money",
+-        "gram",
+-        "own"
+-      ],
+       "kind": "operation",
+       "outputSchema": {
+         "additionalProperties": false,
+@@ -27725,6 +27649,96 @@
+         ]
+       },
+       "service": "stellarDocs",
++      "titleKeywords": [
++        "agents",
++        "check",
++        "balances",
++        "metadata",
++        "delegate",
++        "spending",
++        "pay",
++        "apis",
++        "x402",
++        "messages",
++        "usdt0",
++        "mainnet",
++        "authority",
++        "security",
++        "model",
++        "output",
++        "troubleshooting",
++        "skills",
++        "asset",
++        "add",
++        "meta",
++        "wasm",
++        "argument",
++        "types",
++        "lifecycle",
++        "uploaded",
++        "bytecode",
++        "extend",
++        "instance",
++        "ttl",
++        "entry",
++        "restore",
++        "archived",
++        "keys",
++        "tx",
++        "commands",
++        "create",
++        "claimable",
++        "balance",
++        "op",
++        "upload",
++        "smart",
++        "plugins",
++        "manual",
++        "more",
++        "analytics",
++        "platforms",
++        "sandbox",
++        "block",
++        "explorers",
++        "jupyter",
++        "notebooks",
++        "insights",
++        "status",
++        "node",
++        "operator",
++        "online",
++        "ide",
++        "chain",
++        "saved",
++        "keypairs",
++        "requests",
++        "dashboard",
++        "diff",
++        "xdrs",
++        "json",
++        "toolings",
++        "usage",
++        "container",
++        "modes",
++        "ports",
++        "service",
++        "options",
++        "cloud",
++        "deployment",
++        "digital",
++        "ocean",
++        "fly",
++        "io",
++        "debugging",
++        "diagnostic",
++        "viewing",
++        "logs",
++        "faucet",
++        "connect",
++        "money",
++        "gram",
++        "own"
++      ],
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -27823,16 +27837,120 @@
+             "description": "Add full section `content` to each returned hit (can be multi-KB per hit; keep hitsPerPage small or project fields before returning).",
+             "type": "boolean"
+           },
+-          "query": {
+-            "type": "string"
++          "query": {
++            "type": "string"
++          }
++        },
++        "required": [
++          "query"
++        ],
++        "type": "object"
++      },
++      "kind": "operation",
++      "outputSchema": {
++        "additionalProperties": false,
++        "properties": {
++          "clientFiltered": {
++            "description": "True when the operation kept only hits under its docs category.",
++            "type": "boolean"
++          },
++          "hits": {
++            "description": "The hits live under `data.hits`; `data` itself is not an array.",
++            "items": {
++              "additionalProperties": false,
++              "properties": {
++                "anchor": {
++                  "type": "string"
++                },
++                "breadcrumb": {
++                  "type": "string"
++                },
++                "content": {
++                  "description": "Present only with includeContent: true, and only on `content` records.",
++                  "type": "string"
++                },
++                "snippet": {
++                  "type": "string"
++                },
++                "type": {
++                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
++                  "type": "string"
++                },
++                "url": {
++                  "format": "uri",
++                  "type": "string"
++                },
++                "url_without_anchor": {
++                  "format": "uri",
++                  "type": "string"
++                }
++              },
++              "required": [
++                "url",
++                "url_without_anchor",
++                "type",
++                "breadcrumb"
++              ],
++              "type": "object"
++            },
++            "type": "array"
++          },
++          "nbHits": {
++            "description": "Index-wide match count before any category filter.",
++            "minimum": 0,
++            "type": "integer"
++          },
++          "nbPages": {
++            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
++            "minimum": 0,
++            "type": "integer"
++          },
++          "page": {
++            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
++            "minimum": 0,
++            "type": "integer"
++          }
++        },
++        "required": [
++          "hits",
++          "nbHits"
++        ],
++        "type": "object"
++      },
++      "provenance": {
++        "fetchedAt": "2026-07-02T14:03:39Z",
++        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
++        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
++        "spec": "specs/stellar-docs.json"
++      },
++      "retrievalProfile": {
++        "emptyScope": "operation",
++        "lane": "corpus",
++        "recoverWith": [
++          {
++            "id": "stellarDocs.search_docs",
++            "on": [
++              "empty",
++              "weak",
++              "adjacent",
++              "ambiguous"
++            ],
++            "relation": "corpus-wide"
++          },
++          {
++            "id": "scout.searchResearch",
++            "on": [
++              "weak",
++              "adjacent",
++              "ambiguous",
++              "partial"
++            ],
++            "relation": "cited-research"
+           }
+-        },
+-        "required": [
+-          "query"
+-        ],
+-        "type": "object"
++        ]
+       },
+-      "keywords": [
++      "service": "stellarDocs",
++      "titleKeywords": [
+         "create",
+         "restoration",
+         "footprint",
+@@ -27903,6 +28021,10 @@
+         "ingest",
+         "published",
+         "publish",
++        "replay",
++        "collect",
++        "close",
++        "meta",
+         "analyzing",
+         "cost",
+         "efficiency",
+@@ -27986,9 +28108,23 @@
+         "built",
+         "fully",
+         "typed",
++        "agents",
++        "spending",
++        "pay",
++        "apis",
++        "x402",
++        "messages",
++        "usdt0",
++        "mainnet",
++        "quickstart",
++        "authority",
++        "security",
++        "model",
++        "output",
++        "troubleshooting",
++        "skills",
+         "cookbook",
+         "management",
+-        "meta",
+         "argument",
+         "uploaded",
+         "keys",
+@@ -28000,110 +28136,6 @@
+         "plugins",
+         "manual"
+       ],
+-      "kind": "operation",
+-      "outputSchema": {
+-        "additionalProperties": false,
+-        "properties": {
+-          "clientFiltered": {
+-            "description": "True when the operation kept only hits under its docs category.",
+-            "type": "boolean"
+-          },
+-          "hits": {
+-            "description": "The hits live under `data.hits`; `data` itself is not an array.",
+-            "items": {
+-              "additionalProperties": false,
+-              "properties": {
+-                "anchor": {
+-                  "type": "string"
+-                },
+-                "breadcrumb": {
+-                  "type": "string"
+-                },
+-                "content": {
+-                  "description": "Present only with includeContent: true, and only on `content` records.",
+-                  "type": "string"
+-                },
+-                "snippet": {
+-                  "type": "string"
+-                },
+-                "type": {
+-                  "description": "`content` for a text section; `lvl1` to `lvl6` for a heading record, which has no snippet or content.",
+-                  "type": "string"
+-                },
+-                "url": {
+-                  "format": "uri",
+-                  "type": "string"
+-                },
+-                "url_without_anchor": {
+-                  "format": "uri",
+-                  "type": "string"
+-                }
+-              },
+-              "required": [
+-                "url",
+-                "url_without_anchor",
+-                "type",
+-                "breadcrumb"
+-              ],
+-              "type": "object"
+-            },
+-            "type": "array"
+-          },
+-          "nbHits": {
+-            "description": "Index-wide match count before any category filter.",
+-            "minimum": 0,
+-            "type": "integer"
+-          },
+-          "nbPages": {
+-            "description": "Pages of the index-wide query at 100 hits per page, NOT pages of the category-filtered hits. This operation takes no `page` argument.",
+-            "minimum": 0,
+-            "type": "integer"
+-          },
+-          "page": {
+-            "description": "Always 0: the operation reads one index page of 100 hits and filters it.",
+-            "minimum": 0,
+-            "type": "integer"
+-          }
+-        },
+-        "required": [
+-          "hits",
+-          "nbHits"
+-        ],
+-        "type": "object"
+-      },
+-      "provenance": {
+-        "fetchedAt": "2026-07-02T14:03:39Z",
+-        "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",
+-        "source": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/settings",
+-        "spec": "specs/stellar-docs.json"
+-      },
+-      "retrievalProfile": {
+-        "emptyScope": "operation",
+-        "lane": "corpus",
+-        "recoverWith": [
+-          {
+-            "id": "stellarDocs.search_docs",
+-            "on": [
+-              "empty",
+-              "weak",
+-              "adjacent",
+-              "ambiguous"
+-            ],
+-            "relation": "corpus-wide"
+-          },
+-          {
+-            "id": "scout.searchResearch",
+-            "on": [
+-              "weak",
+-              "adjacent",
+-              "ambiguous",
+-              "partial"
+-            ],
+-            "relation": "cited-research"
+-          }
+-        ]
+-      },
+-      "service": "stellarDocs",
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -28214,63 +28246,6 @@
+         ],
+         "type": "object"
+       },
+-      "keywords": [
+-        "develop",
+-        "templates",
+-        "creation",
+-        "toml",
+-        "10",
+-        "authentication",
+-        "hosted",
+-        "api",
+-        "setup",
+-        "anchored",
+-        "confirmation",
+-        "modal",
+-        "contacts",
+-        "manage",
+-        "trust",
+-        "querying",
+-        "bindings",
+-        "walkthrough",
+-        "prerequisites",
+-        "network",
+-        "ingestion",
+-        "pipeline",
+-        "cdp",
+-        "consumer",
+-        "sample",
+-        "recovery",
+-        "quote",
+-        "programmatic",
+-        "uri",
+-        "scheme",
+-        "facilitate",
+-        "delegated",
+-        "signing",
+-        "proofs",
+-        "comprehensive",
+-        "initialize",
+-        "scripts",
+-        "implement",
+-        "spec",
+-        "work",
+-        "specs",
+-        "java",
+-        "python",
+-        "php",
+-        "connect",
+-        "testnet",
+-        "enable",
+-        "soroban",
+-        "integrate",
+-        "react",
+-        "prompt",
+-        "sign",
+-        "authorization",
+-        "entries",
+-        "xdrs"
+-      ],
+       "kind": "operation",
+       "outputSchema": {
+         "additionalProperties": false,
+@@ -28375,6 +28350,63 @@
+         ]
+       },
+       "service": "stellarDocs",
++      "titleKeywords": [
++        "develop",
++        "templates",
++        "creation",
++        "toml",
++        "10",
++        "authentication",
++        "hosted",
++        "api",
++        "setup",
++        "anchored",
++        "confirmation",
++        "modal",
++        "contacts",
++        "manage",
++        "trust",
++        "querying",
++        "bindings",
++        "walkthrough",
++        "prerequisites",
++        "network",
++        "ingestion",
++        "pipeline",
++        "cdp",
++        "consumer",
++        "sample",
++        "recovery",
++        "quote",
++        "programmatic",
++        "uri",
++        "scheme",
++        "facilitate",
++        "delegated",
++        "signing",
++        "proofs",
++        "comprehensive",
++        "initialize",
++        "scripts",
++        "implement",
++        "spec",
++        "work",
++        "specs",
++        "java",
++        "python",
++        "php",
++        "connect",
++        "testnet",
++        "enable",
++        "soroban",
++        "integrate",
++        "react",
++        "prompt",
++        "sign",
++        "authorization",
++        "entries",
++        "xdrs"
++      ],
+       "transport": {
+         "algolia": {
+           "clientFilter": {
+@@ -28459,6 +28491,6 @@
+       }
+     }
+   ],
+-  "generatedAt": "2026-10-02T14:26:28Z",
++  "generatedAt": "2026-10-02T15:55:26.831Z",
+   "version": 1
+ }
+diff --git a/inventory/stellar-docs-titles.json b/inventory/stellar-docs-titles.json
+index a26726c7..eb2d379f 100644
+--- a/inventory/stellar-docs-titles.json
++++ b/inventory/stellar-docs-titles.json
+@@ -1,5 +1,5 @@
+ {
+-  "fetchedAt": "2026-09-16T20:51:36.112Z",
++  "fetchedAt": "2026-10-02T15:55:26.831Z",
+   "index": "crawler_Stellar Docs - Docusaurus",
+   "service": "stellar-docs",
+   "source": {
+@@ -395,6 +395,10 @@
+       "path": "/docs/build/guides/events/publish",
+       "title": "Publish events from a Rust contract"
+     },
++    {
++      "path": "/docs/build/guides/events/replay-ledger-close-meta",
++      "title": "Replay a ledger to collect its LedgerCloseMeta"
++    },
+     {
+       "path": "/docs/build/guides/fees",
+       "title": "Fees &amp; Metering"
+@@ -1835,6 +1839,62 @@
+       "path": "/docs/tools/cli",
+       "title": "Stellar CLI"
+     },
++    {
++      "path": "/docs/tools/cli/agent-cli",
++      "title": "Stellar CLI for Agents"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/build-and-submit-transactions",
++      "title": "Build and submit transactions"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/check-balances-and-metadata",
++      "title": "Check balances and metadata"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/delegate-spending",
++      "title": "Delegate spending"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
++      "title": "Pay for APIs with x402"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/send-tokens",
++      "title": "Send tokens"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/sign-messages",
++      "title": "Sign messages"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet",
++      "title": "USDT0 on mainnet"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/quickstart",
++      "title": "Quickstart"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/architecture",
++      "title": "Architecture"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/authority-model",
++      "title": "Authority &amp; Security Model"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/output-and-errors",
++      "title": "Output and errors"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/reference/troubleshooting",
++      "title": "Troubleshooting"
++    },
++    {
++      "path": "/docs/tools/cli/agent-cli/skills",
++      "title": "Skills"
++    },
+     {
+       "path": "/docs/tools/cli/cookbook",
+       "title": "Cookbook"
+@@ -2616,5 +2676,5 @@
+       "title": "11 posts tagged with \"protocol\""
+     }
+   ],
+-  "total": 651
++  "total": 666
+ }
+diff --git a/scripts/build-catalog.mjs b/scripts/build-catalog.mjs
+index 1fb531b9..4d6948e1 100644
+--- a/scripts/build-catalog.mjs
++++ b/scripts/build-catalog.mjs
+@@ -50,7 +50,7 @@ const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
+ // Operation keywords: descriptions are prose, so
+ // schema-level vocabulary — property names and enum values — plus the docs
+ // page-title snapshot are lexically invisible to the search scorer. Distill
+-// them into the same low-weight `keywords` field skill sections carry
++// them into low-weight `keywords` and `titleKeywords` fields
+ // (KEYWORD_BLEND damping, scoring.ts lever 4). Two noise controls, both
+ // measured necessary (a naive schema-prose version regressed extended strict
+ // top1 74→71 and skills top5 23→22 on 2026-07-03): only NAMES and ENUMS are
+@@ -96,10 +96,16 @@ const OP_KEYWORD_MAX_DF = 0.3;
+  * vocabulary sources (docs page titles), which join the schema tokens under
+  * the SAME document-frequency filter: a routing keyword is only useful when
+  * it distinguishes this op from its siblings ("muxed" appears on one docs
+- * op and survives; "contract" appears on most and is dropped).
++ * op and survives; "contract" appears on most and is dropped). Preserve title
++ * provenance in `titleKeywords`: titles can boost a score, but cannot rescue
++ * an operation through the coverage gate. Schema tokens keep precedence.
+  */
+-function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } = {}) {
++export function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } = {}) {
+   const ops = entries.filter((e) => e.kind === "operation");
++  const schemaTokensById = new Map(ops.map((entry) => [entry.id, new Set(tokenize([
++    ...schemaTextParts(entry.inputSchema),
++    ...schemaTextParts(entry.outputSchema)
++  ].join("\n")))]));
+   const tokenSetById = new Map(
+     ops.map((e) => [
+       e.id,
+@@ -123,7 +129,7 @@ function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } =
+     const tokens = tokenSetById.get(entry.id);
+     if (!tokens) return entry;
+     const distinctive = [...tokens].filter((t) => (df.get(t) ?? 0) <= maxDf);
+-    const keywords = extractKeywords(distinctive.join(" "), {
++    const extracted = extractKeywords(distinctive.join(" "), {
+       exclude: [
+         entry.id,
+         entry.service,
+@@ -135,7 +141,14 @@ function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } =
+       ],
+       ...(cap !== undefined ? { cap } : {})
+     });
+-    return keywords.length > 0 ? { ...entry, keywords } : entry;
++    const schemaTokens = schemaTokensById.get(entry.id);
++    const keywords = extracted.filter((token) => schemaTokens.has(token));
++    const titleKeywords = extracted.filter((token) => !schemaTokens.has(token));
++    return {
++      ...entry,
++      ...(keywords.length > 0 ? { keywords } : {}),
++      ...(titleKeywords.length > 0 ? { titleKeywords } : {})
++    };
+   });
+ }
+ 
+@@ -1098,6 +1111,7 @@ export function assertNoNonExposedRefs(entries) {
+     const text = [
+       entry.description ?? "",
+       ...(entry.keywords ?? []),
++      ...(entry.titleKeywords ?? []),
+       ...(entry.routingKeywords ?? []),
+       ...(entry.routingPhrases ?? []).flatMap((phrase) => phrase.tokens),
+       ...(entry.knownAliases ?? []),
+@@ -1202,7 +1216,7 @@ async function main() {
+ 
+   // generatedAt = newest input snapshot (deterministic; never wall clock).
+   // Includes stellar-docs-titles.json's fetchedAt: its page-title vocabulary
+-  // feeds the manifest `keywords`, so a titles-only refresh must move the stamp.
++  // feeds the manifest `titleKeywords`, so a titles-only refresh must move the stamp.
+   const generatedAt = [
+     lumenloop.fetchedAt,
+     stellarLight.fetchedAt,
+diff --git a/specs/super-spec.json b/specs/super-spec.json
+index 14f7ecb0..59115ae6 100644
+--- a/specs/super-spec.json
++++ b/specs/super-spec.json
+@@ -196,7 +196,7 @@
+     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
+     "title": "stellar-raven-codemode — unified super spec",
+     "version": "1.0.0",
+-    "x-generatedAt": "2026-10-02T14:26:28Z"
++    "x-generatedAt": "2026-10-02T15:55:26.831Z"
+   },
+   "openapi": "3.1.0",
+   "paths": {
+@@ -7179,7 +7179,7 @@
+   "x-generated": {
+     "builder": "scripts/build-super-spec.mjs",
+     "catalogEntries": 282,
+-    "generatedAt": "2026-10-02T14:26:28Z"
++    "generatedAt": "2026-10-02T15:55:26.831Z"
+   },
+   "x-services": {
+     "lumenloop": {
+diff --git a/src/catalog/scoring.ts b/src/catalog/scoring.ts
+index 83cc1592..168200a5 100644
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -28,10 +28,11 @@ export type { ScorableEntry } from "./vendor/search-scoring.ts";
+ 
+ /**
+  * ScorableEntry plus the optional build-time keyword fields: `keywords`
+- * and `routingKeywords`.
++ * , `titleKeywords`, and `routingKeywords`.
+  */
+ export type WeightedScorableEntry = ScorableEntry & {
+   keywords?: readonly string[];
++  titleKeywords?: readonly string[];
+   routingKeywords?: readonly string[];
+   routingPhrases?: readonly RoutingPhrase[];
+ };
+@@ -190,6 +191,11 @@ function scoreWithKeywords(
+   if (entry.keywords && hasSchemaEvidence) {
+     fields.push({ tokens: [...new Set(entry.keywords)], blend: KEYWORD_BLEND });
+   }
++  // A page title describes indexed content, not the operation's routing intent.
++  // Keep its vocabulary searchable without allowing title-only gate rescue.
++  if (base !== null && entry.titleKeywords?.length) {
++    fields.push({ tokens: [...new Set(entry.titleKeywords)], blend: KEYWORD_BLEND });
++  }
+   if (
+     entry.routingKeywords &&
+     (base !== null || hasCoherentRoutingWitness(entry.routingPhrases, query.contentTokens))
+diff --git a/src/catalog/search.ts b/src/catalog/search.ts
+index d613736c..a9049357 100644
+--- a/src/catalog/search.ts
++++ b/src/catalog/search.ts
+@@ -440,6 +440,7 @@ function discriminativeRoutingTokens(catalog: Catalog): ReadonlySet<string> {
+         entry.id,
+         entry.description,
+         ...(entry.keywords ?? []),
++        ...(entry.titleKeywords ?? []),
+         ...(entry.routingKeywords ?? [])
+       ].join(" ")).map(canonicalRoutingToken)
+     );
+@@ -734,6 +735,7 @@ function scoreCandidates(
+         kind: entry.kind,
+         description: entry.description,
+         keywords: entry.keywords,
++        titleKeywords: entry.titleKeywords,
+         routingKeywords: entry.routingKeywords,
+         routingPhrases: entry.routingPhrases
+       },
+diff --git a/src/catalog/types.ts b/src/catalog/types.ts
+index 03bc14a9..24ddebd4 100644
+--- a/src/catalog/types.ts
++++ b/src/catalog/types.ts
+@@ -145,13 +145,15 @@ const catalogEntryBaseSchema = z.object({
+   kind: z.enum(CATALOG_KINDS),
+   description: z.string().min(1),
+   /**
+-   * Skill-section entries only (optional): content tokens distilled from the
+-   * section BODY at build time (scripts/build-catalog.mjs via
++   * Schema tokens on operations, or body tokens on skill entries, distilled
++   * at build time (scripts/build-catalog.mjs via
+    * src/catalog/extract-keywords.ts) — mid-section vocabulary the truncated
+    * description can't carry. Blended into scoring at low weight
+    * (src/catalog/scoring.ts); never rendered to users.
+    */
+   keywords: z.array(z.string()).optional(),
++  /** Page-title tokens can boost an existing score, but never admit an entry. */
++  titleKeywords: z.array(z.string()).optional(),
+   /**
+    * Operation entries only (optional): curated machine-routing vocabulary
+    * the upstream service publishes separately from its prose description
