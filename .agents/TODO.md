@@ -23,22 +23,6 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Adapters
 
-### Decide how Raven treats the upstream `source` comma alias on `scout.searchResearch`
-
-Scout 1.9.61 documents that a comma in `source` is read like the new `sources` array
-(`inventory/stellar-light.json`, `GET /api/research`). Raven validates `source` against its
-single-value enum (`src/policy/validate.ts`), so `source: "cap,sep"` fails with "must be one of"
-before the adapter runs, while `sources: ["cap", "sep"]` works (live probe 2026-10-02: four
-results, two per source). The spec the sandbox reads therefore carries a parameter description the
-gateway does not honor. A catalog note that pointed callers to `sources` moved 12 graded routing
-rows in a trial, so description text is not the fix. Either accept the alias (split a comma-joined
-`source` into `sources` before validation, as a general rule for parameters that document the
-alias) or state the gateway contract in a lexically inert way. Found by the 2026-10-02 drift review
-(`rounds/2026-10-02-drift-scout-1.9.61/review-drift-astra.md`, finding 3).
-
-Done when: a caller who follows the upstream description gets the upstream result, or the shipped
-description matches Raven's validation, with a test either way.
-
 ### Do not return a failed Scout backend read as data
 
 Found on 2026-10-01 in the Stellar Docs adapter measurement. Under a parallel batch of 65
@@ -145,109 +129,25 @@ snapshot and re-baseline the fingerprint.
 Done when: the current title snapshot is absorbed with no graded regression and the probe queries
 keep `scout.listSkills` and `stellarDocs.search_docs` at or above their 2026-09-29 ranks.
 
-### Investigate why the longer `scout.listSkills` description loses one discovery probe
+### Repair the matching that let an article carry `scout.listSkills` for one MCP discovery probe
 
-Found by the same review. With the Scout 1.9.61 wording, "Are there any model context protocol
-skills for Stellar?" no longer lists `scout.listSkills` in the first five results (rank 3, score
-195 before; `scout.getSkill` at 141 appears instead). Restoring the old description restores the
-rank; the docs keywords are not the cause. The gate lanes do not contain this phrasing and the
-general discovery probes ("What Stellar AI skills can I install?", "List Stellar skills") are
-unchanged. Find the scoring term that penalizes the longer description and decide whether it is
-correct. Do not edit the mirrored upstream description.
+Found by the 2026-10-02 drift review (`rounds/2026-10-02-drift-scout-1.9.61/verify-drift-astra.md`).
+"Are there any model context protocol skills for Stellar?" lists `scout.listSkills` at rank 3
+(score 195) with the Scout 1.9.54 description and not in the first five with the 1.9.61 wording.
+The cause is not description length. The vendor scorer's prefix match
+(`src/catalog/vendor/search-scoring.ts:85`) let the query token `any` match the article `an` in
+the old phrase "an install", and the 60% token-coverage rule (`:129`) then admitted the entry
+(six of nine tokens). The new description drops that article; five of nine tokens no longer meet
+the rule. Neither description matches `model`, `context`, or `protocol`. "Are there any MCP skills
+for Stellar?", "What Stellar AI skills can I install?", and "List Stellar skills" are unchanged.
 
-Done when: the cause is recorded and either the scorer is repaired with measurement or the probe
-is recorded as accepted.
+Repair the general matching (for example, do not let a stopword-length prefix match count toward
+coverage, or let the expanded protocol name resolve to its abbreviation) and measure with the
+routing gate and this probe. Do not edit the mirrored upstream description and do not add a
+query-specific exception.
 
-### `search` does not surface the research lane for protocol-history questions
-
-Eval case `q-protocol-24-whisk-incident` asks why Protocol 24 followed Protocol 23 so quickly.
-`scout.searchResearch` holds every required fact (`source: "cap"` and a broad call together return
-478, 84, 77, 394, 31879035, `CAP-0076`, and Hot Archive). `search` does not rank it in the top ten
-for the case's own wording; `stellarDocs.*` operations win. The lane already advertises incident
-reports, so this is a ranking defect, not a description gap. Filed here and not in `improvements/`:
-the data is reachable, so there is no upstream gap.
-
-Current state: three reviewed mechanism attempts (`clause-fit-hysteresis-v1`,
-`cross-encoder-fit-v1`, `clause-support-fit-v1`) failed the routing gates, and the three-attempt box
-is spent. Records: `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`,
-`.agents/rounds/2026-09-01-protocol-history-attempt-three.md`, and
-`.agents/rounds/2026-09-02-protocol-history-free-evidence.md`. The owner set the v2 contracts on
-2026-09-03 (`.agents/rounds/2026-09-03-owner-decisions.md`): 19 required, nine forbidden, and four
-neutral cases. Both v2 contracts pin manifest epoch `4cd28f4b…fe8b`, so
-`npm run eval:protocol-history` stops as `source-expired` before scoring. That stop is correct. Do
-not repin the v2 epoch; a new epoch needs a new independently authored contract after an accepted
-source freeze (PH3).
-
-Triggers:
-
-- **PH1 — dual upstream card change.** Both hashes must change together. The
-  `inventory/stellar-light.json` SHA-256 must differ from
-  `1a261c4a2e2172683e91a52ddc33b02ff41e74760c861dfacb29c60a8d8671b0`, and
-  `sha256(JSON.stringify(openapi.paths["/api/research"].get["x-routing"]))` must differ from
-  `468a9d9834e8cb50cb905f80ccc42f9d3daa7a3d0ff2d8c5194d566812ba716b`. Routine inventory drift alone
-  does not fire PH1. The drift lane may run the free `npm run eval:protocol-history` diagnostic and
-  record both contract counts. PH1 does not authorize a new mechanism.
-- **PH2 — owner contract decision.** Complete (the v2 contracts above).
-- **PH3 — new non-card evidence box.** The owner can open a box for corpus-derived route vocabulary
-  or another named non-card source. The brief must carry every pre-registration item from the
-  attempt-three brief, section 16. Independent review must pass before any fetch.
-- **PH4 — new live routing evidence.** Two cases show the same absent-lane pattern, from different
-  question families and entities, neither paraphrasing a frozen positive, each with a dated
-  transcript. PH4 opens a TODO note and a token-reachability audit. The owner then decides whether
-  it opens PH3.
-
-Run `npm run eval:protocol-history` as a free diagnostic after changes to `src/catalog/**`,
-`catalog/manifest.json`, `scripts/build-catalog.mjs`, or `src/catalog/vendor/search-scoring.ts`.
-Record the counts when the contracts are eligible, and `source-expired` when they are not.
-
-Done when: a later reviewed mechanism passes both v2 contracts and all routing gates: 19 of 19
-required top-five hits and zero captures among the nine forbidden cases. Neutral cases stay
-diagnostic. One new target capture or one-case improvement does not close this item.
-
-### Preserve structured routing intent across extraction caps and gate tiers
-
-The 2026-09-03 Scout routing attribution found eight real regressions from phrase flattening,
-first-token truncation, generic schema-word coverage, substring coverage, and five weak gated rows.
-It also found valid leaderboard and RFP gains. Rejected search and Scout candidates are retired
-([disposition](rounds/2026-09-09-outstanding-closeout.md#rejected-candidate-retirement--2026-09-10));
-the current accepted source is Scout 1.9.61 (absorbed 2026-10-02). Use current main and a fresh source snapshot for any
-later authorized repair.
-
-Trigger only after the owner authorizes a general Raven scoring repair. This item does not
-authorize a routing-baseline change, operation-specific exceptions, or question-specific
-exceptions.
-
-Required direction: keep phrase and field boundaries from `x-routing` during scoring. Replace
-first-token truncation with deterministic fair allocation. Retain specific older intent when a
-source adds long sections. Stop generic response-property names and unrelated substrings inside
-schema words from satisfying the coverage gate. Let strong ungated cross-service evidence compete
-with five weak gated rows.
-
-Exposure held by this item: keep `GET /api/rwa` excluded until check 8 passes;
-[issue #167](https://github.com/stellar-experimental/stellar-raven/issues/167) tracks its three
-deferred controls (`rounds/2026-09-16-scout-acceptance.md`). Keep `GET /api/quality` excluded
-(`sls-078` residual: response-schema keywords caused unrelated `scout.getQualityReport` captures).
-Do not create a separate routing TODO or upstream successor for either. Three mixed-intent
-controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove those markers after the
-general routing repair passes.
-
-Acceptance checks:
-
-1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
-2. `through`, `network`, `each`, and `walk through` cannot route alone.
-3. `contract` cannot route `explainRepo` without a repository or code anchor.
-4. Added `use` cannot promote `hackathonBrief` above account-merge Docs.
-5. `has` cannot match inside the schema keyword `phase`.
-6. Strong Docs evidence remains eligible after five weak gated Scout candidates.
-7. All eight regression rows meet their clean grades.
-8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
-   simulation, and balance questions do not capture it.
-9. The leaderboard and RFP improvements remain.
-10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no regression.
-11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
-
-Done when: all eleven acceptance checks pass in a reviewed general scoring change. The
-protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+Done when: the probe lists `scout.listSkills` in the first five results through a general rule,
+with no graded regression.
 
 ## Dependencies
 

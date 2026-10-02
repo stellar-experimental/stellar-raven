@@ -109,22 +109,32 @@ passes and the gate prints `GATE PASS`.
 
 One discovery probe outside the gate still moves with the mirrored Scout wording: "Are there any
 model context protocol skills for Stellar?" lists `scout.listSkills` at rank 3 (195) on `main` and
-not in the first five on the candidate (`scout.getSkill` at 141 appears). Restoring the old
-`listSkills` description restores the rank; the docs keywords are not the cause. General discovery
-probes ("What Stellar AI skills can I install?", "List Stellar skills", "What community skills are
-listed on skills.stellar.org?") are unchanged or improve (`listSkills` 391 → 401 on the last).
-Recorded as a `TODO.md` diagnostic; the upstream description is mirrored, not edited.
+not in the first five on the candidate (`scout.getSkill` at 141 appears). The reviewer isolated the
+cause: the vendor scorer's prefix match let the query token `any` match the article `an` in the old
+phrase "an install", which carried the entry over the 60% token-coverage rule; the new wording drops
+that article. Removing only `an` from the old description reproduces the loss, and adding only `an`
+to the new one restores rank 3. "Are there any MCP skills for Stellar?", "What Stellar AI skills
+can I install?", "List Stellar skills", and the community-registry query are unchanged or improve
+(`listSkills` 391 → 401 on the last). The reviewer accepted this as a tracked follow-up; the
+`TODO.md` item records the measured cause and asks for a general matching repair.
 
-### A catalog note was tried and withdrawn
+### The documented `source` comma alias is honored host-side
 
 Review finding 3: the new `source` parameter description says a comma in `source` is read like
-`sources`, but Raven validates `source` against a single-value enum, so `source: "cap,sep"` fails
-with "must be one of" before the adapter runs, while `sources: ["cap", "sep"]` works (live probe
-14:30:24Z and the reviewer's adapter probe 14:37:28Z: four results, two per source). The lead
-appended a catalog note to `scout.searchResearch` pointing callers at `sources`. Two wordings were
-measured; each moved 12 graded routing rows (the note's tokens raised `searchResearch` scores
-broadly: +1 legacy top-1, +7 card hits, −2 extended top-1). The note was withdrawn; the gap is
-recorded as a `TODO.md` item under Adapters.
+`sources`, but Raven validated `source` against a single-value enum, so `source: "cap,sep"` failed
+with "must be one of" before the adapter ran, while `sources: ["cap", "sep"]` worked (live probe
+14:30:24Z and the reviewer's adapter probe 14:37:28Z: four results, two per source).
+
+Two repairs were tried. A catalog note on `scout.searchResearch` pointing callers at `sources` was
+measured in two wordings; each moved 12 graded routing rows (the note's tokens raised
+`searchResearch` scores broadly: +1 legacy top-1, +7 card hits, −2 extended top-1), so model-facing
+text was ruled out. The shipped fix is `src/policy/argument-aliases.ts`: exact-match data by
+operation id (`scout.searchResearch`: `source` → `sources`, kind `comma-list`), applied in
+`src/executor/providers.ts` before the guard, so a comma-joined `source` becomes the `sources`
+array and is validated and sent as that array. `test/argument-aliases.test.ts` pins the manifest
+consistency (the array accepts the scalar's enum), the split, the untouched cases, and the wire
+form through the real ops closures (`sources=cap%2Csep`, no `source`). The served text and the
+validator now agree, and no description changed.
 
 ## Impact audit (Step 1b)
 
@@ -150,10 +160,11 @@ recorded as a `TODO.md` item under Adapters.
 ## Hand edits
 
 `eval/gates.json` (fingerprint, `baselinedAt`, `localTrace`, note), `eval/README.md` (one
-version string), `.agents/TODO.md` (one version string, three new items),
+version string), `.agents/TODO.md` (one version string, two new items), `src/policy/argument-aliases.ts`
+(new), `src/executor/providers.ts` (two lines), `test/argument-aliases.test.ts` (new),
 `improvements/stellar-light-scout/sls-089-…md` and `improvements/skills/sk-027-…md` (dated recheck
-lines) with the regenerated `improvements/INDEX.md`, the review brief, and this ledger. Everything
-else is generated. `inventory/stellar-docs-titles.json` equals `origin/main`.
+lines) with the regenerated `improvements/INDEX.md`, the review brief, the review files, and this
+ledger. Everything else is generated. `inventory/stellar-docs-titles.json` equals `origin/main`.
 
 ## Review (Step 6)
 
@@ -164,7 +175,7 @@ band center at 297): **not safe**, five findings (`review-drift-astra.md` in thi
 | --- | --- |
 | 1. The re-baseline accepted a regression (298 → 297) without an intended improvement | fixed: the title snapshot is held; totals and thresholds are unchanged; only the fingerprint moves |
 | 2. The new title keywords displace `scout.listSkills` on three probes; the new `listSkills` description loses a fourth | fixed for the three title cases by the hold (probe table above); the fourth is recorded as a `TODO.md` diagnostic because the text is mirrored upstream wording |
-| 3. The generated `source` description advertises a comma alias Raven rejects | recorded as a `TODO.md` item after two measured note wordings each moved 12 graded rows; the array form works and the validation error names the allowed values |
+| 3. The generated `source` description advertises a comma alias Raven rejects | fixed after the verification pass rejected a TODO as a resolution: `src/policy/argument-aliases.ts` honors the documented alias before validation, with tests; no description changed |
 | 4. The `sls-089` recheck misattributed `RetryableError` to `/api/hackathon-brief` and overstated recurrence | fixed: the line names `/api/research` (429, 503), the description-only entries on `/api/hackathon-brief`, and says runtime recurrence was not re-tested |
 | 5. `sk-027` still said the live catalog had 43 entries | fixed: 62 entries, five sources, dated recheck; the finding stays open |
 
@@ -173,7 +184,10 @@ the new titles are "Delegate spending" and "USDT0 on mainnet" (not "Delegate Aut
 Transfers with LayerZero", which already existed); the full operation and component tables above
 replace the shorter list.
 
-Verification pass: (pending)
+Verification pass on `35882740` (`verify-drift-astra.md`): findings 1, 2 (title cases), 4, and 5
+resolved; the fourth probe accepted as a tracked follow-up with the measured cause above; finding 3
+**not safe** while the contract contradiction stood. The alias normalization above answers it.
+Final verification: (pending)
 
 ## Gates (Step 5)
 
