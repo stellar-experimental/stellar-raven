@@ -33,9 +33,9 @@ Out of scope here: any deploy (the owner approves deploys), paid evaluations, th
 
 | lane | agent (tier, model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | both branches, this ledger | running |
-| improvements review | `rev-grok-imp` (Grok, `grok-4.7`, high) | `w3W:p1B` | `review-improvements-grok.md` | running |
-| dependency review | `rev-sol-deps` (Codex workhorse, `gpt-6.1-sol`, high) | `w3W:p1C` | `review-deps-sol.md` | running |
+| lead | `raven-next` (Claude Fable 5.1) | `w3W:p2` | both branches, this ledger | done |
+| improvements review | `rev-grok-imp` (Grok, `grok-4.7`, high) | `w3W:p1B` | `review-improvements-grok.md` in this round directory | `sd-052` go; `sk-028` go with fixes, both applied |
+| dependency review | `rev-sol-deps` (Codex workhorse, `gpt-6.1-sol`, high) | `w3W:p1C` | `review-deps-sol.md` in this round directory | accept with one verification gap, closed |
 
 Panes `w3W:p1B` and `w3W:p1C` were split from `w3W:p2` and belong to this lead. Grok was chosen
 for the improvements gate because it repeats live upstream reads without a sandbox; the Codex
@@ -89,6 +89,39 @@ would ship these runtime-affecting commits, none of them from this lead:
 34 files under `src/` and `wrangler.jsonc` differ from the deployed commit (751 insertions, 446
 deletions). The owner decides the deploy.
 
+## Reconciliation
+
+| review | finding | disposition |
+| --- | --- | --- |
+| `rev-sol-deps` | `npm test` exits 1 in the Codex sandbox on both base and candidate (`spawnSync ps EPERM` in `test/qa-paired-launch.test.mjs`); repeat it outside the sandbox | closed: the lead's unsandboxed run passed (2360 passed, 3 expected fail) and the CI `test` job passed. The reviewer also showed `dist/server.js` is byte-identical to `main` |
+| `rev-grok-imp` | `sd-052`: no finding; post the resolver comment before the real resolve | done in that order |
+| `rev-grok-imp` | `sk-028`: the two stale lines are mirrors; the canonical files are in `Stellar-Light/stellarlight` and a generated mirror must not be hand-edited | fixed before filing: the recommendation names `public/skills/stellar-scout.md` line 91, `public/skills/references/api-reference.md` line 104, the regeneration script, and the sync workflow. The lead verified the paths and `SHIPPING.md` through `gh api` |
+| `rev-grok-imp` | `sk-028`: three evidence bullets used internal workflow language | fixed before filing: replaced by one owner-facing dedupe bullet |
+
 ## Receipts
 
-(pending)
+- **PR #211 (types-only dependency bump).** CI passed. GitHub merged it by squash as
+  `d3e85dc670ffa596ca656482652a5ef11d7e127e` at 2026-10-02T02:08:08Z. Not deployed: the Worker
+  bundle is byte-identical to `main` before the merge.
+- **`sk-028` filed.** `npm run improvements:file` created
+  https://github.com/Stellar-Light/stellar-scout/issues/15 at 2026-10-02T02:13:47Z. The record is
+  `reported-upstream` with the URL in its evidence. The issue body was read back: marker, notice,
+  and all five sections present. The repository exposes no `raven` label, so none was applied.
+- **`sd-052` drained.** Resolution comment posted and read back:
+  https://github.com/stellar/stellar-cli/issues/2722#issuecomment-5944336604 (2026-10-02T02:13:58Z).
+  `npm run improvements:resolve` then retired the record to `improvements/resolved.json`, removed
+  its intake override, deleted the active file, and regenerated `INDEX.md`.
+  `npm run improvements:lint` → ok (66 findings); `npm run improvements:lint -- --live` → ok,
+  live intake checked. `npm run improvements:probes` → 6 recurring, 0 fixed-candidate, 2
+  inconclusive (`ll-003` and `ll-007` need `LUMENLOOP_API_KEY`, which this worktree does not
+  carry), 0 errors. `npm test` → 134 files, 2360 passed, 3 expected fail.
+- **This PR (improvements bookkeeping).** Not deployed: it changes only `improvements/` and
+  `.agents/`. Its merge commit is in the Git history of this file.
+
+## Outcome
+
+Done: `sd-052` comment and retirement, `sk-028` filing, the type-only dependency bump. Stopped by
+rule, with a report above: the `ai` and `@ai-sdk/*` bumps. Open for the owner: whether to ship
+those four packages on the free evidence or after a seeded Playground run, and when to deploy
+`main` (the list above). The dated golden checks from 2026-10-08 are not due. Panes `w3W:p1B` and
+`w3W:p1C` are closed.

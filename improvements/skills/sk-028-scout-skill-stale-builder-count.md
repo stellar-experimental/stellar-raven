@@ -1,7 +1,7 @@
 ---
 id: sk-028
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-09-30
 upstreamTitle: Scout skill states fixed Builders directory sizes (dozens, about 110); the live directory has more than 200 profiles
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - 2026-10-02T01:55:51Z GET https://stellarlight.xyz/api/status returned the builders source with count 233 and lastUpdatedAt 2026-10-01T13:42:53.078Z. The count grew by 7 in two days. Upstream main is still commit 3b587aa9f23d21fc572f6e93cb6d11031dbc24e6, and SKILL.md line 91 and references/api-reference.md line 104 still carry the two fixed sizes.
   - A 2026-10-02 check of all 13 Stellar-Light/stellar-scout issues found no builder-count report. Closed issue 2 covers substring filtering. Open issue 14 covers the skills catalog. Title and text searches of the Stellar-Light/stellarlight issues found no builder-count report either.
   - The same two lines are in Stellar-Light/stellarlight at public/skills/stellar-scout.md line 91 and public/skills/references/api-reference.md line 104 (main 98eb8ae133d822badf02ec341f301e45cb335537, read 2026-10-02). SHIPPING.md in that repository says the monorepo is canonical and the distribution repositories sync from it. src/lib/stellar-scout-skill.ts is a generated mirror.
+  - upstream issue filed 2026-10-02: https://github.com/Stellar-Light/stellar-scout/issues/15
 ---
 
 ## Finding
