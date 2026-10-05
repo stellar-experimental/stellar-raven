@@ -44,6 +44,8 @@ export { SEARCH_KINDS };
 
 export const SEARCH_TOOL_NAME = "search";
 export const EXECUTE_TOOL_NAME = "execute";
+const SEARCH_TOOL_TITLE = "Discover Stellar tools and skills";
+const EXECUTE_TOOL_TITLE = "Run Stellar research code";
 const SOURCE_BASIS_TELEMETRY_CALL_LIMIT = 12;
 
 export const rankedSearchInputSchema = {
@@ -363,11 +365,13 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
   server.registerTool(
     SEARCH_TOOL_NAME,
     {
-      title: "Discover Stellar tools and skills",
+      title: SEARCH_TOOL_TITLE,
       description: SEARCH_DESCRIPTION,
       inputSchema: z.object(rankedSearchInputSchema),
       outputSchema: z.object(rankedSearchOutputSchema),
       annotations: {
+        // Directory review reads annotations.title; clients prefer the top-level title.
+        title: SEARCH_TOOL_TITLE,
         readOnlyHint: true,
         destructiveHint: false,
         openWorldHint: false
@@ -461,10 +465,11 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
   server.registerTool(
     EXECUTE_TOOL_NAME,
     {
-      title: "Run Stellar research code",
+      title: EXECUTE_TOOL_TITLE,
       description: EXECUTE_DESCRIPTION,
       inputSchema: z.object(executeInputSchema),
       annotations: {
+        title: EXECUTE_TOOL_TITLE,
         // A truncated result can persist a private artifact for a later execute call.
         readOnlyHint: false,
         destructiveHint: false,

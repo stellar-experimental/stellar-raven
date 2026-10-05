@@ -2,6 +2,7 @@ export const EXPECTED_TOOL_METADATA = {
   search: {
     title: "Discover Stellar tools and skills",
     annotations: {
+      title: "Discover Stellar tools and skills",
       readOnlyHint: true,
       destructiveHint: false,
       openWorldHint: false
@@ -10,6 +11,7 @@ export const EXPECTED_TOOL_METADATA = {
   execute: {
     title: "Run Stellar research code",
     annotations: {
+      title: "Run Stellar research code",
       readOnlyHint: false,
       destructiveHint: false,
       openWorldHint: true
