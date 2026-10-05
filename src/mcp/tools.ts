@@ -470,8 +470,9 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       inputSchema: z.object(executeInputSchema),
       annotations: {
         title: EXECUTE_TOOL_TITLE,
-        // A truncated result can persist a private artifact for a later execute call.
-        readOnlyHint: false,
+        // A truncated result can persist a private, expiring artifact of this call's own
+        // output. That cache changes no user or upstream state, so execute stays read-only.
+        readOnlyHint: true,
         destructiveHint: false,
         openWorldHint: true
       }
