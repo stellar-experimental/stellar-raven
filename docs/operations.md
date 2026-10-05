@@ -38,7 +38,8 @@ Before a release, run the checks in [`CONTRIBUTING.md`](../CONTRIBUTING.md). Aft
 1. Record the Version ID that `npm run deploy` prints.
 2. Wait about one minute. A new route can return 404 while it propagates.
 3. Check that the landing page returns `200`, `GET /health` returns `200`, and an unauthenticated
-   `POST /mcp` returns a `401` JSON error.
+   `POST /mcp` returns `401` with a `WWW-Authenticate: Bearer` header that names
+   `resource_metadata`.
 4. Check that `GET /health/skills` returns `200` after the next hourly canary run.
 
 The `live-drift-resolution` skill (`.agents/skills/live-drift-resolution/SKILL.md`, Step 8) uses

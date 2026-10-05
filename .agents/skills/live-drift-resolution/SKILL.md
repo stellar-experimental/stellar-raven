@@ -325,8 +325,8 @@ keeps fetching the OLD commit until you deploy the new one. Closing the drift lo
   a minute, including on cache-busted URLs — that is propagation, not a routing bug. Re-check before
   debugging it. The public landing pages
   should return `200`; unauthenticated `/mcp`
-  should return the expected auth error (`401` JSON), unless the check includes a valid bearer
-  token. Note the Version ID in the close-out record.
+  should return `401` with a `WWW-Authenticate: Bearer` header, unless the check includes a valid
+  bearer token. Note the Version ID in the close-out record.
 
 A drift bump that is committed but never deployed is a *silent* stale prod — the catalog carries
 the new upstream version while the gateway still answers as the old one. Treat deploy as part of

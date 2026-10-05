@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
-import { homedir } from "node:os";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 export function deploymentFailures(producer, schedules) {
   const failures = [];
@@ -18,18 +19,20 @@ export function deploymentFailures(producer, schedules) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     // The account comes from the collector config so a fork that edits usage/wrangler.jsonc is checked
-    // against its own account. The credential is CLOUDFLARE_API_TOKEN or a local Wrangler OAuth profile.
+    // against its own account. Wrangler resolves the credential: CLOUDFLARE_API_TOKEN, then
+    // WRANGLER_PROFILE, then the profile bound to this directory. It also refreshes an expired token.
     const config = JSON.parse((await readFile(new URL("../usage/wrangler.jsonc", import.meta.url), "utf8")).replace(/^\s*\/\/.*$/gm, ""));
     const accountId = config.account_id;
     if (!accountId) throw new Error("usage/wrangler.jsonc has no account_id");
-    let token = process.env.CLOUDFLARE_API_TOKEN;
-    for (const profile of [process.env.WRANGLER_PROFILE, "default", "sdf"].filter(Boolean)) {
-      if (token) break;
-      try { token = (await readFile(resolve(homedir(), `.wrangler/config/${profile}.toml`), "utf8")).match(/^oauth_token\s*=\s*"([^"]+)"/m)?.[1]; }
-      catch (error) { if (error.code !== "ENOENT") throw error; }
-    }
+    const wrangler = fileURLToPath(new URL("../node_modules/.bin/wrangler", import.meta.url));
+    const profileArgs = process.env.WRANGLER_PROFILE ? ["--profile", process.env.WRANGLER_PROFILE] : [];
+    let token;
+    try {
+      const { stdout } = await promisify(execFile)(wrangler, ["auth", "token", "--json", ...profileArgs], { timeout: 30000 });
+      token = JSON.parse(stdout).token;
+    } catch {}
     if (!token) {
-      console.log("No Cloudflare credential is available, so the usage deployment check was skipped. Set CLOUDFLARE_API_TOKEN or WRANGLER_PROFILE to run it.");
+      console.log("No Cloudflare credential is available, so the usage deployment check was skipped. Run wrangler login, bind a profile to this directory, or set CLOUDFLARE_API_TOKEN.");
       process.exit(0);
     }
     const get = async path => {
