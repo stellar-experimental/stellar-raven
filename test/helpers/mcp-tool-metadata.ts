@@ -12,7 +12,7 @@ export const EXPECTED_TOOL_METADATA = {
     title: "Run Stellar research code",
     annotations: {
       title: "Run Stellar research code",
-      readOnlyHint: false,
+      readOnlyHint: true,
       destructiveHint: false,
       openWorldHint: true
     }
