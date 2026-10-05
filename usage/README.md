@@ -84,8 +84,9 @@ Check a known tool response in both the retained logs and D1, then verify the ho
 Run the monthly report and inspect the collector's logs for failed writes.
 
 Deploy the producer with `npm run deploy`, as [the operations guide](../docs/operations.md#deploy)
-describes. Its `postdeploy` check uses `CLOUDFLARE_API_TOKEN` when it is set. Otherwise it tries
-the Wrangler OAuth profiles `WRANGLER_PROFILE`, `default`, and `sdf`, in that order.
+describes. Its `postdeploy` check gets its credential from `wrangler auth token`. Wrangler uses
+`CLOUDFLARE_API_TOKEN` when it is set, then the `WRANGLER_PROFILE` profile, then the profile bound
+to this checkout.
 
 To stop new collection, remove only this tail consumer from the producer settings and config.
 Preserve the database for the agreed retention period.
