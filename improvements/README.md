@@ -16,7 +16,7 @@ for those targets. This directory holds that set.
 - `stellar-docs/` — the Stellar Docs search surface (the Algolia index): ranking, tokenization,
   and vocabulary coverage. A docs-content finding also belongs here when the indexed source
   content is stale or ambiguous. It also belongs here when the content lacks an explanation that
-  grounded agents need (for example `sd-037`). Raven's operator holds Algolia maintenance credentials, so some findings here have a
+  grounded agents need. Raven's operator holds Algolia maintenance credentials, so some findings here have a
   direct-remediation path. See [Resolution paths](#resolution-paths-stellar-docs-upstream-vs-direct-algolia).
 - `skills/` — the upstream skill sources pinned in `ecosystem-skills/MANIFEST.json`.
   Recommendations target the source repositories. Raven does not vendor skill bodies, so there is
@@ -173,8 +173,8 @@ ceremonial report.
 
 Filing upstream is the default. `stellar-docs` findings divide by root cause:
 
-- **Content gaps.** A page is stale, wrong, ambiguous, or missing (for example `sd-004` and
-  `sd-037`). These findings stay upstream on `stellar/stellar-docs`. Do not rewrite index records
+- **Content gaps.** A page is stale, wrong, ambiguous, or missing (for example `sd-004`). These
+  findings stay upstream with the content owner, usually `stellar/stellar-docs`. Do not rewrite index records
   to correct them. The crawler overwrites such a change, and the shared corpus then differs from
   its source.
 - **Search-mechanism gaps.** The cause is ranking, tokenization, synonyms or vocabulary, or

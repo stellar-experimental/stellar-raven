@@ -150,10 +150,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "The Wallets Kit docs retain a v1 API and an @^1-pinned npm @creit.tech install; the v2 migration uses JSR @creit-tech/stellar-wallets-kit and static initialization."
     },
-    "sd-037": {
-      "repo": "stellar/stellar-protocol",
-      "reason": "SLP proposal-family discoverability is rooted in the normative stellar-protocol limits/ source and needs canonical family metadata/cross-links."
-    },
     "sd-048": {
       "repo": "stellar/stellar-protocol",
       "reason": "CAP-0075 owns the Poseidon2 S-box-degree contradiction; the shipped ABI and host accept only degree 5."

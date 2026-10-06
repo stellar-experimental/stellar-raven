@@ -15,7 +15,7 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Follow the upstream Docs and protocol pull requests for `sd-027`, `sd-034`, and `sd-037`.
+2. Follow the upstream Docs pull request for `sd-027` and `sd-034`.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -37,32 +37,6 @@ status comment while the maintainers are working on the decision. History:
 `.agents/rounds/2026-09-21-improvements-followup.md`.
 
 Done when: each finding records the resulting live state, and any fixed finding completes the
-resolver gates.
-
-### Re-check `sd-037` after stellar-protocol PR #2021 receives a maintainer decision
-
-The stale bot closed issue https://github.com/stellar/stellar-protocol/issues/1981 as
-`NOT_PLANNED`; no maintainer made a scope decision, and the owner decided not to reopen it. The
-author-owned fix is https://github.com/stellar/stellar-protocol/pull/2021. It adds the SLP list to
-`limits/README.md` and an SLP mention to the root README, and it offers to drop the table if the
-maintainers do not want to maintain it. Commit `65d35aebf3ae3d5b9094b36959c27d9b8540e2a0` answers
-the Copilot review; all four checks passed on 2026-09-29. At 2026-09-29T21:44:44Z, `leighmcculloch`
-(`MEMBER`) approved the PR
-(https://github.com/stellar/stellar-protocol/pull/2021#pullrequestreview-5358887566) and enabled squash
-auto-merge. The head is now `53557ae2`, and the approval is not dismissed. GitHub reports
-`mergeable_state: blocked`. The blocker is one unresolved, outdated Copilot review thread
-(https://github.com/stellar/stellar-protocol/pull/2021#discussion_r4064649027): the branch ruleset
-sets `required_review_thread_resolution`. Our reply in that thread states that commit `65d35aeb`
-fixed it. The default-branch READMEs still lack the SLP index, and the finding stays
-`reported-upstream`. Do not post a reminder because of the approval.
-
-Next action: resolve that thread. This is author-owned work. Auto-merge then merges the PR. At the
-next improvements round, read the PR state and any new review, and respond to requested changes.
-The stale workflow marks a quiet PR after 30 days and closes it 30 days later. Do not post a
-keep-alive comment. If the PR closes unmerged, record the reason and keep the finding. If it merges,
-re-run the two README source checks before changing the finding.
-
-Done when: the finding records the merged or declined result, and a fixed finding completes the
 resolver gates.
 
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment

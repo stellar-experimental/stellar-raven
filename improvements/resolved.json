@@ -549,6 +549,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5e23340be0da63630f86e662f010219cf0458eef/improvements/stellar-docs/sd-036-cap-0075-protocol-version-field-selector-errata.md"
     },
     {
+      "id": "sd-037",
+      "title": "The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-10-06",
+      "repo": "stellar/stellar-protocol",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-protocol/issues/1981",
+        "https://github.com/stellar/stellar-protocol/pull/2021"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-protocol/pull/2021"
+      ],
+      "liveRecheck": "2026-10-06: stellar/stellar-protocol master f93e69105c995d0a5f85a81da8fd984eaf3d6280 (PR #2021 merge): README.md lines 10 and 24-26 name SLPs and link the list; limits/README.md has a List of Proposals table with SLP-0001 through SLP-0006. Resolution comments: https://github.com/stellar/stellar-protocol/pull/2021#issuecomment-6019811334 and https://github.com/stellar/stellar-protocol/issues/1981#issuecomment-6019811675",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.1-sol high re-ran the trigger at f93e6910, checked the full limits/ tree and all references; .agents/rounds/2026-10-06-truth-maintenance/sd037-review-sol.md",
+      "sourceCommit": "528fa335dbc52defd82cdd961aba5304f5ee52ca",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/528fa335dbc52defd82cdd961aba5304f5ee52ca/improvements/stellar-docs/sd-037-limits-slps-discoverability.md"
+    },
+    {
       "id": "sd-038",
       "title": "The StellarAssetInterface doc-comments in soroban-sdk/src/token.rs describe pre-CAP-67 Stellar Asset Contract event shapes. CAP-0067…",
       "service": "stellar-docs",
