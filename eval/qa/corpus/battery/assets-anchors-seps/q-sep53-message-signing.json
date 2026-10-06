@@ -35,8 +35,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-10-15",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-02-02",
     "sources": [
       {
         "class": "A",
@@ -59,17 +59,20 @@
           {
             "class": "A",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "Prefix `\"Stellar Signed Message:\\n\"`; 'messageHash = SHA256(encodedMessage)'; sign messageHash with ed25519."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+            "observedAt": "2026-10-06",
+            "note": "SEP53_PREFIX = \"Stellar Signed Message:\\n\"; prefixed, hashed with SHA-256, signed with ed25519."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/main/src/base/keypair.ts",
+            "observedAt": "2026-10-06",
+            "note": "MESSAGE_PREFIX 'Stellar Signed Message:\\n'; signMessage hashes with SHA-256."
           }
         ]
       },
@@ -80,17 +83,14 @@
           {
             "class": "A",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "Preamble: Status Final, Created 2025-02-01, Updated 2026-06-18, Version 1.0.0."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
+            "observedAt": "2026-10-06",
+            "note": "sep-0053.md is the current master file."
           }
         ]
       },
@@ -99,19 +99,52 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/main/src/base/keypair.ts",
+            "observedAt": "2026-10-06",
+            "note": "signMessage and verifyMessage."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/StellarCN/py-stellar-base/blob/main/stellar_sdk/keypair.py",
+            "observedAt": "2026-10-06",
+            "note": "sign_message and verify_message."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/lightsail-network/java-stellar-sdk",
+            "observedAt": "2026-10-06",
+            "note": "GitHub code search: signMessage in src/main/java/org/stellar/sdk/KeyPair.java."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Soneso/stellar_flutter_sdk",
+            "observedAt": "2026-10-06",
+            "note": "GitHub code search: documentation/sep/sep-53.md and SEP-0053 compatibility matrix."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Soneso/stellar-ios-mac-sdk",
+            "observedAt": "2026-10-06",
+            "note": "GitHub code search: signMessage in stellarsdk/crypto/KeyPair.swift."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Soneso/stellar-php-sdk",
+            "observedAt": "2026-10-06",
+            "note": "GitHub code search: signMessage in Soneso/StellarSDK/Crypto/KeyPair.php."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Soneso/kmp-stellar-sdk",
+            "observedAt": "2026-10-06",
+            "note": "GitHub code search: docs/sep/sep-53.md and SEP-0053 compatibility matrix."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+            "observedAt": "2026-10-06",
+            "note": "Source defines `stellar message sign` and `verify` subcommands (read, not run)."
           }
         ]
       },
@@ -120,19 +153,16 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
-          },
-          {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "'Standard Web Wallet API Interface', Status Draft, Version 1.2.1."
+          },
+          {
+            "class": "A",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+            "observedAt": "2026-10-06",
+            "note": "SEP-53 defines the signing format itself."
           }
         ]
       },
@@ -143,17 +173,8 @@
           {
             "class": "A",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "The payload is only prefix plus message; verification uses one ed25519 public key; no nonce or expiry field."
           }
         ]
       },
@@ -164,17 +185,14 @@
           {
             "class": "A",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "Signing is off-chain over a hash; no transaction is built or submitted."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+            "observedAt": "2026-10-06",
+            "note": "The CLI signs and verifies locally."
           }
         ]
       },
@@ -185,39 +203,22 @@
           {
             "class": "A",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-cli",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "Motivation: without a standard for how messages are prefixed and hashed, 'different implementations risk incompatibility'."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-        "https://github.com/stellar/stellar-cli",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-        "Structural re-form (negative-predicate): Split the algorithm fact and moved limitations into avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — showed the exact prefix and exact message-byte payload.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — showed one SHA-256 followed by Ed25519 signing of its 32-byte digest.",
-        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/issues/1492, https://github.com/SCF-Public-Goods-Maintenance/scf-public-goods-maintenance.github.io/issues/43, and https://github.com/Soneso/kmp-stellar-sdk — showed the listed SDK and stellar CLI support.",
-        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/issues/1492 and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — showed release-specific implementation and SEP-43 as a Draft wallet API.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — limited one signature to proof of one private key.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — defined only a prefix-plus-message payload, with no separate nonce or expiry field.",
-        "Sibling sweep 2026-08-27: SEP-53|Stellar Signed Message|SEP-43|M-address|contract-account → q-sep53-message-signing, q-sep-53-sign-verify-message, q-sep-43-web-wallet-api, q-sep-catalog-list, q-sep-45-contract-auth, q-smart-account-scoped-policy-signers, q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery, q-tool-smart-wallet-repos-discovery, q-tool-wallets-comparison, q-infra-secp256r1-passkeys, q-ti-custodial-account-generation-c-address, q-sor-contract-trustlines-c-address, q-anchor-platform-what, q-sep-12-kyc, q-raph-offramp-xlm-usdc, q-crp-sdp-operation, q-stellar-recurring-payments, q-sor-cross-socketfi-auth, q-edge-inject-ignore-instructions, q-edge-exchange-memo-lost-funds; no contradiction."
-      ],
-      "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+        "Live A 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — Final, Version 1.0.0, Updated 2026-06-18; prefix, single SHA-256, ed25519.",
+        "Live B 2026-10-06: js-stellar-sdk src/base/keypair.ts, py-stellar-base stellar_sdk/keypair.py, and stellar-cli commands/message/mod.rs implement SEP-53.",
+        "Live B 2026-10-06: GitHub code search finds SEP-53 signMessage support in java-stellar-sdk, stellar_flutter_sdk, stellar-ios-mac-sdk, stellar-php-sdk, and kmp-stellar-sdk.",
+        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — Draft, Version 1.2.1.",
+        "Sibling sweep 2026-10-06: grep SEP-53|Stellar Signed Message → q-sep-53-sign-verify-message (Final, updated 2026-06-18); no contradiction."
       ]
     },
     "origin": "kaan sep53-sign-verify-message"

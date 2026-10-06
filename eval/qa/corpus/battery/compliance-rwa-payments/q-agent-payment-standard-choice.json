@@ -34,8 +34,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2026-10-15",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2026-12-22",
     "sources": [
       {
         "class": "A",
@@ -68,29 +68,22 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://docs.x402.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://ap2-protocol.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.openai.com/commerce/",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+            "observedAt": "2026-10-06",
+            "note": "Out of Scope list includes 'Session handling mechanisms'; defines extensions and '8. Discovery API'."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/mpp",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+            "observedAt": "2026-10-06",
+            "note": "Stellar MPP uses the paymentauth draft-stellar-charge-00 method with SEP-41 transfers, a different payload than x402."
           },
           {
-            "class": "B",
-            "ref": "https://github.com/google-agentic-commerce/AP2",
-            "observedAt": "2026-07-11"
+            "class": "A",
+            "ref": "https://mpp.dev/",
+            "observedAt": "2026-10-06",
+            "note": "MPP site lists separate sessions and x402-compatibility updates, so the two remain distinct protocols."
           }
         ]
       },
@@ -99,29 +92,16 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://docs.x402.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://ap2-protocol.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.openai.com/commerce/",
-            "observedAt": "2026-07-11"
-          },
-          {
             "class": "B",
-            "ref": "https://github.com/stellar/mpp",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+            "observedAt": "2026-10-06",
+            "note": "'Each payment is a Soroban SEP-41 transfer settled on-chain individually'; Channel mode signs 'cumulative commitments — no per-payment on-chain transactions'."
           },
           {
-            "class": "B",
-            "ref": "https://github.com/google-agentic-commerce/AP2",
-            "observedAt": "2026-07-11"
+            "class": "A",
+            "ref": "https://mpp.dev/",
+            "observedAt": "2026-10-06",
+            "note": "'An improved sessions experience' (2026-06-17) for pay-as-you-go billing."
           }
         ]
       },
@@ -130,29 +110,16 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://docs.x402.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://ap2-protocol.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.openai.com/commerce/",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+            "observedAt": "2026-10-06",
+            "note": "'Mandates are the core means that AP2 uses to authorize agents'; Checkout and Payment Mandates and receipts serve as evidence."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/mpp",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/google-agentic-commerce/AP2",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+            "observedAt": "2026-10-06",
+            "note": "'The specification is maintained by OpenAI and Stripe and is currently in beta'; latest spec 2026-04-17 covers cart, feed, orders."
           }
         ]
       },
@@ -161,29 +128,16 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://docs.x402.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://ap2-protocol.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.openai.com/commerce/",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17",
+            "observedAt": "2026-10-06",
+            "note": "The 2026-04-17 checkout OpenAPI mentions idempotency 46 times; examples include orders/digital-fulfillment.json and orders/refunded-order.json."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/mpp",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/google-agentic-commerce/AP2",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+            "observedAt": "2026-10-06",
+            "note": "Core types PaymentRequirements, PaymentPayload, and SettlementResponse separate payment intent, evidence, and settlement."
           }
         ]
       },
@@ -192,29 +146,22 @@
         "verdict": "contradicted",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://docs.x402.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://ap2-protocol.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.openai.com/commerce/",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+            "observedAt": "2026-10-06",
+            "note": "x402 V2 is its own specification."
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/mpp",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+            "observedAt": "2026-10-06",
+            "note": "ACP is a separate commerce specification."
           },
           {
             "class": "B",
-            "ref": "https://github.com/google-agentic-commerce/AP2",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+            "observedAt": "2026-10-06",
+            "note": "AP2 is a separate mandate specification."
           }
         ]
       },
@@ -223,63 +170,31 @@
         "verdict": "contradicted",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://docs.x402.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://ap2-protocol.org/",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.openai.com/commerce/",
-            "observedAt": "2026-07-11"
-          },
-          {
             "class": "B",
-            "ref": "https://github.com/stellar/mpp",
-            "observedAt": "2026-07-11"
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+            "observedAt": "2026-10-06",
+            "note": "Channel mode makes many off-chain payments with no per-payment on-chain transactions."
           },
           {
-            "class": "B",
-            "ref": "https://github.com/google-agentic-commerce/AP2",
-            "observedAt": "2026-07-11"
+            "class": "A",
+            "ref": "https://mpp.dev/",
+            "observedAt": "2026-10-06",
+            "note": "MPP sessions provide pay-as-you-go billing."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "https://docs.x402.org/",
-        "https://github.com/x402-foundation/x402/blob/main/specs/x402-specification-v2.md",
-        "https://ap2-protocol.org/",
-        "https://developers.openai.com/commerce/",
-        "https://github.com/stellar/mpp",
-        "https://github.com/google-agentic-commerce/AP2",
-        "Structural re-form (compound-predicate): Split four compound key facts into five atomic facts and moved two negative tails to avoid; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — showed the x402 V2 HTTP-402 payload, settlement, extension, and discovery model.",
-        "Live re-check 2026-08-27: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — placed application-level session handling outside the core specification.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-mpp-sdk — showed on-chain Charge settlement and cumulative off-chain Session channel commitments.",
-        "Live re-check 2026-08-27: https://ap2-protocol.org/ — showed AP2 authorization, mandate, and audit semantics; https://github.com/agentic-commerce-protocol/agentic-commerce-protocol showed ACP commerce functions.",
-        "Live re-check 2026-08-27: https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — showed protocol commerce flows that support the adapter boundary.",
-        "Sibling sweep 2026-08-27: q-defi-x402-on-stellar-what, q-defi-agentic-payment-standards-compare, and q-mpp-discovery-and-modes; no contradiction.",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 1 review (gt2-grok-rev)): removed the added qualifier \"core\"; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — MPP uses different payload and settlement paths than x402 V2.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — V2 still defines extensions and discovery fields.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — Charge settles on-chain; Channel signs cumulative commitments.",
-        "Live re-check 2026-08-30: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — AP2 defines mandates, receipts, and dispute evidence.",
-        "Live re-check 2026-08-30: https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17 — schemas cover fulfillment, idempotency, and refunds.",
-        "Sibling sweep 2026-08-30: grep x402|MPP|AP2|ACP → q-defi-agentic-payment-standards-compare, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes; no contradiction"
-      ],
-      "rootCause": [
-        "eval-authoring",
-        "The golden attributed session handling to x402 V2 core although its specification declares sessions out of scope.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+        "Live B 2026-10-06: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — 'Session handling mechanisms' out of scope; extensions and Discovery API present.",
+        "Live B 2026-10-06: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — Charge settles each SEP-41 transfer on-chain; Channel signs cumulative off-chain commitments.",
+        "Live A 2026-10-06: https://mpp.dev/ — sessions update dated 2026-06-17.",
+        "Live B 2026-10-06: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — mandates authorize agents.",
+        "Live B 2026-10-06: https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md — ACP 'currently in beta'; latest spec 2026-04-17.",
+        "Sibling sweep 2026-10-06: grep AP2|ACP|MPP Session|MPP Charge → q-defi-agentic-payment-standards-compare, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what, q-defi-streaming-payments-prior-art; no contradiction."
       ]
     },
     "origin": "kaan agentic-payment-standard-choice"

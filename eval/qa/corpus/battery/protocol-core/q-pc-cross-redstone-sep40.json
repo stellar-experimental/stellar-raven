@@ -33,8 +33,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-10-15",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-01-26",
     "sources": [
       {
         "class": "C",
@@ -55,14 +55,22 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "C",
-            "ref": "lumenloop.find_content_about_project(slug=redstone-finance) + scout.searchProjects(q=RedStone Finance)",
-            "observedAt": "2026-07-11"
-          },
-          {
             "class": "A",
             "ref": "https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-10-06",
+            "note": "Heading 'Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment', datePublished 2026-06-04, dateModified 2026-09-01; HTML title now 'RedStone Adopts Stellar's SEP-40 Oracle Standard for RWA Markets'."
+          },
+          {
+            "class": "C",
+            "ref": "Stellar Raven connector execute: scout.searchProjects(q=RedStone Finance)",
+            "observedAt": "2026-10-06",
+            "note": "Scout lists Redstone Finance, slug redstone-finance, status Live, type Oracle."
+          },
+          {
+            "class": "C",
+            "ref": "Stellar Raven connector execute: lumenloop.search_content_semantic(RedStone SEP-40 data standard Stellar RWA moment)",
+            "observedAt": "2026-10-06",
+            "note": "LumenLoop still indexes the 2026-06-04 article; later RedStone SEP-40 posts are dated 2026-08-05 and 2026-08-26, so 'June 2026' still identifies one article."
           }
         ]
       },
@@ -71,34 +79,30 @@
         "verdict": "confirmed",
         "evidence": [
           {
-            "class": "E",
-            "ref": "stellarDocs.search_docs(query=SEP-40 oracle providers compatible price feeds)",
-            "observedAt": "2026-07-11"
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+            "observedAt": "2026-10-06",
+            "note": "'Publicly availble free price oracles are compatible with SEP40 ecosystem standard interface.'"
           },
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers#reflector-network",
-            "observedAt": "2026-07-11"
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md",
+            "observedAt": "2026-10-06",
+            "note": "SEP-40 'Oracle Consumer Interface', Draft, Version 0.1.0."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-        "Sibling sweep: RedStone/SEP-40 mentions in the owned battery reviewed; no contradictory durable key fact found",
-        "Structural re-form (long-fact): Shortened two facts and split the SEP-40 explanation; truth unchanged.",
-        "Live re-check 2026-08-29: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ — the dated operator article names RedStone and its Stellar SEP-40 rollout.",
-        "Live re-check 2026-08-29: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ — the operator article describes a live production Stellar oracle implementation for Soroban contracts.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/oracles/oracle-providers — the official Stellar page identifies public oracle feeds as SEP-40-compatible.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/oracles/oracle-providers — the official page describes price data used in smart-contract logic through oracle contracts.",
-        "Sibling sweep 2026-08-29: grep RedStone|Redstone Finance|RWA moment|SEP-40 → q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40; no contradiction."
-      ],
-      "rootCause": [
-        "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+        "Live A 2026-10-06: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ — article heading and 2026-06-04 publication unchanged; page metadata title changed (dateModified 2026-09-01).",
+        "Live C 2026-10-06: Scout searchProjects lists Redstone Finance as Live, type Oracle.",
+        "Live A 2026-10-06: https://developers.stellar.org/docs/data/oracles/oracle-providers — public price oracles 'compatible with SEP40 ecosystem standard interface'.",
+        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md — Oracle Consumer Interface.",
+        "Sibling sweep 2026-10-06: grep RedStone → q-defi-reflector-oracle, q-sor-reflector-integration-code, q-eco-defi-market-map, q-scf-cross-reflector-rounds-current; no contradiction."
       ]
     },
     "origin": "authored 2026-07 (cross-service)"

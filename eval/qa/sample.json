@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "325c4c399e5e8e859731b5ae779d3277d2beef9e98abc1ff1629727efe5efcc7",
+  "corpusContentSha256": "03f7f1e4fd46e344658080db497acfbdf22411e87c35d671f9bb121ea502a70d",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -1559,8 +1559,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-08",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2026-11-03",
         "sources": [
           {
             "class": "A",
@@ -1587,14 +1587,20 @@
               {
                 "class": "A",
                 "ref": "https://meridian.stellar.org/event-details",
-                "observedAt": "2026-07-11",
-                "note": "Official FAQ gives dates, venue, city, and hackathon dates."
+                "observedAt": "2026-10-06",
+                "note": "FAQ: 'Meridian 2026 is a two-day in-person conference taking place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal.'"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.hackmeridian.com/",
+                "observedAt": "2026-10-06",
+                "note": "'25–26 October 2026 · ONE16, Lisbon'."
               },
               {
                 "class": "D",
                 "ref": "https://luma.com/meridian2026ll",
-                "observedAt": "2026-07-11",
-                "note": "Independent event listing points to Lisbon and defers to the official site."
+                "observedAt": "2026-10-06",
+                "note": "Placeholder listing: Lisbon, startDate 2026-10-28; defers to meridian.stellar.org."
               }
             ]
           },
@@ -1605,45 +1611,29 @@
               {
                 "class": "A",
                 "ref": "https://x.com/StellarOrg/status/2039405316803031315",
-                "observedAt": "2026-07-11",
-                "note": "Official April 1 post announces new city Lisbon and new dates October 28-29."
+                "observedAt": "2026-10-06",
+                "note": "Read via the api.fxtwitter.com mirror: posted 2026-04-01 18:11 UTC — 'New city. New dates. ... Meridian is headed to Lisbon. October 28–29.'"
               },
               {
-                "class": "D",
-                "ref": "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
-                "observedAt": "2026-07-11",
-                "note": "Older page preserves the superseded Abu Dhabi October 21-22 announcement and explains the stale-source trap."
+                "class": "A",
+                "ref": "https://meridian.stellar.org/event-details",
+                "observedAt": "2026-10-06",
+                "note": "The current FAQ names Lisbon and contains no Abu Dhabi schedule."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "solo://proj/49/process/3417",
-            "solo://proj/49/process/3423",
-            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-            "https://meridian.stellar.org/",
-            "https://meridian.stellar.org/event-details",
-            "https://x.com/StellarOrg/status/2039405316803031315",
-            "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
-            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction",
-            "Structural re-form (long-fact): shortened the current schedule and announcement facts while keeping the superseded schedule in the answer and avoid; truth unchanged.",
-            "Live re-check 2026-08-29: https://meridian.stellar.org/event-details — the current official FAQ schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon.",
-            "Live re-check 2026-08-29: https://x.com/StellarOrg/status/2039405316803031315 — SDF's official post announces Lisbon and October 28–29 at 6:11 PM on April 1, 2026.",
-            "Sibling sweep 2026-08-29: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no contradiction.",
-            "Live re-check 2026-08-31: https://meridian.stellar.org/event-details — 'October 28–29, 2026 at Convento do Beato in Lisbon, Portugal'; class D Luma listing independently shows Lisbon and October 28–29.",
-            "Live re-check 2026-08-31: https://www.hackmeridian.com/ — 'October 25–26, 2026 · Lisbon, Portugal'; class C Scout witness (non-origin) lists HackMeridian in Lisbon on October 25–26.",
-            "Live re-check 2026-08-31: https://x.com/StellarOrg/status/2039405316803031315 — SDF post dated 2026-04-01: 'Meridian is headed to Lisbon. October 28–29'; class D dated social witness displays the same April 1 announcement.",
-            "Sibling sweep 2026-08-31: grep Meridian 2026|HackMeridian|Convento do Beato → 1 other cases; read q-scf-hackathons-active; no contradiction"
-          ],
-          "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The event is still upcoming, so the as-of framing stays correct.",
+            "Live A 2026-10-06: https://meridian.stellar.org/event-details — 'October 28–29, 2026 at Convento do Beato in Lisbon, Portugal'.",
+            "Live A 2026-10-06: https://www.hackmeridian.com/ — '25–26 October 2026 · ONE16, Lisbon'.",
+            "Live A 2026-10-06: https://x.com/StellarOrg/status/2039405316803031315 (api.fxtwitter.com mirror) — posted 2026-04-01, Lisbon, October 28–29.",
+            "Live D 2026-10-06: https://luma.com/meridian2026ll — Lisbon, start 2026-10-28; general-web sweep found no later change of city or date.",
+            "reverifyBy 2026-11-03 is event-triggered: re-verify after the 2026-10-28/29 event, when the scheduled/upcoming framing becomes historical.",
+            "Sibling sweep 2026-10-06: grep Meridian 2026|Convento do Beato|HackMeridian|Yas Marina → q-scf-hackathons-active; no contradiction."
           ]
         },
         "origin": "authored 2026-07 (2026-events)"

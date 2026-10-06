@@ -236,10 +236,10 @@
           "q-tool-lab-what-is"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "Grader-note cleanup (2026-10-01): q-comp-anchor-compliance-stack changed two also-good lines only. One now names AUTH_REQUIRED and AUTH_REVOCABLE, as SEP-8 v1.7.4 requires. One now names the regulated operator and states no categorical licensing allocation. No SEP status claim changed. q-sep-8-regulated-assets and q-comp-sep8-regulated-assets-approval-server state the same Required plus Revocable requirement. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-sep-6-24-deprecation changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Live SEP-6 preamble still reads 'Active (Interactive components are deprecated in favor of SEP-24)'; SEP-24 Active; SEP-41 Draft 0.5.2; SEP-43 Draft; SEP-57 Draft 0.4.0. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "SEP-1/9/10/12/24/31/46/48 Active; SEP-6 Active with only interactive components deprecated in favor of SEP-24 (the only-partial-deprecation nuance is stated identically in all 3 cases that touch it); SEP-30/38/39/41/43/45/55/57/58 Draft — consistent everywhere. SEP-8 moved to tensions (upstream repo itself inconsistent). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -253,7 +253,7 @@
           "q-sep-38-quotes": "6f2043ce24e43cf2d31014fb0e0303edcb606a7f81725217a9314d93136e6a39",
           "q-sep-41-token-interface": "9ea90edb3219f56bd411f241ef2bbd7f29f07af182172876bba341b350e6ab3d",
           "q-sep-45-contract-auth": "e5048ec1d291cdd2e18788fd958e9b1135360ebee46a38228f188131da0e33c3",
-          "q-sep-6-24-deprecation": "e62ebec56c16d6e3df1d232feeef3af7d804eecee77bbc583bd5479e242ee7a3",
+          "q-sep-6-24-deprecation": "7a9d3c94361a8fdc1fc9ff175de7c8873faea7fe02760838c95566d804d1a07f",
           "q-sep-catalog-list": "134e5738e918a77c496c770bdca32d114e689c1d11d2cf3616abdf55ce426542",
           "q-sep-interactive-deposit-withdraw": "dcf7e63045aebbe8078b922acbdd475ea687f98856912e95b5930920c47578b0",
           "q-soroban-contract-build-verification": "44b5b6abaffa32b36ef4690fbca2ceffc228ddfcf5fe37067424e264b830c0a2",
@@ -306,16 +306,16 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "SCF phase refresh (2026-10-01): q-scf-current-round now places #45 in Notification & Award Distribution as of 2026-10-01. #46 stays in Submission through 2026-11-08 and #44 stays last concluded. No program mechanic, cap, tier, or total changed. This review also keeps the 2026-10-01 result for q-scf-rfp-tooling: its scope note binds the RFP-track definition. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-followups.md.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-org-sdf-enterprise-fund changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. No SCF mechanic or SDF-versus-SCF distinction moved. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
-          "q-org-sdf-enterprise-fund": "28826139602111d4be2492f10241068afaedbd3c3b6551ab10d312f23ef512e8",
+          "q-org-sdf-enterprise-fund": "f368fffc7a9e85c115ed41a33ceaf68c8608ff2d8377153a4205dccbfc52ef81",
           "q-scf-ambassador-program": "fd296d5bc36350b62b2734dd07cfcf995ce36e837c4d14ad12db296fb9e66977",
           "q-scf-audit-bank": "527e1d0f43a47d3ee620cd1042d92755911cd7acabd7807268fc7a88e5cacaba",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
@@ -385,16 +385,16 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-comp-yieldblox-oracle-incident changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Horizon effects still show 61249278.3064502 XLM and 1000196.7040837 USDC; Blockaid still reports 48,069,094 XLM quarantined; no repayment, recovery, or Script3 $10.5M primary source found. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. The decoded pre-state's roughly 14,000-USDC liability is not a second exploit transfer, quarantine is not recovery, and the prior Script3 ~$10.5M net-loss attribution remains unverified. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, combined-USD-valuation framing, pre-existing ~14,000-USDC liability, and unverifiable Script3 ~$10.5M attribution match this cluster's note exactly. cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "5da3cc3df7c94de4eff4ad56030e98a4aaedf15319082369a8d0dc3ce6bfb743",
-          "q-comp-yieldblox-oracle-incident": "f20f7fd16cae063789c7f5acfd7e08c24ddc2789dda8bfb74b7c8fc2c00abc48",
+          "q-comp-yieldblox-oracle-incident": "904dbc2489cf35240f8e3b7ac52f0d37ce6c8faf35ad4d9ab522858489854115",
           "q-defi-etherfuse-stablebonds": "e0d83ceb8d3ea583657efbb258ed394ac685fb1d0e31a6565fa0c6f2ad8e149a",
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce",
@@ -1353,15 +1353,15 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-org-sdf-enterprise-fund changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. stellar.org/enterprise-fund still says 'portfolio totaling over $100m'; the MoneyGram treasury post (2023-08-15) is unchanged. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "SDF's current 'portfolio totals over $100m' wording is not an exact cumulative-cash, fair-value, or cost-basis scalar. MoneyGram was funded from SDF cash treasury outside the Enterprise Fund.",
         "memberContentSha256": {
-          "q-org-sdf-enterprise-fund": "28826139602111d4be2492f10241068afaedbd3c3b6551ab10d312f23ef512e8",
+          "q-org-sdf-enterprise-fund": "f368fffc7a9e85c115ed41a33ceaf68c8608ff2d8377153a4205dccbfc52ef81",
           "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
       },
@@ -2131,15 +2131,15 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-org-sdf-enterprise-fund changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "route to current form with explicit conflict; sibling follow-up remains.",
         "memberContentSha256": {
-          "q-org-sdf-enterprise-fund": "28826139602111d4be2492f10241068afaedbd3c3b6551ab10d312f23ef512e8",
+          "q-org-sdf-enterprise-fund": "f368fffc7a9e85c115ed41a33ceaf68c8608ff2d8377153a4205dccbfc52ef81",
           "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
       },
@@ -2971,16 +2971,16 @@
           "q-x402-payment-verification"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-30",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-09-30",
-          "reason": "Review reconciliation (2026-09-30): q-defi-x402-on-stellar-what changed again only in judge-blind truth metadata (evidence classes and verified lines). No SEP, roster, facilitator, wallet, or sponsorship claim moved. The cluster note stands unchanged.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-hist-x402-stellar-announcement changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. The SDF announcement is still dated 2026-03-10 and stellar-protocol still has no x402 SEP. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. The official roster lists Freighter Browser, Albedo, Hana, HOT, Klever, and OneKey and excludes Freighter Mobile, while Freighter owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry and Stellar Wallets Kit explicitly throws for Albedo. Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, and OneKey; Hana owner docs recommend Wallets Kit but do not establish that stronger claim.",
         "memberContentSha256": {
           "q-defi-x402-on-stellar-what": "0516eedef2611b2a8e696633499722857d31d5dd4fe7507eaf48d54af90336a5",
-          "q-hist-x402-stellar-announcement": "b868b75b82dbd044ba9684b5cdbe7b8abf1bbaf49649a0bd3c2386637b695cd1",
+          "q-hist-x402-stellar-announcement": "1a701a6b4fa2f4210e897097d47253a8e308715c36e3ddf97b173dcaebf345a7",
           "q-soroban-x402-auth-entry-signing": "784506578e5475e4dafa51fbf3702310452d44b1edcef416f079f80bd7decca6",
           "q-x402-payment-verification": "4603440ec97ff335e2ae6c258423997a14ada05190a5c8bd90260717c8e5056c"
         }
@@ -2994,15 +2994,15 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-soroban-oracle-defensive-consumption changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-comp-yieldblox-oracle-incident changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Remediation dates 2026-02-27 and 2026-03-20 re-confirmed from Script3 posts and repository commits. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "The incident cases consistently identify 61,249,278.31 XLM plus 1,000,196.70 USDC as the exploit transfers, treat the roughly 14,000-USDC pre-state liability as pre-existing, label roughly $10M-$10.86M figures as source-specific combined USD valuations, and keep Blockaid's 48,069,094-XLM quarantine distinct from recovery or reimbursement. The Script3 ~$10.5M net-loss attribution remains unverified; remediation-status claims require dated evidence. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes drop the settled-compensation claim; transfer/valuation/quarantine/recovery separations unchanged. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
-          "q-comp-yieldblox-oracle-incident": "f20f7fd16cae063789c7f5acfd7e08c24ddc2789dda8bfb74b7c8fc2c00abc48",
+          "q-comp-yieldblox-oracle-incident": "904dbc2489cf35240f8e3b7ac52f0d37ce6c8faf35ad4d9ab522858489854115",
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce",
           "q-soroban-oracle-defensive-consumption": "4c86f2ce5f62c0fb227d494d3cbf2c45587c3a0ae84b25a4b259579bc5a13239"
         }
@@ -3042,20 +3042,20 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-30",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-09-30",
-          "reason": "Golden freshness pass (2026-09-30): q-builder-content-by-person changed only in notes and truth metadata. The closed-world versus open-world rule and the Strupey and Justin Rice controls are unchanged. The cluster note stands unchanged.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-edge-closed-world-builder-directory-miss and q-edge-strupey-ambiguous-stellar-history changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Scout builders?q=Strupey still returns 0; the open-world probe still finds no exact-token Strupey row. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
           "q-builder-content-by-person": "11a80fae05575d6eddf7991e58ab61372a51d51b81e04ef7d84f1c4ee43de51f",
           "q-builder-justin-rice-history": "666e25ec6c21713634ebec85fa3e3906be546df9a88c080820fa916ec74ad1dd",
-          "q-edge-closed-world-builder-directory-miss": "7e55f4e9fc468ad7f3606a52121ca356d3955ae1b4e2dc46076e28bee5ec629e",
+          "q-edge-closed-world-builder-directory-miss": "e48b4d8872a4630027b9f0e1e2f47d3431bb3c53fc9c8fe89b80ea854a604fa4",
           "q-edge-lumenloop-person-entity-empty": "46b0c6f9b14c35a622553e95456108b6f27caf71b1784db61a8130ce669f637f",
           "q-edge-open-world-recovery-after-narrow-miss": "0ba9afe931d8563e8e0a34cc2418da8df32b330d8bd2e2bb498e2f8c77f9c86c",
-          "q-edge-strupey-ambiguous-stellar-history": "bd9698ad1f190c789ab217a2d91eb95d067612a3f58295c5b975b9819409a127",
+          "q-edge-strupey-ambiguous-stellar-history": "2d492eadeaa26cd2c8b8604c64e9e0fbe75b9a758e99cd16cc9ef9d599ae7f0c",
           "q-gap-semantic-directory-fallback": "3036816cab81318e490ce7101c0266866d2f4a0af1cf5c049da215d1e791f95f"
         }
       },
@@ -3551,14 +3551,14 @@
           "q-hist-yieldblox-v2-2026-exploit"
         ],
         "memberContentSha256": {
-          "q-comp-yieldblox-oracle-incident": "f20f7fd16cae063789c7f5acfd7e08c24ddc2789dda8bfb74b7c8fc2c00abc48",
+          "q-comp-yieldblox-oracle-incident": "904dbc2489cf35240f8e3b7ac52f0d37ce6c8faf35ad4d9ab522858489854115",
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-hist-yieldblox-v2-2026-exploit changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: q-comp-yieldblox-oracle-incident changed only in judge-blind truth metadata. Horizon effects for transactions ae721cac… and 3e81a3f7… still transfer 1000196.7040837 USDC and 61249278.3064502 XLM; the PoC still lists the roughly 14,000 USDC liability as pre-existing; Blockaid still reports 48,069,094 XLM quarantined. The authoritative value and rule are unchanged.",
           "verdict": "consistent"
         }
       },
@@ -3743,24 +3743,24 @@
         "lastChecked": "2026-10-01"
       },
       {
-        "triggerDateEvent": "2026-10-08 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
+        "triggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
         "requiredRecheck": "Re-verify remediation, recovery, reimbursement, quarantine, oracle, and governance status without changing the stable on-chain borrow quantities unless primary evidence corrects them.",
-        "disposition": "open — q-comp-yieldblox-oracle-incident reverifyBy 2026-10-08 (re-verified 2026-07-28); do not equate quarantined with recovered.",
+        "disposition": "open — q-comp-yieldblox-oracle-incident reverifyBy 2027-03-02 (re-verified 2026-10-06: no repayment, recovery, or final post-mortem found); do not equate quarantined with recovered.",
         "caseIds": [
           "q-comp-yieldblox-oracle-incident",
           "q-hist-yieldblox-v2-2026-exploit",
           "q-soroban-oracle-defensive-consumption"
         ],
         "memberContentSha256": {
-          "q-comp-yieldblox-oracle-incident": "f20f7fd16cae063789c7f5acfd7e08c24ddc2789dda8bfb74b7c8fc2c00abc48",
+          "q-comp-yieldblox-oracle-incident": "904dbc2489cf35240f8e3b7ac52f0d37ce6c8faf35ad4d9ab522858489854115",
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce",
           "q-soroban-oracle-defensive-consumption": "4c86f2ce5f62c0fb227d494d3cbf2c45587c3a0ae84b25a4b259579bc5a13239"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-soroban-oracle-defensive-consumption changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; the trigger, required recheck, and disposition are unchanged and no member changed its answer, avoid, or notes, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-06",
+          "reason": "Near-due re-verification 2026-10-06: the trigger date passed review before it fired. Script3 remediation posts (2026-02-27, 2026-03-20), repository commits, Blockaid quarantine, BlockSec, rekt.news, and Horizon effects were re-read live; no reimbursement decision, attacker repayment, or final post-mortem changes the members. Only q-comp-yieldblox-oracle-incident changed, in judge-blind truth metadata. The trigger moves to that case's new reverifyBy.",
           "verdict": "consistent"
         }
       },
@@ -3787,20 +3787,20 @@
         }
       },
       {
-        "triggerDateEvent": "2026-10-08 pre-event check and Meridian 2026 on 2026-10-28/2026-10-29",
+        "triggerDateEvent": "2026-11-03 post-event check after Meridian 2026 on 2026-10-28/2026-10-29",
         "requiredRecheck": "Re-fetch official Meridian and event-detail pages for Lisbon venue/date changes, cancellation, or schedule updates; retain Abu Dhabi only as superseded history.",
-        "disposition": "open — Lisbon, October 28–29, 2026 as of 2026-07-11; q-hist-meridian-2026-corrected-venue reverifyBy 2026-10-08.",
+        "disposition": "open — Lisbon, October 28–29, 2026 re-verified 2026-10-06 (pre-event check done); q-hist-meridian-2026-corrected-venue reverifyBy 2026-11-03, after the event, when the upcoming framing becomes historical.",
         "caseIds": [
           "q-hist-meridian-2026-corrected-venue"
         ],
         "memberContentSha256": {
-          "q-hist-meridian-2026-corrected-venue": "75b729db1a972d7186cc66bd9f3c6272d274223fac7ecfd4c32ec158d94902f7"
+          "q-hist-meridian-2026-corrected-venue": "96095bf4283312e9c04bb0cfca4a2ce2160e237e51d1793e3cac5120802fe2d0"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-10-06",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-10-06",
+          "reason": "Pre-event check done 2026-10-06: meridian.stellar.org/event-details still says October 28–29, 2026 at Convento do Beato in Lisbon; hackmeridian.com says 25–26 October 2026 in Lisbon; the 2026-04-01 SDF post is unchanged; no cancellation or schedule change found. The member changed only in judge-blind truth metadata. The trigger moves to the post-event check.",
           "verdict": "consistent"
         }
       },
