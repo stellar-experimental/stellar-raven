@@ -206,6 +206,63 @@ describe("scout adapter", () => {
     });
   });
 
+  it.each([
+    { projects: [], counts: { returned: 0, total: 0 } },
+    { projects: [{ name: "Wallet" }], counts: { returned: 1, total: 303 } }
+  ])("maps meta.partial to error regardless of returned rows: %j", async (payload) => {
+    const failedReads = [
+      { read: "projects search", cause: "timeout after 4000ms" },
+      { read: "repos search", cause: "MongoServerSelectionError" }
+    ];
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({
+        projects: payload.projects,
+        meta: { counts: payload.counts, partial: true, failedReads }
+      }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r).toEqual({
+      ok: false,
+      error: {
+        service: "scout",
+        kind: "error",
+        status: 200,
+        message:
+          "backend read failed: projects search (timeout after 4000ms); repos search (MongoServerSelectionError)",
+        hint: "The Scout backend read failed transiently. Retry once. If the read still fails, report the result as inconclusive.",
+        details: { failedReads }
+      }
+    });
+  });
+
+  it("names a partial page without failedReads and keeps its warnings", async () => {
+    const warnings = ["Keyword fallback used after vector search failed."];
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({ projects: [{ name: "Wallet" }], meta: { partial: true, warnings } }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error).toMatchObject({
+      kind: "error",
+      status: 200,
+      message: "backend read failed: Scout marked the page partial",
+      details: { warnings }
+    });
+  });
+
+  it("keeps a complete page with meta.partial false successful", async () => {
+    const body = {
+      projects: [{ name: "Wallet" }],
+      meta: { counts: { returned: 1, total: 1 }, partial: false, failedReads: [] }
+    };
+    const { fetchImpl } = stubFetch(JSON.stringify(body), 200);
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r).toEqual({ ok: true, data: body });
+  });
+
   it("keeps unread-parameter warnings visible in successful data", async () => {
     const body = {
       projects: [{ name: "Wallet" }],

@@ -63,7 +63,7 @@ In the same burst, `category=Infrastructure&status=Live` returned `167`, so the 
 One burst reproduced one failure. This observation does not estimate a failure rate.
 Earlier model traces contained eleven zero counts under a similar burst; this replay did not reproduce all eleven.
 The affected answer called two populated categories unused.
-The Raven Scout adapter now classifies a `backend read failed` warning as a failed read (`src/adapters/scout.ts`).
+The Raven Scout adapter now classifies `meta.partial: true` or a `backend read failed` warning as a failed read (`src/adapters/scout.ts`).
 Before that repair, it accepted these warnings as successful data.
 
 The saved [OpenAPI excerpt](https://github.com/stellar-experimental/stellar-raven/blob/main/.agents/rounds/2026-10-01-backlog-closeout/sd-measure/evidence/scout-openapi-contract.json) records version `1.9.54` and the document hash.

@@ -183,20 +183,6 @@ Acceptance checks:
 Done when: all eleven acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
-## Adapters
-
-### Detect Scout failed reads from `meta.partial` and `meta.failedReads`
-
-The Raven Scout adapter detects a failed backend read from the `backend read failed` warning prefix
-(`src/adapters/scout.ts:181`). Scout spec 1.9.62 and later adds `meta.partial` and `meta.failedReads`
-to `searchProjects`, `searchRepos`, `getBuilders`, `searchResearch`, `listSkills`, and
-`getHackathons`. The live `Meta` schema says to count loss on `partial`, not on the 200 status. The
-warning text stays as a second disclosure. Found in the 2026-10-06 improvements lane while it
-rechecked `sls-089`.
-
-Done when: the adapter classifies a failed read from `meta.partial` and `meta.failedReads`, tests
-cover `partial: true` with and without rows, and `npm test` and `npm run test:smoke` pass.
-
 ## Dependencies
 
 ### Remove the vitest pool override when the pool updates

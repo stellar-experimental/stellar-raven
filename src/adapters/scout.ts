@@ -19,10 +19,11 @@
  *  - 503 `{unavailable:true}` (AI ops) → kind "error" with the documented
  *    fallback hint (GET /api/partners filters), NOT retryable.
  *  - 200 + `meta.error:"no_query"`     → kind "soft-empty" (0 rows + advisory).
- *  - 200 + an element of the `meta.warnings` string array matching the
- *    case-sensitive prefix "backend read failed" followed by whitespace,
- *    a colon, or end of string → kind "error", even with rows; retry once,
- *    then report an inconclusive read. Preserve all warnings in details.
+ *  - 200 + `meta.partial: true`, or an element of the `meta.warnings` string
+ *    array matching the case-sensitive prefix "backend read failed" followed
+ *    by whitespace, a colon, or end of string → kind "error", even with rows;
+ *    retry once, then report an inconclusive read. Preserve the warnings and
+ *    `meta.failedReads` in details.
  *  - Other warnings remain visible in unchanged successful data.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
@@ -55,6 +56,21 @@ function fillPathTemplate(
     return encodeURIComponent(String(value));
   });
   return { path: filled, used, missing };
+}
+
+/** Message for a partial page that carries no failed-read warning. */
+function describePartialRead(failedReads: unknown): string {
+  const named = Array.isArray(failedReads)
+    ? failedReads
+        .filter(
+          (r): r is { read: string; cause: string } =>
+            typeof r === "object" && r !== null && typeof r.read === "string" && typeof r.cause === "string"
+        )
+        .map((r) => `${r.read} (${r.cause})`)
+    : [];
+  return named.length > 0
+    ? `backend read failed: ${named.join("; ")}`
+    : "backend read failed: Scout marked the page partial";
 }
 
 function toQueryValue(value: unknown): string {
@@ -170,25 +186,31 @@ export async function callScout(
     }
 
     const meta = body.meta as Record<string, unknown> | undefined;
-    // Scout's observed failure signal is a warning string, not a structured
-    // code (2026-10-01 adapter measurement; Meta.warnings is string[] in 1.9.61).
-    // A failed read is inconclusive even when some rows survived. Check it
-    // before meta.error so a backend failure cannot be classified as a miss.
+    // Scout states read loss in `meta.partial` + `meta.failedReads` (spec
+    // 1.9.62+: "count real loss on this field, not on the 200 status"). The
+    // `backend read failed` warning stays a second signal for responses that
+    // carry only the warning. A failed read is inconclusive even when some
+    // rows survived. Check it before meta.error so a backend failure cannot be
+    // classified as a miss.
     const warnings = meta?.warnings;
-    const failedRead = Array.isArray(warnings)
+    const failedReads = meta?.failedReads;
+    const failedReadWarning = Array.isArray(warnings)
       ? warnings.find(
           (warning): warning is string =>
             typeof warning === "string" && /^backend read failed(?:\s|:|$)/.test(warning)
         )
       : undefined;
-    if (failedRead !== undefined) {
+    if (meta?.partial === true || failedReadWarning !== undefined) {
       return errResult({
         service: SERVICE,
         kind: "error",
-        message: failedRead,
+        message: failedReadWarning ?? describePartialRead(failedReads),
         status: res.status,
         hint: "The Scout backend read failed transiently. Retry once. If the read still fails, report the result as inconclusive.",
-        details: { warnings }
+        details: {
+          ...(Array.isArray(warnings) ? { warnings } : {}),
+          ...(Array.isArray(failedReads) ? { failedReads } : {})
+        }
       });
     }
 
