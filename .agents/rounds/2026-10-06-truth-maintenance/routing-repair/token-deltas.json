@@ -1,0 +1,1787 @@
+[
+  {
+    "case": "q-defi-agentic-payment-standards-compare",
+    "id": "scout.searchHackathonBuilds",
+    "fields": {
+      "base": [],
+      "routing": [
+        {
+          "token": "x402",
+          "old": {
+            "token": "x402",
+            "points": 10,
+            "witness": [
+              "x"
+            ]
+          },
+          "current": {
+            "token": "x402",
+            "points": 20,
+            "witness": [
+              "x402"
+            ]
+          }
+        }
+      ],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-agentic-payment-standards-compare",
+    "id": "scout.analyzeHackathonSubmissions",
+    "fields": {
+      "base": [
+        {
+          "token": "how",
+          "current": {
+            "token": "how",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "do",
+          "current": {
+            "token": "do",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "x402",
+          "current": {
+            "token": "x402",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "mpp",
+          "current": {
+            "token": "mpp",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "ap2",
+          "current": {
+            "token": "ap2",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "and",
+          "current": {
+            "token": "and",
+            "points": 20,
+            "witness": [
+              "and"
+            ]
+          }
+        },
+        {
+          "token": "acp",
+          "current": {
+            "token": "acp",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "compare",
+          "current": {
+            "token": "compare",
+            "points": 10,
+            "witness": [
+              "compares"
+            ]
+          }
+        },
+        {
+          "token": "for",
+          "current": {
+            "token": "for",
+            "points": 20,
+            "witness": [
+              "for"
+            ]
+          }
+        },
+        {
+          "token": "agent",
+          "current": {
+            "token": "agent",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "payments",
+          "current": {
+            "token": "payments",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "and",
+          "current": {
+            "token": "and",
+            "points": 20,
+            "witness": [
+              "and"
+            ]
+          }
+        },
+        {
+          "token": "which",
+          "current": {
+            "token": "which",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "are",
+          "current": {
+            "token": "are",
+            "points": 20,
+            "witness": [
+              "are"
+            ]
+          }
+        },
+        {
+          "token": "stellar",
+          "current": {
+            "token": "stellar",
+            "points": 20,
+            "witness": [
+              "stellar"
+            ]
+          }
+        },
+        {
+          "token": "specific",
+          "current": {
+            "token": "specific",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "vs",
+          "current": {
+            "token": "vs",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "general",
+          "current": {
+            "token": "general",
+            "points": 0,
+            "witness": []
+          }
+        }
+      ],
+      "routing": [
+        {
+          "token": "how",
+          "current": {
+            "token": "how",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "do",
+          "current": {
+            "token": "do",
+            "points": 5,
+            "witness": []
+          }
+        },
+        {
+          "token": "x402",
+          "current": {
+            "token": "x402",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "mpp",
+          "current": {
+            "token": "mpp",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "ap2",
+          "current": {
+            "token": "ap2",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "and",
+          "current": {
+            "token": "and",
+            "points": 20,
+            "witness": [
+              "and"
+            ]
+          }
+        },
+        {
+          "token": "acp",
+          "current": {
+            "token": "acp",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "compare",
+          "current": {
+            "token": "compare",
+            "points": 10,
+            "witness": [
+              "compares"
+            ]
+          }
+        },
+        {
+          "token": "for",
+          "current": {
+            "token": "for",
+            "points": 20,
+            "witness": [
+              "for"
+            ]
+          }
+        },
+        {
+          "token": "agent",
+          "current": {
+            "token": "agent",
+            "points": 20,
+            "witness": [
+              "agent"
+            ]
+          }
+        },
+        {
+          "token": "payments",
+          "current": {
+            "token": "payments",
+            "points": 20,
+            "witness": [
+              "payments"
+            ]
+          }
+        },
+        {
+          "token": "and",
+          "current": {
+            "token": "and",
+            "points": 20,
+            "witness": [
+              "and"
+            ]
+          }
+        },
+        {
+          "token": "which",
+          "current": {
+            "token": "which",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "are",
+          "current": {
+            "token": "are",
+            "points": 20,
+            "witness": [
+              "are"
+            ]
+          }
+        },
+        {
+          "token": "stellar",
+          "current": {
+            "token": "stellar",
+            "points": 20,
+            "witness": [
+              "stellar"
+            ]
+          }
+        },
+        {
+          "token": "specific",
+          "current": {
+            "token": "specific",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "vs",
+          "current": {
+            "token": "vs",
+            "points": 20,
+            "witness": [
+              "vs"
+            ]
+          }
+        },
+        {
+          "token": "general",
+          "current": {
+            "token": "general",
+            "points": 0,
+            "witness": []
+          }
+        }
+      ],
+      "schema": [
+        {
+          "token": "how",
+          "current": {
+            "token": "how",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "do",
+          "current": {
+            "token": "do",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "x402",
+          "current": {
+            "token": "x402",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "mpp",
+          "current": {
+            "token": "mpp",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "ap2",
+          "current": {
+            "token": "ap2",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "and",
+          "current": {
+            "token": "and",
+            "points": 20,
+            "witness": [
+              "and"
+            ]
+          }
+        },
+        {
+          "token": "acp",
+          "current": {
+            "token": "acp",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "compare",
+          "current": {
+            "token": "compare",
+            "points": 10,
+            "witness": [
+              "compares"
+            ]
+          }
+        },
+        {
+          "token": "for",
+          "current": {
+            "token": "for",
+            "points": 20,
+            "witness": [
+              "for"
+            ]
+          }
+        },
+        {
+          "token": "agent",
+          "current": {
+            "token": "agent",
+            "points": 10,
+            "witness": [
+              "a",
+              "a",
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "payments",
+          "current": {
+            "token": "payments",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "and",
+          "current": {
+            "token": "and",
+            "points": 20,
+            "witness": [
+              "and"
+            ]
+          }
+        },
+        {
+          "token": "which",
+          "current": {
+            "token": "which",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "are",
+          "current": {
+            "token": "are",
+            "points": 20,
+            "witness": [
+              "are"
+            ]
+          }
+        },
+        {
+          "token": "stellar",
+          "current": {
+            "token": "stellar",
+            "points": 20,
+            "witness": [
+              "stellar"
+            ]
+          }
+        },
+        {
+          "token": "specific",
+          "current": {
+            "token": "specific",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "vs",
+          "current": {
+            "token": "vs",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "general",
+          "current": {
+            "token": "general",
+            "points": 0,
+            "witness": []
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case": "q-defi-blend-alternatives",
+    "id": "scout.searchProjects",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-blend-alternatives",
+    "id": "scout.getClusters",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-rwa-overview",
+    "id": "scout.searchProjects",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-rwa-overview",
+    "id": "scout.analyzeEcosystem",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-rwa-overview",
+    "id": "scout.getHackathon",
+    "fields": {
+      "base": [
+        {
+          "token": "what",
+          "old": {
+            "token": "what",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "what",
+            "points": 20,
+            "witness": [
+              "what"
+            ]
+          }
+        }
+      ],
+      "routing": [
+        {
+          "token": "what",
+          "old": {
+            "token": "what",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "what",
+            "points": 20,
+            "witness": [
+              "what"
+            ]
+          }
+        },
+        {
+          "token": "real",
+          "old": {
+            "token": "real",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "real",
+            "points": 20,
+            "witness": [
+              "real"
+            ]
+          }
+        },
+        {
+          "token": "world",
+          "old": {
+            "token": "world",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "world",
+            "points": 20,
+            "witness": [
+              "world"
+            ]
+          }
+        }
+      ],
+      "schema": [
+        {
+          "token": "what",
+          "old": {
+            "token": "what",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "what",
+            "points": 20,
+            "witness": [
+              "what"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case": "q-defi-stellarx-what-is",
+    "id": "scout.searchHackathonBuilds",
+    "fields": {
+      "base": [
+        {
+          "token": "it",
+          "old": {
+            "token": "it",
+            "points": 20,
+            "witness": [
+              "it"
+            ]
+          },
+          "current": {
+            "token": "it",
+            "points": 10,
+            "witness": [
+              "its"
+            ]
+          }
+        },
+        {
+          "token": "by",
+          "old": {
+            "token": "by",
+            "points": 20,
+            "witness": [
+              "by"
+            ]
+          },
+          "current": {
+            "token": "by",
+            "points": 0,
+            "witness": []
+          }
+        }
+      ],
+      "routing": [
+        {
+          "token": "it",
+          "old": {
+            "token": "it",
+            "points": 20,
+            "witness": [
+              "it"
+            ]
+          },
+          "current": {
+            "token": "it",
+            "points": 10,
+            "witness": [
+              "its"
+            ]
+          }
+        },
+        {
+          "token": "by",
+          "old": {
+            "token": "by",
+            "points": 20,
+            "witness": [
+              "by"
+            ]
+          },
+          "current": {
+            "token": "by",
+            "points": 0,
+            "witness": []
+          }
+        }
+      ],
+      "schema": [
+        {
+          "token": "it",
+          "old": {
+            "token": "it",
+            "points": 20,
+            "witness": [
+              "it"
+            ]
+          },
+          "current": {
+            "token": "it",
+            "points": 10,
+            "witness": [
+              "its"
+            ]
+          }
+        },
+        {
+          "token": "by",
+          "old": {
+            "token": "by",
+            "points": 20,
+            "witness": [
+              "by"
+            ]
+          },
+          "current": {
+            "token": "by",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "development",
+          "old": {
+            "token": "development",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "development",
+            "points": 20,
+            "witness": [
+              "development"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case": "q-defi-stellarx-what-is",
+    "id": "scout.searchProjects",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "id": "scout.searchHackathonBuilds",
+    "fields": {
+      "base": [
+        {
+          "token": "on",
+          "old": {
+            "token": "on",
+            "points": 10,
+            "witness": [
+              "only"
+            ]
+          },
+          "current": {
+            "token": "on",
+            "points": 20,
+            "witness": [
+              "on"
+            ]
+          }
+        },
+        {
+          "token": "repos",
+          "old": {
+            "token": "repos",
+            "points": 10,
+            "witness": [
+              "repo"
+            ]
+          },
+          "current": {
+            "token": "repos",
+            "points": 20,
+            "witness": [
+              "repos"
+            ]
+          }
+        }
+      ],
+      "routing": [
+        {
+          "token": "on",
+          "old": {
+            "token": "on",
+            "points": 10,
+            "witness": [
+              "only"
+            ]
+          },
+          "current": {
+            "token": "on",
+            "points": 20,
+            "witness": [
+              "on"
+            ]
+          }
+        },
+        {
+          "token": "repos",
+          "old": {
+            "token": "repos",
+            "points": 10,
+            "witness": [
+              "repo"
+            ]
+          },
+          "current": {
+            "token": "repos",
+            "points": 20,
+            "witness": [
+              "repos"
+            ]
+          }
+        }
+      ],
+      "schema": [
+        {
+          "token": "on",
+          "old": {
+            "token": "on",
+            "points": 10,
+            "witness": [
+              "only"
+            ]
+          },
+          "current": {
+            "token": "on",
+            "points": 20,
+            "witness": [
+              "on"
+            ]
+          }
+        },
+        {
+          "token": "repos",
+          "old": {
+            "token": "repos",
+            "points": 10,
+            "witness": [
+              "repo"
+            ]
+          },
+          "current": {
+            "token": "repos",
+            "points": 20,
+            "witness": [
+              "repos"
+            ]
+          }
+        },
+        {
+          "token": "or",
+          "old": {
+            "token": "or",
+            "points": 5,
+            "witness": []
+          },
+          "current": {
+            "token": "or",
+            "points": 10,
+            "witness": [
+              "oracle"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "id": "scout.searchProjects",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "id": "scout.searchRepos",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "id": "scout.scfPitch",
+    "fields": {
+      "base": [],
+      "routing": [
+        {
+          "token": "payments",
+          "old": {
+            "token": "payments",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "payments",
+            "points": 20,
+            "witness": [
+              "payments"
+            ]
+          }
+        }
+      ],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "id": "scout.vetIdea",
+    "fields": {
+      "base": [],
+      "routing": [
+        {
+          "token": "contract",
+          "old": {
+            "token": "contract",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "contract",
+            "points": 10,
+            "witness": [
+              "contractors"
+            ]
+          }
+        }
+      ],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "id": "scout.getHackathonSubmission",
+    "fields": {
+      "base": [
+        {
+          "token": "i",
+          "current": {
+            "token": "i",
+            "points": 10,
+            "witness": [
+              "in",
+              "in",
+              "its",
+              "its",
+              "id",
+              "io"
+            ]
+          }
+        },
+        {
+          "token": "want",
+          "current": {
+            "token": "want",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "to",
+          "current": {
+            "token": "to",
+            "points": 10,
+            "witness": [
+              "topic"
+            ]
+          }
+        },
+        {
+          "token": "build",
+          "current": {
+            "token": "build",
+            "points": 10,
+            "witness": [
+              "builds",
+              "builds"
+            ]
+          }
+        },
+        {
+          "token": "a",
+          "current": {
+            "token": "a",
+            "points": 20,
+            "witness": [
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "streaming",
+          "current": {
+            "token": "streaming",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "recurring",
+          "current": {
+            "token": "recurring",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "payments",
+          "current": {
+            "token": "payments",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "contract",
+          "current": {
+            "token": "contract",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "on",
+          "current": {
+            "token": "on",
+            "points": 20,
+            "witness": [
+              "on"
+            ]
+          }
+        },
+        {
+          "token": "soroban",
+          "current": {
+            "token": "soroban",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "what",
+          "current": {
+            "token": "what",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "existing",
+          "current": {
+            "token": "existing",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "stellar",
+          "current": {
+            "token": "stellar",
+            "points": 20,
+            "witness": [
+              "stellar"
+            ]
+          }
+        },
+        {
+          "token": "projects",
+          "current": {
+            "token": "projects",
+            "points": 10,
+            "witness": [
+              "project",
+              "project"
+            ]
+          }
+        },
+        {
+          "token": "repos",
+          "current": {
+            "token": "repos",
+            "points": 10,
+            "witness": [
+              "repo",
+              "repo"
+            ]
+          }
+        },
+        {
+          "token": "or",
+          "current": {
+            "token": "or",
+            "points": 20,
+            "witness": [
+              "or"
+            ]
+          }
+        },
+        {
+          "token": "scf",
+          "current": {
+            "token": "scf",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "submissions",
+          "current": {
+            "token": "submissions",
+            "points": 20,
+            "witness": [
+              "submissions"
+            ]
+          }
+        },
+        {
+          "token": "should",
+          "current": {
+            "token": "should",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "i",
+          "current": {
+            "token": "i",
+            "points": 10,
+            "witness": [
+              "in",
+              "in",
+              "its",
+              "its",
+              "id",
+              "io"
+            ]
+          }
+        },
+        {
+          "token": "study",
+          "current": {
+            "token": "study",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        }
+      ],
+      "routing": [
+        {
+          "token": "i",
+          "current": {
+            "token": "i",
+            "points": 10,
+            "witness": [
+              "in",
+              "in",
+              "its",
+              "its",
+              "id",
+              "io"
+            ]
+          }
+        },
+        {
+          "token": "want",
+          "current": {
+            "token": "want",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "to",
+          "current": {
+            "token": "to",
+            "points": 10,
+            "witness": [
+              "topic",
+              "toll"
+            ]
+          }
+        },
+        {
+          "token": "build",
+          "current": {
+            "token": "build",
+            "points": 10,
+            "witness": [
+              "builds",
+              "builds"
+            ]
+          }
+        },
+        {
+          "token": "a",
+          "current": {
+            "token": "a",
+            "points": 20,
+            "witness": [
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "streaming",
+          "current": {
+            "token": "streaming",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "recurring",
+          "current": {
+            "token": "recurring",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "payments",
+          "current": {
+            "token": "payments",
+            "points": 10,
+            "witness": [
+              "pay"
+            ]
+          }
+        },
+        {
+          "token": "contract",
+          "current": {
+            "token": "contract",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "on",
+          "current": {
+            "token": "on",
+            "points": 20,
+            "witness": [
+              "on"
+            ]
+          }
+        },
+        {
+          "token": "soroban",
+          "current": {
+            "token": "soroban",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "what",
+          "current": {
+            "token": "what",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "existing",
+          "current": {
+            "token": "existing",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "stellar",
+          "current": {
+            "token": "stellar",
+            "points": 20,
+            "witness": [
+              "stellar"
+            ]
+          }
+        },
+        {
+          "token": "projects",
+          "current": {
+            "token": "projects",
+            "points": 10,
+            "witness": [
+              "project",
+              "project"
+            ]
+          }
+        },
+        {
+          "token": "repos",
+          "current": {
+            "token": "repos",
+            "points": 10,
+            "witness": [
+              "repo",
+              "repo"
+            ]
+          }
+        },
+        {
+          "token": "or",
+          "current": {
+            "token": "or",
+            "points": 20,
+            "witness": [
+              "or"
+            ]
+          }
+        },
+        {
+          "token": "scf",
+          "current": {
+            "token": "scf",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "submissions",
+          "current": {
+            "token": "submissions",
+            "points": 20,
+            "witness": [
+              "submissions"
+            ]
+          }
+        },
+        {
+          "token": "should",
+          "current": {
+            "token": "should",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "i",
+          "current": {
+            "token": "i",
+            "points": 10,
+            "witness": [
+              "in",
+              "in",
+              "its",
+              "its",
+              "id",
+              "io"
+            ]
+          }
+        },
+        {
+          "token": "study",
+          "current": {
+            "token": "study",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        }
+      ],
+      "schema": [
+        {
+          "token": "i",
+          "current": {
+            "token": "i",
+            "points": 10,
+            "witness": [
+              "in",
+              "in",
+              "its",
+              "its",
+              "id",
+              "io",
+              "infrastructure",
+              "indexer",
+              "impact",
+              "issuing",
+              "inactive"
+            ]
+          }
+        },
+        {
+          "token": "want",
+          "current": {
+            "token": "want",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "to",
+          "current": {
+            "token": "to",
+            "points": 10,
+            "witness": [
+              "topic"
+            ]
+          }
+        },
+        {
+          "token": "build",
+          "current": {
+            "token": "build",
+            "points": 20,
+            "witness": [
+              "build"
+            ]
+          }
+        },
+        {
+          "token": "a",
+          "current": {
+            "token": "a",
+            "points": 20,
+            "witness": [
+              "a"
+            ]
+          }
+        },
+        {
+          "token": "streaming",
+          "current": {
+            "token": "streaming",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "recurring",
+          "current": {
+            "token": "recurring",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "payments",
+          "current": {
+            "token": "payments",
+            "points": 20,
+            "witness": [
+              "payments"
+            ]
+          }
+        },
+        {
+          "token": "contract",
+          "current": {
+            "token": "contract",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "on",
+          "current": {
+            "token": "on",
+            "points": 20,
+            "witness": [
+              "on"
+            ]
+          }
+        },
+        {
+          "token": "soroban",
+          "current": {
+            "token": "soroban",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "what",
+          "current": {
+            "token": "what",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "existing",
+          "current": {
+            "token": "existing",
+            "points": 0,
+            "witness": []
+          }
+        },
+        {
+          "token": "stellar",
+          "current": {
+            "token": "stellar",
+            "points": 20,
+            "witness": [
+              "stellar"
+            ]
+          }
+        },
+        {
+          "token": "projects",
+          "current": {
+            "token": "projects",
+            "points": 10,
+            "witness": [
+              "project",
+              "project"
+            ]
+          }
+        },
+        {
+          "token": "repos",
+          "current": {
+            "token": "repos",
+            "points": 10,
+            "witness": [
+              "repo",
+              "repo"
+            ]
+          }
+        },
+        {
+          "token": "or",
+          "current": {
+            "token": "or",
+            "points": 20,
+            "witness": [
+              "or"
+            ]
+          }
+        },
+        {
+          "token": "scf",
+          "current": {
+            "token": "scf",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "submissions",
+          "current": {
+            "token": "submissions",
+            "points": 20,
+            "witness": [
+              "submissions"
+            ]
+          }
+        },
+        {
+          "token": "should",
+          "current": {
+            "token": "should",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        },
+        {
+          "token": "i",
+          "current": {
+            "token": "i",
+            "points": 10,
+            "witness": [
+              "in",
+              "in",
+              "its",
+              "its",
+              "id",
+              "io",
+              "infrastructure",
+              "indexer",
+              "impact",
+              "issuing",
+              "inactive"
+            ]
+          }
+        },
+        {
+          "token": "study",
+          "current": {
+            "token": "study",
+            "points": 10,
+            "witness": [
+              "s",
+              "s"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "case": "q-scf-funded-similar-payroll",
+    "id": "scout.searchProjects",
+    "fields": {
+      "base": [],
+      "routing": [],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-scf-funded-similar-payroll",
+    "id": "scout.scfPitch",
+    "fields": {
+      "base": [],
+      "routing": [
+        {
+          "token": "payments",
+          "old": {
+            "token": "payments",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "payments",
+            "points": 20,
+            "witness": [
+              "payments"
+            ]
+          }
+        }
+      ],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-scf-funded-similar-payroll",
+    "id": "scout.vetIdea",
+    "fields": {
+      "base": [],
+      "routing": [
+        {
+          "token": "payroll",
+          "old": {
+            "token": "payroll",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "payroll",
+            "points": 20,
+            "witness": [
+              "payroll"
+            ]
+          }
+        }
+      ],
+      "schema": []
+    }
+  },
+  {
+    "case": "q-edge-scf-v7-centralization-myths",
+    "id": "scout.scfPitch",
+    "fields": {
+      "base": [],
+      "routing": [
+        {
+          "token": "take",
+          "old": {
+            "token": "take",
+            "points": 0,
+            "witness": []
+          },
+          "current": {
+            "token": "take",
+            "points": 20,
+            "witness": [
+              "take"
+            ]
+          }
+        }
+      ],
+      "schema": []
+    }
+  }
+]
