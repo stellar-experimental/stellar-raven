@@ -176,8 +176,9 @@ ranked first on `q-pc-sequence-numbers-ordering-replace`. Ungraded captures also
 (`getHackathonSubmission` first on `q-scf-ecosystem-listing-partner-jobs`; `getHackathon` first on
 `q-hist-remittance-corridors`). Four tested general policies failed; the narrower admission-only
 example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` and its
-`routing-repair-astra.md`. Four proposed golden cases for the two read operations wait on branch
-`drift/2026-10-06-goldens` (see the ledger for the parked-case status). Keep `inventory/stellar-light.json`
+`routing-repair-astra.md`. Four golden proposals for the two read operations wait in
+`eval/qa/corpus/proposed/scf-grants-builders/` (see "Activate the Scout hackathon golden
+proposals"). Keep `inventory/stellar-light.json`
 at 1.9.61 until check 12 passes; the daily drift report keeps #223 open meanwhile.
 
 Acceptance checks:
@@ -326,6 +327,46 @@ exceptions to make its examples pass. Evidence:
 
 Done when: a general mechanism passes frozen routing controls and independently reviewed answer
 checks.
+
+### Reconcile hackathon winner goldens with the submission-detail operation
+
+Trigger: the Scout 1.9.71 absorb lands. `scout.getHackathonSubmission` then returns explicit
+`placement` for one stored submission. Two
+existing cases still require the event-detail path as the only route: `q-scf-kale-winner-live`
+(key facts 1 and 2 require `getHackathons` then `getHackathon`) and `q-gap-hackathon-winner-order`
+(key fact 1 requires `getHackathon` detail). The independent review of the 2026-10-06 golden lane
+found this grading-path overlap. No factual contradiction exists. History:
+`.agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra.md` ("Duplicate and boundary
+review") and `reconciliation.md` row 15.
+
+Done when: both cases accept explicit placement from event or submission detail, through the
+`golden-truth` workflow, or a recorded decision keeps the event-detail path as the only route.
+
+### Activate the Scout hackathon golden proposals when the Scout 1.9.71 absorb lands
+
+Four proposals sit in `eval/qa/corpus/proposed/scf-grants-builders/`. The 2026-10-06 round held the Scout `1.9.71` absorb, so none is active
+and the two operation floors stay unmet. The independent review cleared three for activation after
+its requested edits, which are applied: `q-scout-hackathon-winner-libraries-vs-field`,
+`q-scout-hackathon-submission-link-comet-hoops`, and `q-scout-hackathon-submission-xbid-outcome`.
+It blocked `q-scout-hackathon-placed-share-kale-vs-zk`: the complete winner totals have no witness
+independent of DoraHacks. History: `.agents/rounds/2026-10-06-scout-hackathon-goldens.md`.
+
+Done when: the dated facts are re-probed, the fourth case has an independent winner-list source or
+a reviewed source-relative rewrite, each activated case carries `truth.lifecycle.activation`, and
+`npm run eval:qa:lint -- --stale --enforce-floors` passes for both operations.
+
+### Decide whether Scout's hackathon store gaps are upstream findings
+
+Probes on 2026-10-06 found stored totals below the organizer's totals: KALE x Reflector 45 against
+46 to 47, Real-World ZK 319 against 345, Stellar Hacks: Agents 248 against 262, and Stellar Hacks:
+Blend 35 submissions and 2 winners against 39 and 3. Scout holds the Blend first-place submission
+(`dorahacks.io/buidl/27438`) under `stellar-hacks-paltalabs` with no placement, so its Blend
+first-place result is lost. Scout documents that deleted or private submissions are not served, so
+part of the total gap is by design. The lost first-place record changes `winners` counts and placed
+shares. Evidence: `.agents/rounds/2026-10-06-scout-hackathon-goldens.md` entries 2, 12, and 14.
+
+Done when: the `improvements-pipeline` workflow files a finding for the missing-winner case, or
+records why it is intended behavior.
 
 ### Reconcile the QA answering prompt with out-of-scope goldens
 

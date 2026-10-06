@@ -1,0 +1,191 @@
+{
+  "id": "q-scout-hackathon-submission-link-comet-hoops",
+  "question": "Someone sent me dorahacks.io/buidl/27417. What is that submission, which Stellar hackathon was it entered in, and did it place?",
+  "surface": [
+    "scout.getHackathonSubmission"
+  ],
+  "golden": {
+    "answer": "That link is Comet x Hoops Finance, submitted to Stellar Hacks: Blend, the Stellar Development Foundation hackathon on DoraHacks. It took 2nd place among the three Blend composability prize winners. In the team's own write-up, it is a swap interface for Blend's backstop: users convert between USDC and BLND and deposit into the Backstop in one click through the Hoops Finance interface. The code is at github.com/hoops-finance/cometswap and the demo is at comet.hoops.finance. The write-up is the team's claim about what it built, not proof that it shipped.",
+    "keyFacts": [
+      "The submission is Comet x Hoops Finance, a swap interface for Blend's backstop.",
+      "It was entered in Stellar Hacks: Blend.",
+      "It took 2nd place.",
+      "Its code is at github.com/hoops-finance/cometswap."
+    ],
+    "avoid": [
+      "States that the submission did not place.",
+      "States that the submission took 1st place at Stellar Hacks: Blend."
+    ],
+    "notes": "The product description is the team's self-report; do not require the backstop mechanics. No prize amount is required. The demo URL is nice-to-have. Do not reject a separately sourced statement that the team also took part in another event. First place at Blend went to Blend Pool Creator; an answer need not name it."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-10-06",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/buidl/27417",
+        "note": "The submission page: name, one-line vision, write-up, repository, demo, and video links."
+      },
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/report",
+        "note": "DoraHacks hackathon summary (labelled AIGC by DoraHacks) with the three named winners."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend",
+        "note": "r/Stellar winner announcement naming all three places."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Hoops-Finance/cometswap",
+        "note": "The public repository the submission links."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/builds/27417",
+        "note": "Scout's stored copy of the submission, addressed by the bare link number."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "DoraHacks BUIDL 27417 is Comet x Hoops Finance, described by its team as a swap interface for Blend's backstop.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/buidl/27417",
+            "observedAt": "2026-10-06",
+            "note": "name 'Comet x Hoops Finance'; vision 'Fully functional UI to do Swaps in Blend's Backstop'; write-up: 'convert USDC <-> BLND and deposit directly into the Backstop with a single click'. Read directly (extract in .agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json) and again through a web reader."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/27417",
+            "observedAt": "2026-10-06",
+            "note": "name, summary, and write-up match the DoraHacks record."
+          }
+        ]
+      },
+      {
+        "claim": "Comet x Hoops Finance was entered in Stellar Hacks: Blend and took 2nd place; Blend Pool Creator took 1st and YieldBack.Cash took 3rd.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/report",
+            "observedAt": "2026-10-06",
+            "note": "'1st Place Blend Pool Creator (buidl/27438) ... 2nd Place Comet x Hoops Finance (buidl/27417) ... 3rd Place YieldBack.Cash (buidl/27456)'; '$6,000 in XLM was awarded as prizes to the top three'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend",
+            "observedAt": "2026-10-06",
+            "note": "'Announcing the Winners of the Stellar Hacks: Blend Hackathon': '1st Place: Blend Pool Creator', '2nd Place: Comet x Hoops Finance ... comet.hoops.finance', '3rd Place: YieldBack.Cash'."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/27417",
+            "observedAt": "2026-10-06",
+            "note": "hackathon.title 'Stellar Hacks: Blend', endedAt 2025-07-07, placement '2nd Place', award 'Blend Composability Award', isWinner true."
+          }
+        ]
+      },
+      {
+        "claim": "Stellar Hacks: Blend was a Stellar Development Foundation hackathon on DoraHacks.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/winner",
+            "observedAt": "2026-10-06",
+            "note": "Event record: organizer 'Stellar Development Foundation', bonusPrice 6000 USD. The record also gives timelineEnd 1751871600 (2025-07-07T07:00Z); that date has one upstream witness and the golden does not state it. Extract in .agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-blend",
+            "observedAt": "2026-10-06",
+            "note": "organizer Stellar Development Foundation."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend",
+            "observedAt": "2026-10-06",
+            "note": "The r/Stellar announcement names the event and links its DoraHacks pages."
+          }
+        ]
+      },
+      {
+        "claim": "The submission's code is at github.com/hoops-finance/cometswap.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/buidl/27417",
+            "observedAt": "2026-10-06",
+            "note": "githubUrl https://github.com/hoops-finance/cometswap; demoUrl https://comet.hoops.finance."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Hoops-Finance/cometswap",
+            "observedAt": "2026-10-06",
+            "note": "Public repository created 2025-07-06; last commit on main 51f3069eea at 2025-07-06T23:23:53Z."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/27417",
+            "observedAt": "2026-10-06",
+            "note": "links.github https://github.com/hoops-finance/cometswap; repo hoops-finance/cometswap."
+          }
+        ]
+      },
+      {
+        "claim": "The submission did not place, or it took 1st place at Stellar Hacks: Blend.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-blend/report",
+            "observedAt": "2026-10-06",
+            "note": "2nd Place Comet x Hoops Finance; 1st Place Blend Pool Creator."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend",
+            "observedAt": "2026-10-06",
+            "note": "The announcement gives the same order."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-10-06",
+      "by": "golden-truth lane fable-goldens (Claude Fable 5.1, high), 2026-10-06; independent re-verification by rev-astra-goldens (Codex frontier gpt-6-astra, high)",
+      "evidence": [
+        "https://stellarlight.xyz/api/hackathons/builds/27417 (generatedAt 2026-10-06T14:39Z).",
+        "https://dorahacks.io/buidl/27417 and https://dorahacks.io/hackathon/stellar-hacks-blend/report, read 2026-10-06 by direct request and by an independent web reader.",
+        "https://www.reddit.com/r/Stellar/comments/1lzrofu/announcing_the_winners_of_the_stellar_hacks_blend, read 2026-10-06 through a web reader.",
+        "GitHub REST read of Hoops-Finance/cometswap on 2026-10-06: public, default branch main, last commit 2025-07-06T23:23:53Z.",
+        "This case replaced a first draft about BUIDL 46348 (Wraith). Its first-place result had only DoraHacks-derived witnesses, so it did not meet the independent-class bar.",
+        "Sibling sweep 2026-10-06: grep 'Hoops|Comet|27417|Stellar Hacks: Blend|buidl/' over the battery and live contracts -> q-scf-blend-winners-live and q-scf-hackathon-compare-live are live behavior cases that pin no winner name or count; no contradiction.",
+        "Second review pass (.agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra-pass2.md): verdict activate-with-changes. Both requested edits are applied: the single-witness closing date is removed from the answer, and the note no longer says Scout lacks the first-place submission. Scout holds BUIDL 27438 under a different event with no placement.",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens/reconciliation.md",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ],
+      "rootCause": [
+        "coverage-floor: Scout spec 1.9.71 added this exposed operation with no golden case (live drift issue #223); .agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ]
+    },
+    "origin": "authored 2026-10 (coverage)"
+  }
+}

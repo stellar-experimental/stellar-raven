@@ -1,0 +1,222 @@
+{
+  "id": "q-scout-hackathon-winner-libraries-vs-field",
+  "question": "Do Stellar hackathon winners build on different Stellar libraries than the rest of the field, or is the stack about the same?",
+  "surface": [
+    "scout.analyzeHackathonSubmissions"
+  ],
+  "golden": {
+    "answer": "As of 2026-10-06, the core stack is about the same. Scout holds 64 placed hackathon submissions and has read repository manifests for 45 of them. Of those 45, 35 (about 78%) declare the Stellar JS SDK and 26 (about 58%) declare the Soroban Rust SDK. Among the 967 non-placed submissions with manifest reads, the shares are about 77% and 66%, so the lifts are about 1.0 and 0.9. The clearer differences sit one layer up. Stellar Wallets Kit is more common among placed submissions (16 of 45, about 36% against 27%, lift about 1.3). The Freighter API as a direct dependency is less common (7 of 45, about 16% against 37%, lift about 0.4). Shares use submissions with manifest reads as the denominator; the 19 unread placed submissions are counted apart, not as non-users. These counts are small and noisy. They describe packages declared in current repository reads, not necessarily the code at the event deadline, and a declared package is not a cause of placing.",
+    "keyFacts": [
+      "The Stellar JS SDK is the most common library among winners, at about 78% of those read.",
+      "The Soroban Rust SDK is second among winners, at about 58% of those read.",
+      "Winners declare the JS SDK at about the same rate as the rest (lift about 1.0).",
+      "Stellar Wallets Kit is more common among winners than the rest (lift about 1.3).",
+      "Shares use the 45 of 64 placed submissions with manifest reads as the denominator."
+    ],
+    "avoid": [
+      "Claims a much higher JS SDK rate for winners while citing counts that show about equal rates.",
+      "States that every placed submission declares the Stellar JS SDK."
+    ],
+    "notes": "These figures describe Scout's stored hackathon submissions on 2026-10-06. Accept newer dated, source-supported counts, rankings, and lifts, including a changed ordering or conclusion. Expect the stated scope, the known denominators, and correct comparison arithmetic. Unknown submissions are counted apart and are not non-users. 'Library' groups sibling and renamed packages as Scout's response defines them. The Freighter API lift (about 0.4) is nice-to-have. Two independent GitHub samples (eight and five placed repositories) matched Scout's declared packages; they did not reproduce the aggregate counts."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-01-13",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library",
+        "note": "Library facet over all stored submissions with the winners-versus-others table."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library&winnersOnly=1",
+        "note": "Library facet over placed submissions only: field 64, known 45, unknown 19."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/poki-tcg/wraith",
+        "note": "One of the placed repositories whose manifests were read directly on GitHub by the author and by the reviewer."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Klorenn/topkale",
+        "note": "A placed repository whose only manifest declares no Stellar JS SDK."
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.analyzeHackathonSubmissions",
+        "note": "Exposed contract: library facet, known and unknown denominators, lift definition."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Among the 45 of 64 placed submissions with manifest reads, 35 declare the Stellar JS SDK (about 78%) and 26 declare the Soroban Rust SDK (about 58%).",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library&winnersOnly=1",
+            "observedAt": "2026-10-06",
+            "note": "total.field 64, known 45, unknown 19; Stellar JS SDK 35 (0.778), Soroban Rust SDK 26 (0.578), Stellar Wallets Kit 16 (0.356), Freighter API 7 (0.156)."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds?winnersOnly=1&limit=100",
+            "observedAt": "2026-10-06",
+            "note": "A second endpoint over the same store agrees: buildsMatched 64, buildsRead 45; @stellar/stellar-sdk 35, soroban-sdk 26. Same aggregator: a consistency check, not corroboration."
+          }
+        ]
+      },
+      {
+        "claim": "Winners declare the JS SDK at about the same rate as the rest (lift about 1.0); Stellar Wallets Kit lift is about 1.3 and Freighter API lift about 0.4.",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library",
+            "observedAt": "2026-10-06",
+            "note": "winnersVsOthers: winnersKnown 45, othersKnown 967; Stellar JS SDK 0.778 vs 0.768 lift 1.01; Soroban Rust SDK 0.578 vs 0.664 lift 0.87; Stellar Wallets Kit 0.356 vs 0.267 lift 1.33; Freighter API 0.156 vs 0.37 lift 0.42."
+          },
+          {
+            "class": "F",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library",
+            "observedAt": "2026-10-06",
+            "note": "Reviewer arithmetic on the returned counts: (35/45)/(743/967) = 1.012; (16/45)/(258/967) = 1.333; (7/45)/(358/967) = 0.420."
+          }
+        ]
+      },
+      {
+        "claim": "Scout's per-submission declared packages match the manifests in the public repositories (two real-world samples, twelve distinct placed repositories).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/poki-tcg/wraith",
+            "observedAt": "2026-10-06",
+            "note": "main: @stellar/stellar-sdk, @creit.tech/stellar-wallets-kit, and soroban-sdk declared; matches BUIDL 46348. Read by the author and by the reviewer."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/CTX-com/Cards402",
+            "observedAt": "2026-10-06",
+            "note": "main: @stellar/stellar-sdk in sdk and backend package.json, soroban-sdk in contract/Cargo.toml; matches BUIDL 42819."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/AshFrancis/chickenz",
+            "observedAt": "2026-10-06",
+            "note": "main: @stellar/stellar-sdk and soroban-sdk declared; matches BUIDL 39887."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/AshFrancis/splicers",
+            "observedAt": "2026-10-06",
+            "note": "master: @stellar/stellar-sdk, @creit.tech/stellar-wallets-kit, soroban-sdk declared; matches BUIDL 36195 for those packages."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/rajkaria/toll",
+            "observedAt": "2026-10-06",
+            "note": "main: @stellar/stellar-sdk, @stellar/mpp, @x402/core, @x402/stellar declared; matches BUIDL 42585."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/tantk/rendergate",
+            "observedAt": "2026-10-06",
+            "note": "main: @stellar/stellar-sdk, @x402/core, @x402/stellar declared; matches BUIDL 42807 for those packages."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Ridwannurudeen/anchorshield",
+            "observedAt": "2026-10-06",
+            "note": "default branch: @stellar/stellar-sdk and soroban-sdk declared; matches BUIDL 46373."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/FrankiePower/kale-farmers-market",
+            "observedAt": "2026-10-06",
+            "note": "master: @stellar/stellar-sdk, @creit.tech/stellar-wallets-kit, soroban-sdk declared; matches BUIDL 32695."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/JDewbey/KaleGrabRush",
+            "observedAt": "2026-10-06",
+            "note": "Reviewer sample: @stellar/stellar-sdk ^13.3.0; matches BUIDL 32481."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/mariaelisaaraya/GoLazyStellar",
+            "observedAt": "2026-10-06",
+            "note": "Reviewer sample: workspace soroban-sdk 22.0.0; matches BUIDL 28437."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/MatejMecka/notcircleoftrust",
+            "observedAt": "2026-10-06",
+            "note": "Reviewer sample: @stellar/stellar-sdk, Stellar Wallets Kit, @stellar/freighter-api, and soroban-sdk declared; matches BUIDL 32673."
+          }
+        ]
+      },
+      {
+        "claim": "Every placed submission declares the Stellar JS SDK.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/Klorenn/topkale",
+            "observedAt": "2026-10-06",
+            "note": "Reviewer sample: the complete tree has one package.json with discord.js, axios, node-cron, and dotenv; no Stellar JS SDK. Top Kale placed 6th at KALE x Reflector (BUIDL 32665)."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library&winnersOnly=1",
+            "observedAt": "2026-10-06",
+            "note": "35 of 45 read placed submissions declare it, so 10 read submissions do not."
+          }
+        ]
+      },
+      {
+        "claim": "Winners declare the Stellar JS SDK at a much higher rate than the rest.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=library",
+            "observedAt": "2026-10-06",
+            "note": "Lift 1.01 (0.778 vs 0.768) on 2026-10-06."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-10-06",
+      "by": "golden-truth lane fable-goldens (Claude Fable 5.1, high), 2026-10-06; independent re-verification by rev-astra-goldens (Codex frontier gpt-6-astra, high)",
+      "evidence": [
+        "https://stellarlight.xyz/api/hackathons/analyze?facet=library and https://stellarlight.xyz/api/hackathons/analyze?facet=library&winnersOnly=1 (generatedAt 2026-10-06T14:15Z; reviewer re-read 14:28Z with top=30); https://stellarlight.xyz/api/hackathons/analyze?facet=library&by=placement (14:20Z) returned the same winner and not-placed groups.",
+        "GitHub reads of package.json and Cargo.toml manifests on 2026-10-06: eight placed repositories by the author, five by the reviewer (one shared). Every checked package in Scout's stack was declared.",
+        "The aggregate shares and lifts exist only in Scout. The golden labels them as Scout's counts, and the notes accept newer dated results.",
+        "Review correction: the first draft called the shares a floor. That was false, because 19 placed submissions are unread; the full-set JS SDK share can range from 35/64 to 54/64. The answer now states the denominator rule.",
+        "Sibling sweep 2026-10-06: grep 'Wallets Kit|Freighter API|hackathon winners|lift' over the battery and live contracts -> no case pins library shares among hackathon submissions; no contradiction.",
+        "Second review pass (.agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra-pass2.md): verdict activate, with no required text change. The reviewer accepted the two partial declines (reconciliation rows 12 and 13).",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens/reconciliation.md",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ],
+      "rootCause": [
+        "coverage-floor: Scout spec 1.9.71 added this exposed operation with no golden case (live drift issue #223); .agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ]
+    },
+    "origin": "authored 2026-10 (coverage)"
+  }
+}

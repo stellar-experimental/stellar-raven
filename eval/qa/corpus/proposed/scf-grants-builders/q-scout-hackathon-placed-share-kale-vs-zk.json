@@ -1,0 +1,226 @@
+{
+  "id": "q-scout-hackathon-placed-share-kale-vs-zk",
+  "question": "What share of submissions ended up placing at Stellar Hacks: KALE x Reflector compared with Stellar Hacks: Real-World ZK?",
+  "surface": [
+    "scout.analyzeHackathonSubmissions"
+  ],
+  "golden": {
+    "answer": "As of 2026-10-06, KALE x Reflector has 10 placed submissions and Real-World ZK has 5. Scout's store holds 45 KALE x Reflector submissions, so about 22% placed (10 of 45). It holds 319 Real-World ZK submissions, so about 1.6% placed (5 of 319). DoraHacks' own event totals are slightly larger (46 to 47, and 345), which gives about 21% and 1.4%. On either basis, roughly one in five KALE x Reflector entries placed, against fewer than one in fifty for Real-World ZK. KALE x Reflector lists ten placed submissions in a small field; Real-World ZK lists five in a field about seven times larger.",
+    "keyFacts": [
+      "Ten KALE x Reflector submissions placed.",
+      "Five Real-World ZK submissions placed.",
+      "About 21 to 22 percent of KALE x Reflector submissions placed.",
+      "Under 2 percent of Real-World ZK submissions placed."
+    ],
+    "avoid": [
+      "States that the two events placed a similar share of their submissions.",
+      "States that Real-World ZK placed a larger share of its submissions than KALE x Reflector."
+    ],
+    "notes": "The winner counts match DoraHacks' published hackathon summaries. Scout's stored-submission total and DoraHacks' published total can have different coverage: Scout stores 45 and 319, DoraHacks' counters show 46 and 345, and its KALE x Reflector summary says 47. Accept a share from either total when the answer names its source; accept 21-22% and 1.4-1.6%. Accept a dated, source-supported numerator, denominator, and share, including later changes outside these ranges. A share built from each event's own record is as acceptable as one from the cross-event analysis. Placement records do not show completed prize payments."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "mixed",
+    "status": "unverifiable",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-01-06",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk",
+        "note": "Per-event placed and not-placed counts over Scout's stored submissions."
+      },
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report",
+        "note": "DoraHacks hackathon summary (labelled AIGC by DoraHacks): 47 approved submissions and ten named winners."
+      },
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/report",
+        "note": "DoraHacks hackathon summary (labelled AIGC by DoraHacks): 345 approved projects and five named winners with prize amounts."
+      },
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/winner",
+        "note": "Event page record: buidlsCount 46, organizer Stellar Development Foundation. Extract in .agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/xbid-ai/xbid-ai-blog/main/content/posts/xbid-ai-first-place-stellar-hackathon.md",
+        "note": "Team announcement that xbid.ai won 1st place at KALE x Reflector: an independent witness for one of the ten places."
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.analyzeHackathonSubmissions",
+        "note": "Exposed contract: facet=placement, by=event, hackathon filter; shares are over stored submissions."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Ten KALE x Reflector submissions placed (1st through 10th place).",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk",
+            "observedAt": "2026-10-06",
+            "note": "Group stellar-hacks-kale-reflector: winner builds 10, not placed 35, field 45."
+          },
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report",
+            "observedAt": "2026-10-06",
+            "note": "Summary lists 1st Place xbid.ai through 10th Place CouvePIX; '$12,000 in XLM prizes were distributed among the top ten projects'. Read directly and again through a web reader."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/xbid-ai/xbid-ai-blog/main/content/posts/xbid-ai-first-place-stellar-hackathon.md",
+            "observedAt": "2026-10-06",
+            "note": "'xbid.ai won 1st place at the Stellar Hacks: KALE x Reflector Hackathon', dated 2025-09-15."
+          },
+          {
+            "class": "D",
+            "ref": ".agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra-pass2.md",
+            "observedAt": "2026-10-06",
+            "note": "Review verdict: DoraHacks' final list and Scout's derived count agree, but no source independent of DoraHacks gives the complete final winner list. A second retrieval route for the same DoraHacks page and the planned prize structure do not count as independent confirmation."
+          }
+        ]
+      },
+      {
+        "claim": "Five Real-World ZK submissions placed (1st through 5th place).",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk",
+            "observedAt": "2026-10-06",
+            "note": "Group stellar-hacks-zk: winner builds 5, not placed 314, field 319."
+          },
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/report",
+            "observedAt": "2026-10-06",
+            "note": "Summary lists 1st Place Wraith, 2nd ANCHORSHIELD, 3rd Umbra Wallet, 4th zkProofofReserve, 5th Tukar. Read directly and again through a web reader."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/media/stellar-hacks-real-world-zk-hackathon-information-q",
+            "observedAt": "2026-10-06",
+            "note": "Independent description of the prize structure: $10,000 in XLM across the top five projects."
+          },
+          {
+            "class": "D",
+            "ref": ".agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra-pass2.md",
+            "observedAt": "2026-10-06",
+            "note": "Review verdict: DoraHacks' final list and Scout's derived count agree, but no source independent of DoraHacks gives the complete final winner list. A second retrieval route for the same DoraHacks page and the planned prize structure do not count as independent confirmation."
+          }
+        ]
+      },
+      {
+        "claim": "Scout's store holds 45 KALE x Reflector submissions and 319 Real-World ZK submissions.",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk",
+            "observedAt": "2026-10-06",
+            "note": "field 45 and field 319."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/stellar-hacks-kale-reflector",
+            "observedAt": "2026-10-06",
+            "note": "Event record stats.totalSubmissions 45; the stellar-hacks-zk record gives 319."
+          }
+        ]
+      },
+      {
+        "claim": "DoraHacks publishes 46 (counter) and 47 (summary) for KALE x Reflector and 345 for Real-World ZK.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/winner",
+            "observedAt": "2026-10-06",
+            "note": "buidlsCount 46; tab label 'BUIDLs 46'."
+          },
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report",
+            "observedAt": "2026-10-06",
+            "note": "'161 registered developers and ... 47 approved project submissions'."
+          },
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/report",
+            "observedAt": "2026-10-06",
+            "note": "'registering 678 participants and approving 345 projects'; tab label 'BUIDLs 345'."
+          }
+        ]
+      },
+      {
+        "claim": "About 21 to 22 percent of KALE x Reflector submissions placed, and under 2 percent of Real-World ZK submissions placed.",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk",
+            "observedAt": "2026-10-06",
+            "note": "Served shares: winner 0.222 (10/45) and 0.016 (5/319)."
+          },
+          {
+            "class": "F",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report",
+            "observedAt": "2026-10-06",
+            "note": "Arithmetic on the DoraHacks totals: 10/46 = 21.7%, 10/47 = 21.3%, 5/345 = 1.4%."
+          }
+        ]
+      },
+      {
+        "claim": "The two events placed a similar share, or Real-World ZK placed a larger share than KALE x Reflector.",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk",
+            "observedAt": "2026-10-06",
+            "note": "0.222 against 0.016."
+          },
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-zk/report",
+            "observedAt": "2026-10-06",
+            "note": "Five winners among 345 approved projects; KALE x Reflector has ten among 46 to 47."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-10-06",
+      "by": "golden-truth lane fable-goldens (Claude Fable 5.1, high), 2026-10-06; independent re-verification by rev-astra-goldens (Codex frontier gpt-6-astra, high)",
+      "evidence": [
+        "https://stellarlight.xyz/api/hackathons/analyze?facet=placement&by=event&hackathon=stellar-hacks-kale-reflector,stellar-hacks-zk (generatedAt 2026-10-06T14:20Z, reviewer re-read 14:28Z): 10 of 45 and 5 of 319.",
+        "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report and https://dorahacks.io/hackathon/stellar-hacks-zk/report, read 2026-10-06 by direct request and by an independent web reader: ten and five named winners; 47 and 345 approved.",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json: event records with buidlsCount 46 and 345, timeline end dates, and the summary text.",
+        "The submission totals have different coverage by source, so the key facts gate the winner counts and the share bands that hold under every total.",
+        "Sibling sweep 2026-10-06: grep 'KALE x Reflector|Real-World ZK|stellar-hacks-zk|placed share' over the battery and live contracts -> q-scf-kale-winner-live, q-scf-hackathon-compare-live, q-scf-hackathons-active, q-scf-current-hackathons-compare-live, q-gap-compare-hackathons; all are live behavior cases that pin no submission or winner count; no contradiction.",
+        "Second review pass (.agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra-pass2.md): verdict do-not-activate. The complete winner totals (ten and five) rest on DoraHacks and on Scout's DoraHacks-derived records only. The numeric bar needs two independent classes. This proposal stays inactive until an organizer announcement outside DoraHacks confirms both winner lists, or until the case is rewritten as a source-relative Scout snapshot under its own activation decision.",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens/reconciliation.md",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ],
+      "rootCause": [
+        "coverage-floor: Scout spec 1.9.71 added this exposed operation with no golden case (live drift issue #223); .agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ]
+    },
+    "origin": "authored 2026-10 (coverage)"
+  }
+}
