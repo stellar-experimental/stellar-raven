@@ -15,8 +15,8 @@ Total findings: 66
 | sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                          | reported-upstream | 2026-08-11 | 1           |
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 0           |
 | sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 0           |
-| sk-025 | The beta API skill forbids Authorization: Bearer for requests to https://beta.api.trustlesswork.com. The current Core API documentation…    | reported-upstream | 2026-09-16 | 0           |
-| sk-026 | The Core API skill gives error-documentation URLs that return HTTP 404. The example ESCROW_RECEIVER_TRUSTLINE_MISSING URL omits the…        | reported-upstream | 2026-09-29 | 0           |
+| sk-025 | The beta API skill forbids Authorization: Bearer for requests to https://beta.api.trustlesswork.com. The current Core API documentation…    | reported-upstream | 2026-09-16 | 1           |
+| sk-026 | The Core API skill gives error-documentation URLs that return HTTP 404. The example ESCROW_RECEIVER_TRUSTLINE_MISSING URL omits the…        | reported-upstream | 2026-09-29 | 1           |
 | sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-09-30 the live catalog had 43 entries from four sources…    | reported-upstream | 2026-09-30 | 0           |
 | sk-028 | The Scout skill gives the size of the Builders directory as a fixed count. SKILL.md says the directory is "currently in the dozens, not…    | reported-upstream | 2026-09-30 | 0           |
 
@@ -43,12 +43,12 @@ Total findings: 66
 | sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 4           |
 | sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status                                                                    | declined-upstream | 2026-07-09 | 3           |
 | sd-014 | Official documentation exposes bucketListHash, txSetHash, txSetResultHash, LedgerCloseMeta, SCP envelopes, and archive retrieval in…        | reported-upstream | 2026-07-10 | 1           |
-| sd-027 | Current Stellar developer documentation gives incompatible greenfield guidance for the passkey smart-wallet stack. The OpenZeppelin…        | reported-upstream | 2026-07-11 | 2           |
+| sd-027 | Current Stellar developer documentation gives incompatible greenfield guidance for the passkey smart-wallet stack. The OpenZeppelin…        | reported-upstream | 2026-07-11 | 3           |
 | sd-032 | The current Flutter Wallet SDK tutorial pins this pair:                                                                                     | reported-upstream | 2026-07-11 | 1           |
-| sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 5           |
+| sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 6           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |
-| sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 3           |
-| sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 0           |
+| sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 4           |
+| sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 1           |
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 0           |
 | sd-053 | The RPC configuring page now has the section "Backfilling History on Startup". The section explains BACKFILL, but it omits two startup…     | reported-upstream | 2026-09-21 | 0           |
 | sd-054 | Two pages say that the network updates the ledger "every 5-7 seconds": the Stellar Stack page and the Validators introduction. The sampled… | reported-upstream | 2026-10-01 | 0           |
@@ -98,4 +98,4 @@ Total findings: 66
 | id     | title                                                                                                                                    | status            | discovered | recurrences |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | cs-001 | searchConnectors in @cloudflare/codemode returns connector methods that share no real word with the query. scoreField accepts a prefix…  | reported-upstream | 2026-09-17 | 0           |
-| cs-002 | Two published Soroswap docs pages give a stale status for aggregator liquidity sources. concepts/aggregator.mdx labels Phoenix Protocol… | reported-upstream | 2026-09-17 | 0           |
+| cs-002 | Two published Soroswap docs pages give a stale status for aggregator liquidity sources. concepts/aggregator.mdx labels Phoenix Protocol… | reported-upstream | 2026-09-17 | 1           |

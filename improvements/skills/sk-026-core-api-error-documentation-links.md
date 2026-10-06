@@ -10,6 +10,10 @@ evidence:
   - 2026-09-29 live HTTP reads returned 404 for errors/escrow-receiver-trustline-missing and errors/token-trustline-missing. The corresponding errors/escrow/escrow-receiver-trustline-missing and errors/token/token-trustline-missing pages returned 200. Evidence is .agents/rounds/2026-09-29-truth-maintenance/trustless-work-doc-links.json.
   - Dedupe 2026-09-29 found no existing skill issue for these error-documentation links. The separate beta authentication conflict remains sk-025.
   - upstream issue filed 2026-09-29: https://github.com/Trustless-Work/trustlesswork-skill/issues/16
+  - "2026-10-06 issue state: a third-party contributor (SrvFernandes) commented on 2026-10-03 with /claim #16 and opened https://github.com/Trustless-Work/trustlesswork-skill/pull/17. The PR is open, review is required, and no maintainer has replied. It corrects the two grouped URLs. It also adds auth and tx error groups and new codes, and four sampled new URLs return HTTP 404: errors/auth/authentication-required, errors/tx/tx-submit-failed, errors/escrow/escrow-condition-expired, and errors/token/token-limit-exceeded. It also replaces the beta bearer prohibition (sk-025)."
+recurrences:
+  - date: 2026-10-06
+    evidence: "trustlesswork-skill main 80e2467f34041b9f70e66d6c2f567fc76ba9b1bb still has the ungrouped URLs in core-concepts.md lines 179 and 214. Live HTTP reads returned 404 for errors/escrow-receiver-trustline-missing and errors/token-trustline-missing, and 200 for errors/escrow/escrow-receiver-trustline-missing and errors/token/token-trustline-missing. PR 17 is not merged."
 ---
 
 ## Finding

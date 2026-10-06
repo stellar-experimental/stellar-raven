@@ -24,6 +24,8 @@ recurrences:
     evidence: eval/qa/results/2026-08-04T22-41-34-variantA.json q-soroban-add-signer-smart-wallet-howto repeated stale filed framing while current canonical READMEs describe sibling authorization models
   - date: 2026-08-06
     evidence: the live smart-wallet guide still links the archived https://github.com/kalepail/passkey-kit move pointer instead of the canonical https://github.com/stellar/passkey-kit repository
+  - date: 2026-10-06
+    evidence: "Live https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets returned HTTP 200. It contains five Passkey Kit matches, two kalepail/passkey-kit links, and no Smart Account Kit match. PR 2367 closed unmerged on 2026-09-09; ElliotFriend named PR 2837 as its replacement. PR 2837 is open at head 108ba24e0884f46e0c543996e4e94be754709840 with nine passing checks, one approval (xw-dd, 2026-09-15), and review decision REVIEW_REQUIRED. The finding status does not change."
 ---
 
 ## Finding

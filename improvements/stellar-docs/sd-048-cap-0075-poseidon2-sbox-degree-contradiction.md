@@ -10,6 +10,10 @@ evidence:
   - 2026-09-01 host check at stellar/rs-soroban-env commit a7e15b439c4b49b17ba8f9e4527efee8d8119aba found SUPPORTED_SBOX_DEGREES = [5] in soroban-env-host/src/crypto/poseidon/mod.rs and an unsupported-degree error in poseidon2_params.rs
   - independent residual review in .agents/rounds/2026-09-01-free-improvements-maintenance/opus-deletion-review.md
   - upstream issue filed 2026-09-01: https://github.com/stellar/stellar-protocol/issues/2010
+  - "2026-10-06 issue state: github-actions added the stale label and a stale notice on 2026-10-02. The bot can close the issue after 30 more days without activity, on or after about 2026-11-01. No maintainer has replied. If the issue closes unfixed, classify it as closed-unfixed and keep this finding. Do not post a keep-alive comment."
+recurrences:
+  - date: 2026-10-06
+    evidence: "stellar-protocol master core/cap-0075.md line 78 still lists d as S-box degree (3, 5, 7, or 11). Line 124 still says only d=5 is supported, and line 157 still lists d is not 5 as an error condition. The last commit on the file is still d186cf3187 (2026-08-20, PR 1996)."
 ---
 
 ## Finding
