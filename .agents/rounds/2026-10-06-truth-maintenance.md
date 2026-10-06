@@ -174,7 +174,7 @@ branches are removed at closeout (see "Final checklist").
    and the two new read operations.
 2. **Exclude `reviewSubmission` when 1.9.71 lands** unless the general repair removes its capture.
 3. **Ship the stellar-dev pin separately.** It is routing-neutral by a full row diff.
-4. **`sd-037` thread resolution waits for the owner.** Resolving the outdated Copilot thread on
+4. **`sd-037` thread resolution waited for the owner** (approved later the same day; see "sd-037 retired"). Resolving the outdated Copilot thread on
    stellar-protocol#2021 triggers the armed squash auto-merge into an SDF repository; that is an
    outward action, so the coordinator asked instead of acting.
 5. **No #167 comment.** Nothing material changed upstream.
@@ -193,7 +193,24 @@ branches are removed at closeout (see "Final checklist").
 - [x] PR #229 merged (`528fa335`) and deployed (version `d40a36df-b402-48c7-bfd6-a07c04ba6cea`);
       production checks passed.
 - [x] Issue #223 comment records the hold; #167 unchanged and open.
-- [ ] Owner decision: resolve the outdated Copilot thread on stellar-protocol#2021 (`sd-037`).
+- [x] Owner decision: the owner approved resolving the outdated Copilot thread on stellar-protocol#2021 (`sd-037`); see "sd-037 retired".
 - [x] PR #230 merged (`f4e7539d`).
 - [ ] This PR (#231) merges and deploys the skill pin; the deploy version is recorded on #223.
 - [ ] Round worktrees, local branches, and spawned panes cleaned up after merge.
+
+## sd-037 retired
+
+The owner approved the merge. The coordinator resolved the outdated Copilot thread
+(`PRRT_kwDOAVw6BM6kc1Yk`), and the armed squash auto-merge merged stellar/stellar-protocol PR #2021
+at 2026-10-06T15:32:25Z as `f93e69105c995d0a5f85a81da8fd984eaf3d6280`. On `master` at that commit,
+`README.md` names SLPs and links the list, and `limits/README.md` lists SLP-0001 through SLP-0006.
+
+A distinct reviewer (Codex workhorse `gpt-6.1-sol`, high, pane `w3W:p1Y`) re-ran the trigger,
+checked the full `limits/` tree for residuals, and listed every reference (`sd037-review-sol.md`):
+verdict retire, no successor. Resolution comments were posted and read back on
+[PR #2021](https://github.com/stellar/stellar-protocol/pull/2021#issuecomment-6019811334) and
+[issue #1981](https://github.com/stellar/stellar-protocol/issues/1981#issuecomment-6019811675).
+`improvements:resolve` appended the `improvements/resolved.json` receipt, removed the intake override
+and the active file, and regenerated the index. The queue item and two README examples were
+removed. Dated round records keep their historical references.
+
