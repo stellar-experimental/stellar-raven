@@ -194,5 +194,6 @@ branches are removed at closeout (see "Final checklist").
       production checks passed.
 - [x] Issue #223 comment records the hold; #167 unchanged and open.
 - [ ] Owner decision: resolve the outdated Copilot thread on stellar-protocol#2021 (`sd-037`).
-- [ ] Round PR and PR #230 merged; the round PR deploys the skill pin.
+- [x] PR #230 merged (`f4e7539d`).
+- [ ] This PR (#231) merges and deploys the skill pin; the deploy version is recorded on #223.
 - [ ] Round worktrees, local branches, and spawned panes cleaned up after merge.
