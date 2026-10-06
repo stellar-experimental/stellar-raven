@@ -165,6 +165,21 @@ Do not create a separate routing TODO or upstream successor for either. Three mi
 controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove those markers after the
 general routing repair passes.
 
+Source held by this item: Scout spec 1.9.71 (2026-10-06, drift issue #223). It adds
+`GET /api/hackathons/analyze`, `GET /api/hackathons/builds/{id}`, and `GET /api/hackathons/review`,
+and rewrites `x-routing` examples on twelve existing operations. Against the 1.9.61 manifest, with
+`reviewSubmission` excluded, legacy routing lost top3 298 to 295, top5 326 to 325, and cardHit5 112
+to 111. Four losses are real operation-selection regressions: `q-defi-agentic-payment-standards-compare`,
+`q-defi-blend-alternatives`, `q-defi-rwa-overview`, and `q-scf-funded-similar-payroll`. The fifth,
+`q-defi-streaming-payments-prior-art`, is a narrow card label. Exposed, `scout.reviewSubmission`
+ranked first on `q-pc-sequence-numbers-ordering-replace`. Ungraded captures also appeared
+(`getHackathonSubmission` first on `q-scf-ecosystem-listing-partner-jobs`; `getHackathon` first on
+`q-hist-remittance-corridors`). Four tested general policies failed; the narrower admission-only
+example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` and its
+`routing-repair-astra.md`. Four proposed golden cases for the two read operations wait on branch
+`drift/2026-10-06-goldens` (see the ledger for the parked-case status). Keep `inventory/stellar-light.json`
+at 1.9.61 until check 12 passes; the daily drift report keeps #223 open meanwhile.
+
 Acceptance checks:
 
 1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
@@ -179,9 +194,31 @@ Acceptance checks:
 9. The leaderboard and RFP improvements remain.
 10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no regression.
 11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
+12. On a fresh Scout snapshot (1.9.71 or later), the four real 1.9.71 regressions meet their main
+    grades, `reviewSubmission` does not rank on non-hackathon questions, and the absorb needs only a
+    manifest-fingerprint re-baseline.
 
-Done when: all eleven acceptance checks pass in a reviewed general scoring change. The
+Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+
+## Catalog build
+
+### Close the excluded-path rewrite gap in the leak guards
+
+The 2026-10-06 drift review (Grok 4.7 high) probed the emitted-text guards with Scout 1.9.71
+inputs. `scripts/description-notes.mjs:156-157` rewrites operation paths with `split` and `join`.
+An excluded path that extends an exposed path is rewritten into an exposed-looking name: the input
+`See GET /api/hackathons/review before you apply.` becomes `See scout.getHackathons/review before
+you apply.`, and both `assertNoNonExposedRefsInText` and `scripts/emitted-text-guard.mjs` pass it. A
+bare excluded operation name (`reviewSubmission`) in a description, keyword, or routing phrase also
+passes, and `routingExclusions` is outside the scanned fields (`scripts/build-catalog.mjs:1157-1168`).
+No current manifest leaks a path. The current Scout `Meta.warnings` description already names the
+excluded `getQualityReport`, `verifyClaim`, and `getRwaAssets` as bare words, so a bare-name rule
+needs a scrub for that text first. Evidence: `rounds/2026-10-06-truth-maintenance/review-drift-grok.md`.
+
+Done when: the path rewrite matches whole path segments only, the guards reject a bare excluded
+operation name in every emitted text field including `routingExclusions`, tests cover all three
+probes, and `node scripts/build-catalog.mjs` still passes on the current inventory.
 
 ## Dependencies
 
