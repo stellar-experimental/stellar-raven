@@ -388,3 +388,17 @@ install prompts above have the same class. Serving the line installs nothing and
 no network access. Raven does not serve the plugin itself; see
 [ADR-0010](../research/decisions/0010-scf-community-fund-skills-stay-unpinned.md). Review this line
 again at the next `stellar-light` re-pin.
+
+## 2026-10-06 — stellar-dev ecosystem reference adds Stellar Registry (#223)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `d9ca04bf07d16ef414816ae1a7666f2f366c8704` | `sel:c5fd6cc70419` | author read; independent Grok 4.7 high accepted |
+
+One file changed: `stellar-dev/standards/ecosystem.md`. It adds a "Stellar Registry" entry
+(website, GitHub organization, the `stellar-registry-cli` install command, the `stellar-registry`
+crate macros, and a link to its agent skill). It renames the "Aha Labs" row to "The Aha Company"
+with new links. The diff has no behavior instructions, no claims about this gateway, and no
+reference to a non-exposed operation or retired skill. The install command is reference text of the
+class accepted on 2026-10-01. The stellarlight catalog snapshot grew 62 to 63 entries; the new
+`community` entry is the same Stellar Registry skill. No other pin moved.

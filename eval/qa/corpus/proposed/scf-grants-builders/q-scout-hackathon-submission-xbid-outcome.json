@@ -1,0 +1,203 @@
+{
+  "id": "q-scout-hackathon-submission-xbid-outcome",
+  "question": "What did xbid.ai submit to Stellar Hacks: KALE x Reflector, how did it place, and does Scout's project directory list it now?",
+  "surface": [
+    "scout.getHackathonSubmission",
+    "scout.searchHackathonBuilds"
+  ],
+  "golden": {
+    "answer": "As of 2026-10-06: xbid.ai submitted a multi-LLM AI agent that trades on Stellar (DoraHacks BUIDL 32593). In the team's write-up it runs delta-neutral strategies and feeds its own results back into its behavior; the submission tags itself with SDEX, Blend, and Reflector. It took 1st place at Stellar Hacks: KALE x Reflector. Scout links the submission to the directory project XBid AI (slug `xbid-ai`). The link is made through the demo site xbid.ai, and the project's directory status is Live. The submission links the GitHub organization github.com/xbid-ai, not one repository, so Scout holds no declared-package stack or repository activity for the submission. The write-up is the team's claim, not proof of what shipped.",
+    "keyFacts": [
+      "xbid.ai submitted a multi-LLM AI agent that trades on Stellar.",
+      "It took 1st place at Stellar Hacks: KALE x Reflector.",
+      "Scout links the submission to the directory project XBid AI.",
+      "The linked project's directory status is Live."
+    ],
+    "avoid": [
+      "States that xbid.ai did not place at Stellar Hacks: KALE x Reflector.",
+      "States that Scout's directory has never listed the linked XBid AI project."
+    ],
+    "notes": "The first-place result is supported by the team's dated announcement and by DoraHacks' published hackathon summary. The project link and the Live status are Scout's directory records on 2026-10-06; accept a newer dated Scout status. A Scout listing does not establish SDF directory membership, an initial listing date, funding, or current production operation. The link basis (demo website), the GitHub-organization detail, and the missing stack are nice-to-have; the missing stack does not mean missing code. Scout's record showed no SCF award on that date; that is not a required fact."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-01-20",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons/builds/32593",
+        "note": "Scout's stored copy of the submission with its project link."
+      },
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/buidl/32593",
+        "note": "The submission page: name, vision, write-up, tags, and links."
+      },
+      {
+        "class": "A",
+        "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report",
+        "note": "DoraHacks hackathon summary (labelled AIGC by DoraHacks) with the ten named winners."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/xbid-ai/xbid-ai-blog/main/content/posts/xbid-ai-first-place-stellar-hackathon.md",
+        "note": "The team's dated first-place announcement."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/resolve?q=xbid.ai",
+        "note": "Scout directory record for XBid AI with status basis and source."
+      },
+      {
+        "class": "A",
+        "ref": "https://xbid.ai/.well-known/stellar.toml",
+        "note": "The project's own stellar.toml: ORG_DBA xbid.ai, ORG_GITHUB xbid-ai."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "xbid.ai (DoraHacks BUIDL 32593) is a multi-LLM AI agent that trades on Stellar with delta-neutral strategies, per its team.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/buidl/32593",
+            "observedAt": "2026-10-06",
+            "note": "name 'xbid.ai'; vision 'a multi-LLM AI agent, born on Stellar ... executing delta-neutral strategies with AMM-hedged borrows and rebalancing collateral'; tags layer1:Stellar, layer1:SDEX, layer2:Blend, layer2:Reflector; githubUrl https://github.com/xbid-ai; demoUrl https://xbid.ai. Extract in .agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/xbid-ai/xbid-ai/main/README.md",
+            "observedAt": "2026-10-06",
+            "note": "Reviewer read: 'multi-LLM AI agent'; describes live Stellar markets, delta-neutral strategies, and feedback from outcomes."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/32593",
+            "observedAt": "2026-10-06",
+            "note": "name, summary, selfTags, and links match the DoraHacks record."
+          }
+        ]
+      },
+      {
+        "claim": "xbid.ai took 1st place at Stellar Hacks: KALE x Reflector.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/xbid-ai/xbid-ai-blog/main/content/posts/xbid-ai-first-place-stellar-hackathon.md",
+            "observedAt": "2026-10-06",
+            "note": "'xbid.ai won 1st place at the Stellar Hacks: KALE x Reflector Hackathon on DoraHacks', dated 2025-09-15, linking dorahacks.io/buidl/32593. Read by the author and by the reviewer."
+          },
+          {
+            "class": "A",
+            "ref": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report",
+            "observedAt": "2026-10-06",
+            "note": "'1st Place xbid.ai (dorahacks.io/buidl/32593) - A multi-LLM AI agent trading autonomously on Stellar using delta-neutral strategies'. The event record gives timelineEnd 1757329200 (2025-09-08T11:00Z); that date has one upstream witness and the golden does not state it."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/32593",
+            "observedAt": "2026-10-06",
+            "note": "placement '1st Place', award 'KALE x Reflector Winners', isWinner true."
+          }
+        ]
+      },
+      {
+        "claim": "Scout links the submission to the directory project XBid AI (slug xbid-ai) through its demo website, and the project's directory status is Live.",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/32593",
+            "observedAt": "2026-10-06",
+            "note": "project {slug xbid-ai, name 'XBid AI', basis website, status Live, scfAwarded false, factsReadAt 2026-10-06T14:18Z}."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=xbid.ai",
+            "observedAt": "2026-10-06",
+            "note": "found true, subject slug xbid-ai, status Live; evidence.statusBasis product-integration, statusSourceUrl https://xbid.ai/.well-known/stellar.toml, statusAsOf 2026-09-04."
+          },
+          {
+            "class": "A",
+            "ref": "https://xbid.ai/.well-known/stellar.toml",
+            "observedAt": "2026-10-06",
+            "note": "Real-world footprint: served (HTTP 200) with ORG_NAME 'XBID LABS LLC', ORG_DBA 'xbid.ai', ORG_GITHUB 'xbid-ai', and three listed accounts."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/xbid-ai",
+            "observedAt": "2026-10-06",
+            "note": "Real-world footprint: public organization created 2025-08-01 with five public repositories."
+          }
+        ]
+      },
+      {
+        "claim": "Scout holds no declared-package stack or repository activity for the submission, because its GitHub link is an organization.",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons/builds/32593",
+            "observedAt": "2026-10-06",
+            "note": "repo null, stackReadAt null, activityCheckedAt null; stack and activity absent."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/xbid-ai",
+            "observedAt": "2026-10-06",
+            "note": "GitHub type Organization; the code exists in repositories under it, such as xbid-ai/xbid-ai."
+          }
+        ]
+      },
+      {
+        "claim": "xbid.ai did not place, or Scout's directory has never listed the linked XBid AI project.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/xbid-ai/xbid-ai-blog/main/content/posts/xbid-ai-first-place-stellar-hackathon.md",
+            "observedAt": "2026-10-06",
+            "note": "The team's dated first-place announcement."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=xbid.ai",
+            "observedAt": "2026-10-06",
+            "note": "Scout's directory tracked XBid AI as a current project on 2026-10-06."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-10-06",
+      "by": "golden-truth lane fable-goldens (Claude Fable 5.1, high), 2026-10-06; independent re-verification by rev-astra-goldens (Codex frontier gpt-6-astra, high)",
+      "evidence": [
+        "https://stellarlight.xyz/api/hackathons/builds/32593 (generatedAt 2026-10-06T14:18Z; reviewer re-read 14:28Z): placement, links, project link, absent stack.",
+        "https://raw.githubusercontent.com/xbid-ai/xbid-ai-blog/main/content/posts/xbid-ai-first-place-stellar-hackathon.md and https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/report, read 2026-10-06.",
+        "https://stellarlight.xyz/api/projects/resolve?q=xbid.ai (2026-10-06T14:22Z) and https://xbid.ai/.well-known/stellar.toml (HTTP 200, 2026-10-06).",
+        "The directory link and Live status are Scout-relative facts; the golden names Scout and dates them. The SCF-award negative is kept out of the key facts.",
+        "Sibling sweep 2026-10-06: grep 'xbid|KALE x Reflector' over the battery and live contracts -> q-scf-kale-winner-live asks for the first-place project from the current record without pinning a name; the facts agree. q-scf-hackathon-compare-live pins no counts. No contradiction. The workflow overlap is tracked in .agents/TODO.md.",
+        "Second review pass (.agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra-pass2.md): verdict activate-with-changes. The requested edit is applied: the single-witness closing date is removed from the answer and from the corroboration claims.",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens/reconciliation.md",
+        ".agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ],
+      "rootCause": [
+        "coverage-floor: Scout spec 1.9.71 added this exposed operation with no golden case (live drift issue #223); .agents/rounds/2026-10-06-scout-hackathon-goldens.md"
+      ]
+    },
+    "origin": "authored 2026-10 (coverage)"
+  }
+}

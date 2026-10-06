@@ -1,0 +1,98 @@
+{
+ "$comment": "Fields extracted from the server-rendered __NUXT_DATA__ payload of public DoraHacks pages. Requested with curl -L and a desktop-browser User-Agent header; each response was HTTP 200 with no verification challenge. Owner and member identities are omitted.",
+ "hackathons": [
+  {
+   "url": "https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/winner",
+   "capturedAt": "2026-10-06T14:19:17Z",
+   "htmlSha256": "59ac134386c0df2073bc7156ee3c0678dd29c8d6715b72fc1dbefac04ce3095c",
+   "id": 1276,
+   "uname": "stellar-hacks-kale-reflector",
+   "title": "Stellar Hacks: KALE x Reflector",
+   "organizer": "Stellar Development Foundation",
+   "timelineStart": 1755500400,
+   "timelineEnd": 1757329200,
+   "timelineEndUtc": "2025-09-08T11:00:00+00:00",
+   "bonusPrice": 12000,
+   "bonusToken": "USD",
+   "buidlsCount": 46,
+   "hackersCount": 161,
+   "winnerAnnounced": true,
+   "summaryFinalArticle": "### Hackathon Summary\n\nThe **[Stellar Hacks: KALE x Reflector](https://dorahacks.io/hackathon/stellar-hacks-kale-reflector)** hackathon recently concluded with notable participation, attracting 161 registered developers and generating 47 approved project submissions. The event emphasized composability within the Stellar ecosystem, encouraging developers to build directly on KALE—a proof-of-teamwork meme token aimed at broadening access to yield farming—and Reflector, a DAO-governed, Stellar-native oracle delivering essential asset and FX price feeds.\n\nParticipants contributed a diverse range of tools, features, and integrations that expanded the capabilities and interoperability of both KALE and Reflector. Outcomes included improved user experiences for KALE staking and mining protocols, as well as extended integrations for Reflector’s decentralized price feeds. The hackathon structure, supported by collaborative workshops, allowed entrants to deliver solutions that improved accessibility to decentralized finance tools on Stellar.\n\nOverall, $12,000 in XLM prizes were distributed among the top ten projects. The event supported active engagement and highlighted new enhancements to the Stellar composability landscape, contributing to ongoing growth and experimentation across the ecosystem.\n\n### Hackathon Winners\n\nThis section outlines the winning projects in the KALE x Reflector category, which recognized the most effective demonstrations of composability with Reflector and/or KALE on the Stellar blockchain. Projects were selected based on their technical innovation, problem-solving approach, and quality of implementation.\n\n#### KALE x Reflector Prize Winners\n\n**1st Place**  \n**[xbid.ai](https://dorahacks.io/buidl/32593)** – A multi-LLM AI agent trading autonomously on Stellar using delta-neutral strategies. The system adapts through real market results, employing selection pressure to facilitate agent improvement.\n\n**2nd Place**  \n**[Kale Farmers Market](https://dorahacks.io/buidl/32695)** – A 3D metaverse platform on Stellar that combines prediction markets with a virtual hub, supporting interaction and ecosystem growth for KALE-related projects.\n\n**3rd Place**  \n**[Not Circle of Trust](https://dorahacks.io/buidl/32673)** – A Stellar blockchain game merging mining pool dynamics with trust and betrayal mechanics. Game theory elements encourage both strategic collaboration and competition.\n\n**4th Place**  \n**[Kale Grab Rush](https://dorahacks.io/buidl/32481)** – An arcade game integrating Stellar blockchain for wallet-gated gameplay and real-time leaderboards, enabling community engagement measurable through on-chain activity.\n\n**5th Place**  \n**[Reflector TradeBet](https://dorahacks.io/buidl/32653)** – An automated DeFi trading platform on Stellar offering 24/7 trailing stop strategies, on-chain prediction markets, live oracle integration, and Telegram notifications to support user trading.\n\n**6th Place**  \n**[Top Kale](https://dorahacks.io/buidl/32665)** – A Discord bot that delivers real-time Kale token holder rankings and statistics for Stellar, including automated multi-language updates and interactive commands for users.\n\n**7th Place**  \n**[Stratum](https://dorahacks.io/buidl/32404)** – A multi-signature wallet dApp that simplifies complex Stellar transactions. Features include self-custodial management, fiat conversion, offline (air-gapped) modes, and transaction sharing.\n\n**8th Place**  \n**[Kale on Zenex](https://dorahacks.io/buidl/32688)** – A perpetual trading exchange utilizing KALE as collateral, pegged at $1, with vault-based pools supporting leveraged trades on Stellar.\n\n**9th Place**  \n**[ARS Price Arena](https://dorahacks.io/buidl/32676)** – A decentralized prediction platform where users forecast ARS-USD volatility. Automated oracle data settles five-minute rounds and determines proportional rewards.\n\n**10th Place**  \n**[CouvePIX](https://dorahacks.io/buidl/32712)** – A cryptocurrency wallet built on Stellar, featuring Brazilian PIX payment system integration and adapted for use during the Meridian 2025 event.\n\nFor a complete list of hackathon projects, visit: [https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/buidl](https://dorahacks.io/hackathon/stellar-hacks-kale-reflector/buidl).\n\n### Organization\n\n#### About the Organizer: Stellar Development Foundation\n\nThe Stellar Development Foundation is a nonprofit organization committed to building and supporting the open-source Stellar network—a blockchain-based platform for fast and cost-effective cross-border payments. The foundation leverages expertise in distributed ledger technology and financial infrastructure, working with global financial institutions and fintech companies. Its ongoing focus is on expanding financial access and fostering digital asset innovation through continued technological development and active ecosystem support."
+  },
+  {
+   "url": "https://dorahacks.io/hackathon/stellar-hacks-zk/winner",
+   "capturedAt": "2026-10-06T14:19:19Z",
+   "htmlSha256": "8b4636f69ca375e0191861c67454cc9a75d28a2422f8747fa32c01ac312a3845",
+   "id": 2198,
+   "uname": "stellar-hacks-zk",
+   "title": "Stellar Hacks: Real-World ZK",
+   "organizer": "Stellar Development Foundation",
+   "timelineStart": 1781506800,
+   "timelineEnd": 1783098000,
+   "timelineEndUtc": "2026-07-03T17:00:00+00:00",
+   "bonusPrice": 10000,
+   "bonusToken": "USD",
+   "buidlsCount": 345,
+   "hackersCount": 678,
+   "winnerAnnounced": true,
+   "summaryFinalArticle": "### Hackathon Summary\n\n**[Stellar Hacks: Real-World ZK](https://dorahacks.io/hackathon/stellar-hacks-zk)** attracted considerable developer participation, registering 678 participants and approving 345 projects. The hackathon was designed to advance zero-knowledge (ZK) technology integration on the Stellar blockchain, encouraging the development of applications such as private payments, confidential tokens, and verifiable computation. Participants utilized tools including RISC Zero, Circom, and Noir Lang to build solutions that supported on-chain verification of ZK proofs. These developments were facilitated by recent Stellar protocol improvements, particularly Protocols 25 and 26.\n\nNotable submissions represented a broad range of use cases, from privacy pools and identity proofs to experiments with verifiable data and compliance mechanisms. The open structure of the event promoted the exploration of both practical implementations and innovative ZK applications, aligning with Stellar's established role in stablecoin operations and cross-border asset transfers.\n\nBy the conclusion of the event, the hackathon demonstrated growing capabilities for ZK cryptography on Stellar. It highlighted active developer involvement and indicated further interest in privacy and proof mechanisms for real-world blockchain scenarios.\n\n### Hackathon Winners\n\n#### Stellar Hacks: Real-World ZK Prize Winners\n\nThe Stellar Hacks: Real-World ZK hackathon emphasized leveraging zero-knowledge cryptography to deliver practical blockchain applications. Projects were evaluated within a single category featuring five sub-awards, and were recognized for technical innovation, implementation quality, and relevance to real-world challenges.\n\n**1st Place ($5,000 XLM):**  \n**[Wraith](https://dorahacks.io/buidl/46348)** – Provides a zero-knowledge privacy layer for Stellar, supporting private transactions, trading, and cross-chain bridging with shielded pools and on-chain proof verification. Implements UltraHonk proofs and independently builds a BLS12-381 Ethereum light client.\n\n**2nd Place ($2,000 XLM):**  \n**[ANCHORSHIELD](https://dorahacks.io/buidl/46373)** – Introduces privacy-preserving credentials that are cryptographically bound to users and restrict transferability. Utilizes on-chain BLS12-381 Groth16 pairing checks to control token transfers and attestations, supporting secure, non-replayable compliance proofs.\n\n**3rd Place ($1,250 XLM):**  \n**[Umbra Wallet](https://dorahacks.io/buidl/46541)** – Offers a privacy-focused DeFi wallet with protocol-level transaction confidentiality and auditable compliance. Leverages Baby Jubjub ElGamal encryption alongside BN254 Groth16 shielded pools to enforce privacy and provide required auditor access.\n\n**4th Place ($1,000 XLM):**  \n**[zkProofofReserve](https://dorahacks.io/buidl/46507)** – Allows stablecoin and real-world asset issuers to demonstrate on-chain solvency without exposing sensitive data. Integrates Groth16 zero-knowledge proofs and a BN254 pairing verifier on Soroban, linking attestations to active protocol balances.\n\n**5th Place ($750 XLM):**  \n**[Tukar](https://dorahacks.io/buidl/46474)** – Supports private cross-border remittances by using zero-knowledge proofs to conceal transaction details. Ensures compliance through typed on-chain signals for verifier inputs and uses an oracle-guarded off-ramp for regulated fund withdrawals.\n\nA complete list of submitted projects and additional details is available at: [https://dorahacks.io/hackathon/stellar-hacks-zk/buidl](https://dorahacks.io/hackathon/stellar-hacks-zk/buidl)\n\n### Organization\n\n#### About the Organizer: Stellar Development Foundation\n\nStellar Development Foundation is a nonprofit organization dedicated to supporting the development and growth of the Stellar blockchain network. The foundation focuses on promoting secure, low-cost cross-border transactions and collaborates with financial institutions, fintechs, and developers. Key activities include maintaining the open-source Stellar protocol and facilitating interoperability across global payment systems. The organization's mission centers on enabling equitable access to the global financial system through blockchain technology."
+  },
+  {
+   "url": "https://dorahacks.io/hackathon/stellar-hacks-blend/winner",
+   "capturedAt": "2026-10-06T14:40:08Z",
+   "htmlSha256": "0fa40a0778a0fd96d6d397813fa769afe2460727f781cd2eba1861b6bea9d1c5",
+   "id": 1121,
+   "uname": "stellar-hacks-blend",
+   "title": "Stellar Hacks: Blend",
+   "organizer": "Stellar Development Foundation",
+   "timelineStart": 1750230000,
+   "timelineEnd": 1751871600,
+   "timelineEndUtc": "2025-07-07T07:00:00+00:00",
+   "bonusPrice": 6000,
+   "bonusToken": "USD",
+   "buidlsCount": 39,
+   "hackersCount": 136,
+   "winnerAnnounced": true,
+   "summaryFinalArticle": "### Hackathon Summary\n\nThe **[Stellar Hacks: Blend](https://dorahacks.io/hackathon/stellar-hacks-blend)** hackathon focused on enhancing composability in DeFi applications on the Stellar network. Developers were encouraged to build directly on the Blend protocol, a lending and borrowing platform featuring isolated pools and a reactive interest rate mechanism. This protocol provided the base for a variety of new tools, integrations, and user interfaces during the event.\n\nThe hackathon attracted 136 registered developers and produced 39 approved projects, reflecting active community involvement. Participants delivered a wide array of solutions, including alternative user interfaces for Blend, integrations with wallets and asset bridges, risk visualizers for lending pools, liquidation alert systems, and DeFi/GameFi applications such as launchpads and prediction markets. Several projects focused on improving user onboarding, risk management, and access to new assets within the Stellar ecosystem.\n\nA total of $6,000 in XLM was awarded as prizes to the top three innovations, with selection based on technical quality and practical utility. The event demonstrated significant participation and resulted in concrete enhancements to the Blend protocol, highlighting Stellar's role as a platform for DeFi collaboration.\n\n### Hackathon Winners\n\n#### Blend Composability Prize Winners\n\n**1st Place**\n**[Blend Pool Creator](https://dorahacks.io/buidl/27438)** – This project introduced a web application that streamlines the deployment of custom lending pools on Stellar testnet. Featuring a wizard interface, it simplifies pool creation, facilitates Blend composability, and supports the development of open financial infrastructure on Stellar.\n\n**2nd Place**\n**[Comet x Hoops Finance](https://dorahacks.io/buidl/27417)** – This integration incorporates Blend’s backstop liquidity into a swap interface for DeFi users on Stellar. The solution expands access to liquidity pools and provides smoother asset exchanges using a standardized swap user interface.\n\n**3rd Place**\n**[YieldBack.Cash](https://dorahacks.io/buidl/27456)** – YieldBack.Cash is an on-chain bond platform that offers liquidity incentives by allowing sponsors to front coupons. User deposits are routed to Blend pools at fixed interest rates, addressing liquidity attraction and supporting predictable returns.\n\n---\n\nA complete list of submitted projects and additional hackathon information can be found at [https://dorahacks.io/hackathon/stellar-hacks-blend/buidl](https://dorahacks.io/hackathon/stellar-hacks-blend/buidl).\n\n### Organization\n\n#### About the Organizer: Stellar Development Foundation\n\nThe Stellar Development Foundation is a non-profit organization dedicated to the advancement of the Stellar blockchain network. Its work centers on promoting accessible, low-cost financial services and cross-border payments through decentralized technology. Stellar is a public blockchain featuring a native [smart contracts platform](https://stellar.org/soroban) that leverages the decentralized Stellar network. Its global ecosystem of innovators leverages the decentralized Stellar network to create opportunities across borders. The platform offers tools that integrate with financial assets, building real solutions that make global financial services accessible to all."
+  }
+ ],
+ "buidls": [
+  {
+   "url": "https://dorahacks.io/buidl/32593",
+   "capturedAt": "2026-10-06T14:24:12Z",
+   "htmlSha256": "061a31bb5ec516e3b0b42afd080617e74887e275563e1370a1b53aa6076a9216",
+   "id": 32593,
+   "name": "xbid.ai",
+   "vision": "xbid.ai is a multi-LLM AI agent, born on Stellar. Built to evolve, it trades for real—executing delta-neutral strategies with AMM-hedged borrows and rebalancing collateral—on a loop that generalizes beyond markets under selection pressure",
+   "githubUrl": "https://github.com/xbid-ai",
+   "demoUrl": "https://xbid.ai",
+   "demoVideoUrl": "https://www.youtube.com/watch?v=j9k61KUxjF8",
+   "otherInfrastructures": [
+    "layer1:Stellar",
+    "layer1:SDEX",
+    "layer2:Blend",
+    "layer2:Reflector"
+   ],
+   "createdAt": "2025-09-07T00:34:11.479046",
+   "isPrivate": false,
+   "isDeleted": false,
+   "description": "Meet [xbid.ai](https://xbid.ai) — a multi-LLM AI agent born on Stellar, built to evolve and roam anywhere.\n\nWith real stake and a memory of its own outcomes, xbid.ai is shaped by selection pressure. **The vision** is straightforward: create an intelligence that carries its own weight and evolves by owning what it does.\n\nWhether trading for carry, running NFT auctions, gaming competitively, or participating in metaverse and web3 activities, the same loop can be applied where reinforcement routes receipts back into behavior, holding the agent to outcomes.\n\n## Built to evolve\n\n**xbid.ai** is built to evolve: intelligence and environment are modular, models can interact, and data streams extend seamlessly.\n\n### The LLM layer\n\nA multi-LLM router fronts OpenAI, Anthropic, or any self-hosted model. Models can also be combined to suit strategy needs, performance, privacy, and cost profiles.\n\nPersona behavior and build archetypes are declared in YAML, letting you re-shape agents instantly, without touching core logic.\n\n### The data layer\n\nData ingestion uses an extensible plugin system, one shape: fetch raw data, normalize it, distill and compute observables.\n\nExamples:\n\n- **ReflectorAdapter** — ingests Oracle prices from [Reflector Oracles](https://reflector.network) and exposes observables like slope and freshness to the agent pipeline via distillation.\n- **BlendAdapter** — ingests [Blend](https://www.blend.capital/) V2 data from backstop, pools, oracles, and user positions then distillation calculates trends, logarithmic returns, and rate indicators on series.\n- **AmmAdapter** — ingests trades and pool state for Stellar constant-product pools, distillation extracts series for VWAP, volumes, and time-weighted APR to feed signals.\n\n## The feedback loop\n\nAt its core, **xbid.ai** is designed to be driven by selection pressure.\n\nMost trading systems stop at automation or backtesting. The idea with **xbid.ai**'s multi-LLM agent is to push further, treating markets, outcomes, and even crowd input as the environment applying pressure on the agent. Every trade, every decision, every outcome feeds back into behavior.\n\n## Learn more\n\n- [Source code](https://github.com/xbid-ai)\n- [Live Site](https://xbid.ai)\n- [Blog](https://blog.xbid.ai)\n- [Twitter](https://x.com/xbid_ai)\n- [Youtube](https://www.youtube.com/@xbidai)\n\n## Disclaimer\n\nNot financial advice. This is an experiment in onchain intelligence."
+  },
+  {
+   "url": "https://dorahacks.io/buidl/27417",
+   "capturedAt": "2026-10-06T14:40:10Z",
+   "htmlSha256": "f490d0bae7fad951772cfd0bf4728451937a051deca0d32df5b3b46571ec2ae6",
+   "id": 27417,
+   "name": "Comet x Hoops Finance",
+   "vision": "Fully functional UI to do Swaps in Blend's Backstop",
+   "githubUrl": "https://github.com/hoops-finance/cometswap",
+   "demoUrl": "https://comet.hoops.finance",
+   "demoVideoUrl": "https://vimeo.com/1099091008?share=copy#t=0",
+   "otherInfrastructures": [],
+   "createdAt": "2025-07-06T14:53:25.156852",
+   "isPrivate": false,
+   "isDeleted": false,
+   "description": "## Blend Backstop Swap brings Blend’s critical backstop liquidity pool out of the command line and into a polished DeFi experience.\n\n**Live on Stellar mainnet through the Hoops Finance interface**, it lets anyone convert USDC ↔ BLND and deposit directly into the Backstop with a single click—no contract calls, no wallets kits to install, no code.\n\nBy collapsing smart-contract complexity into an intuitive swap widget, we open the Backstop to everyday traders, deepen protocol liquidity, and strengthen Blend’s peg-defense mechanics. This UI turns an infrastructure feature into a user-facing product, accelerating real adoption of the Blend ecosystem."
+  }
+ ]
+}

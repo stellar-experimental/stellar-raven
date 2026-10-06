@@ -165,6 +165,22 @@ Do not create a separate routing TODO or upstream successor for either. Three mi
 controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove those markers after the
 general routing repair passes.
 
+Source held by this item: Scout spec 1.9.71 (2026-10-06, drift issue #223). It adds
+`GET /api/hackathons/analyze`, `GET /api/hackathons/builds/{id}`, and `GET /api/hackathons/review`,
+and rewrites `x-routing` examples on twelve existing operations. Against the 1.9.61 manifest, with
+`reviewSubmission` excluded, legacy routing lost top3 298 to 295, top5 326 to 325, and cardHit5 112
+to 111. Four losses are real operation-selection regressions: `q-defi-agentic-payment-standards-compare`,
+`q-defi-blend-alternatives`, `q-defi-rwa-overview`, and `q-scf-funded-similar-payroll`. The fifth,
+`q-defi-streaming-payments-prior-art`, is a narrow card label. Exposed, `scout.reviewSubmission`
+ranked first on `q-pc-sequence-numbers-ordering-replace`. Ungraded captures also appeared
+(`getHackathonSubmission` first on `q-scf-ecosystem-listing-partner-jobs`; `getHackathon` first on
+`q-hist-remittance-corridors`). Four tested general policies failed; the narrower admission-only
+example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` and its
+`routing-repair-astra.md`. Four golden proposals for the two read operations wait in
+`eval/qa/corpus/proposed/scf-grants-builders/` (see "Activate the Scout hackathon golden
+proposals"). Keep `inventory/stellar-light.json`
+at 1.9.61 until check 12 passes; the daily drift report keeps #223 open meanwhile.
+
 Acceptance checks:
 
 1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
@@ -179,9 +195,31 @@ Acceptance checks:
 9. The leaderboard and RFP improvements remain.
 10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no regression.
 11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
+12. On a fresh Scout snapshot (1.9.71 or later), the four real 1.9.71 regressions meet their main
+    grades, `reviewSubmission` does not rank on non-hackathon questions, and the absorb needs only a
+    manifest-fingerprint re-baseline.
 
-Done when: all eleven acceptance checks pass in a reviewed general scoring change. The
+Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+
+## Catalog build
+
+### Close the excluded-path rewrite gap in the leak guards
+
+The 2026-10-06 drift review (Grok 4.7 high) probed the emitted-text guards with Scout 1.9.71
+inputs. `scripts/description-notes.mjs:156-157` rewrites operation paths with `split` and `join`.
+An excluded path that extends an exposed path is rewritten into an exposed-looking name: the input
+`See GET /api/hackathons/review before you apply.` becomes `See scout.getHackathons/review before
+you apply.`, and both `assertNoNonExposedRefsInText` and `scripts/emitted-text-guard.mjs` pass it. A
+bare excluded operation name (`reviewSubmission`) in a description, keyword, or routing phrase also
+passes, and `routingExclusions` is outside the scanned fields (`scripts/build-catalog.mjs:1157-1168`).
+No current manifest leaks a path. The current Scout `Meta.warnings` description already names the
+excluded `getQualityReport`, `verifyClaim`, and `getRwaAssets` as bare words, so a bare-name rule
+needs a scrub for that text first. Evidence: `rounds/2026-10-06-truth-maintenance/review-drift-grok.md`.
+
+Done when: the path rewrite matches whole path segments only, the guards reject a bare excluded
+operation name in every emitted text field including `routingExclusions`, tests cover all three
+probes, and `node scripts/build-catalog.mjs` still passes on the current inventory.
 
 ## Dependencies
 
@@ -289,6 +327,57 @@ exceptions to make its examples pass. Evidence:
 
 Done when: a general mechanism passes frozen routing controls and independently reviewed answer
 checks.
+
+### Reconcile hackathon winner goldens with the submission-detail operation
+
+Trigger: the Scout 1.9.71 absorb lands. `scout.getHackathonSubmission` then returns explicit
+`placement` for one stored submission. Two
+existing cases still require the event-detail path as the only route: `q-scf-kale-winner-live`
+(key facts 1 and 2 require `getHackathons` then `getHackathon`) and `q-gap-hackathon-winner-order`
+(key fact 1 requires `getHackathon` detail). The independent review of the 2026-10-06 golden lane
+found this grading-path overlap. No factual contradiction exists. History:
+`.agents/rounds/2026-10-06-scout-hackathon-goldens/review-astra.md` ("Duplicate and boundary
+review") and `reconciliation.md` row 15.
+
+Done when: both cases accept explicit placement from event or submission detail, through the
+`golden-truth` workflow, or a recorded decision keeps the event-detail path as the only route.
+
+### Activate the Scout hackathon golden proposals when the Scout 1.9.71 absorb lands
+
+Four proposals sit in `eval/qa/corpus/proposed/scf-grants-builders/`. The 2026-10-06 round held the Scout `1.9.71` absorb, so none is active
+and the two operation floors stay unmet. The independent review cleared three for activation after
+its requested edits, which are applied: `q-scout-hackathon-winner-libraries-vs-field`,
+`q-scout-hackathon-submission-link-comet-hoops`, and `q-scout-hackathon-submission-xbid-outcome`.
+It blocked `q-scout-hackathon-placed-share-kale-vs-zk`: the complete winner totals have no witness
+independent of DoraHacks. History: `.agents/rounds/2026-10-06-scout-hackathon-goldens.md`.
+
+Done when: the dated facts are re-probed, the fourth case has an independent winner-list source or
+a reviewed source-relative rewrite, each activated case carries `truth.lifecycle.activation`, and
+`npm run eval:qa:lint -- --stale --enforce-floors` passes for both operations.
+
+### Decide whether Scout's hackathon store gaps are upstream findings
+
+Probes on 2026-10-06 found stored totals below the organizer's totals: KALE x Reflector 45 against
+46 to 47, Real-World ZK 319 against 345, Stellar Hacks: Agents 248 against 262, and Stellar Hacks:
+Blend 35 submissions and 2 winners against 39 and 3. Scout holds the Blend first-place submission
+(`dorahacks.io/buidl/27438`) under `stellar-hacks-paltalabs` with no placement, so its Blend
+first-place result is lost. Scout documents that deleted or private submissions are not served, so
+part of the total gap is by design. The lost first-place record changes `winners` counts and placed
+shares. Evidence: `.agents/rounds/2026-10-06-scout-hackathon-goldens.md` entries 2, 12, and 14.
+
+Done when: the `improvements-pipeline` workflow files a finding for the missing-winner case, or
+records why it is intended behavior.
+
+### Decide whether Scout's strict repo-search label is an upstream finding
+
+On 2026-10-06, `https://stellarlight.xyz/api/repos/search?q=strupey` reported
+`matchMode: "strict"` ("every query term matched"), but none of its 23 returned rows (for example
+`stellar/freighter`) contains the token. The near-due golden re-verification lane found this while
+it checked `q-edge-strupey-ambiguous-stellar-history`. Evidence:
+`rounds/2026-10-06-truth-maintenance.md` ("Golden verdict").
+
+Done when: the `improvements-pipeline` workflow reproduces the label on a second query and files a
+finding, or records why the label is correct.
 
 ### Reconcile the QA answering prompt with out-of-scope goldens
 

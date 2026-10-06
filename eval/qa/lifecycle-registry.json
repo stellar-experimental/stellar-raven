@@ -3,7 +3,7 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 0,
+    "proposed": 4,
     "active": 501,
     "quarantined": 0,
     "retired": 0
@@ -353,6 +353,10 @@
     "q-scf-verified-members",
     "q-scf-vs-sdf-enterprise-fund",
     "q-scout-hackathon-brief-first-hour",
+    "q-scout-hackathon-placed-share-kale-vs-zk",
+    "q-scout-hackathon-submission-link-comet-hoops",
+    "q-scout-hackathon-submission-xbid-outcome",
+    "q-scout-hackathon-winner-libraries-vs-field",
     "q-sep-1-toml",
     "q-sep-12-kyc",
     "q-sep-31-cross-border",
@@ -2919,6 +2923,34 @@
       "state": "active",
       "reviewState": "none",
       "caseContentSha256": "1c096b73d99a909f3d1b882c261205f4e9fac26bbff599a16d7d320a7207467e"
+    },
+    {
+      "id": "q-scout-hackathon-placed-share-kale-vs-zk",
+      "path": "eval/qa/corpus/proposed/scf-grants-builders/q-scout-hackathon-placed-share-kale-vs-zk.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "482a9b3630e2a22ee0e68c29eb2c867f346f8893871946d242aaba74223c688d"
+    },
+    {
+      "id": "q-scout-hackathon-submission-link-comet-hoops",
+      "path": "eval/qa/corpus/proposed/scf-grants-builders/q-scout-hackathon-submission-link-comet-hoops.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "de3bb36f020b5138763ab15d18ceebbdd6c9ad1dce95b3580276655fba98f043"
+    },
+    {
+      "id": "q-scout-hackathon-submission-xbid-outcome",
+      "path": "eval/qa/corpus/proposed/scf-grants-builders/q-scout-hackathon-submission-xbid-outcome.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "c41254a4f71490cbd27bec0d87cf6fe6718b0b753a0e755b289f66169367562e"
+    },
+    {
+      "id": "q-scout-hackathon-winner-libraries-vs-field",
+      "path": "eval/qa/corpus/proposed/scf-grants-builders/q-scout-hackathon-winner-libraries-vs-field.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "13713b5a54785a91e2a2cff58cceab82b413ff3db634dd979d7b8bc32940b054"
     },
     {
       "id": "q-sep-1-toml",

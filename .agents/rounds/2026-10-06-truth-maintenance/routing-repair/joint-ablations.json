@@ -1,0 +1,242 @@
+[
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "changes": [
+      [
+        "scout.vetIdea",
+        "routingPhrases"
+      ],
+      [
+        "scout.scfPitch",
+        "routingKeywords"
+      ]
+    ],
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 461,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchHackathonBuilds",
+        "score": 454,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 405,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.getHackathonSubmission",
+        "score": 379,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchRepos",
+        "score": 379,
+        "tier": "gated"
+      }
+    ]
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "changes": [
+      [
+        "scout.vetIdea",
+        "routingPhrases"
+      ],
+      [
+        "scout.getHackathonSubmission",
+        "REMOVE"
+      ]
+    ],
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 461,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchHackathonBuilds",
+        "score": 454,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 405,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.scfPitch",
+        "score": 382,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchRepos",
+        "score": 379,
+        "tier": "gated"
+      }
+    ]
+  },
+  {
+    "case": "q-defi-streaming-payments-prior-art",
+    "changes": [
+      [
+        "scout.scfPitch",
+        "routingKeywords"
+      ],
+      [
+        "scout.getHackathonSubmission",
+        "REMOVE"
+      ]
+    ],
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 461,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchHackathonBuilds",
+        "score": 454,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 411,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 405,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchRepos",
+        "score": 379,
+        "tier": "gated"
+      }
+    ]
+  },
+  {
+    "case": "q-scf-funded-similar-payroll",
+    "changes": [
+      [
+        "scout.vetIdea",
+        "routingPhrases"
+      ],
+      [
+        "scout.scfPitch",
+        "routingKeywords"
+      ]
+    ],
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 244,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 176,
+        "tier": "gated"
+      },
+      {
+        "id": "lumenloop.find_similar_scf_submissions",
+        "score": 192,
+        "tier": "backfill"
+      },
+      {
+        "id": "skills.stellar-dev.agentic-payments",
+        "score": 192,
+        "tier": "backfill"
+      },
+      {
+        "id": "scout.scfPitch",
+        "score": 188,
+        "tier": "backfill"
+      }
+    ]
+  },
+  {
+    "case": "q-scf-funded-similar-payroll",
+    "changes": [
+      [
+        "scout.vetIdea",
+        "routingPhrases"
+      ],
+      [
+        "scout.getHackathonSubmission",
+        "REMOVE"
+      ]
+    ],
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 244,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 176,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.scfPitch",
+        "score": 209,
+        "tier": "backfill"
+      },
+      {
+        "id": "lumenloop.find_similar_scf_submissions",
+        "score": 192,
+        "tier": "backfill"
+      },
+      {
+        "id": "skills.stellar-dev.agentic-payments",
+        "score": 192,
+        "tier": "backfill"
+      }
+    ]
+  },
+  {
+    "case": "q-scf-funded-similar-payroll",
+    "changes": [
+      [
+        "scout.scfPitch",
+        "routingKeywords"
+      ],
+      [
+        "scout.getHackathonSubmission",
+        "REMOVE"
+      ]
+    ],
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 244,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 176,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 131,
+        "tier": "gated"
+      },
+      {
+        "id": "lumenloop.find_similar_scf_submissions",
+        "score": 192,
+        "tier": "backfill"
+      },
+      {
+        "id": "skills.stellar-dev.agentic-payments",
+        "score": 192,
+        "tier": "backfill"
+      }
+    ]
+  }
+]
