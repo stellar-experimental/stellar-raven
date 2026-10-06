@@ -368,6 +368,17 @@ shares. Evidence: `.agents/rounds/2026-10-06-scout-hackathon-goldens.md` entries
 Done when: the `improvements-pipeline` workflow files a finding for the missing-winner case, or
 records why it is intended behavior.
 
+### Decide whether Scout's strict repo-search label is an upstream finding
+
+On 2026-10-06, `https://stellarlight.xyz/api/repos/search?q=strupey` reported
+`matchMode: "strict"` ("every query term matched"), but none of its 23 returned rows (for example
+`stellar/freighter`) contains the token. The near-due golden re-verification lane found this while
+it checked `q-edge-strupey-ambiguous-stellar-history`. Evidence:
+`rounds/2026-10-06-truth-maintenance.md` ("Golden verdict").
+
+Done when: the `improvements-pipeline` workflow reproduces the label on a second query and files a
+finding, or records why the label is correct.
+
 ### Reconcile the QA answering prompt with out-of-scope goldens
 
 The answering prompt asks for a plain, brief out-of-scope answer at `eval/qa/run-qa.mjs:749` and
