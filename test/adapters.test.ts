@@ -253,6 +253,49 @@ describe("scout adapter", () => {
     });
   });
 
+  it.each(["true", 1, null, {}])(
+    "does not treat a non-boolean meta.partial as a failure signal: %j",
+    async (partial) => {
+      const body = { projects: [{ name: "Wallet" }], meta: { partial } };
+      const { fetchImpl } = stubFetch(JSON.stringify(body), 200);
+      const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+      expect(r).toEqual({ ok: true, data: body });
+    }
+  );
+
+  it.each([
+    [{ read: "projects search" }, "x"],
+    ["projects search", null]
+  ])("keeps a partial page with malformed failedReads an error: %j", async (...failedReads) => {
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({ projects: [{ name: "Wallet" }], meta: { partial: true, failedReads } }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), { q: "wallet" }, {}, fetchImpl);
+    expect(r).toEqual({
+      ok: false,
+      error: expect.objectContaining({
+        kind: "error",
+        message: "backend read failed: Scout marked the page partial",
+        details: { failedReads }
+      })
+    });
+  });
+
+  it.each([
+    { partial: true, failedReads: [{ read: "projects search", cause: "timeout after 4000ms" }] },
+    { partial: false, warnings: ["backend read failed: timeout"] }
+  ])("gives either failure signal priority over meta.error: %j", async (signal) => {
+    const { fetchImpl } = stubFetch(
+      JSON.stringify({ projects: [], meta: { error: "no_query", ...signal } }),
+      200
+    );
+    const r = await callScout(entry("scout.searchProjects"), {}, {}, fetchImpl);
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error.kind).toBe("error");
+  });
+
   it("keeps a complete page with meta.partial false successful", async () => {
     const body = {
       projects: [{ name: "Wallet" }],
