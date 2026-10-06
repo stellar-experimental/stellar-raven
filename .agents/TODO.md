@@ -46,15 +46,18 @@ The stale bot closed issue https://github.com/stellar/stellar-protocol/issues/19
 author-owned fix is https://github.com/stellar/stellar-protocol/pull/2021. It adds the SLP list to
 `limits/README.md` and an SLP mention to the root README, and it offers to drop the table if the
 maintainers do not want to maintain it. Commit `65d35aebf3ae3d5b9094b36959c27d9b8540e2a0` answers
-the Copilot review; all four checks passed on 2026-09-29. On 2026-09-30, `leighmcculloch`
-(`MEMBER`) approved head `777561b2`
-(https://github.com/stellar/stellar-protocol/pull/2021#pullrequestreview-5358887566), but GitHub
-reports `mergeable_state: blocked`, so a second condition still holds the merge. The default-branch
-READMEs still lack the SLP index, and the finding stays `reported-upstream`. Do not post a reminder
-because of the approval.
+the Copilot review; all four checks passed on 2026-09-29. At 2026-09-29T21:44:44Z, `leighmcculloch`
+(`MEMBER`) approved the PR
+(https://github.com/stellar/stellar-protocol/pull/2021#pullrequestreview-5358887566) and enabled squash
+auto-merge. The head is now `53557ae2`, and the approval is not dismissed. GitHub reports
+`mergeable_state: blocked`. The blocker is one unresolved, outdated Copilot review thread
+(https://github.com/stellar/stellar-protocol/pull/2021#discussion_r4064649027): the branch ruleset
+sets `required_review_thread_resolution`. Our reply in that thread states that commit `65d35aeb`
+fixed it. The default-branch READMEs still lack the SLP index, and the finding stays
+`reported-upstream`. Do not post a reminder because of the approval.
 
-At the next improvements round, read the merge blocker, the PR state, and any new review, and
-respond to requested changes.
+Next action: resolve that thread. This is author-owned work. Auto-merge then merges the PR. At the
+next improvements round, read the PR state and any new review, and respond to requested changes.
 The stale workflow marks a quiet PR after 30 days and closes it 30 days later. Do not post a
 keep-alive comment. If the PR closes unmerged, record the reason and keep the finding. If it merges,
 re-run the two README source checks before changing the finding.
