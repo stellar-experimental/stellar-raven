@@ -29,8 +29,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-13",
-    "reverifyBy": "2026-10-15",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-02-09",
     "sources": [
       {
         "class": "B",
@@ -44,32 +44,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-        "Live scout.searchResearch result quoting SEP-0006 status and canonical URL, 2026-07-13",
-        "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
-        "solo://proj/49/scratchpad/24-hour-adversarial--629#sol-box-review",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-        "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; golden truth unchanged.",
-        "Improvement finding read 2026-08-27: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md; disputed claim: official Docs omit SEP-6's interactive-component deprecation in favor of SEP-24.",
-        "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction",
-        "Structural re-form (long-fact): Shortened both SEP-6 lifecycle facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP-6 preamble says its interactive components are deprecated in favor of SEP-24.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current Active SEP defines the programmatic Deposit and Withdrawal API.",
-        "Sibling sweep 2026-08-29: grep SEP-6|SEP-24|SEP-31|hosted UI → q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-sep-31-cross-border, and related anchor cases; no contradiction"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — 'Active (Interactive components are deprecated in favor of SEP-24)'.",
+        "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — Hosted Deposit and Withdrawal, Active.",
+        "Live A 2026-10-06: https://developers.stellar.org/docs/learn/fundamentals/anchors — programmatic SEP-6 versus hosted SEP-24; no deprecation text.",
+        "Live E 2026-10-06: Stellar Docs search for 'SEP-6 interactive deprecated SEP-24' returns no deprecation text.",
+        "Improvement status 2026-10-06: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md is declined-upstream, so the grader caution stays durable.",
+        "Sibling sweep 2026-10-06: grep interactive components|SEP-6 deprecat → q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-comp-sep6-vs-sep12-roles; no contradiction."
       ],
       "rootCause": [
-        "freshness-drift",
-        "eval-authoring",
-        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md"
       ]
     },
     "origin": "raven-next q-sep-6-24-deprecation",
@@ -79,22 +66,28 @@
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-            "observedAt": "2026-07-11",
-            "note": "Official anchor documentation distinguishes programmatic and hosted deposit/withdrawal integrations."
-          },
-          {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
-            "observedAt": "2026-07-11",
-            "note": "Fetched SEP-6 source retains the non-interactive API and marks interactive portions deprecated."
+            "observedAt": "2026-10-06",
+            "note": "'Status: Active (Interactive components are deprecated in favor of SEP-24)', Version 4.3.0, updated 2025-09-10."
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-            "observedAt": "2026-07-11",
-            "note": "Fetched SEP-24 source defines the replacement hosted interactive flow."
+            "observedAt": "2026-10-06",
+            "note": "'Hosted Deposit and Withdrawal', Status Active, Version 3.8.0."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+            "observedAt": "2026-10-06",
+            "note": "Lists 'SEP-6: Programmatic Deposit and Withdrawal' and 'SEP-24: Hosted Deposit and Withdrawal'; still omits the deprecation (sd-009)."
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs(query=SEP-6 interactive deprecated SEP-24)",
+            "observedAt": "2026-10-06",
+            "note": "No hit contains the deprecation text; consistent with declined-upstream sd-009."
           }
         ]
       }

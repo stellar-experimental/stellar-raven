@@ -31,8 +31,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-13",
-    "reverifyBy": "2026-10-09",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-01-12",
     "sources": [
       {
         "class": "C",
@@ -52,28 +52,27 @@
         "evidence": [
           {
             "class": "C",
-            "ref": "http://localhost:8787/mcp scout.getBuilders(q=Strupey)",
-            "observedAt": "2026-07-13",
-            "note": "Directory response reported zero returned and zero total."
+            "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+            "observedAt": "2026-10-06",
+            "note": "generatedAt 2026-10-06T14:52:43Z; counts returned=0, total=0; partial=false; advisory says this is a filter miss over 320 builder profiles, not absence."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getBuilders",
+            "observedAt": "2026-10-06",
+            "note": "The exposed operation contract still defines the Scout builder-directory surface."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "2026-07-13 localhost Scout getBuilders exact-query projection.",
-        "Paired open-world Strupey truth matrices in Solo scratchpad 611.",
-        "Structural re-form (long-fact): Shortened the exact-membership and closed-world search-scope facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellarlight.xyz/api/builders?q=Strupey — the live exact query returns zero builder rows with generatedAt and directory scope.",
-        "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the operation contract defines a bounded directory surface and reserves broad recovery for open-world questions.",
-        "Sibling sweep 2026-08-29: grep Strupey|closed-world|builder directory|open-world → q-edge-strupey-ambiguous-stellar-history, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss; no contradiction"
-      ],
-      "rootCause": [
-        "A broad-recovery policy needs a paired closed-world control so it does not over-search every exact directory miss.",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The dated 2026-07-13 miss is still a miss on 2026-10-06.",
+        "Live C 2026-10-06: https://stellarlight.xyz/api/builders?q=Strupey — returned=0, total=0, partial=false, generatedAt 2026-10-06T14:52:43Z.",
+        "Live B 2026-10-06: catalog/manifest.json at 528fa335 still exposes scout.getBuilders as the builder-directory operation.",
+        "Sibling sweep 2026-10-06: grep Strupey → q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty, q-builder-justin-rice-history, q-scf-resolve-passport-superseded-slug; no contradiction."
       ]
     },
     "origin": "authored 2026-07-13 as the closed-world over-recovery control"

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "325c4c399e5e8e859731b5ae779d3277d2beef9e98abc1ff1629727efe5efcc7",
+  "corpusContentSha256": "03f7f1e4fd46e344658080db497acfbdf22411e87c35d671f9bb121ea502a70d",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -1157,8 +1157,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-04",
-        "reverifyBy": "2026-10-15",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2026-12-22",
         "sources": [
           {
             "class": "A",
@@ -1191,29 +1191,22 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://docs.x402.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://ap2-protocol.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.openai.com/commerce/",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+                "observedAt": "2026-10-06",
+                "note": "Out of Scope list includes 'Session handling mechanisms'; defines extensions and '8. Discovery API'."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/mpp",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+                "observedAt": "2026-10-06",
+                "note": "Stellar MPP uses the paymentauth draft-stellar-charge-00 method with SEP-41 transfers, a different payload than x402."
               },
               {
-                "class": "B",
-                "ref": "https://github.com/google-agentic-commerce/AP2",
-                "observedAt": "2026-07-11"
+                "class": "A",
+                "ref": "https://mpp.dev/",
+                "observedAt": "2026-10-06",
+                "note": "MPP site lists separate sessions and x402-compatibility updates, so the two remain distinct protocols."
               }
             ]
           },
@@ -1222,29 +1215,16 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://docs.x402.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://ap2-protocol.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.openai.com/commerce/",
-                "observedAt": "2026-07-11"
-              },
-              {
                 "class": "B",
-                "ref": "https://github.com/stellar/mpp",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+                "observedAt": "2026-10-06",
+                "note": "'Each payment is a Soroban SEP-41 transfer settled on-chain individually'; Channel mode signs 'cumulative commitments — no per-payment on-chain transactions'."
               },
               {
-                "class": "B",
-                "ref": "https://github.com/google-agentic-commerce/AP2",
-                "observedAt": "2026-07-11"
+                "class": "A",
+                "ref": "https://mpp.dev/",
+                "observedAt": "2026-10-06",
+                "note": "'An improved sessions experience' (2026-06-17) for pay-as-you-go billing."
               }
             ]
           },
@@ -1253,29 +1233,16 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://docs.x402.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://ap2-protocol.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.openai.com/commerce/",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+                "observedAt": "2026-10-06",
+                "note": "'Mandates are the core means that AP2 uses to authorize agents'; Checkout and Payment Mandates and receipts serve as evidence."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/mpp",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/google-agentic-commerce/AP2",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+                "observedAt": "2026-10-06",
+                "note": "'The specification is maintained by OpenAI and Stripe and is currently in beta'; latest spec 2026-04-17 covers cart, feed, orders."
               }
             ]
           },
@@ -1284,29 +1251,16 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://docs.x402.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://ap2-protocol.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.openai.com/commerce/",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17",
+                "observedAt": "2026-10-06",
+                "note": "The 2026-04-17 checkout OpenAPI mentions idempotency 46 times; examples include orders/digital-fulfillment.json and orders/refunded-order.json."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/mpp",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/google-agentic-commerce/AP2",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+                "observedAt": "2026-10-06",
+                "note": "Core types PaymentRequirements, PaymentPayload, and SettlementResponse separate payment intent, evidence, and settlement."
               }
             ]
           },
@@ -1315,29 +1269,22 @@
             "verdict": "contradicted",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://docs.x402.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://ap2-protocol.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.openai.com/commerce/",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+                "observedAt": "2026-10-06",
+                "note": "x402 V2 is its own specification."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/mpp",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+                "observedAt": "2026-10-06",
+                "note": "ACP is a separate commerce specification."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/google-agentic-commerce/AP2",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+                "observedAt": "2026-10-06",
+                "note": "AP2 is a separate mandate specification."
               }
             ]
           },
@@ -1346,63 +1293,31 @@
             "verdict": "contradicted",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://docs.x402.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://ap2-protocol.org/",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.openai.com/commerce/",
-                "observedAt": "2026-07-11"
-              },
-              {
                 "class": "B",
-                "ref": "https://github.com/stellar/mpp",
-                "observedAt": "2026-07-11"
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+                "observedAt": "2026-10-06",
+                "note": "Channel mode makes many off-chain payments with no per-payment on-chain transactions."
               },
               {
-                "class": "B",
-                "ref": "https://github.com/google-agentic-commerce/AP2",
-                "observedAt": "2026-07-11"
+                "class": "A",
+                "ref": "https://mpp.dev/",
+                "observedAt": "2026-10-06",
+                "note": "MPP sessions provide pay-as-you-go billing."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "https://docs.x402.org/",
-            "https://github.com/x402-foundation/x402/blob/main/specs/x402-specification-v2.md",
-            "https://ap2-protocol.org/",
-            "https://developers.openai.com/commerce/",
-            "https://github.com/stellar/mpp",
-            "https://github.com/google-agentic-commerce/AP2",
-            "Structural re-form (compound-predicate): Split four compound key facts into five atomic facts and moved two negative tails to avoid; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — showed the x402 V2 HTTP-402 payload, settlement, extension, and discovery model.",
-            "Live re-check 2026-08-27: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — placed application-level session handling outside the core specification.",
-            "Live re-check 2026-08-27: https://github.com/stellar/stellar-mpp-sdk — showed on-chain Charge settlement and cumulative off-chain Session channel commitments.",
-            "Live re-check 2026-08-27: https://ap2-protocol.org/ — showed AP2 authorization, mandate, and audit semantics; https://github.com/agentic-commerce-protocol/agentic-commerce-protocol showed ACP commerce functions.",
-            "Live re-check 2026-08-27: https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — showed protocol commerce flows that support the adapter boundary.",
-            "Sibling sweep 2026-08-27: q-defi-x402-on-stellar-what, q-defi-agentic-payment-standards-compare, and q-mpp-discovery-and-modes; no contradiction.",
-            "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 1 review (gt2-grok-rev)): removed the added qualifier \"core\"; truth unchanged versus HEAD.",
-            "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — MPP uses different payload and settlement paths than x402 V2.",
-            "Live re-check 2026-08-30: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — V2 still defines extensions and discovery fields.",
-            "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — Charge settles on-chain; Channel signs cumulative commitments.",
-            "Live re-check 2026-08-30: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — AP2 defines mandates, receipts, and dispute evidence.",
-            "Live re-check 2026-08-30: https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17 — schemas cover fulfillment, idempotency, and refunds.",
-            "Sibling sweep 2026-08-30: grep x402|MPP|AP2|ACP → q-defi-agentic-payment-standards-compare, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes; no contradiction"
-          ],
-          "rootCause": [
-            "eval-authoring",
-            "The golden attributed session handling to x402 V2 core although its specification declares sessions out of scope.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live B 2026-10-06: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — 'Session handling mechanisms' out of scope; extensions and Discovery API present.",
+            "Live B 2026-10-06: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — Charge settles each SEP-41 transfer on-chain; Channel signs cumulative off-chain commitments.",
+            "Live A 2026-10-06: https://mpp.dev/ — sessions update dated 2026-06-17.",
+            "Live B 2026-10-06: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — mandates authorize agents.",
+            "Live B 2026-10-06: https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md — ACP 'currently in beta'; latest spec 2026-04-17.",
+            "Sibling sweep 2026-10-06: grep AP2|ACP|MPP Session|MPP Charge → q-defi-agentic-payment-standards-compare, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what, q-defi-streaming-payments-prior-art; no contradiction."
           ]
         },
         "origin": "kaan agentic-payment-standard-choice"
@@ -6649,8 +6564,8 @@
         },
         "domain": "mixed",
         "status": "mixed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-10-08",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-03-02",
         "sources": [
           {
             "class": "B",
@@ -6695,19 +6610,22 @@
             "verdict": "confirmed",
             "evidence": [
               {
-                "class": "B",
-                "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-                "observedAt": "2026-07-28"
+                "class": "F",
+                "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff",
+                "observedAt": "2026-10-06",
+                "note": "Horizon: successful, ledger 61340384, created 2026-02-22T00:22:09Z."
               },
               {
-                "class": "D",
-                "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
-                "observedAt": "2026-07-28"
+                "class": "B",
+                "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+                "observedAt": "2026-10-06",
+                "note": "README: SDEX price manipulation of illiquid USTRY 'feeding into the Reflector oracle'; USTRY inflated ~100x from ~$1.06 to ~$106.74."
               },
               {
                 "class": "D",
                 "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "'On February 22, 2026, a lending pool operated by YieldBlox DAO on Stellar's Blend V2 was exploited'; the attacker manipulated the USTRY/USDC SDEX market."
               }
             ]
           },
@@ -6717,23 +6635,21 @@
             "evidence": [
               {
                 "class": "F",
-                "ref": "https://stellar.expert/explorer/public/tx/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff",
-                "observedAt": "2026-07-28"
+                "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+                "observedAt": "2026-10-06",
+                "note": "Effects: contract_debited and account_credited 1000196.7040837 USDC."
               },
               {
                 "class": "F",
-                "ref": "https://stellar.expert/explorer/public/tx/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657",
-                "observedAt": "2026-07-28"
+                "ref": "https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657/effects",
+                "observedAt": "2026-10-06",
+                "note": "Effects: contract_debited and account_credited 61249278.3064502 native XLM; created 2026-02-22T00:24:27Z."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-                "observedAt": "2026-07-28"
-              },
-              {
-                "class": "D",
-                "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "TX1 1,000,196.70 USDC and TX2 61,249,278.31 XLM."
               }
             ]
           },
@@ -6744,13 +6660,14 @@
               {
                 "class": "B",
                 "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-                "observedAt": "2026-07-28",
-                "note": "Decoded pre-state shows the roughly 14,000 USDC liability already existed; the exploit call amount is 10001967040837 in seven-decimal units."
+                "observedAt": "2026-10-06",
+                "note": "Pre-state still lists 'USDC liability (reserve 1) 119,028,268,790 d-tokens (~14,000 USDC)'; the exploit transfer is 10001967040837 in seven-decimal units."
               },
               {
                 "class": "F",
-                "ref": "https://stellar.expert/explorer/public/tx/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff",
-                "observedAt": "2026-07-28"
+                "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+                "observedAt": "2026-10-06",
+                "note": "The ledger transfer is 1000196.7040837 USDC, not 1,014,196.7040837."
               }
             ]
           },
@@ -6759,16 +6676,16 @@
             "verdict": "unverifiable",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://x.com/i/article/2029281732231344128",
-                "observedAt": "2026-07-28",
-                "note": "The operator article was not accessible through the reviewed live fetches, and no accessible Script3 repository or notice recovered this exact net-loss attribution."
-              },
-              {
                 "class": "B",
                 "ref": "https://github.com/script3/yieldblox-incident-remediation",
-                "observedAt": "2026-07-28",
-                "note": "Remediation data and execution logs do not establish the claimed $10.5M net-loss estimate."
+                "observedAt": "2026-10-06",
+                "note": "Repository files (data/aggregate_loss_*.csv, data/backstop_remediation.csv, logs) still do not state a $10.5M net-loss estimate."
+              },
+              {
+                "class": "D",
+                "ref": "Claude Code WebSearch queries 'Script3 YieldBlox \"$10.5M\" net loss estimate' and 'Script3 YieldBlox remediation liquidated users excluded backstop March 20 2026'",
+                "observedAt": "2026-10-06",
+                "note": "General-web sweep found no accessible Script3 primary source for a $10.5M net-loss figure."
               }
             ]
           },
@@ -6779,13 +6696,14 @@
               {
                 "class": "D",
                 "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "'Approximately 48,069,094 XLM was effectively quarantined'; funds 'remained visible onchain but were prevented from further movement'; the team was 'working to recoup' a further amount."
               },
               {
-                "class": "B",
-                "ref": "https://github.com/script3/yieldblox-incident-remediation",
-                "observedAt": "2026-07-28",
-                "note": "Separate supplier and backstop remediation records do not establish attacker repayment."
+                "class": "D",
+                "ref": "https://rekt.news/yieldblox-rekt",
+                "observedAt": "2026-10-06",
+                "note": "'Tier 1 Validators scrambled to freeze 48 million XLM'; after the Security Council's bounty message 'the attacker's response was to keep laundering'. No repayment reported."
               }
             ]
           },
@@ -6796,17 +6714,20 @@
               {
                 "class": "A",
                 "ref": "https://x.com/script3official/status/2027462360294953200",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "Read via the api.fxtwitter.com mirror: posted 2026-02-27 19:14 UTC; depositor remediation fully distributed; payments under 0.01 skipped; claimable balances for missing trustlines."
               },
               {
                 "class": "A",
                 "ref": "https://x.com/script3official/status/2035066332887023761",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "Read via the api.fxtwitter.com mirror: posted 2026-03-20 18:49 UTC; backstop remediation of 1.45M BLND-USDC LP tokens; 'no remediation for those liquidated during the manipulation'."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/script3/yieldblox-incident-remediation",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "Commits dated 2026-02-27 (execution logs) and 2026-03-20 (backstop remediation); src/execute.js skips below-threshold amounts and nonexistent destination accounts."
               }
             ]
           },
@@ -6817,45 +6738,35 @@
               {
                 "class": "B",
                 "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-                "observedAt": "2026-07-28"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/yieldblox/oracle-aggregator",
-                "observedAt": "2026-07-28"
+                "observedAt": "2026-10-06",
+                "note": "Oracle Adapter lastprice returned the fresh manipulated USTRY price; 'Health factor with manipulated oracle ($106.74/USTRY)' passes."
               },
               {
                 "class": "D",
-                "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
-                "observedAt": "2026-07-28"
+                "ref": "https://rekt.news/yieldblox-rekt",
+                "observedAt": "2026-10-06",
+                "note": "The Oracle Adapter 'returned the latest price and passed the full 100x inflation straight through'; it 'didn't take a median'."
+              },
+              {
+                "class": "D",
+                "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
+                "observedAt": "2026-10-06",
+                "note": "Reflector pulled the manipulated SDEX price and updated its feed before the borrows."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "Production scout.searchResearch(source=\"incident\", query=\"YieldBlox Reflector oracle manipulation\") returned a current incident synthesis anchored to Blockaid; direct Blockaid and BlockSec reports independently confirmed the event date, mechanism and rounded transfers.",
-            "The PoC's decoded transaction calls give 1,000,196.7040837 USDC and 61,249,278.3064502 XLM; its pre-state separately shows the roughly 14,000 USDC liability.",
-            "Script3's remediation repository and dated notices confirm the two remediation dates and handling, but the reviewed live sources did not prove attacker repayment or recover the prior Script3 $10.5M net-loss attribution.",
-            "improvements/stellar-light-scout/sls-022-yieldblox-incident-fact-model.md",
-            "improvements/lumenloop/ll-011-yieldblox-incident-unit-status-errors.md",
-            "solo://proj/49/todo/2026-07-28-reconcile-lane-c--1251",
-            "24h-commit adversarial review (todo 1254, 2026-07-28): golden.notes still asserted 'Script3 to compensate depositors' as settled while the verified answer treats depositor compensation and recovery as unverified; the note now records Script3's announced remediation/backstop process with compensation and recovery explicitly unverified. Internal-consistency repair only — no new external source consulted.",
-            "Structural re-form (negative-predicate): split four compound facts into five atomic facts and left recovery, staleness, and TWAP traps in golden.avoid; truth is unchanged.",
-            "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the PoC still identifies the YieldBlox USTRY-SDEX/Reflector manipulation path.",
-            "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the PoC still reports 61,249,278.31 XLM and 1,000,196.70 USDC transfers.",
-            "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the decoded pre-state still labels roughly 14,000 USDC as an existing liability and uses a source-specific valuation.",
-            "Live re-check 2026-08-27: https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — Blockaid still reports 48,069,094 XLM as quarantined.",
-            "Live re-check 2026-08-27: https://github.com/script3/yieldblox-incident-remediation — the repository still contains the supplier and backstop remediation records with exclusions.",
-            "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the decoded flow still shows the manipulated price passing the pool health check.",
-            "Sibling sweep 2026-08-27: grep YieldBlox|48M XLM|61,249,278|14,000 USDC → q-hist-yieldblox-v2-2026-exploit, q-soroban-oracle-defensive-consumption, q-defi-etherfuse-stablebonds; no contradiction"
-          ],
-          "rootCause": [
-            "Eval-authoring flaw: the prior golden added a pre-existing liability to the exploit call amount and promoted an inaccessible operator net-loss attribution to verified fact; todo 1251 tracks the cross-case repair.",
-            "Different reports still use different incident-time valuations, quarantine and remediation labels, so the case remains mixed rather than forcing one loss/recovery number.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live F 2026-10-06: Horizon transactions ae721cac… and 3e81a3f7… are successful on 2026-02-22 and their effects transfer 1000196.7040837 USDC and 61249278.3064502 XLM.",
+            "Live B 2026-10-06: https://github.com/DK27ss/YieldBlox-10M-PoC — ~$10.86M valuation, ~14,000 USDC pre-existing liability, fresh-value path unchanged.",
+            "Live D 2026-10-06: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — 48,069,094 XLM quarantined; https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain — date and mechanism.",
+            "Live A 2026-10-06: Script3 posts 2027462360294953200 (2026-02-27) and 2035066332887023761 (2026-03-20), read via the api.fxtwitter.com mirror; Live B: https://github.com/script3/yieldblox-incident-remediation commit dates and skip rules.",
+            "Web sweep 2026-10-06 (YieldBlox recovery/repayment/net loss): no source reports attacker repayment, recovery of quarantined funds, or a Script3 $10.5M net-loss figure.",
+            "Sibling sweep 2026-10-06: grep YieldBlox|61,249,278|48,069,094 → q-hist-yieldblox-v2-2026-exploit plus ten topical mentions; read q-hist-yieldblox-v2-2026-exploit; no contradiction."
           ]
         },
         "origin": "raven-next q-comp-yieldblox-oracle-incident"
@@ -15466,8 +15377,8 @@
         },
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-09",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-01-12",
         "sources": [
           {
             "class": "C",
@@ -15487,28 +15398,27 @@
             "evidence": [
               {
                 "class": "C",
-                "ref": "http://localhost:8787/mcp scout.getBuilders(q=Strupey)",
-                "observedAt": "2026-07-13",
-                "note": "Directory response reported zero returned and zero total."
+                "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+                "observedAt": "2026-10-06",
+                "note": "generatedAt 2026-10-06T14:52:43Z; counts returned=0, total=0; partial=false; advisory says this is a filter miss over 320 builder profiles, not absence."
+              },
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.getBuilders",
+                "observedAt": "2026-10-06",
+                "note": "The exposed operation contract still defines the Scout builder-directory surface."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "2026-07-13 localhost Scout getBuilders exact-query projection.",
-            "Paired open-world Strupey truth matrices in Solo scratchpad 611.",
-            "Structural re-form (long-fact): Shortened the exact-membership and closed-world search-scope facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://stellarlight.xyz/api/builders?q=Strupey — the live exact query returns zero builder rows with generatedAt and directory scope.",
-            "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the operation contract defines a bounded directory surface and reserves broad recovery for open-world questions.",
-            "Sibling sweep 2026-08-29: grep Strupey|closed-world|builder directory|open-world → q-edge-strupey-ambiguous-stellar-history, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss; no contradiction"
-          ],
-          "rootCause": [
-            "A broad-recovery policy needs a paired closed-world control so it does not over-search every exact directory miss.",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The dated 2026-07-13 miss is still a miss on 2026-10-06.",
+            "Live C 2026-10-06: https://stellarlight.xyz/api/builders?q=Strupey — returned=0, total=0, partial=false, generatedAt 2026-10-06T14:52:43Z.",
+            "Live B 2026-10-06: catalog/manifest.json at 528fa335 still exposes scout.getBuilders as the builder-directory operation.",
+            "Sibling sweep 2026-10-06: grep Strupey → q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty, q-builder-justin-rice-history, q-scf-resolve-passport-superseded-slug; no contradiction."
           ]
         },
         "origin": "authored 2026-07-13 as the closed-world over-recovery control"
@@ -18128,8 +18038,8 @@
         },
         "domain": "mixed",
         "status": "unverifiable",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-15",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-01-20",
         "sources": [
           {
             "class": "C",
@@ -18169,61 +18079,57 @@
             "evidence": [
               {
                 "class": "C",
-                "ref": "http://localhost:8787/mcp Strupey broad-family probe",
-                "observedAt": "2026-07-13",
-                "note": "Zero exact-token rows across current gateway families despite semantic-neighbor output."
+                "ref": "Stellar Raven connector execute: stellarDocs.search_docs, lumenloop.search_content_semantic, scout.searchResearch, scout.searchProjects (query Strupey)",
+                "observedAt": "2026-10-06",
+                "note": "No returned row contains the exact token; Scout projects used matchMode 'corrected' to Stroopy.AI; LumenLoop semantic rows were generic Stellar content."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/people?q=strupey",
+                "observedAt": "2026-10-06",
+                "note": "People index returned 0; builders 0; repos/search returned 23 rows, none containing the token."
               },
               {
                 "class": "B",
                 "ref": "https://api.github.com/search/users?q=strupey%20in%3Alogin&per_page=10",
-                "observedAt": "2026-07-13",
-                "note": "Exact public user-login search returned zero."
+                "observedAt": "2026-10-06",
+                "note": "total_count=0."
               },
               {
                 "class": "B",
                 "ref": "https://api.github.com/search/repositories?q=strupey%20in%3Aname%2Cdescription%2Creadme&per_page=10",
-                "observedAt": "2026-07-13",
-                "note": "Exact public repository search returned zero."
+                "observedAt": "2026-10-06",
+                "note": "total_count=0."
               },
               {
                 "class": "E",
-                "ref": "stellarDocs.search_docs(query=%22Strupey%22,includeMeetings=true)",
-                "observedAt": "2026-07-13",
-                "note": "Zero-hit soft-empty scoped to the official docs index."
+                "ref": "stellarDocs.search_docs(query=Strupey)",
+                "observedAt": "2026-10-06",
+                "note": "Five hits returned; none contains the exact token."
               },
               {
                 "class": "D",
-                "ref": "https://x.com/Strupey",
-                "observedAt": "2026-07-13",
-                "note": "The exact handle identifies Joe Strupek, but the reviewed profile supplies no Stellar link; it is counterevidence against conflation, not proof of global absence."
+                "ref": "Claude Code WebSearch query '\"Strupey\" Stellar'",
+                "observedAt": "2026-10-06",
+                "note": "General-web sweep returned only Otto Struve astronomy and stroop results; no Stellar identity for Strupey."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "Current gateway broad-family exact-token projection.",
-            "Exact GitHub API user and repository searches, official-docs zero-hit, and exact-handle counterevidence documented in solo://proj/49/scratchpad/evidence-poor-retrie--611.",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-            "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-017; the scoped Strupey non-verification is unchanged.",
-            "Improvements review 2026-08-27: improvements/lumenloop/ll-017-semantic-person-match-provenance.md remains reported upstream; the disputed claim is whether Strupey semantic neighbors establish an exact identity without exact-token provenance.",
-            "Sibling sweep 2026-08-27: grep ll-017|Strupey → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
-            "Structural re-form (compound-predicate): split source scope and dating, then tightened three long facts; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://api.github.com/search/users?q=strupey%20in%3Alogin&per_page=10 — the current exact user search still returns zero, supporting only searched-source non-verification.",
-            "Live re-check 2026-08-27: https://api.github.com/search/repositories?q=strupey%20in%3Aname%2Cdescription%2Creadme&per_page=10 — the current exact repository search dates the same scoped non-verification.",
-            "Live re-check 2026-08-27: https://www.joestrupek.com/about — the current unrelated Joe Strupek biography still cannot establish an exact Stellar identity or history.",
-            "Live re-check 2026-08-27: https://api.github.com/search/users?q=strupey%20in%3Alogin&per_page=10 — the current exact-name miss still warrants spelling, entity-type, link, and timeframe clarification.",
-            "Live re-check 2026-08-27: https://www.joestrupek.com/about — the current unrelated namesake remains counterevidence to conflation, not proof that Strupey cannot exist.",
-            "Sibling sweep 2026-08-27: grep Strupey|semantic neighbor|exact identity → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The dated non-verification still holds.",
+            "Live C 2026-10-06: Stellar Raven connector probe across Stellar Docs, LumenLoop semantic, Scout research, and Scout projects returned no exact-token Strupey row; Scout projects spell-corrected to Stroopy.AI.",
+            "Live C 2026-10-06: https://stellarlight.xyz/api/people?q=strupey, /api/builders?q=Strupey return 0; /api/repos/search?q=strupey labels 'strict' but no returned row contains the token.",
+            "Live B 2026-10-06: GitHub user-login and repository searches for strupey return total_count=0.",
+            "Live D 2026-10-06: general-web sweep for \"Strupey\" Stellar found no Stellar identity.",
+            "Improvement status 2026-10-06: improvements/lumenloop/ll-017-semantic-person-match-provenance.md is still reported-upstream, so the grader caution stays.",
+            "Sibling sweep 2026-10-06: grep Strupey → q-edge-closed-world-builder-directory-miss, q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-lumenloop-person-entity-empty, q-builder-justin-rice-history, q-scf-resolve-passport-superseded-slug; no contradiction."
           ],
           "rootCause": [
-            "Semantic systems can return high-volume adjacent rows even when the requested term is absent.",
-            "A negative open-world existence claim requires scoped non-verification and clarification rather than neighbor attribution.",
-            "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "improvements/lumenloop/ll-017-semantic-person-match-provenance.md"
           ]
         },
         "origin": "authored 2026-07-13 as a negative control for evidence-poor retrieval"
@@ -20549,8 +20455,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-08",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2026-11-03",
         "sources": [
           {
             "class": "A",
@@ -20577,14 +20483,20 @@
               {
                 "class": "A",
                 "ref": "https://meridian.stellar.org/event-details",
-                "observedAt": "2026-07-11",
-                "note": "Official FAQ gives dates, venue, city, and hackathon dates."
+                "observedAt": "2026-10-06",
+                "note": "FAQ: 'Meridian 2026 is a two-day in-person conference taking place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal.'"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.hackmeridian.com/",
+                "observedAt": "2026-10-06",
+                "note": "'25–26 October 2026 · ONE16, Lisbon'."
               },
               {
                 "class": "D",
                 "ref": "https://luma.com/meridian2026ll",
-                "observedAt": "2026-07-11",
-                "note": "Independent event listing points to Lisbon and defers to the official site."
+                "observedAt": "2026-10-06",
+                "note": "Placeholder listing: Lisbon, startDate 2026-10-28; defers to meridian.stellar.org."
               }
             ]
           },
@@ -20595,45 +20507,29 @@
               {
                 "class": "A",
                 "ref": "https://x.com/StellarOrg/status/2039405316803031315",
-                "observedAt": "2026-07-11",
-                "note": "Official April 1 post announces new city Lisbon and new dates October 28-29."
+                "observedAt": "2026-10-06",
+                "note": "Read via the api.fxtwitter.com mirror: posted 2026-04-01 18:11 UTC — 'New city. New dates. ... Meridian is headed to Lisbon. October 28–29.'"
               },
               {
-                "class": "D",
-                "ref": "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
-                "observedAt": "2026-07-11",
-                "note": "Older page preserves the superseded Abu Dhabi October 21-22 announcement and explains the stale-source trap."
+                "class": "A",
+                "ref": "https://meridian.stellar.org/event-details",
+                "observedAt": "2026-10-06",
+                "note": "The current FAQ names Lisbon and contains no Abu Dhabi schedule."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "solo://proj/49/process/3417",
-            "solo://proj/49/process/3423",
-            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-            "https://meridian.stellar.org/",
-            "https://meridian.stellar.org/event-details",
-            "https://x.com/StellarOrg/status/2039405316803031315",
-            "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
-            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction",
-            "Structural re-form (long-fact): shortened the current schedule and announcement facts while keeping the superseded schedule in the answer and avoid; truth unchanged.",
-            "Live re-check 2026-08-29: https://meridian.stellar.org/event-details — the current official FAQ schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon.",
-            "Live re-check 2026-08-29: https://x.com/StellarOrg/status/2039405316803031315 — SDF's official post announces Lisbon and October 28–29 at 6:11 PM on April 1, 2026.",
-            "Sibling sweep 2026-08-29: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no contradiction.",
-            "Live re-check 2026-08-31: https://meridian.stellar.org/event-details — 'October 28–29, 2026 at Convento do Beato in Lisbon, Portugal'; class D Luma listing independently shows Lisbon and October 28–29.",
-            "Live re-check 2026-08-31: https://www.hackmeridian.com/ — 'October 25–26, 2026 · Lisbon, Portugal'; class C Scout witness (non-origin) lists HackMeridian in Lisbon on October 25–26.",
-            "Live re-check 2026-08-31: https://x.com/StellarOrg/status/2039405316803031315 — SDF post dated 2026-04-01: 'Meridian is headed to Lisbon. October 28–29'; class D dated social witness displays the same April 1 announcement.",
-            "Sibling sweep 2026-08-31: grep Meridian 2026|HackMeridian|Convento do Beato → 1 other cases; read q-scf-hackathons-active; no contradiction"
-          ],
-          "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md. The event is still upcoming, so the as-of framing stays correct.",
+            "Live A 2026-10-06: https://meridian.stellar.org/event-details — 'October 28–29, 2026 at Convento do Beato in Lisbon, Portugal'.",
+            "Live A 2026-10-06: https://www.hackmeridian.com/ — '25–26 October 2026 · ONE16, Lisbon'.",
+            "Live A 2026-10-06: https://x.com/StellarOrg/status/2039405316803031315 (api.fxtwitter.com mirror) — posted 2026-04-01, Lisbon, October 28–29.",
+            "Live D 2026-10-06: https://luma.com/meridian2026ll — Lisbon, start 2026-10-28; general-web sweep found no later change of city or date.",
+            "reverifyBy 2026-11-03 is event-triggered: re-verify after the 2026-10-28/29 event, when the scheduled/upcoming framing becomes historical.",
+            "Sibling sweep 2026-10-06: grep Meridian 2026|Convento do Beato|HackMeridian|Yas Marina → q-scf-hackathons-active; no contradiction."
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -21217,8 +21113,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-08",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-01-05",
         "sources": [
           {
             "class": "A",
@@ -21245,14 +21141,14 @@
               {
                 "class": "A",
                 "ref": "https://stellar.org/blog/foundation-news/x402-on-stellar",
-                "observedAt": "2026-07-11",
-                "note": "Official page carries 2026-03-10 publication date."
+                "observedAt": "2026-10-06",
+                "note": "Page metadata date 2026-03-10."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/x402-stellar",
-                "observedAt": "2026-07-11",
-                "note": "Official implementation repository was created in the same launch window and documents Stellar x402 tooling."
+                "observedAt": "2026-10-06",
+                "note": "Official implementation repository: created 2026-03-03, not archived, last push 2026-09-29."
               }
             ]
           },
@@ -21263,14 +21159,14 @@
               {
                 "class": "B",
                 "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
-                "observedAt": "2026-07-11",
-                "note": "Official SEP directory inventory contains no x402 proposal."
+                "observedAt": "2026-10-06",
+                "note": "59 ecosystem entries; no file name contains x402 or 402; GitHub code and PR searches of stellar/stellar-protocol for x402 returned zero results."
               },
               {
                 "class": "D",
-                "ref": "https://www.google.com/search?q=site%3Agithub.com%2Fstellar%2Fstellar-protocol+x402+SEP",
-                "observedAt": "2026-07-11",
-                "note": "Explicit general-web absence sweep found implementation/docs references but no SEP identity."
+                "ref": "Claude Code WebSearch query 'x402 Stellar Ecosystem Proposal SEP number stellar-protocol'",
+                "observedAt": "2026-10-06",
+                "note": "General-web sweep found x402 implementation and docs references but no SEP number."
               }
             ]
           },
@@ -21281,44 +21177,28 @@
               {
                 "class": "A",
                 "ref": "https://stellar.org/blog/foundation-news/x402-on-stellar",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "'The settlement layer is live. The agent tooling is being built.'"
               },
               {
-                "class": "B",
-                "ref": "https://github.com/stellar/x402-stellar",
-                "observedAt": "2026-07-11",
-                "note": "Repository contains the agent-facing tools and examples; the official announcement supplies the live-settlement versus active-development status boundary."
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+                "observedAt": "2026-10-06",
+                "note": "'x402 works with Soroban authorization so that clients can pay for API requests via signed auth entries'; 'supports any SEP-41 compliant token'."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "solo://proj/49/process/3417",
-            "solo://proj/49/process/3423",
-            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
-            "https://stellar.org/blog/foundation-news/x402-on-stellar",
-            "https://developers.stellar.org/docs/build/agentic-payments/x402",
-            "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
-            "https://github.com/stellar/x402-stellar",
-            "Structural re-form (compound-predicate): Split the payment flow and merged the historical status boundary under one predicate; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/x402-on-stellar — the announcement still describes programmatic per-request HTTP payments on Stellar.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — current documentation still shows Soroban authorization and SEP-41 token flows.",
-            "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/x402-on-stellar — the announcement still says settlement was live while agent/MCP tooling was being built.",
-            "Sibling sweep 2026-08-27: grep x402|SEP-402|SEP-41 → q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing, q-sep-41-token-interface; no contradiction",
-            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — SDF announcement dated 2026-03-10; class D Gate report (2026-03-13) covers the launch.",
-            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — 'per-request HTTP payments on Stellar'; class A SDF announcement describes HTTP 402 payment flows.",
-            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — the flow uses SEP-41 tokens and Soroban authorization; class B https://github.com/stellar/x402-stellar holds the implementation.",
-            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — no x402 SEP listed; class B stellar-protocol search for x402 and sep-402 returned zero matches; class D sweep found no SEP.",
-            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — 'The settlement layer is live' and 'The agent tooling is being built'; class D x402agentic.ai lists its MCP bridge as planned work.",
-            "Sibling sweep 2026-08-31: grep x402|HTTP 402 → 22 other cases; read q-agent-payment-standard-choice, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes, q-soroban-x402-auth-entry-signing, q-x402-payment-verification; no contradiction"
-          ],
-          "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live A 2026-10-06: https://stellar.org/blog/foundation-news/x402-on-stellar — date 2026-03-10; 'The settlement layer is live. The agent tooling is being built.'",
+            "Live A 2026-10-06: https://developers.stellar.org/docs/build/agentic-payments/x402 — Soroban authorization entries and any SEP-41 token.",
+            "Live B 2026-10-06: stellar/stellar-protocol ecosystem directory (59 entries) has no x402 SEP; GitHub code and PR searches for x402 in that repository return zero.",
+            "Live D 2026-10-06: general-web sweep found no SEP number for x402.",
+            "Sibling sweep 2026-10-06: grep SEP-402|x402 on Stellar → q-defi-x402-on-stellar-what; no contradiction."
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -24864,8 +24744,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-20",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-02-23",
         "sources": [
           {
             "class": "A",
@@ -24891,45 +24771,40 @@
               {
                 "class": "A",
                 "ref": "https://stellar.org/enterprise-fund",
-                "observedAt": "2026-07-13",
-                "note": "Supports only SDF's live, source-reported 'portfolio totaling over $100m' wording; it does not define a reconciled valuation basis."
+                "observedAt": "2026-10-06",
+                "note": "'a venture-style fund'; 'Our investments span across five continents ... with our portfolio totaling over $100m.'"
               },
               {
                 "class": "A",
                 "ref": "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
-                "observedAt": "2026-07-13",
-                "note": "First-party 2023-08-15 treasury-versus-Enterprise-Fund distinction."
+                "observedAt": "2026-10-06",
+                "note": "Dated 2023-08-15: 'The investment was made out of SDF's own cash treasury ... rather than the Enterprise Fund'."
               },
               {
                 "class": "D",
                 "ref": "https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/",
-                "observedAt": "2026-07-13",
-                "note": "Independent 2023-08-16 corroboration for the MoneyGram funding-source distinction, not for the live $100m portfolio metric."
+                "observedAt": "2026-10-06",
+                "note": "Independent 2023-08-16 report: 'the money came from the SDF treasury used for SDF operations, not its Enterprise Fund'."
+              },
+              {
+                "class": "D",
+                "ref": "Claude Code WebSearch query 'Stellar Enterprise Fund portfolio totaling over $100m SDF investments 2026'",
+                "observedAt": "2026-10-06",
+                "note": "General-web sweep repeats the 'over $100m' wording; no newer figure found."
               }
             ],
-            "note": "Legacy verdict: confirmed-with-metric-scope."
+            "note": "Re-confirmed 2026-10-06."
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "https://stellar.org/enterprise-fund",
-            "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
-            "https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/",
-            "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol metric-scope reviews",
-            "Sibling sweep: q-org-sdf-mandate-buckets and q-org-sdf-structure-mandate retain separate mandate/reserve semantics.",
-            "Structural re-form (negative-predicate): Shortened the sourcing fact and stated the MoneyGram funding taxonomy positively; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://stellar.org/enterprise-fund — showed a current venture-style Enterprise Fund page with portfolio wording over $100m.",
-            "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international — showed the MoneyGram investment came from SDF's cash treasury rather than the Enterprise Fund.",
-            "Sibling sweep 2026-08-27: grep Enterprise Fund|MoneyGram|cash treasury|portfolio totals → q-org-sdf-enterprise-fund, q-scf-ecosystem-listing-partner-jobs, q-scf-total-distributed, q-scf-vs-sdf-enterprise-fund; no contradiction"
-          ],
-          "rootCause": [
-            "Eval-side portfolio-value/cost-basis/cumulative-cash metric conflation.",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "solo://proj/49/todo/golden-truth-review--972",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live A 2026-10-06: https://stellar.org/enterprise-fund — venture-style fund; 'portfolio totaling over $100m'.",
+            "Live A 2026-10-06: https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international — dated 2023-08-15; MoneyGram funded from SDF cash treasury, not the Enterprise Fund.",
+            "Live D 2026-10-06: general-web sweep found the same 'over $100m' wording and no newer portfolio figure.",
+            "Sibling sweep 2026-10-06: grep Enterprise Fund → q-scf-vs-sdf-enterprise-fund, q-scf-total-distributed, q-scf-ecosystem-listing-partner-jobs, q-scf-how-to-apply; no contradiction."
           ]
         },
         "origin": "raven-next q-org-sdf-enterprise-fund"
@@ -26990,8 +26865,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-15",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-01-26",
         "sources": [
           {
             "class": "C",
@@ -27012,14 +26887,22 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "C",
-                "ref": "lumenloop.find_content_about_project(slug=redstone-finance) + scout.searchProjects(q=RedStone Finance)",
-                "observedAt": "2026-07-11"
-              },
-              {
                 "class": "A",
                 "ref": "https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "Heading 'Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment', datePublished 2026-06-04, dateModified 2026-09-01; HTML title now 'RedStone Adopts Stellar's SEP-40 Oracle Standard for RWA Markets'."
+              },
+              {
+                "class": "C",
+                "ref": "Stellar Raven connector execute: scout.searchProjects(q=RedStone Finance)",
+                "observedAt": "2026-10-06",
+                "note": "Scout lists Redstone Finance, slug redstone-finance, status Live, type Oracle."
+              },
+              {
+                "class": "C",
+                "ref": "Stellar Raven connector execute: lumenloop.search_content_semantic(RedStone SEP-40 data standard Stellar RWA moment)",
+                "observedAt": "2026-10-06",
+                "note": "LumenLoop still indexes the 2026-06-04 article; later RedStone SEP-40 posts are dated 2026-08-05 and 2026-08-26, so 'June 2026' still identifies one article."
               }
             ]
           },
@@ -27028,34 +26911,30 @@
             "verdict": "confirmed",
             "evidence": [
               {
-                "class": "E",
-                "ref": "stellarDocs.search_docs(query=SEP-40 oracle providers compatible price feeds)",
-                "observedAt": "2026-07-11"
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+                "observedAt": "2026-10-06",
+                "note": "'Publicly availble free price oracles are compatible with SEP40 ecosystem standard interface.'"
               },
               {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers#reflector-network",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md",
+                "observedAt": "2026-10-06",
+                "note": "SEP-40 'Oracle Consumer Interface', Draft, Version 0.1.0."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-            "Sibling sweep: RedStone/SEP-40 mentions in the owned battery reviewed; no contradictory durable key fact found",
-            "Structural re-form (long-fact): Shortened two facts and split the SEP-40 explanation; truth unchanged.",
-            "Live re-check 2026-08-29: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ — the dated operator article names RedStone and its Stellar SEP-40 rollout.",
-            "Live re-check 2026-08-29: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ — the operator article describes a live production Stellar oracle implementation for Soroban contracts.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/oracles/oracle-providers — the official Stellar page identifies public oracle feeds as SEP-40-compatible.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/oracles/oracle-providers — the official page describes price data used in smart-contract logic through oracle contracts.",
-            "Sibling sweep 2026-08-29: grep RedStone|Redstone Finance|RWA moment|SEP-40 → q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40; no contradiction."
-          ],
-          "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live A 2026-10-06: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ — article heading and 2026-06-04 publication unchanged; page metadata title changed (dateModified 2026-09-01).",
+            "Live C 2026-10-06: Scout searchProjects lists Redstone Finance as Live, type Oracle.",
+            "Live A 2026-10-06: https://developers.stellar.org/docs/data/oracles/oracle-providers — public price oracles 'compatible with SEP40 ecosystem standard interface'.",
+            "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md — Oracle Consumer Interface.",
+            "Sibling sweep 2026-10-06: grep RedStone → q-defi-reflector-oracle, q-sor-reflector-integration-code, q-eco-defi-market-map, q-scf-cross-reflector-rounds-current; no contradiction."
           ]
         },
         "origin": "authored 2026-07 (cross-service)"
@@ -34832,8 +34711,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-15",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-02-16",
         "sources": [
           {
             "class": "A",
@@ -34851,13 +34730,21 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "https://stellar.org/use-cases/tokenization",
-                "observedAt": "2026-07-11"
+                "ref": "https://developers.stellar.org/docs/tokens/publishing-asset-info",
+                "observedAt": "2026-10-06",
+                "note": "Anchored-asset issuers publish anchor_asset, redemption_instructions ('Instructions to redeem your token for the underlying asset'), and attestation_of_reserve."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+                "observedAt": "2026-10-06",
+                "note": "SEP-1 defines attestation_of_reserve, redemption_instructions, and the regulated (SEP-8) flag."
+              },
+              {
+                "class": "A",
+                "ref": "https://stellar.org/use-cases/tokenization",
+                "observedAt": "2026-10-06",
+                "note": "Tokenization relies on 'regulated financial institutions providing custody services'. The legal-claim element is a design principle, not a quoted line."
               }
             ]
           },
@@ -34867,13 +34754,15 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "https://stellar.org/use-cases/tokenization",
-                "observedAt": "2026-07-11"
+                "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+                "observedAt": "2026-10-06",
+                "note": "'When AUTH_REQUIRED_FLAG is enabled, an issuer must approve an account before that account can hold its asset'; AUTH_REVOCABLE_FLAG lets an issuer freeze a trustline; clawback is documented on the same page."
               },
               {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
-                "observedAt": "2026-07-11"
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+                "observedAt": "2026-10-06",
+                "note": "Tokenization model comparison: Stellar Asset with issuer flags; SEP-41 contract tokens with custom logic; SEP-57 T-REX with built-in compliance rules."
               }
             ]
           },
@@ -34882,14 +34771,22 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://stellar.org/use-cases/tokenization",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+                "observedAt": "2026-10-06",
+                "note": "SEP-41 'Soroban Token Interface' (Draft, Version 0.5.2, updated 2026-08-24)."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "SEP-56 'Tokenized Vault Standard', Status Draft, Version 0.1.2; vaults take deposits and mint shares."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+                "observedAt": "2026-10-06",
+                "note": "Official guide calls contract tokens SEP-41 implementations."
               }
             ]
           },
@@ -34898,14 +34795,16 @@
             "verdict": "contradicted",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://stellar.org/use-cases/tokenization",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+                "observedAt": "2026-10-06",
+                "note": "Scope is deposits, withdrawals, and asset-to-share conversions; it defines no reserve or attestation mechanism."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+                "observedAt": "2026-10-06",
+                "note": "Reserve attestation is a separate SEP-1 attestation_of_reserve URL field."
               }
             ]
           },
@@ -34915,33 +34814,29 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "https://stellar.org/use-cases/tokenization",
-                "observedAt": "2026-07-11"
+                "ref": "https://developers.stellar.org/docs/tokens/publishing-asset-info",
+                "observedAt": "2026-10-06",
+                "note": "Anchored-token issuers still publish redemption instructions and reserve attestations."
               },
               {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
-                "observedAt": "2026-07-11"
+                "class": "A",
+                "ref": "https://stellar.org/use-cases/tokenization",
+                "observedAt": "2026-10-06",
+                "note": "Tokenization relies on regulated custody service providers."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "https://stellar.org/use-cases/tokenization",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
-            "Structural re-form (long-fact): Split three long facts into five one-predicate facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the current official guide confirms legal, custody/reserve, eligibility, and redemption considerations for tokenized assets.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/control-asset-access and https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the official guides confirm classic authorization/clawback and custom Soroban compliance controls for regulated transfers.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current proposal defines SEP-41 as the Soroban token interface.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md — the current proposal marks SEP-56 Draft and defines a tokenized-vault standard.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md — SEP-56 covers vault deposits, shares, and withdrawals, not real-world attestation.",
-            "Sibling sweep 2026-08-29: grep SEP-0056|SEP-56|SEP-41|tokenized vault|custody.*reserve|regulated transfers → q-rwa-tokenization-standards, q-rwa-stellar-vs-erc20-regulated, q-sep-41-token-interface, q-sep-catalog-list, q-soroban-oz-token, q-tool-sep41-status-live; no contradiction."
-          ],
-          "rootCause": [
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md — Status Draft, Version 0.1.2, tokenized-vault scope.",
+            "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — Soroban Token Interface, Version 0.5.2 (updated 2026-08-24; the golden states only that SEP-41 is a token interface).",
+            "Live A 2026-10-06: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/tokens/anatomy-of-an-asset, and https://developers.stellar.org/docs/tokens/publishing-asset-info — issuer flags, tokenization model comparison, redemption instructions, and reserve attestation; B: SEP-1 defines the same fields.",
+            "Live A 2026-10-06: https://stellar.org/use-cases/tokenization — regulated custody providers and native asset controls. Observation (no truth change): the official tokenization comparison now names SEP-57 T-REX (Draft, Version 0.4.0, updated 2026-09-08) for regulated tokens; the golden does not deny it.",
+            "Sibling sweep 2026-10-06: grep SEP-56|SEP-0056|tokenized vault → no other case; no contradiction."
           ]
         },
         "origin": "kaan rwa-tokenization-stellar"
@@ -40384,8 +40279,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-15",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-02-09",
         "sources": [
           {
             "class": "B",
@@ -40399,32 +40294,19 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-            "Live scout.searchResearch result quoting SEP-0006 status and canonical URL, 2026-07-13",
-            "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
-            "solo://proj/49/scratchpad/24-hour-adversarial--629#sol-box-review",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
-            "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; golden truth unchanged.",
-            "Improvement finding read 2026-08-27: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md; disputed claim: official Docs omit SEP-6's interactive-component deprecation in favor of SEP-24.",
-            "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-            "Sibling sweep 2026-08-27: grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction",
-            "Structural re-form (long-fact): Shortened both SEP-6 lifecycle facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP-6 preamble says its interactive components are deprecated in favor of SEP-24.",
-            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current Active SEP defines the programmatic Deposit and Withdrawal API.",
-            "Sibling sweep 2026-08-29: grep SEP-6|SEP-24|SEP-31|hosted UI → q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-sep-31-cross-border, and related anchor cases; no contradiction"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — 'Active (Interactive components are deprecated in favor of SEP-24)'.",
+            "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — Hosted Deposit and Withdrawal, Active.",
+            "Live A 2026-10-06: https://developers.stellar.org/docs/learn/fundamentals/anchors — programmatic SEP-6 versus hosted SEP-24; no deprecation text.",
+            "Live E 2026-10-06: Stellar Docs search for 'SEP-6 interactive deprecated SEP-24' returns no deprecation text.",
+            "Improvement status 2026-10-06: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md is declined-upstream, so the grader caution stays durable.",
+            "Sibling sweep 2026-10-06: grep interactive components|SEP-6 deprecat → q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-comp-sep6-vs-sep12-roles; no contradiction."
           ],
           "rootCause": [
-            "freshness-drift",
-            "eval-authoring",
-            "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md"
           ]
         },
         "origin": "raven-next q-sep-6-24-deprecation",
@@ -40434,22 +40316,28 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
-                "observedAt": "2026-07-11",
-                "note": "Official anchor documentation distinguishes programmatic and hosted deposit/withdrawal integrations."
-              },
-              {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
-                "observedAt": "2026-07-11",
-                "note": "Fetched SEP-6 source retains the non-interactive API and marks interactive portions deprecated."
+                "observedAt": "2026-10-06",
+                "note": "'Status: Active (Interactive components are deprecated in favor of SEP-24)', Version 4.3.0, updated 2025-09-10."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-                "observedAt": "2026-07-11",
-                "note": "Fetched SEP-24 source defines the replacement hosted interactive flow."
+                "observedAt": "2026-10-06",
+                "note": "'Hosted Deposit and Withdrawal', Status Active, Version 3.8.0."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+                "observedAt": "2026-10-06",
+                "note": "Lists 'SEP-6: Programmatic Deposit and Withdrawal' and 'SEP-24: Hosted Deposit and Withdrawal'; still omits the deprecation (sd-009)."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs(query=SEP-6 interactive deprecated SEP-24)",
+                "observedAt": "2026-10-06",
+                "note": "No hit contains the deprecation text; consistent with declined-upstream sd-009."
               }
             ]
           }
@@ -41283,8 +41171,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-15",
+        "asOf": "2026-10-06",
+        "reverifyBy": "2027-02-02",
         "sources": [
           {
             "class": "A",
@@ -41307,17 +41195,20 @@
               {
                 "class": "A",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "Prefix `\"Stellar Signed Message:\\n\"`; 'messageHash = SHA256(encodedMessage)'; sign messageHash with ed25519."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+                "observedAt": "2026-10-06",
+                "note": "SEP53_PREFIX = \"Stellar Signed Message:\\n\"; prefixed, hashed with SHA-256, signed with ed25519."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/stellar/js-stellar-sdk/blob/main/src/base/keypair.ts",
+                "observedAt": "2026-10-06",
+                "note": "MESSAGE_PREFIX 'Stellar Signed Message:\\n'; signMessage hashes with SHA-256."
               }
             ]
           },
@@ -41328,17 +41219,14 @@
               {
                 "class": "A",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "Preamble: Status Final, Created 2025-02-01, Updated 2026-06-18, Version 1.0.0."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
+                "observedAt": "2026-10-06",
+                "note": "sep-0053.md is the current master file."
               }
             ]
           },
@@ -41347,19 +41235,52 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
+                "class": "B",
+                "ref": "https://github.com/stellar/js-stellar-sdk/blob/main/src/base/keypair.ts",
+                "observedAt": "2026-10-06",
+                "note": "signMessage and verifyMessage."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/StellarCN/py-stellar-base/blob/main/stellar_sdk/keypair.py",
+                "observedAt": "2026-10-06",
+                "note": "sign_message and verify_message."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/lightsail-network/java-stellar-sdk",
+                "observedAt": "2026-10-06",
+                "note": "GitHub code search: signMessage in src/main/java/org/stellar/sdk/KeyPair.java."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Soneso/stellar_flutter_sdk",
+                "observedAt": "2026-10-06",
+                "note": "GitHub code search: documentation/sep/sep-53.md and SEP-0053 compatibility matrix."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Soneso/stellar-ios-mac-sdk",
+                "observedAt": "2026-10-06",
+                "note": "GitHub code search: signMessage in stellarsdk/crypto/KeyPair.swift."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Soneso/stellar-php-sdk",
+                "observedAt": "2026-10-06",
+                "note": "GitHub code search: signMessage in Soneso/StellarSDK/Crypto/KeyPair.php."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Soneso/kmp-stellar-sdk",
+                "observedAt": "2026-10-06",
+                "note": "GitHub code search: docs/sep/sep-53.md and SEP-0053 compatibility matrix."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+                "observedAt": "2026-10-06",
+                "note": "Source defines `stellar message sign` and `verify` subcommands (read, not run)."
               }
             ]
           },
@@ -41368,19 +41289,16 @@
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
-              },
-              {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "'Standard Web Wallet API Interface', Status Draft, Version 1.2.1."
+              },
+              {
+                "class": "A",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+                "observedAt": "2026-10-06",
+                "note": "SEP-53 defines the signing format itself."
               }
             ]
           },
@@ -41391,17 +41309,8 @@
               {
                 "class": "A",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "The payload is only prefix plus message; verification uses one ed25519 public key; no nonce or expiry field."
               }
             ]
           },
@@ -41412,17 +41321,14 @@
               {
                 "class": "A",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "Signing is off-chain over a hash; no transaction is built or submitted."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+                "observedAt": "2026-10-06",
+                "note": "The CLI signs and verifies locally."
               }
             ]
           },
@@ -41433,39 +41339,22 @@
               {
                 "class": "A",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-cli",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-10-06",
+                "note": "Motivation: without a standard for how messages are prefixed and hashed, 'different implementations risk incompatibility'."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-06",
+          "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
           "evidence": [
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
-            "https://github.com/stellar/stellar-cli",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
-            "Structural re-form (negative-predicate): Split the algorithm fact and moved limitations into avoid; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — showed the exact prefix and exact message-byte payload.",
-            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — showed one SHA-256 followed by Ed25519 signing of its 32-byte digest.",
-            "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/issues/1492, https://github.com/SCF-Public-Goods-Maintenance/scf-public-goods-maintenance.github.io/issues/43, and https://github.com/Soneso/kmp-stellar-sdk — showed the listed SDK and stellar CLI support.",
-            "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/issues/1492 and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — showed release-specific implementation and SEP-43 as a Draft wallet API.",
-            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — limited one signature to proof of one private key.",
-            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — defined only a prefix-plus-message payload, with no separate nonce or expiry field.",
-            "Sibling sweep 2026-08-27: SEP-53|Stellar Signed Message|SEP-43|M-address|contract-account → q-sep53-message-signing, q-sep-53-sign-verify-message, q-sep-43-web-wallet-api, q-sep-catalog-list, q-sep-45-contract-auth, q-smart-account-scoped-policy-signers, q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery, q-tool-smart-wallet-repos-discovery, q-tool-wallets-comparison, q-infra-secp256r1-passkeys, q-ti-custodial-account-generation-c-address, q-sor-contract-trustlines-c-address, q-anchor-platform-what, q-sep-12-kyc, q-raph-offramp-xlm-usdc, q-crp-sdp-operation, q-stellar-recurring-payments, q-sor-cross-socketfi-auth, q-edge-inject-ignore-instructions, q-edge-exchange-memo-lost-funds; no contradiction."
-          ],
-          "rootCause": [
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+            "Live A 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — Final, Version 1.0.0, Updated 2026-06-18; prefix, single SHA-256, ed25519.",
+            "Live B 2026-10-06: js-stellar-sdk src/base/keypair.ts, py-stellar-base stellar_sdk/keypair.py, and stellar-cli commands/message/mod.rs implement SEP-53.",
+            "Live B 2026-10-06: GitHub code search finds SEP-53 signMessage support in java-stellar-sdk, stellar_flutter_sdk, stellar-ios-mac-sdk, stellar-php-sdk, and kmp-stellar-sdk.",
+            "Live B 2026-10-06: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — Draft, Version 1.2.1.",
+            "Sibling sweep 2026-10-06: grep SEP-53|Stellar Signed Message → q-sep-53-sign-verify-message (Final, updated 2026-06-18); no contradiction."
           ]
         },
         "origin": "kaan sep53-sign-verify-message"

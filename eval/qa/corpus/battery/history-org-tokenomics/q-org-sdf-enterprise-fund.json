@@ -30,8 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-13",
-    "reverifyBy": "2026-10-20",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-02-23",
     "sources": [
       {
         "class": "A",
@@ -57,45 +57,40 @@
           {
             "class": "A",
             "ref": "https://stellar.org/enterprise-fund",
-            "observedAt": "2026-07-13",
-            "note": "Supports only SDF's live, source-reported 'portfolio totaling over $100m' wording; it does not define a reconciled valuation basis."
+            "observedAt": "2026-10-06",
+            "note": "'a venture-style fund'; 'Our investments span across five continents ... with our portfolio totaling over $100m.'"
           },
           {
             "class": "A",
             "ref": "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
-            "observedAt": "2026-07-13",
-            "note": "First-party 2023-08-15 treasury-versus-Enterprise-Fund distinction."
+            "observedAt": "2026-10-06",
+            "note": "Dated 2023-08-15: 'The investment was made out of SDF's own cash treasury ... rather than the Enterprise Fund'."
           },
           {
             "class": "D",
             "ref": "https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/",
-            "observedAt": "2026-07-13",
-            "note": "Independent 2023-08-16 corroboration for the MoneyGram funding-source distinction, not for the live $100m portfolio metric."
+            "observedAt": "2026-10-06",
+            "note": "Independent 2023-08-16 report: 'the money came from the SDF treasury used for SDF operations, not its Enterprise Fund'."
+          },
+          {
+            "class": "D",
+            "ref": "Claude Code WebSearch query 'Stellar Enterprise Fund portfolio totaling over $100m SDF investments 2026'",
+            "observedAt": "2026-10-06",
+            "note": "General-web sweep repeats the 'over $100m' wording; no newer figure found."
           }
         ],
-        "note": "Legacy verdict: confirmed-with-metric-scope."
+        "note": "Re-confirmed 2026-10-06."
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "https://stellar.org/enterprise-fund",
-        "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
-        "https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/",
-        "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol metric-scope reviews",
-        "Sibling sweep: q-org-sdf-mandate-buckets and q-org-sdf-structure-mandate retain separate mandate/reserve semantics.",
-        "Structural re-form (negative-predicate): Shortened the sourcing fact and stated the MoneyGram funding taxonomy positively; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://stellar.org/enterprise-fund — showed a current venture-style Enterprise Fund page with portfolio wording over $100m.",
-        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international — showed the MoneyGram investment came from SDF's cash treasury rather than the Enterprise Fund.",
-        "Sibling sweep 2026-08-27: grep Enterprise Fund|MoneyGram|cash treasury|portfolio totals → q-org-sdf-enterprise-fund, q-scf-ecosystem-listing-partner-jobs, q-scf-total-distributed, q-scf-vs-sdf-enterprise-fund; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-side portfolio-value/cost-basis/cumulative-cash metric conflation.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "solo://proj/49/todo/golden-truth-review--972",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+        "Live A 2026-10-06: https://stellar.org/enterprise-fund — venture-style fund; 'portfolio totaling over $100m'.",
+        "Live A 2026-10-06: https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international — dated 2023-08-15; MoneyGram funded from SDF cash treasury, not the Enterprise Fund.",
+        "Live D 2026-10-06: general-web sweep found the same 'over $100m' wording and no newer portfolio figure.",
+        "Sibling sweep 2026-10-06: grep Enterprise Fund → q-scf-vs-sdf-enterprise-fund, q-scf-total-distributed, q-scf-ecosystem-listing-partner-jobs, q-scf-how-to-apply; no contradiction."
       ]
     },
     "origin": "raven-next q-org-sdf-enterprise-fund"

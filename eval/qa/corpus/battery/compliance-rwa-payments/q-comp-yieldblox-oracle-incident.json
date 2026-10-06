@@ -36,8 +36,8 @@
     },
     "domain": "mixed",
     "status": "mixed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-10-08",
+    "asOf": "2026-10-06",
+    "reverifyBy": "2027-03-02",
     "sources": [
       {
         "class": "B",
@@ -82,19 +82,22 @@
         "verdict": "confirmed",
         "evidence": [
           {
-            "class": "B",
-            "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-            "observedAt": "2026-07-28"
+            "class": "F",
+            "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff",
+            "observedAt": "2026-10-06",
+            "note": "Horizon: successful, ledger 61340384, created 2026-02-22T00:22:09Z."
           },
           {
-            "class": "D",
-            "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
-            "observedAt": "2026-07-28"
+            "class": "B",
+            "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
+            "observedAt": "2026-10-06",
+            "note": "README: SDEX price manipulation of illiquid USTRY 'feeding into the Reflector oracle'; USTRY inflated ~100x from ~$1.06 to ~$106.74."
           },
           {
             "class": "D",
             "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "'On February 22, 2026, a lending pool operated by YieldBlox DAO on Stellar's Blend V2 was exploited'; the attacker manipulated the USTRY/USDC SDEX market."
           }
         ]
       },
@@ -104,23 +107,21 @@
         "evidence": [
           {
             "class": "F",
-            "ref": "https://stellar.expert/explorer/public/tx/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff",
-            "observedAt": "2026-07-28"
+            "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+            "observedAt": "2026-10-06",
+            "note": "Effects: contract_debited and account_credited 1000196.7040837 USDC."
           },
           {
             "class": "F",
-            "ref": "https://stellar.expert/explorer/public/tx/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657",
-            "observedAt": "2026-07-28"
+            "ref": "https://horizon.stellar.org/transactions/3e81a3f7b6e17cc22d0a1f33e9dcf90e5664b125b9e61f108b8d2f082f2d4657/effects",
+            "observedAt": "2026-10-06",
+            "note": "Effects: contract_debited and account_credited 61249278.3064502 native XLM; created 2026-02-22T00:24:27Z."
           },
           {
             "class": "B",
             "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-            "observedAt": "2026-07-28"
-          },
-          {
-            "class": "D",
-            "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "TX1 1,000,196.70 USDC and TX2 61,249,278.31 XLM."
           }
         ]
       },
@@ -131,13 +132,14 @@
           {
             "class": "B",
             "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-            "observedAt": "2026-07-28",
-            "note": "Decoded pre-state shows the roughly 14,000 USDC liability already existed; the exploit call amount is 10001967040837 in seven-decimal units."
+            "observedAt": "2026-10-06",
+            "note": "Pre-state still lists 'USDC liability (reserve 1) 119,028,268,790 d-tokens (~14,000 USDC)'; the exploit transfer is 10001967040837 in seven-decimal units."
           },
           {
             "class": "F",
-            "ref": "https://stellar.expert/explorer/public/tx/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff",
-            "observedAt": "2026-07-28"
+            "ref": "https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects",
+            "observedAt": "2026-10-06",
+            "note": "The ledger transfer is 1000196.7040837 USDC, not 1,014,196.7040837."
           }
         ]
       },
@@ -146,16 +148,16 @@
         "verdict": "unverifiable",
         "evidence": [
           {
-            "class": "A",
-            "ref": "https://x.com/i/article/2029281732231344128",
-            "observedAt": "2026-07-28",
-            "note": "The operator article was not accessible through the reviewed live fetches, and no accessible Script3 repository or notice recovered this exact net-loss attribution."
-          },
-          {
             "class": "B",
             "ref": "https://github.com/script3/yieldblox-incident-remediation",
-            "observedAt": "2026-07-28",
-            "note": "Remediation data and execution logs do not establish the claimed $10.5M net-loss estimate."
+            "observedAt": "2026-10-06",
+            "note": "Repository files (data/aggregate_loss_*.csv, data/backstop_remediation.csv, logs) still do not state a $10.5M net-loss estimate."
+          },
+          {
+            "class": "D",
+            "ref": "Claude Code WebSearch queries 'Script3 YieldBlox \"$10.5M\" net loss estimate' and 'Script3 YieldBlox remediation liquidated users excluded backstop March 20 2026'",
+            "observedAt": "2026-10-06",
+            "note": "General-web sweep found no accessible Script3 primary source for a $10.5M net-loss figure."
           }
         ]
       },
@@ -166,13 +168,14 @@
           {
             "class": "D",
             "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "'Approximately 48,069,094 XLM was effectively quarantined'; funds 'remained visible onchain but were prevented from further movement'; the team was 'working to recoup' a further amount."
           },
           {
-            "class": "B",
-            "ref": "https://github.com/script3/yieldblox-incident-remediation",
-            "observedAt": "2026-07-28",
-            "note": "Separate supplier and backstop remediation records do not establish attacker repayment."
+            "class": "D",
+            "ref": "https://rekt.news/yieldblox-rekt",
+            "observedAt": "2026-10-06",
+            "note": "'Tier 1 Validators scrambled to freeze 48 million XLM'; after the Security Council's bounty message 'the attacker's response was to keep laundering'. No repayment reported."
           }
         ]
       },
@@ -183,17 +186,20 @@
           {
             "class": "A",
             "ref": "https://x.com/script3official/status/2027462360294953200",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "Read via the api.fxtwitter.com mirror: posted 2026-02-27 19:14 UTC; depositor remediation fully distributed; payments under 0.01 skipped; claimable balances for missing trustlines."
           },
           {
             "class": "A",
             "ref": "https://x.com/script3official/status/2035066332887023761",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "Read via the api.fxtwitter.com mirror: posted 2026-03-20 18:49 UTC; backstop remediation of 1.45M BLND-USDC LP tokens; 'no remediation for those liquidated during the manipulation'."
           },
           {
             "class": "B",
             "ref": "https://github.com/script3/yieldblox-incident-remediation",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "Commits dated 2026-02-27 (execution logs) and 2026-03-20 (backstop remediation); src/execute.js skips below-threshold amounts and nonexistent destination accounts."
           }
         ]
       },
@@ -204,45 +210,35 @@
           {
             "class": "B",
             "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC",
-            "observedAt": "2026-07-28"
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/yieldblox/oracle-aggregator",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-10-06",
+            "note": "Oracle Adapter lastprice returned the fresh manipulated USTRY price; 'Health factor with manipulated oracle ($106.74/USTRY)' passes."
           },
           {
             "class": "D",
-            "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
-            "observedAt": "2026-07-28"
+            "ref": "https://rekt.news/yieldblox-rekt",
+            "observedAt": "2026-10-06",
+            "note": "The Oracle Adapter 'returned the latest price and passed the full 100x inflation straight through'; it 'didn't take a median'."
+          },
+          {
+            "class": "D",
+            "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
+            "observedAt": "2026-10-06",
+            "note": "Reflector pulled the manipulated SDEX price and updated its feed before the borrows."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-10-06",
+      "by": "golden-truth near-due re-verification 2026-10-06 (brief tmp/2026-10-06-maintenance/brief-reverify.md; single-session author, Claude Opus 5.5; report tmp/reverify-report.md)",
       "evidence": [
-        "Production scout.searchResearch(source=\"incident\", query=\"YieldBlox Reflector oracle manipulation\") returned a current incident synthesis anchored to Blockaid; direct Blockaid and BlockSec reports independently confirmed the event date, mechanism and rounded transfers.",
-        "The PoC's decoded transaction calls give 1,000,196.7040837 USDC and 61,249,278.3064502 XLM; its pre-state separately shows the roughly 14,000 USDC liability.",
-        "Script3's remediation repository and dated notices confirm the two remediation dates and handling, but the reviewed live sources did not prove attacker repayment or recover the prior Script3 $10.5M net-loss attribution.",
-        "improvements/stellar-light-scout/sls-022-yieldblox-incident-fact-model.md",
-        "improvements/lumenloop/ll-011-yieldblox-incident-unit-status-errors.md",
-        "solo://proj/49/todo/2026-07-28-reconcile-lane-c--1251",
-        "24h-commit adversarial review (todo 1254, 2026-07-28): golden.notes still asserted 'Script3 to compensate depositors' as settled while the verified answer treats depositor compensation and recovery as unverified; the note now records Script3's announced remediation/backstop process with compensation and recovery explicitly unverified. Internal-consistency repair only — no new external source consulted.",
-        "Structural re-form (negative-predicate): split four compound facts into five atomic facts and left recovery, staleness, and TWAP traps in golden.avoid; truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the PoC still identifies the YieldBlox USTRY-SDEX/Reflector manipulation path.",
-        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the PoC still reports 61,249,278.31 XLM and 1,000,196.70 USDC transfers.",
-        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the decoded pre-state still labels roughly 14,000 USDC as an existing liability and uses a source-specific valuation.",
-        "Live re-check 2026-08-27: https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — Blockaid still reports 48,069,094 XLM as quarantined.",
-        "Live re-check 2026-08-27: https://github.com/script3/yieldblox-incident-remediation — the repository still contains the supplier and backstop remediation records with exclusions.",
-        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the decoded flow still shows the manipulated price passing the pool health check.",
-        "Sibling sweep 2026-08-27: grep YieldBlox|48M XLM|61,249,278|14,000 USDC → q-hist-yieldblox-v2-2026-exploit, q-soroban-oracle-defensive-consumption, q-defi-etherfuse-stablebonds; no contradiction"
-      ],
-      "rootCause": [
-        "Eval-authoring flaw: the prior golden added a pre-existing liability to the exploit call amount and promoted an inaccessible operator net-loss attribution to verified fact; todo 1251 tracks the cross-case repair.",
-        "Different reports still use different incident-time valuations, quarantine and remediation labels, so the case remains mixed rather than forcing one loss/recovery number.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "Re-verified unchanged 2026-10-06; report tmp/reverify-report.md.",
+        "Live F 2026-10-06: Horizon transactions ae721cac… and 3e81a3f7… are successful on 2026-02-22 and their effects transfer 1000196.7040837 USDC and 61249278.3064502 XLM.",
+        "Live B 2026-10-06: https://github.com/DK27ss/YieldBlox-10M-PoC — ~$10.86M valuation, ~14,000 USDC pre-existing liability, fresh-value path unchanged.",
+        "Live D 2026-10-06: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — 48,069,094 XLM quarantined; https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain — date and mechanism.",
+        "Live A 2026-10-06: Script3 posts 2027462360294953200 (2026-02-27) and 2035066332887023761 (2026-03-20), read via the api.fxtwitter.com mirror; Live B: https://github.com/script3/yieldblox-incident-remediation commit dates and skip rules.",
+        "Web sweep 2026-10-06 (YieldBlox recovery/repayment/net loss): no source reports attacker repayment, recovery of quarantined funds, or a Script3 $10.5M net-loss figure.",
+        "Sibling sweep 2026-10-06: grep YieldBlox|61,249,278|48,069,094 → q-hist-yieldblox-v2-2026-exploit plus ten topical mentions; read q-hist-yieldblox-v2-2026-exploit; no contradiction."
       ]
     },
     "origin": "raven-next q-comp-yieldblox-oracle-incident"
