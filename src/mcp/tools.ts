@@ -31,6 +31,7 @@ import {
 } from "../catalog/search.ts";
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { getCatalog } from "../catalog/load.ts";
+import { ARTIFACT_TTL_MS } from "../artifacts/store.ts";
 import { SEARCH_KINDS, RETRIEVAL_REASONS } from "../catalog/types.ts";
 import type { ExecuteCallContext, ExecuteRunner } from "../executor/run.ts";
 import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
@@ -276,9 +277,9 @@ Most questions have a primary family and a corroborating one — pick both up fr
 
 ${UPSTREAM_DOC_LINKS}`;
 
-export const EXECUTE_DESCRIPTION = `Execute JavaScript in a sandboxed Worker isolate with access to the service SDKs discovered via the \`search\` tool.
+export const EXECUTE_DESCRIPTION = `Execute JavaScript in a sandboxed Worker isolate with no network access (\`fetch()\` fails). Scripts can call only catalogued \`lumenloop.*\`, \`scout.*\`, and \`stellarDocs.*\` operations, found with \`search\`, plus \`codemode.*\` helpers.
 
-Calls return one text result; failures set \`isError\`. The sandbox result, console output, and thrown errors each have a separate model-boundary cap of roughly 6k tokens by default. Service-call payloads live under \`.data\`. The sandbox has no direct network access, and \`fetch()\` fails.
+Calls return one text result; failures set \`isError\`. The result, console output, and thrown errors each have a separate cap of roughly 6k tokens. Service-call payloads live under \`.data\`.
 
 Write an async arrow function in JavaScript that returns the result. One script should compose MANY operations: broad discovery calls first (in parallel where independent), then targeted deeper calls parameterized by their results, then return one merged, compact value.
 
@@ -309,7 +310,7 @@ Every service call resolves (never throws) to either { ok: true, data } or { ok:
 - \`codemode.describe("<exact id>")\` is the canonical detail step after \`search\`: for an operation it returns the FULL rendered signature (complete output type, even where the search hit showed a compacted stub), the raw inputSchema/outputSchema as data, and a \`usage\` line; for a skill, its \`availableSections\` plus the skill.read call to make; for a skill section, the parent skill id, section key, and the exact skill.read call. Reach for it whenever a search hit's stub, description, or field names aren't enough to write the call or select payload fields.
 - Skills are operational playbooks — tested build/integration/recovery procedures: \`codemode.skill.read("<exact skill id>", { sections: ["<section-slug>"] })\`; section keys come from search hits' \`availableSections\` or the spec's x-skill-index. \`{ sections }\` is the ONLY option (unknown option keys are rejected, not ignored). It resolves to { ok: true, id, content | sections, availableSections, notice? } — skill content sits at the TOP LEVEL of the result, not under \`.data\` (that envelope is for service calls); failures are { ok: false, error } as usual. Large reads come back whole for in-sandbox use (grep/aggregate freely) with an advisory \`notice\` — but RETURN sections or aggregates from the script, not whole bodies. Pair build skill sections with \`stellarDocs.search_*\` for current reference truth. When designing a new contract, app, integration, protocol, or infrastructure component, also run one prior-art pass in the SAME script: at most two \`scout.searchRepos\`/\`scout.searchProjects\` discovery calls, one focused detail call, and three returned candidates. Use it for scope, pitfalls, and build-vs-integrate decisions; return exact URL, role/applicability, freshness/provenance, and limitations, with license/audit/deployment/compatibility unknown unless source-backed. It is never API, security, maintenance, or production authority. Skip it for single-step how-tos and debugging.
 - A few skills are RUNNABLE: \`codemode.skill.run("<exact skill id>", input)\` executes that skill's data-gathering pipeline host-side in one call, resolving to the ordinary service-call envelope ({ ok: true, data } | { ok: false, error }) with \`data.calls\` auditing every constituent call it made — ids are exact-match (runnable search hits and \`codemode.describe\` show the exact callable line and input type), and \`skill.read\` on the same id still returns the prose playbook: run gathers the data, read carries the judgment steps.
-- If a returned result is truncated, the visible tail is a source-basis block. When it says an artifact is available, call \`codemode.artifact.info(id)\` for metadata or \`codemode.artifact.read(id)\` for the full redacted result inside the same authenticated execute session; read it in the sandbox, then return a compact projection. Artifact reads resolve to the same envelope shape and are capped per execute.
+- If a returned result is truncated, the visible tail is a source-basis block. When it says an artifact is available, call \`codemode.artifact.info(id)\` for metadata or \`codemode.artifact.read(id)\` for the full redacted result inside the same authenticated execute session; read it in the sandbox, then return a compact projection. For a signed-in account, Raven stores the full redacted result privately for that account for ${ARTIFACT_TTL_MS / 86_400_000} days. Artifact reads resolve to the same envelope shape and are capped per execute.
 - Do NOT use \`fetch\` — the sandbox has no network access; it will throw. All I/O goes through the service globals.
 - Do NOT use TypeScript syntax — no type annotations, interfaces, or generics. Plain JavaScript only.
 - Do NOT define named functions and then call them — just write the arrow function body directly.
@@ -474,7 +475,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         // output. That cache changes no user or upstream state, so execute stays read-only.
         readOnlyHint: true,
         destructiveHint: false,
-        openWorldHint: true
+        openWorldHint: false
       }
     },
     async (args) => {

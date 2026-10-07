@@ -14,7 +14,7 @@ export const EXPECTED_TOOL_METADATA = {
       title: "Run Stellar research code",
       readOnlyHint: true,
       destructiveHint: false,
-      openWorldHint: true
+      openWorldHint: false
     }
   }
 } as const;
