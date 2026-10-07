@@ -57,13 +57,18 @@ import {
 
 export const JUDGE_MODEL = "claude-sonnet-5";
 /**
- * Stall handling for one judge call. The CLI owns request timeouts and
- * retries, so a stalled request still ends in a result envelope that reports
- * its cost. The CLI waits up to 180 s for a first response byte by default; a
- * harness kill at that point loses the cost and stops a budgeted method.
- * JUDGE_TIMEOUT_MS is only a backstop above the CLI's own worst case:
- * (1 + JUDGE_CLI_MAX_RETRIES) requests of at most JUDGE_CLI_API_TIMEOUT_MS each,
- * plus retry backoff.
+ * Stall handling for one judge call. A judge CLI that the harness kills prints
+ * no cost, and a budgeted method stops on a missing cost. So the CLI handles
+ * stalls first and reports its cost in the result envelope.
+ *
+ * The CLI waits about 180 s for first response headers by default, then
+ * retries. JUDGE_CLI_API_TIMEOUT_MS sets its fetch timeout, which also caps
+ * that first-header window. It does not cap a response body that keeps
+ * streaming. JUDGE_CLI_MAX_RETRIES limits ordinary retries only; fallback and
+ * recovery paths can add requests.
+ *
+ * JUDGE_TIMEOUT_MS is a chosen backstop, not a proven bound on the CLI. A kill
+ * at the backstop still stops the method.
  */
 export const JUDGE_CLI_API_TIMEOUT_MS = 240_000;
 export const JUDGE_CLI_MAX_RETRIES = 2;

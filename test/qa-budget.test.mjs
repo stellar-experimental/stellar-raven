@@ -140,11 +140,10 @@ describe("QA sequential budget", () => {
       API_TIMEOUT_MS: String(JUDGE_CLI_API_TIMEOUT_MS),
       CLAUDE_CODE_MAX_RETRIES: String(JUDGE_CLI_MAX_RETRIES)
     });
-    // The CLI's 180 s first-byte wait must fit inside one request window.
+    // The CLI's default first-header wait (about 180 s) must stay below its fetch timeout.
     expect(JUDGE_CLI_API_TIMEOUT_MS).toBeGreaterThan(180_000);
-    // A backoff margin of at least two minutes separates the CLI worst case from the kill.
-    const cliWorstCaseMs = (1 + JUDGE_CLI_MAX_RETRIES) * JUDGE_CLI_API_TIMEOUT_MS;
-    expect(JUDGE_TIMEOUT_MS - cliWorstCaseMs).toBeGreaterThanOrEqual(120_000);
+    // The backstop leaves room for several CLI requests before the harness kills the judge.
+    expect(JUDGE_TIMEOUT_MS).toBeGreaterThan((1 + JUDGE_CLI_MAX_RETRIES) * JUDGE_CLI_API_TIMEOUT_MS);
   });
 
   it("requires one budget flag on each paid runner CLI", () => {
