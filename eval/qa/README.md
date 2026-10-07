@@ -117,6 +117,9 @@ Comparable artifacts require a matching final postflight and `skippedReason: nul
 `--max-budget-usd` sets the total method cap.
 Each answering, judging, panel, or retry call receives only the remaining authorization.
 Each reported cost reduces the same ledger. Missing cost data invalidates the method.
+A judge CLI that the harness kills prints no cost, so the judge CLI owns stall handling.
+`judge.mjs` sets its fetch timeout and ordinary retry count, and the harness timeout is a chosen backstop.
+These settings reduce harness kills; they do not guarantee that every judge call reports a cost.
 Stored judging restores earlier spend; its new cap applies to the cumulative total.
 A reported total with missing costs is a lower bound, never a complete spend figure.
 

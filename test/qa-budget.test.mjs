@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { buildJudgeArgs, createPanelCaseBudget } from "../eval/qa/judge.mjs";
+import {
+  buildJudgeArgs,
+  buildJudgeEnv,
+  createPanelCaseBudget,
+  JUDGE_CLI_API_TIMEOUT_MS,
+  JUDGE_CLI_MAX_RETRIES,
+  JUDGE_TIMEOUT_MS
+} from "../eval/qa/judge.mjs";
 import {
   buildAgentSpawn,
   isRetryableAgentFailure,
@@ -124,6 +131,19 @@ describe("QA sequential budget", () => {
     const judgeArgs = buildJudgeArgs({ maxBudgetUsd: 0.25 });
     const judgeIndex = judgeArgs.indexOf("--max-budget-usd");
     expect(judgeArgs.slice(judgeIndex, judgeIndex + 2)).toEqual(["--max-budget-usd", "0.25"]);
+  });
+
+  it("lets the judge CLI end a stalled call before the harness backstop", () => {
+    const env = buildJudgeEnv({ PATH: "/bin", API_TIMEOUT_MS: "1", CLAUDE_CODE_MAX_RETRIES: "9" });
+    expect(env).toEqual({
+      PATH: "/bin",
+      API_TIMEOUT_MS: String(JUDGE_CLI_API_TIMEOUT_MS),
+      CLAUDE_CODE_MAX_RETRIES: String(JUDGE_CLI_MAX_RETRIES)
+    });
+    // The CLI's default first-header wait (about 180 s) must stay below its fetch timeout.
+    expect(JUDGE_CLI_API_TIMEOUT_MS).toBeGreaterThan(180_000);
+    // The backstop leaves room for several CLI requests before the harness kills the judge.
+    expect(JUDGE_TIMEOUT_MS).toBeGreaterThan((1 + JUDGE_CLI_MAX_RETRIES) * JUDGE_CLI_API_TIMEOUT_MS);
   });
 
   it("requires one budget flag on each paid runner CLI", () => {
