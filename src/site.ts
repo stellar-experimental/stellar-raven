@@ -42,7 +42,7 @@ export const OG_IMAGE = "https://raven.stellar.org/og.png";
 
 // Orange raven/star mark — reads as both a bird in flight and a four-point
 // stellar spark. Inline SVG data URI (favicon) + raw path (in-page marks).
-const RAVEN_PATH =
+export const RAVEN_PATH =
   "M2 14C8 13 10 9 12 4C14 9 16 13 22 14C16 14 13 16 12 20C11 16 8 14 2 14Z";
 export const FAVICON =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='" +

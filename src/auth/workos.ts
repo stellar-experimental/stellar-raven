@@ -48,6 +48,7 @@ import {
   termsPage
 } from "../site";
 import { OG_PNG_BASE64 } from "../og";
+import { BRAND_SVGS } from "../brand";
 import { logEvent } from "../observability.ts";
 import { hasAllowedRedirectTransport } from "./redirects";
 import { skillHealthResponse } from "../skills/canary.ts";
@@ -135,6 +136,11 @@ export const WorkOSAuthHandler = {
 
     if (isRead && url.pathname === "/og.png") {
       return ogImageResponse();
+    }
+
+    const brandSvg = isRead ? BRAND_SVGS.get(url.pathname) : undefined;
+    if (brandSvg) {
+      return new Response(brandSvg, { headers: BRAND_SVG_HEADERS });
     }
 
     if (isRead && url.pathname === "/robots.txt") {
@@ -590,6 +596,14 @@ function text(
     headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store", ...headers }
   });
 }
+
+// An SVG opened directly is a document, so the CSP blocks any script or fetch.
+const BRAND_SVG_HEADERS = {
+  "content-type": "image/svg+xml",
+  "cache-control": "public, max-age=86400",
+  "x-content-type-options": "nosniff",
+  "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'"
+};
 
 // Decoded once per isolate (the ~200KB base64 is a module constant): undefined
 // = not yet decoded, null = no image bundled, else the PNG bytes.
