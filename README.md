@@ -15,6 +15,18 @@ ecosystem skills.
 The server instructions also include a generated source-family map. Agents use it to plan which
 source family can answer a question.
 
+## Sources and operators
+
+| Source family | Run by | How Raven reads it |
+|---|---|---|
+| Lumenloop (`lumenloop.*`) | The independent Lumen Loop team ([lumenloop.com](https://lumenloop.com/)) | Its API, with an API key that Lumen Loop issued to Raven |
+| Stellar Light/Scout (`scout.*`) | The Stellar Light team ([stellarlight.xyz](https://stellarlight.xyz/)) | Its read-only public API, which it publishes for AI tools and agents |
+| Stellar Docs (`stellarDocs.*`) | The Stellar Development Foundation ([developers.stellar.org](https://developers.stellar.org/docs)) | The search index of the official docs site |
+
+Selected ecosystem skills come from Lumen Loop, OpenZeppelin, the Stellar Development Foundation,
+Stellar Light, and Trustless Work. Raven pins each source at a reviewed commit, and each skill keeps
+its own license. [`ecosystem-skills/README.md`](./ecosystem-skills/README.md) describes the pin set.
+
 ## Connect
 
 Add `https://raven.stellar.org/mcp` to an MCP client that supports streamable HTTP and OAuth.

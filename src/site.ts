@@ -1385,13 +1385,16 @@ ${docTrace()}
 <h2>The four source families</h2>
 <p>Each family answers different questions, and Raven's guidance tells your agent which to trust:</p>
 <ul>
-  <li><b>Lumenloop</b> (lumenloop.*) — community and editorial ecosystem intelligence: project
+  <li><b>Lumenloop</b> (lumenloop.*), run by the independent
+    <a href="https://lumenloop.com/" target="_blank" rel="noopener">Lumen Loop</a> team — community and editorial ecosystem intelligence: project
     directory details, published research, content, audio/video passages, and SCF funding context.</li>
-  <li><b>Scout</b> (scout.*) — the live ecosystem graph: projects, repos, builders, partners,
+  <li><b>Scout</b> (scout.*), run by the
+    <a href="https://stellarlight.xyz/" target="_blank" rel="noopener">Stellar Light</a> team — the live ecosystem graph: projects, repos, builders, partners,
     hackathons, audits, and stablecoins.</li>
-  <li><b>Stellar Docs</b> (stellarDocs.*) — official Stellar documentation. The authority for
+  <li><b>Stellar Docs</b> (stellarDocs.*), run by the Stellar Development Foundation — official Stellar documentation. The authority for
     protocol behavior, standards status, and API shapes.</li>
-  <li><b>Skills</b> (skills.*) — pinned operational playbooks read section by section: tested
+  <li><b>Skills</b> (skills.*), from Lumen Loop, OpenZeppelin, the Stellar Development Foundation, Stellar Light,
+    and Trustless Work — pinned operational playbooks read section by section: tested
     build, integration, security, and data procedures.</li>
 </ul>
 <p>Ecosystem facts start with Lumenloop or Scout. Protocol and standards claims stay unverified
