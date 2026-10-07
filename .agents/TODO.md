@@ -176,6 +176,21 @@ Acceptance checks:
 Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
+### Move answer-style guidance from server instructions into result data
+
+The Claude directory review (2026-10-07) found answer-style guidance in `BASE_SERVER_INSTRUCTIONS`:
+how to phrase an absence, when to abstain, and when to ask for context. The reviewer suggested
+result fields such as `inconclusive: true` or `as_of`, so the client can explain findings without
+being told how to talk. The review capture also cut off the 7,864-character `SERVER_INSTRUCTIONS`
+(the base plus the micro-map).
+
+Today the envelope carries `error.kind: "soft-empty"` and adapter hints. It has no general
+inconclusive flag or as-of field on ok results.
+
+Done when: ok results carry measured inconclusive and as-of signals, the instructions drop the
+phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
+measurement shows no regression in abstention or absence answers.
+
 ## Catalog build
 
 ### Close the excluded-path rewrite gap in the leak guards

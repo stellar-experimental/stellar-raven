@@ -191,8 +191,14 @@ describe("tool registration", () => {
     expect(descriptionPrefix).toContain("one text result");
     expect(descriptionPrefix).toContain("roughly 6k tokens");
     expect(descriptionPrefix).toContain("payloads live under `.data`");
-    expect(descriptionPrefix).toContain("no direct network access");
+    expect(descriptionPrefix).toContain("no network access");
+    expect(descriptionPrefix).toContain(
+      "can call only catalogued `lumenloop.*`, `scout.*`, and `stellarDocs.*` operations"
+    );
     expect(descriptionPrefix).toContain("`fetch()` fails");
+    expect(execute?.description).toContain(
+      "Raven stores the full redacted result privately for that account for 7 days."
+    );
   });
 });
 
