@@ -13,6 +13,9 @@
  * src/executor/run → cloudflare:workers via @cloudflare/codemode), so its
  * thin fetch router is exercised through these same building blocks.
  */
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AuthorizationError, OAuthProvider, getOAuthApi } from "@cloudflare/workers-oauth-provider";
 import type { AuthRequest, OAuthHelpers } from "@cloudflare/workers-oauth-provider";
@@ -48,6 +51,8 @@ import { getDocCatalogCounts } from "../src/site";
 
 // ---------------------------------------------------------------------------
 // Stubs
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 function memoryKv(): KVNamespace & { store: Map<string, string> } {
   const store = new Map<string, string>();
@@ -651,6 +656,30 @@ describe("WorkOSAuthHandler", () => {
     expect(page).toContain("codemode.artifact.read");
     expect(response.headers.get("content-security-policy")).not.toContain("script-src");
     expect(page).not.toContain("<script");
+  });
+
+  it("serves the brand SVGs byte-identical to the assets/brand masters", async () => {
+    const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
+    for (const name of ["raven-icon.svg", "raven-logo-dark.svg", "raven-logo-light.svg"]) {
+      const response = await WorkOSAuthHandler.fetch(new Request(`https://mcp.test/${name}`), env);
+      expect(response.status, name).toBe(200);
+      expect(response.headers.get("content-type")).toBe("image/svg+xml");
+      expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+      expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
+      expect(await response.text(), name).toBe(
+        readFileSync(join(ROOT, "assets", "brand", name), "utf8")
+      );
+      const head = await WorkOSAuthHandler.fetch(
+        new Request(`https://mcp.test/${name}`, { method: "HEAD" }),
+        env
+      );
+      expect(head.status, name).toBe(200);
+    }
+    const favicon = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/raven-favicon.svg"),
+      env
+    );
+    expect(favicon.status).not.toBe(200);
   });
 
   it("HEAD /docs returns the public status and headers with no body", async () => {
