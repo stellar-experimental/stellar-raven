@@ -47,7 +47,7 @@ import {
   workosAuthenticateBody
 } from "../src/auth/workos";
 import { DEMO_COOKIE_NAME, verifyDemoCookie } from "../src/demo/auth";
-import { getDocCatalogCounts } from "../src/site";
+import { FAVICON, getDocCatalogCounts } from "../src/site";
 
 // ---------------------------------------------------------------------------
 // Stubs
@@ -658,28 +658,15 @@ describe("WorkOSAuthHandler", () => {
     expect(page).not.toContain("<script");
   });
 
-  it("serves the brand SVGs byte-identical to the assets/brand masters", async () => {
-    const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
+  it("serves brand SVGs as static files that carry the site's raven mark", async () => {
+    const mark = decodeURIComponent(FAVICON).match(/ d='([^']+)'/)![1];
     for (const name of ["raven-icon.svg", "raven-logo-dark.svg", "raven-logo-light.svg"]) {
-      const response = await WorkOSAuthHandler.fetch(new Request(`https://mcp.test/${name}`), env);
-      expect(response.status, name).toBe(200);
-      expect(response.headers.get("content-type")).toBe("image/svg+xml");
-      expect(response.headers.get("x-content-type-options")).toBe("nosniff");
-      expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
-      expect(await response.text(), name).toBe(
-        readFileSync(join(ROOT, "assets", "brand", name), "utf8")
-      );
-      const head = await WorkOSAuthHandler.fetch(
-        new Request(`https://mcp.test/${name}`, { method: "HEAD" }),
-        env
-      );
-      expect(head.status, name).toBe(200);
+      expect(readFileSync(join(ROOT, "public", name), "utf8"), name).toContain(`d="${mark}"`);
     }
-    const favicon = await WorkOSAuthHandler.fetch(
-      new Request("https://mcp.test/raven-favicon.svg"),
-      env
-    );
-    expect(favicon.status).not.toBe(200);
+    // Static assets win before the Worker runs, so the Worker keeps no brand route.
+    const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
+    const response = await WorkOSAuthHandler.fetch(new Request("https://mcp.test/raven-icon.svg"), env);
+    expect(response.status).not.toBe(200);
   });
 
   it("HEAD /docs returns the public status and headers with no body", async () => {

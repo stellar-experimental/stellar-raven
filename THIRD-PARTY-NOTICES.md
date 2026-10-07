@@ -86,6 +86,7 @@ data in `src/fonts.ts`. `scripts/gen-og.mjs` also uses these fonts to render `/o
 The fonts are © IBM Corp. and are licensed under the
 [SIL Open Font License 1.1](https://openfontlicense.org/open-font-license-official-text/).
 `scripts/gen-site-fonts.mjs` fetches them from Google Fonts.
+The logo SVGs in `public/` contain IBM Plex Serif and IBM Plex Mono glyphs converted to outlines.
 
 ## Other snapshot data
 
