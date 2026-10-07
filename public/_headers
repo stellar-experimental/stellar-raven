@@ -1,0 +1,5 @@
+# Static brand and listing images. The Worker serves every path without a file here.
+/*
+  Cache-Control: public, max-age=86400
+  X-Content-Type-Options: nosniff
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'

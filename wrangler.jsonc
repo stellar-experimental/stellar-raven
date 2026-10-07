@@ -2,6 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "stellar-raven-codemode",
   "main": "src/server.ts",
+  // Static brand and listing images. A request for a file in public/ gets the
+  // file without running the Worker; every other request reaches the Worker.
+  // public/_headers sets their cache, nosniff, and CSP headers.
+  "assets": { "directory": "./public" },
   // Keep the compatibility date at 2026-06-11 or later, with nodejs_compat
   // (matches Cloudflare's codemode-mcp-openapi reference example).
   "compatibility_date": "2026-06-11",
