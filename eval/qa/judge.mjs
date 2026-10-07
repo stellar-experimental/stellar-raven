@@ -56,6 +56,14 @@ import {
 } from "../lib/bound-server-identity.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
+/** A judge call's wall-clock limit. The harness kills the CLI after it. */
+export const JUDGE_TIMEOUT_MS = 300_000;
+/**
+ * The most one budgeted judge call may spend. Stored judge calls through
+ * 2026-10-07 never reported more than $0.16; the ceiling leaves 6x headroom.
+ * A killed call is charged this amount (see spend-budget.mjs).
+ */
+export const JUDGE_CALL_CEILING_USD = 1;
 export const P6_SELF_TEST_CALL_SCHEMA = "p6-judge-self-test-call-v1";
 export const DEFAULT_PANEL_CASE_DIVISOR = 3;
 export const DEFAULT_PANEL_CASE_FLOOR = 10;
@@ -577,7 +585,7 @@ export async function judgeCase(
   input,
   {
     model = JUDGE_MODEL,
-    timeoutMs = 180_000,
+    timeoutMs = JUDGE_TIMEOUT_MS,
     maxBuffer = 32 * 1024 * 1024,
     command = "claude",
     safeMode = true,

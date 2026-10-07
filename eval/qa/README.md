@@ -116,7 +116,11 @@ Comparable artifacts require a matching final postflight and `skippedReason: nul
 
 `--max-budget-usd` sets the total method cap.
 Each answering, judging, panel, or retry call receives only the remaining authorization.
-Each reported cost reduces the same ledger. Missing cost data invalidates the method.
+Each reported cost reduces the same ledger. Missing cost data invalidates the method, with one exception.
+Each judge call is also capped at `JUDGE_CALL_CEILING_USD` in `judge.mjs`.
+When the harness kills a judge call at `JUDGE_TIMEOUT_MS`, the call prints no cost.
+The ledger then charges that call its full authorization as `boundedChargeUsd`, and collection continues.
+The row keeps a `timeout` judge failure; re-judge it before a grade comparison.
 Stored judging restores earlier spend; its new cap applies to the cumulative total.
 A reported total with missing costs is a lower bound, never a complete spend figure.
 

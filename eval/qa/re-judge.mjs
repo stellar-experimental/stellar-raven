@@ -30,6 +30,7 @@ import {
   judgeInputSha256,
   judgeCase,
   judgeCasePanel,
+  JUDGE_CALL_CEILING_USD,
   JUDGE_MODEL,
   JUDGE_RUBRIC
 } from "./judge.mjs";
@@ -791,7 +792,8 @@ export async function rejudgeRows({
       const authorization = authorizeSpend(spendLedger, {
         method: "re-judge",
         id: row.id,
-        attempt: calls.length + 1
+        attempt: calls.length + 1,
+        callCeilingUsd: JUDGE_CALL_CEILING_USD
       });
       const verdict = await judge(input, {
         ...options,
@@ -807,7 +809,7 @@ export async function rejudgeRows({
       };
       calls.push(call);
       try {
-        recordSpend(spendLedger, authorization, verdict?.costUsd);
+        recordSpend(spendLedger, authorization, verdict?.costUsd, { failureClass: call.failureClass });
       } catch (error) {
         error.rejudgeCall = call;
         throw error;

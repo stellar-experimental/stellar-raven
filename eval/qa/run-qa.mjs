@@ -122,6 +122,7 @@ import {
   DEFAULT_PANEL_CASE_DIVISOR,
   DEFAULT_PANEL_CASE_FLOOR,
   defaultMaxPanelCases,
+  JUDGE_CALL_CEILING_USD,
   JUDGE_MODEL,
   JUDGE_RUBRIC
 } from "./judge.mjs";
@@ -942,7 +943,8 @@ export async function runJudgeAttempt(
     const authorization = authorizeSpend(spendLedger, {
       method: "judge",
       id: input.id,
-      attempt: `${number}.${callNumber}`
+      attempt: `${number}.${callNumber}`,
+      callCeilingUsd: JUDGE_CALL_CEILING_USD
     });
     const verdict = await judge(judgeInput, {
       ...judgeOptions,
@@ -958,7 +960,7 @@ export async function runJudgeAttempt(
     };
     calls.push(call);
     try {
-      recordSpend(spendLedger, authorization, verdict?.costUsd);
+      recordSpend(spendLedger, authorization, verdict?.costUsd, { failureClass: call.failureClass });
     } catch (error) {
       error.judgeCall = call;
       throw error;

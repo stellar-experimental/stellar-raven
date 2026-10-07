@@ -122,7 +122,9 @@ range derived from per-case figures has excluded most real runs before.
 paid call. The harness sends only the remaining authorized amount to each sequential answering or
 judge call. Reported cost reduces the ledger, exhaustion stops the next call, and the artifact
 retains incomplete and unattempted IDs. A budgeted call with no reported cost invalidates the
-method. Record the real CLI path, version, and hash.
+method. The one exception is a judge call that the harness kills at its timeout: each judge call has
+a per-call ceiling, and the ledger charges the killed call that full ceiling (`boundedChargeUsd`).
+Re-judge that row before a grade comparison. Record the real CLI path, version, and hash.
 
 **Pin the immutable executable, not a self-updating launcher.** A launcher such as
 `~/.local/bin/claude` is a link. Another session on the machine can move that link during an
