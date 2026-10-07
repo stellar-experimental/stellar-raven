@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { buildJudgeArgs, createPanelCaseBudget, JUDGE_CALL_CEILING_USD } from "../eval/qa/judge.mjs";
+import {
+  buildJudgeArgs,
+  buildJudgeEnv,
+  createPanelCaseBudget,
+  JUDGE_CLI_API_TIMEOUT_MS,
+  JUDGE_CLI_MAX_RETRIES,
+  JUDGE_TIMEOUT_MS
+} from "../eval/qa/judge.mjs";
 import {
   buildAgentSpawn,
   isRetryableAgentFailure,
@@ -81,68 +88,6 @@ describe("QA sequential budget", () => {
     )).not.toThrow();
   });
 
-  it("charges a killed ceiling-capped call its full authorization", () => {
-    const ledger = createSpendLedger(3);
-    const killed = authorizeSpend(ledger, { method: "judge", id: "a", attempt: "1.1", callCeilingUsd: 1 });
-    expect(killed.maxBudgetUsd).toBe(1);
-    const call = recordSpend(ledger, killed, undefined, { failureClass: "timeout" });
-    expect(call).toMatchObject({ costUsd: null, boundedChargeUsd: 1, boundedChargeReason: "timeout" });
-    const next = authorizeSpend(ledger, { method: "agent", id: "b", attempt: 1 });
-    expect(next.maxBudgetUsd).toBe(2);
-    recordSpend(ledger, next, 0.5);
-    expect(spendLedgerRecord(ledger)).toMatchObject({
-      reportedSpendUsd: 0.5,
-      boundedSpendUsd: 1,
-      remainingUsd: 1.5,
-      expectedCalls: 2,
-      reportedCalls: 1,
-      boundedCalls: 1,
-      missingCosts: 0
-    });
-
-    const resumed = resumeSpendLedger(3, spendLedgerRecord(ledger));
-    expect(spendLedgerRecord(resumed)).toMatchObject({ boundedSpendUsd: 1, remainingUsd: 1.5 });
-  });
-
-  it("caps a ceiling call at the remaining budget and charges only that", () => {
-    const ledger = createSpendLedger(0.4);
-    const killed = authorizeSpend(ledger, { method: "judge", id: "a", attempt: 1, callCeilingUsd: 1 });
-    expect(killed.maxBudgetUsd).toBe(0.4);
-    recordSpend(ledger, killed, null, { failureClass: "timeout" });
-    expect(spendLedgerRecord(ledger)).toMatchObject({ boundedSpendUsd: 0.4, remainingUsd: 0, exhausted: true });
-  });
-
-  it("still stops on a missing cost without a timeout or without a ceiling", () => {
-    const ledger = createSpendLedger(3);
-    const capped = authorizeSpend(ledger, { method: "judge", id: "a", attempt: 1, callCeilingUsd: 1 });
-    expect(() => recordSpend(ledger, capped, null, { failureClass: "cli" })).toThrow(MissingReportedCostError);
-    const uncapped = authorizeSpend(ledger, { method: "agent", id: "b", attempt: 1 });
-    expect(() => recordSpend(ledger, uncapped, null, { failureClass: "timeout" }))
-      .toThrow(MissingReportedCostError);
-    expect(spendLedgerRecord(ledger)).toMatchObject({ boundedCalls: 0, missingCosts: 2 });
-    expect(() => authorizeSpend(ledger, { method: "judge", id: "c", attempt: 1, callCeilingUsd: 0 }))
-      .toThrow(/callCeilingUsd/);
-  });
-
-  it("keeps collecting after a judge timeout and charges the judge ceiling", async () => {
-    const budgets = [];
-    const judge = async (_input, options) => {
-      budgets.push(options.maxBudgetUsd);
-      return { score: "error", failureClass: "timeout", promptSha256: "input-hash" };
-    };
-    const ledger = createSpendLedger(5);
-    const attempts = await judgeRowWithRetry(judgeInput, judgeOptions(judge, ledger), []);
-
-    expect(budgets).toEqual([JUDGE_CALL_CEILING_USD]);
-    expect(attempts).toHaveLength(1);
-    expect(attempts[0]).toMatchObject({ failureClass: "timeout", costUsd: null });
-    expect(spendLedgerRecord(ledger)).toMatchObject({
-      boundedSpendUsd: JUDGE_CALL_CEILING_USD,
-      remainingUsd: 5 - JUDGE_CALL_CEILING_USD,
-      missingCosts: 0
-    });
-  });
-
   it("records a provider overspend before it rejects the call", () => {
     const ledger = createSpendLedger(0.1);
     const authorization = authorizeSpend(ledger, { method: "judge", id: "a", attempt: 1 });
@@ -186,6 +131,20 @@ describe("QA sequential budget", () => {
     const judgeArgs = buildJudgeArgs({ maxBudgetUsd: 0.25 });
     const judgeIndex = judgeArgs.indexOf("--max-budget-usd");
     expect(judgeArgs.slice(judgeIndex, judgeIndex + 2)).toEqual(["--max-budget-usd", "0.25"]);
+  });
+
+  it("lets the judge CLI end a stalled call before the harness backstop", () => {
+    const env = buildJudgeEnv({ PATH: "/bin", API_TIMEOUT_MS: "1", CLAUDE_CODE_MAX_RETRIES: "9" });
+    expect(env).toEqual({
+      PATH: "/bin",
+      API_TIMEOUT_MS: String(JUDGE_CLI_API_TIMEOUT_MS),
+      CLAUDE_CODE_MAX_RETRIES: String(JUDGE_CLI_MAX_RETRIES)
+    });
+    // The CLI's 180 s first-byte wait must fit inside one request window.
+    expect(JUDGE_CLI_API_TIMEOUT_MS).toBeGreaterThan(180_000);
+    // A backoff margin of at least two minutes separates the CLI worst case from the kill.
+    const cliWorstCaseMs = (1 + JUDGE_CLI_MAX_RETRIES) * JUDGE_CLI_API_TIMEOUT_MS;
+    expect(JUDGE_TIMEOUT_MS - cliWorstCaseMs).toBeGreaterThanOrEqual(120_000);
   });
 
   it("requires one budget flag on each paid runner CLI", () => {

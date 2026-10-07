@@ -4,11 +4,6 @@
  * A claimed cap is enforceable only when every paid call reports its cost.
  * Callers authorize immediately before a provider call and record immediately
  * after it. The next call receives only the remaining authorized amount.
- *
- * One exception keeps the cap enforceable without a reported cost: a call
- * authorized under a per-call ceiling that the harness killed on its timeout
- * is charged its full authorization. A killed process prints no cost envelope,
- * but the ceiling still bounds what it could spend.
  */
 
 const USD_EPSILON = 1e-12;
@@ -71,14 +66,9 @@ export function createSpendLedger(maxBudgetUsd = null) {
     claimed: maxBudgetUsd !== null,
     authorizedUsd: maxBudgetUsd === null ? null : roundUsd(maxBudgetUsd),
     reportedSpendUsd: 0,
-    boundedSpendUsd: 0,
     calls: [],
     stoppedBefore: null
   };
-}
-
-function isBoundedCharge(call) {
-  return call.costUsd === null && Number.isFinite(call.boundedChargeUsd) && call.boundedChargeUsd >= 0;
 }
 
 /** Restore a persisted method ledger before a stored resume. */
@@ -90,9 +80,7 @@ export function resumeSpendLedger(maxBudgetUsd = null, prior = null) {
     throw new Error("stored budget ledger has no calls array");
   }
   ledger.calls = prior.calls.map((call) => ({ ...call }));
-  const missing = ledger.calls.find(
-    (call) => !isBoundedCharge(call) && (!Number.isFinite(call.costUsd) || call.costUsd < 0)
-  );
+  const missing = ledger.calls.find((call) => !Number.isFinite(call.costUsd) || call.costUsd < 0);
   if (ledger.claimed && missing) {
     throw new MissingReportedCostError({ method: missing.method, id: missing.id });
   }
@@ -100,9 +88,6 @@ export function resumeSpendLedger(maxBudgetUsd = null, prior = null) {
     ledger.calls
       .filter((call) => Number.isFinite(call.costUsd) && call.costUsd >= 0)
       .reduce((sum, call) => sum + call.costUsd, 0)
-  );
-  ledger.boundedSpendUsd = roundUsd(
-    ledger.calls.filter(isBoundedCharge).reduce((sum, call) => sum + call.boundedChargeUsd, 0)
   );
   if (
     Number.isFinite(prior.reportedSpendUsd) &&
@@ -118,35 +103,22 @@ export function resumeSpendLedger(maxBudgetUsd = null, prior = null) {
 
 export function remainingBudgetUsd(ledger) {
   if (!ledger?.claimed) return null;
-  return roundUsd(Math.max(0, ledger.authorizedUsd - ledger.reportedSpendUsd - ledger.boundedSpendUsd));
+  return roundUsd(Math.max(0, ledger.authorizedUsd - ledger.reportedSpendUsd));
 }
 
-/**
- * `callCeilingUsd` caps this one call below the remaining budget. Only a
- * ceiling-capped call can take a bounded charge when its cost goes unreported.
- */
-export function authorizeSpend(ledger, { method, id, attempt, callCeilingUsd = null }) {
-  if (callCeilingUsd !== null && (!Number.isFinite(callCeilingUsd) || callCeilingUsd <= 0)) {
-    throw new Error(`callCeilingUsd must be null or a finite positive number, got ${callCeilingUsd}`);
-  }
+export function authorizeSpend(ledger, { method, id, attempt }) {
   if (!ledger?.claimed) {
-    return { method, id, attempt, maxBudgetUsd: null, callCeilingUsd };
+    return { method, id, attempt, maxBudgetUsd: null };
   }
   const remainingUsd = remainingBudgetUsd(ledger);
   if (remainingUsd <= USD_EPSILON) {
     ledger.stoppedBefore ??= { method, id, attempt, remainingUsd };
     throw new BudgetExhaustedError({ method, id, remainingUsd });
   }
-  const maxBudgetUsd = callCeilingUsd === null ? remainingUsd : roundUsd(Math.min(remainingUsd, callCeilingUsd));
-  return { method, id, attempt, maxBudgetUsd, callCeilingUsd };
+  return { method, id, attempt, maxBudgetUsd: remainingUsd };
 }
 
-/**
- * `failureClass: "timeout"` marks a call the harness killed. When that call
- * had a per-call ceiling, an unreported cost becomes a bounded charge instead
- * of a method-stopping error. Every other unreported cost still stops.
- */
-export function recordSpend(ledger, authorization, costUsd, { failureClass = null } = {}) {
+export function recordSpend(ledger, authorization, costUsd) {
   const reported = Number.isFinite(costUsd) && costUsd >= 0;
   const call = {
     method: authorization.method,
@@ -157,16 +129,7 @@ export function recordSpend(ledger, authorization, costUsd, { failureClass = nul
   };
   ledger.calls.push(call);
   if (!reported) {
-    if (!ledger.claimed) return call;
-    const bounded =
-      failureClass === "timeout" &&
-      Number.isFinite(authorization.callCeilingUsd) &&
-      Number.isFinite(authorization.maxBudgetUsd) &&
-      authorization.maxBudgetUsd <= authorization.callCeilingUsd;
-    if (!bounded) throw new MissingReportedCostError(authorization);
-    call.boundedChargeUsd = authorization.maxBudgetUsd;
-    call.boundedChargeReason = "timeout";
-    ledger.boundedSpendUsd = roundUsd(ledger.boundedSpendUsd + authorization.maxBudgetUsd);
+    if (ledger.claimed) throw new MissingReportedCostError(authorization);
     return call;
   }
   ledger.reportedSpendUsd = roundUsd(ledger.reportedSpendUsd + costUsd);
@@ -185,17 +148,14 @@ export function recordSpend(ledger, authorization, costUsd, { failureClass = nul
 export function spendLedgerRecord(ledger) {
   const expectedCalls = ledger.calls.length;
   const reportedCalls = ledger.calls.filter((call) => Number.isFinite(call.costUsd)).length;
-  const boundedCalls = ledger.calls.filter(isBoundedCharge).length;
   return {
     claimed: ledger.claimed,
     authorizedUsd: ledger.authorizedUsd,
     reportedSpendUsd: roundUsd(ledger.reportedSpendUsd),
-    boundedSpendUsd: roundUsd(ledger.boundedSpendUsd),
     remainingUsd: remainingBudgetUsd(ledger),
     expectedCalls,
     reportedCalls,
-    boundedCalls,
-    missingCosts: expectedCalls - reportedCalls - boundedCalls,
+    missingCosts: expectedCalls - reportedCalls,
     exhausted: ledger.claimed && remainingBudgetUsd(ledger) <= USD_EPSILON,
     stoppedBefore: ledger.stoppedBefore,
     calls: ledger.calls

@@ -56,14 +56,18 @@ import {
 } from "../lib/bound-server-identity.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
-/** A judge call's wall-clock limit. The harness kills the CLI after it. */
-export const JUDGE_TIMEOUT_MS = 300_000;
 /**
- * The most one budgeted judge call may spend. Stored judge calls through
- * 2026-10-07 never reported more than $0.16; the ceiling leaves 6x headroom.
- * A killed call is charged this amount (see spend-budget.mjs).
+ * Stall handling for one judge call. The CLI owns request timeouts and
+ * retries, so a stalled request still ends in a result envelope that reports
+ * its cost. The CLI waits up to 180 s for a first response byte by default; a
+ * harness kill at that point loses the cost and stops a budgeted method.
+ * JUDGE_TIMEOUT_MS is only a backstop above the CLI's own worst case:
+ * (1 + JUDGE_CLI_MAX_RETRIES) requests of at most JUDGE_CLI_API_TIMEOUT_MS each,
+ * plus retry backoff.
  */
-export const JUDGE_CALL_CEILING_USD = 1;
+export const JUDGE_CLI_API_TIMEOUT_MS = 240_000;
+export const JUDGE_CLI_MAX_RETRIES = 2;
+export const JUDGE_TIMEOUT_MS = 1_200_000;
 export const P6_SELF_TEST_CALL_SCHEMA = "p6-judge-self-test-call-v1";
 export const DEFAULT_PANEL_CASE_DIVISOR = 3;
 export const DEFAULT_PANEL_CASE_FLOOR = 10;
@@ -601,7 +605,7 @@ export async function judgeCase(
   const res = spawnSync(
     command,
     buildJudgeArgs({ model, safeMode, maxBudgetUsd }),
-    { input: prompt, timeout: timeoutMs, maxBuffer }
+    { input: prompt, timeout: timeoutMs, maxBuffer, env: buildJudgeEnv(process.env) }
   );
   const promptWriteFailed = res.status === 0 && res.error?.code === "EPIPE";
   if (res.error || res.status !== 0) {
@@ -712,6 +716,15 @@ export async function judgeCase(
 }
 
 /** Exact Claude arguments for a judge, which never needs MCP access. */
+/** The judge CLI's environment: the caller's, with the stall limits set. */
+export function buildJudgeEnv(baseEnv) {
+  return {
+    ...baseEnv,
+    API_TIMEOUT_MS: String(JUDGE_CLI_API_TIMEOUT_MS),
+    CLAUDE_CODE_MAX_RETRIES: String(JUDGE_CLI_MAX_RETRIES)
+  };
+}
+
 export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudgetUsd = null } = {}) {
   if (maxBudgetUsd !== null && (!Number.isFinite(maxBudgetUsd) || maxBudgetUsd < 0)) {
     throw new Error(`maxBudgetUsd must be null or a finite non-negative number, got ${maxBudgetUsd}`);
