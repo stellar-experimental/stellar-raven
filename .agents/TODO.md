@@ -23,6 +23,17 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Improvements follow-up
 
+### File the 2026-10-07 tool-surface round's upstream candidates
+
+The [tool-surface QA round](rounds/2026-10-07-tool-surface-qa.md) row review listed candidates but filed
+none: recurrence evidence for `ll-012`, `ll-030`, `ll-025`, and `sk-022`; Stellar Docs
+`assembleTransaction` example signing an unbuilt builder; the ledger-header page (`feePool` units,
+missing `ext`); Scout exact advisory-ID and release-tag retrieval; Scout Zenex Live versus Testnet.
+The round's live-probe evidence sat in temporary storage, so each filing re-gathers its own evidence.
+
+Done when: each candidate is filed or rejected through `improvements-pipeline`, with the round ledger
+linked.
+
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
 
 The maintainer named https://github.com/stellar/stellar-docs/pull/2837 as the replacement for the
@@ -278,6 +289,40 @@ Keep returning the full `Response` for existing raw-response callers.
 Do not remove the guard and dispatch without a captured log identifier.
 Add real-handler regressions for both named models and a fallback into a native model.
 Require an answer, captured log reads, and a complete numeric receipt in each regression.
+
+### Keep the original judge failure class on budget-stopped rows
+
+When a budgeted judge call reports no cost, the row grade's `failureClass` becomes `budget-cost`. The
+original class (for example `timeout`) survives only in the per-call record
+([tool-surface round](rounds/2026-10-07-tool-surface-qa.md), arms B1 and B2). Diagnosis then needs the
+call records.
+
+Done when: the stored row keeps both the budget stop and the original judge failure class, with a test.
+
+### Measure the execute annotation change in isolation
+
+PR #225 and #234 set `execute` `readOnlyHint: true` and `openWorldHint: false`. Claude Code `2.1.292`
+maps these to `isReadOnly()`, `isConcurrencySafe()`, and `isOpenWorld()`. In the
+[tool-surface round](rounds/2026-10-07-tool-surface-qa.md), T made more execute calls (195→214) and
+fewer artifact reads (8 calls on 5 rows → 3 calls on 2 rows) than B3. The round shows no demonstrated
+mechanism and cannot separate annotation effects from description edits or answering variance.
+
+Done when: a reviewed, separately authorized annotation-only comparison, or a free transcript audit
+over more stored runs, decides whether the annotations change execute or artifact-read behavior.
+
+### Triage the 2026-10-07 row-review own-repo candidates
+
+The [tool-surface round](rounds/2026-10-07-tool-surface-qa.md) row review found, in both arms:
+`.data` misuse on `codemode.skill.read` and artifact reads; truncated execute results with no
+follow-up (26 B3 rows, 22 T rows); string `sources` and other invalid input types or enums; an
+invented `codemode.scout.*` namespace; an account-support capability overclaim in both arms
+(`q-n3-missing-funds-account-support`, same case as the "Monitor Raven capability-boundary offers"
+item, so no new trigger); judge scope removal and inconsistent trap grading
+(`q-raph-claimable-balance-safety`); and a Testnet USDC issuer accepted in a Mainnet answer. Evidence-
+pack omissions recur under the existing p6 judge-pack item below.
+
+Done when: each candidate becomes its own item with evidence, merges into an existing item, or is
+rejected with a reason.
 
 ### Investigate missing source evidence in the p6 judge pack
 
