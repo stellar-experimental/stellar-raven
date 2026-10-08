@@ -407,7 +407,7 @@ class accepted on 2026-10-01. The stellarlight catalog snapshot grew 62 to 63 en
 
 | Source | Pinned commit | Selection | Reviewed |
 | --- | --- | --- | --- |
-| `stellar-dev` | `e9ab7dbb662dc2efc9b0ebb4ed86c417d16dd29f` | `sel:f8004795a15f` | author read; independent review recorded in the pull request |
+| `stellar-dev` | `e9ab7dbb662dc2efc9b0ebb4ed86c417d16dd29f` | `sel:f8004795a15f` | author read; independent Grok 4.7 high approved with changes |
 
 Five files changed. `agentic-payments/x402.md` adds a troubleshooting entry: a self-hosted
 `ExactStellarScheme` facilitator bids 100 stroops on mainnet settlement unless
@@ -419,4 +419,7 @@ diff has no behavior instructions outside the skill topics, no claims about this
 credentials, and no reference to a non-exposed operation or retired skill. The Blux `appId` is a
 placeholder. No selected skill was added or removed. The stellarlight catalog snapshot grew 63 to
 67 entries (Blux, Scopuly Wallet, Wasit, SODAX), and the skills.stellar.org community snapshot
-added the same community entries.
+added the same community entries. The upstream dApp description appends "Blux is also an option.";
+its short tokens moved six routing top-five lists, so `scripts/description-notes.mjs` keeps the
+previous dApp search description until the general routing repair lands. The served skill body is the
+pinned upstream text.
