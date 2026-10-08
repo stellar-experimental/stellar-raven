@@ -225,14 +225,26 @@ probes, and `node scripts/build-catalog.mjs` still passes on the current invento
 
 ### Remove the vitest pool override when the pool updates
 
-`package.json` `overrides` points `@cloudflare/vitest-pool-workers` 0.22.0 at `miniflare`
-5.20260930.0-alpha and `wrangler` 4.145.0. Pool 0.22.0 pins `miniflare` 5.20260815.0-alpha and
+`package.json` `overrides` has three entries. The pool entry points `@cloudflare/vitest-pool-workers`
+0.22.0 at `wrangler` 4.145.0. A global `miniflare` entry pins `miniflare` to the direct version
+(5.20260930.0-alpha) and `sharp` to 0.35.5. An `agents` entry overrides the two MCP peers to the
+direct versions. Pool 0.22.0 pins `miniflare` 5.20260815.0-alpha and
 `wrangler` 4.124.0 exactly, and those carry high advisories through `undici` 7.29.0 and `sharp`
-0.35.2. Found by the `dependency-audit` issue on 2026-10-01. With the override, `npm audit` reports
-no findings, `npm run test:smoke` passes, and every package uses one `workerd` version.
+0.35.2. Found by the `dependency-audit` issue on 2026-10-01.
+Pool 0.23.0 still pins those versions, so the pool override remains necessary.
+Issue #233 adds a `miniflare` override for `sharp` 0.35.5 because even Miniflare
+5.20261006.0-alpha pins vulnerable `sharp` 0.35.4 (GHSA-wq5f-xc86-pv6w).
+With these overrides, `npm audit` reports no findings, `npm run test:smoke` passes,
+and every package uses `workerd` 1.20260930.2.
 
 Done when: a pool release pins patched `miniflare` and `wrangler` versions, the override is
 removed, and `npm audit` and `npm run test:smoke` still pass.
+Remove the `miniflare`/`sharp` override when Miniflare pins `sharp` 0.35.5 or later.
+Remove the `agents` override when an `agents` release accepts `@modelcontextprotocol/sdk` 1.31.0 and
+`@modelcontextprotocol/client` 2.2.0 or later (GHSA-6qxp-vccf-f47h). `agents` 0.20.1 pins 1.30.0 and
+2.0.0 exactly; issue #233 overrides those peers to the patched direct versions. `agents` 0.21.0
+through 0.27.0 keep the same exact pins, so a bump alone does not remove this override. Until then the
+tree carries two `@modelcontextprotocol/core` versions: 2.0.0 for the server and 2.2.0 under the client.
 
 ### Upgrade `ai` and `@ai-sdk/*` past the OpenAI tool-strictness default change
 
