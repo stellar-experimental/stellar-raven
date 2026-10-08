@@ -53,9 +53,21 @@ describe("skill Markdown frontmatter", () => {
       .toThrow(/trustless-work-dev/);
     expect(() =>
       assertSkillDescriptionOverrideIdsResolve(
-        new Set(["skills.trustless-work.trustless-work-dev"]),
+        new Set(Object.keys(SKILL_DESCRIPTION_OVERRIDES)),
         "test generator"
       )
     ).not.toThrow();
+  });
+
+  it("serves the held dApp search description without the upstream short-token sentence", () => {
+    const id = "skills.stellar-dev.dapp";
+    const expected = SKILL_DESCRIPTION_OVERRIDES[id];
+    expect(expected).not.toContain("also an option");
+    const manifest = JSON.parse(readFileSync(path.join(ROOT, "catalog/manifest.json"), "utf8"));
+    expect(manifest.entries.find((item) => item.id === id).description).toBe(expected);
+    const spec = JSON.parse(readFileSync(path.join(ROOT, "specs/super-spec.json"), "utf8"));
+    const skill = spec.paths["/skills/list_skills"].get["x-skill-index"]
+      .find((item) => item.id === id);
+    expect(skill.description).toBe(expected);
   });
 });

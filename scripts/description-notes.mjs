@@ -26,7 +26,13 @@ export const LUMENLOOP_DESCRIPTION_NOTES = {
 // that each key still resolves, so a rename cannot silently drop curated text.
 export const SKILL_DESCRIPTION_OVERRIDES = Object.freeze({
   "skills.trustless-work.trustless-work-dev":
-    "Escrow-as-a-service integration for single-release and multi-release escrows, milestone releases, dispute handling, and the provider REST API, React SDK, or Blocks UI."
+    "Escrow-as-a-service integration for single-release and multi-release escrows, milestone releases, dispute handling, and the provider REST API, React SDK, or Blocks UI.",
+  // Upstream e9ab7dbb662d appends "Blux is also an option." Its short tokens
+  // (is, an, also, option) prefix- and substring-match unrelated queries and moved
+  // six top-five lists (2026-10-08 drift review). Remove this override when the
+  // general routing repair stops short tokens from matching alone.
+  "skills.stellar-dev.dapp":
+    "Stellar dApp / frontend development. Covers the JavaScript stellar-sdk (browser + Node.js), Freighter wallet, Stellar Wallets Kit (multi-wallet), Wallet Standard, smart accounts with passkeys, transaction building / signing / submission, smart contract invocation from the client, simulation, and error handling. Use when building a React/Next.js/Node.js app that talks to Stellar — classic operations or smart contracts."
 });
 
 export function skillDescription(id, upstreamDescription) {

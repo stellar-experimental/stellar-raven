@@ -1,15 +1,15 @@
 {
   "source": "https://stellarlight.xyz/api/skills",
-  "fetched_at": "2026-10-06T14:12:39Z",
+  "fetched_at": "2026-10-08T17:41:07Z",
   "counts": {
-    "returned": 63,
-    "total": 63,
+    "returned": 67,
+    "total": 67,
     "bySource": {
       "sdf": 8,
       "stellarlight": 15,
       "lumenloop": 8,
       "external": 12,
-      "community": 20
+      "community": 24
     }
   },
   "validKinds": [
@@ -82,6 +82,16 @@
       "homepage": "https://github.com/mpprouter/stellar-agent-wallet-skill/tree/main/skills/discover"
     },
     {
+      "name": "docs-blux-cc",
+      "title": "Blux",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Bring Web2 users to Stellar with passkey, OAuth, email, or wallet login.",
+      "install": null,
+      "repository": null,
+      "homepage": "https://docs.blux.cc/SKILLS.md"
+    },
+    {
       "name": "eunomia-bounded-agent-treasury",
       "title": "Eunomia Bounded Agent Treasury",
       "source": "community",
@@ -140,6 +150,16 @@
       "install": "npx skills add https://github.com/RozoAI/rozo-intents-skills",
       "repository": "https://github.com/RozoAI/rozo-intents-skills",
       "homepage": "https://github.com/RozoAI/rozo-intents-skills/tree/main"
+    },
+    {
+      "name": "scopuly-wallet",
+      "title": "Scopuly Wallet",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Connect Stellar dApps to Scopuly Mobile and its paired browser extension using the Provider API or Stellar Wallets Kit.",
+      "install": "npx skills add https://github.com/Scopuly/scopuly-skills",
+      "repository": "https://github.com/Scopuly/scopuly-skills",
+      "homepage": "https://github.com/Scopuly/scopuly-skills/tree/main/skills/scopuly-wallet"
     },
     {
       "name": "setup-stellar-contracts",
@@ -220,6 +240,26 @@
       "install": "npx skills add https://github.com/Trustless-Work/trustlesswork-skill",
       "repository": "https://github.com/Trustless-Work/trustlesswork-skill",
       "homepage": "https://github.com/Trustless-Work/trustlesswork-skill/tree/main/trustless-work-dev"
+    },
+    {
+      "name": "wasit",
+      "title": "Wasit",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Protocol-compliance testing for x402 and MPP on Stellar.",
+      "install": "npx skills add https://github.com/wasit-dev/wasit",
+      "repository": "https://github.com/wasit-dev/wasit",
+      "homepage": "https://github.com/wasit-dev/wasit/tree/main/skills/wasit"
+    },
+    {
+      "name": "www-sodax-com",
+      "title": "SODAX",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Build cross-network trading, lending, and asset transfers between Stellar and 20+ other networks with the @sodax/sdk TypeScript package.",
+      "install": null,
+      "repository": null,
+      "homepage": "https://www.sodax.com/skill.md"
     },
     {
       "name": "allbridge-sdk",

@@ -402,3 +402,24 @@ with new links. The diff has no behavior instructions, no claims about this gate
 reference to a non-exposed operation or retired skill. The install command is reference text of the
 class accepted on 2026-10-01. The stellarlight catalog snapshot grew 62 to 63 entries; the new
 `community` entry is the same Stellar Registry skill. No other pin moved.
+
+## 2026-10-08 — stellar-dev adds Blux examples, an x402 fee fix, and a MuxedAddress fix (#223)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `e9ab7dbb662dc2efc9b0ebb4ed86c417d16dd29f` | `sel:f8004795a15f` | author read; independent Grok 4.7 high approved with changes |
+
+Five files changed. `agentic-payments/x402.md` adds a troubleshooting entry: a self-hosted
+`ExactStellarScheme` facilitator bids 100 stroops on mainnet settlement unless
+`inclusionFeeStroops` is set (2.27.0 and later). `dapp/SKILL.md`, `dapp/react.md`, and
+`dapp/data-fetching.md` add Blux as an optional wallet integration, with provider, login,
+transfer, balance, and contract-read examples. `smart-contracts/development.md` corrects the
+`MuxedAddress` transfer guidance: pass `&to` directly, because `&to.into()` fails with E0283. The
+diff has no behavior instructions outside the skill topics, no claims about this gateway, no
+credentials, and no reference to a non-exposed operation or retired skill. The Blux `appId` is a
+placeholder. No selected skill was added or removed. The stellarlight catalog snapshot grew 63 to
+67 entries (Blux, Scopuly Wallet, Wasit, SODAX), and the skills.stellar.org community snapshot
+added the same community entries. The upstream dApp description appends "Blux is also an option.";
+its short tokens moved six routing top-five lists, so `scripts/description-notes.mjs` keeps the
+previous dApp search description until the general routing repair lands. The served skill body is the
+pinned upstream text.
