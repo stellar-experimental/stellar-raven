@@ -1,0 +1,1837 @@
+[
+  {
+    "extra": [],
+    "gated": null,
+    "ungated": 386,
+    "base": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "x",
+        "in",
+        "with",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "support",
+        "multiple",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "app",
+        "single"
+      ],
+      "coverage": 0.42857142857142855,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "augmented": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "support",
+        "wallets",
+        "x",
+        "in",
+        "with",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one",
+        "app"
+      ],
+      "coverage": 0.5714285714285714,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "effective": {
+      "tokens": [
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "d",
+        "app",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "stellar",
+        "d",
+        "support",
+        "wallets",
+        "x",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one",
+        "app"
+      ],
+      "coverage": 0.4666666666666667,
+      "matches": {
+        "id": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "name": [
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "service": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "kind": [],
+        "description": [
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 465,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_wallet_dapp_docs",
+        "score": 565,
+        "tier": "backfill"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 298,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 262,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchResearch",
+        "score": 253,
+        "tier": "gated"
+      }
+    ]
+  },
+  {
+    "extra": [
+      "sponsorship"
+    ],
+    "gated": null,
+    "ungated": 386,
+    "base": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "x",
+        "in",
+        "with",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "support",
+        "multiple",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "app",
+        "single"
+      ],
+      "coverage": 0.42857142857142855,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "augmented": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "support",
+        "wallets",
+        "x",
+        "in",
+        "with",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one",
+        "app"
+      ],
+      "coverage": 0.5714285714285714,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "effective": {
+      "tokens": [
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "d",
+        "app",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "stellar",
+        "d",
+        "support",
+        "wallets",
+        "x",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one",
+        "app"
+      ],
+      "coverage": 0.4666666666666667,
+      "matches": {
+        "id": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "name": [
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "service": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "kind": [],
+        "description": [
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 465,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_wallet_dapp_docs",
+        "score": 565,
+        "tier": "backfill"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 298,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 262,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchResearch",
+        "score": 253,
+        "tier": "gated"
+      }
+    ]
+  },
+  {
+    "extra": [
+      "approach"
+    ],
+    "gated": 178,
+    "ungated": 390,
+    "base": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "x",
+        "in",
+        "with",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "support",
+        "multiple",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "app",
+        "single"
+      ],
+      "coverage": 0.42857142857142855,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "augmented": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "support",
+        "wallets",
+        "x",
+        "in",
+        "app",
+        "with",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one"
+      ],
+      "coverage": 0.6190476190476191,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "app",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": 445
+    },
+    "effective": {
+      "tokens": [
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "d",
+        "app",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "stellar",
+        "d",
+        "support",
+        "wallets",
+        "x",
+        "app",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one"
+      ],
+      "coverage": 0.5333333333333333,
+      "matches": {
+        "id": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "name": [
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "service": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "kind": [],
+        "description": [
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "app",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 465,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 298,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 262,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchResearch",
+        "score": 253,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_soroban_contract_docs",
+        "score": 178,
+        "tier": "gated"
+      }
+    ]
+  },
+  {
+    "extra": [
+      "sponsorship",
+      "approach"
+    ],
+    "gated": 178,
+    "ungated": 390,
+    "base": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "x",
+        "in",
+        "with",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "support",
+        "multiple",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "app",
+        "single"
+      ],
+      "coverage": 0.42857142857142855,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "augmented": {
+      "tokens": [
+        "how",
+        "do",
+        "i",
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "in",
+        "one",
+        "d",
+        "app",
+        "with",
+        "a",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "do",
+        "stellar",
+        "d",
+        "a",
+        "i",
+        "support",
+        "wallets",
+        "x",
+        "in",
+        "app",
+        "with",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "how",
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one"
+      ],
+      "coverage": 0.6190476190476191,
+      "matches": {
+        "id": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "name": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "service": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "kind": [
+          [
+            "i",
+            "substring"
+          ],
+          [
+            "a",
+            "substring"
+          ]
+        ],
+        "description": [
+          [
+            "do",
+            "prefix"
+          ],
+          [
+            "i",
+            "prefix"
+          ],
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "in",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "app",
+            "prefix"
+          ],
+          [
+            "with",
+            "exact"
+          ],
+          [
+            "a",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": 445
+    },
+    "effective": {
+      "tokens": [
+        "support",
+        "multiple",
+        "stellar",
+        "wallets",
+        "freighter",
+        "lobstr",
+        "x",
+        "bull",
+        "hardware",
+        "wallets",
+        "one",
+        "d",
+        "app",
+        "single",
+        "integration"
+      ],
+      "matched": [
+        "stellar",
+        "d",
+        "support",
+        "wallets",
+        "x",
+        "app",
+        "single",
+        "integration"
+      ],
+      "missing": [
+        "multiple",
+        "freighter",
+        "lobstr",
+        "bull",
+        "hardware",
+        "one"
+      ],
+      "coverage": 0.5333333333333333,
+      "matches": {
+        "id": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "name": [
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "service": [
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ]
+        ],
+        "kind": [],
+        "description": [
+          [
+            "support",
+            "exact"
+          ],
+          [
+            "stellar",
+            "exact"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "x",
+            "substring"
+          ],
+          [
+            "wallets",
+            "exact"
+          ],
+          [
+            "d",
+            "prefix"
+          ],
+          [
+            "app",
+            "prefix"
+          ],
+          [
+            "single",
+            "exact"
+          ],
+          [
+            "integration",
+            "prefix"
+          ]
+        ]
+      },
+      "vendor": null
+    },
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 465,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 298,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 262,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchResearch",
+        "score": 253,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_soroban_contract_docs",
+        "score": 178,
+        "tier": "gated"
+      }
+    ]
+  }
+]

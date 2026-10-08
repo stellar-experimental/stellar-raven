@@ -475,3 +475,8 @@ joined the triage TODO as a recurrence of the existing monitor; the status line 
 Open closeout item, stated plainly: the upstream candidates are not filed and no "nothing new" note
 applies. The `.agents/TODO.md` item "File the 2026-10-07 tool-surface round's upstream candidates"
 owns them.
+
+## Follow-up pointer (2026-10-08)
+
+The three flagged rows were re-collected with five fresh samples per arm, plus an annotation-only arm:
+[`2026-10-08-flagged-row-recollection.md`](2026-10-08-flagged-row-recollection.md). This pointer changes nothing above.

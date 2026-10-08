@@ -1,0 +1,156 @@
+{
+  "calibration": [
+    [
+      "q-comp-finclusive-caas",
+      "CAL-T",
+      "present",
+      "-"
+    ],
+    [
+      "q-comp-finclusive-caas",
+      "CAL-B3",
+      "absent",
+      "-"
+    ],
+    [
+      "q-gap-leaderboard-project-not-builder",
+      "CAL-B3",
+      "absent",
+      "-"
+    ],
+    [
+      "q-gap-leaderboard-project-not-builder",
+      "CAL-T",
+      "present",
+      "-"
+    ],
+    [
+      "q-pc-quantum-preparedness-dormant",
+      "CAL-B3",
+      "absent",
+      "yes"
+    ],
+    [
+      "q-pc-quantum-preparedness-dormant",
+      "CAL-T",
+      "present",
+      "no"
+    ]
+  ],
+  "features": {
+    "q-comp-finclusive-caas": {
+      "B": {
+        "present": 0,
+        "n": 5,
+        "e2": 0,
+        "items": [
+          "B1:a",
+          "B2:a",
+          "B3:a",
+          "B4:a",
+          "B5:a"
+        ]
+      },
+      "A": {
+        "present": 1,
+        "n": 5,
+        "e2": 0,
+        "items": [
+          "A1:a",
+          "A2:a",
+          "A3:a",
+          "A4:a",
+          "A5:p"
+        ]
+      },
+      "T": {
+        "present": 1,
+        "n": 5,
+        "e2": 0,
+        "items": [
+          "T1:a",
+          "T2:p",
+          "T3:a",
+          "T4:a",
+          "T5:a"
+        ]
+      }
+    },
+    "q-gap-leaderboard-project-not-builder": {
+      "A": {
+        "present": 0,
+        "n": 5,
+        "e2": 0,
+        "items": [
+          "A1:a",
+          "A2:a",
+          "A3:a",
+          "A4:a",
+          "A5:a"
+        ]
+      },
+      "B": {
+        "present": 3,
+        "n": 5,
+        "e2": 0,
+        "items": [
+          "B1:p",
+          "B2:p",
+          "B3:a",
+          "B4:a",
+          "B5:p"
+        ]
+      },
+      "T": {
+        "present": 3,
+        "n": 5,
+        "e2": 0,
+        "items": [
+          "T1:a",
+          "T2:p",
+          "T3:p",
+          "T4:p",
+          "T5:a"
+        ]
+      }
+    },
+    "q-pc-quantum-preparedness-dormant": {
+      "B": {
+        "present": 4,
+        "n": 5,
+        "e2": 1,
+        "items": [
+          "B1:p",
+          "B2:p",
+          "B3:p",
+          "B4:p",
+          "B5:a"
+        ]
+      },
+      "T": {
+        "present": 2,
+        "n": 5,
+        "e2": 3,
+        "items": [
+          "T1:a",
+          "T2:p",
+          "T3:p",
+          "T4:a",
+          "T5:a"
+        ]
+      },
+      "A": {
+        "present": 2,
+        "n": 5,
+        "e2": 3,
+        "items": [
+          "A1:p",
+          "A2:a",
+          "A3:a",
+          "A4:p",
+          "A5:a"
+        ]
+      }
+    }
+  }
+}

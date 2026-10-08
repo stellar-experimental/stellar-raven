@@ -1,0 +1,287 @@
+{
+  "q-defi-agentic-payment-standards-compare": {
+    "query": "How do x402, MPP, AP2, and ACP compare for agent payments, and which are Stellar-specific vs general?",
+    "hits": [
+      {
+        "id": "skills.stellar-dev.agentic-payments",
+        "score": 306,
+        "tier": "gated"
+      },
+      {
+        "id": "lumenloop.search_content_semantic",
+        "score": 217,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 326,
+        "tier": "backfill"
+      },
+      {
+        "id": "stellarDocs.search_doc_titles",
+        "score": 316,
+        "tier": "backfill"
+      },
+      {
+        "id": "stellarDocs.search_sdk_cli_tools_docs",
+        "score": 307,
+        "tier": "backfill"
+      }
+    ]
+  },
+  "q-defi-blend-alternatives": {
+    "query": "Are there alternatives to Blend for lending on Stellar — what other lending protocols exist?",
+    "hits": [
+      {
+        "id": "stellarDocs.search_doc_titles",
+        "score": 249,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 230,
+        "tier": "gated"
+      },
+      {
+        "id": "skills.stellar-light.stellar-scout",
+        "score": 230,
+        "tier": "gated"
+      },
+      {
+        "id": "skills.stellar-dev.cross-chain",
+        "score": 204,
+        "tier": "gated"
+      },
+      {
+        "id": "lumenloop.search_content_semantic",
+        "score": 181,
+        "tier": "gated"
+      }
+    ]
+  },
+  "q-defi-rwa-overview": {
+    "query": "What real-world-asset (RWA) products are live on Stellar?",
+    "hits": [
+      {
+        "id": "scout.searchProjects",
+        "score": 227,
+        "tier": "gated"
+      },
+      {
+        "id": "skills.lumenloop.stellar-ecosystem-scout",
+        "score": 179,
+        "tier": "gated"
+      },
+      {
+        "id": "lumenloop.search_content_semantic",
+        "score": 151,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_asset_token_docs",
+        "score": 233,
+        "tier": "backfill"
+      },
+      {
+        "id": "lumenloop.search_directory",
+        "score": 98,
+        "tier": "gated"
+      }
+    ]
+  },
+  "q-scf-funded-similar-payroll": {
+    "query": "Have any crypto-payroll or stablecoin-payments apps been funded through the SCF before?",
+    "hits": [
+      {
+        "id": "skills.lumenloop.scf-submission-radar",
+        "score": 244,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 176,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.scfPitch",
+        "score": 209,
+        "tier": "backfill"
+      },
+      {
+        "id": "lumenloop.find_similar_scf_submissions",
+        "score": 192,
+        "tier": "backfill"
+      },
+      {
+        "id": "scout.reviewSubmission",
+        "score": 67,
+        "tier": "gated"
+      }
+    ]
+  },
+  "q-tool-wallets-kit": {
+    "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 465,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_wallet_dapp_docs",
+        "score": 565,
+        "tier": "backfill"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 308,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 262,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchResearch",
+        "score": 253,
+        "tier": "gated"
+      }
+    ]
+  },
+  "q-pc-sequence-numbers-ordering-replace": {
+    "query": "How do Stellar sequence numbers behave compared with an EVM nonce, including ordering across unrelated accounts, duplicate or seq+2 submissions, and replacing a stuck pending transaction?",
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 407,
+        "tier": "backfill"
+      },
+      {
+        "id": "stellarDocs.search_docs_in_category",
+        "score": 402,
+        "tier": "backfill"
+      },
+      {
+        "id": "stellarDocs.search_protocol_concepts_docs",
+        "score": 398,
+        "tier": "backfill"
+      },
+      {
+        "id": "stellarDocs.search_soroban_contract_docs",
+        "score": 395,
+        "tier": "backfill"
+      },
+      {
+        "id": "stellarDocs.search_anchor_sep_docs",
+        "score": 376,
+        "tier": "backfill"
+      }
+    ]
+  },
+  "rwa": [
+    {
+      "query": "Which tokenized real-world assets are live on Stellar?",
+      "hits": [
+        "scout.getRwaAssets",
+        "skills.stellar-dev.assets",
+        "stellarDocs.search_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "lumenloop.search_content_semantic"
+      ]
+    },
+    {
+      "query": "How do I get test XLM from Friendbot?",
+      "hits": [
+        "stellarDocs.search_doc_titles",
+        "stellarDocs.search_protocol_concepts_docs",
+        "stellarDocs.get_doc_page_sections",
+        "lumenloop.get_document",
+        "lumenloop.search_content_semantic"
+      ]
+    },
+    {
+      "query": "What is Stellar RPC?",
+      "hits": [
+        "stellarDocs.search_rpc_horizon_data_docs",
+        "stellarDocs.search_doc_titles",
+        "skills.lumenloop.stellar-ecosystem-scout",
+        "skills.lumenloop.stellar-integration-finder",
+        "lumenloop.search_content_semantic"
+      ]
+    },
+    {
+      "query": "How can I reduce a Soroban WASM binary size?",
+      "hits": [
+        "stellarDocs.search_soroban_contract_docs",
+        "stellarDocs.search_doc_titles",
+        "lumenloop.find_content_about_project",
+        "stellarDocs.search_asset_token_docs",
+        "skills.openzeppelin-stellar.upgrade-stellar-contracts"
+      ]
+    },
+    {
+      "query": "How do I simulate a transaction?",
+      "hits": [
+        "stellarDocs.search_docs_in_category",
+        "stellarDocs.search_rpc_horizon_data_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "skills.stellar-dev.dapp",
+        "lumenloop.list_research"
+      ]
+    },
+    {
+      "query": "How do I fetch account balances?",
+      "hits": [
+        "stellarDocs.get_doc_page_sections",
+        "stellarDocs.search_doc_titles",
+        "stellarDocs.search_protocol_concepts_docs",
+        "lumenloop.get_document",
+        "lumenloop.get_project"
+      ]
+    },
+    {
+      "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+      "hits": [
+        "stellarDocs.search_rpc_horizon_data_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "scout.getRwaAssets",
+        "stellarDocs.search_asset_token_docs",
+        "stellarDocs.search_anchor_sep_docs"
+      ]
+    },
+    {
+      "query": "How do I read a wallet balance for tokenized treasury assets?",
+      "hits": [
+        "stellarDocs.search_asset_token_docs",
+        "scout.getRwaAssets",
+        "stellarDocs.search_docs",
+        "lumenloop.search_directory",
+        "lumenloop.search_documents"
+      ]
+    },
+    {
+      "query": "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?",
+      "hits": [
+        "scout.getRwaAssets",
+        "stellarDocs.search_doc_titles",
+        "stellarDocs.search_docs",
+        "scout.analyzeEcosystem",
+        "lumenloop.search_content_semantic"
+      ]
+    }
+  ],
+  "phase": [
+    {
+      "token": "phase",
+      "score": 19
+    },
+    {
+      "token": "unrelated",
+      "score": 19
+    }
+  ],
+  "genericProperties": {
+    "score": 46
+  }
+}
