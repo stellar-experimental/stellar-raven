@@ -1,0 +1,197 @@
+{
+  "q-comp-finclusive-caas": {
+    "B": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "wrong",
+        "partial",
+        "partial",
+        "wrong",
+        "wrong"
+      ],
+      "meanScore": 0.2,
+      "minScore": 0,
+      "maxScore": 0.5,
+      "coreCorrect": 3,
+      "meanExecute": 2.8,
+      "meanSearch": 2.6,
+      "meanTurns": 7.4,
+      "artifactReads": 1,
+      "meanCost": 0.429
+    },
+    "T": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "partial",
+        "wrong",
+        "partial",
+        "partial",
+        "wrong"
+      ],
+      "meanScore": 0.3,
+      "minScore": 0,
+      "maxScore": 0.5,
+      "coreCorrect": 5,
+      "meanExecute": 2.6,
+      "meanSearch": 2.8,
+      "meanTurns": 7.4,
+      "artifactReads": 1,
+      "meanCost": 0.421
+    },
+    "A": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "wrong",
+        "partial",
+        "partial",
+        "wrong",
+        "wrong"
+      ],
+      "meanScore": 0.2,
+      "minScore": 0,
+      "maxScore": 0.5,
+      "coreCorrect": 3,
+      "meanExecute": 3,
+      "meanSearch": 2.8,
+      "meanTurns": 7.8,
+      "artifactReads": 1,
+      "meanCost": 0.438
+    }
+  },
+  "q-gap-leaderboard-project-not-builder": {
+    "B": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct"
+      ],
+      "meanScore": 1,
+      "minScore": 1,
+      "maxScore": 1,
+      "coreCorrect": 5,
+      "meanExecute": 0.4,
+      "meanSearch": 3,
+      "meanTurns": 5.4,
+      "artifactReads": 0,
+      "meanCost": 0.195
+    },
+    "T": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct"
+      ],
+      "meanScore": 1,
+      "minScore": 1,
+      "maxScore": 1,
+      "coreCorrect": 5,
+      "meanExecute": 0.6,
+      "meanSearch": 2.8,
+      "meanTurns": 5.4,
+      "artifactReads": 0,
+      "meanCost": 0.208
+    },
+    "A": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "correct",
+        "correct",
+        "correct",
+        "correct",
+        "correct"
+      ],
+      "meanScore": 1,
+      "minScore": 1,
+      "maxScore": 1,
+      "coreCorrect": 5,
+      "meanExecute": 0,
+      "meanSearch": 2.8,
+      "meanTurns": 4.8,
+      "artifactReads": 0,
+      "meanCost": 0.162
+    }
+  },
+  "q-pc-quantum-preparedness-dormant": {
+    "B": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "partial",
+        "partial",
+        "wrong",
+        "wrong",
+        "correct"
+      ],
+      "meanScore": 0.4,
+      "minScore": 0,
+      "maxScore": 1,
+      "coreCorrect": 3,
+      "meanExecute": 4.2,
+      "meanSearch": 2.6,
+      "meanTurns": 8.8,
+      "artifactReads": 5,
+      "meanCost": 0.676
+    },
+    "T": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "correct",
+        "wrong",
+        "partial",
+        "correct",
+        "correct"
+      ],
+      "meanScore": 0.7,
+      "minScore": 0,
+      "maxScore": 1,
+      "coreCorrect": 4,
+      "meanExecute": 4,
+      "meanSearch": 3,
+      "meanTurns": 9,
+      "artifactReads": 0,
+      "meanCost": 0.627
+    },
+    "A": {
+      "n": 5,
+      "nValid": 5,
+      "nScore": 5,
+      "verdicts": [
+        "partial",
+        "correct",
+        "correct",
+        "partial",
+        "correct"
+      ],
+      "meanScore": 0.8,
+      "minScore": 0.5,
+      "maxScore": 1,
+      "coreCorrect": 5,
+      "meanExecute": 5,
+      "meanSearch": 2.8,
+      "meanTurns": 9.8,
+      "artifactReads": 4,
+      "meanCost": 0.63
+    }
+  }
+}

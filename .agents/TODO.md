@@ -166,6 +166,20 @@ example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` a
 proposals"). Keep `inventory/stellar-light.json`
 at 1.9.61 until check 12 passes; the daily drift report keeps #223 open meanwhile.
 
+2026-10-08 authorized repair attempt (Codex frontier; Claude Fable review): no general policy passes.
+Ten policies were tested on all 544 rows against current and fresh sources (Scout 1.9.72, 674 Docs
+titles). Each fails at least one check (5, 8, 10, or 12). The three mixed RWA controls still fail.
+New mechanisms: `tokenize` splits `dApp` into `d` + `app`, and the new title keyword `approach`
+prefix-matches `app`. That admits a weak fifth gated row, and `fullPageUngatedAdmission` then drops the
+stronger `stellarDocs.search_wallet_dapp_docs` (565) from `q-tool-wallets-kit`. Short description
+tokens (`is`, `an`, `also`) prefix- and substring-match unrelated queries the same way; a
+`SKILL_DESCRIPTION_OVERRIDES` entry for `skills.stellar-dev.dapp` holds that skill's search text until
+this repair lands (`rounds/2026-10-08-maintenance.md`). The identity fallback admits `reviewSubmission` on any "submission". The Docs title
+snapshot is also held by this item now. Exposure recommendation for the later absorb:
+`analyzeHackathonSubmissions` (broad) and `getHackathonSubmission` (detail) after the repair passes;
+keep `reviewSubmission` excluded. Ledger: `rounds/2026-10-08-maintenance.md`; evidence:
+`rounds/2026-10-08-routing-repair/`.
+
 Acceptance checks:
 
 1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
@@ -319,8 +333,17 @@ maps these to `isReadOnly()`, `isConcurrencySafe()`, and `isOpenWorld()`. In the
 fewer artifact reads (8 calls on 5 rows → 3 calls on 2 rows) than B3. The round shows no demonstrated
 mechanism and cannot separate annotation effects from description edits or answering variance.
 
-Done when: a reviewed, separately authorized annotation-only comparison, or a free transcript audit
-over more stored runs, decides whether the annotations change execute or artifact-read behavior.
+The [2026-10-08 re-collection](rounds/2026-10-08-flagged-row-recollection.md) ran an annotation-only
+arm A on three rows (5 samples per arm). No 2026-10-07 drop held, so attribution did not apply.
+Attempted artifact reads (call sites; no successful read outcome recorded) were B 6, T 1, A 5, all of
+the difference on the QPP row: A, which shares B's annotations, attempted reads like B. Execute calls
+per answer: B 2.5, T 2.4, A 2.7. The parallel-call prediction could not be checked: stored transcripts
+have no assistant-turn boundaries.
+
+Done when: a reviewed, separately authorized annotation-only comparison over more rows, or a free
+transcript audit over more stored runs, decides whether the annotations change artifact-read
+behavior. Record assistant-turn boundaries in QA transcripts first, so parallel `execute` calls
+become observable.
 
 ### Triage the 2026-10-07 row-review own-repo candidates
 

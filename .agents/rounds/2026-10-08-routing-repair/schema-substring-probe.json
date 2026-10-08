@@ -1,0 +1,42 @@
+{
+  "entry": {
+    "id": "demo.has",
+    "name": "has",
+    "service": "demo",
+    "kind": "operation",
+    "description": "Retrieve widgets"
+  },
+  "query": "has widgets",
+  "results": {
+    "baseline": [
+      {
+        "keywords": [
+          "widgets"
+        ],
+        "score": 141
+      },
+      {
+        "keywords": [
+          "widgets",
+          "phase"
+        ],
+        "score": 143
+      }
+    ],
+    "structural": [
+      {
+        "keywords": [
+          "widgets"
+        ],
+        "score": 141
+      },
+      {
+        "keywords": [
+          "widgets",
+          "phase"
+        ],
+        "score": 143
+      }
+    ]
+  }
+}
