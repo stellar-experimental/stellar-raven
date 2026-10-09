@@ -388,13 +388,13 @@ host execution.
 
 ### Keep freeze-type must-avoid items off dated, source-scoped lists
 
-Three of the five judge errors in the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md) row review share one pattern. A must-avoid item about a
-frozen, permanent, or network-wide list fired on an answer that dated its list and named its source.
-The rows are B3 `q-jutsu-cash-crypto-ramps`, T `q-soroban-sdk-cve`, and T
-`q-tool-sdk-repos-discovery`. A fired avoid forces `wrong`. The directed re-judge repeated two of the
-three. The rubric limits avoid items to answer-visible content. It does not say that a dated,
-source-scoped, or non-exhaustive list is not a frozen list. Control: B3 `q-eco-defi-market-map`,
-where the avoid fires correctly.
+Three of the five judge errors in the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md) row review share one pattern. Each answer dated its list and named
+its source. A must-avoid item about a frozen, permanent, or network-wide list still fired. The rows
+are B3 `q-jutsu-cash-crypto-ramps`, T `q-soroban-sdk-cve`, and T `q-tool-sdk-repos-discovery`.
+
+A fired avoid forces `wrong`. The directed re-judge repeated two of the three. The rubric limits
+avoid items to answer-visible content. It does not say that a dated, source-scoped, or non-exhaustive
+list is not a frozen list. Control: B3 `q-eco-defi-market-map`, where the avoid fires correctly.
 
 Done when:
 

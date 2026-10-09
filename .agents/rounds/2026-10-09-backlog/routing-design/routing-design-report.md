@@ -75,7 +75,7 @@ Fresh-versus-main comparisons hold each candidate fixed.
 Candidate 1 changes four grade rows and 23 orders.
 Candidate 2 changes one grade row and 21 orders.
 Candidate 3 changes one grade row and 14 orders.
-[summary.json](measurement-summary.json) retains every comparison row and the lane totals.
+[measurement-summary.json](measurement-summary.json) retains the lane totals, gate failures, and every graded row. The local archive keeps the full per-row orders and scores.
 
 ### All 12 checks for the retained candidate
 
