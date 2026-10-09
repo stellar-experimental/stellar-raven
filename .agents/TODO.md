@@ -379,34 +379,6 @@ Calls with one message ID share an ordinal across assistant events. Entries with
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
 
-### Re-judge the rubric v2.11 and scam-check golden rows
-
-PR #250 (2026-10-09) changed judging in two ways:
-
-- `JUDGE_RUBRIC` v2.11 exempts the freeze clause of a must-avoid item when the answer presents its
-  list as dated, source-scoped, or non-exhaustive. An explicit permanence claim, or an instruction not
-  to re-check, still fires the clause. A completeness claim fires it only when it exceeds the stated
-  source or date bounds, or lacks support. Other conditions in the item and concrete wrong content
-  still bind.
-- Every protective instruction that a `scam-check` golden answer directs is now a key fact. The
-  exception is `q-raph-lobstr-legitimacy`: at the five-key-fact cap, its note names the install path
-  as required behavior.
-
-The free tests pin the prompt text only. v2.10 artifacts are not comparable with v2.11 runs.
-
-Expected grades, from the stored rationales of the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md):
-
-- B3 `q-jutsu-cash-crypto-ramps`, T `q-soroban-sdk-cve`, and T `q-tool-sdk-repos-discovery`: wrong to
-  partial.
-- B3 `q-eco-defi-market-map` (control): stays wrong.
-- B3 and T `q-raph-claimable-balance-safety`: wrong (both answers omit the warning).
-- B3 and T `q-raph-remove-scam-token`: correct only if the stored answers carry the new warning.
-
-Done when: a separately authorized run re-judges those 8 rows with `re-judge.mjs --allow-non-identical`
-and runs the 7-call `eval:qa:selftest` (15 judge calls). The round ledger records each flip direction.
-Change trap tiering only if a fixed golden still splits. The commands are in
-`rounds/2026-10-09-followup.md`.
-
 ### Investigate missing source evidence in the p6 judge pack
 
 The 2026-10-01 adapter comparison found a disputed Beans Wrong grade in

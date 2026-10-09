@@ -110,6 +110,19 @@ describe("reviewed p6 judge self-test wrapper", () => {
     }
   });
 
+  it("refuses an output path whose directory does not exist", () => {
+    const directory = mkdtempSync(path.join(tmpdir(), "p6-exclusive-"));
+    const missing = path.join(directory, "missing");
+    try {
+      expect(() => assertP6OutputAvailable(path.join(missing, "summary.json"))).toThrow(
+        /output directory does not exist/
+      );
+      expect(existsSync(missing)).toBe(false);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
   it("writes a new method record without leaving its temporary output", () => {
     const directory = mkdtempSync(path.join(tmpdir(), "p6-exclusive-"));
     const outputPath = path.join(directory, "summary.json");
