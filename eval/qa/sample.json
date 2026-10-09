@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "03f7f1e4fd46e344658080db497acfbdf22411e87c35d671f9bb121ea502a70d",
+  "corpusContentSha256": "eca8bc2e9f2dcde82ee4d98773316f14fed6de78d9187750f52c99de1c0b03e0",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -2220,13 +2220,14 @@
         "answer": "A claimable balance is a ledger entry someone created for one or more named claimants; it is claimed in a separate operation when its conditions are met. For a non-XLM asset, the claimant must first have the matching trustline or the claim fails with a technical `op_no_trust` error. A claimable balance can be a legitimate payment flow, but an unexpected one is not proof of a reward—verify the issuer and do not follow external links or pay to unlock it.",
         "keyFacts": [
           "Defines a claimable balance as a distinct conditional ledger-entry flow.",
-          "Requires the matching trustline for a non-XLM claim."
+          "Requires the matching trustline for a non-XLM claim.",
+          "Warns the user to verify the issuer and not pay or follow links to unlock the balance."
         ],
         "avoid": [
           "Do NOT say every claimable balance is a scam.",
           "Do NOT say a non-XLM claim succeeds without its trustline."
         ],
-        "notes": "Both safety and protocol behavior are material."
+        "notes": "Both safety and protocol behavior are material. The scam warning (key fact 3) is required behavior, not background."
       },
       "tags": {
         "category": "retail-consumer",
@@ -2295,8 +2296,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-31",
-          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+          "date": "2026-10-09",
+          "by": "golden-truth lane G, 2026-10-09 r1009b round (Claude Fable 5.1, high); evidence in .agents/rounds/2026-10-07-tool-surface-qa.md and the stored 2026-10-07-tool-surface-qa results",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
@@ -2310,12 +2311,15 @@
             "Sibling sweep 2026-08-27: grep claimable balance|ClaimableBalanceEntry|op_no_trust → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-raph-phishing-pending-claim; no contradiction",
             "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — two-part conditional flow; class B CAP-0023 defines ClaimableBalanceEntry; class F live entry shows claimants and predicates.",
             "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimant needs a trustline or the claim fails with op_no_trust; class B CAP-0023 defines CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4.",
-            "Sibling sweep 2026-08-31: grep claimable balance|op_no_trust|ClaimableBalanceEntry → 16 other cases; read q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-phishing-pending-claim, q-raph-unsolicited-airdrop; no contradiction"
+            "Sibling sweep 2026-08-31: grep claimable balance|op_no_trust|ClaimableBalanceEntry → 16 other cases; read q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-phishing-pending-claim, q-raph-unsolicited-airdrop; no contradiction",
+            "Key-fact addition 2026-10-09: the scam warning that the golden answer and grader note already require became key fact 3; truth unchanged. Five stored rubric v2.10 verdicts on answers that all omit the warning split 3 wrong / 2 correct (eval/qa/results/2026-10-07-tool-surface-qa/: 2026-10-07T19-43-18-variantA.json wrong; 2026-10-07T23-25-14-variantA.json correct, rationale 'not listed as a separate required-behavior item'; 2026-10-08T02-40-37-variantA.json wrong; 2026-10-08T02-41-23-rejudge.json wrong; 2026-10-08T02-54-52-rejudge.json correct). Row review: .agents/rounds/2026-10-07-tool-surface-qa.md (q-raph-claimable-balance-safety, 'shared safety omission graded both ways').",
+            "Live re-check 2026-10-09: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — 'A trustline must be established by the claimant to the asset before it can claim the claimable balance, otherwise, the claim will result in an op_no_trust error.' (class A, HTTP 200).",
+            "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; SDF will 'NEVER ask you to deposit funds to any wallet address' and 'NEVER ask you for your private keys'; 'Always verify the domain and email addresses' (class A, HTTP 200). Class D https://www.cisa.gov/secure-our-world/recognize-and-report-phishing — 'don't click on any link or call any number in the message. Look up another way to contact the company' (HTTP 200).",
+            "Sibling sweep 2026-10-09: read all nine scam-check traps (q-raph-scam-spam-tokens, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-unsolicited-airdrop, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet) and the claimable-balance siblings q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves; no contradiction. q-raph-unsolicited-airdrop and q-raph-phishing-pending-claim already carry the no-pay, no-link, no-secret behavior as key facts."
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            ".agents/TODO.md — Make the claimable-balance safety warning a key fact"
           ]
         },
         "origin": "raph claimable-balance-claim-and-safety"
