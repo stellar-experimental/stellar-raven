@@ -337,6 +337,43 @@ It makes seven calls with a `$0.50` per-call cap and a `$3.50` total cap.
 The output path and its `.tmp` path must not exist.
 This command is paid and does not run in CI.
 
+## Offline stable-row evidence diagnostic
+
+[diagnose-stable-evidence.mjs](diagnose-stable-evidence.mjs) checks each saved `verdict.wrongClaims` entry against saved execute results.
+It selects rows with saved `freshness: "stable"` tags by default.
+It reads files only and prints a separate JSON report.
+
+```sh
+node eval/qa/diagnose-stable-evidence.mjs eval/qa/results > tmp/stable-evidence.json
+node eval/qa/diagnose-stable-evidence.mjs <saved-result.json> --all-freshness --ids <case-id>
+```
+
+Directories include JSON files in subdirectories.
+The report records source hashes, skipped files, selected rows, and each disputed claim.
+It uses saved tags only; missing tags remain unknown.
+It excludes search results, execute inputs, tool errors, console output, and host footers from matches.
+Missing transcripts, missing results, and detected truncation remain explicit evidence limits.
+
+The diagnostic first checks each probe against the saved answer.
+It pads trailing sentence punctuation in a temporary copy before probing the answer.
+It preserves decimal points and dots within identifiers.
+Only probes present in that answer can count as evidence matches.
+`prose-match` means that a short prose fragment matched the answer and a saved result.
+`term-match` means that only exact terms matched both.
+The summary counts number-only term matches separately.
+`excludedMatches` records source matches absent from the answer under `judge-text-only`.
+The summary's `judgeTextOnly` count includes uncertain claims with only those excluded matches.
+Missing answers and bounded probe-list limits receive separate uncertainty reasons.
+Exact matching still misses some typographic variants, including nonbreaking hyphens.
+A match does not prove the full claim, its source authority, or the answer's correctness.
+`uncertain` means that the available evidence cannot establish a match.
+An absent match does not prove fabrication.
+The diagnostic does not check unlisted answer claims or individual panel votes.
+It preserves judge inputs, grades, saved artifacts, rubric, pack version, and comparison denominators.
+Its counts describe saved observations, including repeated cases across files.
+`--help` and `-h` print usage even with other arguments.
+If sanitization fails, the CLI emits `[redacted]` instead of parsing that sentinel as JSON.
+
 ## Re-judge stored results
 
 Use `run-qa.mjs --judge-stored <results>` for first judging of a capture made with `--no-judge`.
