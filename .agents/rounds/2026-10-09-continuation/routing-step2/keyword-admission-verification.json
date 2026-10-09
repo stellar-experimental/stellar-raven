@@ -1,0 +1,35 @@
+{
+  "sources": {
+    "main": {
+      "queries": 544,
+      "entries": 48,
+      "comparisons": 52224,
+      "admissionChanges": [],
+      "scoreDecreases": []
+    },
+    "fresh": {
+      "queries": 544,
+      "entries": 50,
+      "comparisons": 54400,
+      "admissionChanges": [],
+      "scoreDecreases": []
+    }
+  },
+  "synthetic": [
+    {
+      "tier": "gated",
+      "schemaOnly": null,
+      "plain": 115,
+      "ranked": 123,
+      "repeated": 123
+    },
+    {
+      "tier": "ungated",
+      "schemaOnly": null,
+      "plain": 115,
+      "ranked": 123,
+      "repeated": 123
+    }
+  ],
+  "pass": true
+}

@@ -1,0 +1,102 @@
+diff --git a/src/catalog/scoring.ts b/src/catalog/scoring.ts
+index b74d7b48..36d766aa 100644
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -5,8 +5,8 @@
+  * Stopword rescue retries a failed score without closed-class English words.
+  * A score that already passes keeps its original vendor value.
+  * Section weighting uses 0.75; default section entries remain unsearchable.
+- * Section keywords blend at 0.4 when an experiment emits them.
+- * Routing keywords blend at 1.0 with routing-coherence and schema checks.
++ * Keywords add rank at 0.4 after independent admission; they never supply coverage.
++ * Routing keywords blend at 1.0 with routing-coherence checks.
+  * Query aliases provide general canonical forms through QUERY_TOKEN_ALIASES.
+  * Acronym rescue contracts content-word spans when source text supplies the acronym.
+  * The ungated replica keeps the scoring scale while removing the coverage gate.
+@@ -106,10 +106,8 @@ function prepareQueryForm(query: string): ScoringQueryForm {
+ }
+ 
+ /**
+- * Section-keyword blend factor. Keyword matches ride the description slot
+- * (vendor weight 5) in the augmented pass; damping their delta by 0.4 puts
+- * them at effective weight 2 — the same tier as the vendor's own low-weight
+- * `kind` field.
++ * Keyword rank blend factor. Each whole-token match uses description weight
++ * 5 and token multiplier 4, damped by 0.4. Keywords cannot admit an entry.
+  */
+ const KEYWORD_BLEND = 0.4;
+ 
+@@ -156,12 +154,6 @@ export function tokensOverlap(left: string, right: string): boolean {
+   return canonicalLeft.startsWith(canonicalRight) || canonicalRight.startsWith(canonicalLeft);
+ }
+ 
+-function matchingTokens(tokens: readonly string[], queryTokens: readonly string[]): string[] {
+-  return tokens.filter((token) => queryTokens.some((queryToken) =>
+-    tokensOverlap(token, queryToken)
+-  ));
+-}
+-
+ function hasCoherentRoutingWitness(
+   phrases: readonly RoutingPhrase[] | undefined,
+   queryTokens: readonly string[]
+@@ -180,10 +172,9 @@ const gatedEntryScorer: EntryScorer = (entry, query) => scoreEntry(entry, query.
+ const ungatedEntryScorer: EntryScorer = (entry, query) => scoreEntryUngatedPrepared(entry, query);
+ 
+ /**
+- * Base score with the build-time keyword fields blended in.
+- * A keyword field needs a whole-token witness. Routing-only admission also
+- * needs two query tokens from one source phrase. Once admitted, each field
+- * contributes one deduplicated delta. Repeated phrases cannot add weight.
++ * Base score with source-authored routing vocabulary blended in.
++ * Routing-only admission needs two query tokens from one source phrase.
++ * Schema keywords stay outside this pipeline, including acronym rescue.
+  */
+ function scoreWithKeywords(
+   entry: WeightedScorableEntry,
+@@ -192,12 +183,6 @@ function scoreWithKeywords(
+ ): number | null {
+   const base = score(entry, query);
+   const fields: { tokens: readonly string[]; blend: number }[] = [];
+-  const schemaMatches = entry.keywords ? matchingTokens(entry.keywords, query.tokens) : [];
+-  const hasSchemaEvidence = schemaMatches.length >= 2 ||
+-    (base !== null && schemaMatches.some((token) => canonicalRoutingToken(token).length >= 4));
+-  if (entry.keywords && hasSchemaEvidence) {
+-    fields.push({ tokens: [...new Set(entry.keywords)], blend: KEYWORD_BLEND });
+-  }
+   if (
+     entry.routingKeywords &&
+     (base !== null || hasCoherentRoutingWitness(entry.routingPhrases, query.contentTokens))
+@@ -414,7 +399,7 @@ export function scoreEntryWeighted(
+   query: string,
+   prepared = prepareScoringQuery(query)
+ ): number | null {
+-  return acronymRescueScore(entry, prepared);
++  return addKeywordRank(entry, prepared, acronymRescueScore(entry, prepared));
+ }
+ 
+ /**
+@@ -427,7 +412,23 @@ export function scoreEntryWeightedUngated(
+   query: string,
+   prepared = prepareScoringQuery(query)
+ ): number | null {
+-  return aliasMaxScore(entry, prepared, ungatedEntryScorer);
++  return addKeywordRank(entry, prepared, aliasMaxScore(entry, prepared, ungatedEntryScorer));
++}
++
++/** Whole schema-token matches rank independently admitted entries without adding coverage. */
++function addKeywordRank(
++  entry: WeightedScorableEntry,
++  query: PreparedScoringQuery,
++  admitted: number | null
++): number | null {
++  if (admitted === null || !entry.keywords?.length) return admitted;
++  const vocabulary = new Set(tokenize(joinedKeywords(entry.keywords)).map(canonicalRoutingToken));
++  const matches = (form: PreparedQueryForm) => new Set(
++    form.tokens.map(canonicalRoutingToken).filter((token) => vocabulary.has(token))
++  ).size;
++  const count = Math.max(matches(query.original), query.canonical ? matches(query.canonical) : 0);
++  const kindWeight = entry.kind === "skill-section" ? 0.75 : 1;
++  return admitted + Math.round(count * UNGATED_FIELD_WEIGHTS.description * 4 * KEYWORD_BLEND * kindWeight);
+ }
+ 
+ /**

@@ -1,0 +1,5117 @@
+{
+  "main": [
+    {
+      "id": "q-defi-lumenloop-categories-vocab",
+      "query": "What project categories does the Stellar ecosystem directory actually track — give me the controlled list of category values it uses.",
+      "before": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "score": 399
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 335
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 291
+        },
+        {
+          "id": "lumenloop.get_categories",
+          "service": "lumenloop",
+          "score": 298
+        },
+        {
+          "id": "scout.getRfps",
+          "service": "scout",
+          "score": 94
+        }
+      ],
+      "after": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "service": "skills",
+          "score": 399
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 335
+        },
+        {
+          "id": "lumenloop.get_project",
+          "service": "lumenloop",
+          "score": 329
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 291
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 267
+        }
+      ],
+      "tiers": [
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "score": 399,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 335,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.get_project",
+          "score": 329,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 291,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 267,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.get_categories",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 298,
+              "after": 298,
+              "withoutKeywords": 298
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_project",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 329,
+              "after": 329,
+              "withoutKeywords": 329
+            },
+            "ungated": {
+              "before": 329,
+              "after": 329,
+              "withoutKeywords": 329
+            }
+          }
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "keywords": [
+            "end",
+            "field",
+            "publishing",
+            "created",
+            "start",
+            "sources",
+            "twitter",
+            "accounts",
+            "scf",
+            "submissions",
+            "knowledge",
+            "snippet"
+          ],
+          "scores": {
+            "gated": {
+              "before": 267,
+              "after": 267,
+              "withoutKeywords": 267
+            },
+            "ungated": {
+              "before": 267,
+              "after": 267,
+              "withoutKeywords": 267
+            }
+          }
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 335,
+              "after": 335,
+              "withoutKeywords": 335
+            },
+            "ungated": {
+              "before": 335,
+              "after": 335,
+              "withoutKeywords": 335
+            }
+          }
+        },
+        {
+          "id": "scout.getRfps",
+          "keywords": [
+            "category",
+            "offset",
+            "categories",
+            "matched",
+            "synthetic",
+            "quarters",
+            "confirmed",
+            "progress",
+            "unavailable",
+            "closes",
+            "opens",
+            "verify",
+            "submit",
+            "new",
+            "author",
+            "row",
+            "technical",
+            "requirements"
+          ],
+          "scores": {
+            "gated": {
+              "before": 94,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 215,
+              "after": 203,
+              "withoutKeywords": 195
+            }
+          }
+        },
+        {
+          "id": "scout.searchProjects",
+          "keywords": [
+            "user",
+            "facing",
+            "partner",
+            "integration",
+            "bridge",
+            "sdk",
+            "indexer",
+            "explorer",
+            "analytics",
+            "ai",
+            "education",
+            "security",
+            "social",
+            "impact",
+            "rpc",
+            "faucet",
+            "exchange",
+            "development",
+            "pre",
+            "release",
+            "offset",
+            "fields",
+            "references",
+            "signals",
+            "commits90d",
+            "open",
+            "prs",
+            "tag",
+            "state",
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "reputation",
+            "canonical",
+            "ci",
+            "present",
+            "contracts",
+            "delta",
+            "subinvocations",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "score",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "version",
+            "deps",
+            "proof",
+            "cargo",
+            "macros",
+            "lang"
+          ],
+          "scores": {
+            "gated": {
+              "before": 291,
+              "after": 291,
+              "withoutKeywords": 291
+            },
+            "ungated": {
+              "before": 291,
+              "after": 291,
+              "withoutKeywords": 291
+            }
+          }
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 399,
+              "after": 399,
+              "withoutKeywords": 399
+            },
+            "ungated": {
+              "before": 399,
+              "after": 399,
+              "withoutKeywords": 399
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-infra-hubble-vs-rpc-layer",
+      "query": "Should I read account balances and history from Stellar RPC or from Hubble/BigQuery? When does each make sense?",
+      "before": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 250
+        },
+        {
+          "id": "scout.explainRepo",
+          "service": "scout",
+          "score": 225
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 328
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 299
+        },
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 184
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 451
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 258
+        },
+        {
+          "id": "scout.explainRepo",
+          "service": "scout",
+          "score": 225
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 328
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 299
+        }
+      ],
+      "tiers": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "score": 451,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 258,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.explainRepo",
+          "score": 225,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "score": 328,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 299,
+          "tier": "backfill"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "keywords": [
+            "end",
+            "field",
+            "publishing",
+            "created",
+            "start",
+            "sources",
+            "twitter",
+            "accounts",
+            "scf",
+            "submissions",
+            "knowledge",
+            "snippet"
+          ],
+          "scores": {
+            "gated": {
+              "before": 250,
+              "after": 258,
+              "withoutKeywords": 250
+            },
+            "ungated": {
+              "before": 250,
+              "after": 258,
+              "withoutKeywords": 250
+            }
+          }
+        },
+        {
+          "id": "scout.explainRepo",
+          "keywords": [
+            "alternate",
+            "verified",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "score",
+            "depth",
+            "interface",
+            "deployable",
+            "mainnet",
+            "protocol",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "soroban",
+            "version",
+            "deps",
+            "proof",
+            "symbols",
+            "target",
+            "knowledge",
+            "notes",
+            "note2",
+            "archived",
+            "kind",
+            "fork",
+            "template",
+            "tutorial",
+            "application",
+            "stars",
+            "via",
+            "sources"
+          ],
+          "scores": {
+            "gated": {
+              "before": 225,
+              "after": 225,
+              "withoutKeywords": 225
+            },
+            "ungated": {
+              "before": 225,
+              "after": 225,
+              "withoutKeywords": 225
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "keywords": [
+            "meetings"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 299,
+              "after": 299,
+              "withoutKeywords": 299
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 328,
+              "after": 328,
+              "withoutKeywords": 328
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "keywords": [
+            "generate",
+            "key",
+            "parameters",
+            "symbol",
+            "retrieve",
+            "code",
+            "entry",
+            "connecting",
+            "creating",
+            "visualizations",
+            "optimizing",
+            "queries",
+            "like",
+            "viewing",
+            "developer",
+            "backfill",
+            "js",
+            "udf",
+            "use",
+            "sdf",
+            "etl",
+            "curation",
+            "architecture",
+            "scheduling",
+            "orchestration",
+            "system",
+            "visualization",
+            "public",
+            "dashboards",
+            "apis",
+            "introduction",
+            "configuring",
+            "filtering",
+            "installing",
+            "monitoring",
+            "prerequisites",
+            "upgrading",
+            "error",
+            "handling",
+            "specific",
+            "stale",
+            "timeout",
+            "failed",
+            "malformed",
+            "standard",
+            "merge",
+            "allow",
+            "trust",
+            "bump",
+            "sequence",
+            "change",
+            "create",
+            "passive",
+            "sell",
+            "offer",
+            "manage",
+            "buy",
+            "payment",
+            "strict",
+            "receive",
+            "options",
+            "consistency",
+            "arguments",
+            "migrate",
+            "lake",
+            "development",
+            "indexers",
+            "exporting",
+            "setup",
+            "example",
+            "usages",
+            "export",
+            "gcs",
+            "backends",
+            "buffered",
+            "storage",
+            "backend",
+            "captive",
+            "core",
+            "readers",
+            "changes",
+            "within",
+            "range",
+            "count",
+            "each",
+            "archive",
+            "successful",
+            "processors",
+            "token",
+            "transfer",
+            "processor",
+            "oracle"
+          ],
+          "scores": {
+            "gated": {
+              "before": 184,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 445,
+              "after": 451,
+              "withoutKeywords": 435
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "query": "How does OpenZeppelin's Upgradeable module for Stellar make a Soroban contract upgradeable?",
+      "before": [
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "service": "skills",
+          "score": 580
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "service": "skills",
+          "score": 430
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 457
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 281
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 245
+        }
+      ],
+      "after": [
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "service": "skills",
+          "score": 580
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "service": "skills",
+          "score": 430
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 281
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 440
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 245
+        }
+      ],
+      "tiers": [
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "score": 580,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "score": 430,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchResearch",
+          "score": 281,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 440,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 245,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.searchRepos",
+          "keywords": [
+            "activity",
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "offset",
+            "fields",
+            "canonical",
+            "strict",
+            "partial",
+            "weak",
+            "none",
+            "signals",
+            "commits90d",
+            "prs",
+            "tag",
+            "state",
+            "builder",
+            "reputation",
+            "ci",
+            "present",
+            "events",
+            "delta",
+            "subinvocations",
+            "verified",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "deps",
+            "cargo",
+            "macros",
+            "lang",
+            "js",
+            "toml",
+            "symbols",
+            "supported",
+            "deprecated",
+            "deep",
+            "wiki",
+            "winner",
+            "homepage",
+            "judge",
+            "judged",
+            "kind",
+            "template",
+            "tutorial",
+            "application",
+            "notes",
+            "issues",
+            "owner"
+          ],
+          "scores": {
+            "gated": {
+              "before": 245,
+              "after": 245,
+              "withoutKeywords": 245
+            },
+            "ungated": {
+              "before": 245,
+              "after": 245,
+              "withoutKeywords": 245
+            }
+          }
+        },
+        {
+          "id": "scout.searchResearch",
+          "keywords": [
+            "query",
+            "paper",
+            "proposal",
+            "developer",
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "informational",
+            "sources",
+            "per",
+            "fields",
+            "error",
+            "results",
+            "hash",
+            "doc",
+            "empty",
+            "model",
+            "score",
+            "advisory",
+            "wide",
+            "top",
+            "chunk",
+            "content",
+            "kind",
+            "guide",
+            "article",
+            "data",
+            "supported",
+            "deprecated"
+          ],
+          "scores": {
+            "gated": {
+              "before": 281,
+              "after": 281,
+              "withoutKeywords": 281
+            },
+            "ungated": {
+              "before": 281,
+              "after": 281,
+              "withoutKeywords": 281
+            }
+          }
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 430,
+              "after": 430,
+              "withoutKeywords": 430
+            },
+            "ungated": {
+              "before": 430,
+              "after": 430,
+              "withoutKeywords": 430
+            }
+          }
+        },
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 580,
+              "after": 580,
+              "withoutKeywords": 580
+            },
+            "ungated": {
+              "before": 580,
+              "after": 580,
+              "withoutKeywords": 580
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "keywords": [
+            "create",
+            "restoration",
+            "footprint",
+            "manually",
+            "restore",
+            "java",
+            "script",
+            "extend",
+            "entry",
+            "test",
+            "extension",
+            "logic",
+            "interesting",
+            "ways",
+            "starter",
+            "basics",
+            "automating",
+            "futurenet",
+            "reset",
+            "add",
+            "support",
+            "verify",
+            "trustlines",
+            "patterns",
+            "examples",
+            "wallets",
+            "making",
+            "installed",
+            "bytecode",
+            "deployer",
+            "sac",
+            "asset",
+            "code",
+            "organize",
+            "error",
+            "enum",
+            "extending",
+            "deployed",
+            "upgrading",
+            "write",
+            "workspace",
+            "conversions",
+            "convert",
+            "address",
+            "other",
+            "types",
+            "bytes",
+            "sc",
+            "val",
+            "string",
+            "consume",
+            "previously",
+            "ingested",
+            "ingest",
+            "published",
+            "publish",
+            "replay",
+            "collect",
+            "close",
+            "meta",
+            "analyzing",
+            "cost",
+            "efficiency",
+            "choose",
+            "use",
+            "migrate",
+            "structures",
+            "strategies",
+            "production",
+            "differential",
+            "fork",
+            "snapshot",
+            "mocking",
+            "channel",
+            "claimable",
+            "balances",
+            "clawbacks",
+            "fee",
+            "bump",
+            "install",
+            "invoke",
+            "function",
+            "sdks",
+            "payments",
+            "pooled",
+            "muxed",
+            "memos",
+            "receive",
+            "signing",
+            "invocations",
+            "method",
+            "sponsored",
+            "reserves",
+            "submit",
+            "web",
+            "assembly",
+            "allocator",
+            "batched",
+            "atomic",
+            "swaps",
+            "swap",
+            "bls",
+            "signature",
+            "complex",
+            "delegate",
+            "fuzz",
+            "liquidity",
+            "pool",
+            "logging",
+            "mint",
+            "lock",
+            "simple",
+            "single",
+            "offer",
+            "sale",
+            "timelock",
+            "upgradeable",
+            "increment",
+            "frontend",
+            "interactions",
+            "lifecycle",
+            "concepts",
+            "modes",
+            "generate",
+            "dialect",
+            "persisting",
+            "built",
+            "fully",
+            "typed",
+            "cookbook",
+            "management",
+            "argument",
+            "uploaded",
+            "keys",
+            "tx",
+            "commands",
+            "balance",
+            "op",
+            "sign",
+            "upload",
+            "plugins",
+            "manual"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 457,
+              "after": 440,
+              "withoutKeywords": 432
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "query": "Friendbot keeps rate-limiting my testnet funding - what are the legitimate ways to get testnet XLM, and is there an official backup faucet wallet?",
+      "before": [
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 259
+        },
+        {
+          "id": "lumenloop.get_project",
+          "service": "lumenloop",
+          "score": 232
+        },
+        {
+          "id": "lumenloop.get_document",
+          "service": "lumenloop",
+          "score": 227
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "service": "lumenloop",
+          "score": 221
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 219
+        }
+      ],
+      "after": [
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 259
+        },
+        {
+          "id": "lumenloop.get_project",
+          "service": "lumenloop",
+          "score": 232
+        },
+        {
+          "id": "lumenloop.get_document",
+          "service": "lumenloop",
+          "score": 227
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "service": "lumenloop",
+          "score": 221
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 217
+        }
+      ],
+      "tiers": [
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "score": 259,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.get_project",
+          "score": 232,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.get_document",
+          "score": 227,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "score": 221,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 217,
+          "tier": "backfill"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.get_document",
+          "keywords": [
+            "jobs",
+            "status"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 227,
+              "after": 227,
+              "withoutKeywords": 227
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_project",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 232,
+              "after": 232,
+              "withoutKeywords": 232
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 259,
+              "after": 259,
+              "withoutKeywords": 259
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 221,
+              "after": 221,
+              "withoutKeywords": 221
+            }
+          }
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 217,
+              "after": 217,
+              "withoutKeywords": 217
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "keywords": [
+            "develop",
+            "templates",
+            "creation",
+            "toml",
+            "10",
+            "authentication",
+            "hosted",
+            "api",
+            "setup",
+            "anchored",
+            "confirmation",
+            "modal",
+            "contacts",
+            "manage",
+            "trust",
+            "querying",
+            "generate",
+            "bindings",
+            "walkthrough",
+            "prerequisites",
+            "custom",
+            "network",
+            "ingestion",
+            "pipeline",
+            "cdp",
+            "consumer",
+            "sample",
+            "code",
+            "recovery",
+            "quote",
+            "programmatic",
+            "uri",
+            "scheme",
+            "facilitate",
+            "delegated",
+            "signing",
+            "proofs",
+            "comprehensive",
+            "initialize",
+            "scripts",
+            "implement",
+            "spec",
+            "work",
+            "specs",
+            "java",
+            "python",
+            "php",
+            "connect",
+            "testnet",
+            "enable",
+            "soroban",
+            "react",
+            "prompt",
+            "sign",
+            "developer",
+            "token",
+            "payments",
+            "authorization",
+            "entries",
+            "xdrs"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 219,
+              "after": 204,
+              "withoutKeywords": 196
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-ti-multisig-recover-lobstr-vault",
+      "query": "How do I remove signers or change thresholds on an existing multisig, and what are my options if I lost the LOBSTR Vault recovery phrase but still control the source account?",
+      "before": [
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 370
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 359
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 354
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 350
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 347
+        }
+      ],
+      "after": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 375
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 366
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 354
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 350
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 347
+        }
+      ],
+      "tiers": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 375,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "score": 366,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 354,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "score": 350,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 347,
+          "tier": "backfill"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "keywords": [
+            "end",
+            "field",
+            "publishing",
+            "created",
+            "start",
+            "sources",
+            "twitter",
+            "accounts",
+            "scf",
+            "submissions",
+            "knowledge",
+            "snippet"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 359,
+              "after": 375,
+              "withoutKeywords": 359
+            }
+          }
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 347,
+              "after": 347,
+              "withoutKeywords": 347
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "keywords": [
+            "meetings"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 354,
+              "after": 354,
+              "withoutKeywords": 354
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 350,
+              "after": 350,
+              "withoutKeywords": 350
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "keywords": [
+            "json",
+            "decentralized",
+            "exchange",
+            "smart",
+            "signatures",
+            "lifecycle",
+            "master",
+            "rust",
+            "development",
+            "fast",
+            "cheap",
+            "0ut",
+            "0f",
+            "control",
+            "quest",
+            "migrate",
+            "another",
+            "chain",
+            "introduction",
+            "soroban",
+            "hardhat",
+            "solidity",
+            "support",
+            "via",
+            "solang",
+            "audits",
+            "poseidon",
+            "host",
+            "environment",
+            "software"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 370,
+              "after": 366,
+              "withoutKeywords": 358
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-holdout-a-05-groth16-soroban",
+      "query": "verify a groth16 proof inside a soroban contract",
+      "before": [
+        {
+          "id": "scout.listContracts",
+          "service": "scout",
+          "score": 208
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 196
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "service": "skills",
+          "score": 164
+        },
+        {
+          "id": "scout.getRepoTrust",
+          "service": "scout",
+          "score": 120
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 64
+        }
+      ],
+      "after": [
+        {
+          "id": "scout.listContracts",
+          "service": "scout",
+          "score": 208
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 323
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 196
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "service": "skills",
+          "score": 164
+        },
+        {
+          "id": "scout.getRepoTrust",
+          "service": "scout",
+          "score": 128
+        }
+      ],
+      "tiers": [
+        {
+          "id": "scout.listContracts",
+          "score": 208,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 323,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 196,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "score": 164,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getRepoTrust",
+          "score": 128,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.getRepoTrust",
+          "keywords": [
+            "days",
+            "audits",
+            "auditor",
+            "published",
+            "size",
+            "scan",
+            "pending",
+            "error",
+            "incomplete",
+            "gone",
+            "sdk",
+            "capabilities",
+            "stellar",
+            "project",
+            "archived",
+            "stars",
+            "tier",
+            "deep",
+            "publishes",
+            "multi",
+            "superseded",
+            "predecessors",
+            "successor",
+            "contracts",
+            "events",
+            "delta",
+            "subinvocations"
+          ],
+          "scores": {
+            "gated": {
+              "before": 120,
+              "after": 128,
+              "withoutKeywords": 120
+            },
+            "ungated": {
+              "before": 120,
+              "after": 128,
+              "withoutKeywords": 120
+            }
+          }
+        },
+        {
+          "id": "scout.listContracts",
+          "keywords": [
+            "amm",
+            "yield",
+            "oracle",
+            "payments",
+            "x402",
+            "wallet",
+            "infra",
+            "anchor",
+            "ramp",
+            "indexer",
+            "offset",
+            "audits",
+            "latest",
+            "auditor",
+            "published",
+            "events",
+            "delta",
+            "self",
+            "validated",
+            "onchain",
+            "size",
+            "scanned",
+            "successor",
+            "filtered"
+          ],
+          "scores": {
+            "gated": {
+              "before": 208,
+              "after": 208,
+              "withoutKeywords": 208
+            },
+            "ungated": {
+              "before": 208,
+              "after": 208,
+              "withoutKeywords": 208
+            }
+          }
+        },
+        {
+          "id": "scout.searchRepos",
+          "keywords": [
+            "activity",
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "offset",
+            "fields",
+            "canonical",
+            "strict",
+            "partial",
+            "weak",
+            "none",
+            "signals",
+            "commits90d",
+            "prs",
+            "tag",
+            "state",
+            "builder",
+            "reputation",
+            "ci",
+            "present",
+            "events",
+            "delta",
+            "subinvocations",
+            "verified",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "deps",
+            "cargo",
+            "macros",
+            "lang",
+            "js",
+            "toml",
+            "symbols",
+            "supported",
+            "deprecated",
+            "deep",
+            "wiki",
+            "winner",
+            "homepage",
+            "judge",
+            "judged",
+            "kind",
+            "template",
+            "tutorial",
+            "application",
+            "notes",
+            "issues",
+            "owner"
+          ],
+          "scores": {
+            "gated": {
+              "before": 196,
+              "after": 196,
+              "withoutKeywords": 196
+            },
+            "ungated": {
+              "before": 196,
+              "after": 196,
+              "withoutKeywords": 196
+            }
+          }
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 164,
+              "after": 164,
+              "withoutKeywords": 164
+            },
+            "ungated": {
+              "before": 164,
+              "after": 164,
+              "withoutKeywords": 164
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "keywords": [
+            "create",
+            "restoration",
+            "footprint",
+            "manually",
+            "restore",
+            "java",
+            "script",
+            "extend",
+            "entry",
+            "test",
+            "extension",
+            "logic",
+            "interesting",
+            "ways",
+            "starter",
+            "basics",
+            "automating",
+            "futurenet",
+            "reset",
+            "add",
+            "support",
+            "verify",
+            "trustlines",
+            "patterns",
+            "examples",
+            "wallets",
+            "making",
+            "installed",
+            "bytecode",
+            "deployer",
+            "sac",
+            "asset",
+            "code",
+            "organize",
+            "error",
+            "enum",
+            "extending",
+            "deployed",
+            "upgrading",
+            "write",
+            "workspace",
+            "conversions",
+            "convert",
+            "address",
+            "other",
+            "types",
+            "bytes",
+            "sc",
+            "val",
+            "string",
+            "consume",
+            "previously",
+            "ingested",
+            "ingest",
+            "published",
+            "publish",
+            "replay",
+            "collect",
+            "close",
+            "meta",
+            "analyzing",
+            "cost",
+            "efficiency",
+            "choose",
+            "use",
+            "migrate",
+            "structures",
+            "strategies",
+            "production",
+            "differential",
+            "fork",
+            "snapshot",
+            "mocking",
+            "channel",
+            "claimable",
+            "balances",
+            "clawbacks",
+            "fee",
+            "bump",
+            "install",
+            "invoke",
+            "function",
+            "sdks",
+            "payments",
+            "pooled",
+            "muxed",
+            "memos",
+            "receive",
+            "signing",
+            "invocations",
+            "method",
+            "sponsored",
+            "reserves",
+            "submit",
+            "web",
+            "assembly",
+            "allocator",
+            "batched",
+            "atomic",
+            "swaps",
+            "swap",
+            "bls",
+            "signature",
+            "complex",
+            "delegate",
+            "fuzz",
+            "liquidity",
+            "pool",
+            "logging",
+            "mint",
+            "lock",
+            "simple",
+            "single",
+            "offer",
+            "sale",
+            "timelock",
+            "upgradeable",
+            "increment",
+            "frontend",
+            "interactions",
+            "lifecycle",
+            "concepts",
+            "modes",
+            "generate",
+            "dialect",
+            "persisting",
+            "built",
+            "fully",
+            "typed",
+            "cookbook",
+            "management",
+            "argument",
+            "uploaded",
+            "keys",
+            "tx",
+            "commands",
+            "balance",
+            "op",
+            "sign",
+            "upload",
+            "plugins",
+            "manual"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 323,
+              "after": 323,
+              "withoutKeywords": 315
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "keywords": [
+            "develop",
+            "templates",
+            "creation",
+            "toml",
+            "10",
+            "authentication",
+            "hosted",
+            "api",
+            "setup",
+            "anchored",
+            "confirmation",
+            "modal",
+            "contacts",
+            "manage",
+            "trust",
+            "querying",
+            "generate",
+            "bindings",
+            "walkthrough",
+            "prerequisites",
+            "custom",
+            "network",
+            "ingestion",
+            "pipeline",
+            "cdp",
+            "consumer",
+            "sample",
+            "code",
+            "recovery",
+            "quote",
+            "programmatic",
+            "uri",
+            "scheme",
+            "facilitate",
+            "delegated",
+            "signing",
+            "proofs",
+            "comprehensive",
+            "initialize",
+            "scripts",
+            "implement",
+            "spec",
+            "work",
+            "specs",
+            "java",
+            "python",
+            "php",
+            "connect",
+            "testnet",
+            "enable",
+            "soroban",
+            "react",
+            "prompt",
+            "sign",
+            "developer",
+            "token",
+            "payments",
+            "authorization",
+            "entries",
+            "xdrs"
+          ],
+          "scores": {
+            "gated": {
+              "before": 64,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 141,
+              "after": 144,
+              "withoutKeywords": 128
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-tool-wallets-kit",
+      "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+      "before": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 465
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 565
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 298
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 262
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 253
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 465
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 565
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 298
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 270
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 253
+        }
+      ],
+      "tiers": [
+        {
+          "id": "stellarDocs.search_docs",
+          "score": 465,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "score": 565,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.vetIdea",
+          "score": 298,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 270,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchResearch",
+          "score": 253,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.searchProjects",
+          "keywords": [
+            "user",
+            "facing",
+            "partner",
+            "integration",
+            "bridge",
+            "sdk",
+            "indexer",
+            "explorer",
+            "analytics",
+            "ai",
+            "education",
+            "security",
+            "social",
+            "impact",
+            "rpc",
+            "faucet",
+            "exchange",
+            "development",
+            "pre",
+            "release",
+            "offset",
+            "fields",
+            "references",
+            "signals",
+            "commits90d",
+            "open",
+            "prs",
+            "tag",
+            "state",
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "reputation",
+            "canonical",
+            "ci",
+            "present",
+            "contracts",
+            "delta",
+            "subinvocations",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "score",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "version",
+            "deps",
+            "proof",
+            "cargo",
+            "macros",
+            "lang"
+          ],
+          "scores": {
+            "gated": {
+              "before": 262,
+              "after": 270,
+              "withoutKeywords": 262
+            },
+            "ungated": {
+              "before": 270,
+              "after": 270,
+              "withoutKeywords": 262
+            }
+          }
+        },
+        {
+          "id": "scout.searchResearch",
+          "keywords": [
+            "query",
+            "paper",
+            "proposal",
+            "developer",
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "informational",
+            "sources",
+            "per",
+            "fields",
+            "error",
+            "results",
+            "hash",
+            "doc",
+            "empty",
+            "model",
+            "score",
+            "advisory",
+            "wide",
+            "top",
+            "chunk",
+            "content",
+            "kind",
+            "guide",
+            "article",
+            "data",
+            "supported",
+            "deprecated"
+          ],
+          "scores": {
+            "gated": {
+              "before": 253,
+              "after": 253,
+              "withoutKeywords": 253
+            },
+            "ungated": {
+              "before": 253,
+              "after": 253,
+              "withoutKeywords": 253
+            }
+          }
+        },
+        {
+          "id": "scout.vetIdea",
+          "keywords": [
+            "report",
+            "scored",
+            "weak",
+            "types",
+            "activity",
+            "domains",
+            "stars",
+            "tier",
+            "awarded",
+            "winners",
+            "progress",
+            "audited",
+            "mainnet",
+            "winner"
+          ],
+          "scores": {
+            "gated": {
+              "before": 298,
+              "after": 298,
+              "withoutKeywords": 298
+            },
+            "ungated": {
+              "before": 298,
+              "after": 298,
+              "withoutKeywords": 298
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "keywords": [
+            "meetings"
+          ],
+          "scores": {
+            "gated": {
+              "before": 465,
+              "after": 465,
+              "withoutKeywords": 465
+            },
+            "ungated": {
+              "before": 465,
+              "after": 465,
+              "withoutKeywords": 465
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "keywords": [
+            "develop",
+            "templates",
+            "creation",
+            "toml",
+            "10",
+            "authentication",
+            "hosted",
+            "api",
+            "setup",
+            "anchored",
+            "confirmation",
+            "modal",
+            "contacts",
+            "manage",
+            "trust",
+            "querying",
+            "generate",
+            "bindings",
+            "walkthrough",
+            "prerequisites",
+            "custom",
+            "network",
+            "ingestion",
+            "pipeline",
+            "cdp",
+            "consumer",
+            "sample",
+            "code",
+            "recovery",
+            "quote",
+            "programmatic",
+            "uri",
+            "scheme",
+            "facilitate",
+            "delegated",
+            "signing",
+            "proofs",
+            "comprehensive",
+            "initialize",
+            "scripts",
+            "implement",
+            "spec",
+            "work",
+            "specs",
+            "java",
+            "python",
+            "php",
+            "connect",
+            "testnet",
+            "enable",
+            "soroban",
+            "react",
+            "prompt",
+            "sign",
+            "developer",
+            "token",
+            "payments",
+            "authorization",
+            "entries",
+            "xdrs"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 565,
+              "after": 565,
+              "withoutKeywords": 565
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "fresh": [
+    {
+      "id": "q-infra-hubble-vs-rpc-layer",
+      "query": "Should I read account balances and history from Stellar RPC or from Hubble/BigQuery? When does each make sense?",
+      "before": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 250
+        },
+        {
+          "id": "scout.explainRepo",
+          "service": "scout",
+          "score": 225
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 328
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 299
+        },
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 184
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "service": "stellarDocs",
+          "score": 451
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 258
+        },
+        {
+          "id": "scout.explainRepo",
+          "service": "scout",
+          "score": 225
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 328
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 299
+        }
+      ],
+      "tiers": [
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "score": 451,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 258,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.explainRepo",
+          "score": 225,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "score": 328,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 299,
+          "tier": "backfill"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "keywords": [
+            "end",
+            "field",
+            "publishing",
+            "created",
+            "start",
+            "sources",
+            "twitter",
+            "accounts",
+            "scf",
+            "submissions",
+            "knowledge",
+            "snippet"
+          ],
+          "scores": {
+            "gated": {
+              "before": 250,
+              "after": 258,
+              "withoutKeywords": 250
+            },
+            "ungated": {
+              "before": 250,
+              "after": 258,
+              "withoutKeywords": 250
+            }
+          }
+        },
+        {
+          "id": "scout.explainRepo",
+          "keywords": [
+            "alternate",
+            "verified",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "score",
+            "depth",
+            "interface",
+            "deployable",
+            "mainnet",
+            "protocol",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "soroban",
+            "version",
+            "deps",
+            "proof",
+            "symbols",
+            "target",
+            "knowledge",
+            "notes",
+            "note2",
+            "archived",
+            "kind",
+            "fork",
+            "platform",
+            "template",
+            "tutorial",
+            "application",
+            "stars",
+            "via",
+            "sources"
+          ],
+          "scores": {
+            "gated": {
+              "before": 225,
+              "after": 225,
+              "withoutKeywords": 225
+            },
+            "ungated": {
+              "before": 225,
+              "after": 225,
+              "withoutKeywords": 225
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "keywords": [
+            "meetings"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 299,
+              "after": 299,
+              "withoutKeywords": 299
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 328,
+              "after": 328,
+              "withoutKeywords": 328
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_rpc_horizon_data_docs",
+          "keywords": [
+            "generate",
+            "key",
+            "parameters",
+            "symbol",
+            "retrieve",
+            "code",
+            "entry",
+            "connecting",
+            "creating",
+            "visualizations",
+            "optimizing",
+            "queries",
+            "like",
+            "viewing",
+            "developer",
+            "backfill",
+            "js",
+            "udf",
+            "use",
+            "sdf",
+            "etl",
+            "curation",
+            "architecture",
+            "scheduling",
+            "orchestration",
+            "system",
+            "visualization",
+            "public",
+            "dashboards",
+            "apis",
+            "introduction",
+            "configuring",
+            "filtering",
+            "installing",
+            "monitoring",
+            "prerequisites",
+            "upgrading",
+            "error",
+            "handling",
+            "specific",
+            "stale",
+            "timeout",
+            "failed",
+            "malformed",
+            "standard",
+            "merge",
+            "allow",
+            "trust",
+            "bump",
+            "sequence",
+            "change",
+            "create",
+            "passive",
+            "sell",
+            "offer",
+            "manage",
+            "buy",
+            "payment",
+            "strict",
+            "receive",
+            "options",
+            "consistency",
+            "arguments",
+            "migrate",
+            "lake",
+            "development",
+            "indexers",
+            "exporting",
+            "setup",
+            "example",
+            "usages",
+            "export",
+            "gcs",
+            "backends",
+            "buffered",
+            "storage",
+            "backend",
+            "captive",
+            "core",
+            "readers",
+            "changes",
+            "within",
+            "range",
+            "count",
+            "each",
+            "archive",
+            "successful",
+            "processors",
+            "token",
+            "transfer",
+            "processor",
+            "oracle"
+          ],
+          "scores": {
+            "gated": {
+              "before": 184,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 445,
+              "after": 451,
+              "withoutKeywords": 435
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "query": "How does OpenZeppelin's Upgradeable module for Stellar make a Soroban contract upgradeable?",
+      "before": [
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "service": "skills",
+          "score": 580
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "service": "skills",
+          "score": 430
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 457
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 281
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 245
+        }
+      ],
+      "after": [
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "service": "skills",
+          "score": 580
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "service": "skills",
+          "score": 430
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 281
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 440
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 245
+        }
+      ],
+      "tiers": [
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "score": 580,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "score": 430,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchResearch",
+          "score": 281,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 440,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 245,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.searchRepos",
+          "keywords": [
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "offset",
+            "fields",
+            "canonical",
+            "strict",
+            "weak",
+            "none",
+            "signals",
+            "commits90d",
+            "prs",
+            "tag",
+            "state",
+            "builder",
+            "reputation",
+            "ci",
+            "present",
+            "events",
+            "delta",
+            "subinvocations",
+            "verified",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "deps",
+            "cargo",
+            "macros",
+            "lang",
+            "js",
+            "toml",
+            "symbols",
+            "supported",
+            "deprecated",
+            "deep",
+            "wiki",
+            "homepage",
+            "judge",
+            "judged",
+            "kind",
+            "platform",
+            "template",
+            "tutorial",
+            "application",
+            "notes",
+            "issues",
+            "owner",
+            "link",
+            "ec"
+          ],
+          "scores": {
+            "gated": {
+              "before": 245,
+              "after": 245,
+              "withoutKeywords": 245
+            },
+            "ungated": {
+              "before": 245,
+              "after": 245,
+              "withoutKeywords": 245
+            }
+          }
+        },
+        {
+          "id": "scout.searchResearch",
+          "keywords": [
+            "query",
+            "paper",
+            "proposal",
+            "developer",
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "informational",
+            "sources",
+            "per",
+            "fields",
+            "error",
+            "results",
+            "hash",
+            "doc",
+            "empty",
+            "model",
+            "score",
+            "advisory",
+            "wide",
+            "top",
+            "chunk",
+            "content",
+            "kind",
+            "guide",
+            "article",
+            "data",
+            "supported",
+            "deprecated"
+          ],
+          "scores": {
+            "gated": {
+              "before": 281,
+              "after": 281,
+              "withoutKeywords": 281
+            },
+            "ungated": {
+              "before": 281,
+              "after": 281,
+              "withoutKeywords": 281
+            }
+          }
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 430,
+              "after": 430,
+              "withoutKeywords": 430
+            },
+            "ungated": {
+              "before": 430,
+              "after": 430,
+              "withoutKeywords": 430
+            }
+          }
+        },
+        {
+          "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 580,
+              "after": 580,
+              "withoutKeywords": 580
+            },
+            "ungated": {
+              "before": 580,
+              "after": 580,
+              "withoutKeywords": 580
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "keywords": [
+            "create",
+            "restoration",
+            "footprint",
+            "manually",
+            "restore",
+            "java",
+            "script",
+            "extend",
+            "entry",
+            "test",
+            "extension",
+            "logic",
+            "interesting",
+            "ways",
+            "starter",
+            "basics",
+            "automating",
+            "futurenet",
+            "reset",
+            "add",
+            "support",
+            "verify",
+            "trustlines",
+            "patterns",
+            "examples",
+            "wallets",
+            "making",
+            "installed",
+            "bytecode",
+            "deployer",
+            "sac",
+            "asset",
+            "code",
+            "organize",
+            "error",
+            "enum",
+            "extending",
+            "deployed",
+            "upgrading",
+            "write",
+            "workspace",
+            "conversions",
+            "convert",
+            "address",
+            "other",
+            "types",
+            "bytes",
+            "sc",
+            "val",
+            "string",
+            "consume",
+            "previously",
+            "ingested",
+            "ingest",
+            "published",
+            "publish",
+            "replay",
+            "collect",
+            "close",
+            "meta",
+            "analyzing",
+            "cost",
+            "efficiency",
+            "choose",
+            "use",
+            "migrate",
+            "structures",
+            "strategies",
+            "production",
+            "differential",
+            "fork",
+            "snapshot",
+            "mocking",
+            "channel",
+            "claimable",
+            "balances",
+            "clawbacks",
+            "fee",
+            "bump",
+            "sponsorship",
+            "approach",
+            "install",
+            "invoke",
+            "function",
+            "sdks",
+            "payments",
+            "pooled",
+            "muxed",
+            "memos",
+            "receive",
+            "signing",
+            "invocations",
+            "method",
+            "sponsored",
+            "reserves",
+            "submit",
+            "web",
+            "assembly",
+            "allocator",
+            "batched",
+            "atomic",
+            "swaps",
+            "swap",
+            "bls",
+            "signature",
+            "complex",
+            "delegate",
+            "fuzz",
+            "liquidity",
+            "pool",
+            "logging",
+            "mint",
+            "lock",
+            "simple",
+            "single",
+            "offer",
+            "sale",
+            "timelock",
+            "upgradeable",
+            "increment",
+            "frontend",
+            "interactions",
+            "lifecycle",
+            "concepts",
+            "modes",
+            "generate",
+            "dialect",
+            "persisting",
+            "built",
+            "fully",
+            "typed",
+            "cookbook",
+            "management",
+            "argument",
+            "uploaded",
+            "keys",
+            "tx",
+            "commands",
+            "balance",
+            "op",
+            "sign",
+            "upload",
+            "plugins",
+            "manual"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 457,
+              "after": 440,
+              "withoutKeywords": 432
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-soroban-x402-auth-entry-signing",
+      "query": "Which Stellar wallets support the Soroban auth-entry signing x402 needs, and what's the payment flow?",
+      "before": [
+        {
+          "id": "scout.listSkills",
+          "service": "scout",
+          "score": 287
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "score": 281
+        },
+        {
+          "id": "scout.getHackathon",
+          "service": "scout",
+          "score": 267
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 182
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "service": "stellarDocs",
+          "score": 134
+        }
+      ],
+      "after": [
+        {
+          "id": "scout.listSkills",
+          "service": "scout",
+          "score": 287
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "service": "scout",
+          "score": 285
+        },
+        {
+          "id": "scout.getHackathon",
+          "service": "scout",
+          "score": 267
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 266
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 266
+        }
+      ],
+      "tiers": [
+        {
+          "id": "scout.listSkills",
+          "score": 287,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "score": 285,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getHackathon",
+          "score": 267,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 266,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchResearch",
+          "score": 266,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.getHackathon",
+          "keywords": [
+            "builds",
+            "known",
+            "unknown",
+            "values",
+            "share",
+            "value",
+            "category",
+            "library",
+            "package",
+            "required",
+            "questions",
+            "video",
+            "award",
+            "demo",
+            "github",
+            "vote",
+            "ranked"
+          ],
+          "scores": {
+            "gated": {
+              "before": 267,
+              "after": 267,
+              "withoutKeywords": 267
+            },
+            "ungated": {
+              "before": 267,
+              "after": 267,
+              "withoutKeywords": 267
+            }
+          }
+        },
+        {
+          "id": "scout.listSkills",
+          "keywords": [
+            "stellarlight",
+            "lumenloop",
+            "external",
+            "filtered",
+            "served",
+            "unreachable",
+            "valid",
+            "kinds",
+            "sources",
+            "argument",
+            "hint",
+            "compatibility",
+            "featured",
+            "homepage",
+            "alt",
+            "command",
+            "raw",
+            "repository",
+            "tagline",
+            "tags",
+            "target",
+            "user",
+            "invocable"
+          ],
+          "scores": {
+            "gated": {
+              "before": 287,
+              "after": 287,
+              "withoutKeywords": 287
+            },
+            "ungated": {
+              "before": 287,
+              "after": 287,
+              "withoutKeywords": 287
+            }
+          }
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "keywords": [
+            "keyword",
+            "hybrid",
+            "true",
+            "yes",
+            "false",
+            "off",
+            "category",
+            "wallet",
+            "dex",
+            "lending",
+            "bridge",
+            "infrastructure",
+            "anchor",
+            "indexer",
+            "explorer",
+            "analytics",
+            "ai",
+            "gaming",
+            "education",
+            "security",
+            "nft",
+            "rwa",
+            "stablecoin",
+            "social",
+            "impact",
+            "rpc",
+            "faucet",
+            "card",
+            "issuing",
+            "exchange",
+            "oracle",
+            "yield",
+            "package",
+            "award",
+            "categories",
+            "ended",
+            "github",
+            "terms",
+            "prize",
+            "website",
+            "facts",
+            "draft",
+            "development",
+            "pre",
+            "release",
+            "inactive",
+            "similarity",
+            "votes",
+            "indexed",
+            "filtered",
+            "vector",
+            "requested",
+            "served",
+            "packages",
+            "upstream"
+          ],
+          "scores": {
+            "gated": {
+              "before": 281,
+              "after": 285,
+              "withoutKeywords": 277
+            },
+            "ungated": {
+              "before": 281,
+              "after": 285,
+              "withoutKeywords": 277
+            }
+          }
+        },
+        {
+          "id": "scout.searchProjects",
+          "keywords": [
+            "user",
+            "facing",
+            "partner",
+            "integration",
+            "bridge",
+            "indexer",
+            "explorer",
+            "analytics",
+            "ai",
+            "education",
+            "security",
+            "social",
+            "impact",
+            "rpc",
+            "faucet",
+            "exchange",
+            "development",
+            "pre",
+            "release",
+            "offset",
+            "fields",
+            "references",
+            "signals",
+            "commits90d",
+            "open",
+            "prs",
+            "tag",
+            "state",
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "reputation",
+            "canonical",
+            "ci",
+            "present",
+            "contracts",
+            "delta",
+            "subinvocations",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "score",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "version",
+            "deps",
+            "proof",
+            "cargo",
+            "macros",
+            "lang",
+            "js"
+          ],
+          "scores": {
+            "gated": {
+              "before": 266,
+              "after": 266,
+              "withoutKeywords": 266
+            },
+            "ungated": {
+              "before": 266,
+              "after": 266,
+              "withoutKeywords": 266
+            }
+          }
+        },
+        {
+          "id": "scout.searchResearch",
+          "keywords": [
+            "query",
+            "paper",
+            "proposal",
+            "developer",
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "informational",
+            "sources",
+            "per",
+            "fields",
+            "error",
+            "results",
+            "hash",
+            "doc",
+            "empty",
+            "model",
+            "score",
+            "advisory",
+            "wide",
+            "top",
+            "chunk",
+            "content",
+            "kind",
+            "guide",
+            "article",
+            "data",
+            "supported",
+            "deprecated"
+          ],
+          "scores": {
+            "gated": {
+              "before": 266,
+              "after": 266,
+              "withoutKeywords": 266
+            },
+            "ungated": {
+              "before": 266,
+              "after": 266,
+              "withoutKeywords": 266
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_sdk_cli_tools_docs",
+          "keywords": [
+            "check",
+            "balances",
+            "delegate",
+            "spending",
+            "pay",
+            "apis",
+            "x402",
+            "messages",
+            "usdt0",
+            "mainnet",
+            "architecture",
+            "authority",
+            "security",
+            "model",
+            "output",
+            "errors",
+            "troubleshooting",
+            "more",
+            "analytics",
+            "platforms",
+            "asset",
+            "sandbox",
+            "block",
+            "explorers",
+            "jupyter",
+            "notebooks",
+            "insights",
+            "status",
+            "node",
+            "operator",
+            "online",
+            "ide",
+            "wallet",
+            "chain",
+            "saved",
+            "keypairs",
+            "requests",
+            "smart",
+            "upload",
+            "dashboard",
+            "diff",
+            "xdrs",
+            "json",
+            "usage",
+            "container",
+            "modes",
+            "ports",
+            "commands",
+            "options",
+            "cloud",
+            "deployment",
+            "digital",
+            "ocean",
+            "fly",
+            "io",
+            "debugging",
+            "diagnostic",
+            "viewing",
+            "logs",
+            "faucet",
+            "connect",
+            "money",
+            "gram",
+            "own"
+          ],
+          "scores": {
+            "gated": {
+              "before": 134,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 311,
+              "after": 311,
+              "withoutKeywords": 295
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "keywords": [
+            "create",
+            "restoration",
+            "footprint",
+            "manually",
+            "restore",
+            "java",
+            "script",
+            "extend",
+            "entry",
+            "test",
+            "extension",
+            "logic",
+            "interesting",
+            "ways",
+            "starter",
+            "basics",
+            "automating",
+            "futurenet",
+            "reset",
+            "add",
+            "support",
+            "verify",
+            "trustlines",
+            "patterns",
+            "examples",
+            "wallets",
+            "making",
+            "installed",
+            "bytecode",
+            "deployer",
+            "sac",
+            "asset",
+            "code",
+            "organize",
+            "error",
+            "enum",
+            "extending",
+            "deployed",
+            "upgrading",
+            "write",
+            "workspace",
+            "conversions",
+            "convert",
+            "address",
+            "other",
+            "types",
+            "bytes",
+            "sc",
+            "val",
+            "string",
+            "consume",
+            "previously",
+            "ingested",
+            "ingest",
+            "published",
+            "publish",
+            "replay",
+            "collect",
+            "close",
+            "meta",
+            "analyzing",
+            "cost",
+            "efficiency",
+            "choose",
+            "use",
+            "migrate",
+            "structures",
+            "strategies",
+            "production",
+            "differential",
+            "fork",
+            "snapshot",
+            "mocking",
+            "channel",
+            "claimable",
+            "balances",
+            "clawbacks",
+            "fee",
+            "bump",
+            "sponsorship",
+            "approach",
+            "install",
+            "invoke",
+            "function",
+            "sdks",
+            "payments",
+            "pooled",
+            "muxed",
+            "memos",
+            "receive",
+            "signing",
+            "invocations",
+            "method",
+            "sponsored",
+            "reserves",
+            "submit",
+            "web",
+            "assembly",
+            "allocator",
+            "batched",
+            "atomic",
+            "swaps",
+            "swap",
+            "bls",
+            "signature",
+            "complex",
+            "delegate",
+            "fuzz",
+            "liquidity",
+            "pool",
+            "logging",
+            "mint",
+            "lock",
+            "simple",
+            "single",
+            "offer",
+            "sale",
+            "timelock",
+            "upgradeable",
+            "increment",
+            "frontend",
+            "interactions",
+            "lifecycle",
+            "concepts",
+            "modes",
+            "generate",
+            "dialect",
+            "persisting",
+            "built",
+            "fully",
+            "typed",
+            "cookbook",
+            "management",
+            "argument",
+            "uploaded",
+            "keys",
+            "tx",
+            "commands",
+            "balance",
+            "op",
+            "sign",
+            "upload",
+            "plugins",
+            "manual"
+          ],
+          "scores": {
+            "gated": {
+              "before": 182,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 399,
+              "after": 402,
+              "withoutKeywords": 362
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "query": "Friendbot keeps rate-limiting my testnet funding - what are the legitimate ways to get testnet XLM, and is there an official backup faucet wallet?",
+      "before": [
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 259
+        },
+        {
+          "id": "lumenloop.get_project",
+          "service": "lumenloop",
+          "score": 232
+        },
+        {
+          "id": "lumenloop.get_document",
+          "service": "lumenloop",
+          "score": 227
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "service": "lumenloop",
+          "score": 221
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 219
+        }
+      ],
+      "after": [
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "service": "lumenloop",
+          "score": 259
+        },
+        {
+          "id": "lumenloop.get_project",
+          "service": "lumenloop",
+          "score": 232
+        },
+        {
+          "id": "lumenloop.get_document",
+          "service": "lumenloop",
+          "score": 227
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "service": "lumenloop",
+          "score": 221
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 217
+        }
+      ],
+      "tiers": [
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "score": 259,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.get_project",
+          "score": 232,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.get_document",
+          "score": 227,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "score": 221,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 217,
+          "tier": "backfill"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.get_document",
+          "keywords": [
+            "jobs",
+            "status"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 227,
+              "after": 227,
+              "withoutKeywords": 227
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_project",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 232,
+              "after": 232,
+              "withoutKeywords": 232
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_scf_submissions",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 259,
+              "after": 259,
+              "withoutKeywords": 259
+            }
+          }
+        },
+        {
+          "id": "lumenloop.get_tags_vocabulary",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 221,
+              "after": 221,
+              "withoutKeywords": 221
+            }
+          }
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 217,
+              "after": 217,
+              "withoutKeywords": 217
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "keywords": [
+            "develop",
+            "templates",
+            "creation",
+            "toml",
+            "10",
+            "authentication",
+            "hosted",
+            "api",
+            "setup",
+            "anchored",
+            "confirmation",
+            "modal",
+            "contacts",
+            "manage",
+            "trust",
+            "querying",
+            "generate",
+            "bindings",
+            "walkthrough",
+            "prerequisites",
+            "custom",
+            "network",
+            "ingestion",
+            "pipeline",
+            "cdp",
+            "consumer",
+            "sample",
+            "code",
+            "recovery",
+            "quote",
+            "programmatic",
+            "uri",
+            "scheme",
+            "facilitate",
+            "delegated",
+            "signing",
+            "proofs",
+            "comprehensive",
+            "initialize",
+            "scripts",
+            "implement",
+            "spec",
+            "work",
+            "specs",
+            "java",
+            "python",
+            "php",
+            "connect",
+            "testnet",
+            "enable",
+            "soroban",
+            "react",
+            "prompt",
+            "sign",
+            "developer",
+            "token",
+            "payments",
+            "authorization",
+            "entries",
+            "xdrs"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 219,
+              "after": 204,
+              "withoutKeywords": 196
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-ti-multisig-recover-lobstr-vault",
+      "query": "How do I remove signers or change thresholds on an existing multisig, and what are my options if I lost the LOBSTR Vault recovery phrase but still control the source account?",
+      "before": [
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 370
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 359
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 354
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 350
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 347
+        }
+      ],
+      "after": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "service": "lumenloop",
+          "score": 375
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "service": "stellarDocs",
+          "score": 366
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "service": "stellarDocs",
+          "score": 354
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "service": "stellarDocs",
+          "score": 350
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "service": "lumenloop",
+          "score": 347
+        }
+      ],
+      "tiers": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 375,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "score": 366,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 354,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "score": 350,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 347,
+          "tier": "backfill"
+        }
+      ],
+      "entries": [
+        {
+          "id": "lumenloop.search_content_semantic",
+          "keywords": [
+            "end",
+            "field",
+            "publishing",
+            "created",
+            "start",
+            "sources",
+            "twitter",
+            "accounts",
+            "scf",
+            "submissions",
+            "knowledge",
+            "snippet"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 359,
+              "after": 375,
+              "withoutKeywords": 359
+            }
+          }
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 347,
+              "after": 347,
+              "withoutKeywords": 347
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "keywords": [
+            "meetings"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 354,
+              "after": 354,
+              "withoutKeywords": 354
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 350,
+              "after": 350,
+              "withoutKeywords": 350
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "keywords": [
+            "json",
+            "decentralized",
+            "exchange",
+            "smart",
+            "signatures",
+            "lifecycle",
+            "master",
+            "rust",
+            "development",
+            "fast",
+            "cheap",
+            "0ut",
+            "0f",
+            "control",
+            "quest",
+            "migrate",
+            "another",
+            "chain",
+            "introduction",
+            "soroban",
+            "hardhat",
+            "solidity",
+            "support",
+            "via",
+            "solang",
+            "audits",
+            "poseidon",
+            "host",
+            "environment",
+            "software"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 370,
+              "after": 366,
+              "withoutKeywords": 358
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-holdout-a-05-groth16-soroban",
+      "query": "verify a groth16 proof inside a soroban contract",
+      "before": [
+        {
+          "id": "scout.listContracts",
+          "service": "scout",
+          "score": 208
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 196
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "service": "skills",
+          "score": 164
+        },
+        {
+          "id": "scout.getRepoTrust",
+          "service": "scout",
+          "score": 120
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 64
+        }
+      ],
+      "after": [
+        {
+          "id": "scout.listContracts",
+          "service": "scout",
+          "score": 208
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 323
+        },
+        {
+          "id": "scout.searchRepos",
+          "service": "scout",
+          "score": 196
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "service": "skills",
+          "score": 164
+        },
+        {
+          "id": "scout.getRepoTrust",
+          "service": "scout",
+          "score": 128
+        }
+      ],
+      "tiers": [
+        {
+          "id": "scout.listContracts",
+          "score": 208,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 323,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 196,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "score": 164,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getRepoTrust",
+          "score": 128,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.getRepoTrust",
+          "keywords": [
+            "days",
+            "audits",
+            "auditor",
+            "published",
+            "size",
+            "scan",
+            "pending",
+            "error",
+            "incomplete",
+            "gone",
+            "capabilities",
+            "archived",
+            "stars",
+            "tier",
+            "deep",
+            "publishes",
+            "multi",
+            "superseded",
+            "predecessors",
+            "successor",
+            "contracts",
+            "events",
+            "delta",
+            "subinvocations"
+          ],
+          "scores": {
+            "gated": {
+              "before": 120,
+              "after": 128,
+              "withoutKeywords": 120
+            },
+            "ungated": {
+              "before": 120,
+              "after": 128,
+              "withoutKeywords": 120
+            }
+          }
+        },
+        {
+          "id": "scout.listContracts",
+          "keywords": [
+            "defi",
+            "lending",
+            "amm",
+            "yield",
+            "oracle",
+            "payments",
+            "x402",
+            "wallet",
+            "infra",
+            "anchor",
+            "ramp",
+            "indexer",
+            "offset",
+            "audits",
+            "latest",
+            "auditor",
+            "published",
+            "events",
+            "delta",
+            "self",
+            "validated",
+            "onchain",
+            "size",
+            "scanned",
+            "successor",
+            "filtered"
+          ],
+          "scores": {
+            "gated": {
+              "before": 208,
+              "after": 208,
+              "withoutKeywords": 208
+            },
+            "ungated": {
+              "before": 208,
+              "after": 208,
+              "withoutKeywords": 208
+            }
+          }
+        },
+        {
+          "id": "scout.searchRepos",
+          "keywords": [
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "offset",
+            "fields",
+            "canonical",
+            "strict",
+            "weak",
+            "none",
+            "signals",
+            "commits90d",
+            "prs",
+            "tag",
+            "state",
+            "builder",
+            "reputation",
+            "ci",
+            "present",
+            "events",
+            "delta",
+            "subinvocations",
+            "verified",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "deps",
+            "cargo",
+            "macros",
+            "lang",
+            "js",
+            "toml",
+            "symbols",
+            "supported",
+            "deprecated",
+            "deep",
+            "wiki",
+            "homepage",
+            "judge",
+            "judged",
+            "kind",
+            "platform",
+            "template",
+            "tutorial",
+            "application",
+            "notes",
+            "issues",
+            "owner",
+            "link",
+            "ec"
+          ],
+          "scores": {
+            "gated": {
+              "before": 196,
+              "after": 196,
+              "withoutKeywords": 196
+            },
+            "ungated": {
+              "before": 196,
+              "after": 196,
+              "withoutKeywords": 196
+            }
+          }
+        },
+        {
+          "id": "skills.stellar-dev.zk-proofs",
+          "keywords": [],
+          "scores": {
+            "gated": {
+              "before": 164,
+              "after": 164,
+              "withoutKeywords": 164
+            },
+            "ungated": {
+              "before": 164,
+              "after": 164,
+              "withoutKeywords": 164
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "keywords": [
+            "create",
+            "restoration",
+            "footprint",
+            "manually",
+            "restore",
+            "java",
+            "script",
+            "extend",
+            "entry",
+            "test",
+            "extension",
+            "logic",
+            "interesting",
+            "ways",
+            "starter",
+            "basics",
+            "automating",
+            "futurenet",
+            "reset",
+            "add",
+            "support",
+            "verify",
+            "trustlines",
+            "patterns",
+            "examples",
+            "wallets",
+            "making",
+            "installed",
+            "bytecode",
+            "deployer",
+            "sac",
+            "asset",
+            "code",
+            "organize",
+            "error",
+            "enum",
+            "extending",
+            "deployed",
+            "upgrading",
+            "write",
+            "workspace",
+            "conversions",
+            "convert",
+            "address",
+            "other",
+            "types",
+            "bytes",
+            "sc",
+            "val",
+            "string",
+            "consume",
+            "previously",
+            "ingested",
+            "ingest",
+            "published",
+            "publish",
+            "replay",
+            "collect",
+            "close",
+            "meta",
+            "analyzing",
+            "cost",
+            "efficiency",
+            "choose",
+            "use",
+            "migrate",
+            "structures",
+            "strategies",
+            "production",
+            "differential",
+            "fork",
+            "snapshot",
+            "mocking",
+            "channel",
+            "claimable",
+            "balances",
+            "clawbacks",
+            "fee",
+            "bump",
+            "sponsorship",
+            "approach",
+            "install",
+            "invoke",
+            "function",
+            "sdks",
+            "payments",
+            "pooled",
+            "muxed",
+            "memos",
+            "receive",
+            "signing",
+            "invocations",
+            "method",
+            "sponsored",
+            "reserves",
+            "submit",
+            "web",
+            "assembly",
+            "allocator",
+            "batched",
+            "atomic",
+            "swaps",
+            "swap",
+            "bls",
+            "signature",
+            "complex",
+            "delegate",
+            "fuzz",
+            "liquidity",
+            "pool",
+            "logging",
+            "mint",
+            "lock",
+            "simple",
+            "single",
+            "offer",
+            "sale",
+            "timelock",
+            "upgradeable",
+            "increment",
+            "frontend",
+            "interactions",
+            "lifecycle",
+            "concepts",
+            "modes",
+            "generate",
+            "dialect",
+            "persisting",
+            "built",
+            "fully",
+            "typed",
+            "cookbook",
+            "management",
+            "argument",
+            "uploaded",
+            "keys",
+            "tx",
+            "commands",
+            "balance",
+            "op",
+            "sign",
+            "upload",
+            "plugins",
+            "manual"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 323,
+              "after": 323,
+              "withoutKeywords": 315
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "keywords": [
+            "develop",
+            "templates",
+            "creation",
+            "toml",
+            "10",
+            "authentication",
+            "hosted",
+            "api",
+            "setup",
+            "anchored",
+            "confirmation",
+            "modal",
+            "contacts",
+            "manage",
+            "trust",
+            "querying",
+            "generate",
+            "bindings",
+            "walkthrough",
+            "prerequisites",
+            "custom",
+            "network",
+            "ingestion",
+            "pipeline",
+            "cdp",
+            "consumer",
+            "sample",
+            "code",
+            "recovery",
+            "quote",
+            "programmatic",
+            "uri",
+            "scheme",
+            "facilitate",
+            "delegated",
+            "signing",
+            "proofs",
+            "comprehensive",
+            "initialize",
+            "scripts",
+            "implement",
+            "spec",
+            "work",
+            "specs",
+            "java",
+            "python",
+            "php",
+            "connect",
+            "testnet",
+            "enable",
+            "soroban",
+            "react",
+            "prompt",
+            "sign",
+            "developer",
+            "token",
+            "payments",
+            "authorization",
+            "entries",
+            "xdrs"
+          ],
+          "scores": {
+            "gated": {
+              "before": 64,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 141,
+              "after": 144,
+              "withoutKeywords": 128
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q-tool-wallets-kit",
+      "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+      "before": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 465
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 308
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 262
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 253
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "service": "stellarDocs",
+          "score": 178
+        }
+      ],
+      "after": [
+        {
+          "id": "stellarDocs.search_docs",
+          "service": "stellarDocs",
+          "score": 465
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "service": "stellarDocs",
+          "score": 565
+        },
+        {
+          "id": "scout.vetIdea",
+          "service": "scout",
+          "score": 308
+        },
+        {
+          "id": "scout.searchProjects",
+          "service": "scout",
+          "score": 270
+        },
+        {
+          "id": "scout.searchResearch",
+          "service": "scout",
+          "score": 253
+        }
+      ],
+      "tiers": [
+        {
+          "id": "stellarDocs.search_docs",
+          "score": 465,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "score": 565,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.vetIdea",
+          "score": 308,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 270,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchResearch",
+          "score": 253,
+          "tier": "gated"
+        }
+      ],
+      "entries": [
+        {
+          "id": "scout.searchProjects",
+          "keywords": [
+            "user",
+            "facing",
+            "partner",
+            "integration",
+            "bridge",
+            "indexer",
+            "explorer",
+            "analytics",
+            "ai",
+            "education",
+            "security",
+            "social",
+            "impact",
+            "rpc",
+            "faucet",
+            "exchange",
+            "development",
+            "pre",
+            "release",
+            "offset",
+            "fields",
+            "references",
+            "signals",
+            "commits90d",
+            "open",
+            "prs",
+            "tag",
+            "state",
+            "active",
+            "maintained",
+            "dormant",
+            "archived",
+            "unknown",
+            "reputation",
+            "canonical",
+            "ci",
+            "present",
+            "contracts",
+            "delta",
+            "subinvocations",
+            "confidence",
+            "age",
+            "days",
+            "high",
+            "medium",
+            "low",
+            "score",
+            "depth",
+            "domains",
+            "interface",
+            "deployable",
+            "mainnet",
+            "caps",
+            "cap",
+            "scanned",
+            "ref",
+            "capabilities",
+            "version",
+            "deps",
+            "proof",
+            "cargo",
+            "macros",
+            "lang",
+            "js"
+          ],
+          "scores": {
+            "gated": {
+              "before": 262,
+              "after": 270,
+              "withoutKeywords": 262
+            },
+            "ungated": {
+              "before": 270,
+              "after": 270,
+              "withoutKeywords": 262
+            }
+          }
+        },
+        {
+          "id": "scout.searchResearch",
+          "keywords": [
+            "query",
+            "paper",
+            "proposal",
+            "developer",
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "informational",
+            "sources",
+            "per",
+            "fields",
+            "error",
+            "results",
+            "hash",
+            "doc",
+            "empty",
+            "model",
+            "score",
+            "advisory",
+            "wide",
+            "top",
+            "chunk",
+            "content",
+            "kind",
+            "guide",
+            "article",
+            "data",
+            "supported",
+            "deprecated"
+          ],
+          "scores": {
+            "gated": {
+              "before": 253,
+              "after": 253,
+              "withoutKeywords": 253
+            },
+            "ungated": {
+              "before": 253,
+              "after": 253,
+              "withoutKeywords": 253
+            }
+          }
+        },
+        {
+          "id": "scout.vetIdea",
+          "keywords": [
+            "report",
+            "scored",
+            "weak",
+            "types",
+            "domains",
+            "stars",
+            "tier",
+            "winners",
+            "progress",
+            "audited",
+            "mainnet"
+          ],
+          "scores": {
+            "gated": {
+              "before": 308,
+              "after": 308,
+              "withoutKeywords": 308
+            },
+            "ungated": {
+              "before": 308,
+              "after": 308,
+              "withoutKeywords": 308
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "keywords": [
+            "meetings"
+          ],
+          "scores": {
+            "gated": {
+              "before": 465,
+              "after": 465,
+              "withoutKeywords": 465
+            },
+            "ungated": {
+              "before": 465,
+              "after": 465,
+              "withoutKeywords": 465
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "keywords": [
+            "create",
+            "restoration",
+            "footprint",
+            "manually",
+            "restore",
+            "java",
+            "script",
+            "extend",
+            "entry",
+            "test",
+            "extension",
+            "logic",
+            "interesting",
+            "ways",
+            "starter",
+            "basics",
+            "automating",
+            "futurenet",
+            "reset",
+            "add",
+            "support",
+            "verify",
+            "trustlines",
+            "patterns",
+            "examples",
+            "wallets",
+            "making",
+            "installed",
+            "bytecode",
+            "deployer",
+            "sac",
+            "asset",
+            "code",
+            "organize",
+            "error",
+            "enum",
+            "extending",
+            "deployed",
+            "upgrading",
+            "write",
+            "workspace",
+            "conversions",
+            "convert",
+            "address",
+            "other",
+            "types",
+            "bytes",
+            "sc",
+            "val",
+            "string",
+            "consume",
+            "previously",
+            "ingested",
+            "ingest",
+            "published",
+            "publish",
+            "replay",
+            "collect",
+            "close",
+            "meta",
+            "analyzing",
+            "cost",
+            "efficiency",
+            "choose",
+            "use",
+            "migrate",
+            "structures",
+            "strategies",
+            "production",
+            "differential",
+            "fork",
+            "snapshot",
+            "mocking",
+            "channel",
+            "claimable",
+            "balances",
+            "clawbacks",
+            "fee",
+            "bump",
+            "sponsorship",
+            "approach",
+            "install",
+            "invoke",
+            "function",
+            "sdks",
+            "payments",
+            "pooled",
+            "muxed",
+            "memos",
+            "receive",
+            "signing",
+            "invocations",
+            "method",
+            "sponsored",
+            "reserves",
+            "submit",
+            "web",
+            "assembly",
+            "allocator",
+            "batched",
+            "atomic",
+            "swaps",
+            "swap",
+            "bls",
+            "signature",
+            "complex",
+            "delegate",
+            "fuzz",
+            "liquidity",
+            "pool",
+            "logging",
+            "mint",
+            "lock",
+            "simple",
+            "single",
+            "offer",
+            "sale",
+            "timelock",
+            "upgradeable",
+            "increment",
+            "frontend",
+            "interactions",
+            "lifecycle",
+            "concepts",
+            "modes",
+            "generate",
+            "dialect",
+            "persisting",
+            "built",
+            "fully",
+            "typed",
+            "cookbook",
+            "management",
+            "argument",
+            "uploaded",
+            "keys",
+            "tx",
+            "commands",
+            "balance",
+            "op",
+            "sign",
+            "upload",
+            "plugins",
+            "manual"
+          ],
+          "scores": {
+            "gated": {
+              "before": 178,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 390,
+              "after": 377,
+              "withoutKeywords": 353
+            }
+          }
+        },
+        {
+          "id": "stellarDocs.search_wallet_dapp_docs",
+          "keywords": [
+            "develop",
+            "templates",
+            "creation",
+            "toml",
+            "10",
+            "authentication",
+            "hosted",
+            "api",
+            "setup",
+            "anchored",
+            "confirmation",
+            "modal",
+            "contacts",
+            "manage",
+            "trust",
+            "querying",
+            "generate",
+            "bindings",
+            "walkthrough",
+            "prerequisites",
+            "custom",
+            "network",
+            "ingestion",
+            "pipeline",
+            "cdp",
+            "consumer",
+            "sample",
+            "code",
+            "recovery",
+            "quote",
+            "programmatic",
+            "uri",
+            "scheme",
+            "facilitate",
+            "delegated",
+            "signing",
+            "proofs",
+            "comprehensive",
+            "initialize",
+            "scripts",
+            "implement",
+            "spec",
+            "work",
+            "specs",
+            "java",
+            "python",
+            "php",
+            "connect",
+            "testnet",
+            "enable",
+            "soroban",
+            "react",
+            "prompt",
+            "sign",
+            "developer",
+            "token",
+            "payments",
+            "authorization",
+            "entries",
+            "xdrs"
+          ],
+          "scores": {
+            "gated": {
+              "before": null,
+              "after": null,
+              "withoutKeywords": null
+            },
+            "ungated": {
+              "before": 565,
+              "after": 565,
+              "withoutKeywords": 565
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

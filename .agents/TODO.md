@@ -217,8 +217,27 @@ measures its own baseline and candidate runs into that layout.
 
 Check 1 is a controlled probe: neither source carries literal `yieldblox` or `reflector` routing
 phrases. Check 12 requires zero per-row grade changes between sources, which is stricter than a
-fingerprint-only re-baseline. The next attempt starts at step 2 (schema `keywords` as rank-only
-evidence). It starts from the accepted baseline, without the step 1 patch.
+fingerprint-only re-baseline. The step 1 patch is not part of later attempts.
+
+2026-10-09 step 2 (Codex frontier xhigh; Claude Fable review agrees). Schema `keywords` became
+rank-only evidence, from the accepted baseline. Rejected; step 3 did not run.
+
+- The re-measured baseline equals the archived step 1 baseline on all 544 rows and both sources.
+- Step 2 passes check 5 on both sources and check 6 on the fresh source. The baseline fails them.
+- Check 10 fails on both sources: holdout top3 falls from 26 to 25 (Groth16 skill rank 3 to 4).
+- Check 11 fails on current sources: `lumenloop.get_categories` leaves the long category page.
+- Check 12 adds one fresh-source loss: `q-soroban-x402-auth-entry-signing` top5.
+- The candidate bundles three sub-changes: no keyword admission, whole-token matching, and a flat
+  rank weight. An admission-only variant alone reproduces the check 10 and check 11 failures. The
+  weight change causes the OpenZeppelin, Friendbot, and multisig losses.
+- Check 11 is a selector gap in `src/catalog/search.ts`. The quota replacement cannot fire when a
+  service is at or above its quota. A general fix replaces the weakest same-service entry.
+- Check 10 is not a selector gap. Without the schema-only Docs admission, the Groth16 page is short.
+  A stronger Docs entry then fills it above the ZK skill. Every rank-only keyword attempt repeats
+  this loss.
+
+Next attempt: owner decision B comes first. Then measure the admission-only variant with the
+selector quota fix as one step. Evidence: `rounds/2026-10-09-continuation/routing-step2/`.
 
 Acceptance checks:
 
@@ -343,20 +362,6 @@ Done when:
 
 ## Eval instruments
 
-### Extend Playground eval accounting to native and no-plugin model paths
-
-The [accounting coverage review](../research/audits/2026-10-01-playground-accounting-coverage.md) reproduced refusals for
-`@cf/moonshotai/kimi-k2.7-code` and `moonshotai/kimi-k3` before upstream access.
-Keep the guard until these paths support complete accounting.
-
-Done when: native and no-plugin chat calls request `returnRawResponse: true`, capture the log identifier,
-and preserve the shared settlement and budget checks.
-Return the response body stream or parsed JSON that the installed native parser expects.
-Keep returning the full `Response` for existing raw-response callers.
-Do not remove the guard and dispatch without a captured log identifier.
-Add real-handler regressions for both named models and a fallback into a native model.
-Require an answer, captured log reads, and a complete numeric receipt in each regression.
-
 ### Measure the execute annotation change in isolation
 
 PR #225 and #234 set `execute` `readOnlyHint: true` and `openWorldHint: false`. Claude Code `2.1.292`
@@ -379,18 +384,31 @@ Calls with one message ID share an ordinal across assistant events. Entries with
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
 
-### Investigate missing source evidence in the p6 judge pack
+### Repair claim-support selection in the p6 judge pack
 
-The 2026-10-01 adapter comparison found a disputed Beans Wrong grade in
-`eval/qa/results/2026-10-01T22-05-47-variantA.json` (`q-live-beans-cross-service-reconcile`).
-The raw transcript contains the founder story, lifecycle claims, release tag, and SDK commit date.
-The p6 pack omits those details, and the judges call them fabricated.
-The result records `evidenceSupportCheck.status: pack-omission` and `requiresReview: true`.
-The primary SDF article independently confirms the founder story.
+The 2026-10-01 adapter comparison graded a disputed Beans row Wrong
+(`q-live-beans-cross-service-reconcile`). The p6 pack omitted transcript details, and the judges
+called them fabricated. That artifact (`2026-10-01T22-05-47-variantA.json`) is not retained.
 
-Trace the general evidence-selection boundary and propose a repair with replayable coverage.
-Do not change the frozen adapter-measurement artifacts or replace their original verdicts.
-Any repaired pack needs a separate reviewed measurement before it supports acceptance.
+The [2026-10-09 analysis](rounds/2026-10-09-continuation/pack-omission/pack-omission-analysis.md)
+replayed two saved pack-omission rows with exact p6 hashes:
+
+- `q-hist-quantum-preparedness-plan`: a source phrase is not a candidate term, so no snippet holds it.
+- `q-soroban-oz-upgradeable-macro`: final shortening around another anchor removes a selected macro.
+- A 100,000-character budget repairs neither row.
+
+Proposed repair: build evidence units with exact source spans, and measure coverage on the final
+serialized text. Recompute coverage after each budget cut. Record an omission when a claim's
+evidence cannot fit. The analysis lists the replayable coverage: the two rows above, nine other
+saved omission rows, and new fixture classes.
+
+The repair changes judge inputs. It needs a new pack version, an independent review, and its own
+authorized measurement. Land it after the paired run (owner decision A), or pin p6 for that run.
+Do not change frozen adapter-measurement artifacts or replace their verdicts.
+`eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
+
+Done when: a reviewed new pack version passes the replayable coverage, and an authorized
+measurement shows no grade regression.
 
 ### Re-check the upstream codemode short-token repair
 
@@ -458,30 +476,6 @@ Done when: the dated facts are re-probed, the fourth case has an independent win
 a reviewed source-relative rewrite, each activated case carries `truth.lifecycle.activation`, and
 `npm run eval:qa:lint -- --stale --enforce-floors` passes for both operations.
 
-### Decide whether Scout's hackathon store gaps are upstream findings
-
-Probes on 2026-10-06 found stored totals below the organizer's totals: KALE x Reflector 45 against
-46 to 47, Real-World ZK 319 against 345, Stellar Hacks: Agents 248 against 262, and Stellar Hacks:
-Blend 35 submissions and 2 winners against 39 and 3. Scout holds the Blend first-place submission
-(`dorahacks.io/buidl/27438`) under `stellar-hacks-paltalabs` with no placement, so its Blend
-first-place result is lost. Scout documents that deleted or private submissions are not served, so
-part of the total gap is by design. The lost first-place record changes `winners` counts and placed
-shares. Evidence: `.agents/rounds/2026-10-06-scout-hackathon-goldens.md` entries 2, 12, and 14.
-
-Done when: the `improvements-pipeline` workflow files a finding for the missing-winner case, or
-records why it is intended behavior.
-
-### Decide whether Scout's strict repo-search label is an upstream finding
-
-On 2026-10-06, `https://stellarlight.xyz/api/repos/search?q=strupey` reported
-`matchMode: "strict"` ("every query term matched"), but none of its 23 returned rows (for example
-`stellar/freighter`) contains the token. The near-due golden re-verification lane found this while
-it checked `q-edge-strupey-ambiguous-stellar-history`. Evidence:
-`rounds/2026-10-06-truth-maintenance.md` ("Golden verdict").
-
-Done when: the `improvements-pipeline` workflow reproduces the label on a second query and files a
-finding, or records why the label is correct.
-
 ### Reconcile the QA answering prompt with out-of-scope goldens
 
 The answering prompt asks for a plain, brief out-of-scope answer at `eval/qa/run-qa.mjs:749` and
@@ -542,44 +536,6 @@ The plan includes the trap, the control, the environment pin, and a pre-register
 Do not add another QA-prompt wording layer or copy case facts into a prompt.
 
 Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
-
-### Diagnose stable-row evidence omissions without changing judge inputs
-
-The September 4 candidate audit found transcript-supported claims that judges called unsupported.
-`attachTranscriptEvidenceDiagnostics` skips stable rows, and the pack builder also omits stable-row
-evidence. Removing only the diagnostic condition would leave an empty pack. The delegated resolution
-of owner decision H (2026-10-01, owner veto open) schedules an offline diagnostic design
-([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
-
-Done when: a separate diagnostic inspects saved stable-row claims against saved execute evidence and
-reports bounded support or uncertainty. Tests cover supported claims, unsupported claims, truncated
-evidence, and missing transcripts. The change preserves judge inputs, grades, saved source
-artifacts, rubric, pack version, and comparison denominators. Land this change before the first
-paired arm or after the second. A change to run-qa.mjs or judge.mjs changes the implementation hash.
-
-### Label skipped-panel uncertainty in flip reports
-
-The September 4 candidate audit found 64 boundary rows whose panel escalation reached the cap. The
-judge records the skipped escalation, but flip analysis needs a visible confidence distinction. The
-delegated resolution of owner decision H (2026-10-01, owner veto open) schedules a reporting change
-([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
-
-Done when: flip reports (eval/qa/re-judge.mjs --flips-vs and the paired report) identify rows with
-panelEscalationSkipped: "max-panel-cases" separately. Tests cover both arms, absent metadata, and
-actual panel results. The report preserves all selected IDs, grades, panel caps, and comparison
-denominators.
-
-### Measure planning text in saved final answers
-
-The September 4 candidate audit found 155 possible planning preambles among 500 answers with a broad
-regular expression. The answering prompt already prohibits this text, so additional prompt wording
-lacks support. The delegated resolution of owner decision H (2026-10-01, owner veto open) schedules
-an offline metric with reviewed positive and negative examples
-([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
-
-Done when: a reproducible diagnostic reports reviewed planning-text matches and its false-positive
-limits. Tests distinguish planning text from legitimate explanations of uncertainty and quoted
-examples. The metric changes no answer, judge grade, prompt, or release gate.
 
 ### Resolve paired-QA design before promotion
 
@@ -674,3 +630,16 @@ After the run, or after a stop, either promote the launch tooling into `eval/qa/
 or delete the round's launch scripts, `paired-stability-register.json`,
 `test/qa-paired-launch.test.mjs`, and `test/qa-paired-claude-pin.test.mjs` together. Both tests
 import the scripts from the round folder.
+
+PR #256 (2026-10-09) changed the `re-judge.mjs` and `paired-verdict.mjs` implementation hashes.
+Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
+
+### B. Choose how the routing repair treats the Groth16 holdout loss
+
+Routing step 2 showed that any rank-only keyword change drops the Groth16 ZK skill from holdout
+rank 3 to 4. A stronger Docs entry fills the short page above it on its own evidence. The holdout
+top3 floor (26) then fails. See "Preserve structured routing intent…" and its step 2 evidence.
+
+Options: lower the holdout top3 floor to 25 for a repair that passes every other check, or require
+a skill-evidence change before the keyword step. Safe default: keep the floor, and do not start the
+next routing attempt.
