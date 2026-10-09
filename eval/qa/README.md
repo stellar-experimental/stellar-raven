@@ -178,7 +178,8 @@ The first answer, agent outcome, and verdict remain the top-level values.
 Retries stay in `attempts.agent[]` and `attempts.judge[]`; they do not replace first-attempt evidence.
 
 New attempts record `startedAt` and `endedAt` as UTC ISO timestamps.
-Answering timestamps span the existing duration interval, from before the identity capture to the completed CLI result.
+Answering timestamps start before spend authorization and the before-call identity capture.
+They end at the completed CLI result and preserve the existing duration interval.
 The interval excludes the after-call identity capture.
 Judge attempts span the method, including panel calls; each `attempts.judge[].calls[]` entry also records its CLI interval.
 Identity captures record `meta.remoteIdentityGuard.captures[].capturedAt`; guard failures record `meta.remoteIdentityGuard.failure.failedAt`.
@@ -200,13 +201,21 @@ Other agent failures remain visible as error rows in a complete QA artifact.
 
 Search calls retain full inputs and bounded ranking evidence in `resultProjection`.
 Execute calls retain bounded result text. Compare usage tokens, not captured character counts, across surfaces.
-New transcript entries record `assistantTurn`, the one-based assistant-message ordinal within that answering attempt.
-All tool calls in one assistant message share this number, including messages without usage counters.
+New transcript entries record `assistantTurn`, a one-based ordinal within that answering attempt.
+The parser groups consecutive assistant events that share `message.id`, including events without usage counters.
+These entries record `assistantTurnBasis: "message-id"`.
+Tool calls with the same message ordinal belong to one assistant message, even across separate events.
+An assistant event without a message ID consumes its own ordinal and records `assistantTurnBasis: "event"`.
+An event without a message ID also ends the previous message group.
+Readers must treat message boundaries for these event-based entries as unknown.
 Text-only assistant messages consume an ordinal, so transcript ordinals can have gaps.
-The ordinal resets for each answering retry and matches the numbering in `agent.usage.perTurn`.
-Shared ordinals show calls requested together; they do not prove that host execution overlapped.
-Older transcripts can omit `assistantTurn`; readers must treat their turn boundaries as unknown.
+The ordinal resets for each answering retry.
+Shared message ordinals show calls requested together; they do not prove that host execution overlapped.
+Older transcripts can omit `assistantTurn` and `assistantTurnBasis`; readers must treat their message boundaries as unknown.
 `agent.usage.final` preserves provider usage; `agent.usage.perTurn` contains normalized numeric counters.
+`agent.usage.perTurn[].turn` keeps the existing assistant-event ordinal, including events without usage counters.
+It can differ from `assistantTurn` when several events share a message ID.
+The usage records, provider totals, and reported costs retain their existing values.
 Missing counters remain `null`. [evidence-sanitizer.mjs](evidence-sanitizer.mjs) bounds and redacts CLI evidence before storage.
 
 ## Five-track result contract

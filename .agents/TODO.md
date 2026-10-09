@@ -333,8 +333,10 @@ have no assistant-turn boundaries.
 
 Done when: a reviewed, separately authorized annotation-only comparison over more rows, or a free
 transcript audit over more stored runs, decides whether the annotations change artifact-read
-behavior. QA transcript entries now record `assistantTurn` (2026-10-09), so calls requested in one
-assistant message share an ordinal. A shared ordinal does not prove overlapping host execution.
+behavior. QA transcript entries now record `assistantTurn` and `assistantTurnBasis` (2026-10-09).
+Calls with one message ID share an ordinal across assistant events. Entries without a message ID use
+event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
+host execution.
 
 ### Triage the 2026-10-07 row-review own-repo candidates
 

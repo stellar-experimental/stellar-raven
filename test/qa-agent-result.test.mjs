@@ -303,9 +303,9 @@ describe("parseAgentResult — bounded diagnostic capture", () => {
     ]);
   });
 
-  it("numbers per-turn usage by assistant-message ordinal, not by how many carried usage", () => {
-    // Turn 2 emitted no usage block. Recording turn 3's counters as "turn 2"
-    // would silently re-label which turn the tokens belong to.
+  it("numbers per-turn usage by assistant-event ordinal, including events without usage", () => {
+    // Event 2 emitted no usage block. All three events share one message ID.
+    // Usage retains event numbers even when transcript turns group by ID.
     const outcome = parseAgentResult({ stdout: stream("usage-gap"), stderr: "", status: 0, signal: null });
 
     expect(outcome.usage.perTurnAvailable).toBe(true);
@@ -323,6 +323,26 @@ describe("parseAgentResult — bounded diagnostic capture", () => {
     const outcome = parseAgentResult({ stdout: stream("provider-safeguard"), stderr: "", status: 0, signal: null });
     expect(outcome.usage.perTurnAvailable).toBe(false);
     expect(outcome.usage.perTurn).toEqual([]);
+  });
+});
+
+describe("parseAgentResult — assistant message IDs", () => {
+  it.each([
+    ["tool-blocks-same-id", [1, 1]],
+    ["tool-blocks-different-ids", [1, 2]]
+  ])("groups split tool blocks in %s", (name, turns) => {
+    const outcome = parseAgentResult({ stdout: stream(name), status: 0 });
+    expect(outcome.transcript.map((entry) => entry.assistantTurn)).toEqual(turns);
+    expect(outcome.transcript.map((entry) => entry.assistantTurnBasis)).toEqual(["message-id", "message-id"]);
+    expect(outcome.usage.perTurn).toEqual([
+      { turn: 1, inputTokens: 12, outputTokens: 34, cacheCreationInputTokens: null, cacheReadInputTokens: null },
+      { turn: 2, inputTokens: 12, outputTokens: 34, cacheCreationInputTokens: null, cacheReadInputTokens: null }
+    ]);
+    expect(outcome.usage.final).toEqual({ input_tokens: 12, output_tokens: 34 });
+    expect(outcome.turns).toBe(2);
+    expect(outcome.costUsd).toBe(0.1);
+    expect(outcome.answer).toBe("done");
+    expect(outcome.failure).toBeNull();
   });
 });
 

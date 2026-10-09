@@ -907,6 +907,11 @@ export function agentAttemptRecord(run, number, startedAtMs, endedAtMs) {
   };
 }
 
+function judgeAttemptFailureClass(error) {
+  return error instanceof BudgetExhaustedError ? "budget-exhausted" :
+    error instanceof MissingReportedCostError || error.code === "budget-cost" ? "budget-cost" : "harness";
+}
+
 function budgetFailureVerdict(error, calls) {
   return {
     score: "error",
@@ -916,7 +921,7 @@ function budgetFailureVerdict(error, calls) {
     avoidMatches: [],
     consistencyViolations: [],
     rationale: error.message,
-    failureClass: error instanceof BudgetExhaustedError ? "budget-exhausted" : "budget-cost",
+    failureClass: judgeAttemptFailureClass(error),
     originalFailureClass: error.judgeCall?.failureClass ?? null,
     rubric: JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
@@ -990,9 +995,7 @@ export async function runJudgeAttempt(
       endedAt: new Date().toISOString(),
       inputSha256,
       answerSha256: sha256Text(input.candidateAnswer),
-      failureClass:
-        error instanceof BudgetExhaustedError ? "budget-exhausted" :
-          error instanceof MissingReportedCostError || error.code === "budget-cost" ? "budget-cost" : "harness",
+      failureClass: judgeAttemptFailureClass(error),
       costUsd: calls.some((call) => Number.isFinite(call.costUsd))
         ? sumReported(calls.filter((call) => Number.isFinite(call.costUsd)).map((call) => call.costUsd))
         : null,

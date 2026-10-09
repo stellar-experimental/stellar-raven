@@ -490,9 +490,11 @@ export function parseAgentResult(spawn, options = {}) {
   let mcpServers = null;
   let sawAnyMessage = false;
   let protocolIssue = null;
-  // Independent of `perTurn.length`: an assistant message that carries no usage
-  // block must still consume an ordinal.
+  // Stream events can hold separate content blocks from the same message.
+  // Keep usage event numbers separate from transcript message ordinals.
+  let assistantEventOrdinal = 0;
   let assistantOrdinal = 0;
+  let previousAssistantMessageId = null;
 
   for (const [lineIndex, line] of String(stdout).split("\n").entries()) {
     if (!line.trim().startsWith("{")) continue;
@@ -513,8 +515,13 @@ export function parseAgentResult(spawn, options = {}) {
           }))
         : [];
     } else if (msg.type === "assistant" && Array.isArray(msg.message?.content)) {
-      assistantOrdinal += 1;
-      const usage = perTurnUsage(msg.message.usage ?? null, assistantOrdinal);
+      assistantEventOrdinal += 1;
+      const messageId = typeof msg.message.id === "string" && msg.message.id.length > 0
+        ? msg.message.id
+        : null;
+      if (messageId === null || messageId !== previousAssistantMessageId) assistantOrdinal += 1;
+      previousAssistantMessageId = messageId;
+      const usage = perTurnUsage(msg.message.usage ?? null, assistantEventOrdinal);
       if (usage) perTurn.push(usage);
       for (const block of msg.message.content) {
         if (block.type !== "tool_use") continue;
@@ -522,6 +529,7 @@ export function parseAgentResult(spawn, options = {}) {
         transcript.push({
           toolUseId: block.id,
           assistantTurn: assistantOrdinal,
+          assistantTurnBasis: messageId === null ? "event" : "message-id",
           tool: block.name,
           input: keepWholeInput(String(block.name)) ? rawInput : rawInput.slice(0, TOOL_INPUT_SLICE_CHARS)
         });

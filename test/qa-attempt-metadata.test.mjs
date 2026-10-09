@@ -12,7 +12,10 @@ import {
   remoteIdentityVectorSha256,
   runRemoteIdentityGuardedCall
 } from "../eval/qa/remote-identity-guard.mjs";
-import { createSpendLedger, authorizeSpend, recordSpend, spendLedgerRecord } from "../eval/qa/spend-budget.mjs";
+import {
+  createSpendLedger, authorizeSpend, recordSpend, spendLedgerRecord,
+  BudgetAuthorizationExceededError, BudgetExhaustedError
+} from "../eval/qa/spend-budget.mjs";
 
 const START = Date.parse("2026-10-09T12:00:00.000Z");
 const iso = (offset) => new Date(START + offset).toISOString();
@@ -192,10 +195,59 @@ describe("QA judge attempt metadata", () => {
     expect(Date.parse(attempt.startedAt)).toBeLessThanOrEqual(Date.parse(attempt.endedAt));
     expect(spendLedgerRecord(options.spendLedger).missingCosts).toBe(1);
   });
+
+  it("stores a null original class when a successful call exceeds its authorization", async () => {
+    const options = judgeOptions(async () => ({ score: "correct", costUsd: 2 }));
+    let failure;
+    try {
+      await judgeRowWithRetry(input, options);
+    } catch (error) {
+      failure = error;
+    }
+    expect(failure).toBeInstanceOf(BudgetAuthorizationExceededError);
+    const attempt = JSON.parse(JSON.stringify(failure.judgeAttempt));
+    expect(attempt.verdict).toMatchObject({ failureClass: "budget-cost", originalFailureClass: null });
+    expect(attempt.calls).toHaveLength(1);
+    expect(attempt.calls[0]).toMatchObject({ failureClass: null, verdict: { score: "correct" } });
+    expect(options.spendLedger.reportedSpendUsd).toBe(2);
+  });
+
+  it("stores a null original class when a panel stops before its next call", async () => {
+    const judge = vi.fn(async () => ({ score: "correct", costUsd: 1 }));
+    const options = { ...judgeOptions(judge), judgePanel: 2 };
+    let failure;
+    try {
+      await judgeRowWithRetry(input, options);
+    } catch (error) {
+      failure = error;
+    }
+    expect(failure).toBeInstanceOf(BudgetExhaustedError);
+    const attempt = JSON.parse(JSON.stringify(failure.judgeAttempt));
+    expect(attempt.verdict).toMatchObject({ failureClass: "budget-exhausted", originalFailureClass: null });
+    expect(attempt.calls).toHaveLength(1);
+    expect(judge).toHaveBeenCalledTimes(1);
+    expect(options.spendLedger.reportedSpendUsd).toBe(1);
+  });
+
+  it("stores the harness class on the attempt and verdict after an unknown panel error", async () => {
+    const failure = new Error("fixture panel failure");
+    const judge = vi.fn()
+      .mockResolvedValueOnce({ score: "correct", costUsd: 0.1 })
+      .mockRejectedValueOnce(failure);
+    const options = { ...judgeOptions(judge), judgePanel: 2 };
+    await expect(judgeRowWithRetry(input, options)).rejects.toBe(failure);
+    const attempt = JSON.parse(JSON.stringify(failure.judgeAttempt));
+    expect(attempt).toMatchObject({
+      failureClass: "harness",
+      verdict: { failureClass: "harness", originalFailureClass: null }
+    });
+    expect(attempt.calls).toHaveLength(1);
+    expect(options.spendLedger.reportedSpendUsd).toBe(0.1);
+  });
 });
 
-function assistant(content, usage) {
-  return { type: "assistant", message: { content, ...(usage ? { usage } : {}) } };
+function assistant(content, usage, id) {
+  return { type: "assistant", message: { content, ...(usage ? { usage } : {}), ...(id ? { id } : {}) } };
 }
 function tool(id) {
   return { type: "tool_use", id, name: "mcp__raven__execute", input: { code: "return {};" } };
@@ -212,6 +264,7 @@ describe("QA assistant-turn boundaries", () => {
       assistant([tool("two")], { input_tokens: 2, output_tokens: 2 })
     ]);
     expect(parsed.transcript.map((entry) => entry.assistantTurn)).toEqual([1, 3]);
+    expect(parsed.transcript.map((entry) => entry.assistantTurnBasis)).toEqual(["event", "event"]);
     expect(parsed.usage.perTurn.map((entry) => entry.turn)).toEqual([1, 3]);
   });
 
@@ -221,11 +274,37 @@ describe("QA assistant-turn boundaries", () => {
     expect(parse([assistant([tool("retry")])]).transcript[0].assistantTurn).toBe(1);
   });
 
+  it("counts text-only messages by ID and groups split blocks without usage", () => {
+    const parsed = parse([
+      assistant([{ type: "text", text: "Continue." }], undefined, "text"),
+      assistant([tool("one")], undefined, "tools"),
+      assistant([tool("two")], undefined, "tools"),
+      assistant([tool("three")], undefined, "next")
+    ]);
+    expect(parsed.transcript.map((entry) => entry.assistantTurn)).toEqual([2, 2, 3]);
+    expect(parsed.transcript.map((entry) => entry.assistantTurnBasis))
+      .toEqual(["message-id", "message-id", "message-id"]);
+    expect(parsed.usage.perTurn).toEqual([]);
+    expect(parse([assistant([tool("retry")], undefined, "tools")]).transcript[0].assistantTurn).toBe(1);
+  });
+
+  it("ends a message group at each event without an ID", () => {
+    const parsed = parse([
+      assistant([tool("one")], undefined, "tools"),
+      assistant([tool("two")]),
+      assistant([tool("three")]),
+      assistant([tool("four")], undefined, "tools")
+    ]);
+    expect(parsed.transcript.map((entry) => entry.assistantTurn)).toEqual([1, 2, 3, 4]);
+    expect(parsed.transcript.map((entry) => entry.assistantTurnBasis))
+      .toEqual(["message-id", "event", "event", "message-id"]);
+  });
+
   it("preserves evidence and judge input bytes when turn metadata is absent", () => {
-    const transcript = parse([assistant([tool("one"), tool("two")])]).transcript.map((entry) => ({
+    const transcript = parse([assistant([tool("one"), tool("two")], undefined, "tools")]).transcript.map((entry) => ({
       ...entry, result: '{"answer":"Answer."}', isError: false
     }));
-    const legacy = transcript.map(({ assistantTurn, ...entry }) => entry);
+    const legacy = transcript.map(({ assistantTurn, assistantTurnBasis, ...entry }) => entry);
     expect(buildTranscriptEvidence({ ...input, transcript })).toBe(buildTranscriptEvidence({ ...input, transcript: legacy }));
     expect(judgeInputSha256({ ...input, transcript })).toBe(judgeInputSha256({ ...input, transcript: legacy }));
   });
