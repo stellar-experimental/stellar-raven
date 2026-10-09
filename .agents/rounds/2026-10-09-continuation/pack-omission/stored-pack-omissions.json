@@ -1,0 +1,191 @@
+[
+  {
+    "file": "2026-08-27T00-02-11-variantA.json",
+    "id": "q-defi-arbitrage-pathpayment-bots",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 7,
+      "transcriptSupportedTerms": 2,
+      "omittedTerms": [
+        "1 XLM"
+      ]
+    }
+  },
+  {
+    "file": "2026-08-27T00-02-11-variantA.json",
+    "id": "q-ti-freighter-localhost-not-detected",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 3,
+      "checkedTerms": 4,
+      "transcriptSupportedTerms": 3,
+      "omittedTerms": [
+        "const connected = await isConnected(); if (connected)"
+      ]
+    }
+  },
+  {
+    "file": "2026-08-28T19-27-08-variantA.json",
+    "id": "q-asset-rwa-tokenized-freshness",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 9,
+      "transcriptSupportedTerms": 7,
+      "omittedTerms": [
+        "$500M",
+        "500M"
+      ]
+    }
+  },
+  {
+    "file": "2026-08-28T19-27-08-variantA.json",
+    "id": "q-defi-arbitrage-pathpayment-bots",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 5,
+      "transcriptSupportedTerms": 4,
+      "omittedTerms": [
+        "3.5 XLM",
+        "0.5 XLM"
+      ]
+    }
+  },
+  {
+    "file": "2026-08-30T03-43-11-variantA.json",
+    "id": "q-sor-p23-auto-restore-extendto",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 3,
+      "transcriptSupportedTerms": 2,
+      "omittedTerms": [
+        "max_entry_ttl"
+      ]
+    }
+  },
+  {
+    "file": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json",
+    "id": "q-defi-etherfuse-stablebonds",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 2,
+      "transcriptSupportedTerms": 1,
+      "omittedTerms": [
+        "90"
+      ],
+      "checkedProse": 1,
+      "transcriptSupportedProse": 0,
+      "omittedProse": []
+    }
+  },
+  {
+    "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+    "id": "q-edge-fresh-latest-blend-tvl",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 2,
+      "checkedTerms": 11,
+      "transcriptSupportedTerms": 4,
+      "omittedTerms": [
+        "$100.6M",
+        "$174.4M",
+        "100.6M",
+        "174.4M"
+      ],
+      "checkedProse": 3,
+      "transcriptSupportedProse": 2,
+      "omittedProse": []
+    }
+  },
+  {
+    "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 2,
+      "checkedTerms": 7,
+      "transcriptSupportedTerms": 4,
+      "omittedTerms": [
+        "createCustomContract"
+      ],
+      "checkedProse": 2,
+      "transcriptSupportedProse": 0,
+      "omittedProse": []
+    }
+  },
+  {
+    "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+    "id": "q-ti-rpc-gettransactions-pagination-xdr",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 5,
+      "transcriptSupportedTerms": 3,
+      "omittedTerms": [
+        "startLedger"
+      ],
+      "checkedProse": 1,
+      "transcriptSupportedProse": 0,
+      "omittedProse": []
+    }
+  },
+  {
+    "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+    "id": "q-hist-quantum-preparedness-plan",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 0,
+      "transcriptSupportedTerms": 0,
+      "omittedTerms": [],
+      "checkedProse": 2,
+      "transcriptSupportedProse": 1,
+      "omittedProse": [
+        "already becoming protocol"
+      ]
+    }
+  },
+  {
+    "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+    "id": "q-soroban-oz-upgradeable-macro",
+    "hasTranscript": true,
+    "check": {
+      "status": "pack-omission",
+      "requiresReview": true,
+      "checkedClaims": 1,
+      "checkedTerms": 7,
+      "transcriptSupportedTerms": 6,
+      "omittedTerms": [
+        "#[derive(Upgradeable)]",
+        "#[derive(UpgradeableMigratable)]"
+      ],
+      "checkedProse": 1,
+      "transcriptSupportedProse": 0,
+      "omittedProse": []
+    }
+  }
+]

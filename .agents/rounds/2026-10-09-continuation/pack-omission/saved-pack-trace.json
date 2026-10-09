@@ -1,0 +1,198 @@
+{
+  "source": "eval/qa/results/2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+  "sourceSha256": "e3517cf81b724016ac33f84be1deb9c4e17207507a2c8f2b841e08876465e5f4",
+  "output": [
+    {
+      "id": "q-hist-quantum-preparedness-plan",
+      "storedPack": {
+        "packVersion": "p6",
+        "chars": 11632,
+        "sha256": "c2a605e968d48e741e6975c009a74fe397bc9a1cf5d1b7b2e223457409637859"
+      },
+      "reproducedPackSha256": "c2a605e968d48e741e6975c009a74fe397bc9a1cf5d1b7b2e223457409637859",
+      "packChars": 11632,
+      "widePackChars": 19809,
+      "targets": [
+        {
+          "term": "already becoming protocol",
+          "candidateContains": true,
+          "extractedTerm": false,
+          "rawSnippets": 0,
+          "selectedSnippets": 0,
+          "selectedAnchors": [],
+          "packContains": false,
+          "widePackContains": false
+        }
+      ],
+      "omission": {
+        "status": "pack-omission",
+        "requiresReview": true,
+        "checkedClaims": 1,
+        "checkedTerms": 0,
+        "transcriptSupportedTerms": 0,
+        "omittedTerms": [],
+        "checkedProse": 2,
+        "transcriptSupportedProse": 1,
+        "omittedProse": [
+          "already becoming protocol"
+        ]
+      },
+      "diagnostic": {
+        "id": "q-hist-quantum-preparedness-plan",
+        "freshness": "scheduled",
+        "claimSource": "verdict.wrongClaims",
+        "transcriptEntries": 6,
+        "usableExecuteResults": 2,
+        "evidenceLosses": [
+          "entry-4:truncated-result",
+          "entry-5:truncated-result"
+        ],
+        "claims": [
+          {
+            "claimIndex": 0,
+            "claim": "Claims Stage 1's ML-DSA host functions are 'already shipping as protocol' / 'already becoming protocol' despite the cited CAP-0087 status being 'Draft', contradicting the golden's point that verification primitives were not yet shipped at publication",
+            "status": "prose-match",
+            "reason": "fragment-match",
+            "numberOnly": false,
+            "checkedTerms": 0,
+            "checkedProse": 2,
+            "answerTerms": [],
+            "answerProse": [
+              "already shipping as protocol",
+              "already becoming protocol"
+            ],
+            "judgeTextOnlyTerms": 0,
+            "judgeTextOnlyProse": 0,
+            "probeLimitReached": false,
+            "excludedMatches": [],
+            "matches": [
+              {
+                "transcriptIndex": 4,
+                "tool": "mcp__raven__execute",
+                "supportedTerms": 0,
+                "supportedProse": 1,
+                "terms": [],
+                "prose": [
+                  "already becoming protocol"
+                ]
+              },
+              {
+                "transcriptIndex": 5,
+                "tool": "mcp__raven__execute",
+                "supportedTerms": 0,
+                "supportedProse": 1,
+                "terms": [],
+                "prose": [
+                  "already becoming protocol"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "storedPack": {
+        "packVersion": "p6",
+        "chars": 8419,
+        "sha256": "09b8dee0d1c772a1d17373cbe0b3b5d87d8b5b32c4d652e6847c067983659849"
+      },
+      "reproducedPackSha256": "09b8dee0d1c772a1d17373cbe0b3b5d87d8b5b32c4d652e6847c067983659849",
+      "packChars": 8419,
+      "widePackChars": 8419,
+      "targets": [
+        {
+          "term": "#[derive(Upgradeable)]",
+          "candidateContains": true,
+          "extractedTerm": true,
+          "rawSnippets": 0,
+          "selectedSnippets": 0,
+          "selectedAnchors": [],
+          "packContains": false,
+          "widePackContains": false
+        },
+        {
+          "term": "#[derive(UpgradeableMigratable)]",
+          "candidateContains": true,
+          "extractedTerm": true,
+          "rawSnippets": 1,
+          "selectedSnippets": 1,
+          "selectedAnchors": [
+            {
+              "term": "_require_auth",
+              "entryIndex": 0,
+              "targetOffset": 7,
+              "snippetChars": 739
+            }
+          ],
+          "packContains": false,
+          "widePackContains": false
+        }
+      ],
+      "omission": {
+        "status": "pack-omission",
+        "requiresReview": true,
+        "checkedClaims": 1,
+        "checkedTerms": 7,
+        "transcriptSupportedTerms": 6,
+        "omittedTerms": [
+          "#[derive(Upgradeable)]",
+          "#[derive(UpgradeableMigratable)]"
+        ],
+        "checkedProse": 1,
+        "transcriptSupportedProse": 0,
+        "omittedProse": []
+      },
+      "diagnostic": {
+        "id": "q-soroban-oz-upgradeable-macro",
+        "freshness": "scheduled",
+        "claimSource": "verdict.wrongClaims",
+        "transcriptEntries": 4,
+        "usableExecuteResults": 1,
+        "evidenceLosses": [],
+        "claims": [
+          {
+            "claimIndex": 0,
+            "claim": "Presents `#[derive(Upgradeable)]`/`#[derive(UpgradeableMigratable)]` and `UpgradeableInternal`/`UpgradeableMigratableInternal` with `_require_auth`/`_migrate` as the current module API without noting these are retired/superseded",
+            "status": "term-match",
+            "reason": "fragment-match",
+            "numberOnly": false,
+            "checkedTerms": 7,
+            "checkedProse": 1,
+            "answerTerms": [
+              "#[derive(Upgradeable)]",
+              "#[derive(UpgradeableMigratable)]",
+              "UpgradeableInternal",
+              "UpgradeableMigratableInternal",
+              "_require_auth",
+              "_migrate"
+            ],
+            "answerProse": [],
+            "judgeTextOnlyTerms": 1,
+            "judgeTextOnlyProse": 1,
+            "probeLimitReached": false,
+            "excludedMatches": [],
+            "matches": [
+              {
+                "transcriptIndex": 3,
+                "tool": "mcp__raven__execute",
+                "supportedTerms": 6,
+                "supportedProse": 0,
+                "terms": [
+                  "#[derive(Upgradeable)]",
+                  "#[derive(UpgradeableMigratable)]",
+                  "UpgradeableInternal",
+                  "UpgradeableMigratableInternal",
+                  "_require_auth",
+                  "_migrate"
+                ],
+                "prose": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

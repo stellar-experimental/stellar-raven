@@ -1,0 +1,2293 @@
+{
+  "runs": {
+    "baseline-main": {
+      "ranAt": "2026-10-09T21:10:08.233Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 219,
+        "top3": 298,
+        "top5": 326,
+        "cardN": 182,
+        "cardHit5": 112
+      },
+      "extended": {
+        "n": 122,
+        "top1": 93,
+        "top3": 111,
+        "top5": 117,
+        "cardN": 28,
+        "cardHit5": 16
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 26,
+        "top5": 29,
+        "cardN": 49,
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
+      },
+      "gate": {
+        "pass": true,
+        "failures": [],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": false,
+        "6": true,
+        "7": true,
+        "8": false,
+        "9": true,
+        "10": true,
+        "11": true,
+        "12": false
+      },
+      "rwa": {
+        "positives": {
+          "pass": true,
+          "failures": []
+        },
+        "ordinaryNegatives": {
+          "pass": true,
+          "failures": []
+        },
+        "deferredItFails": {
+          "pass": false,
+          "failures": [
+            {
+              "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+              "rank": 3
+            },
+            {
+              "query": "How do I read a wallet balance for tokenized treasury assets?",
+              "rank": 2
+            },
+            {
+              "query": "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?",
+              "rank": 1
+            }
+          ]
+        }
+      },
+      "check5": {
+        "pass": false,
+        "phase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 141,
+            "after": 143
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 75,
+            "after": 75
+          }
+        ],
+        "ungatedPhase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 141,
+            "after": 143
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 25,
+            "after": 35
+          }
+        ],
+        "generic": 46
+      },
+      "check7Losses": [],
+      "check7Missing": [],
+      "check10": {
+        "failures": [],
+        "extendedLosses": []
+      },
+      "check12": {
+        "sourceChanges": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "changes": {
+              "top5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-stellarx-what-is",
+            "changes": {
+              "top1": {
+                "before": false,
+                "after": true
+              }
+            }
+          },
+          {
+            "id": "q-defi-streaming-payments-prior-art",
+            "changes": {
+              "cardHit5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-edge-scf-v7-centralization-myths",
+            "changes": {
+              "top3": {
+                "before": false,
+                "after": true
+              }
+            }
+          }
+        ],
+        "losses": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "losses": [
+              "top5"
+            ]
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "losses": [
+              "top3"
+            ]
+          }
+        ],
+        "sequenceRow": {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "expected_service": "stellarDocs",
+          "expected_any": [
+            "stellarDocs",
+            "scout"
+          ],
+          "top1": true,
+          "top3": true,
+          "top5": true,
+          "cardHit5": null,
+          "any1": true,
+          "any3": true,
+          "any5": true,
+          "topHits": [
+            {
+              "id": "stellarDocs.search_docs",
+              "service": "stellarDocs",
+              "score": 407
+            },
+            {
+              "id": "stellarDocs.search_docs_in_category",
+              "service": "stellarDocs",
+              "score": 402
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "service": "stellarDocs",
+              "score": 398
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "service": "stellarDocs",
+              "score": 395
+            },
+            {
+              "id": "stellarDocs.search_anchor_sep_docs",
+              "service": "stellarDocs",
+              "score": 376
+            }
+          ]
+        }
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1192,
+          "rowsWithoutGated": 35
+        },
+        "extendedCases": {
+          "gated": 127,
+          "rowsWithoutGated": 68
+        },
+        "skillsCases": {
+          "gated": 53,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 116,
+          "rowsWithoutGated": 17
+        },
+        "protocolHistoryCases": {
+          "gated": 33,
+          "rowsWithoutGated": 2
+        }
+      },
+      "changedGradedRows": []
+    },
+    "baseline-fresh": {
+      "ranAt": "2026-10-09T21:11:21.622Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "c81092b75ed7824a2dba63de73fa81635d2061f6265fa317222607f8aeec0660"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 220,
+        "top3": 295,
+        "top5": 325,
+        "cardN": 182,
+        "cardHit5": 111
+      },
+      "extended": {
+        "n": 122,
+        "top1": 93,
+        "top3": 112,
+        "top5": 117,
+        "cardN": 28,
+        "cardHit5": 16
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 26,
+        "top5": 29,
+        "cardN": 49,
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
+      },
+      "gate": {
+        "pass": false,
+        "failures": [
+          "catalog/manifest.json SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": false,
+        "6": false,
+        "7": true,
+        "8": false,
+        "9": true,
+        "10": true,
+        "11": true,
+        "12": false
+      },
+      "rwa": {
+        "positives": {
+          "pass": true,
+          "failures": []
+        },
+        "ordinaryNegatives": {
+          "pass": true,
+          "failures": []
+        },
+        "deferredItFails": {
+          "pass": false,
+          "failures": [
+            {
+              "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+              "rank": 3
+            },
+            {
+              "query": "How do I read a wallet balance for tokenized treasury assets?",
+              "rank": 2
+            },
+            {
+              "query": "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?",
+              "rank": 1
+            }
+          ]
+        }
+      },
+      "check5": {
+        "pass": false,
+        "phase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 141,
+            "after": 143
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 75,
+            "after": 75
+          }
+        ],
+        "ungatedPhase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 141,
+            "after": 143
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 25,
+            "after": 35
+          }
+        ],
+        "generic": 46
+      },
+      "check7Losses": [],
+      "check7Missing": [],
+      "check10": {
+        "failures": [],
+        "extendedLosses": []
+      },
+      "check12": {
+        "sourceChanges": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "changes": {
+              "top5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-stellarx-what-is",
+            "changes": {
+              "top1": {
+                "before": false,
+                "after": true
+              }
+            }
+          },
+          {
+            "id": "q-defi-streaming-payments-prior-art",
+            "changes": {
+              "cardHit5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-edge-scf-v7-centralization-myths",
+            "changes": {
+              "top3": {
+                "before": false,
+                "after": true
+              }
+            }
+          }
+        ],
+        "losses": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "losses": [
+              "top5"
+            ]
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "losses": [
+              "top3"
+            ]
+          }
+        ],
+        "sequenceRow": {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "expected_service": "stellarDocs",
+          "expected_any": [
+            "stellarDocs",
+            "scout"
+          ],
+          "top1": true,
+          "top3": true,
+          "top5": true,
+          "cardHit5": null,
+          "any1": true,
+          "any3": true,
+          "any5": true,
+          "topHits": [
+            {
+              "id": "stellarDocs.search_docs",
+              "service": "stellarDocs",
+              "score": 407
+            },
+            {
+              "id": "stellarDocs.search_docs_in_category",
+              "service": "stellarDocs",
+              "score": 402
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "service": "stellarDocs",
+              "score": 398
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "service": "stellarDocs",
+              "score": 395
+            },
+            {
+              "id": "stellarDocs.search_anchor_sep_docs",
+              "service": "stellarDocs",
+              "score": 376
+            }
+          ]
+        }
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1209,
+          "rowsWithoutGated": 34
+        },
+        "extendedCases": {
+          "gated": 127,
+          "rowsWithoutGated": 68
+        },
+        "skillsCases": {
+          "gated": 55,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 116,
+          "rowsWithoutGated": 17
+        },
+        "protocolHistoryCases": {
+          "gated": 32,
+          "rowsWithoutGated": 2
+        }
+      },
+      "changedGradedRows": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ]
+    },
+    "step2-main": {
+      "ranAt": "2026-10-09T21:14:50.757Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 220,
+        "top3": 297,
+        "top5": 326,
+        "cardN": 182,
+        "cardHit5": 111
+      },
+      "extended": {
+        "n": 122,
+        "top1": 92,
+        "top3": 111,
+        "top5": 116,
+        "cardN": 28,
+        "cardHit5": 16
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 25,
+        "top5": 29,
+        "cardN": 49,
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
+      },
+      "gate": {
+        "pass": false,
+        "failures": [
+          "holdout lane top3=25 below floor 26"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": false,
+        "9": true,
+        "10": false,
+        "11": false,
+        "12": false
+      },
+      "rwa": {
+        "positives": {
+          "pass": true,
+          "failures": []
+        },
+        "ordinaryNegatives": {
+          "pass": true,
+          "failures": []
+        },
+        "deferredItFails": {
+          "pass": false,
+          "failures": [
+            {
+              "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+              "rank": 3
+            },
+            {
+              "query": "How do I read a wallet balance for tokenized treasury assets?",
+              "rank": 2
+            },
+            {
+              "query": "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?",
+              "rank": 1
+            }
+          ]
+        }
+      },
+      "check5": {
+        "pass": true,
+        "phase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 149,
+            "after": 149
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 83,
+            "after": 83
+          }
+        ],
+        "ungatedPhase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 149,
+            "after": 149
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 33,
+            "after": 33
+          }
+        ],
+        "generic": null
+      },
+      "check7Losses": [],
+      "check7Missing": [],
+      "check10": {
+        "failures": [
+          "holdout lane top3=25 below floor 26"
+        ],
+        "extendedLosses": [
+          "top1",
+          "top5"
+        ]
+      },
+      "check12": {
+        "sourceChanges": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "changes": {
+              "top5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-lumenloop-categories-vocab",
+            "changes": {
+              "cardHit5": {
+                "before": false,
+                "after": true
+              }
+            }
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-stellarx-what-is",
+            "changes": {
+              "top1": {
+                "before": false,
+                "after": true
+              }
+            }
+          },
+          {
+            "id": "q-defi-streaming-payments-prior-art",
+            "changes": {
+              "cardHit5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-soroban-x402-auth-entry-signing",
+            "changes": {
+              "top5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-edge-scf-v7-centralization-myths",
+            "changes": {
+              "top3": {
+                "before": false,
+                "after": true
+              }
+            }
+          }
+        ],
+        "losses": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "losses": [
+              "top5"
+            ]
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "losses": [
+              "top3"
+            ]
+          }
+        ],
+        "sequenceRow": {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "expected_service": "stellarDocs",
+          "expected_any": [
+            "stellarDocs",
+            "scout"
+          ],
+          "top1": true,
+          "top3": true,
+          "top5": true,
+          "cardHit5": null,
+          "any1": true,
+          "any3": true,
+          "any5": true,
+          "topHits": [
+            {
+              "id": "stellarDocs.search_docs",
+              "service": "stellarDocs",
+              "score": 407
+            },
+            {
+              "id": "stellarDocs.search_docs_in_category",
+              "service": "stellarDocs",
+              "score": 402
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "service": "stellarDocs",
+              "score": 398
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "service": "stellarDocs",
+              "score": 395
+            },
+            {
+              "id": "stellarDocs.search_anchor_sep_docs",
+              "service": "stellarDocs",
+              "score": 376
+            }
+          ]
+        }
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1174,
+          "rowsWithoutGated": 35
+        },
+        "extendedCases": {
+          "gated": 122,
+          "rowsWithoutGated": 70
+        },
+        "skillsCases": {
+          "gated": 46,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 109,
+          "rowsWithoutGated": 18
+        },
+        "protocolHistoryCases": {
+          "gated": 33,
+          "rowsWithoutGated": 2
+        }
+      },
+      "changedGradedRows": [
+        {
+          "id": "q-defi-lumenloop-categories-vocab",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-infra-hubble-vs-rpc-layer",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-05-groth16-soroban",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ]
+    },
+    "step2-fresh": {
+      "ranAt": "2026-10-09T21:18:20.318Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "c81092b75ed7824a2dba63de73fa81635d2061f6265fa317222607f8aeec0660"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 221,
+        "top3": 294,
+        "top5": 324,
+        "cardN": 182,
+        "cardHit5": 111
+      },
+      "extended": {
+        "n": 122,
+        "top1": 92,
+        "top3": 112,
+        "top5": 116,
+        "cardN": 28,
+        "cardHit5": 16
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 25,
+        "top5": 29,
+        "cardN": 49,
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
+      },
+      "gate": {
+        "pass": false,
+        "failures": [
+          "catalog/manifest.json SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly",
+          "legacy top3=294 outside ±3 of baseline 298",
+          "holdout lane top3=25 below floor 26"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": false,
+        "9": true,
+        "10": false,
+        "11": true,
+        "12": false
+      },
+      "rwa": {
+        "positives": {
+          "pass": true,
+          "failures": []
+        },
+        "ordinaryNegatives": {
+          "pass": true,
+          "failures": []
+        },
+        "deferredItFails": {
+          "pass": false,
+          "failures": [
+            {
+              "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+              "rank": 3
+            },
+            {
+              "query": "How do I read a wallet balance for tokenized treasury assets?",
+              "rank": 2
+            },
+            {
+              "query": "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?",
+              "rank": 1
+            }
+          ]
+        }
+      },
+      "check5": {
+        "pass": true,
+        "phase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 149,
+            "after": 149
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 83,
+            "after": 83
+          }
+        ],
+        "ungatedPhase": [
+          {
+            "entry": {
+              "id": "demo.has",
+              "name": "has",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 149,
+            "after": 149
+          },
+          {
+            "entry": {
+              "id": "demo.lookup",
+              "name": "lookup",
+              "service": "demo",
+              "kind": "operation",
+              "description": "Retrieve widgets"
+            },
+            "query": "has widgets",
+            "before": 33,
+            "after": 33
+          }
+        ],
+        "generic": null
+      },
+      "check7Losses": [],
+      "check7Missing": [],
+      "check10": {
+        "failures": [
+          "legacy top3=294 outside ±3 of baseline 298",
+          "holdout lane top3=25 below floor 26"
+        ],
+        "extendedLosses": [
+          "top1",
+          "top5"
+        ]
+      },
+      "check12": {
+        "sourceChanges": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "changes": {
+              "top5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-lumenloop-categories-vocab",
+            "changes": {
+              "cardHit5": {
+                "before": false,
+                "after": true
+              }
+            }
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-defi-stellarx-what-is",
+            "changes": {
+              "top1": {
+                "before": false,
+                "after": true
+              }
+            }
+          },
+          {
+            "id": "q-defi-streaming-payments-prior-art",
+            "changes": {
+              "cardHit5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "changes": {
+              "top3": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-soroban-x402-auth-entry-signing",
+            "changes": {
+              "top5": {
+                "before": true,
+                "after": false
+              }
+            }
+          },
+          {
+            "id": "q-edge-scf-v7-centralization-myths",
+            "changes": {
+              "top3": {
+                "before": false,
+                "after": true
+              }
+            }
+          }
+        ],
+        "losses": [
+          {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-defi-blend-alternatives",
+            "losses": [
+              "top5"
+            ]
+          },
+          {
+            "id": "q-defi-rwa-overview",
+            "losses": [
+              "top3"
+            ]
+          },
+          {
+            "id": "q-scf-funded-similar-payroll",
+            "losses": [
+              "top3"
+            ]
+          }
+        ],
+        "sequenceRow": {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "expected_service": "stellarDocs",
+          "expected_any": [
+            "stellarDocs",
+            "scout"
+          ],
+          "top1": true,
+          "top3": true,
+          "top5": true,
+          "cardHit5": null,
+          "any1": true,
+          "any3": true,
+          "any5": true,
+          "topHits": [
+            {
+              "id": "stellarDocs.search_docs",
+              "service": "stellarDocs",
+              "score": 407
+            },
+            {
+              "id": "stellarDocs.search_docs_in_category",
+              "service": "stellarDocs",
+              "score": 402
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "service": "stellarDocs",
+              "score": 398
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "service": "stellarDocs",
+              "score": 395
+            },
+            {
+              "id": "stellarDocs.search_anchor_sep_docs",
+              "service": "stellarDocs",
+              "score": 376
+            }
+          ]
+        }
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1189,
+          "rowsWithoutGated": 35
+        },
+        "extendedCases": {
+          "gated": 122,
+          "rowsWithoutGated": 70
+        },
+        "skillsCases": {
+          "gated": 48,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 108,
+          "rowsWithoutGated": 18
+        },
+        "protocolHistoryCases": {
+          "gated": 32,
+          "rowsWithoutGated": 2
+        }
+      },
+      "changedGradedRows": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-infra-hubble-vs-rpc-layer",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-x402-auth-entry-signing",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-05-groth16-soroban",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  "comparisons": {
+    "archived-main": {
+      "total": 544,
+      "graded": 0,
+      "order": 0,
+      "targetRank": 0,
+      "scores": 0,
+      "changedGradedRows": []
+    },
+    "archived-fresh": {
+      "total": 544,
+      "graded": 0,
+      "order": 0,
+      "targetRank": 0,
+      "scores": 0,
+      "changedGradedRows": []
+    },
+    "baseline-source": {
+      "total": 544,
+      "graded": 7,
+      "order": 80,
+      "targetRank": 0,
+      "scores": 97,
+      "changedGradedRows": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "lane": "extendedCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ]
+    },
+    "step2-main": {
+      "total": 544,
+      "graded": 6,
+      "order": 89,
+      "targetRank": 0,
+      "scores": 294,
+      "changedGradedRows": [
+        {
+          "id": "q-defi-lumenloop-categories-vocab",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-infra-hubble-vs-rpc-layer",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-05-groth16-soroban",
+          "lane": "holdoutCases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ]
+    },
+    "step2-fresh": {
+      "total": 544,
+      "graded": 6,
+      "order": 92,
+      "targetRank": 0,
+      "scores": 301,
+      "changedGradedRows": [
+        {
+          "id": "q-infra-hubble-vs-rpc-layer",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-x402-auth-entry-signing",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-05-groth16-soroban",
+          "lane": "holdoutCases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ]
+    },
+    "step2-source": {
+      "total": 544,
+      "graded": 9,
+      "order": 77,
+      "targetRank": 0,
+      "scores": 92,
+      "changedGradedRows": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-lumenloop-categories-vocab",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-x402-auth-entry-signing",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "lane": "extendedCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ]
+    },
+    "step2-fresh-v-main": {
+      "total": 544,
+      "graded": 13,
+      "order": 152,
+      "targetRank": 0,
+      "scores": 339,
+      "changedGradedRows": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-infra-hubble-vs-rpc-layer",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-x402-auth-entry-signing",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "lane": "extendedCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-05-groth16-soroban",
+          "lane": "holdoutCases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  "stop": {
+    "main": {
+      "newFailures": [
+        "10",
+        "11"
+      ],
+      "fixedFailures": [
+        "5"
+      ],
+      "failedBeforeAndAfter": [
+        "8",
+        "12"
+      ]
+    },
+    "fresh": {
+      "newFailures": [
+        "10"
+      ],
+      "fixedFailures": [
+        "5",
+        "6"
+      ],
+      "failedBeforeAndAfter": [
+        "8",
+        "12"
+      ]
+    }
+  }
+}
