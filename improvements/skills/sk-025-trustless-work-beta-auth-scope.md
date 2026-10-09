@@ -14,7 +14,9 @@ evidence:
   - https://docs.trustlesswork.com/trustless-work/v2-en/api-rest/introduction
   - https://github.com/Trustless-Work/trustlesswork-sdk-js/blob/4121f92593b74643fc9e16b3d7d13cdd0a620914/src/transport/http-transport.ts
   - Independent Grok 4.6 high source review and the Astra coordinator both reproduced the source conflict.
-  - "2026-10-06 issue state: a third-party contributor (SrvFernandes) commented on 2026-10-03 with /claim #6 and opened https://github.com/Trustless-Work/trustlesswork-skill/pull/18. The PR is open, review is required, and no maintainer has replied. Its new text says that all requests require x-api-key. It does not scope bearer authentication for the beta host, so it does not apply this recommendation."
+  - "2026-10-06 issue-state snapshot: a third-party contributor (SrvFernandes) commented on 2026-10-03 with /claim #6 and opened PR 18. The PR is open, review is required, and no maintainer has replied. Its new text says that all requests require x-api-key. It does not scope bearer authentication for the beta host, so it does not apply this recommendation."
+  - "2026-10-09 removal: the third-party PR 18 no longer exists. The public Trustless-Work/trustlesswork-skill repository remains accessible. A direct PR read returns HTTP 404. The contributor account SrvFernandes and its /claim comments no longer exist. This removal does not prove a deployed fix."
+  - 2026-10-09 https://api.github.com/users/SrvFernandes returns HTTP 404; https://api.github.com/repos/Trustless-Work/trustlesswork-skill/issues/6/comments contains no contributor /claim comment.
 recurrences:
   - date: 2026-10-06
     evidence: "trustlesswork-skill main 80e2467f34041b9f70e66d6c2f567fc76ba9b1bb (2026-09-27) still reproduces the conflict. trustless-work-dev/skills/api/v2/core-concepts.md line 30 still says Never Authorization: Bearer. PR 18 is not merged."

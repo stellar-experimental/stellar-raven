@@ -14,6 +14,8 @@ recurrences:
     evidence: "Broad RWA search still omits five exact-name records and lacks product state; issue #29 remains open."
   - date: 2026-08-14
     evidence: "Content-absence instance for a live RWA product. lumenloop.search_content_semantic('WisdomTree CRDT tokenized private credit fund on Stellar', types articles/research/av/events, limit 6) returned 24 rows and no CRDT or CRDYX row. lumenloop.search_documents({collection:'articles', query:'CRDT'}) and the same call for 'CRDYX' each returned zero items. lumenloop.get_project({slug:'wisdomtree'}) returns only the WisdomTree Prime record, with empty mainnet.tokens. scout.searchResearch for both terms returned no exact match. The product is canonically confirmed: WisdomTree IR release 2025-09-12, the SEC prospectus, and https://stellar.wisdomtree.com/.well-known/stellar.toml. Issue #29 remains open."
+  - date: 2026-10-09
+    evidence: "Public Lumenloop directory searches for CRDT and CRDYX each return 0 projects. WisdomTree returns one issuer record. The issuer TOML names CRDT, anchored to the CRDYX fund. This confirms the exact-product gap recorded on 2026-08-14. The public search differs from search_directory; the authenticated API returned HTTP 401 without a key."
 ---
 
 ## Finding
@@ -30,6 +32,14 @@ Stablebonds. Directory inclusion also does not distinguish an entity from a
 specific live Stellar-issued product.
 
 ## Evidence
+
+Fresh public checks on 2026-10-09 confirm the previously recorded exact-product gap.
+[CRDT](https://lumenloop.com/projects?q=CRDT) and [CRDYX](https://lumenloop.com/projects?q=CRDYX) each return `0 projects`.
+[WisdomTree](https://lumenloop.com/projects?q=WisdomTree) returns one issuer record.
+The [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT`, anchored to the `CRDYX` fund.
+These reads test public directory discovery, not authenticated `search_directory` semantics.
+The authenticated API returned HTTP `401` without a key.
+This recurrence makes no new claim about broad RWA prevalence or live/planned state mixing.
 
 The audit ran broad and exact-name directory probes on 2026-07-10. Exact-name
 queries located the named entities, and operator/issuer primary records plus

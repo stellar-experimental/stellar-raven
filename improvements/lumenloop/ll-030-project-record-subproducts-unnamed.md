@@ -15,6 +15,8 @@ evidence:
 recurrences:
   - date: 2026-09-04
     evidence: authenticated production Raven re-execution reproduced the exact defect. lumenloop.get_project({slug:"wisdomtree"}) returned the 13-digital-funds description with no CRDT or CRDYX substring. lumenloop.search_directory({query:"CRDT",limit:10}) returned match_mode semantic and ten adjacent rows, with no CRDT. lumenloop.search_content_semantic({query:"WisdomTree CRDT CRDYX private credit alternative income digital fund Stellar",limit:15}) returned 24 rows across six collections, with no CRDT or CRDYX substring.
+  - date: 2026-10-09
+    evidence: "The public WisdomTree project description and current projects/wisdomtree.yaml still count 13 digital funds without naming them. The source record has empty mainnet.tokens. The issuer TOML names CRDT, anchored to the CRDYX fund. This check covers the record description and source tokens, not the whole page or authenticated API."
 ---
 
 ## Finding
@@ -35,6 +37,13 @@ inside a successfully retrieved record. The count is present; the names are
 not. That is a record-content gap, not a recall gap, so it takes its own id.
 
 ## Evidence
+
+Fresh public checks on 2026-10-09 confirm the unnamed-funds description.
+The [WisdomTree project page](https://lumenloop.com/projects/wisdomtree) still counts `13 digital funds` without naming them in that description.
+The [source record](https://github.com/lumenloop/stellar-ecosystem-db/blob/7dbb50cc54cfd2ed7c1c1d6bf1e25ac6a0bd406e/projects/wisdomtree.yaml) also has empty `mainnet.tokens`.
+The [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT`, anchored to the `CRDYX` fund.
+This check covers the description and source tokens, not every linked article or page section.
+The authenticated API was unavailable without a key.
 
 Results stamp `eval/qa/results/2026-08-28T19-27-08-variantA.json`, row
 `q-defi-wisdomtree-crdt`.
