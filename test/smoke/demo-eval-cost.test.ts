@@ -4,8 +4,8 @@ import { handleDemoChat } from "../../src/demo/chat";
 import { mintDemoCookie } from "../../src/demo/auth";
 import type { DemoFrame } from "../../src/demo/frames";
 
-// Keep the chat route, AI SDK, Responses plugin, and Gateway delegate real.
-// Only the upstream Gateway service is fake; no provider request leaves workerd.
+// Keep the chat route, AI SDK, plugins, and native parser real.
+// Only upstream services are fake; no provider request leaves workerd.
 function upstream() {
   const entries: AIGatewayUniversalRequest[] = [];
   const getLog = vi.fn(async (id: string) => {
@@ -25,7 +25,7 @@ function upstream() {
       headers: { "content-type": "text/event-stream", "cf-aig-log-id": "private-request-log" }
     });
   });
-  const run = vi.fn(() => { throw new Error("Unexpected AI.run transport"); });
+  const run = vi.fn(async (): Promise<Response> => { throw new Error("Unexpected AI.run transport"); });
   const gateway = vi.fn((id: string) => {
     expect(id).toBe("eval-test");
     return { run: gatewayRun, getLog };
@@ -60,6 +60,21 @@ async function request(testEnv: Env, options: { budget?: string; origin?: string
   return { response, body, frames };
 }
 
+function chatResponse(model: string, format: "sse" | "json", id: string) {
+  const usage = { prompt_tokens: 2, completion_tokens: 1, total_tokens: 3 };
+  const headers = { "cf-aig-log-id": id };
+  if (format === "json") {
+    return Response.json({ choices: [{ message: { content: "answer" }, finish_reason: "stop" }], usage }, { headers });
+  }
+  const chunks = model.startsWith("@")
+    ? [{ response: "answer" }, { finish_reason: "stop", usage }]
+    : [{ choices: [{ delta: { content: "answer" }, finish_reason: null }] },
+      { choices: [{ delta: {}, finish_reason: "stop" }], usage }];
+  return new Response(chunks.map((chunk) => `data: ${JSON.stringify(chunk)}\n\n`).join("") + "data: [DONE]\n\n", {
+    headers: { ...headers, "content-type": "text/event-stream; charset=utf-8" }
+  });
+}
+
 afterEach(() => vi.restoreAllMocks());
 
 describe("evaluation accounting through real provider paths", () => {
@@ -91,25 +106,99 @@ describe("evaluation accounting through real provider paths", () => {
   });
 
   it.each(["@cf/moonshotai/kimi-k2.7-code", "moonshotai/kimi-k3"])(
-    "refuses unsupported evaluation transport for %s before upstream access",
+    "accounts for %s through the installed native parser",
     async (model) => {
       vi.spyOn(console, "log").mockImplementation(() => undefined);
-      const f = upstream();
-      f.testEnv.DEMO_MODEL_OVERRIDE = model;
-      const { frames } = await request(f.testEnv, { budget: "1" });
-      expect(frames).toContainEqual({
-        type: "error",
-        message: "Eval accounting requires raw-response Gateway or run transport; this model path is unsupported."
-      });
-      expect(frames).toContainEqual({
-        type: "eval-cost", costUsd: null, reportedCostUsd: 0, calls: 0, reportedCalls: 0, error: null
-      });
-      expect(frames.some((frame) => frame.type === "token")).toBe(false);
-      expect(f.run).not.toHaveBeenCalled();
-      expect(f.gatewayRun).not.toHaveBeenCalled();
-      expect(f.getLog).not.toHaveBeenCalled();
+      for (const format of ["sse", "json"] as const) {
+        const f = upstream();
+        f.testEnv.DEMO_MODEL_OVERRIDE = model;
+        f.run.mockResolvedValueOnce(chatResponse(model, format, "private-request-log"));
+        const { frames, body } = await request(f.testEnv, { budget: "1" });
+        expect(frames).toContainEqual({ type: "token", text: "answer" });
+        expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
+        expect(frames.at(-1)).toEqual({
+          type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+        });
+        expect(body).not.toContain("private-request-log");
+        expect(f.run).toHaveBeenCalledExactlyOnceWith(model, expect.objectContaining({ stream: true, messages: expect.any(Array) }),
+          expect.objectContaining({
+            returnRawResponse: true,
+            gateway: { id: "eval-test", collectLog: true, retries: { maxAttempts: 1 } },
+            extraHeaders: expect.objectContaining({ "cf-aig-collect-log-payload": "false" })
+          }));
+        expect(f.gatewayRun).not.toHaveBeenCalled();
+        expect(f.getLog).toHaveBeenCalledExactlyOnceWith("private-request-log");
+      }
     }
   );
+
+  it("settles the primary call before a fallback into a native model", async () => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const f = upstream();
+    const model = "@cf/moonshotai/kimi-k2.7-code";
+    f.testEnv.DEMO_MODEL_OVERRIDE = `openai/gpt-5.6-terra,${model}`;
+    f.gatewayRun.mockResolvedValueOnce(Response.json({ error: { message: "Unavailable" } }, {
+      status: 503, headers: { "cf-aig-log-id": "primary-log" }
+    }));
+    f.getLog.mockImplementation(async (id) => {
+      expect(["primary-log", "native-log"]).toContain(id);
+      return { cost: id === "primary-log" ? 0.05 : 0.15 };
+    });
+    f.run.mockImplementationOnce(async () => {
+      expect(f.getLog).toHaveBeenCalledExactlyOnceWith("primary-log");
+      return chatResponse(model, "sse", "native-log");
+    });
+    const { frames, body } = await request(f.testEnv, { budget: "1" });
+    expect(frames).toContainEqual({ type: "token", text: "answer" });
+    expect(frames.at(-2)).toEqual({ type: "done", reason: "stop" });
+    expect(frames.at(-1)).toEqual({
+      type: "eval-cost", costUsd: 0.2, reportedCostUsd: 0.2, calls: 2, reportedCalls: 2, error: null
+    });
+    expect(f.gatewayRun).toHaveBeenCalledTimes(1);
+    expect(f.run).toHaveBeenCalledTimes(1);
+    expect(f.getLog.mock.calls).toEqual([["primary-log"], ["native-log"]]);
+    expect(body).not.toMatch(/primary-log|native-log/);
+  });
+
+  it("blocks native fallback after a response without a log identifier", async () => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const f = upstream();
+    f.testEnv.DEMO_MODEL_OVERRIDE = "moonshotai/kimi-k3,@cf/moonshotai/kimi-k2.7-code";
+    const response = chatResponse("moonshotai/kimi-k3", "sse", "missing-log");
+    response.headers.delete("cf-aig-log-id");
+    f.run.mockResolvedValueOnce(response);
+    const { frames } = await request(f.testEnv, { budget: "1" });
+    expect(frames).toContainEqual({ type: "error", message: "missing-or-duplicate-answer-log-id" });
+    expect(frames.some((frame) => frame.type === "token")).toBe(false);
+    expect(frames.at(-1)).toEqual({
+      type: "eval-cost", costUsd: null, reportedCostUsd: 0, calls: 1, reportedCalls: 0,
+      error: "missing-or-duplicate-answer-log-id"
+    });
+    expect(f.run).toHaveBeenCalledTimes(1);
+    expect(f.gatewayRun).not.toHaveBeenCalled();
+    expect(f.getLog).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { status: 400, contentType: "application/json", body: JSON.stringify({ errors: [{ code: 8006, message: "temperature must be 1" }] }),
+      message: "Answer provider returned HTTP 400. 8006: temperature must be 1" },
+    { status: 200, contentType: "text/plain", body: "not a chat response", message: "unsupported-answer-content-type" }
+  ])("reports native response errors with retained cost: $message", async ({ status, contentType, body, message }) => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const f = upstream();
+    f.testEnv.DEMO_MODEL_OVERRIDE = "moonshotai/kimi-k3";
+    f.run.mockResolvedValueOnce(new Response(body, {
+      status, headers: { "content-type": contentType, "cf-aig-log-id": "private-request-log" }
+    }));
+    const { frames } = await request(f.testEnv, { budget: "1" });
+    expect(frames).toContainEqual({ type: "error", message });
+    expect(frames.some((frame) => frame.type === "token")).toBe(false);
+    expect(frames.at(-1)).toEqual({
+      type: "eval-cost", costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+    });
+    expect(f.run).toHaveBeenCalledTimes(1);
+    expect(f.getLog).toHaveBeenCalledExactlyOnceWith("private-request-log");
+  });
 
   it("rejects accounting requests before provider access when origin, auth, or host checks fail", async () => {
     for (const [options, code] of [

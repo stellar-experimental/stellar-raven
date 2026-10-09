@@ -65,26 +65,33 @@ Live cost reporting remains a measurement prerequisite; offline mocks cannot pro
 
 ### Supported accounting transports
 
-Evaluation accounting supports two raw-response paths in the installed `workers-ai-provider@4.0.0`:
+Evaluation accounting captures raw responses through these paths in the installed `workers-ai-provider@4.0.0`:
 
 | Path | Supported configurations |
 |---|---|
 | `AI.gateway(id).run` | OpenAI Responses, OpenAI Chat, and Grok with the production transport settings |
 | `AI.run` with `returnRawResponse: true` | Plugin-based run transport, including Anthropic, Google, and explicit OpenAI Chat run transport |
+| Native chat through `AI.run` | Native Workers AI and no-plugin catalog chat, including `@cf/moonshotai/kimi-k2.7-code` and `moonshotai/kimi-k3` |
 
 The configured OpenAI Responses primary and fallback share the same request accounting.
 Each Gateway dispatch must contain one entry; evaluation accounting rejects hidden server-side fallback entries.
 These statements describe dispatch coverage, not verified live cost availability for every vendor.
 
-Native Workers AI and no-plugin catalog paths remain unsupported under evaluation accounting.
-The installed native parser calls `AI.run` without `returnRawResponse`.
-This includes `@cf/moonshotai/kimi-k2.7-code` and the `moonshotai/kimi-k3` no-plugin path.
-A fallback into either path has the same limitation.
-The guard rejects these paths before any upstream call and explains the unsupported transport in an error frame.
-The receipt has zero counted calls and a null cost; the runner rejects that incomplete receipt.
+Native chat calls request `returnRawResponse: true` through the accounting binding.
+The binding captures each log identifier before it returns output to the installed native parser.
+The parser receives the body stream for `text/event-stream` and parsed JSON for `application/json`.
+Missing or unrecognized content types produce `unsupported-answer-content-type`. Accounting retains the captured cost.
+Native HTTP errors include the upstream error code and message when an 8 KiB body read supplies them.
+Existing raw-response callers receive the full `Response`.
+Native calls share the settlement and budget checks, including fallback calls.
+The guard still rejects non-chat calls without raw-response support before any upstream call.
+Missing or duplicate log identifiers block further calls and produce an incomplete receipt.
 Ordinary requests without the evaluation budget header retain their existing model support.
 
-The [coverage review](../../research/audits/2026-10-01-playground-accounting-coverage.md) records the evidence and required extension.
+The [coverage review](../../research/audits/2026-10-01-playground-accounting-coverage.md) records the original gap.
+The current regressions use the real handler and installed parser with mocked upstream responses and costs.
+They cover both named models, JSON responses to streaming requests, and fallback into a native model.
+They do not establish live model availability or live cost reporting.
 
 ### Results and provenance
 
