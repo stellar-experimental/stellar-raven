@@ -10,6 +10,18 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+it("does not append a failure footer for a compact soft-empty result", async () => {
+  vi.stubGlobal("fetch", async () => Response.json({ error: "unknown project" }, { status: 404 }));
+  const outcome = await run(`async () => {
+    const r = await scout.getHackathon({ slug: "unknown" });
+    return { ok: r.ok, kind: r.error.kind };
+  }`);
+  if (!outcome.ok) throw new Error(outcome.error);
+  expect(outcome.result).toBe('{"ok":false,"kind":"soft-empty"}');
+  expect(outcome.truncated).toBe(false);
+  expect(outcome.sourceBasis).toBeUndefined();
+});
+
 const cases = [
   { name: "one source", args: { sources: "cap" }, reason: undefined, ok: true, wire: "cap" },
   { name: "several sources", args: { sources: "cap,sep,dev-docs" }, reason: undefined, ok: true, wire: "cap,sep,dev-docs" },
@@ -76,10 +88,11 @@ it.each([
   expect(outcome.result.split("\n").find((line) => line.startsWith("calls:"))).toBe(
     `calls: lumenloop.get_document=error/0ms [${reason}] (totals ok=0 error=1 soft-empty=0)`
   );
-  expect(outcome.result).toContain("--- SOURCE BASIS ---");
+  const marker = pad ? "--- SOURCE BASIS ---" : "--- SOURCE METADATA ---";
+  expect(outcome.result).toContain(marker);
   expect(outcome.result).not.toContain("private upstream body");
   expect(outcome.result).not.toContain("example.test");
   expect(outcome.result).not.toContain("smoke-test-lumenloop-key");
-  const block = outcome.result.slice(outcome.result.lastIndexOf("--- SOURCE BASIS ---"));
+  const block = outcome.result.slice(outcome.result.lastIndexOf(marker));
   expect(block.length).toBeLessThanOrEqual(SOURCE_BASIS_MANIFEST_MAX_CHARS);
 });

@@ -15,6 +15,43 @@ const entry = (id: string) => {
 };
 
 describe("documented argument aliases", () => {
+  it("pins the exact manifest operation and parameter set for comma-form arrays", () => {
+    const matched: string[][] = [];
+    for (const operation of catalog.entries.filter((item) => item.kind === "operation")) {
+      const properties = operation.inputSchema?.properties as Record<string, { type?: string }> | undefined;
+      for (const [parameter, schema] of Object.entries(properties ?? {})) {
+        if (schema.type !== "array") continue;
+        const args = { [parameter]: "first, second" };
+        const normalized = applyArgumentAliases(operation, args) as Record<string, unknown>;
+        if (Array.isArray(normalized[parameter])) matched.push([operation.id, parameter]);
+      }
+    }
+    expect(matched.sort()).toEqual([
+      ["scout.compareHackathons", "slugs"],
+      ["scout.getLeaderboard", "type"],
+      ["scout.searchResearch", "sources"]
+    ]);
+  });
+
+  it.each(["", " \t\n ", " , , "])("leaves an empty list string %j for validation", (value) => {
+    for (const [id, parameter, rest] of [
+      ["scout.searchResearch", "sources", { q: "base reserve" }],
+      ["scout.getLeaderboard", "type", {}],
+      ["scout.compareHackathons", "slugs", {}]
+    ] as const) {
+      const args = { ...rest, [parameter]: value };
+      const normalized = applyArgumentAliases(entry(id), args);
+      expect(normalized).toBe(args);
+      expect(guard(entry(id), normalized)).toMatchObject({
+        ok: false,
+        error: { details: [{ path: parameter, message: "expected array, got string" }] }
+      });
+    }
+    const aliasArgs = { q: "base reserve", source: value };
+    expect(applyArgumentAliases(entry("scout.searchResearch"), aliasArgs)).toBe(aliasArgs);
+    expect(guard(entry("scout.searchResearch"), aliasArgs)).not.toBeNull();
+  });
+
   it("every alias names a manifest operation with the scalar and the array parameter", () => {
     for (const [id, aliases] of Object.entries(ARGUMENT_ALIASES)) {
       const schema = entry(id).inputSchema as { properties?: Record<string, { type?: string; items?: { enum?: unknown[] }; enum?: unknown[] }> };

@@ -9,7 +9,11 @@
  * description word moves the lexical routing gate), honor the documented alias
  * here: the scalar is split into the sibling array, then validated as that
  * array. Cross-parameter aliases use exact operation ids, like exposure
- * (ADR-0003). Array parameters also accept their documented comma form.
+ * (ADR-0003). Same-parameter normalization instead reads the manifest: only
+ * array parameters whose descriptions say comma-separated or comma-separable
+ * accept a string list. A test pins the exact matched operation/parameter set
+ * so an upstream description change requires explicit review. Empty lists
+ * remain strings for validation; normalization never bypasses the guard.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 
@@ -29,8 +33,9 @@ export const ARGUMENT_ALIASES: Readonly<Record<string, readonly ArgumentAlias[]>
 /**
  * Return the arguments with every documented alias applied. Non-object input
  * passes through untouched so the validator reports it. An alias applies only
- * when the scalar holds a comma and the array parameter is absent; any other
- * combination is left for validation to judge. A string in an array parameter
+ * when the scalar holds a comma with at least one non-empty item, and the
+ * array parameter is absent. Other combinations remain subject to validation.
+ * A string in an array parameter
  * is split only when that parameter documents a comma-separated form.
  */
 export function applyArgumentAliases(entry: CatalogEntry, args: unknown): unknown {
@@ -39,14 +44,18 @@ export function applyArgumentAliases(entry: CatalogEntry, args: unknown): unknow
   for (const alias of ARGUMENT_ALIASES[entry.id] ?? []) {
     const value = out[alias.from];
     if (typeof value !== "string" || !value.includes(",") || out[alias.to] !== undefined) continue;
+    const list = commaList(value);
+    if (list.length === 0) continue;
     const { [alias.from]: _dropped, ...rest } = out;
-    out = { ...rest, [alias.to]: commaList(value) };
+    out = { ...rest, [alias.to]: list };
   }
   const properties = entry.inputSchema?.properties as Record<string, { type?: string; description?: string }> | undefined;
   for (const [name, parameter] of Object.entries(properties ?? {})) {
     if (parameter.type !== "array" || !/\bcomma[- ](?:separated|separable)\b/i.test(parameter.description ?? "")) continue;
     const value = out[name];
-    if (typeof value === "string") out = { ...out, [name]: commaList(value) };
+    if (typeof value !== "string") continue;
+    const list = commaList(value);
+    if (list.length > 0) out = { ...out, [name]: list };
   }
   return out;
 }

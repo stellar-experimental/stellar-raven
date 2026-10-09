@@ -101,7 +101,7 @@ export type BuildSourceBasisManifestInput = {
   canonicalUrls?: string[];
   artifact?: SourceBasisArtifact;
   skillSectionAdvice?: boolean;
-  /** False when captured metadata or call failures caused this block without truncation. */
+  /** False when source metadata or error calls cause an untruncated SOURCE METADATA footer. */
   truncated?: boolean;
 };
 
@@ -259,8 +259,7 @@ function serializeManifest(
   }
 ): string {
   const lines = [
-    input.truncated === false && !input.calls.some((call) => call.reason)
-      ? SOURCE_METADATA_MARKER : SOURCE_BASIS_MARKER,
+    input.truncated === false ? SOURCE_METADATA_MARKER : SOURCE_BASIS_MARKER,
     `shape: ${shapeLine(input.shape, limits.shapeDetailLimit)}`,
     `calls: ${callsLine(input.calls, limits.callLimit)}`
   ];
@@ -279,7 +278,7 @@ function serializeManifest(
 
 function guidanceLine(input: BuildSourceBasisManifestInput): string {
   if (input.truncated === false) {
-    if (input.calls.some((call) => call.reason)) {
+    if (input.calls.some((call) => call.outcome === "error")) {
       return "host-captured call failures survived sandbox projection; treat failed reads as inconclusive and preserve any source metadata.";
     }
     return "host-captured source metadata survived sandbox projection; preserve its dates, modes, and counts when answering.";

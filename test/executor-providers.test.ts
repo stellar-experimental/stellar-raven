@@ -53,6 +53,17 @@ function fnsOf(providers: Sandbox, name: string) {
 }
 
 describe("host structural service evidence", () => {
+  it("keeps soft-empty outcomes distinct from failures without adding a reason", async () => {
+    const calls: OpLedgerCall[] = [];
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl: async () => Response.json({ error: "unknown project timed out" }, { status: 404 }),
+      onOpCall: (call) => calls.push(call)
+    });
+    const result = await fnsOf(providers, "scout").getHackathon!({ slug: "unknown" });
+    expect(result).toMatchObject({ ok: false, error: { kind: "soft-empty", status: 404 } });
+    expect(calls[0]).toMatchObject({ outcome: "soft-empty", reason: undefined });
+  });
+
   it("keeps arbitrary argument keys and upstream messages out of failure reasons", async () => {
     const calls: OpLedgerCall[] = [];
     const fetchImpl: FetchLike = async () => Response.json({

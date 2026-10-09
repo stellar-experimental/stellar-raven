@@ -122,7 +122,7 @@ describe("source-basis manifest", () => {
     }));
     const text = buildSourceBasisManifest({
       shape: validArrayShape,
-      calls: calls(2),
+      calls: calls(1),
       sourceMetadata: repeated,
       artifact: { state: "absent", reason: "not-truncated" },
       truncated: false

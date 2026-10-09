@@ -351,7 +351,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
 }
 
 function failedCallReason(entry: CatalogEntry, result: AdapterResult, refused = false): string | undefined {
-  if (result.ok) return undefined;
+  if (result.ok || result.error.kind === "soft-empty") return undefined;
   if (refused) {
     // Select declared parameter names, never caller-controlled unknown keys or values.
     const issues = Array.isArray(result.error.details) ? result.error.details : [];
@@ -365,7 +365,7 @@ function failedCallReason(entry: CatalogEntry, result: AdapterResult, refused = 
   if (typeof status === "number" && Number.isInteger(status) && status >= 400 && status <= 599) return `http-${status}`;
   // Inspect the message only to choose a fixed label. Never copy any of its text.
   if (/\b(?:timeout|timed out)\b/i.test(result.error.message)) return "timeout";
-  return result.error.kind === "soft-empty" ? "soft-empty" : "upstream-error";
+  return "upstream-error";
 }
 
 /**

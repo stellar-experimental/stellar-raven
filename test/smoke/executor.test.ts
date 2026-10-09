@@ -57,8 +57,8 @@ function artifactIdFrom(text: string): string {
   return match[1];
 }
 
-function parseResultJsonWithMetadata(text: string, marker = SOURCE_METADATA_MARKER): unknown {
-  const boundary = `\n${marker}`;
+function parseResultJsonWithMetadata(text: string): unknown {
+  const boundary = `\n${SOURCE_METADATA_MARKER}`;
   const boundaryIndex = text.lastIndexOf(boundary);
   if (boundaryIndex < 0) throw new Error("expected a host source-metadata block");
   if (text.indexOf(boundary) !== boundaryIndex) {
@@ -456,7 +456,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
 
       expect(outcome.ok).toBe(true);
       if (!outcome.ok) throw new Error(outcome.error);
-      expect(parseResultJsonWithMetadata(outcome.result, SOURCE_BASIS_MARKER)).toMatchObject({
+      expect(parseResultJsonWithMetadata(outcome.result)).toMatchObject({
         ok: false,
         error: { service: "scout", kind: "error", status: 200, message: warning }
       });
@@ -1022,7 +1022,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      expect(parseResultJsonWithMetadata(outcome.result, SOURCE_BASIS_MARKER))
+      expect(parseResultJsonWithMetadata(outcome.result))
         .toEqual({ dataIsUndefined: true, note: "write-through ok" });
       expect(outcome.sourceBasis?.calls[0]?.reason).toBe("invalid-args: query");
       expect(outcome.logs.join("\n")).toContain("[envelope] lumenloop.search_directory");

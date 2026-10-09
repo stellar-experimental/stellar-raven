@@ -124,7 +124,10 @@ This provides one model-facing copy of the bounded output.
 The host redacts the final result before applying `truncateForModel`.
 The configured token budget determines a character cut at four characters per token.
 Reserved source-manifest markers receive escaping even when the result fits.
-A source-basis footer appears after truncation, captured source metadata, or a failed call.
+A footer appears after truncation, captured source metadata, or an error call.
+`--- SOURCE BASIS ---` marks a truncated result.
+`--- SOURCE METADATA ---` marks every untruncated footer, including error call reasons.
+Soft-empty calls have no failure reason and do not trigger a footer.
 The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
 Each failed call includes a reason of at most 64 characters.
