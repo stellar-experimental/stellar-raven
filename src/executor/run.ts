@@ -424,7 +424,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     let text = escapeSourceManifestMarkerCollisions(result.text);
     let sourceBasis: BuildSourceBasisManifestInput | undefined;
     const sourceMetadata = sourceMetadataFromOperationLedger(opLedger);
-    if (result.truncated || sourceMetadata.length > 0) {
+    if (result.truncated || sourceMetadata.length > 0 || opLedger.some((call) => call.reason)) {
       let artifact: SourceBasisArtifact = { state: "absent", reason: "unavailable" };
       if (result.truncated) {
         const serialized = serializedResult(redactedResult);

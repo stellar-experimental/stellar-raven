@@ -79,11 +79,11 @@ import {
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { callService } from "../adapters/index.ts";
-import type { AdapterEnv, FetchLike } from "../adapters/types.ts";
+import type { AdapterEnv, AdapterResult, FetchLike } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
 import { applyArgumentAliases } from "../policy/argument-aliases.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
-import type { SourceMetadataField, SourceMetadataPath } from "../policy/source-basis.ts";
+import { SOURCE_BASIS_REASON_MAX_CHARS, type SourceMetadataField, type SourceMetadataPath } from "../policy/source-basis.ts";
 import { readSkill } from "../skills/store.ts";
 import type { SkillRetrievalFrom, SkillSource } from "../skills/source.ts";
 import { runSkill, assertRunnersWired } from "../skills/run.ts";
@@ -111,6 +111,8 @@ export type OpLedgerCall = {
   hasServiceData?: boolean;
   /** Exact allowlisted response metadata captured before sandbox projection. */
   sourceMetadata?: SourceMetadataField[];
+  /** Bounded host label; never an upstream message, body, URL, or argument value. */
+  reason?: string;
   ms: number;
 };
 
@@ -348,6 +350,24 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   ].join("\n");
 }
 
+function failedCallReason(entry: CatalogEntry, result: AdapterResult, refused = false): string | undefined {
+  if (result.ok) return undefined;
+  if (refused) {
+    // Select declared parameter names, never caller-controlled unknown keys or values.
+    const issues = Array.isArray(result.error.details) ? result.error.details : [];
+    const names = Object.keys(entry.inputSchema?.properties ?? {}).filter((name) =>
+      issues.some((issue) => typeof issue?.path === "string" &&
+        (issue.path === name || issue.path.startsWith(`${name}[`) || issue.path.startsWith(`${name}.`)))
+    );
+    return `invalid-args: ${names.join(", ") || "arguments"}`.slice(0, SOURCE_BASIS_REASON_MAX_CHARS);
+  }
+  const status = result.error.status;
+  if (typeof status === "number" && Number.isInteger(status) && status >= 400 && status <= 599) return `http-${status}`;
+  // Inspect the message only to choose a fixed label. Never copy any of its text.
+  if (/\b(?:timeout|timed out)\b/i.test(result.error.message)) return "timeout";
+  return result.error.kind === "soft-empty" ? "soft-empty" : "upstream-error";
+}
+
 /**
  * The per-op wrapped-closure builder — extracted from buildProviders (design
  * src/skills/README.md) so the SAME closures serve BOTH consumers: the sandbox service
@@ -379,7 +399,7 @@ export function buildOpsFns(
       const t0 = Date.now();
       // Documented upstream aliases first (policy/argument-aliases.ts), then
       // validation of what will actually be sent.
-      const args = applyArgumentAliases(entry.id, rawArgs);
+      const args = applyArgumentAliases(entry, rawArgs);
       const refused = guard(entry, args); // arg validation only (ADR-0003)
       if (refused) {
         // guard only ever returns the error variant; narrow for the compiler.
@@ -392,6 +412,7 @@ export function buildOpsFns(
         deps?.onOpCall?.({
           op: entry.id,
           outcome: refused.ok ? "ok" : refused.error.kind,
+          reason: failedCallReason(entry, refused, true),
           ms
         });
         return refused;
@@ -417,6 +438,7 @@ export function buildOpsFns(
         outcome: result.ok ? "ok" : result.error.kind,
         hasServiceData: result.ok ? hasServiceData(result.data) : undefined,
         sourceMetadata,
+        reason: failedCallReason(entry, result),
         ms
       });
       return redactedResult;

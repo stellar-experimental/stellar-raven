@@ -28,24 +28,54 @@ describe("documented argument aliases", () => {
   });
 
   it("splits a comma-joined source into sources and passes validation", () => {
-    const out = applyArgumentAliases("scout.searchResearch", { q: "base reserve", source: "cap, sep", perSource: 2 });
+    const out = applyArgumentAliases(entry("scout.searchResearch"), { q: "base reserve", source: "cap, sep", perSource: 2 });
     expect(out).toEqual({ q: "base reserve", sources: ["cap", "sep"], perSource: 2 });
     expect(guard(entry("scout.searchResearch"), out)).toBeNull();
   });
 
   it("leaves a single source, an explicit sources array, and other operations alone", () => {
     const single = { q: "base reserve", source: "cap" };
-    expect(applyArgumentAliases("scout.searchResearch", single)).toBe(single);
+    expect(applyArgumentAliases(entry("scout.searchResearch"), single)).toBe(single);
     const both = { q: "base reserve", source: "cap,sep", sources: ["dev-docs"] };
-    expect(applyArgumentAliases("scout.searchResearch", both)).toBe(both);
+    expect(applyArgumentAliases(entry("scout.searchResearch"), both)).toBe(both);
     expect(guard(entry("scout.searchResearch"), both)).not.toBeNull();
     const other = { query: "a,b" };
-    expect(applyArgumentAliases("lumenloop.search_directory", other)).toBe(other);
-    expect(applyArgumentAliases("scout.searchResearch", undefined)).toBeUndefined();
+    expect(applyArgumentAliases(entry("lumenloop.search_directory"), other)).toBe(other);
+    expect(applyArgumentAliases(entry("scout.searchResearch"), undefined)).toBeUndefined();
   });
 
   it("still rejects the comma form without the alias", () => {
     expect(guard(entry("scout.searchResearch"), { q: "base reserve", source: "cap,sep" })).not.toBeNull();
+  });
+
+  it.each([
+    ["cap", ["cap"]],
+    ["cap,sep,dev-docs", ["cap", "sep", "dev-docs"]],
+    [" , cap , , sep, ", ["cap", "sep"]]
+  ])("splits documented sources %s before validation", (sources, expected) => {
+    const args = { q: "base reserve", sources };
+    const out = applyArgumentAliases(entry("scout.searchResearch"), args);
+    expect(out).toEqual({ q: "base reserve", sources: expected });
+    expect(args.sources).toBe(sources);
+    expect(guard(entry("scout.searchResearch"), out)).toBeNull();
+  });
+
+  it("keeps unknown array values subject to the guard", () => {
+    const out = applyArgumentAliases(entry("scout.searchResearch"), { q: "base reserve", sources: "cap,unknown" });
+    expect(out).toEqual({ q: "base reserve", sources: ["cap", "unknown"] });
+    expect(guard(entry("scout.searchResearch"), out)).toMatchObject({
+      ok: false, error: { details: [{ path: "sources[1]" }] }
+    });
+  });
+
+  it("uses declared array types and comma forms across operations", () => {
+    expect(applyArgumentAliases(entry("scout.compareHackathons"), { slugs: "a, b" }))
+      .toEqual({ slugs: ["a", "b"] });
+    expect(applyArgumentAliases(entry("scout.getLeaderboard"), { type: "DEX,Lending" }))
+      .toEqual({ type: ["DEX", "Lending"] });
+    const undocumented = { sources: "a,b" };
+    expect(applyArgumentAliases(entry("lumenloop.search_content_semantic"), undocumented)).toBe(undocumented);
+    expect(guard(entry("lumenloop.search_content_semantic"), undocumented)).not.toBeNull();
   });
 });
 
