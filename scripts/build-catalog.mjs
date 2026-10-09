@@ -47,7 +47,7 @@ function guardedTokens(text) {
   return tokenize(text);
 }
 
-function guardedExtractKeywords(body, options) {
+export function guardedExtractKeywords(body, options) {
   assertNoNonExposedRefsInText(body, "keyword source");
   for (const text of options?.exclude ?? []) assertNoNonExposedRefsInText(text, "keyword exclusion source");
   return extractKeywords(body, options);
@@ -532,7 +532,7 @@ import {
   lumenloopOpExcluded,
   scrubNonExposedRefs
 } from "./exposure.mjs";
-import { assertNoNonExposedRefsInText, assertNoNonExposedRefsInTokens } from "./emitted-text-guard.mjs";
+import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 import { parseFrontmatter, plainText, slugify } from "./lib/skill-markdown.mjs";
 
 // ---------------------------------------------------------------------------
@@ -755,7 +755,9 @@ export function buildScout(inv) {
         };
         for (const [field, texts] of Object.entries(source)) {
           for (const text of texts) {
-            assertNoNonExposedRefsInText(text, `scout.${opId} x-routing.${field}`);
+            // Exclusions emit only the intent clause, as extractRoutingExclusions does.
+            const emittedText = field === "notFor" ? text.split(/\s*->\s*/u, 1)[0] ?? "" : text;
+            assertNoNonExposedRefsInText(emittedText, `scout.${opId} x-routing.${field}`);
           }
         }
         const parts = [
@@ -1205,15 +1207,6 @@ export function assertNoNonExposedRefs(entries) {
       }
     }
     assertNoNonExposedRefsInText(text, `entry "${entry.id}"`);
-    const tokenFields = [
-      ["keywords", entry.keywords ?? []],
-      ["routingKeywords", entry.routingKeywords ?? []],
-      ...(entry.routingPhrases ?? []).map((phrase) => ["routingPhrases", phrase.tokens]),
-      ...(entry.routingExclusions ?? []).map((exclusion) => ["routingExclusions", exclusion.tokens])
-    ];
-    for (const [field, tokens] of tokenFields) {
-      assertNoNonExposedRefsInTokens(tokens, `entry "${entry.id}" ${field}`);
-    }
   }
 }
 

@@ -18,7 +18,8 @@ import {
   assertNoNonExposedRefs,
   assertBuildAuthorityIdsResolve,
   assertScoutExclusionsResolve,
-  buildScout
+  buildScout,
+  guardedExtractKeywords
 } from "../scripts/build-catalog.mjs";
 import { extractRoutingExclusions, extractRoutingPhrases } from "../src/catalog/extract-routing-phrases.ts";
 import { extractKeywords } from "../src/catalog/extract-keywords.ts";
@@ -124,30 +125,6 @@ describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", 
         .toThrow(/ADR-0003 leak/);
     });
   }
-
-  const tokenFields = {
-    keywords: (text) => extractKeywords(text),
-    routingKeywords: (text) => extractKeywords(text),
-    routingPhrases: (text) => extractRoutingPhrases({ purpose: [text] }),
-    routingExclusions: (text) => extractRoutingExclusions([text])
-  };
-  for (const [field, extract] of Object.entries(tokenFields)) {
-    it.each(["reviewSubmission", "getRwaAssets", "/api/hackathons/review"])(
-      `rejects real extracted tokens for %s in ${field}`, (reference) => {
-        const entry = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
-        const value = extract(`Use ${reference} here.`);
-        expect(value.length).toBeGreaterThan(0);
-        expect(() => assertNoNonExposedRefs([{ ...entry, [field]: value }])).toThrow(/ADR-0003 leak/);
-      }
-    );
-  }
-
-  it("keeps phrase boundaries when checking token sequences", () => {
-    const entry = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
-    expect(() => assertNoNonExposedRefs([{ ...entry,
-      routingExclusions: [{ tokens: ["review"] }, { tokens: ["submission"] }]
-    }])).not.toThrow();
-  });
 
   it("rejects an excluded child path after the Scout rewrite", () => {
     const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
@@ -255,6 +232,25 @@ describe("assertBuildAuthorityIdsResolve — role ids are pinned to skills that 
 
 describe("Scout raw routing sources follow ADR-0003 before extraction", () => {
   const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+  const tokenFields = {
+    routingKeywords: { sourceField: "keywords", extract: (text) => extractKeywords(text) },
+    routingPhrases: { sourceField: "purpose", extract: (text) => extractRoutingPhrases({ purpose: [text] }) },
+    routingExclusions: { sourceField: "notFor", extract: (text) => extractRoutingExclusions([text]) }
+  };
+  for (const [field, { sourceField, extract }] of Object.entries(tokenFields)) {
+    it.each(["reviewSubmission", "getRwaAssets", "/api/hackathons/review"])(
+      `rejects real extracted tokens for %s in ${field} at the raw source`, (reference) => {
+        const text = `Use ${reference} here.`;
+        expect(extract(text).length).toBeGreaterThan(0);
+        const changed = structuredClone(inventory);
+        changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+          [sourceField]: sourceField === "purpose" ? text : [text]
+        };
+        expect(() => buildScout(changed)).toThrow(new RegExp(`x-routing\\.${sourceField}`));
+      }
+    );
+  }
+
   for (const field of ["purpose", "useWhen", "exampleQuestions", "keywords", "notFor"]) {
     it.each(["reviewSubmission", "get_rwa_assets", "/api/hackathons%2Freview"])(
       `rejects %s in raw x-routing.${field}`, (reference) => {
@@ -268,13 +264,49 @@ describe("Scout raw routing sources follow ADR-0003 before extraction", () => {
     );
   }
 
-  it("checks excluded notFor targets before the extractor drops them", () => {
-    const changed = structuredClone(inventory);
-    changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
-      notFor: ["judging a single entry -> scout.reviewSubmission"]
-    };
-    expect(() => buildScout(changed)).toThrow(/x-routing\.notFor/);
-  });
+  it.each(["reviewSubmission", "getQualityReport", "getRwaAssets"])(
+    "drops the excluded notFor target %s before scanning emitted tokens", (target) => {
+      const changed = structuredClone(inventory);
+      changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+        notFor: [`judging a single entry -> scout.${target}`]
+      };
+      const source = buildScout(changed).routingPhraseExtras.get("scout.getHackathons");
+      expect(extractRoutingExclusions(source.notFor)).toEqual([
+        { tokens: ["judging", "single", "entry"] }
+      ]);
+    }
+  );
+
+  it.each(["purpose", "useWhen", "exampleQuestions", "keywords"])(
+    "scans the full positive x-routing.%s string", (field) => {
+      const changed = structuredClone(inventory);
+      const text = "judging a single entry -> scout.reviewSubmission";
+      changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+        [field]: field === "purpose" ? text : [text]
+      };
+      expect(() => buildScout(changed)).toThrow(new RegExp(`x-routing\\.${field}`));
+    }
+  );
+
+  for (const field of ["purpose", "useWhen", "exampleQuestions", "keywords", "notFor"]) {
+    it.each([
+      "post-submission review", "review submission scoring", "quality report", "RWA assets", "api feedback loop"
+    ])(`accepts legitimate prose %s in x-routing.${field}`, (text) => {
+      const changed = structuredClone(inventory);
+      changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+        [field]: field === "purpose" ? text : [text]
+      };
+      const built = buildScout(changed);
+      const entry = built.entries.find((entry) => entry.id === "scout.getHackathons");
+      const source = built.routingPhraseExtras.get(entry.id);
+      expect(() => assertNoNonExposedRefs([{
+        ...entry,
+        routingKeywords: extractKeywords((built.routingExtras.get(entry.id) ?? []).join("\n")),
+        routingPhrases: extractRoutingPhrases(source),
+        routingExclusions: extractRoutingExclusions(source.notFor)
+      }])).not.toThrow();
+    });
+  }
 
   it("preserves a source with only clean notFor strings", () => {
     const changed = structuredClone(inventory);
@@ -283,5 +315,26 @@ describe("Scout raw routing sources follow ADR-0003 before extraction", () => {
     expect(buildScout(changed).routingPhraseExtras.get("scout.getHackathons")).toEqual({
       purpose: [], useWhen: [], exampleQuestions: [], keywords: [], notFor
     });
+  });
+});
+
+describe("Keyword raw sources follow ADR-0003 before extraction", () => {
+  it.each(["reviewSubmission", "getRwaAssets", "/api/hackathons/review"])(
+    "rejects real extracted tokens for %s in keywords at the raw source", (reference) => {
+      const text = `Use ${reference} here.`;
+      expect(extractKeywords(text).length).toBeGreaterThan(0);
+      expect(() => guardedExtractKeywords(text)).toThrow(/keyword source/);
+      expect(() => guardedExtractKeywords("clean section body", { exclude: [text] }))
+        .toThrow(/keyword exclusion source/);
+    }
+  );
+
+  it.each([
+    "post-submission review", "review submission scoring", "quality report", "RWA assets", "api feedback loop"
+  ])("accepts legitimate prose %s in keywords", (text) => {
+    const keywords = guardedExtractKeywords(text);
+    expect(keywords.length).toBeGreaterThan(0);
+    const entry = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
+    expect(() => assertNoNonExposedRefs([{ ...entry, keywords }])).not.toThrow();
   });
 });

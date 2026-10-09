@@ -19,8 +19,6 @@
  * (demo page copy, demo system/tool prompts): it only knows what must NOT
  * appear (the exclusion data), not the full set of what's currently exposed.
  */
-import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
-import { STOPWORDS } from "../src/catalog/scoring.ts";
 import {
   EXCLUDED_LUMENLOOP_OPS,
   EXCLUDED_SCOUT_OPS,
@@ -97,25 +95,5 @@ export function assertNoNonExposedRefsInText(text, label) {
         `(${bareMatch[0]}) — the exclusion in scripts/exposure.mjs ` +
         `must take its cross-references with it.`
     );
-  }
-}
-
-// Mirror the token filtering used by the routing phrase/exclusion extractors.
-// This is a backstop for emitted tokens; raw source checks remain authoritative
-// because keyword sorting, deduplication, and caps can destroy name sequences.
-const NON_EXPOSED_TOKEN_REFS = [
-  ...NON_EXPOSED_SCOUT_OP_NAMES, ...EXCLUDED_LUMENLOOP_OPS, ...RAW_SCOUT_PATHS
-].map((reference) => ({
-  reference,
-  tokens: [...new Set(tokenize(reference).filter((token) => token.length >= 2 && !STOPWORDS.has(token)))]
-}));
-
-/** Reject a contiguous non-exposed name/path sequence within one token field. */
-export function assertNoNonExposedRefsInTokens(tokens, label) {
-  for (const excluded of NON_EXPOSED_TOKEN_REFS) {
-    if (excluded.tokens.length === 0) continue;
-    if (tokens.some((_, start) => excluded.tokens.every((token, offset) => tokens[start + offset] === token))) {
-      throw new Error(`ADR-0003 leak: ${label} emits tokenized non-exposed reference "${excluded.reference}".`);
-    }
   }
 }
