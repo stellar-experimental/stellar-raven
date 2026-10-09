@@ -1,7 +1,7 @@
 # 2026-10-07 — tool-surface non-regression QA
 
 Status: collection, re-judges, row review, live verification, and the independent closeout review are
-complete (Conclusion at the end). Open closeout item: file the upstream candidates (`.agents/TODO.md`).
+complete (Conclusion at the end). The upstream candidates were filed on 2026-10-09 (follow-up pointer at the end).
 
 ## Question
 
@@ -480,3 +480,9 @@ owns them.
 
 The three flagged rows were re-collected with five fresh samples per arm, plus an annotation-only arm:
 [`2026-10-08-flagged-row-recollection.md`](2026-10-08-flagged-row-recollection.md). This pointer changes nothing above.
+
+## Follow-up pointer (2026-10-09)
+
+The upstream candidates and the own-repo candidates were resolved in
+[`2026-10-09-backlog.md`](2026-10-09-backlog.md): seven findings filed upstream, four recurrences recorded, and
+each own-repo candidate made an item, merged, or rejected. This pointer changes nothing above.

@@ -1,7 +1,9 @@
-> Archive note (orchestrator, 2026-10-09): `tmp/` paths below lived in the removed lane worktree. The full set,
-> including `tmp/routing2/` and `candidate1.patch`, is in the owner's local archive
-> `eval/results/2026-10-09-routing-design-evidence.tar.gz`. The acceptance helper wrote checks 1–9 and 11 only;
-> checks 10 and 12 were added by hand and verified against the routing JSON (see `independent-audit.md`, finding 1).
+> Archive note (orchestrator, 2026-10-09): the linked files sit beside this report.
+> `measurement-summary.json` is a compact copy of `tmp/routing2/summary.json`: lane totals, gate failures, and every
+> graded row for all eight runs. Per-row order and score detail, the six full candidate runs, and
+> `candidate1.patch` are in the owner's local archive `eval/results/2026-10-09-routing-design-evidence.tar.gz`.
+> Other `tmp/` paths below lived in the removed lane worktree. The acceptance helper wrote checks 1–9 and 11 only.
+> Checks 10 and 12 were added by hand and verified against the routing JSON (`independent-audit.md`, finding 1).
 
 # Routing design lane — 2026-10-09
 
@@ -73,12 +75,12 @@ Fresh-versus-main comparisons hold each candidate fixed.
 Candidate 1 changes four grade rows and 23 orders.
 Candidate 2 changes one grade row and 21 orders.
 Candidate 3 changes one grade row and 14 orders.
-[summary.json](routing2/summary.json) retains every comparison row and the lane totals.
+[summary.json](measurement-summary.json) retains every comparison row and the lane totals.
 
 ### All 12 checks for the retained candidate
 
 Both source snapshots produce the following verdicts.
-The evidence uses [selected-main-acceptance.json](routing2/selected-main-acceptance.json) and [selected-fresh-acceptance.json](routing2/selected-fresh-acceptance.json).
+The evidence uses [selected-main-acceptance.json](selected-main-acceptance.json) and [selected-fresh-acceptance.json](selected-fresh-acceptance.json).
 
 | Check | Result | Evidence and limit |
 | --- | --- | --- |
@@ -152,7 +154,7 @@ The query contains `also`, which matches the added sentence's complete `also` to
 Thus, the original short-token failures disappear, but the appended sentence still affects ranking.
 The candidate does not justify removing the override now.
 I restored `scripts/description-notes.mjs` byte-for-byte.
-The [main](routing2/dapp-main-diff.txt) and [fresh](routing2/dapp-fresh-diff.txt) differences retain the full evidence.
+The [main](dapp-main-diff.txt) and [fresh](dapp-fresh-diff.txt) differences retain the full evidence.
 
 ## Files changed
 
