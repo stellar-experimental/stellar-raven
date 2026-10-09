@@ -521,6 +521,7 @@ export function parseAgentResult(spawn, options = {}) {
         const rawInput = JSON.stringify(block.input ?? {});
         transcript.push({
           toolUseId: block.id,
+          assistantTurn: assistantOrdinal,
           tool: block.name,
           input: keepWholeInput(String(block.name)) ? rawInput : rawInput.slice(0, TOOL_INPUT_SLICE_CHARS)
         });
