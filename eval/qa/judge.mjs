@@ -1053,21 +1053,21 @@ export async function runPinnedJudgeSelfTestCandidate(
 }
 
 const PROMPT_SHA256_FIXTURES = new Map([
-  ["q-aas-burn-clawback-redemption-mechanics", "6f478c2d55d0e005bd8f0dd0a7921889225e950b20653feb70887db32ba80729"],
-  ["q-aas-list-token-on-exchanges-aggregators", "bc81cea735e230e55fedd4b3741a91746cf5dc170380ef8706347a30da2a1897"],
-  ["q-asset-rwa-tokenized-freshness", "23ac1ab3ce5dc5c26fb8579912e2f9614c3a84a76f5061b1c9e62a798ed30a03"], // gitleaks:allow — committed prompt SHA-256 fixture
-  ["q-comp-sep8-number-lookup-no-deepresearch", "675edf34d0561b9c28cfc72a020f71f4525623a833ad4537f357a4b8c55f0722"],
-  ["q-edge-1xlm-activation-fee", "67334911f145c3a3a445d7dda8df7d8240d5e64a0476298295ef734b051998b0"],
-  ["q-edge-ambig-best-wallet", "e2555b8b40a2c8dd845e777d8579fcec8a31e67a59aa808528dae5d4e8baf223"],
-  ["q-edge-factcheck-soroswap-first-amm", "9cbc76ff1bb5e6d46edc0df684a9cdd048d8d2469630fa94aceeeab9385a6254"],
-  ["q-edge-inject-ignore-instructions", "0ddec216ce2ecab76c04b6dd55d9dac10949f26ac33d81e2c05f1599fea972b2"],
-  ["q-edge-noinfo-sep-9999", "93bbb01a84eb4d9610d0e999d0978a84554aae6eb6fc44a03da0222e9abd2618"],
-  ["q-edge-oos-bitcoin-price-prediction", "aab4f5e2d0f270db047b4b4d27c4fc2be532404abfd9fdab34e276472722f779"],
-  ["q-edge-send-me-free-xlm", "751113a6173e62b002f6caf2eb34e61abfae5038f59f8cd3251fc05f83d90a95"],
-  ["q-edge-xlm-price-investment-advice", "1af1dd71913d2d9d6565baace3285b124c2467ec6c5b563583baf9dcdb783dcb"],
-  ["q-scf-total-distributed", "61f45a10aca58975e55c2487a01a9dbf9faa05b502792e395e98fffcc805c681"],
-  ["q-soroban-storage-types", "446dd6130765f418f11934078dd4347e395885d868af6bba0970169068eeb5d4"],
-  ["q-ti-bindings-to-nextjs-integration", "bf0acb99359607b113eb96cd7afddb71c624ed719f9fe1c46fc62193af1df597"]
+  ["q-aas-burn-clawback-redemption-mechanics", "d8cd7305a5312ce60606ac30c9cf0d9910cadc417b3d2ed67bcfd0e4e55d3beb"],
+  ["q-aas-list-token-on-exchanges-aggregators", "09b76f30cc05aeb3f395a13b51b346705f2019facb10f6b3dd36086874d71b9a"],
+  ["q-asset-rwa-tokenized-freshness", "23b4aa6ad0f7045360879ac8bb417945033df243a0febd2f7b1d324037264192"], // gitleaks:allow — committed prompt SHA-256 fixture
+  ["q-comp-sep8-number-lookup-no-deepresearch", "2272a2b0ba8b4a864ad3db214c03331d261833733598070ebccda59c26741bee"],
+  ["q-edge-1xlm-activation-fee", "d5b08b2703691cd0aed9814a65e82e327e6544b4c5f126ef013f7dec806b80c7"],
+  ["q-edge-ambig-best-wallet", "4484a1a563fef4127e4a69d3efd41829353933e6b64a894441f0cdb09dc45e8a"],
+  ["q-edge-factcheck-soroswap-first-amm", "6bbbc09ea3b253743b56eae47b8a25a19c629d9304dee00fdf27aaf1d7fcd475"],
+  ["q-edge-inject-ignore-instructions", "eb9c98b763c39eb99078eeea9d03dd1faa54c7163258d239e1cf95ade0c63031"],
+  ["q-edge-noinfo-sep-9999", "eca39ef27254cfed4a496f899c6ef14273b6ea49a6b715feea67670bd8ebf417"],
+  ["q-edge-oos-bitcoin-price-prediction", "f62133201dcc23860692cfd22c42790d983dcb32d8b1b07e09bcafc1d41aac0e"],
+  ["q-edge-send-me-free-xlm", "474637b74bf866068a473baa0e83e0c30d27469eed4511a517b1c89e688e0945"],
+  ["q-edge-xlm-price-investment-advice", "9f903bf48c19a598c8aad1a97791c31061ba5c2abc2d8168c637f64abcc30c4e"],
+  ["q-scf-total-distributed", "ddc4da3b12f9ec2a5e41c748560eb960fe8b4c9afeddbb9c7fb16a7280620b01"],
+  ["q-soroban-storage-types", "8c17e48660627e5565d8b1ded43854d4eb0097abc819f537db6f86501227b61f"],
+  ["q-ti-bindings-to-nextjs-integration", "82223b8fcd836c27ac075b4d3cfb828498200d0ca483e4aab30c99c1a9ee88f6"]
 ]);
 
 function loadPromptFixtureCases() {

@@ -3,7 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   P6_SELF_TEST_CALL_SCHEMA,
   P6_SELF_TEST_CALLS,
@@ -19,6 +19,7 @@ import {
 } from "../eval/qa/run-p6-judge-self-test.mjs";
 import {
   runJudgeSelfTestCandidate,
+  runJudgeSelfTestStatic,
   runPinnedJudgeSelfTestCandidate
 } from "../eval/qa/judge.mjs";
 
@@ -354,5 +355,22 @@ describe("reviewed p6 judge self-test wrapper", () => {
     const dirty = structuredClone(identity);
     dirty.runner.dirty = true;
     expect(() => assertStableP6SelfTestIdentity(identity, dirty)).toThrow(/runner worktree/);
+  });
+});
+
+describe("judge self-test static preflight", () => {
+  // The paid wrapper runs this preflight first. Run it here so a judge prompt change that
+  // leaves the pinned prompt SHA-256 fixtures stale fails CI, not the paid launch.
+  it("passes on the committed judge and battery", async () => {
+    const lines = [];
+    const spy = vi.spyOn(console, "log").mockImplementation((line) => lines.push(String(line)));
+    let result;
+    try {
+      result = await runJudgeSelfTestStatic({ log: (line) => lines.push(String(line)) });
+    } finally {
+      spy.mockRestore();
+    }
+    expect(result.ok, lines.join("\n")).toBe(true);
+    expect(result.failures).toBe(0);
   });
 });
