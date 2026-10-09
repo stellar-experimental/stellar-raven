@@ -243,54 +243,16 @@ export type ArtifactSandboxDeps = {
   onReadStats?: (stats: ArtifactReadStats) => void;
 };
 
-/**
- * Skill namespace + result-shape guard. `codemode.skill.read` returns skill
- * content at the TOP LEVEL ({ ok, id, content | sections, availableSections,
- * notice? }) — NOT under `.data` like the service-call envelope. Reading
- * `.data` on an ok read is the one observed failure mode (agents copy the
- * `r.data.X` service pattern and get a bare TypeError with no corrective
- * path), so we plant a non-enumerable `.data` trap inside the sandbox exactly
- * like envelopeGuardPrelude: GET throws the corrective pointer to
- * content/sections; SET self-replaces (write-through — decorating the result
- * stays legal). A FAILED read ({ ok:false, error }) routes through the shared
- * `__guardEnvelope` so `.data` there warns-once-and-undefined identically to
- * every other failed envelope — one consistent story for `.data` misuse.
- * (__guardEnvelope is declared by the service prelude and shared via the
- * concatenated sandbox scope; buildProviders only attaches that prelude when
- * at least one operation entry exists, so a skills-only/empty-operation
- * catalog would leave it undeclared — the typeof fallback keeps skill.read
- * self-contained there, degrading to the pre-guard behavior instead of a
- * ReferenceError. The inlined trap descriptor below must stay in lock-step
- * with __trap in envelopeGuardPrelude: same non-enumerable get-throws /
- * set-write-through contract, or skill results and service envelopes
- * decorate inconsistently.)
- *
- * `codemode.skill.run` (src/skills/README.md) is read's sibling over the flat
- * `skill_run` dispatch. NO .data-trap inversion for run: unlike skill.read,
- * run is a CALL and RETURNS the service-call envelope
- * ({ ok: true, data } | { ok: false, error }), so the shared __guardEnvelope
- * plants exactly the right traps — ok:true payload-key traps pointing at
- * r.data.<field>, ok:false warn-once `.data` — identical treatment to every
- * operation call. Same typeof fallback for operation-less test catalogs.
- */
+/** Nested skill helpers use the same envelope guard as service operations. */
 const SKILL_PRELUDE = [
   "    codemode.skill = {",
   "      read: async (name, opts) => {",
   "        const raw = await codemode.skill_read(name, opts);",
-  '        const r = typeof __guardEnvelope === "function" ? __guardEnvelope(raw, "codemode.skill.read") : raw;',
-  '        if (r && typeof r === "object" && r.ok === true) {',
-  "          const msg = 'codemode.skill.read result: \".data\" is the service-call envelope shape — skill content sits at the top level: use r.content (whole read) or r.sections (section read); other fields: id, availableSections, notice';",
-  '          try { Object.defineProperty(r, "data", {',
-  "            enumerable: false, configurable: true,",
-  "            get() { throw new Error(msg); },",
-  '            set(value) { Object.defineProperty(this, "data", { value, writable: true, enumerable: true, configurable: true }); }',
-  "          }); } catch {}",
-  "        }",
-  "        return r;",
+  '        return __guardEnvelope(raw, "codemode.skill.read");',
   "      },",
   "      run: async (name, input) => {",
   "        const raw = await codemode.skill_run(name, input);",
-  '        return typeof __guardEnvelope === "function" ? __guardEnvelope(raw, "codemode.skill.run") : raw;',
+  '        return __guardEnvelope(raw, "codemode.skill.run");',
   "      }",
   "    };"
 ].join("\n");
@@ -299,11 +261,11 @@ const ARTIFACT_PRELUDE = [
   "    codemode.artifact = {",
   "      info: async (id) => {",
   "        const raw = await codemode.artifact_info(id);",
-  '        return typeof __guardEnvelope === "function" ? __guardEnvelope(raw, "codemode.artifact.info") : raw;',
+  '        return __guardEnvelope(raw, "codemode.artifact.info");',
   "      },",
   "      read: async (id) => {",
   "        const raw = await codemode.artifact_read(id);",
-  '        return typeof __guardEnvelope === "function" ? __guardEnvelope(raw, "codemode.artifact.read") : raw;',
+  '        return __guardEnvelope(raw, "codemode.artifact.read");',
   "      }",
   "    };"
 ].join("\n");
@@ -340,8 +302,8 @@ const ARTIFACT_PRELUDE = [
  * Only direct wrong-level property access trips a trap.
  * The write-through SET is NOT try/caught: on a frozen envelope it must
  * throw loudly at the write, not silently no-op and then throw on read.
- * Applies to service namespaces only — codemode.* discovery fns return
- * their own shapes (hits/total at the top level) by design.
+ * Service operations, skill helpers, and artifact helpers use this guard.
+ * Discovery helpers retain their own shapes (hits/total at the top level).
  */
 function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   const wiring = [...opsByService.entries()].map(
@@ -1119,7 +1081,8 @@ export function buildCodemodeProvider(
 
   return {
     name: "codemode",
-    prelude: `${SKILL_PRELUDE}\n${ARTIFACT_PRELUDE}`,
+    // A local scope keeps helper guards available even without service providers.
+    prelude: `{\n${envelopeGuardPrelude(new Map())}\n${SKILL_PRELUDE}\n${ARTIFACT_PRELUDE}\n}`,
     fns
   };
 }

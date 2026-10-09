@@ -555,10 +555,7 @@ describe("docs page truthfulness", () => {
   it("scopes the .data envelope rule to service calls", () => {
     const page = docsPage();
 
-    // `codemode.search`, `codemode.describe`, and `codemode.skill.read` resolve
-    // at the TOP level, not under `.data` (src/executor/providers.ts even plants
-    // a throwing `.data` trap on a successful skill.read). An unscoped "every
-    // call" claim sends readers to a field those results do not have.
+    // Discovery helpers retain top-level fields; skill reads use data.
     expect(page).not.toMatch(/Every call resolves to/);
     expect(page.match(/Every service call resolves to/g)?.length).toBe(2);
 
@@ -575,15 +572,15 @@ describe("docs page truthfulness", () => {
         "codemode.describe → r.signature + r.inputSchema",
         /<code>codemode\.describe<\/code>\s+gives\s+entry\s+fields\s+such\s+as\s+<code>r\.signature<\/code>\s+and\s+<code>r\.inputSchema<\/code>/
       ],
-      // skills/store.ts whole read: top-level content
+      // skills/store.ts whole read: data.content
       [
-        "whole codemode.skill.read → r.content",
-        /<code>codemode\.skill\.read\(id\)<\/code>\s+gives\s+<code>r\.content<\/code>/
+        "whole codemode.skill.read → r.data.content",
+        /<code>codemode\.skill\.read\(id\)<\/code>\s+gives\s+<code>r\.data\.content<\/code>/
       ],
-      // skills/store.ts sectional read: top-level sections
+      // skills/store.ts sectional read: data.sections
       [
-        "sectional codemode.skill.read → r.sections",
-        /<code>codemode\.skill\.read\(id, \{ sections \}\)<\/code>\s+gives\s+<code>r\.sections<\/code>/
+        "sectional codemode.skill.read → r.data.sections",
+        /<code>codemode\.skill\.read\(id, \{ sections \}\)<\/code>\s+gives\s+<code>r\.data\.sections<\/code>/
       ],
       // skill.run and both artifact reads keep the service-call envelope
       [

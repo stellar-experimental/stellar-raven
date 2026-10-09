@@ -79,7 +79,7 @@ function footer(
 ): string {
   const approxTokens = Math.round(originalChars / CHARS_PER_TOKEN);
   const skillHint = advice?.skillSectionAdvice
-    ? " This run read skill content: request specific sections via codemode.skill.read(id, { sections: [...] }) (keys in availableSections) instead of whole skills."
+    ? " This run read skill content: request specific sections via codemode.skill.read(id, { sections: [...] }) (keys in data.availableSections) instead of whole skills."
     : "";
   const detailPart = detail ? ` ${detail}` : "";
   return `\n--- TRUNCATED --- Result was ~${approxTokens} tokens (limit: ${maxTokens}).${detailPart} Re-run returning a smaller value: select only the fields you need, slice arrays, or project fewer columns / aggregate inside the sandbox before returning.${skillHint}`;

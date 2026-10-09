@@ -31,7 +31,7 @@ export const CASES = [
         lumenloopTop: dir.ok && dir.data.projects[0] ? dir.data.projects[0].slug : null,
         docsNbHits: docs.ok ? docs.data.nbHits : docs.error,
         docsTopUrl: docs.ok ? docs.data.hits[0].url : null,
-        skillChars: skill.ok ? skill.content.length : skill.error
+        skillChars: skill.ok ? skill.data.content.length : skill.error
       };
     }`
   },
@@ -145,10 +145,10 @@ export const CASES = [
     code: `async () => {
       const r = await codemode.skill.read("skills.stellar-dev.standards");
       return {
-        pass: r.ok && typeof r.content === "string" && r.content.length > 24000 && typeof r.notice === "string" && r.availableSections.length > 10,
-        notice: r.ok ? r.notice.slice(0, 140) : r.error,
-        chars: r.ok ? r.content.length : 0,
-        sectionCount: r.ok ? r.availableSections.length : 0
+        pass: r.ok && typeof r.data.content === "string" && r.data.content.length > 24000 && typeof r.data.notice === "string" && r.data.availableSections.length > 10,
+        notice: r.ok ? r.data.notice.slice(0, 140) : r.error,
+        chars: r.ok ? r.data.content.length : 0,
+        sectionCount: r.ok ? r.data.availableSections.length : 0
       };
     }`,
     expect: '"pass":true'
@@ -158,12 +158,12 @@ export const CASES = [
     code: `async () => {
       const index = await codemode.skill.read("skills.stellar-dev.standards");
       if (!index.ok) return { pass: false, error: index.error };
-      const slug = index.availableSections.find((s) => !s.startsWith("file:"));
+      const slug = index.data.availableSections.find((s) => !s.startsWith("file:"));
       const r = await codemode.skill.read("skills.stellar-dev.standards", { sections: [slug] });
       return {
-        pass: r.ok && r.sections.length === 1 && r.sections[0].content.length > 50 && r.notice === undefined,
+        pass: r.ok && r.data.sections.length === 1 && r.data.sections[0].content.length > 50 && r.data.notice === undefined,
         slug,
-        chars: r.ok ? r.sections[0].content.length : 0
+        chars: r.ok ? r.data.sections[0].content.length : 0
       };
     }`,
     expect: '"pass":true'

@@ -24,8 +24,7 @@ export type SkillSection = {
   url: string;
 };
 
-type SkillReadSuccess = {
-  ok: true;
+type SkillReadData = {
   id: string;
   /** Pinned upstream URL for the skill's main SKILL.md file. Section reads
    *  also report exact per-section provenance in each SkillSection.url. */
@@ -47,15 +46,17 @@ type SkillReadSuccess = {
 };
 
 export type SkillReadResult =
-  | (SkillReadSuccess & {
-      /** Full SKILL.md body, as fetched, including upstream frontmatter. */
-      content: string;
-      sections?: never;
-    })
-  | (SkillReadSuccess & {
-      sections: SkillSection[];
-      content?: never;
-    })
+  | {
+      ok: true;
+      data: SkillReadData & (
+        | {
+            /** Full SKILL.md body, as fetched, including upstream frontmatter. */
+            content: string;
+            sections?: never;
+          }
+        | { sections: SkillSection[]; content?: never }
+      );
+    }
   | { ok: false; error: { service: "skills"; kind: "error"; message: string } };
 
 /**
@@ -72,7 +73,7 @@ const NOTICE_THRESHOLD_TOKENS = 5000;
 function sizeNotice(id: string, chars: number): string | undefined {
   const estTokens = Math.ceil(chars / CHARS_PER_TOKEN);
   if (estTokens <= NOTICE_THRESHOLD_TOKENS) return undefined;
-  return `this read of ${id} is ~${estTokens} tokens. The content is included in full for in-sandbox use (grep, slice, aggregate freely), but RETURNING it whole from your script will be truncated at the ~${DEFAULT_MAX_TOKENS}-token model boundary. To return skill material, request specific sections (keys in availableSections) or return in-script aggregates instead.`;
+  return `this read of ${id} is ~${estTokens} tokens. The content is included in full for in-sandbox use (grep, slice, aggregate freely), but RETURNING it whole from your script will be truncated at the ~${DEFAULT_MAX_TOKENS}-token model boundary. To return skill material, request specific sections (keys in data.availableSections) or return in-script aggregates instead.`;
 }
 
 /** Same slugify as scripts/build-catalog.mjs — section ids must line up. */
@@ -351,8 +352,8 @@ export async function readSkill(
     const content = body.trim();
     const notice = sizeNotice(entry.id, content.length);
     return notice
-      ? { ok: true, id: entry.id, url: ref.url, content, notice, availableSections }
-      : { ok: true, id: entry.id, url: ref.url, content, availableSections };
+      ? { ok: true, data: { id: entry.id, url: ref.url, content, notice, availableSections } }
+      : { ok: true, data: { id: entry.id, url: ref.url, content, availableSections } };
   }
 
   // Resolve requested companion pins before starting their concurrent loads.
@@ -422,6 +423,6 @@ export async function readSkill(
     found.reduce((n, s) => n + s.content.length, 0)
   );
   return notice
-    ? { ok: true, id: entry.id, url: ref.url, sections: found, notice, availableSections }
-    : { ok: true, id: entry.id, url: ref.url, sections: found, availableSections };
+    ? { ok: true, data: { id: entry.id, url: ref.url, sections: found, notice, availableSections } }
+    : { ok: true, data: { id: entry.id, url: ref.url, sections: found, availableSections } };
 }

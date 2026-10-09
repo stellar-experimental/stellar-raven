@@ -944,7 +944,7 @@ const SAMPLE_CODE = `async () => {
     stellarDocs.search_soroban_contract_docs({ query: "deploy to testnet", hitsPerPage: 3 })
   ]);
   return {
-    sections: skill.ok ? skill.sections : skill.error,
+    sections: skill.ok ? skill.data.sections : skill.error,
     docs: docs.ok ? docs.data.hits.map(h => ({ url: h.url, breadcrumb: h.breadcrumb })) : docs.error
   };
 }`;
