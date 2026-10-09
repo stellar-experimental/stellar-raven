@@ -29,6 +29,11 @@ The [tool-surface QA round](rounds/2026-10-07-tool-surface-qa.md) row review lis
 none: recurrence evidence for `ll-012`, `ll-030`, `ll-025`, and `sk-022`; Stellar Docs
 `assembleTransaction` example signing an unbuilt builder; the ledger-header page (`feePool` units,
 missing `ext`); Scout exact advisory-ID and release-tag retrieval; Scout Zenex Live versus Testnet.
+The 2026-10-09 own-repo triage added two more. Lumenloop listing rows carry string ids (`"10190"`),
+while `get_document.id` and `get_related_projects.content_id` require numbers (2 T rows; one lost its
+document reads). If the upstream accepts numeric strings, the fix is an own-repo argument alias
+instead. The Stellar Docs Anchor Platform admin guide calls `stellar:USDC:GBBD47…LFLA5` (Circle's
+Testnet issuer) "Circle USD" with no network label; one B3 Mainnet bridge answer copied it.
 The round's live-probe evidence sat in temporary storage, so each filing re-gathers its own evidence.
 
 Done when: each candidate is filed or rejected through `improvements-pipeline`, with the round ledger
@@ -37,9 +42,9 @@ linked.
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
 
 The maintainer named https://github.com/stellar/stellar-docs/pull/2837 as the replacement for the
-closed PR #2367. The reviewed repair is at head `108ba24e0884f46e0c543996e4e94be754709840`. On
-2026-09-29, all nine checks passed and the review decision was `REVIEW_REQUIRED`. Required
-maintainer approval and the author's explicit merge hold remain.
+closed PR #2367. On 2026-10-09 the head was `0c20e720138eb126c37dab3336501b16751d1d2f`. Its last
+commit (2026-10-06) describes passkey-kit as a sibling of smart-account-kit. The review decision is
+`APPROVED` (second approval 2026-10-07), and the merge state is `CLEAN`. The PR is not merged.
 
 Re-check the PR at the next improvements round, or earlier if its head changes or it closes. If it
 merges and deploys, run both original live page checks before changing either finding. Do not post a
@@ -180,6 +185,21 @@ snapshot is also held by this item now. Exposure recommendation for the later ab
 keep `reviewSubmission` excluded. Ledger: `rounds/2026-10-08-maintenance.md`; evidence:
 `rounds/2026-10-08-routing-repair/`.
 
+2026-10-09 design pass (Codex frontier xhigh; Claude Fable audit agrees): three general candidates
+(whole-content anchors, field provenance, per-phrase alternatives, complete candidate competition)
+on all 544 rows and both sources. None passes. The best fails checks 7, 8, 10, and 12 and changes 220
+graded rows: strict whole-word coverage starves the gated tier (legacy top-five gated hits 1192 to
+308), so Scout and Lumenloop lose service selection and card precision falls. It eliminates the
+short-token triggers and passes checks 1 to 6, 9, and 11. Check 8 detail: the five named negatives
+pass; the three `it.fails` controls and the passing "Walk me through issuing a new custom token"
+assertion fail. Check 7 means the baseline corpus grades of the eight IDs plus fixture presence; the
+two disagree for `q-soroban-reentrancy` and `q-protocol-parallel-execution`. On the fresh source,
+`analyzeHackathonSubmissions` reaches rank 4 on `q-pc-sequence-numbers-ordering-replace`. Next
+attempt: change one mechanism at a time from the accepted baseline, measuring all 544 rows after each
+step: (1) whole-content anchors in the ungated replica only; (2) schema `keywords` as rank-only
+evidence; (3) then per-phrase alternatives with the corroborated-partial coverage rule. Use one
+acceptance helper that computes all twelve checks. Evidence: `rounds/2026-10-09-backlog/routing-design/`.
+
 Acceptance checks:
 
 1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
@@ -215,6 +235,50 @@ inconclusive flag or as-of field on ok results.
 Done when: ok results carry measured inconclusive and as-of signals, the instructions drop the
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
+
+## Executor and policy
+
+### Return `codemode.skill.read` results in the service-call envelope
+
+`codemode.skill.read` keeps content at the top level. Service calls, `codemode.skill.run`, and
+`codemode.artifact.read` resolve to `{ ok, data }`. In the
+[tool-surface round](rounds/2026-10-07-tool-surface-qa.md), scripts read `.data` on a skill read in 5 B3 and 4 T rows (9 of the 13 tool-level errors). The
+guard in `src/executor/providers.ts` (`SKILL_PRELUDE`) threw its corrective message, and every row
+recovered one `execute` later. The `execute` description and `ARCHITECTURE.md` state the exception
+next to the `.data` rule.
+
+Done when: a successful `skill.read` resolves to
+`{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`, and each section
+keeps its exact URL; the skill `.data` trap and the top-level exception text are gone; the shared
+envelope guard covers skill reads; owned examples, documentation, and the spec builder
+(`scripts/build-super-spec.mjs`) describe the new shape, and the spec is regenerated by its script;
+unit tests and `npm run test:smoke` pass; and the next authorized QA round reports skill-read shape
+errors from its stored transcripts.
+
+### Accept the documented comma-joined `sources` on `scout.searchResearch`
+
+The Scout `sources` description says "comma-separated (e.g. cap,sep,dev-docs)", but the manifest
+types `sources` as an array. In the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md), scripts passed a comma-joined string in 12 call sites (B3 7,
+T 5; 9 cases), and the guard rejected each one with no call made. Truncation hid 3 of those
+rejections. `src/policy/argument-aliases.ts` already maps a comma in `source` to `sources`, but it
+skips a string in `sources` itself.
+
+Done when: `applyArgumentAliases` splits a string `sources` into the documented array, tests cover
+one value, several values, and an unknown source (still rejected), and `npm test` passes.
+
+### Name failed-call reasons in the source-basis block
+
+The source-basis `calls:` line shows a failed call only as `op=error/0ms`. The call record keeps the
+outcome but not the reason. In the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md), four executes held a guard-rejected call whose reason the
+script never saw: three through truncation (B3 `q-scf-audit-bank`; T `q-agent-identity-erc8004-stellar`,
+`q-scf-audit-bank`) and one through script filtering (T `q-scf-verified-members`, where
+`if (d.ok) docs.push(d.data)` dropped every failed `lumenloop.get_document` read and returned
+`"docs":[]`). Final truncation alone showed no grade harm (B3 26 rows: 10 correct, 0 wrong; T 22
+rows: 9 correct, 4 wrong).
+
+Done when: refused and failed calls carry a short bounded reason (for example
+`invalid-args: sources`), the `calls:` line shows it within the existing caps, and tests cover a
+rejection inside a dropped branch and a script that filters out failed envelopes.
 
 ## Dependencies
 
@@ -319,20 +383,33 @@ Calls with one message ID share an ordinal across assistant events. Entries with
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
 
-### Triage the 2026-10-07 row-review own-repo candidates
+### Keep freeze-type must-avoid items off dated, source-scoped lists
 
-The [tool-surface round](rounds/2026-10-07-tool-surface-qa.md) row review found, in both arms:
-`.data` misuse on `codemode.skill.read` and artifact reads; truncated execute results with no
-follow-up (26 B3 rows, 22 T rows); string `sources` and other invalid input types or enums; an
-invented `codemode.scout.*` namespace; an account-support capability overclaim in both arms
-(`q-n3-missing-funds-account-support`, same case as the "Monitor Raven capability-boundary offers"
-item, so no new trigger); judge scope removal and inconsistent trap grading
-(`q-raph-claimable-balance-safety`); and a Testnet USDC issuer accepted in a Mainnet answer. Evidence-
-pack omissions recur under the existing p6 judge-pack item below.
+Three of the five judge errors in the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md) row review share one pattern. A must-avoid item about a
+frozen, permanent, or network-wide list fired on an answer that dated its list and named its source:
+B3 `q-jutsu-cash-crypto-ramps`, T `q-soroban-sdk-cve`, and T `q-tool-sdk-repos-discovery`. A fired
+avoid forces `wrong`, and the directed re-judge repeated two of the three. The rubric limits avoid
+items to answer-visible content, but it does not say that a dated, source-scoped, or non-exhaustive
+list is not a frozen list. Control: B3 `q-eco-defi-market-map`, where the avoid fires correctly.
 
-Done when: each candidate becomes its own item with evidence, merges into an existing item, or is
-rejected with a reason.
+Done when: the rubric states that rule and that a missing list item is a missing fact,
+`JUDGE_RUBRIC` moves past `v2.10`, a free test pins the prompt text, and a separately authorized
+re-judge of the three rows and the control shows the intended grades. Land this change before the
+first paired arm or after the second. A change to judge.mjs changes the implementation hash.
 
+### Make the claimable-balance safety warning a key fact
+
+`q-raph-claimable-balance-safety` is a `scam-check` trap. Its golden answer and grader note require
+the scam warning, but its two key facts cover only protocol mechanics. In the [tool-surface round](rounds/2026-10-07-tool-surface-qa.md), four judge calls
+on two answers that both omit the warning split two to two. The B3 judge said the warning "is not
+listed as a separate required-behavior item". Both original votes had stability score 1, so stable
+history kept them at the `single` tier and the false pass stood.
+
+Done when: through `golden-truth`, the case gets a key fact for the warning; a sibling sweep of the
+`scam-check` goldens confirms each required safety behavior is a key fact (check
+`q-raph-scam-spam-tokens` first); and `npm run eval:qa:lint -- --stale --enforce-floors` and
+`npm run eval:qa:register -- --check` pass. Change trap tiering only if a fixed golden still splits
+in a later authorized run. Land this change before the first paired arm or after the second.
 ### Investigate missing source evidence in the p6 judge pack
 
 The 2026-10-01 adapter comparison found a disputed Beans Wrong grade in
@@ -355,6 +432,10 @@ source record is `improvements/canonical-source/cs-001-codemode-search-short-tok
 Raven also has an ungated copy of the same prefix rule. Reverse-prefix deletion and standard
 Porter stemming both failed routing coverage and do not ship. Do not replace them with query
 exceptions or a tuned token-length threshold.
+
+The 2026-10-09 design pass's anchored matcher returns no match for all four weather and billing
+triggers, but its complete Raven candidate fails the routing gates
+(`rounds/2026-10-09-backlog/routing-design/`).
 
 Done when: an upstream or general local repair passes the original triggers, positive controls, and
 Raven routing gates. Keep the RWA exclusion until its three technical controls also pass.
@@ -452,6 +533,8 @@ valid mechanism must not suppress it.
 Current state: monitor-only by owner decision on 2026-09-03 (rounds/2026-09-03-owner-decisions.md).
 The delegated October 1 adjudication confirmed `q-n3-wallet-hacked-support-redirect` as the third
 distinct case. The free cause audit found seven unsupported offers among 44 stored no-tool answers.
+The 2026-10-07 tool-surface round repeated the same case in both arms with no tool call. No other
+answer in either arm offered a lookup, so no trigger fired.
 It also confirmed the September 4 recurrence from the retained shard report. The current source
 inventory identifies no causal shipped instruction or exposed account lookup. Keep the monitor; the
 audit grants no prompt change, product change, or further spend.
