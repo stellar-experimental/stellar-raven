@@ -257,6 +257,7 @@ export function createRemoteIdentityGuard({
     failure ??= {
       reason,
       phase,
+      failedAt: new Date().toISOString(),
       id: context.id,
       attempt: context.attempt,
       changedServices,
@@ -295,6 +296,7 @@ export function createRemoteIdentityGuard({
     }
     captures.push({
       sequence: captures.length + 1,
+      capturedAt: new Date().toISOString(),
       phase,
       id: context.id,
       attempt: context.attempt,

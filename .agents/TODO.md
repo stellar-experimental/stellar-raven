@@ -316,15 +316,6 @@ Do not remove the guard and dispatch without a captured log identifier.
 Add real-handler regressions for both named models and a fallback into a native model.
 Require an answer, captured log reads, and a complete numeric receipt in each regression.
 
-### Keep the original judge failure class on budget-stopped rows
-
-When a budgeted judge call reports no cost, the row grade's `failureClass` becomes `budget-cost`. The
-original class (for example `timeout`) survives only in the per-call record
-([tool-surface round](rounds/2026-10-07-tool-surface-qa.md), arms B1 and B2). Diagnosis then needs the
-call records.
-
-Done when: the stored row keeps both the budget stop and the original judge failure class, with a test.
-
 ### Measure the execute annotation change in isolation
 
 PR #225 and #234 set `execute` `readOnlyHint: true` and `openWorldHint: false`. Claude Code `2.1.292`
@@ -342,8 +333,10 @@ have no assistant-turn boundaries.
 
 Done when: a reviewed, separately authorized annotation-only comparison over more rows, or a free
 transcript audit over more stored runs, decides whether the annotations change artifact-read
-behavior. Record assistant-turn boundaries in QA transcripts first, so parallel `execute` calls
-become observable.
+behavior. QA transcript entries now record `assistantTurn` and `assistantTurnBasis` (2026-10-09).
+Calls with one message ID share an ordinal across assistant events. Entries without a message ID use
+event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
+host execution.
 
 ### Triage the 2026-10-07 row-review own-repo candidates
 
@@ -506,19 +499,6 @@ The plan includes the trap, the control, the environment pin, and a pre-register
 Do not add another QA-prompt wording layer or copy case facts into a prompt.
 
 Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
-
-### Record QA attempt timestamps beside existing identity captures
-
-The September 4 candidate audit reconstructed intervals from durations because rows lack absolute
-start and end timestamps. The current runner records attempt durations and identity captures with
-case IDs, attempt numbers, and vector hashes. The delegated resolution of owner decision H
-(2026-10-01, owner veto open) schedules this remaining metadata work
-([evidence](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)).
-
-Done when: saved attempts have start and end timestamps linked to the existing identity captures.
-Tests cover success, retry, guard failure, and partial collection without changing order, spending,
-grades, or comparability rules. Land this change before the first paired arm or after the second. A
-change to run-qa.mjs or judge.mjs changes the implementation hash.
 
 ### Diagnose stable-row evidence omissions without changing judge inputs
 

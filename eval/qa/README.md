@@ -177,6 +177,23 @@ Stored judging records each completed attempt before an eligible retry.
 The first answer, agent outcome, and verdict remain the top-level values.
 Retries stay in `attempts.agent[]` and `attempts.judge[]`; they do not replace first-attempt evidence.
 
+New attempts record `startedAt` and `endedAt` as UTC ISO timestamps.
+Answering timestamps start before spend authorization and the before-call identity capture.
+They end at the completed CLI result and preserve the existing duration interval.
+The interval excludes the after-call identity capture.
+Judge attempts span the method, including panel calls; each `attempts.judge[].calls[]` entry also records its CLI interval.
+Identity captures record `meta.remoteIdentityGuard.captures[].capturedAt`; guard failures record `meta.remoteIdentityGuard.failure.failedAt`.
+Join answering attempts to identity captures with the row `id` and the attempt `number` matching capture `attempt`.
+A failed after-call guard retains the completed attempt and its timestamps.
+A failed before-call guard creates no answering attempt; its failure context identifies the unattempted call.
+Partial artifacts retain timestamps for saved attempts without creating attempts for unattempted IDs.
+Older artifacts can omit all timestamp fields; readers do not infer absolute times from durations.
+
+Budget-stopped judge verdicts keep the budget class in `failureClass`.
+They also record `originalFailureClass` from the judge call that caused the budget stop, such as `timeout`.
+`originalFailureClass` is `null` when no such call exists or the call has no failure class.
+Older verdicts can omit `originalFailureClass`; their per-call records remain the original failure evidence.
+
 Answering agents run outside the repository with empty setting sources, disabled slash commands, and strict MCP configuration.
 Each row must confirm the explicit `raven` MCP server as connected.
 A failed connection stops the batch and makes the artifact non-comparable.
@@ -184,7 +201,21 @@ Other agent failures remain visible as error rows in a complete QA artifact.
 
 Search calls retain full inputs and bounded ranking evidence in `resultProjection`.
 Execute calls retain bounded result text. Compare usage tokens, not captured character counts, across surfaces.
+New transcript entries record `assistantTurn`, a one-based ordinal within that answering attempt.
+The parser groups consecutive assistant events that share `message.id`, including events without usage counters.
+These entries record `assistantTurnBasis: "message-id"`.
+Tool calls with the same message ordinal belong to one assistant message, even across separate events.
+An assistant event without a message ID consumes its own ordinal and records `assistantTurnBasis: "event"`.
+An event without a message ID also ends the previous message group.
+Readers must treat message boundaries for these event-based entries as unknown.
+Text-only assistant messages consume an ordinal, so transcript ordinals can have gaps.
+The ordinal resets for each answering retry.
+Shared message ordinals show calls requested together; they do not prove that host execution overlapped.
+Older transcripts can omit `assistantTurn` and `assistantTurnBasis`; readers must treat their message boundaries as unknown.
 `agent.usage.final` preserves provider usage; `agent.usage.perTurn` contains normalized numeric counters.
+`agent.usage.perTurn[].turn` keeps the existing assistant-event ordinal, including events without usage counters.
+It can differ from `assistantTurn` when several events share a message ID.
+The usage records, provider totals, and reported costs retain their existing values.
 Missing counters remain `null`. [evidence-sanitizer.mjs](evidence-sanitizer.mjs) bounds and redacts CLI evidence before storage.
 
 ## Five-track result contract

@@ -882,9 +882,11 @@ export function runAgent(question, {
   };
 }
 
-function agentAttemptRecord(run, number, durationMs) {
+export function agentAttemptRecord(run, number, startedAtMs, endedAtMs) {
   return {
     number,
+    startedAt: new Date(startedAtMs).toISOString(),
+    endedAt: new Date(endedAtMs).toISOString(),
     inputSha256: run.inputSha256,
     answerSha256: run.answerSha256,
     failureClass: run.failure?.class ?? null,
@@ -901,8 +903,13 @@ function agentAttemptRecord(run, number, durationMs) {
       failure: run.failure
     },
     artifacts: run.artifacts,
-    durationMs
+    durationMs: endedAtMs - startedAtMs
   };
+}
+
+function judgeAttemptFailureClass(error) {
+  return error instanceof BudgetExhaustedError ? "budget-exhausted" :
+    error instanceof MissingReportedCostError || error.code === "budget-cost" ? "budget-cost" : "harness";
 }
 
 function budgetFailureVerdict(error, calls) {
@@ -914,7 +921,8 @@ function budgetFailureVerdict(error, calls) {
     avoidMatches: [],
     consistencyViolations: [],
     rationale: error.message,
-    failureClass: error instanceof BudgetExhaustedError ? "budget-exhausted" : "budget-cost",
+    failureClass: judgeAttemptFailureClass(error),
+    originalFailureClass: error.judgeCall?.failureClass ?? null,
     rubric: JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
     promptSha256: calls[0]?.inputSha256 ?? null
@@ -935,6 +943,7 @@ export async function runJudgeAttempt(
     spendLedger
   }
 ) {
+  const startedAt = new Date().toISOString();
   const calls = [];
   const inputSha256 = judgeInputSha256(input);
   const budgetedJudge = async (judgeInput, judgeOptions) => {
@@ -944,12 +953,15 @@ export async function runJudgeAttempt(
       id: input.id,
       attempt: `${number}.${callNumber}`
     });
+    const callStartedAt = new Date().toISOString();
     const verdict = await judge(judgeInput, {
       ...judgeOptions,
       maxBudgetUsd: authorization.maxBudgetUsd
     });
     const call = {
       number: callNumber,
+      startedAt: callStartedAt,
+      endedAt: new Date().toISOString(),
       inputSha256: verdict?.promptSha256 ?? inputSha256,
       answerSha256: sha256Text(input.candidateAnswer),
       failureClass: verdict?.failureClass ?? null,
@@ -979,11 +991,11 @@ export async function runJudgeAttempt(
     const attempt = {
       number,
       kind,
+      startedAt,
+      endedAt: new Date().toISOString(),
       inputSha256,
       answerSha256: sha256Text(input.candidateAnswer),
-      failureClass:
-        error instanceof BudgetExhaustedError ? "budget-exhausted" :
-          error instanceof MissingReportedCostError || error.code === "budget-cost" ? "budget-cost" : "harness",
+      failureClass: judgeAttemptFailureClass(error),
       costUsd: calls.some((call) => Number.isFinite(call.costUsd))
         ? sumReported(calls.filter((call) => Number.isFinite(call.costUsd)).map((call) => call.costUsd))
         : null,
@@ -996,6 +1008,8 @@ export async function runJudgeAttempt(
   return {
     number,
     kind,
+    startedAt,
+    endedAt: new Date().toISOString(),
     inputSha256: verdict.promptSha256 ?? inputSha256,
     answerSha256: sha256Text(input.candidateAnswer),
     failureClass: verdict.failureClass ?? null,
@@ -1866,7 +1880,8 @@ async function main() {
               const attempt = agentAttemptRecord(
                 completedRun,
                 attemptNumber,
-                Date.now() - attemptStartedAt
+                attemptStartedAt,
+                Date.now()
               );
               answerAttempts.push(attempt);
             },
