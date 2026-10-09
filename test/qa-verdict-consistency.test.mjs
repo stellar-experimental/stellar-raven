@@ -121,20 +121,27 @@ describe("QA verdict consistency", () => {
     };
     const exemptCandidate = "As of 2026-10-07, per the Scout directory, the roster is A and B. This is not a complete list; check the directory directly.";
     const permanenceCandidate = "As of 2026-10-07, per Scout, the roster is A and B. Keep this roster permanently. Never query it again.";
+    // A complete query result within its stated source and date is a scoped claim: the override must not cover it.
+    const queryCompleteCandidate = "As of 2026-10-09, this is the complete list returned by Scout for this query: A and B. It may omit other ecosystem entries. Re-query before use.";
+    const queryCompleteEvidence = JSON.stringify({ source: "Scout", generatedAt: "2026-10-09", query: "example", counts: { returned: 2, total: 2 }, entries: ["A", "B"] });
     const exemption = "That freeze clause does NOT fire on a candidate that presents its list as dated, source-scoped, or non-exhaustive (an as-of date, a named source or query, or an explicit statement that the list may be incomplete): a dated, source-scoped, or non-exhaustive list is not a frozen list, and a sourced count or ordering inside it is not a frozen count or ordering.";
     const missingFactRule = "When such a candidate omits an item the golden lists, record the omitted item in missingFacts as a missing key fact; do not record a fired avoid.";
-    const permanenceLimit = "(a) An explicit permanence or completeness claim overrides it: a candidate that calls its list permanent, final, complete, exhaustive, or the only entries, or tells the reader not to re-check it, fires the freeze clause even when the same answer carries a date or a source.";
+    const permanenceLimit = "(a) An explicit permanence claim, or an instruction not to re-check (for example \"keep this roster permanently\" or \"never query it again\"), overrides it and fires the freeze clause even when the same answer carries a date or a source. A completeness claim overrides it only when the claim exceeds the stated source or date bounds, or lacks support: \"the complete list returned by this query as of this date\" is a scoped claim and stays exempt; \"these are the only entries in the ecosystem\" is not.";
     const clauseLimit = "(b) The exemption covers only the freeze clause. Every other condition in the same must-avoid item — for example inferring maturity from tags, or calling a category empty without the operator verification the item demands — binds on its own terms whether or not the list is dated.";
     const contentLimit = "(c) The exemption never excuses CONCRETE WRONG CONTENT inside the list: a specific false statement, such as calling a category empty or single-provider when the golden names live members, still binds under the rule above.";
 
-    for (const candidateAnswer of [exemptCandidate, permanenceCandidate]) {
+    for (const [candidateAnswer, transcriptEvidence] of [
+      [exemptCandidate, ""],
+      [permanenceCandidate, ""],
+      [queryCompleteCandidate, queryCompleteEvidence]
+    ]) {
       for (const tags of [{ freshness: "stable" }, { freshness: "stable", trap: "fabrication-bait" }]) {
         const prompt = buildJudgePrompt({
           question: "Where is the ecosystem crowded versus whitespace?",
           golden,
           tags,
           candidateAnswer,
-          transcriptEvidence: ""
+          transcriptEvidence
         });
         expect(prompt).toContain(candidateAnswer);
         expect(prompt).toContain("- FREEZE CLAUSES. Some must-avoid items forbid freezing, pinning, or hard-coding a list, count, roster, ordering, or map as permanent, complete, exhaustive, timeless, or network-wide.");
@@ -150,6 +157,10 @@ describe("QA verdict consistency", () => {
         expect(freezeRuleIndex).toBeGreaterThan(bindingRuleIndex);
         expect(prompt.indexOf(permanenceLimit)).toBeGreaterThan(prompt.indexOf(exemption));
         expect(prompt).not.toContain("asserts completeness or permanence without that framing");
+        // The permanence counterexample is covered by the override; the scoped query-completeness claim is not.
+        expect(prompt).not.toContain("calls its list permanent, final, complete, exhaustive, or the only entries");
+        expect(prompt).toContain("\"the complete list returned by this query as of this date\" is a scoped claim and stays exempt");
+        expect(prompt).toContain("\"keep this roster permanently\" or \"never query it again\"");
         expect(prompt).toContain("Non-empty avoidMatches ALWAYS means \"wrong\"; a fired avoid is never a minor slip.");
       }
     }
