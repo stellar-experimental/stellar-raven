@@ -1062,6 +1062,33 @@ describe("re-judge saved-answer selection", () => {
     expect(JSON.parse(result.stdout).selectedIds).toEqual(ids);
   });
 
+  it.each(["source", "flipsVs", "both", "absent", "panel", "tier-panel", "size-only"])(
+    "annotates %s panel metadata without changing flip selection",
+    async (kind) => {
+      const { resultsPath, baselinePath, ids } = writeFlipsPair(await loadJudgeTuple());
+      for (const [role, file] of [["source", resultsPath], ["flipsVs", baselinePath]]) {
+        const artifact = JSON.parse(readFileSync(file!, "utf8"));
+        if (kind === role || kind === "both") {
+          artifact.rows[0].verdict.meta = { panelEscalationSkipped: "max-panel-cases" };
+        } else if (kind === "panel") {
+          artifact.rows[0].verdict.meta = { judgeTierUsed: "panel", panelSize: 3, panelDisagreement: true, panelScores: ["correct", "partial", "correct"] };
+        } else if (kind === "tier-panel") {
+          artifact.rows[0].verdict.meta = { judgeTierUsed: "panel" };
+        } else if (kind === "size-only") {
+          artifact.rows[0].verdict.meta = { judgeTierUsed: "single", panelSize: 3 };
+        }
+        writeFileSync(file!, JSON.stringify(artifact));
+      }
+      const result = spawnSync(process.execPath, [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--dry-run"], { cwd: ROOT, encoding: "utf8" });
+      expect(result.status, result.stderr).toBe(0);
+      const report = JSON.parse(result.stdout);
+      expect(report.selectedIds).toEqual(ids);
+      const skippedPanelRoles = ["source", "flipsVs"].filter((role) => kind === role || kind === "both");
+      const status = (role: string) => skippedPanelRoles.includes(role) ? "skipped-max-panel-cases" : ["panel", "tier-panel"].includes(kind) ? "panel-result" : "no-panel-metadata";
+      expect(report.flipPanelConfidence).toEqual([{ id: ids[0], source: status("source"), flipsVs: status("flipsVs"), skippedPanelRoles }]);
+    }
+  );
+
   it("refuses a --flips-vs baseline whose snapshot or judge tuple differs", async () => {
     const tuple = await loadJudgeTuple();
     const drifted: Array<[string, Record<string, unknown>, string]> = [
