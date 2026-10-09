@@ -5,14 +5,14 @@ status: verified
 discovered: 2026-10-06
 upstreamTitle: Stellar Hacks Blend first-place submission is stored under a later event with no placement
 evidence:
-  - 2026-10-06 golden-coverage round. A distinct reviewer read GET /api/hackathons/builds/27438 and found the Blend first-place submission under stellar-hacks-paltalabs with placement null (.agents/rounds/2026-10-06-scout-hackathon-goldens.md, entries 12 and 14).
-  - 2026-10-06T14:40:08Z DoraHacks capture of https://dorahacks.io/hackathon/stellar-hacks-blend/winner. buidlsCount 39, winnerAnnounced true, and a summary that names Blend Pool Creator (buidl/27438) as first place (.agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json).
-  - 2026-10-09T21:11Z Scout API 1.9.72. GET /api/hackathons/stellar-hacks-blend returns stats.totalSubmissions 35 and stats.winners 2. winners[] holds dorahacks-buidl-27417 (2nd Place) and dorahacks-buidl-27456 (3rd Place). prizeTiers lists First Place, rank 1, amountUSD 3000, and no winner has placementRank 1.
-  - 2026-10-09T21:11Z GET /api/hackathons/builds/27438 returns name Blend Pool Creator, hackathon.slug stellar-hacks-paltalabs, hackathon.endedAt 2025-08-07, and placement null. GET /api/hackathons/review?link=https://dorahacks.io/buidl/27438 repeats isWinner false and award null.
+  - 2026-10-06 golden-coverage round. A distinct reviewer read GET /api/hackathons/builds/27438. The Blend first-place submission sat under stellar-hacks-paltalabs with placement null (.agents/rounds/2026-10-06-scout-hackathon-goldens.md, entries 12 and 14).
+  - 2026-10-06T14:40:08Z DoraHacks capture of https://dorahacks.io/hackathon/stellar-hacks-blend/winner. It records buidlsCount 39 and winnerAnnounced true. Its summary names Blend Pool Creator (buidl/27438) as first place (.agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json).
+  - 2026-10-09T21:11Z Scout API 1.9.72. GET /api/hackathons/stellar-hacks-blend returns stats.totalSubmissions 35 and stats.winners 2. The winners[] list holds dorahacks-buidl-27417 (2nd Place) and dorahacks-buidl-27456 (3rd Place). The prizeTiers list has First Place at rank 1 with amountUSD 3000. No winner has placementRank 1.
+  - 2026-10-09T21:11Z GET /api/hackathons/builds/27438 returns name Blend Pool Creator and hackathon.slug stellar-hacks-paltalabs. The event endedAt is 2025-08-07 and placement is null. GET /api/hackathons/review?link=https://dorahacks.io/buidl/27438 repeats isWinner false and award null.
   - 2026-10-09T21:11Z GET /api/hackathons/builds?hackathon=stellar-hacks-blend&limit=100 returns 35 rows with two placed rows. GET /api/hackathons/compare?slugs=stellar-hacks-blend,stellar-hacks-paltalabs reports winnerCount 2 and prizePerWinnerUSD 3000 for Blend. GET /api/hackathons/analyze?facet=placement&by=event reports 2 winners of 35 for Blend.
-  - 2026-10-09 organizer report read through a web reader, because direct reads of dorahacks.io return HTTP 405 behind a human-verification check. https://dorahacks.io/hackathon/stellar-hacks-blend/report (dated 2025/08/28) names 1st Place Blend Pool Creator (buidl/27438), 2nd Place Comet x Hoops Finance (buidl/27417), 3rd Place YieldBack.Cash (buidl/27456), and 39 approved projects.
-  - 2026-10-09T21:18Z other events keep the 2026-10-06 totals. stellar-hacks-kale-reflector serves 45 submissions and 10 winners against the organizer capture of 46 approved projects and ten named winners. stellar-hacks-zk serves 319 and 5 against 345 and five. Those winner counts agree with the organizer, so only Blend loses a placed submission.
-  - Dedupe 2026-10-09. No active finding, no resolved receipt, and no Stellar-Light/stellarlight issue names buidl 27438, Blend Pool Creator, or a submission stored under the wrong event. The resolved sls-001 covered missing placement fields and is fixed.
+  - 2026-10-09 organizer report read through a web reader. Direct reads of dorahacks.io return HTTP 405 behind a human-verification check. The report at https://dorahacks.io/hackathon/stellar-hacks-blend/report is dated 2025/08/28. It names 1st Place Blend Pool Creator (buidl/27438), 2nd Place Comet x Hoops Finance (buidl/27417), and 3rd Place YieldBack.Cash (buidl/27456). It reports 39 approved projects.
+  - 2026-10-09T21:18Z other events keep their 2026-10-06 totals. stellar-hacks-kale-reflector serves 45 submissions and 10 winners. The 2026-10-06 capture of its winner page records buidlsCount 46, and the organizer report text states 47 approved project submissions. The gap is 1 against the captured roster count and 2 against the approved count. Both sources name ten winners. stellar-hacks-zk serves 319 submissions and 5 winners against a captured buidlsCount of 345 and five named winners. The winner counts agree with the organizer, so only Blend loses a placed submission.
+  - Dedupe 2026-10-09. No active finding, resolved receipt, or Stellar-Light/stellarlight issue names buidl 27438 or Blend Pool Creator. None describes a submission stored under the wrong event. The resolved sls-001 covered missing placement fields and is fixed.
 probe:
   type: http-text
   url: https://stellarlight.xyz/api/hackathons/builds/27438
@@ -74,7 +74,10 @@ The 2026-10-06 capture of the Blend winner page agrees with the report: `buidlsC
 The r/Stellar announcement cited on 2026-10-06 gives the same three places.
 
 The same-day reads of `stellar-hacks-kale-reflector` and `stellar-hacks-zk` show winner counts that agree with the organizer.
-Their submission totals are below the organizer counts by 1 and 26.
+KALE x Reflector serves 45 submissions.
+Its captured `buidlsCount` is 46, and its report text states 47 approved project submissions.
+The gap is 1 against the captured roster count and 2 against the approved count.
+Real-World ZK serves 319 submissions against a captured `buidlsCount` of 345, a gap of 26.
 Only Blend loses a placed submission.
 
 The resolved `sls-001` fixed missing placement fields on served winners.
@@ -87,5 +90,8 @@ Serve that list on the build record, or keep one row per submission and event pa
 Restore Blend Pool Creator as the Stellar Hacks: Blend first place.
 Recount `stats.winners`, `winnerCount`, `prizePerWinnerUSD`, and the placement facet from per-event placements.
 
-When the stored count differs from the organizer's approved count, serve the organizer count or a coverage note next to `totalSubmissions`.
-Add a regression check: a completed event with an announced winner list and a rank 1 prize tier has a winner at `placementRank` 1, or the record says why not.
+When the stored count differs from the organizer's approved count, say so.
+Serve the organizer count or a coverage note next to `totalSubmissions`.
+Add a regression check for completed events with an announced winner list.
+Such an event with a rank 1 prize tier must have a winner at `placementRank` 1.
+Otherwise the record must say why not.
