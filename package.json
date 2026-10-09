@@ -74,16 +74,16 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.22.0",
-    "@cloudflare/workers-types": "^5.20260916.1",
+    "@cloudflare/workers-types": "^5.20261009.1",
     "@modelcontextprotocol/client": "2.2.0",
     "@modelcontextprotocol/sdk": "1.31.0",
     "@types/node": "^26.3.0",
     "esbuild": "0.28.1",
     "happy-dom": "20.14.5",
-    "miniflare": "5.20260930.0-alpha",
+    "miniflare": "5.20261006.1-alpha",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11",
-    "wrangler": "4.145.0"
+    "wrangler": "4.149.0"
   },
   "engines": {
     "node": ">=24 <25"
@@ -93,12 +93,9 @@
       "@modelcontextprotocol/client": "$@modelcontextprotocol/client",
       "@modelcontextprotocol/sdk": "$@modelcontextprotocol/sdk"
     },
-    "miniflare": {
-      ".": "$miniflare",
-      "sharp": "0.35.5"
-    },
+    "miniflare": "$miniflare",
     "@cloudflare/vitest-pool-workers": {
-      "wrangler": "4.145.0"
+      "wrangler": "4.149.0"
     }
   }
 }
