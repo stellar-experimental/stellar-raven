@@ -54,8 +54,11 @@ The orchestrator is Claude Opus, so it reviews nothing.
     analysis now in the TODO.
 - For the merged lanes, full local test runs failed only on load timeouts. The load average was
   about 107 with five lanes. Each failed file passed alone, and CI passed on every PR.
-- The rejected R2 candidate had 22 unit failures. Five come from its keyword and page changes; the
-  rest are load timeouts and a sandbox `ps` denial. The restored R2 tree passed the full suite.
+- The rejected R2 candidate had 22 unit failures. Five come from its keyword and page changes. The
+  other 17 are timeouts and subprocess cleanup checks (`spawnSync ps ETIMEDOUT`).
+- A separate isolated R2 run of `test/qa-paired-launch.test.mjs` hit a sandbox `ps` denial (`EPERM`):
+  29 failed and 17 passed. The repository command then passed all 46. The restored R2 tree passed
+  the full suite.
 - PR #255 changes `src/demo`. Deployed as version `0d36cc09-4c33-4894-af91-3203b4a8ab18`. Both
   hosts return 200 on `/` and 401 with the Bearer challenge on unauthenticated `POST /mcp`.
 - PR #256 changes the `re-judge.mjs` (`7b293cbe…`) and `paired-verdict.mjs` (`025168fa…`)
