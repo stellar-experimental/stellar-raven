@@ -1,0 +1,243 @@
+{
+  "rows": [
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return a city's forecast."
+      },
+      "query": "send slack message",
+      "expectedMatch": false,
+      "gated": 27,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the forecast for a city."
+      },
+      "query": "add alarm",
+      "expectedMatch": false,
+      "gated": 45,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the forecast for a city."
+      },
+      "query": "archive all tasks",
+      "expectedMatch": false,
+      "gated": 27,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund a re-billed invoice."
+      },
+      "query": "read repository readme",
+      "expectedMatch": false,
+      "gated": 55,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return a city's forecast."
+      },
+      "query": "city forecast",
+      "expectedMatch": true,
+      "gated": 153,
+      "ungated": 153,
+      "weightedUngated": 153
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund a re-billed invoice."
+      },
+      "query": "refund invoice",
+      "expectedMatch": true,
+      "gated": 481,
+      "ungated": 481,
+      "weightedUngated": 481
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return a city's forecast."
+      },
+      "query": "city forecasts",
+      "expectedMatch": true,
+      "gated": 99,
+      "ungated": 99,
+      "weightedUngated": 99
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return a city's forecast."
+      },
+      "query": "forecasts",
+      "expectedMatch": true,
+      "gated": 79,
+      "ungated": 79,
+      "weightedUngated": 79
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the city forecast."
+      },
+      "query": "forecast unrelated extra vocabulary",
+      "expectedMatch": true,
+      "gated": null,
+      "ungated": 111,
+      "weightedUngated": 111
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the city forecast."
+      },
+      "query": "send slack message",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund duplicate invoice."
+      },
+      "query": "send slack message",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the city forecast."
+      },
+      "query": "read repository readme",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund duplicate invoice."
+      },
+      "query": "read repository readme",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the city forecast."
+      },
+      "query": "add alarm",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund duplicate invoice."
+      },
+      "query": "add alarm",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the city forecast."
+      },
+      "query": "archive all tasks",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund duplicate invoice."
+      },
+      "query": "archive all tasks",
+      "expectedMatch": false,
+      "gated": null,
+      "ungated": null,
+      "weightedUngated": null
+    }
+  ],
+  "pass": true
+}

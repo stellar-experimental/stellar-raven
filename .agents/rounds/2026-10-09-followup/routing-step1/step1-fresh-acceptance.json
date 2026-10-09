@@ -1,0 +1,3367 @@
+{
+  "label": "step1-fresh",
+  "checks": {
+    "1": {
+      "pass": true,
+      "capProbe": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "alpha",
+            "beta"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "yieldblox",
+            "oracle"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "reflector",
+            "incident"
+          ]
+        }
+      ],
+      "tokens": [
+        {
+          "token": "yieldblox",
+          "retained": []
+        },
+        {
+          "token": "reflector",
+          "retained": []
+        }
+      ],
+      "hits": [
+        {
+          "id": "scout.searchResearch",
+          "score": 220,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 184,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 174,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 143,
+          "tier": "backfill"
+        },
+        {
+          "id": "skills.lumenloop.stellar-integration-finder",
+          "score": 143,
+          "tier": "backfill"
+        }
+      ]
+    },
+    "2": {
+      "rows": [
+        {
+          "query": "through",
+          "hits": [
+            {
+              "id": "lumenloop.list_documents",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.stellar-dev.agentic-payments",
+              "score": 75,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "network",
+          "hits": [
+            {
+              "id": "stellarDocs.search_asset_token_docs",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_sdk_cli_tools_docs",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 65,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 35,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "each",
+          "hits": [
+            {
+              "id": "lumenloop.get_categories",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.get_project_tags_vocabulary",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.get_scf_submissions",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.get_doc_page_sections",
+              "score": 75,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_doc_titles",
+              "score": 35,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "walk through",
+          "hits": [
+            {
+              "id": "lumenloop.list_documents",
+              "score": 25,
+              "tier": "backfill"
+            },
+            {
+              "id": "skills.stellar-dev.agentic-payments",
+              "score": 25,
+              "tier": "backfill"
+            }
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    "3": {
+      "pass": true,
+      "negative": [
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 295,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.listContracts",
+          "score": 251,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.develop-secure-contracts",
+          "score": 251,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+          "score": 251,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "score": 75,
+          "tier": "gated"
+        }
+      ],
+      "positive": [
+        {
+          "id": "scout.explainRepo",
+          "score": 235,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchRepos",
+          "score": 132,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-dev.smart-contracts",
+          "score": 110,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "score": 66,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 56,
+          "tier": "gated"
+        }
+      ]
+    },
+    "4": {
+      "pass": false,
+      "rows": [
+        {
+          "query": "How does account merge work, what must I clear first, and can I it to reclaim locked base-reserve XLM?",
+          "hits": [
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 234,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "score": 171,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 154,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.get_project",
+              "score": 134,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.find_content_about_project",
+              "score": 124,
+              "tier": "backfill"
+            }
+          ]
+        },
+        {
+          "query": "How does account merge work, what must I clear first, and can I use it to reclaim locked base-reserve XLM?",
+          "hits": [
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 254,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_directory",
+              "score": 175,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 174,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "score": 170,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.get_project",
+              "score": 154,
+              "tier": "backfill"
+            }
+          ]
+        }
+      ]
+    },
+    "5": {
+      "pass": false,
+      "phase": [
+        {
+          "entry": {
+            "id": "demo.has",
+            "name": "has",
+            "service": "demo",
+            "kind": "operation",
+            "description": "Retrieve widgets"
+          },
+          "query": "has widgets",
+          "before": 141,
+          "after": 143
+        },
+        {
+          "entry": {
+            "id": "demo.lookup",
+            "name": "lookup",
+            "service": "demo",
+            "kind": "operation",
+            "description": "Retrieve widgets"
+          },
+          "query": "has widgets",
+          "before": 75,
+          "after": 75
+        }
+      ],
+      "ungatedPhase": [
+        {
+          "entry": {
+            "id": "demo.has",
+            "name": "has",
+            "service": "demo",
+            "kind": "operation",
+            "description": "Retrieve widgets"
+          },
+          "query": "has widgets",
+          "before": 33,
+          "after": 43
+        },
+        {
+          "entry": {
+            "id": "demo.lookup",
+            "name": "lookup",
+            "service": "demo",
+            "kind": "operation",
+            "description": "Retrieve widgets"
+          },
+          "query": "has widgets",
+          "before": 25,
+          "after": 35
+        }
+      ],
+      "generic": 46
+    },
+    "6": {
+      "pass": false,
+      "staking": [
+        {
+          "id": "scout.searchResearch",
+          "score": 284,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 252,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "score": 284,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_asset_token_docs",
+          "score": 266,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 251,
+          "tier": "backfill"
+        }
+      ],
+      "wallets": {
+        "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+        "hits": [
+          {
+            "id": "stellarDocs.search_docs",
+            "score": 465,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.vetIdea",
+            "score": 308,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.searchProjects",
+            "score": 262,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.searchResearch",
+            "score": 253,
+            "tier": "gated"
+          },
+          {
+            "id": "stellarDocs.search_soroban_contract_docs",
+            "score": 178,
+            "tier": "gated"
+          }
+        ]
+      },
+      "weakGated": [
+        {
+          "query": "alpha beta gamma wallet dapp",
+          "description": "alphabet betamax gammaray",
+          "scoutGatedScore": 36,
+          "docsUngatedScore": 220,
+          "hits": [
+            {
+              "id": "docs.walletDapp",
+              "score": 220,
+              "tier": "backfill"
+            },
+            {
+              "id": "scout.weak0",
+              "score": 36,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.weak2",
+              "score": 36,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.weak3",
+              "score": 36,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.weak4",
+              "score": 36,
+              "tier": "gated"
+            }
+          ],
+          "docsPresent": true
+        },
+        {
+          "query": "alpha beta gamma wallet dapp",
+          "description": "xalphax xbetax xgammax",
+          "scoutGatedScore": 21,
+          "docsUngatedScore": 220,
+          "hits": [
+            {
+              "id": "docs.walletDapp",
+              "score": 220,
+              "tier": "backfill"
+            },
+            {
+              "id": "scout.weak0",
+              "score": 21,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.weak2",
+              "score": 21,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.weak3",
+              "score": 21,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.weak4",
+              "score": 21,
+              "tier": "gated"
+            }
+          ],
+          "docsPresent": true
+        }
+      ],
+      "wholeWordDiagnostic": {
+        "query": "alpha beta gamma wallet dapp",
+        "description": "alpha beta gamma",
+        "scoutGatedScore": 66,
+        "docsUngatedScore": 220,
+        "hits": [
+          {
+            "id": "scout.weak0",
+            "score": 66,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.weak1",
+            "score": 66,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.weak2",
+            "score": 66,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.weak3",
+            "score": 66,
+            "tier": "gated"
+          },
+          {
+            "id": "scout.weak4",
+            "score": 66,
+            "tier": "gated"
+          }
+        ],
+        "docsPresent": false
+      }
+    },
+    "7": {
+      "rows": [
+        {
+          "query": "What happened in the YieldBlox/Reflector oracle-manipulation incident, roughly how much was lost/recovered, and what are the design lessons?",
+          "expected": [
+            "scout.searchResearch"
+          ],
+          "hits": [
+            {
+              "id": "scout.searchResearch",
+              "score": 220,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_doc_titles",
+              "score": 184,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 174,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.search_directory",
+              "score": 143,
+              "tier": "backfill"
+            },
+            {
+              "id": "skills.lumenloop.stellar-integration-finder",
+              "score": 143,
+              "tier": "backfill"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "Has anything like tokenized real-world assets or on-chain funds been funded through the SCF?",
+          "expected": [
+            "scout.getRwaAssets",
+            "lumenloop.find_similar_scf_submissions"
+          ],
+          "hits": [
+            {
+              "id": "skills.lumenloop.scf-submission-radar",
+              "score": 261,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchProjects",
+              "score": 240,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 212,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchResearch",
+              "score": 148,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.find_similar_scf_submissions",
+              "score": 236,
+              "tier": "backfill"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "List the Stellar network passphrases for the public network, testnet, and futurenet — what is the exact passphrase string for each?",
+          "expected": [
+            "stellarDocs.search_protocol_concepts_docs"
+          ],
+          "hits": [
+            {
+              "id": "scout.searchResearch",
+              "score": 316,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 286,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "score": 310,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 294,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_sdk_cli_tools_docs",
+              "score": 289,
+              "tier": "backfill"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "How do I create my first Soroban smart contract?",
+          "expected": [
+            "skills.stellar-dev.smart-contracts"
+          ],
+          "hits": [
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "score": 251,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 210,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.stellar-dev.smart-contracts",
+              "score": 198,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.listContracts",
+              "score": 160,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+              "score": 132,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "Does Stellar execute smart-contract transactions in parallel, and when did that capability ship?",
+          "expected": [
+            "stellarDocs.search_docs"
+          ],
+          "hits": [
+            {
+              "id": "skills.stellar-dev.dapp",
+              "score": 215,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.stellar-dev.smart-contracts",
+              "score": 315,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 184,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "score": 282,
+              "tier": "backfill"
+            },
+            {
+              "id": "scout.searchResearch",
+              "score": 156,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "Is reentrancy a concern in Soroban smart contracts the way it is on Ethereum?",
+          "expected": [
+            "stellarDocs.search_soroban_contract_docs"
+          ],
+          "hits": [
+            {
+              "id": "skills.stellar-dev.smart-contracts",
+              "score": 356,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "score": 324,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.listAudits",
+              "score": 305,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_doc_titles",
+              "score": 243,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchResearch",
+              "score": 188,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "How does account merge work, what must I clear first, and can I use it to reclaim locked base-reserve XLM?",
+          "expected": [
+            "stellarDocs.search_docs_in_category"
+          ],
+          "hits": [
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 254,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_directory",
+              "score": 175,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_docs",
+              "score": 174,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_protocol_concepts_docs",
+              "score": 170,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.get_project",
+              "score": 154,
+              "tier": "backfill"
+            }
+          ],
+          "pass": false
+        },
+        {
+          "query": "Since XLM has no native protocol staking, how can I build a staking or yield feature for my own Soroban token?",
+          "expected": [
+            "stellarDocs.search_asset_token_docs"
+          ],
+          "hits": [
+            {
+              "id": "scout.searchResearch",
+              "score": 284,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchProjects",
+              "score": 252,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchHackathonBuilds",
+              "score": 284,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_asset_token_docs",
+              "score": 266,
+              "tier": "backfill"
+            },
+            {
+              "id": "stellarDocs.search_soroban_contract_docs",
+              "score": 251,
+              "tier": "backfill"
+            }
+          ],
+          "pass": true
+        }
+      ],
+      "presencePass": false,
+      "grades": [
+        {
+          "id": "q-comp-yieldblox-oracle-incident",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "after": {
+            "top1": true,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "losses": []
+        },
+        {
+          "id": "q-defi-rwa-scf-similar",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "after": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "losses": []
+        },
+        {
+          "id": "q-protocol-network-passphrases-list",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": null
+          },
+          "after": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": null
+          },
+          "losses": []
+        },
+        {
+          "id": "q-skill-soroban-first-contract",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "after": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "losses": []
+        },
+        {
+          "id": "q-protocol-parallel-execution",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "after": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "losses": []
+        },
+        {
+          "id": "q-soroban-reentrancy",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "after": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true
+          },
+          "losses": []
+        },
+        {
+          "id": "q-pc-account-merge-reclaim-reserve",
+          "before": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": null
+          },
+          "after": {
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": null
+          },
+          "losses": []
+        },
+        {
+          "id": "q-defi-build-staking-for-own-token",
+          "before": {
+            "top1": false,
+            "top3": false,
+            "top5": true,
+            "cardHit5": null
+          },
+          "after": {
+            "top1": false,
+            "top3": false,
+            "top5": true,
+            "cardHit5": null
+          },
+          "losses": []
+        }
+      ],
+      "pass": false
+    },
+    "8": {
+      "positives": {
+        "pass": true,
+        "rows": [
+          {
+            "query": "Which tokenized real-world assets are live on Stellar?",
+            "positive": true,
+            "hits": [
+              {
+                "id": "scout.getRwaAssets",
+                "score": 249,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.stellar-dev.assets",
+                "score": 238,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 189,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_sdk_cli_tools_docs",
+                "score": 166,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "score": 163,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "Show verified tokenized treasury funds and their issuers on Stellar.",
+            "positive": true,
+            "hits": [
+              {
+                "id": "stellarDocs.search_asset_token_docs",
+                "score": 222,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.getRwaAssets",
+                "score": 207,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-integration-finder",
+                "score": 206,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_anchor_sep_docs",
+                "score": 178,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.listContracts",
+                "score": 173,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "Are tokenized bonds and real estate assets live on Stellar?",
+            "positive": true,
+            "hits": [
+              {
+                "id": "scout.getRwaAssets",
+                "score": 305,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.stellar-dev.assets",
+                "score": 237,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.get_doc_page_sections",
+                "score": 211,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "score": 199,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-builder-quickstart",
+                "score": 194,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "Is Franklin Templeton BENJI actually issued on Stellar?",
+            "positive": true,
+            "hits": [
+              {
+                "id": "scout.getRwaAssets",
+                "score": 187,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "score": 168,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-ecosystem-scout",
+                "score": 159,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 158,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.scf-submission-radar",
+                "score": 115,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          }
+        ]
+      },
+      "ordinaryNegatives": {
+        "pass": true,
+        "rows": [
+          {
+            "query": "How do I get test XLM from Friendbot?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "score": 177,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_protocol_concepts_docs",
+                "score": 160,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "score": 107,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 85,
+                "tier": "backfill"
+              },
+              {
+                "id": "skills.stellar-dev.cross-chain",
+                "score": 65,
+                "tier": "backfill"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "What is Stellar RPC?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_rpc_horizon_data_docs",
+                "score": 221,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "score": 185,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-ecosystem-scout",
+                "score": 156,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-integration-finder",
+                "score": 146,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "score": 68,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "How can I reduce a Soroban WASM binary size?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_soroban_contract_docs",
+                "score": 174,
+                "tier": "backfill"
+              },
+              {
+                "id": "skills.openzeppelin-stellar.upgrade-stellar-contracts",
+                "score": 56,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 84,
+                "tier": "backfill"
+              },
+              {
+                "id": "stellarDocs.search_asset_token_docs",
+                "score": 64,
+                "tier": "backfill"
+              },
+              {
+                "id": "skills.lumenloop.stellar-builder-quickstart",
+                "score": 53,
+                "tier": "backfill"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "How do I simulate a transaction?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_docs_in_category",
+                "score": 195,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_rpc_horizon_data_docs",
+                "score": 194,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_sdk_cli_tools_docs",
+                "score": 194,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.stellar-dev.dapp",
+                "score": 111,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.list_research",
+                "score": 95,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "How do I fetch account balances?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.get_doc_page_sections",
+                "score": 141,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "score": 141,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_protocol_concepts_docs",
+                "score": 140,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.get_document",
+                "score": 103,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.get_project",
+                "score": 37,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "How do I create and issue a custom Stellar asset?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_asset_token_docs",
+                "score": 443,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 363,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-project-dossier",
+                "score": 282,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.openzeppelin-stellar.setup-stellar-contracts",
+                "score": 238,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.find_av_passages",
+                "score": 177,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "How do I build a tokenization contract on Stellar?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_asset_token_docs",
+                "score": 407,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_soroban_contract_docs",
+                "score": 400,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-project-dossier",
+                "score": 304,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-builder-quickstart",
+                "score": 293,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.listContracts",
+                "score": 240,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          },
+          {
+            "query": "Walk me through issuing a new custom token on Stellar from scratch.",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_asset_token_docs",
+                "score": 335,
+                "tier": "backfill"
+              },
+              {
+                "id": "skills.lumenloop.stellar-content-auditor",
+                "score": 256,
+                "tier": "backfill"
+              },
+              {
+                "id": "scout.searchResearch",
+                "score": 154,
+                "tier": "gated"
+              },
+              {
+                "id": "skills.lumenloop.stellar-ecosystem-digest",
+                "score": 243,
+                "tier": "backfill"
+              },
+              {
+                "id": "stellarDocs.search_wallet_dapp_docs",
+                "score": 90,
+                "tier": "gated"
+              }
+            ],
+            "pass": true
+          }
+        ]
+      },
+      "deferredItFails": {
+        "pass": false,
+        "rows": [
+          {
+            "query": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_rpc_horizon_data_docs",
+                "score": 356,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_sdk_cli_tools_docs",
+                "score": 280,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.getRwaAssets",
+                "score": 218,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.explainRepo",
+                "score": 159,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.searchResearch",
+                "score": 139,
+                "tier": "gated"
+              }
+            ],
+            "pass": false
+          },
+          {
+            "query": "How do I read a wallet balance for tokenized treasury assets?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "stellarDocs.search_asset_token_docs",
+                "score": 316,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.getRwaAssets",
+                "score": 268,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 247,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.search_directory",
+                "score": 164,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.search_documents",
+                "score": 161,
+                "tier": "gated"
+              }
+            ],
+            "pass": false
+          },
+          {
+            "query": "As a Stellar asset issuer, can I charge transfer fees, cap supply, or freeze a holder, and what is actually possible at the protocol level?",
+            "positive": false,
+            "hits": [
+              {
+                "id": "scout.getRwaAssets",
+                "score": 485,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "score": 456,
+                "tier": "gated"
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "score": 424,
+                "tier": "gated"
+              },
+              {
+                "id": "scout.analyzeEcosystem",
+                "score": 382,
+                "tier": "gated"
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "score": 360,
+                "tier": "gated"
+              }
+            ],
+            "pass": false
+          }
+        ]
+      },
+      "fixture": {
+        "inventoryPath": "tmp/routing3/fresh-inventory/stellar-light.json",
+        "inventorySha256": "a5ae479f670648b403d9a2ec94610d4982ec4d4daca5d073706413bab7f8b832",
+        "version": "1.9.72",
+        "entrySha256": "e6fb8f1c9890a911ead10b8042d6bd109e7d928c5191ec61a2bc73af71014a80"
+      },
+      "pass": false
+    },
+    "9": {
+      "probes": [
+        {
+          "query": "top projects by GitHub activity",
+          "hits": [
+            {
+              "id": "lumenloop.find_similar_projects_semantic",
+              "score": 155,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.find_content_by_entity",
+              "score": 145,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.getLeaderboard",
+              "score": 145,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchRepos",
+              "score": 135,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.lumenloop.stellar-project-dossier",
+              "score": 90,
+              "tier": "gated"
+            }
+          ]
+        },
+        {
+          "query": "Is there an open SCF RFP for developer tooling or indexing infrastructure I could build against?",
+          "hits": [
+            {
+              "id": "skills.lumenloop.scf-submission-radar",
+              "score": 304,
+              "tier": "gated"
+            },
+            {
+              "id": "stellarDocs.search_docs_in_category",
+              "score": 279,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.getRfps",
+              "score": 229,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.scfPitch",
+              "score": 228,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 214,
+              "tier": "gated"
+            }
+          ]
+        }
+      ],
+      "grades": [
+        {
+          "id": "q-tool-leaderboard-open-issues",
+          "before": {
+            "id": "q-tool-leaderboard-open-issues",
+            "expected_service": "scout",
+            "top1": true,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true,
+            "topHits": [
+              {
+                "id": "scout.getLeaderboard",
+                "service": "scout",
+                "score": 278
+              },
+              {
+                "id": "skills.lumenloop.stellar-integration-finder",
+                "service": "skills",
+                "score": 285
+              },
+              {
+                "id": "skills.lumenloop.stellar-project-dossier",
+                "service": "skills",
+                "score": 282
+              },
+              {
+                "id": "scout.resolveProject",
+                "service": "scout",
+                "score": 268
+              },
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "service": "stellarDocs",
+                "score": 263
+              }
+            ]
+          },
+          "after": {
+            "id": "q-tool-leaderboard-open-issues",
+            "expected_service": "scout",
+            "top1": true,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true,
+            "topHits": [
+              {
+                "id": "scout.getLeaderboard",
+                "service": "scout",
+                "score": 278
+              },
+              {
+                "id": "skills.lumenloop.stellar-integration-finder",
+                "service": "skills",
+                "score": 275
+              },
+              {
+                "id": "skills.lumenloop.stellar-project-dossier",
+                "service": "skills",
+                "score": 272
+              },
+              {
+                "id": "scout.getHackathon",
+                "service": "scout",
+                "score": 266
+              },
+              {
+                "id": "scout.resolveProject",
+                "service": "scout",
+                "score": 266
+              }
+            ]
+          },
+          "losses": []
+        },
+        {
+          "id": "q-scf-rfp-tooling",
+          "before": {
+            "id": "q-scf-rfp-tooling",
+            "expected_service": "scout",
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true,
+            "topHits": [
+              {
+                "id": "skills.lumenloop.scf-submission-radar",
+                "service": "skills",
+                "score": 304
+              },
+              {
+                "id": "stellarDocs.search_docs_in_category",
+                "service": "stellarDocs",
+                "score": 279
+              },
+              {
+                "id": "scout.getRfps",
+                "service": "scout",
+                "score": 229
+              },
+              {
+                "id": "scout.scfPitch",
+                "service": "scout",
+                "score": 228
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 214
+              }
+            ]
+          },
+          "after": {
+            "id": "q-scf-rfp-tooling",
+            "expected_service": "scout",
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true,
+            "topHits": [
+              {
+                "id": "skills.lumenloop.scf-submission-radar",
+                "service": "skills",
+                "score": 304
+              },
+              {
+                "id": "stellarDocs.search_docs_in_category",
+                "service": "stellarDocs",
+                "score": 279
+              },
+              {
+                "id": "scout.getRfps",
+                "service": "scout",
+                "score": 229
+              },
+              {
+                "id": "scout.scfPitch",
+                "service": "scout",
+                "score": 228
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 214
+              }
+            ]
+          },
+          "losses": []
+        }
+      ],
+      "pass": true
+    },
+    "10": {
+      "pass": false,
+      "gate": {
+        "pass": false,
+        "failures": [
+          "catalog/manifest.json SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly",
+          "holdout forbidden captures=12 above ceiling 10"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "applicableGateFailures": [
+        "holdout forbidden captures=12 above ceiling 10"
+      ],
+      "manifestFingerprintIgnored": true,
+      "extendedLosses": [
+        "top1",
+        "top5"
+      ],
+      "extended": {
+        "strict": {
+          "n": 122,
+          "top1": 85,
+          "top3": 112,
+          "top5": 116,
+          "cardN": 28,
+          "cardHit5": 17
+        },
+        "perService": {
+          "stellarDocs": {
+            "n": 94,
+            "top1": 71,
+            "top3": 91,
+            "top5": 92,
+            "cardN": 0,
+            "cardHit5": 0
+          },
+          "scout": {
+            "n": 25,
+            "top1": 14,
+            "top3": 20,
+            "top5": 23,
+            "cardN": 25,
+            "cardHit5": 17
+          },
+          "lumenloop": {
+            "n": 3,
+            "top1": 0,
+            "top3": 1,
+            "top5": 1,
+            "cardN": 3,
+            "cardHit5": 0
+          }
+        },
+        "acceptEither": {
+          "n": 122,
+          "top1": 97,
+          "top3": 118,
+          "top5": 120,
+          "cardN": 28,
+          "cardHit5": 17
+        }
+      },
+      "extendedBaseline": {
+        "strict": {
+          "n": 122,
+          "top1": 93,
+          "top3": 111,
+          "top5": 117,
+          "cardN": 28,
+          "cardHit5": 16
+        },
+        "perService": {
+          "stellarDocs": {
+            "n": 94,
+            "top1": 79,
+            "top3": 91,
+            "top5": 94,
+            "cardN": 0,
+            "cardHit5": 0
+          },
+          "scout": {
+            "n": 25,
+            "top1": 14,
+            "top3": 19,
+            "top5": 22,
+            "cardN": 25,
+            "cardHit5": 16
+          },
+          "lumenloop": {
+            "n": 3,
+            "top1": 0,
+            "top3": 1,
+            "top5": 1,
+            "cardN": 3,
+            "cardHit5": 0
+          }
+        },
+        "acceptEither": {
+          "n": 122,
+          "top1": 102,
+          "top3": 118,
+          "top5": 121,
+          "cardN": 28,
+          "cardHit5": 16
+        }
+      },
+      "extendedChangedRows": [
+        {
+          "id": "q-aas-claimable-predicates-expiry-reserves",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-export-tx-history-taxes",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-regional-offramp-mobilemoney",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-sdex-offer-lifecycle",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-exchange-memo-lost-funds",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-sor-reflector-integration-code",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-sor-require-auth-propagation",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-classic-submission-errors",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-freighter-localhost-not-detected",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-secret-key-custody-backend",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ]
+    },
+    "11": {
+      "rows": [
+        {
+          "query": "What project categories does the Stellar ecosystem directory actually track — give me the controlled list of category values it uses.",
+          "hits": [
+            {
+              "id": "skills.lumenloop.stellar-ecosystem-scout",
+              "score": 399,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.search_directory",
+              "score": 335,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchProjects",
+              "score": 291,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchHackathonBuilds",
+              "score": 232,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.get_categories",
+              "score": 290,
+              "tier": "backfill"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "ecosystem project category filter",
+          "hits": [
+            {
+              "id": "lumenloop.get_project",
+              "score": 156,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.lumenloop.stellar-ecosystem-scout",
+              "score": 136,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchProjects",
+              "score": 112,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.getLeaderboard",
+              "score": 105,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.get_categories",
+              "score": 58,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "directory project categories list",
+          "hits": [
+            {
+              "id": "scout.listAudits",
+              "score": 136,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchProjects",
+              "score": 112,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.get_categories",
+              "score": 133,
+              "tier": "backfill"
+            },
+            {
+              "id": "lumenloop.search_content_semantic",
+              "score": 68,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.lumenloop.stellar-ecosystem-scout",
+              "score": 58,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        },
+        {
+          "query": "List the exact region values allowed by the project directory.",
+          "hits": [
+            {
+              "id": "lumenloop.get_project",
+              "score": 245,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.listAudits",
+              "score": 212,
+              "tier": "gated"
+            },
+            {
+              "id": "scout.searchProjects",
+              "score": 201,
+              "tier": "gated"
+            },
+            {
+              "id": "lumenloop.get_regions",
+              "score": 170,
+              "tier": "gated"
+            },
+            {
+              "id": "skills.lumenloop.stellar-ecosystem-scout",
+              "score": 106,
+              "tier": "gated"
+            }
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    "12": {
+      "pass": false,
+      "version": "1.9.72",
+      "grades": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "before": {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "expected_service": "stellarDocs",
+            "expected_any": [
+              "stellarDocs",
+              "scout"
+            ],
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": null,
+            "any1": false,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "skills.stellar-dev.agentic-payments",
+                "service": "skills",
+                "score": 306
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 217
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "service": "stellarDocs",
+                "score": 326
+              },
+              {
+                "id": "scout.searchHackathonBuilds",
+                "service": "scout",
+                "score": 202
+              },
+              {
+                "id": "scout.getBuilders",
+                "service": "scout",
+                "score": 171
+              }
+            ]
+          },
+          "after": {
+            "id": "q-defi-agentic-payment-standards-compare",
+            "expected_service": "stellarDocs",
+            "expected_any": [
+              "stellarDocs",
+              "scout"
+            ],
+            "top1": false,
+            "top3": false,
+            "top5": true,
+            "cardHit5": null,
+            "any1": false,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "skills.stellar-dev.agentic-payments",
+                "service": "skills",
+                "score": 306
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 217
+              },
+              {
+                "id": "scout.searchHackathonBuilds",
+                "service": "scout",
+                "score": 212
+              },
+              {
+                "id": "scout.analyzeHackathonSubmissions",
+                "service": "scout",
+                "score": 201
+              },
+              {
+                "id": "stellarDocs.search_docs",
+                "service": "stellarDocs",
+                "score": 306
+              }
+            ]
+          },
+          "losses": [
+            "top3"
+          ]
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "before": {
+            "id": "q-defi-blend-alternatives",
+            "expected_service": "lumenloop",
+            "expected_any": [
+              "lumenloop",
+              "scout"
+            ],
+            "top1": false,
+            "top3": false,
+            "top5": true,
+            "cardHit5": false,
+            "any1": false,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "service": "stellarDocs",
+                "score": 249
+              },
+              {
+                "id": "scout.searchProjects",
+                "service": "scout",
+                "score": 230
+              },
+              {
+                "id": "skills.stellar-light.stellar-scout",
+                "service": "skills",
+                "score": 230
+              },
+              {
+                "id": "skills.stellar-dev.cross-chain",
+                "service": "skills",
+                "score": 204
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 181
+              }
+            ]
+          },
+          "after": {
+            "id": "q-defi-blend-alternatives",
+            "expected_service": "lumenloop",
+            "expected_any": [
+              "lumenloop",
+              "scout"
+            ],
+            "top1": false,
+            "top3": false,
+            "top5": false,
+            "cardHit5": false,
+            "any1": false,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "stellarDocs.search_doc_titles",
+                "service": "stellarDocs",
+                "score": 249
+              },
+              {
+                "id": "scout.searchProjects",
+                "service": "scout",
+                "score": 230
+              },
+              {
+                "id": "skills.stellar-light.stellar-scout",
+                "service": "skills",
+                "score": 230
+              },
+              {
+                "id": "skills.stellar-dev.cross-chain",
+                "service": "skills",
+                "score": 204
+              },
+              {
+                "id": "scout.getClusters",
+                "service": "scout",
+                "score": 189
+              }
+            ]
+          },
+          "losses": [
+            "top5"
+          ]
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "before": {
+            "id": "q-defi-rwa-overview",
+            "expected_service": "lumenloop",
+            "expected_any": [
+              "lumenloop",
+              "scout"
+            ],
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true,
+            "any1": true,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "scout.searchProjects",
+                "service": "scout",
+                "score": 227
+              },
+              {
+                "id": "skills.lumenloop.stellar-ecosystem-scout",
+                "service": "skills",
+                "score": 179
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 151
+              },
+              {
+                "id": "scout.analyzeEcosystem",
+                "service": "scout",
+                "score": 119
+              },
+              {
+                "id": "lumenloop.search_directory",
+                "service": "lumenloop",
+                "score": 98
+              }
+            ]
+          },
+          "after": {
+            "id": "q-defi-rwa-overview",
+            "expected_service": "lumenloop",
+            "expected_any": [
+              "lumenloop",
+              "scout"
+            ],
+            "top1": false,
+            "top3": false,
+            "top5": true,
+            "cardHit5": true,
+            "any1": true,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "scout.searchProjects",
+                "service": "scout",
+                "score": 227
+              },
+              {
+                "id": "skills.lumenloop.stellar-ecosystem-scout",
+                "service": "skills",
+                "score": 179
+              },
+              {
+                "id": "scout.getHackathon",
+                "service": "scout",
+                "score": 162
+              },
+              {
+                "id": "lumenloop.search_content_semantic",
+                "service": "lumenloop",
+                "score": 151
+              },
+              {
+                "id": "lumenloop.search_directory",
+                "service": "lumenloop",
+                "score": 98
+              }
+            ]
+          },
+          "losses": [
+            "top3"
+          ]
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "before": {
+            "id": "q-scf-funded-similar-payroll",
+            "expected_service": "lumenloop",
+            "expected_any": [
+              "lumenloop",
+              "scout"
+            ],
+            "top1": false,
+            "top3": true,
+            "top5": true,
+            "cardHit5": true,
+            "any1": false,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "skills.lumenloop.scf-submission-radar",
+                "service": "skills",
+                "score": 244
+              },
+              {
+                "id": "scout.searchProjects",
+                "service": "scout",
+                "score": 176
+              },
+              {
+                "id": "lumenloop.find_similar_scf_submissions",
+                "service": "lumenloop",
+                "score": 192
+              },
+              {
+                "id": "skills.stellar-dev.agentic-payments",
+                "service": "skills",
+                "score": 192
+              },
+              {
+                "id": "scout.scfPitch",
+                "service": "scout",
+                "score": 188
+              }
+            ]
+          },
+          "after": {
+            "id": "q-scf-funded-similar-payroll",
+            "expected_service": "lumenloop",
+            "expected_any": [
+              "lumenloop",
+              "scout"
+            ],
+            "top1": false,
+            "top3": false,
+            "top5": true,
+            "cardHit5": true,
+            "any1": false,
+            "any3": true,
+            "any5": true,
+            "topHits": [
+              {
+                "id": "skills.lumenloop.scf-submission-radar",
+                "service": "skills",
+                "score": 244
+              },
+              {
+                "id": "scout.searchProjects",
+                "service": "scout",
+                "score": 176
+              },
+              {
+                "id": "scout.vetIdea",
+                "service": "scout",
+                "score": 131
+              },
+              {
+                "id": "scout.scfPitch",
+                "service": "scout",
+                "score": 209
+              },
+              {
+                "id": "lumenloop.find_similar_scf_submissions",
+                "service": "lumenloop",
+                "score": 192
+              }
+            ]
+          },
+          "losses": [
+            "top3"
+          ]
+        }
+      ],
+      "reviewExposed": false,
+      "reviewCaptures": [],
+      "exclusionLimit": "The manifest excludes reviewSubmission. This does not prove safe ranking if exposed.",
+      "numericFailures": [
+        "holdout forbidden captures=12 above ceiling 10"
+      ],
+      "extendedLosses": [
+        "top1",
+        "top5"
+      ],
+      "sourceChanges": [
+        {
+          "id": "q-defi-blend-alternatives",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-pc-l2-payment-channels-starlight",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ],
+      "sequenceRow": {
+        "id": "q-pc-sequence-numbers-ordering-replace",
+        "expected_service": "stellarDocs",
+        "expected_any": [
+          "stellarDocs",
+          "scout"
+        ],
+        "top1": true,
+        "top3": true,
+        "top5": true,
+        "cardHit5": null,
+        "any1": true,
+        "any3": true,
+        "any5": true,
+        "topHits": [
+          {
+            "id": "stellarDocs.search_docs",
+            "service": "stellarDocs",
+            "score": 375
+          },
+          {
+            "id": "stellarDocs.search_protocol_concepts_docs",
+            "service": "stellarDocs",
+            "score": 366
+          },
+          {
+            "id": "scout.analyzeHackathonSubmissions",
+            "service": "scout",
+            "score": 355
+          },
+          {
+            "id": "stellarDocs.search_soroban_contract_docs",
+            "service": "stellarDocs",
+            "score": 343
+          },
+          {
+            "id": "stellarDocs.search_docs_in_category",
+            "service": "stellarDocs",
+            "score": 340
+          }
+        ]
+      }
+    }
+  },
+  "rows": {
+    "q-defi-agentic-payment-standards-compare": {
+      "query": "How do x402, MPP, AP2, and ACP compare for agent payments, and which are Stellar-specific vs general?",
+      "hits": [
+        {
+          "id": "skills.stellar-dev.agentic-payments",
+          "score": 306,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 217,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchHackathonBuilds",
+          "score": 212,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.analyzeHackathonSubmissions",
+          "score": 201,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_docs",
+          "score": 306,
+          "tier": "backfill"
+        }
+      ]
+    },
+    "q-defi-blend-alternatives": {
+      "query": "Are there alternatives to Blend for lending on Stellar — what other lending protocols exist?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_doc_titles",
+          "score": 249,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 230,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-light.stellar-scout",
+          "score": 230,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.stellar-dev.cross-chain",
+          "score": 204,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getClusters",
+          "score": 189,
+          "tier": "gated"
+        }
+      ]
+    },
+    "q-defi-rwa-overview": {
+      "query": "What real-world-asset (RWA) products are live on Stellar?",
+      "hits": [
+        {
+          "id": "scout.searchProjects",
+          "score": 227,
+          "tier": "gated"
+        },
+        {
+          "id": "skills.lumenloop.stellar-ecosystem-scout",
+          "score": 179,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.getHackathon",
+          "score": 162,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_content_semantic",
+          "score": 151,
+          "tier": "gated"
+        },
+        {
+          "id": "lumenloop.search_directory",
+          "score": 98,
+          "tier": "gated"
+        }
+      ]
+    },
+    "q-scf-funded-similar-payroll": {
+      "query": "Have any crypto-payroll or stablecoin-payments apps been funded through the SCF before?",
+      "hits": [
+        {
+          "id": "skills.lumenloop.scf-submission-radar",
+          "score": 244,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 176,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.vetIdea",
+          "score": 131,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.scfPitch",
+          "score": 209,
+          "tier": "backfill"
+        },
+        {
+          "id": "lumenloop.find_similar_scf_submissions",
+          "score": 192,
+          "tier": "backfill"
+        }
+      ]
+    },
+    "q-tool-wallets-kit": {
+      "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_docs",
+          "score": 465,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.vetIdea",
+          "score": 308,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchProjects",
+          "score": 262,
+          "tier": "gated"
+        },
+        {
+          "id": "scout.searchResearch",
+          "score": 253,
+          "tier": "gated"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 178,
+          "tier": "gated"
+        }
+      ]
+    },
+    "q-pc-sequence-numbers-ordering-replace": {
+      "query": "How do Stellar sequence numbers behave compared with an EVM nonce, including ordering across unrelated accounts, duplicate or seq+2 submissions, and replacing a stuck pending transaction?",
+      "hits": [
+        {
+          "id": "stellarDocs.search_docs",
+          "score": 375,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_protocol_concepts_docs",
+          "score": 366,
+          "tier": "backfill"
+        },
+        {
+          "id": "scout.analyzeHackathonSubmissions",
+          "score": 355,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_soroban_contract_docs",
+          "score": 343,
+          "tier": "backfill"
+        },
+        {
+          "id": "stellarDocs.search_docs_in_category",
+          "score": 340,
+          "tier": "backfill"
+        }
+      ]
+    }
+  },
+  "reviewSubmissionExposed": false,
+  "shortTokenControls": [
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return a city's forecast."
+      },
+      "query": "send slack message",
+      "gated": 27,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the forecast for a city."
+      },
+      "query": "add alarm",
+      "gated": 45,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the forecast for a city."
+      },
+      "query": "archive all tasks",
+      "gated": 27,
+      "ungated": null,
+      "weightedUngated": null
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund a re-billed invoice."
+      },
+      "query": "read repository readme",
+      "gated": 55,
+      "ungated": null,
+      "weightedUngated": null
+    }
+  ],
+  "shortTokenPositives": [
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return a city's forecast."
+      },
+      "query": "weather.getForecast",
+      "score": 497
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the forecast for a city."
+      },
+      "query": "weather.getForecast",
+      "score": 497
+    },
+    {
+      "entry": {
+        "id": "weather.getForecast",
+        "name": "getForecast",
+        "service": "weather",
+        "kind": "operation",
+        "description": "Return the forecast for a city."
+      },
+      "query": "weather.getForecast",
+      "score": 497
+    },
+    {
+      "entry": {
+        "id": "billing.refundInvoice",
+        "name": "refundInvoice",
+        "service": "billing",
+        "kind": "operation",
+        "description": "Refund a re-billed invoice."
+      },
+      "query": "billing.refundInvoice",
+      "score": 517
+    }
+  ],
+  "source": {
+    "scoringSha256": "862e44c55fc403e7802e6351b617b54121cc5465e4dbac3606ce3a7989f8efdd",
+    "manifestSha256": "c81092b75ed7824a2dba63de73fa81635d2061f6265fa317222607f8aeec0660",
+    "sourceSnapshot": "fresh",
+    "freshVersion": "1.9.72"
+  },
+  "changedGradedRows": [
+    {
+      "id": "q-comp-yieldblox-oracle-incident",
+      "changes": {
+        "top1": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-defi-agentic-payment-standards-compare",
+      "changes": {
+        "top3": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-defi-aquarius-av",
+      "changes": {
+        "top1": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-defi-aquarius-tvl-freshness",
+      "changes": {
+        "top1": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-defi-blend-alternatives",
+      "changes": {
+        "top5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-defi-rwa-overview",
+      "changes": {
+        "top3": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-defi-stellarx-what-is",
+      "changes": {
+        "top1": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-defi-streaming-payments-prior-art",
+      "changes": {
+        "cardHit5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-eco-freighter-wallet",
+      "changes": {
+        "top3": {
+          "before": true,
+          "after": false
+        },
+        "top5": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-edge-deep-multi-hour-soroban-survey",
+      "changes": {
+        "top3": {
+          "before": false,
+          "after": true
+        },
+        "any3": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-edge-deep-no-budget-limit",
+      "changes": {
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "top3": {
+          "before": true,
+          "after": false
+        },
+        "top5": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        },
+        "any3": {
+          "before": true,
+          "after": false
+        },
+        "any5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-edge-inject-fabricate-citation-instruction",
+      "changes": {
+        "cardHit5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-protocol-quorum-slice-vs-quorum",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "top3": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        },
+        "any3": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-scf-funded-similar-payroll",
+      "changes": {
+        "top3": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-soroban-instance-storage-dos",
+      "changes": {
+        "top3": {
+          "before": false,
+          "after": true
+        },
+        "cardHit5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-soroban-oracle-defensive-consumption",
+      "changes": {
+        "top3": {
+          "before": false,
+          "after": true
+        },
+        "cardHit5": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-token-circle-usdc-on-stellar",
+      "changes": {
+        "any5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-aas-claimable-predicates-expiry-reserves",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-crp-export-tx-history-taxes",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-crp-regional-offramp-mobilemoney",
+      "changes": {
+        "any5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-defi-sdex-offer-lifecycle",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-edge-exchange-memo-lost-funds",
+      "changes": {
+        "top5": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-edge-scf-v7-centralization-myths",
+      "changes": {
+        "top3": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-sor-reflector-integration-code",
+      "changes": {
+        "top5": {
+          "before": false,
+          "after": true
+        },
+        "cardHit5": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-sor-require-auth-propagation",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-ti-classic-submission-errors",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-ti-freighter-localhost-not-detected",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "top3": {
+          "before": true,
+          "after": false
+        },
+        "top5": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        },
+        "any3": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "changes": {
+        "top1": {
+          "before": false,
+          "after": true
+        },
+        "top3": {
+          "before": false,
+          "after": true
+        },
+        "any1": {
+          "before": false,
+          "after": true
+        },
+        "any3": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-ti-multisig-recover-lobstr-vault",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-ti-secret-key-custody-backend",
+      "changes": {
+        "top1": {
+          "before": true,
+          "after": false
+        },
+        "any1": {
+          "before": true,
+          "after": false
+        }
+      }
+    },
+    {
+      "id": "q-holdout-a-10-oz-emergency-stop",
+      "changes": {
+        "forbiddenCapture": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-holdout-a-14-poseidon-merkle",
+      "changes": {
+        "forbiddenCapture": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-holdout-b-04-regulated-asset",
+      "changes": {
+        "top3": {
+          "before": false,
+          "after": true
+        },
+        "top5": {
+          "before": false,
+          "after": true
+        },
+        "cardHit5": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-holdout-b-06-sac-or-sep41",
+      "changes": {
+        "top5": {
+          "before": false,
+          "after": true
+        },
+        "cardHit5": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "id": "q-holdout-c-10-scf-positioning",
+      "changes": {
+        "top5": {
+          "before": true,
+          "after": false
+        },
+        "cardHit5": {
+          "before": true,
+          "after": false
+        },
+        "pass": {
+          "before": true,
+          "after": false
+        }
+      }
+    }
+  ],
+  "tiers": {
+    "cases": {
+      "gated": 1211,
+      "rowsWithoutGated": 34
+    },
+    "extendedCases": {
+      "gated": 127,
+      "rowsWithoutGated": 68
+    },
+    "skillsCases": {
+      "gated": 55,
+      "rowsWithoutGated": 2
+    },
+    "holdoutCases": {
+      "gated": 116,
+      "rowsWithoutGated": 17
+    },
+    "protocolHistoryCases": {
+      "gated": 32,
+      "rowsWithoutGated": 2
+    }
+  },
+  "allPass": false,
+  "tokenization": [
+    "d",
+    "app",
+    "i",
+    "phone",
+    "e",
+    "bay",
+    "get",
+    "forecast"
+  ]
+}

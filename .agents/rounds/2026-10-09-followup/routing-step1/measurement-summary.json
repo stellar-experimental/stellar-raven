@@ -1,0 +1,3195 @@
+{
+  "runs": {
+    "baseline-main": {
+      "stamp": "2026-10-09T16:46:57.603Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 219,
+        "top3": 298,
+        "top5": 326,
+        "cardN": 182,
+        "cardHit5": 112
+      },
+      "extended": {
+        "strict": {
+          "n": 122,
+          "top1": 93,
+          "top3": 111,
+          "top5": 117,
+          "cardN": 28,
+          "cardHit5": 16
+        },
+        "perService": {
+          "stellarDocs": {
+            "n": 94,
+            "top1": 79,
+            "top3": 91,
+            "top5": 94,
+            "cardN": 0,
+            "cardHit5": 0
+          },
+          "scout": {
+            "n": 25,
+            "top1": 14,
+            "top3": 19,
+            "top5": 22,
+            "cardN": 25,
+            "cardHit5": 16
+          },
+          "lumenloop": {
+            "n": 3,
+            "top1": 0,
+            "top3": 1,
+            "top5": 1,
+            "cardN": 3,
+            "cardHit5": 0
+          }
+        },
+        "acceptEither": {
+          "n": 122,
+          "top1": 102,
+          "top3": 118,
+          "top5": 121,
+          "cardN": 28,
+          "cardHit5": 16
+        }
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 26,
+        "top5": 29,
+        "cardN": 49,
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
+      },
+      "gate": {
+        "pass": true,
+        "failures": [],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": false,
+        "6": true,
+        "7": true,
+        "8": false,
+        "9": true,
+        "10": true,
+        "11": true,
+        "12": false
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1192,
+          "rowsWithoutGated": 35
+        },
+        "extendedCases": {
+          "gated": 127,
+          "rowsWithoutGated": 68
+        },
+        "skillsCases": {
+          "gated": 53,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 116,
+          "rowsWithoutGated": 17
+        },
+        "protocolHistoryCases": {
+          "gated": 33,
+          "rowsWithoutGated": 2
+        }
+      },
+      "rwaGroups": {
+        "positives": true,
+        "ordinaryNegatives": true,
+        "deferredItFails": false
+      },
+      "rwaFixture": {
+        "inventoryPath": "tmp/routing3/accepted/inventory/stellar-light.json",
+        "inventorySha256": "35a511f60aa4fd6bed0d6e0c6b4fe6a6eb6977bc5daa045d254271a5298379ec",
+        "version": "1.9.61",
+        "entrySha256": "c2d38ddb5b990d78e0c170a684daa8630fabd493e92b1cd1649c2cee42794aa9"
+      }
+    },
+    "baseline-fresh": {
+      "stamp": "2026-10-09T16:50:00.855Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "c81092b75ed7824a2dba63de73fa81635d2061f6265fa317222607f8aeec0660"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 220,
+        "top3": 295,
+        "top5": 325,
+        "cardN": 182,
+        "cardHit5": 111
+      },
+      "extended": {
+        "strict": {
+          "n": 122,
+          "top1": 93,
+          "top3": 112,
+          "top5": 117,
+          "cardN": 28,
+          "cardHit5": 16
+        },
+        "perService": {
+          "stellarDocs": {
+            "n": 94,
+            "top1": 79,
+            "top3": 91,
+            "top5": 94,
+            "cardN": 0,
+            "cardHit5": 0
+          },
+          "scout": {
+            "n": 25,
+            "top1": 14,
+            "top3": 20,
+            "top5": 22,
+            "cardN": 25,
+            "cardHit5": 16
+          },
+          "lumenloop": {
+            "n": 3,
+            "top1": 0,
+            "top3": 1,
+            "top5": 1,
+            "cardN": 3,
+            "cardHit5": 0
+          }
+        },
+        "acceptEither": {
+          "n": 122,
+          "top1": 102,
+          "top3": 118,
+          "top5": 121,
+          "cardN": 28,
+          "cardHit5": 16
+        }
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 26,
+        "top5": 29,
+        "cardN": 49,
+        "cardHit5": 29,
+        "forbiddenCaptures": 10,
+        "passed": 24
+      },
+      "gate": {
+        "pass": false,
+        "failures": [
+          "catalog/manifest.json SHA-256 does not match the committed gate evidence \u2014 re-baseline gates.json explicitly"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": false,
+        "6": false,
+        "7": true,
+        "8": false,
+        "9": true,
+        "10": true,
+        "11": true,
+        "12": false
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1209,
+          "rowsWithoutGated": 34
+        },
+        "extendedCases": {
+          "gated": 127,
+          "rowsWithoutGated": 68
+        },
+        "skillsCases": {
+          "gated": 55,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 116,
+          "rowsWithoutGated": 17
+        },
+        "protocolHistoryCases": {
+          "gated": 32,
+          "rowsWithoutGated": 2
+        }
+      },
+      "rwaGroups": {
+        "positives": true,
+        "ordinaryNegatives": true,
+        "deferredItFails": false
+      },
+      "rwaFixture": {
+        "inventoryPath": "tmp/routing3/fresh-inventory/stellar-light.json",
+        "inventorySha256": "a5ae479f670648b403d9a2ec94610d4982ec4d4daca5d073706413bab7f8b832",
+        "version": "1.9.72",
+        "entrySha256": "e6fb8f1c9890a911ead10b8042d6bd109e7d928c5191ec61a2bc73af71014a80"
+      }
+    },
+    "step1-main": {
+      "stamp": "2026-10-09T16:52:11.933Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 220,
+        "top3": 297,
+        "top5": 324,
+        "cardN": 182,
+        "cardHit5": 111
+      },
+      "extended": {
+        "strict": {
+          "n": 122,
+          "top1": 84,
+          "top3": 111,
+          "top5": 116,
+          "cardN": 28,
+          "cardHit5": 17
+        },
+        "perService": {
+          "stellarDocs": {
+            "n": 94,
+            "top1": 70,
+            "top3": 91,
+            "top5": 92,
+            "cardN": 0,
+            "cardHit5": 0
+          },
+          "scout": {
+            "n": 25,
+            "top1": 14,
+            "top3": 19,
+            "top5": 23,
+            "cardN": 25,
+            "cardHit5": 17
+          },
+          "lumenloop": {
+            "n": 3,
+            "top1": 0,
+            "top3": 1,
+            "top5": 1,
+            "cardN": 3,
+            "cardHit5": 0
+          }
+        },
+        "acceptEither": {
+          "n": 122,
+          "top1": 97,
+          "top3": 118,
+          "top5": 120,
+          "cardN": 28,
+          "cardHit5": 17
+        }
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 27,
+        "top5": 30,
+        "cardN": 49,
+        "cardHit5": 30,
+        "forbiddenCaptures": 12,
+        "passed": 23
+      },
+      "gate": {
+        "pass": false,
+        "failures": [
+          "holdout forbidden captures=12 above ceiling 10"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": false,
+        "5": false,
+        "6": true,
+        "7": false,
+        "8": false,
+        "9": true,
+        "10": false,
+        "11": true,
+        "12": false
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1194,
+          "rowsWithoutGated": 35
+        },
+        "extendedCases": {
+          "gated": 128,
+          "rowsWithoutGated": 68
+        },
+        "skillsCases": {
+          "gated": 53,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 116,
+          "rowsWithoutGated": 17
+        },
+        "protocolHistoryCases": {
+          "gated": 33,
+          "rowsWithoutGated": 2
+        }
+      },
+      "rwaGroups": {
+        "positives": true,
+        "ordinaryNegatives": true,
+        "deferredItFails": false
+      },
+      "rwaFixture": {
+        "inventoryPath": "tmp/routing3/accepted/inventory/stellar-light.json",
+        "inventorySha256": "35a511f60aa4fd6bed0d6e0c6b4fe6a6eb6977bc5daa045d254271a5298379ec",
+        "version": "1.9.61",
+        "entrySha256": "c2d38ddb5b990d78e0c170a684daa8630fabd493e92b1cd1649c2cee42794aa9"
+      }
+    },
+    "step1-fresh": {
+      "stamp": "2026-10-09T16:53:57.771Z",
+      "manifest": {
+        "path": "catalog/manifest.json",
+        "sha256": "c81092b75ed7824a2dba63de73fa81635d2061f6265fa317222607f8aeec0660"
+      },
+      "legacy": {
+        "n": 338,
+        "top1": 221,
+        "top3": 295,
+        "top5": 323,
+        "cardN": 182,
+        "cardHit5": 110
+      },
+      "extended": {
+        "strict": {
+          "n": 122,
+          "top1": 85,
+          "top3": 112,
+          "top5": 116,
+          "cardN": 28,
+          "cardHit5": 17
+        },
+        "perService": {
+          "stellarDocs": {
+            "n": 94,
+            "top1": 71,
+            "top3": 91,
+            "top5": 92,
+            "cardN": 0,
+            "cardHit5": 0
+          },
+          "scout": {
+            "n": 25,
+            "top1": 14,
+            "top3": 20,
+            "top5": 23,
+            "cardN": 25,
+            "cardHit5": 17
+          },
+          "lumenloop": {
+            "n": 3,
+            "top1": 0,
+            "top3": 1,
+            "top5": 1,
+            "cardN": 3,
+            "cardHit5": 0
+          }
+        },
+        "acceptEither": {
+          "n": 122,
+          "top1": 97,
+          "top3": 118,
+          "top5": 120,
+          "cardN": 28,
+          "cardHit5": 17
+        }
+      },
+      "skills": {
+        "authoredAt": "2026-07-02",
+        "n": 23,
+        "top1": 17,
+        "top3": 23,
+        "top5": 23,
+        "cardN": 23,
+        "cardHit5": 23
+      },
+      "holdout": {
+        "authoredAt": "2026-08-11",
+        "n": 49,
+        "top1": 12,
+        "top3": 27,
+        "top5": 30,
+        "cardN": 49,
+        "cardHit5": 30,
+        "forbiddenCaptures": 12,
+        "passed": 23
+      },
+      "gate": {
+        "pass": false,
+        "failures": [
+          "catalog/manifest.json SHA-256 does not match the committed gate evidence \u2014 re-baseline gates.json explicitly",
+          "holdout forbidden captures=12 above ceiling 10"
+        ],
+        "holdoutChecked": true,
+        "baselinedAt": "2026-10-08T18:02:47.313Z",
+        "evidence": {
+          "inputs": [
+            {
+              "path": "catalog/manifest.json",
+              "sha256": "4852f62608f105cfff34fdc7e01cdfe886bbeaca69250b8ea5f76d03d5208064"
+            },
+            {
+              "path": "eval/routing-cases.json",
+              "sha256": "9e863cedc1f1754f67b3955bfe744254da6ae0d069502aefc7964530493fafd3"
+            },
+            {
+              "path": "eval/skills-cases.json",
+              "sha256": "3ec4d90444489550f9ac9745384a4371cdbd0077dfc77a84597652d02f61ba1f"
+            },
+            {
+              "path": "eval/holdout-cases.json",
+              "sha256": "cb34d83be86f63a0a4ba06977659afa91d0fbaecbeab0e86b82bef9d73c4bbf5"
+            }
+          ],
+          "acceptedTotals": {
+            "legacy": {
+              "n": 338,
+              "top1": 219,
+              "top3": 298,
+              "top5": 326,
+              "cardN": 182,
+              "cardHit5": 112
+            },
+            "skills": {
+              "n": 23,
+              "top1": 17,
+              "top3": 23,
+              "top5": 23,
+              "cardN": 23,
+              "cardHit5": 23
+            },
+            "holdout": {
+              "n": 49,
+              "top1": 12,
+              "top3": 26,
+              "top5": 29,
+              "cardN": 49,
+              "cardHit5": 29,
+              "forbiddenCaptures": 10,
+              "passed": 24
+            }
+          },
+          "localTrace": "routing-2026-10-08T18-02-47-312Z.json"
+        }
+      },
+      "checks": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": true,
+        "10": false,
+        "11": true,
+        "12": false
+      },
+      "tiers": {
+        "cases": {
+          "gated": 1211,
+          "rowsWithoutGated": 34
+        },
+        "extendedCases": {
+          "gated": 127,
+          "rowsWithoutGated": 68
+        },
+        "skillsCases": {
+          "gated": 55,
+          "rowsWithoutGated": 2
+        },
+        "holdoutCases": {
+          "gated": 116,
+          "rowsWithoutGated": 17
+        },
+        "protocolHistoryCases": {
+          "gated": 32,
+          "rowsWithoutGated": 2
+        }
+      },
+      "rwaGroups": {
+        "positives": true,
+        "ordinaryNegatives": true,
+        "deferredItFails": false
+      },
+      "rwaFixture": {
+        "inventoryPath": "tmp/routing3/fresh-inventory/stellar-light.json",
+        "inventorySha256": "a5ae479f670648b403d9a2ec94610d4982ec4d4daca5d073706413bab7f8b832",
+        "version": "1.9.72",
+        "entrySha256": "e6fb8f1c9890a911ead10b8042d6bd109e7d928c5191ec61a2bc73af71014a80"
+      }
+    }
+  },
+  "comparisons": {
+    "baseline-source": {
+      "total": 544,
+      "graded": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "lane": "extendedCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ],
+      "order": [
+        "q-anchor-platform-what",
+        "q-anchor-sdp-what",
+        "q-asset-sac-usdc-soroban",
+        "q-comp-sep10-auth-role",
+        "q-defi-agentic-payment-standards-compare",
+        "q-defi-blend-alternatives",
+        "q-defi-blend-repo",
+        "q-defi-lending-scf-flagships",
+        "q-defi-liquid-staking-whitespace",
+        "q-defi-lumenloop-categories-vocab",
+        "q-defi-phoenix-scf",
+        "q-defi-rwa-overview",
+        "q-defi-soroswap-what-is",
+        "q-defi-stellarx-what-is",
+        "q-defi-streaming-payments-prior-art",
+        "q-defi-x402-on-stellar-what",
+        "q-defi-x402-projects-discovery",
+        "q-eco-pyusd-stellar-freshness",
+        "q-edge-fresh-latest-protocol-version",
+        "q-hist-remittance-corridors",
+        "q-infra-anchor-platform",
+        "q-infra-horizon-deprecated",
+        "q-infra-horizon-rpc-migration",
+        "q-protocol-23-whisk-caps",
+        "q-protocol-24-whisk-incident",
+        "q-protocol-bls12-381-cap59",
+        "q-protocol-cap-process",
+        "q-protocol-clawback-cap-0035",
+        "q-protocol-passkeys-secp256r1",
+        "q-protocol-validator-upgrade-vote",
+        "q-scf-award-tiers-list",
+        "q-scf-build-award-cap",
+        "q-scf-category-funded-ratio",
+        "q-scf-current-round",
+        "q-scf-eligibility-criteria",
+        "q-scf-funded-similar-payroll",
+        "q-scf-hackathon-detail-results",
+        "q-scf-hackathons-active",
+        "q-scf-hackathons-dorahacks",
+        "q-scf-how-to-apply",
+        "q-scf-sdf-marketing-grant",
+        "q-soroban-add-signer-smart-wallet-howto",
+        "q-soroban-cross-contract-call",
+        "q-soroban-factory-pattern",
+        "q-soroban-upgrade-wasm",
+        "q-soroban-x402-auth-entry-signing",
+        "q-tool-cli-skills-discovery",
+        "q-tool-cli-testnet-identity-howto",
+        "q-tool-leaderboard-open-issues",
+        "q-tool-passkeykit-smart-wallet",
+        "q-tool-sdk-repos-discovery",
+        "q-tool-skill-detail-install",
+        "q-tool-smart-wallet-repos-discovery",
+        "q-tool-wallets-kit",
+        "q-tool-which-sdk-comparison",
+        "q-aas-trusted-asset-list-whitelist",
+        "q-crp-anchors-by-corridor",
+        "q-crp-tokenize-personal-rwa",
+        "q-edge-deep-leave-no-stone-unturned-wallets",
+        "q-edge-scf-v7-centralization-myths",
+        "q-pc-l2-payment-channels-starlight",
+        "q-scf-ecosystem-listing-partner-jobs",
+        "q-scf-submission-lifecycle-deadlines",
+        "q-ti-enumerate-all-contracts",
+        "q-ti-launchtube-mercury",
+        "q-skill-dapp-freighter-invoke",
+        "q-skill-dapp-wallets-kit-passkeys",
+        "q-skill-agentic-payments-paid-api",
+        "q-skill-builder-quickstart-remittance",
+        "q-holdout-a-07-contract-audit-checklist",
+        "q-holdout-a-16-current-protocol",
+        "q-holdout-a-18-zk-ecosystem-search",
+        "q-holdout-b-10-nextjs-payment",
+        "q-holdout-b-14-compliance-backfill",
+        "q-holdout-c-02-defi-landscape",
+        "q-holdout-c-05-oracle-pick",
+        "q-holdout-c-07-tipping-start",
+        "q-holdout-c-10-scf-positioning",
+        "ph-protocol-24-archival-root-cause",
+        "ph-protocol-corrective-upgrade-history"
+      ],
+      "protocol": []
+    },
+    "step1-main": {
+      "total": 544,
+      "graded": [
+        {
+          "id": "q-comp-yieldblox-oracle-incident",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-aquarius-av",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-aquarius-tvl-freshness",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-eco-freighter-wallet",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-deep-multi-hour-soroban-survey",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-edge-deep-no-budget-limit",
+          "lane": "cases",
+          "changes": {
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-fresh-latest-blend-tvl",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-inject-fabricate-citation-instruction",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-protocol-quorum-slice-vs-quorum",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-instance-storage-dos",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oracle-defensive-consumption",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-token-circle-usdc-on-stellar",
+          "lane": "cases",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-aas-claimable-predicates-expiry-reserves",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-export-tx-history-taxes",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-regional-offramp-mobilemoney",
+          "lane": "extendedCases",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-sdex-offer-lifecycle",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-exchange-memo-lost-funds",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-pc-l2-payment-channels-starlight",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-sor-reflector-integration-code",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-sor-require-auth-propagation",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-classic-submission-errors",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-freighter-localhost-not-detected",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-secret-key-custody-backend",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-10-oz-emergency-stop",
+          "lane": "holdoutCases",
+          "changes": {
+            "forbiddenCapture": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-14-poseidon-merkle",
+          "lane": "holdoutCases",
+          "changes": {
+            "forbiddenCapture": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-b-04-regulated-asset",
+          "lane": "holdoutCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-b-06-sac-or-sep41",
+          "lane": "holdoutCases",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-c-10-scf-positioning",
+          "lane": "holdoutCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "cardHit5": {
+              "before": true,
+              "after": false
+            },
+            "pass": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ],
+      "order": [
+        "q-anchor-moneygram-ramps",
+        "q-anchor-platform-repo-discovery",
+        "q-asset-amm-fee-reserve",
+        "q-asset-usdc-eurc-issuer",
+        "q-asset-usdc-eurc-path-fx",
+        "q-comp-anchor-compliance-stack",
+        "q-comp-clawback-holder-risk",
+        "q-comp-finclusive-caas",
+        "q-comp-sep12-kyc-anchors",
+        "q-comp-sep6-vs-sep12-roles",
+        "q-comp-sep8-regulated-assets-approval-server",
+        "q-comp-yieldblox-oracle-incident",
+        "q-defi-agentic-payment-standards-compare",
+        "q-defi-aquarius-av",
+        "q-defi-aquarius-tvl-freshness",
+        "q-defi-defindex-honest",
+        "q-defi-lending-scf-flagships",
+        "q-defi-lumenloop-document-record",
+        "q-defi-rwa-scf-similar",
+        "q-defi-wisdomtree-crdt",
+        "q-eco-freighter-wallet",
+        "q-eco-lobstr-wallet",
+        "q-edge-deep-comprehensive-sep-audit",
+        "q-edge-deep-explicit-request-research-tool",
+        "q-edge-deep-full-history-report",
+        "q-edge-deep-leave-no-stone-unturned-defi",
+        "q-edge-deep-multi-hour-soroban-survey",
+        "q-edge-deep-no-budget-limit",
+        "q-edge-exhaustive-defi-deep-report",
+        "q-edge-factcheck-soroswap-first-amm",
+        "q-edge-fresh-latest-blend-tvl",
+        "q-edge-fresh-most-recent-news",
+        "q-edge-inject-fabricate-citation-instruction",
+        "q-edge-inject-ignore-instructions",
+        "q-edge-noinfo-sep-9999",
+        "q-hist-franklin-templeton-benji",
+        "q-hist-remittance-corridors",
+        "q-infra-galexie-vs-etl",
+        "q-infra-hubble-vs-rpc-layer",
+        "q-infra-rpc-event-retention",
+        "q-infra-rpc-provider-archive-tier",
+        "q-infra-rpc-providers-list",
+        "q-infra-secp256r1-passkeys",
+        "q-infra-simulate-transaction-howto",
+        "q-infra-which-indexer",
+        "q-org-sdf-enterprise-fund",
+        "q-pay-anchor-msb-licensing",
+        "q-pay-travel-rule-aid-flows",
+        "q-protocol-19-preconditions-cap-0021",
+        "q-protocol-24-whisk-incident",
+        "q-protocol-amm-cap-0038",
+        "q-protocol-futurenet-vs-testnet",
+        "q-protocol-horizon-vs-rpc",
+        "q-protocol-max-tx-set-size",
+        "q-protocol-network-passphrases",
+        "q-protocol-parallel-execution",
+        "q-protocol-quorum-slice-vs-quorum",
+        "q-protocol-tier1-requirements",
+        "q-protocol-validator-node-roles",
+        "q-scf-exhaustive-funding-report",
+        "q-scf-funding-by-category",
+        "q-scf-hackathon-detail-results",
+        "q-scf-hackathons-active",
+        "q-scf-total-distributed",
+        "q-scf-verified-members",
+        "q-scf-vs-sdf-enterprise-fund",
+        "q-sep-12-kyc",
+        "q-sep-43-web-wallet-api",
+        "q-sep-6-24-deprecation",
+        "q-sep-7-uri",
+        "q-sep-clawback-prereq-flag",
+        "q-soroban-canonical-examples-source",
+        "q-soroban-constructor-lifecycle",
+        "q-soroban-cross-contract-footprint",
+        "q-soroban-fee-structure",
+        "q-soroban-instance-storage-dos",
+        "q-soroban-no-std-constraints",
+        "q-soroban-oracle-defensive-consumption",
+        "q-soroban-resource-limits",
+        "q-soroban-sdk-cve",
+        "q-soroban-ttl-expiry-behavior",
+        "q-soroban-upgradeable-storage-compat",
+        "q-soroban-wasm-size-limit",
+        "q-soroban-zk-bn254-poseidon",
+        "q-token-circle-usdc-on-stellar",
+        "q-token-initial-supply-distribution",
+        "q-tool-cli-init-build-deploy",
+        "q-tool-cli-skills-discovery",
+        "q-tool-leaderboard-open-issues",
+        "q-tool-passkey-wallet-recovery",
+        "q-aas-claimable-predicates-expiry-reserves",
+        "q-aas-trustline-limit-lifecycle",
+        "q-crp-anchors-by-corridor",
+        "q-crp-become-an-anchor-licensing",
+        "q-crp-export-tx-history-taxes",
+        "q-crp-regional-offramp-mobilemoney",
+        "q-crp-remittance-founder-advisory",
+        "q-crp-tokenize-personal-rwa",
+        "q-defi-arbitrage-pathpayment-bots",
+        "q-defi-bridge-evm-to-stellar-axelar",
+        "q-defi-nft-standards-projects",
+        "q-defi-provide-liquidity-impermanent-loss",
+        "q-defi-sdex-offer-lifecycle",
+        "q-edge-exchange-memo-lost-funds",
+        "q-edge-metamask-evm-mental-model",
+        "q-edge-retail-everyday-use-eli5",
+        "q-edge-scf-v7-centralization-myths",
+        "q-edge-validators-reverse-tx-fork-detection",
+        "q-hot-sdf-transparency-wallets-reports",
+        "q-hot-sdf-xlm-holdings-sales",
+        "q-pc-account-activation-not-found",
+        "q-pc-account-merge-reclaim-reserve",
+        "q-pc-address-types-strkey",
+        "q-pc-bucketlist-vs-merkle-inclusion-proof",
+        "q-pc-fee-bump-channel-accounts-feepool",
+        "q-pc-l2-payment-channels-starlight",
+        "q-pc-memos-reference",
+        "q-pc-multisig-setup-lifecycle",
+        "q-pc-muxed-accounts",
+        "q-pc-practical-fee-setting",
+        "q-pc-quantum-preparedness-dormant",
+        "q-pc-scp-message-types-overlay",
+        "q-pc-sequence-numbers-ordering-replace",
+        "q-pc-sponsored-reserves",
+        "q-pc-tx-finality-failure-semantics",
+        "q-scf-nontechnical-participation",
+        "q-scf-submission-lifecycle-deadlines",
+        "q-sor-bindings-from-wasm-no-address",
+        "q-sor-build-target-wasm32v1",
+        "q-sor-classic-dex-from-contract",
+        "q-sor-confidential-tokens",
+        "q-sor-contract-as-claimable-arbiter",
+        "q-sor-contract-trustlines-c-address",
+        "q-sor-decode-hosterror-codes",
+        "q-sor-deploy-invoke-from-js-sdk",
+        "q-sor-doc-timestamping-manage-data",
+        "q-sor-evm-to-soroban-porting",
+        "q-sor-force-fast-archival-localnet",
+        "q-sor-freeze-account-allowance",
+        "q-sor-index-sac-vs-sep41-events",
+        "q-sor-msg-sender-equivalent",
+        "q-sor-native-xlm-sac-address",
+        "q-sor-nft-mint-on-soroban",
+        "q-sor-p23-auto-restore-extendto",
+        "q-sor-recurring-escrow-patterns",
+        "q-sor-reflector-integration-code",
+        "q-sor-require-auth-propagation",
+        "q-sor-sac-introspection",
+        "q-sor-scval-conversion",
+        "q-sor-sep41-transfer-vs-transferfrom",
+        "q-sor-stale-spec-after-upgrade",
+        "q-sor-testing-negative-auth-events",
+        "q-sor-ttl-defaults-extend",
+        "q-sor-x-ray-bn254-sdk-gap",
+        "q-ti-bindings-to-nextjs-integration",
+        "q-ti-channel-accounts-throughput",
+        "q-ti-classic-submission-errors",
+        "q-ti-cli-rust-windows-troubleshooting",
+        "q-ti-compute-token-lp-market-data",
+        "q-ti-connect-wallet-button-code",
+        "q-ti-contract-verification-explorers",
+        "q-ti-custodial-account-generation-c-address",
+        "q-ti-enumerate-all-contracts",
+        "q-ti-enumerate-holders-airdrop",
+        "q-ti-find-export-secret-key",
+        "q-ti-freighter-localhost-not-detected",
+        "q-ti-friendbot-ratelimit-alternatives",
+        "q-ti-historical-events-beyond-retention",
+        "q-ti-historical-pointintime-balances",
+        "q-ti-java-sdk-wallet-feebump",
+        "q-ti-launchtube-mercury",
+        "q-ti-multisig-recover-lobstr-vault",
+        "q-ti-openzeppelin-relayer",
+        "q-ti-parse-raw-ledger-data",
+        "q-ti-rpc-gettransactions-pagination-xdr",
+        "q-ti-run-tune-own-horizon",
+        "q-ti-scaffold-stellar",
+        "q-ti-sdk-package-rename",
+        "q-ti-secret-key-custody-backend",
+        "q-ti-secret-key-vs-mnemonic-derivation",
+        "q-ti-self-host-core-rpc-full-history",
+        "q-ti-self-host-retention-backfill",
+        "q-ti-stellar-lab-usage-and-new-ui",
+        "q-ti-testnet-mainnet-migration",
+        "q-ti-testnet-usdc-faucet",
+        "q-ti-tx-too-late-resubmit",
+        "q-ti-xdr-decode-in-code",
+        "q-skill-soroban-dev-patterns",
+        "q-skill-soroban-testing-strategy",
+        "q-skill-soroban-security-checklist",
+        "q-skill-oz-project-setup",
+        "q-skill-oz-access-control",
+        "q-skill-dapp-wallets-kit-passkeys",
+        "q-skill-data-balances-history",
+        "q-skill-agentic-payments-paid-api",
+        "q-skill-standards-sep-map",
+        "q-skill-zk-circom-groth16",
+        "q-skill-eco-scout-rwa-landscape",
+        "q-skill-project-dossier-blend",
+        "q-skill-builder-quickstart-remittance",
+        "q-holdout-a-02-oz-atomic-migration",
+        "q-holdout-a-04-oz-workspace-setup",
+        "q-holdout-a-06-circom-verifier",
+        "q-holdout-a-08-contract-security-review",
+        "q-holdout-a-10-oz-emergency-stop",
+        "q-holdout-a-12-wasm-target",
+        "q-holdout-a-14-poseidon-merkle",
+        "q-holdout-a-15-resource-profiling",
+        "q-holdout-a-17-audit-registry",
+        "q-holdout-b-02-asset-metadata-standard",
+        "q-holdout-b-03-clawback-stablecoin",
+        "q-holdout-b-04-regulated-asset",
+        "q-holdout-b-06-sac-or-sep41",
+        "q-holdout-b-08-sep24-validation",
+        "q-holdout-b-10-nextjs-payment",
+        "q-holdout-b-14-compliance-backfill",
+        "q-holdout-b-16-wallet-usdc-refresh",
+        "q-holdout-c-02-defi-landscape",
+        "q-holdout-c-04-rwa-digest",
+        "q-holdout-c-06-oracle-tradeoffs",
+        "q-holdout-c-08-tipping-plan",
+        "q-holdout-c-10-scf-positioning",
+        "q-holdout-c-12-blend-directory",
+        "q-holdout-c-14-aquarius-tweet",
+        "q-holdout-c-16-x402-express",
+        "q-holdout-c-17-freighter-nextjs",
+        "ph-protocol-24-archival-root-cause",
+        "ph-protocol-corrective-upgrade-history",
+        "ph-protocol-regression-remediation",
+        "ph-yieldblox-oracle-incident",
+        "ph-security-incident-postmortems",
+        "ph-soroban-auth-audit-history",
+        "ph-protocol-feature-origin"
+      ],
+      "protocol": []
+    },
+    "step1-fresh": {
+      "total": 544,
+      "graded": [
+        {
+          "id": "q-comp-yieldblox-oracle-incident",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-aquarius-av",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-aquarius-tvl-freshness",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-eco-freighter-wallet",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-deep-multi-hour-soroban-survey",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-edge-deep-no-budget-limit",
+          "lane": "cases",
+          "changes": {
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-fresh-latest-blend-tvl",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-inject-fabricate-citation-instruction",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-protocol-quorum-slice-vs-quorum",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-instance-storage-dos",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oracle-defensive-consumption",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-token-circle-usdc-on-stellar",
+          "lane": "cases",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-aas-claimable-predicates-expiry-reserves",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-export-tx-history-taxes",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-regional-offramp-mobilemoney",
+          "lane": "extendedCases",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-sdex-offer-lifecycle",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-exchange-memo-lost-funds",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-sor-reflector-integration-code",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-sor-require-auth-propagation",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-classic-submission-errors",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-freighter-localhost-not-detected",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-secret-key-custody-backend",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-10-oz-emergency-stop",
+          "lane": "holdoutCases",
+          "changes": {
+            "forbiddenCapture": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-14-poseidon-merkle",
+          "lane": "holdoutCases",
+          "changes": {
+            "forbiddenCapture": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-b-04-regulated-asset",
+          "lane": "holdoutCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-b-06-sac-or-sep41",
+          "lane": "holdoutCases",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-c-10-scf-positioning",
+          "lane": "holdoutCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "cardHit5": {
+              "before": true,
+              "after": false
+            },
+            "pass": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ],
+      "order": [
+        "q-anchor-moneygram-ramps",
+        "q-anchor-platform-repo-discovery",
+        "q-asset-amm-fee-reserve",
+        "q-asset-usdc-eurc-issuer",
+        "q-asset-usdc-eurc-path-fx",
+        "q-comp-anchor-compliance-stack",
+        "q-comp-clawback-holder-risk",
+        "q-comp-finclusive-caas",
+        "q-comp-sep12-kyc-anchors",
+        "q-comp-sep6-vs-sep12-roles",
+        "q-comp-sep8-regulated-assets-approval-server",
+        "q-comp-yieldblox-oracle-incident",
+        "q-defi-agentic-payment-standards-compare",
+        "q-defi-aquarius-av",
+        "q-defi-aquarius-tvl-freshness",
+        "q-defi-defindex-honest",
+        "q-defi-lumenloop-document-record",
+        "q-defi-rwa-scf-similar",
+        "q-defi-wisdomtree-crdt",
+        "q-eco-freighter-wallet",
+        "q-eco-lobstr-wallet",
+        "q-edge-deep-comprehensive-sep-audit",
+        "q-edge-deep-explicit-request-research-tool",
+        "q-edge-deep-full-history-report",
+        "q-edge-deep-leave-no-stone-unturned-defi",
+        "q-edge-deep-multi-hour-soroban-survey",
+        "q-edge-deep-no-budget-limit",
+        "q-edge-exhaustive-defi-deep-report",
+        "q-edge-factcheck-soroswap-first-amm",
+        "q-edge-fresh-latest-blend-tvl",
+        "q-edge-fresh-most-recent-news",
+        "q-edge-inject-fabricate-citation-instruction",
+        "q-edge-inject-ignore-instructions",
+        "q-edge-noinfo-sep-9999",
+        "q-hist-franklin-templeton-benji",
+        "q-infra-galexie-vs-etl",
+        "q-infra-hubble-vs-rpc-layer",
+        "q-infra-rpc-event-retention",
+        "q-infra-rpc-provider-archive-tier",
+        "q-infra-rpc-providers-list",
+        "q-infra-secp256r1-passkeys",
+        "q-infra-simulate-transaction-howto",
+        "q-infra-which-indexer",
+        "q-org-sdf-enterprise-fund",
+        "q-pay-anchor-msb-licensing",
+        "q-pay-travel-rule-aid-flows",
+        "q-protocol-19-preconditions-cap-0021",
+        "q-protocol-24-whisk-incident",
+        "q-protocol-amm-cap-0038",
+        "q-protocol-futurenet-vs-testnet",
+        "q-protocol-horizon-vs-rpc",
+        "q-protocol-max-tx-set-size",
+        "q-protocol-network-passphrases",
+        "q-protocol-parallel-execution",
+        "q-protocol-quorum-slice-vs-quorum",
+        "q-protocol-tier1-requirements",
+        "q-protocol-validator-node-roles",
+        "q-scf-exhaustive-funding-report",
+        "q-scf-funding-by-category",
+        "q-scf-hackathons-active",
+        "q-scf-total-distributed",
+        "q-scf-verified-members",
+        "q-scf-vs-sdf-enterprise-fund",
+        "q-sep-12-kyc",
+        "q-sep-43-web-wallet-api",
+        "q-sep-6-24-deprecation",
+        "q-sep-7-uri",
+        "q-sep-clawback-prereq-flag",
+        "q-soroban-canonical-examples-source",
+        "q-soroban-constructor-lifecycle",
+        "q-soroban-cross-contract-footprint",
+        "q-soroban-fee-structure",
+        "q-soroban-instance-storage-dos",
+        "q-soroban-no-std-constraints",
+        "q-soroban-oracle-defensive-consumption",
+        "q-soroban-resource-limits",
+        "q-soroban-sdk-cve",
+        "q-soroban-ttl-expiry-behavior",
+        "q-soroban-upgradeable-storage-compat",
+        "q-soroban-wasm-size-limit",
+        "q-soroban-zk-bn254-poseidon",
+        "q-token-circle-usdc-on-stellar",
+        "q-token-initial-supply-distribution",
+        "q-tool-cli-init-build-deploy",
+        "q-tool-passkey-wallet-recovery",
+        "q-tool-which-sdk-comparison",
+        "q-aas-claimable-predicates-expiry-reserves",
+        "q-aas-trustline-limit-lifecycle",
+        "q-crp-anchors-by-corridor",
+        "q-crp-become-an-anchor-licensing",
+        "q-crp-export-tx-history-taxes",
+        "q-crp-regional-offramp-mobilemoney",
+        "q-crp-remittance-founder-advisory",
+        "q-crp-tokenize-personal-rwa",
+        "q-defi-arbitrage-pathpayment-bots",
+        "q-defi-bridge-evm-to-stellar-axelar",
+        "q-defi-nft-standards-projects",
+        "q-defi-provide-liquidity-impermanent-loss",
+        "q-defi-sdex-offer-lifecycle",
+        "q-edge-deep-leave-no-stone-unturned-wallets",
+        "q-edge-exchange-memo-lost-funds",
+        "q-edge-metamask-evm-mental-model",
+        "q-edge-retail-everyday-use-eli5",
+        "q-edge-scf-v7-centralization-myths",
+        "q-edge-validators-reverse-tx-fork-detection",
+        "q-hot-sdf-transparency-wallets-reports",
+        "q-hot-sdf-xlm-holdings-sales",
+        "q-pc-account-activation-not-found",
+        "q-pc-account-merge-reclaim-reserve",
+        "q-pc-address-types-strkey",
+        "q-pc-bucketlist-vs-merkle-inclusion-proof",
+        "q-pc-fee-bump-channel-accounts-feepool",
+        "q-pc-l2-payment-channels-starlight",
+        "q-pc-memos-reference",
+        "q-pc-multisig-setup-lifecycle",
+        "q-pc-muxed-accounts",
+        "q-pc-practical-fee-setting",
+        "q-pc-quantum-preparedness-dormant",
+        "q-pc-scp-message-types-overlay",
+        "q-pc-sequence-numbers-ordering-replace",
+        "q-pc-sponsored-reserves",
+        "q-pc-tx-finality-failure-semantics",
+        "q-scf-nontechnical-participation",
+        "q-sor-bindings-from-wasm-no-address",
+        "q-sor-build-target-wasm32v1",
+        "q-sor-classic-dex-from-contract",
+        "q-sor-confidential-tokens",
+        "q-sor-contract-as-claimable-arbiter",
+        "q-sor-contract-trustlines-c-address",
+        "q-sor-decode-hosterror-codes",
+        "q-sor-deploy-invoke-from-js-sdk",
+        "q-sor-doc-timestamping-manage-data",
+        "q-sor-evm-to-soroban-porting",
+        "q-sor-force-fast-archival-localnet",
+        "q-sor-freeze-account-allowance",
+        "q-sor-index-sac-vs-sep41-events",
+        "q-sor-msg-sender-equivalent",
+        "q-sor-native-xlm-sac-address",
+        "q-sor-nft-mint-on-soroban",
+        "q-sor-p23-auto-restore-extendto",
+        "q-sor-recurring-escrow-patterns",
+        "q-sor-reflector-integration-code",
+        "q-sor-require-auth-propagation",
+        "q-sor-sac-introspection",
+        "q-sor-scval-conversion",
+        "q-sor-sep41-transfer-vs-transferfrom",
+        "q-sor-stale-spec-after-upgrade",
+        "q-sor-testing-negative-auth-events",
+        "q-sor-ttl-defaults-extend",
+        "q-sor-x-ray-bn254-sdk-gap",
+        "q-ti-bindings-to-nextjs-integration",
+        "q-ti-channel-accounts-throughput",
+        "q-ti-classic-submission-errors",
+        "q-ti-cli-rust-windows-troubleshooting",
+        "q-ti-compute-token-lp-market-data",
+        "q-ti-connect-wallet-button-code",
+        "q-ti-contract-verification-explorers",
+        "q-ti-custodial-account-generation-c-address",
+        "q-ti-enumerate-all-contracts",
+        "q-ti-enumerate-holders-airdrop",
+        "q-ti-find-export-secret-key",
+        "q-ti-freighter-localhost-not-detected",
+        "q-ti-friendbot-ratelimit-alternatives",
+        "q-ti-historical-events-beyond-retention",
+        "q-ti-historical-pointintime-balances",
+        "q-ti-java-sdk-wallet-feebump",
+        "q-ti-launchtube-mercury",
+        "q-ti-multisig-recover-lobstr-vault",
+        "q-ti-openzeppelin-relayer",
+        "q-ti-parse-raw-ledger-data",
+        "q-ti-rpc-gettransactions-pagination-xdr",
+        "q-ti-run-tune-own-horizon",
+        "q-ti-scaffold-stellar",
+        "q-ti-sdk-package-rename",
+        "q-ti-secret-key-custody-backend",
+        "q-ti-secret-key-vs-mnemonic-derivation",
+        "q-ti-self-host-core-rpc-full-history",
+        "q-ti-self-host-retention-backfill",
+        "q-ti-stellar-lab-usage-and-new-ui",
+        "q-ti-testnet-mainnet-migration",
+        "q-ti-testnet-usdc-faucet",
+        "q-ti-tx-too-late-resubmit",
+        "q-ti-xdr-decode-in-code",
+        "q-skill-soroban-dev-patterns",
+        "q-skill-soroban-testing-strategy",
+        "q-skill-soroban-security-checklist",
+        "q-skill-oz-project-setup",
+        "q-skill-oz-access-control",
+        "q-skill-dapp-freighter-invoke",
+        "q-skill-dapp-wallets-kit-passkeys",
+        "q-skill-data-balances-history",
+        "q-skill-agentic-payments-paid-api",
+        "q-skill-standards-sep-map",
+        "q-skill-zk-circom-groth16",
+        "q-skill-eco-scout-rwa-landscape",
+        "q-skill-project-dossier-blend",
+        "q-skill-builder-quickstart-remittance",
+        "q-holdout-a-02-oz-atomic-migration",
+        "q-holdout-a-04-oz-workspace-setup",
+        "q-holdout-a-06-circom-verifier",
+        "q-holdout-a-08-contract-security-review",
+        "q-holdout-a-10-oz-emergency-stop",
+        "q-holdout-a-12-wasm-target",
+        "q-holdout-a-14-poseidon-merkle",
+        "q-holdout-a-15-resource-profiling",
+        "q-holdout-a-17-audit-registry",
+        "q-holdout-b-02-asset-metadata-standard",
+        "q-holdout-b-03-clawback-stablecoin",
+        "q-holdout-b-04-regulated-asset",
+        "q-holdout-b-06-sac-or-sep41",
+        "q-holdout-b-08-sep24-validation",
+        "q-holdout-b-10-nextjs-payment",
+        "q-holdout-b-14-compliance-backfill",
+        "q-holdout-b-16-wallet-usdc-refresh",
+        "q-holdout-c-02-defi-landscape",
+        "q-holdout-c-04-rwa-digest",
+        "q-holdout-c-06-oracle-tradeoffs",
+        "q-holdout-c-08-tipping-plan",
+        "q-holdout-c-10-scf-positioning",
+        "q-holdout-c-12-blend-directory",
+        "q-holdout-c-14-aquarius-tweet",
+        "q-holdout-c-16-x402-express",
+        "q-holdout-c-17-freighter-nextjs",
+        "ph-protocol-24-archival-root-cause",
+        "ph-protocol-corrective-upgrade-history",
+        "ph-protocol-regression-remediation",
+        "ph-yieldblox-oracle-incident",
+        "ph-security-incident-postmortems",
+        "ph-soroban-auth-audit-history",
+        "ph-protocol-feature-origin"
+      ],
+      "protocol": []
+    },
+    "step1-source": {
+      "total": 544,
+      "graded": [
+        {
+          "id": "q-defi-blend-alternatives",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "lane": "extendedCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-pc-l2-payment-channels-starlight",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ],
+      "order": [
+        "q-anchor-platform-what",
+        "q-anchor-sdp-what",
+        "q-asset-sac-usdc-soroban",
+        "q-comp-sep10-auth-role",
+        "q-defi-agentic-payment-standards-compare",
+        "q-defi-blend-alternatives",
+        "q-defi-blend-repo",
+        "q-defi-lending-scf-flagships",
+        "q-defi-liquid-staking-whitespace",
+        "q-defi-lumenloop-categories-vocab",
+        "q-defi-phoenix-scf",
+        "q-defi-rwa-overview",
+        "q-defi-soroswap-what-is",
+        "q-defi-stellarx-what-is",
+        "q-defi-streaming-payments-prior-art",
+        "q-defi-x402-on-stellar-what",
+        "q-defi-x402-projects-discovery",
+        "q-eco-pyusd-stellar-freshness",
+        "q-edge-fresh-latest-protocol-version",
+        "q-hist-remittance-corridors",
+        "q-infra-anchor-platform",
+        "q-infra-horizon-deprecated",
+        "q-infra-horizon-rpc-migration",
+        "q-protocol-23-whisk-caps",
+        "q-protocol-24-whisk-incident",
+        "q-protocol-bls12-381-cap59",
+        "q-protocol-cap-process",
+        "q-protocol-clawback-cap-0035",
+        "q-protocol-passkeys-secp256r1",
+        "q-protocol-validator-upgrade-vote",
+        "q-scf-award-tiers-list",
+        "q-scf-build-award-cap",
+        "q-scf-category-funded-ratio",
+        "q-scf-current-round",
+        "q-scf-eligibility-criteria",
+        "q-scf-funded-similar-payroll",
+        "q-scf-hackathon-detail-results",
+        "q-scf-hackathons-active",
+        "q-scf-hackathons-dorahacks",
+        "q-scf-how-to-apply",
+        "q-scf-sdf-marketing-grant",
+        "q-soroban-add-signer-smart-wallet-howto",
+        "q-soroban-cross-contract-call",
+        "q-soroban-factory-pattern",
+        "q-soroban-upgrade-wasm",
+        "q-soroban-x402-auth-entry-signing",
+        "q-tool-cli-skills-discovery",
+        "q-tool-cli-testnet-identity-howto",
+        "q-tool-leaderboard-open-issues",
+        "q-tool-passkeykit-smart-wallet",
+        "q-tool-sdk-repos-discovery",
+        "q-tool-skill-detail-install",
+        "q-tool-smart-wallet-repos-discovery",
+        "q-tool-wallets-kit",
+        "q-tool-which-sdk-comparison",
+        "q-aas-trusted-asset-list-whitelist",
+        "q-crp-anchors-by-corridor",
+        "q-crp-tokenize-personal-rwa",
+        "q-edge-deep-leave-no-stone-unturned-wallets",
+        "q-edge-scf-v7-centralization-myths",
+        "q-pc-l2-payment-channels-starlight",
+        "q-pc-sequence-numbers-ordering-replace",
+        "q-pc-sponsored-reserves",
+        "q-scf-ecosystem-listing-partner-jobs",
+        "q-scf-submission-lifecycle-deadlines",
+        "q-sor-msg-sender-equivalent",
+        "q-ti-channel-accounts-throughput",
+        "q-ti-launchtube-mercury",
+        "q-skill-dapp-wallets-kit-passkeys",
+        "q-skill-agentic-payments-paid-api",
+        "q-skill-builder-quickstart-remittance",
+        "q-holdout-a-07-contract-audit-checklist",
+        "q-holdout-a-16-current-protocol",
+        "q-holdout-a-18-zk-ecosystem-search",
+        "q-holdout-b-10-nextjs-payment",
+        "q-holdout-b-16-wallet-usdc-refresh",
+        "q-holdout-c-02-defi-landscape",
+        "q-holdout-c-05-oracle-pick",
+        "q-holdout-c-07-tipping-start",
+        "ph-protocol-24-archival-root-cause",
+        "ph-protocol-corrective-upgrade-history"
+      ],
+      "protocol": []
+    },
+    "step1-fresh-v-main": {
+      "total": 544,
+      "graded": [
+        {
+          "id": "q-comp-yieldblox-oracle-incident",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-aquarius-av",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-aquarius-tvl-freshness",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "lane": "cases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-rwa-overview",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-stellarx-what-is",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-defi-streaming-payments-prior-art",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-eco-freighter-wallet",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-deep-multi-hour-soroban-survey",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-edge-deep-no-budget-limit",
+          "lane": "cases",
+          "changes": {
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-fresh-latest-blend-tvl",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            },
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-inject-fabricate-citation-instruction",
+          "lane": "cases",
+          "changes": {
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-protocol-quorum-slice-vs-quorum",
+          "lane": "cases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-scf-funded-similar-payroll",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-instance-storage-dos",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-soroban-oracle-defensive-consumption",
+          "lane": "cases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-token-circle-usdc-on-stellar",
+          "lane": "cases",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-aas-claimable-predicates-expiry-reserves",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-export-tx-history-taxes",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-crp-regional-offramp-mobilemoney",
+          "lane": "extendedCases",
+          "changes": {
+            "any5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-defi-sdex-offer-lifecycle",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-exchange-memo-lost-funds",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-edge-scf-v7-centralization-myths",
+          "lane": "extendedCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-sor-reflector-integration-code",
+          "lane": "extendedCases",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-sor-require-auth-propagation",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-classic-submission-errors",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-freighter-localhost-not-detected",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "top3": {
+              "before": true,
+              "after": false
+            },
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            },
+            "any3": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": false,
+              "after": true
+            },
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "any1": {
+              "before": false,
+              "after": true
+            },
+            "any3": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-ti-multisig-recover-lobstr-vault",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-ti-secret-key-custody-backend",
+          "lane": "extendedCases",
+          "changes": {
+            "top1": {
+              "before": true,
+              "after": false
+            },
+            "any1": {
+              "before": true,
+              "after": false
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-10-oz-emergency-stop",
+          "lane": "holdoutCases",
+          "changes": {
+            "forbiddenCapture": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-a-14-poseidon-merkle",
+          "lane": "holdoutCases",
+          "changes": {
+            "forbiddenCapture": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-b-04-regulated-asset",
+          "lane": "holdoutCases",
+          "changes": {
+            "top3": {
+              "before": false,
+              "after": true
+            },
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-b-06-sac-or-sep41",
+          "lane": "holdoutCases",
+          "changes": {
+            "top5": {
+              "before": false,
+              "after": true
+            },
+            "cardHit5": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "id": "q-holdout-c-10-scf-positioning",
+          "lane": "holdoutCases",
+          "changes": {
+            "top5": {
+              "before": true,
+              "after": false
+            },
+            "cardHit5": {
+              "before": true,
+              "after": false
+            },
+            "pass": {
+              "before": true,
+              "after": false
+            }
+          }
+        }
+      ],
+      "order": [
+        "q-anchor-moneygram-ramps",
+        "q-anchor-platform-repo-discovery",
+        "q-anchor-platform-what",
+        "q-anchor-sdp-what",
+        "q-asset-amm-fee-reserve",
+        "q-asset-sac-usdc-soroban",
+        "q-asset-usdc-eurc-issuer",
+        "q-asset-usdc-eurc-path-fx",
+        "q-comp-anchor-compliance-stack",
+        "q-comp-clawback-holder-risk",
+        "q-comp-finclusive-caas",
+        "q-comp-sep10-auth-role",
+        "q-comp-sep12-kyc-anchors",
+        "q-comp-sep6-vs-sep12-roles",
+        "q-comp-sep8-regulated-assets-approval-server",
+        "q-comp-yieldblox-oracle-incident",
+        "q-defi-agentic-payment-standards-compare",
+        "q-defi-aquarius-av",
+        "q-defi-aquarius-tvl-freshness",
+        "q-defi-blend-alternatives",
+        "q-defi-blend-repo",
+        "q-defi-defindex-honest",
+        "q-defi-lending-scf-flagships",
+        "q-defi-liquid-staking-whitespace",
+        "q-defi-lumenloop-categories-vocab",
+        "q-defi-lumenloop-document-record",
+        "q-defi-phoenix-scf",
+        "q-defi-rwa-overview",
+        "q-defi-rwa-scf-similar",
+        "q-defi-soroswap-what-is",
+        "q-defi-stellarx-what-is",
+        "q-defi-streaming-payments-prior-art",
+        "q-defi-wisdomtree-crdt",
+        "q-defi-x402-on-stellar-what",
+        "q-defi-x402-projects-discovery",
+        "q-eco-freighter-wallet",
+        "q-eco-lobstr-wallet",
+        "q-eco-pyusd-stellar-freshness",
+        "q-edge-deep-comprehensive-sep-audit",
+        "q-edge-deep-explicit-request-research-tool",
+        "q-edge-deep-full-history-report",
+        "q-edge-deep-leave-no-stone-unturned-defi",
+        "q-edge-deep-multi-hour-soroban-survey",
+        "q-edge-deep-no-budget-limit",
+        "q-edge-exhaustive-defi-deep-report",
+        "q-edge-factcheck-soroswap-first-amm",
+        "q-edge-fresh-latest-blend-tvl",
+        "q-edge-fresh-latest-protocol-version",
+        "q-edge-fresh-most-recent-news",
+        "q-edge-inject-fabricate-citation-instruction",
+        "q-edge-inject-ignore-instructions",
+        "q-edge-noinfo-sep-9999",
+        "q-hist-franklin-templeton-benji",
+        "q-hist-remittance-corridors",
+        "q-infra-anchor-platform",
+        "q-infra-galexie-vs-etl",
+        "q-infra-horizon-deprecated",
+        "q-infra-horizon-rpc-migration",
+        "q-infra-hubble-vs-rpc-layer",
+        "q-infra-rpc-event-retention",
+        "q-infra-rpc-provider-archive-tier",
+        "q-infra-rpc-providers-list",
+        "q-infra-secp256r1-passkeys",
+        "q-infra-simulate-transaction-howto",
+        "q-infra-which-indexer",
+        "q-org-sdf-enterprise-fund",
+        "q-pay-anchor-msb-licensing",
+        "q-pay-travel-rule-aid-flows",
+        "q-protocol-19-preconditions-cap-0021",
+        "q-protocol-23-whisk-caps",
+        "q-protocol-24-whisk-incident",
+        "q-protocol-amm-cap-0038",
+        "q-protocol-bls12-381-cap59",
+        "q-protocol-cap-process",
+        "q-protocol-clawback-cap-0035",
+        "q-protocol-futurenet-vs-testnet",
+        "q-protocol-horizon-vs-rpc",
+        "q-protocol-max-tx-set-size",
+        "q-protocol-network-passphrases",
+        "q-protocol-parallel-execution",
+        "q-protocol-passkeys-secp256r1",
+        "q-protocol-quorum-slice-vs-quorum",
+        "q-protocol-tier1-requirements",
+        "q-protocol-validator-node-roles",
+        "q-protocol-validator-upgrade-vote",
+        "q-scf-award-tiers-list",
+        "q-scf-build-award-cap",
+        "q-scf-category-funded-ratio",
+        "q-scf-current-round",
+        "q-scf-eligibility-criteria",
+        "q-scf-exhaustive-funding-report",
+        "q-scf-funded-similar-payroll",
+        "q-scf-funding-by-category",
+        "q-scf-hackathon-detail-results",
+        "q-scf-hackathons-active",
+        "q-scf-hackathons-dorahacks",
+        "q-scf-how-to-apply",
+        "q-scf-sdf-marketing-grant",
+        "q-scf-total-distributed",
+        "q-scf-verified-members",
+        "q-scf-vs-sdf-enterprise-fund",
+        "q-sep-12-kyc",
+        "q-sep-43-web-wallet-api",
+        "q-sep-6-24-deprecation",
+        "q-sep-7-uri",
+        "q-sep-clawback-prereq-flag",
+        "q-soroban-add-signer-smart-wallet-howto",
+        "q-soroban-canonical-examples-source",
+        "q-soroban-constructor-lifecycle",
+        "q-soroban-cross-contract-call",
+        "q-soroban-cross-contract-footprint",
+        "q-soroban-factory-pattern",
+        "q-soroban-fee-structure",
+        "q-soroban-instance-storage-dos",
+        "q-soroban-no-std-constraints",
+        "q-soroban-oracle-defensive-consumption",
+        "q-soroban-resource-limits",
+        "q-soroban-sdk-cve",
+        "q-soroban-ttl-expiry-behavior",
+        "q-soroban-upgrade-wasm",
+        "q-soroban-upgradeable-storage-compat",
+        "q-soroban-wasm-size-limit",
+        "q-soroban-x402-auth-entry-signing",
+        "q-soroban-zk-bn254-poseidon",
+        "q-token-circle-usdc-on-stellar",
+        "q-token-initial-supply-distribution",
+        "q-tool-cli-init-build-deploy",
+        "q-tool-cli-skills-discovery",
+        "q-tool-cli-testnet-identity-howto",
+        "q-tool-leaderboard-open-issues",
+        "q-tool-passkey-wallet-recovery",
+        "q-tool-passkeykit-smart-wallet",
+        "q-tool-sdk-repos-discovery",
+        "q-tool-skill-detail-install",
+        "q-tool-smart-wallet-repos-discovery",
+        "q-tool-wallets-kit",
+        "q-tool-which-sdk-comparison",
+        "q-aas-claimable-predicates-expiry-reserves",
+        "q-aas-trusted-asset-list-whitelist",
+        "q-aas-trustline-limit-lifecycle",
+        "q-crp-anchors-by-corridor",
+        "q-crp-become-an-anchor-licensing",
+        "q-crp-export-tx-history-taxes",
+        "q-crp-regional-offramp-mobilemoney",
+        "q-crp-remittance-founder-advisory",
+        "q-crp-tokenize-personal-rwa",
+        "q-defi-arbitrage-pathpayment-bots",
+        "q-defi-bridge-evm-to-stellar-axelar",
+        "q-defi-nft-standards-projects",
+        "q-defi-provide-liquidity-impermanent-loss",
+        "q-defi-sdex-offer-lifecycle",
+        "q-edge-deep-leave-no-stone-unturned-wallets",
+        "q-edge-exchange-memo-lost-funds",
+        "q-edge-metamask-evm-mental-model",
+        "q-edge-retail-everyday-use-eli5",
+        "q-edge-scf-v7-centralization-myths",
+        "q-edge-validators-reverse-tx-fork-detection",
+        "q-hot-sdf-transparency-wallets-reports",
+        "q-hot-sdf-xlm-holdings-sales",
+        "q-pc-account-activation-not-found",
+        "q-pc-account-merge-reclaim-reserve",
+        "q-pc-address-types-strkey",
+        "q-pc-bucketlist-vs-merkle-inclusion-proof",
+        "q-pc-fee-bump-channel-accounts-feepool",
+        "q-pc-l2-payment-channels-starlight",
+        "q-pc-memos-reference",
+        "q-pc-multisig-setup-lifecycle",
+        "q-pc-muxed-accounts",
+        "q-pc-practical-fee-setting",
+        "q-pc-quantum-preparedness-dormant",
+        "q-pc-scp-message-types-overlay",
+        "q-pc-sequence-numbers-ordering-replace",
+        "q-pc-sponsored-reserves",
+        "q-pc-tx-finality-failure-semantics",
+        "q-scf-ecosystem-listing-partner-jobs",
+        "q-scf-nontechnical-participation",
+        "q-scf-submission-lifecycle-deadlines",
+        "q-sor-bindings-from-wasm-no-address",
+        "q-sor-build-target-wasm32v1",
+        "q-sor-classic-dex-from-contract",
+        "q-sor-confidential-tokens",
+        "q-sor-contract-as-claimable-arbiter",
+        "q-sor-contract-trustlines-c-address",
+        "q-sor-decode-hosterror-codes",
+        "q-sor-deploy-invoke-from-js-sdk",
+        "q-sor-doc-timestamping-manage-data",
+        "q-sor-evm-to-soroban-porting",
+        "q-sor-force-fast-archival-localnet",
+        "q-sor-freeze-account-allowance",
+        "q-sor-index-sac-vs-sep41-events",
+        "q-sor-msg-sender-equivalent",
+        "q-sor-native-xlm-sac-address",
+        "q-sor-nft-mint-on-soroban",
+        "q-sor-p23-auto-restore-extendto",
+        "q-sor-recurring-escrow-patterns",
+        "q-sor-reflector-integration-code",
+        "q-sor-require-auth-propagation",
+        "q-sor-sac-introspection",
+        "q-sor-scval-conversion",
+        "q-sor-sep41-transfer-vs-transferfrom",
+        "q-sor-stale-spec-after-upgrade",
+        "q-sor-testing-negative-auth-events",
+        "q-sor-ttl-defaults-extend",
+        "q-sor-x-ray-bn254-sdk-gap",
+        "q-ti-bindings-to-nextjs-integration",
+        "q-ti-channel-accounts-throughput",
+        "q-ti-classic-submission-errors",
+        "q-ti-cli-rust-windows-troubleshooting",
+        "q-ti-compute-token-lp-market-data",
+        "q-ti-connect-wallet-button-code",
+        "q-ti-contract-verification-explorers",
+        "q-ti-custodial-account-generation-c-address",
+        "q-ti-enumerate-all-contracts",
+        "q-ti-enumerate-holders-airdrop",
+        "q-ti-find-export-secret-key",
+        "q-ti-freighter-localhost-not-detected",
+        "q-ti-friendbot-ratelimit-alternatives",
+        "q-ti-historical-events-beyond-retention",
+        "q-ti-historical-pointintime-balances",
+        "q-ti-java-sdk-wallet-feebump",
+        "q-ti-launchtube-mercury",
+        "q-ti-multisig-recover-lobstr-vault",
+        "q-ti-openzeppelin-relayer",
+        "q-ti-parse-raw-ledger-data",
+        "q-ti-rpc-gettransactions-pagination-xdr",
+        "q-ti-run-tune-own-horizon",
+        "q-ti-scaffold-stellar",
+        "q-ti-sdk-package-rename",
+        "q-ti-secret-key-custody-backend",
+        "q-ti-secret-key-vs-mnemonic-derivation",
+        "q-ti-self-host-core-rpc-full-history",
+        "q-ti-self-host-retention-backfill",
+        "q-ti-stellar-lab-usage-and-new-ui",
+        "q-ti-testnet-mainnet-migration",
+        "q-ti-testnet-usdc-faucet",
+        "q-ti-tx-too-late-resubmit",
+        "q-ti-xdr-decode-in-code",
+        "q-skill-soroban-dev-patterns",
+        "q-skill-soroban-testing-strategy",
+        "q-skill-soroban-security-checklist",
+        "q-skill-oz-project-setup",
+        "q-skill-oz-access-control",
+        "q-skill-dapp-wallets-kit-passkeys",
+        "q-skill-data-balances-history",
+        "q-skill-agentic-payments-paid-api",
+        "q-skill-standards-sep-map",
+        "q-skill-zk-circom-groth16",
+        "q-skill-eco-scout-rwa-landscape",
+        "q-skill-project-dossier-blend",
+        "q-skill-builder-quickstart-remittance",
+        "q-holdout-a-02-oz-atomic-migration",
+        "q-holdout-a-04-oz-workspace-setup",
+        "q-holdout-a-06-circom-verifier",
+        "q-holdout-a-07-contract-audit-checklist",
+        "q-holdout-a-08-contract-security-review",
+        "q-holdout-a-10-oz-emergency-stop",
+        "q-holdout-a-12-wasm-target",
+        "q-holdout-a-14-poseidon-merkle",
+        "q-holdout-a-15-resource-profiling",
+        "q-holdout-a-16-current-protocol",
+        "q-holdout-a-17-audit-registry",
+        "q-holdout-a-18-zk-ecosystem-search",
+        "q-holdout-b-02-asset-metadata-standard",
+        "q-holdout-b-03-clawback-stablecoin",
+        "q-holdout-b-04-regulated-asset",
+        "q-holdout-b-06-sac-or-sep41",
+        "q-holdout-b-08-sep24-validation",
+        "q-holdout-b-10-nextjs-payment",
+        "q-holdout-b-14-compliance-backfill",
+        "q-holdout-b-16-wallet-usdc-refresh",
+        "q-holdout-c-02-defi-landscape",
+        "q-holdout-c-04-rwa-digest",
+        "q-holdout-c-05-oracle-pick",
+        "q-holdout-c-06-oracle-tradeoffs",
+        "q-holdout-c-07-tipping-start",
+        "q-holdout-c-08-tipping-plan",
+        "q-holdout-c-10-scf-positioning",
+        "q-holdout-c-12-blend-directory",
+        "q-holdout-c-14-aquarius-tweet",
+        "q-holdout-c-16-x402-express",
+        "q-holdout-c-17-freighter-nextjs",
+        "ph-protocol-24-archival-root-cause",
+        "ph-protocol-corrective-upgrade-history",
+        "ph-protocol-regression-remediation",
+        "ph-yieldblox-oracle-incident",
+        "ph-security-incident-postmortems",
+        "ph-soroban-auth-audit-history",
+        "ph-protocol-feature-origin"
+      ],
+      "protocol": []
+    }
+  },
+  "fixRound": {
+    "review": "tmp/routing3/fix-round/review-routing3.md",
+    "note": "Corrected check 6 controls, fresh check 10, RWA groups and fixture provenance. The rejection remains unchanged."
+  }
+}
