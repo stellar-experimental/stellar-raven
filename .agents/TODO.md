@@ -210,10 +210,12 @@ ungated replica only. Rejected; step 2 did not run.
 - The unchanged baseline fails checks 5, 8, and 12 on current sources.
 
 The acceptance helper is `rounds/2026-10-09-followup/routing-step1/acceptance.mjs`. It reads saved
-runs, manifests, and inventories from a `tmp/routing3/` layout, and `snapshot.mjs` in the same folder
+runs, manifests, and inventories from a `tmp/routing3/` layout. `snapshot.mjs` in the same folder
 switches the sources. A fresh checkout does not have the step 1 inputs. They exist only in the owner's
 ignored local archive `eval/results/2026-10-09-routing-step1-evidence.tar.gz`. The next attempt
-measures its own baseline and candidate runs into that layout. Check 1 is a
+measures its own baseline and candidate runs into that layout.
+
+Check 1 is a
 controlled probe: neither source carries literal `yieldblox` or `reflector` routing phrases. Check 12
 requires zero per-row grade changes between sources, which is stricter than a fingerprint-only
 re-baseline. The next attempt starts at step 2 (schema `keywords` as rank-only evidence) from the
