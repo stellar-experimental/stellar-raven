@@ -1,7 +1,7 @@
 ---
 id: sd-058
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Update the fee-payer signing example to use SDK 17 XDR fields
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - "2026-10-09 @stellar/stellar-sdk 17.2.1 local execution: the current fee-payer example throws TypeError: txEnvelope.v1 is not a function before any RPC call."
   - 2026-10-09 SDK 17.0.0 release and XDR migration guide; https://github.com/stellar/js-stellar-sdk/releases/tag/v17.0.0; https://github.com/stellar/js-stellar-sdk/blob/v17.0.0/docs/migration/xdr-migration.md
   - 2026-10-09 adjacent x402 source and local SDK section check; https://github.com/stellar/stellar-docs/blob/2efd1d55840eb780f4b311c313e35d34fedf2f63/docs/build/agentic-payments/x402/quickstart-guide.mdx#L154
+  - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2909
 ---
 
 ## Finding

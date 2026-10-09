@@ -1,13 +1,14 @@
 ---
 id: sls-091
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Update the Zenex shortDescription to match its sourced mainnet deployment
 evidence:
   - 2026-10-09 Scout API 1.9.72 exact Zenex project read; https://stellarlight.xyz/api/projects/search?q=Zenex&limit=5
   - 2026-10-09 Zenex deployment page checked 2026-10-06; https://docs.zenex.trade/deployments/contract-addresses
   - 2026-10-09 pinned zenith-protocols/zenex-docs deployment source; https://raw.githubusercontent.com/zenith-protocols/zenex-docs/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md
+  - upstream issue filed 2026-10-09: https://github.com/Stellar-Light/stellarlight/issues/1810
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-057
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Label the Circle USDC issuer example as Stellar Testnet in the Anchor admin guide
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-10-09 published Anchor Platform admin guide and source at 2efd1d55840eb780f4b311c313e35d34fedf2f63; https://raw.githubusercontent.com/stellar/stellar-docs/2efd1d55840eb780f4b311c313e35d34fedf2f63/docs/platforms/anchor-platform/admin-guide/assets-and-client-wallets.mdx
   - 2026-10-09 Circle USDC contract-address table; https://developers.circle.com/stablecoins/usdc-contract-addresses
   - 2026-10-09 repeated issuer scan; 51 occurrences across the current docs source
+  - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2908
 ---
 
 ## Finding
