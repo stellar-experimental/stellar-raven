@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { existsSync, linkSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   agentEnvironmentIdentity,
@@ -294,6 +295,10 @@ export function assertP6OutputAvailable(
   { exists = existsSync } = {}
 ) {
   const temporaryPath = `${outputPath}.tmp`;
+  const directory = path.dirname(outputPath);
+  if (!exists(directory)) {
+    throw new Error(`p6 judge self-test output directory does not exist: ${directory}`);
+  }
   if (exists(outputPath)) {
     throw new Error(`p6 judge self-test output already exists: ${outputPath}`);
   }
