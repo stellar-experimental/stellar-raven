@@ -7,6 +7,39 @@ export type AnswerCost = {
   error: string | null;
 };
 
+const MAX_ANSWER_ERROR_BYTES = 8 * 1024;
+
+async function answerProviderError(response: Response): Promise<Error> {
+  const message = `Answer provider returned HTTP ${response.status}.`;
+  const reader = response.body?.getReader();
+  if (!reader) return new Error(message);
+  try {
+    const decoder = new TextDecoder();
+    let text = "";
+    let bytes = 0;
+    while (bytes < MAX_ANSWER_ERROR_BYTES) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const part = value.subarray(0, MAX_ANSWER_ERROR_BYTES - bytes);
+      bytes += part.byteLength;
+      text += decoder.decode(part, { stream: true });
+    }
+    text += decoder.decode();
+    const body = JSON.parse(text);
+    // Match the binding's _parseError fields without exposing an arbitrary body.
+    const code = body?.internalCode ?? body?.errors?.[0]?.code;
+    const detail = body?.internalCode ? body.description : body?.errors?.[0]?.message;
+    if ((typeof code === "number" || typeof code === "string") && typeof detail === "string") {
+      return new Error(`${message} ${code}: ${detail}`);
+    }
+  } catch { /* Keep the HTTP status if the bounded body cannot supply error details. */ }
+  finally {
+    await reader.cancel().catch(() => undefined);
+    reader.releaseLock();
+  }
+  return new Error(message);
+}
+
 export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: number) {
   if (!Number.isFinite(maxBudgetUsd) || maxBudgetUsd <= 0) throw new Error("invalid-answer-budget");
   let calls = 0;
@@ -94,15 +127,39 @@ export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: n
       };
       if (key === "run") return async (...args: Parameters<Ai["run"]>) => {
         const [model, inputs, options] = args;
-        // Raw responses carry the log identity. Unsupported transports stop before spend.
-        if (!options?.returnRawResponse) {
+        // Only chat inputs have the native parser contract checked below.
+        // Other non-raw transports still stop before spend.
+        if (!options?.returnRawResponse && !(inputs && typeof inputs === "object" &&
+          "messages" in inputs && Array.isArray(inputs.messages))) {
           throw new Error("Eval accounting requires raw-response Gateway or run transport; this model path is unsupported.");
         }
-        return dispatch(() => target.run(model, inputs, {
+        const response = await dispatch(() => target.run(model, inputs, {
           ...options,
-          gateway: { ...options.gateway, id: gatewayId, collectLog: true, retries: { maxAttempts: 1 } },
-          extraHeaders: { ...options.extraHeaders, "cf-aig-collect-log-payload": "false" }
+          returnRawResponse: true,
+          gateway: { ...options?.gateway, id: gatewayId, collectLog: true, retries: { maxAttempts: 1 } },
+          extraHeaders: { ...options?.extraHeaders, "cf-aig-collect-log-payload": "false" }
         }));
+        if (options?.returnRawResponse) return response;
+        // Do not release native output without a captured, unique log identity.
+        if (error) throw new Error(error);
+        // Type narrowing only: dispatch already rejects non-Response values through error above.
+        if (!(response instanceof Response)) throw new Error("answer-cost-requires-response");
+        if (!response.ok) throw await answerProviderError(response);
+        // workers-ai-provider@4.0.0 doStream accepts SSE bytes or a JSON object,
+        // including JSON replies to stream:true. It does not accept Response.
+        const contentType = response.headers.get("content-type")?.split(";", 1)[0]?.trim().toLowerCase();
+        try {
+          if (contentType === "text/event-stream") {
+            if (!response.body) throw new Error("missing-answer-stream");
+            return response.body;
+          }
+          if (contentType === "application/json") return await response.json();
+          throw new Error("unsupported-answer-content-type");
+        } catch (cause) {
+          // Cancel any remaining body when output cannot reach the native parser.
+          await response.body?.cancel().catch(() => undefined);
+          throw cause;
+        }
       };
       const value = Reflect.get(target, key, target);
       return typeof value === "function" ? value.bind(target) : value;

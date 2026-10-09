@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { streamText } from "ai";
+import { generateText, streamText } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
 import { openai } from "workers-ai-provider/openai";
 import { createEvalCostBinding } from "../src/demo/eval-cost";
@@ -8,12 +8,14 @@ import { DEMO_PRIMARY_MODEL, demoGatewayOptions, demoModelSettings, openAiRespon
 function fixture(costs: number[], ids: (string | null)[] = ["one", "two"], transport = "binding") {
   const run = vi.fn(async () => {
     const id = ids.shift();
-    return new Response("stream", { headers: id ? { "cf-aig-log-id": id } : {} });
+    return new Response("stream", { headers: { "content-type": "text/event-stream", ...(id ? { "cf-aig-log-id": id } : {}) } });
   });
   const getLog = vi.fn(async () => ({ cost: costs.shift() }));
   const ai = { run, gateway: () => ({ getLog, run }) } as unknown as Ai;
   const accounting = createEvalCostBinding(ai, "eval", 1);
-  const call = () => transport === "binding"
+  const call = () => transport === "native"
+    ? accounting.binding.run("@cf/moonshotai/kimi-k2.7-code", { messages: [], stream: true })
+    : transport === "binding"
     ? accounting.binding.run("openai/gpt-5.4", {}, { returnRawResponse: true })
     : accounting.binding.gateway("eval").run({ provider: "openai", endpoint: "v1/responses", headers: {}, query: {} });
   return { accounting, call, run, getLog };
@@ -83,7 +85,7 @@ describe("loopback answer cost accounting", () => {
     expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1 });
     expect(f.getLog).toHaveBeenCalledWith("real-transport");
   });
-  it.each(["binding", "gateway"])("settles %s streams before another provider call, including fallback calls", async (transport) => {
+  it.each(["binding", "gateway", "native"])("settles %s streams before another provider call, including fallback calls", async (transport) => {
     const f = fixture([0.4, 0.6], undefined, transport);
     await f.call();
     expect(f.getLog).not.toHaveBeenCalled();
@@ -96,15 +98,19 @@ describe("loopback answer cost accounting", () => {
       gateway: { id: "eval", collectLog: true, retries: { maxAttempts: 1 } },
       extraHeaders: { "cf-aig-collect-log-payload": "false" }
     });
-    if (transport === "binding") expect(f.run).toHaveBeenCalledWith("openai/gpt-5.4", {}, controls);
+    if (transport === "native") expect(f.run).toHaveBeenCalledWith(
+      "@cf/moonshotai/kimi-k2.7-code", { messages: [], stream: true }, controls
+    );
+    else if (transport === "binding") expect(f.run).toHaveBeenCalledWith("openai/gpt-5.4", {}, controls);
     else expect(f.run).toHaveBeenCalledWith([expect.objectContaining({ headers: {
       "cf-aig-collect-log": "true", "cf-aig-collect-log-payload": "false", "cf-aig-max-attempts": "1"
     } })], controls);
   });
 
-  it.each(["binding", "gateway"])("stops %s after a missing log identity or transport failure", async (transport) => {
+  it.each(["binding", "gateway", "native"])("stops %s after a missing log identity or transport failure", async (transport) => {
     const f = fixture([], [null], transport);
-    await f.call();
+    if (transport === "native") await expect(f.call()).rejects.toThrow(/log-id/);
+    else await f.call();
     await expect(f.call()).rejects.toThrow(/log-id/);
     expect(await f.accounting.finish()).toMatchObject({ costUsd: null, calls: 1, reportedCalls: 0 });
     const g = fixture([], undefined, transport);
@@ -114,7 +120,7 @@ describe("loopback answer cost accounting", () => {
     expect(g.run).toHaveBeenCalledTimes(1);
   });
 
-  it.each(["binding", "gateway"])("retains %s cost when one call exceeds its authorization", async (transport) => {
+  it.each(["binding", "gateway", "native"])("retains %s cost when one call exceeds its authorization", async (transport) => {
     const f = fixture([1.1], undefined, transport);
     await f.call();
     await expect(f.call()).rejects.toThrow(/exceeds/);
@@ -127,7 +133,100 @@ describe("loopback answer cost accounting", () => {
     expect(f.run).not.toHaveBeenCalled();
   });
 
-  it.each(["binding", "gateway"])("retries only %s log reads and stops when costs remain unavailable", async (transport) => {
+  it("preserves the full response for raw callers", async () => {
+    const f = fixture([0.15]);
+    const response = new Response("body", { status: 503, headers: { "cf-aig-log-id": "raw-log" } });
+    f.run.mockResolvedValueOnce(response);
+    expect(await f.call()).toBe(response);
+    expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, error: null });
+    expect(f.getLog).toHaveBeenCalledWith("raw-log");
+  });
+
+  it("returns parsed JSON to the installed non-streaming native parser", async () => {
+    const f = fixture([0.15]);
+    f.run.mockResolvedValueOnce(Response.json({ response: "answer", usage: { prompt_tokens: 2, completion_tokens: 1 } }, {
+      headers: { "cf-aig-log-id": "json-log" }
+    }));
+    const provider = createWorkersAI({ binding: f.accounting.binding, gateway: { id: "eval" } });
+    const result = await generateText({ model: provider("@cf/moonshotai/kimi-k2.7-code"), prompt: "question", maxRetries: 0 });
+    expect(result.text).toBe("answer");
+    expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1, error: null });
+    expect(f.getLog).toHaveBeenCalledWith("json-log");
+  });
+
+  it("retains captured cost when native response parsing fails", async () => {
+    const f = fixture([0.15], undefined, "native");
+    f.run.mockResolvedValueOnce(new Response("invalid JSON", { headers: {
+      "cf-aig-log-id": "bad-json", "content-type": "application/json; charset=utf-8"
+    } }));
+    await expect(f.call()).rejects.toThrow(SyntaxError);
+    expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1, error: null });
+    expect(f.getLog).toHaveBeenCalledWith("bad-json");
+  });
+
+  it.each([
+    [JSON.stringify({ errors: [{ code: 8006, message: "temperature must be 1" }] }), " 8006: temperature must be 1"],
+    [JSON.stringify({ internalCode: 3040, description: "out of capacity" }), " 3040: out of capacity"],
+    ["not JSON", ""]
+  ])("retains native HTTP error details and cost for %s", async (body, detail) => {
+    const f = fixture([0.15], undefined, "native");
+    const response = new Response(body, { status: 400, headers: { "cf-aig-log-id": "error-log" } });
+    f.run.mockResolvedValueOnce(response);
+    await expect(f.call()).rejects.toThrow(`Answer provider returned HTTP 400.${detail}`);
+    expect(response.bodyUsed).toBe(true);
+    expect(response.body?.locked).toBe(false);
+    expect(await f.accounting.finish()).toEqual({
+      costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+    });
+    expect(f.getLog).toHaveBeenCalledExactlyOnceWith("error-log");
+  });
+
+  it("bounds native HTTP error reads and cancels the unread body", async () => {
+    const f = fixture([0.15], undefined, "native");
+    const cancel = vi.fn();
+    const pull = vi.fn((controller: ReadableStreamDefaultController<Uint8Array>) => {
+      controller.enqueue(new TextEncoder().encode(" ".repeat(8 * 1024)));
+    });
+    const response = new Response(new ReadableStream({ pull, cancel }, { highWaterMark: 0 }), {
+      status: 503, headers: { "cf-aig-log-id": "bounded-error" }
+    });
+    f.run.mockResolvedValueOnce(response);
+    await expect(f.call()).rejects.toThrow("Answer provider returned HTTP 503.");
+    expect(pull).toHaveBeenCalledTimes(1);
+    expect(cancel).toHaveBeenCalledTimes(1);
+    expect(response.body?.locked).toBe(false);
+    expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1, error: null });
+  });
+
+  it("retains captured cost when the SSE body is missing", async () => {
+    const f = fixture([0.15], undefined, "native");
+    f.run.mockResolvedValueOnce(new Response(null, {
+      headers: { "content-type": "text/event-stream", "cf-aig-log-id": "empty-stream" }
+    }));
+    await expect(f.call()).rejects.toThrow("missing-answer-stream");
+    expect(await f.accounting.finish()).toMatchObject({ costUsd: 0.15, calls: 1, reportedCalls: 1, error: null });
+    expect(f.getLog).toHaveBeenCalledExactlyOnceWith("empty-stream");
+  });
+
+  it.each([null, "text/plain", "application/octet-stream"])(
+    "names unsupported native content type %s and retains its cost",
+    async (contentType) => {
+      const f = fixture([0.15], undefined, "native");
+      const cancel = vi.fn();
+      const response = new Response(new ReadableStream({ cancel }), {
+        headers: { "cf-aig-log-id": "unsupported-type", ...(contentType ? { "content-type": contentType } : {}) }
+      });
+      f.run.mockResolvedValueOnce(response);
+      await expect(f.call()).rejects.toThrow("unsupported-answer-content-type");
+      expect(cancel).toHaveBeenCalledTimes(1);
+      expect(await f.accounting.finish()).toEqual({
+        costUsd: 0.15, reportedCostUsd: 0.15, calls: 1, reportedCalls: 1, error: null
+      });
+      expect(f.getLog).toHaveBeenCalledExactlyOnceWith("unsupported-type");
+    }
+  );
+
+  it.each(["binding", "gateway", "native"])("retries only %s log reads and stops when costs remain unavailable", async (transport) => {
     vi.useFakeTimers();
     const f = fixture([], undefined, transport);
     await f.call();
@@ -139,7 +238,7 @@ describe("loopback answer cost accounting", () => {
     expect(await f.accounting.finish()).toMatchObject({ costUsd: null, reportedCostUsd: 0, reportedCalls: 0 });
   });
 
-  it.each(["binding", "gateway"])("bounds unavailable %s log reads and preserves partial reported costs", async (transport) => {
+  it.each(["binding", "gateway", "native"])("bounds unavailable %s log reads and preserves partial reported costs", async (transport) => {
     vi.useFakeTimers();
     const f = fixture([0.2], undefined, transport);
     await f.call();
