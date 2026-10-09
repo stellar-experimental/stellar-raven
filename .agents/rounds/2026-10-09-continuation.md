@@ -84,4 +84,7 @@ The orchestrator is Claude Opus, so it reviews nothing.
   decision B.
 - Full lane evidence (briefs, reports, reviews, runs, and raw Scout captures) is in the ignored local
   archive `eval/results/2026-10-09-continuation-lanes-evidence.tar.gz`.
+- **Horizon monitor.** The 2026-10-09 reading returned `29`, equal to the source at its `scannedRef`.
+  `sls-087` moved to `fixed-upstream`. Upstream closed issue 1738 on 2026-10-08. The drain posts a
+  resolution comment on that issue, so it waits for owner approval.
 - Every pane and worktree that this round opened is closed or removed.
