@@ -1,7 +1,7 @@
 ---
 id: sls-090
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Research search misses exact SDK advisory IDs and a published release tag
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-10-09 exact CVE and GHSA queries with limit 10; https://stellarlight.xyz/api/research?q=CVE-2026-24889&limit=10; https://stellarlight.xyz/api/research?q=GHSA-96xm-fv9w-pf3f&limit=10
   - 2026-10-09 release-scoped queries with limit 25; https://stellarlight.xyz/api/research?q=GHSA-96xm-fv9w-pf3f&source=release&limit=25; https://stellarlight.xyz/api/research?q=rs-soroban-sdk%20v25.0.2&source=release&limit=25
   - 2026-10-09 current GitHub advisory and v25.0.2 release; https://api.github.com/repos/stellar/rs-soroban-sdk/security-advisories/GHSA-96xm-fv9w-pf3f; https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v25.0.2
+  - upstream issue filed 2026-10-09: https://github.com/Stellar-Light/stellarlight/issues/1809
 ---
 
 ## Finding

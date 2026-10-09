@@ -33,8 +33,8 @@ Total findings: 72
 | sls-087 | Scout returns a stale Horizon protocol ceiling for a current-source question. The answer states MaxSupportedProtocolVersion = 28. The…      | reported-upstream | 2026-09-29 | 0           |
 | sls-088 | Scout marks the Horizon API server repository as a deployable Soroban contract product. The response returns…                               | reported-upstream | 2026-09-29 | 0           |
 | sls-089 | GET /api/projects/search returns HTTP 200 and meta.counts.total: 0 after a backend read timeout. The same response reports the failed read… | reported-upstream | 2026-10-01 | 0           |
-| sls-090 | Research search returns adjacent documents for CVE-2026-24889 and GHSA-96xm-fv9w-pf3f. The tested results contain neither identifier. A…    | verified          | 2026-10-09 | 0           |
-| sls-091 | The Zenex project's shortDescription still says testnet with mainnet pending. The same response gives a sourced mainnet deployment and a…   | verified          | 2026-10-09 | 0           |
+| sls-090 | Research search returns adjacent documents for CVE-2026-24889 and GHSA-96xm-fv9w-pf3f. The tested results contain neither identifier. A…    | reported-upstream | 2026-10-09 | 0           |
+| sls-091 | The Zenex project's shortDescription still says testnet with mainnet pending. The same response gives a sourced mainnet deployment and a…   | reported-upstream | 2026-10-09 | 0           |
 
 ## stellar-docs
 
@@ -53,10 +53,10 @@ Total findings: 72
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 0           |
 | sd-053 | The RPC configuring page now has the section "Backfilling History on Startup". The section explains BACKFILL, but it omits two startup…     | reported-upstream | 2026-09-21 | 0           |
 | sd-054 | Two pages say that the network updates the ledger "every 5-7 seconds": the Stellar Stack page and the Validators introduction. The sampled… | reported-upstream | 2026-10-01 | 0           |
-| sd-055 | Two archival examples call sign() on the builder returned by assembleTransaction(). The non-restoration branch fails with TypeError:…       | verified          | 2026-10-09 | 0           |
-| sd-056 | The Ledgers page says the ledger-header fee pool uses lumens rather than stroops. The XDR field feePool holds an integer amount in…         | verified          | 2026-10-09 | 0           |
-| sd-057 | The Anchor Platform admin guide uses Circle's Testnet USDC issuer without a network label. Its asset-ID explanation says the example…       | verified          | 2026-10-09 | 0           |
-| sd-058 | The fee-payer signing example calls removed XDR getter methods with the current JavaScript SDK. It throws TypeError: txEnvelope.v1 is not…  | verified          | 2026-10-09 | 0           |
+| sd-055 | Two archival examples call sign() on the builder returned by assembleTransaction(). The non-restoration branch fails with TypeError:…       | reported-upstream | 2026-10-09 | 0           |
+| sd-056 | The Ledgers page says the ledger-header fee pool uses lumens rather than stroops. The XDR field feePool holds an integer amount in…         | reported-upstream | 2026-10-09 | 0           |
+| sd-057 | The Anchor Platform admin guide uses Circle's Testnet USDC issuer without a network label. Its asset-ID explanation says the example…       | reported-upstream | 2026-10-09 | 0           |
+| sd-058 | The fee-payer signing example calls removed XDR getter methods with the current JavaScript SDK. It throws TypeError: txEnvelope.v1 is not…  | reported-upstream | 2026-10-09 | 0           |
 
 ## lumenloop
 
@@ -91,7 +91,7 @@ Total findings: 72
 | ll-028 | list_documents accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning               | reported-upstream | 2026-08-14 | 0           |
 | ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 0           |
 | ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | reported-upstream | 2026-08-28 | 2           |
-| ll-031 | search_documents returns a string ID that get_document and get_related_projects reject. get_document also returns that ID as a string…      | verified          | 2026-10-09 | 0           |
+| ll-031 | search_documents returns a string ID that get_document and get_related_projects reject. get_document also returns that ID as a string…      | reported-upstream | 2026-10-09 | 0           |
 
 ## workers-ai-provider
 

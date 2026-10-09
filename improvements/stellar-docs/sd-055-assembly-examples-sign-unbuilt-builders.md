@@ -1,7 +1,7 @@
 ---
 id: sd-055
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Build assembled transactions before signing in the archival and simulation examples
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-10-09 @stellar/stellar-sdk 17.2.1 local reproduction
   - 2026-10-09 repeated-example scan
   - 2026-10-09 multi-party reproduction
+  - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2906
 ---
 
 ## Finding

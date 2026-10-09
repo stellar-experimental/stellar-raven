@@ -1,7 +1,7 @@
 ---
 id: sd-056
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Correct ledger-header fee units and document its extension member
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-10-09 Stellar-ledger.x at 4f524bbac80c781c06e4fb5fc93a2d0d331d6705; https://raw.githubusercontent.com/stellar/stellar-xdr/4f524bbac80c781c06e4fb5fc93a2d0d331d6705/Stellar-ledger.x
   - 2026-10-09 TransactionFrame.cpp at ba6a4e6e322a8069b85bdf48a35d971a2d72cc81; https://raw.githubusercontent.com/stellar/stellar-core/ba6a4e6e322a8069b85bdf48a35d971a2d72cc81/src/transactions/TransactionFrame.cpp
   - 2026-10-09 public ledger 64853885 header_xdr and fee_pool; https://horizon.stellar.org/ledgers/64853885
+  - upstream issue filed 2026-10-09: https://github.com/stellar/stellar-docs/issues/2907
 ---
 
 ## Finding

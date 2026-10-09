@@ -23,22 +23,6 @@ budget never transfers to headline collection. Use [the evaluation map](../eval/
 
 ## Improvements follow-up
 
-### File the 2026-10-07 tool-surface round's upstream candidates
-
-The [tool-surface QA round](rounds/2026-10-07-tool-surface-qa.md) row review listed candidates but filed
-none: recurrence evidence for `ll-012`, `ll-030`, `ll-025`, and `sk-022`; Stellar Docs
-`assembleTransaction` example signing an unbuilt builder; the ledger-header page (`feePool` units,
-missing `ext`); Scout exact advisory-ID and release-tag retrieval; Scout Zenex Live versus Testnet.
-The 2026-10-09 own-repo triage added two more. Lumenloop listing rows carry string ids (`"10190"`),
-while `get_document.id` and `get_related_projects.content_id` require numbers (2 T rows; one lost its
-document reads). If the upstream accepts numeric strings, the fix is an own-repo argument alias
-instead. The Stellar Docs Anchor Platform admin guide calls `stellar:USDC:GBBD47…LFLA5` (Circle's
-Testnet issuer) "Circle USD" with no network label; one B3 Mainnet bridge answer copied it.
-The round's live-probe evidence sat in temporary storage, so each filing re-gathers its own evidence.
-
-Done when: each candidate is filed or rejected through `improvements-pipeline`, with the round ledger
-linked.
-
 ### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
 
 The maintainer named https://github.com/stellar/stellar-docs/pull/2837 as the replacement for the

@@ -1,13 +1,14 @@
 ---
 id: ll-031
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-10-09
 upstreamTitle: Document reads reject the string IDs returned by search and document responses
 evidence:
   - eval/qa/results/2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json; q-gap-related-projects-empty and q-scf-verified-members
   - "2026-10-09 host-side direct API probes, 2026-10-09T14:30:27.600Z through 2026-10-09T14:30:27.839Z: search_documents and get_document emit string ID 10190; both lookup operations accept numbers and reject strings."
   - 2026-10-09 current input schemas require numbers; https://api.lumenloop.com/v1/openapi.json
+  - upstream issue filed 2026-10-09: https://github.com/lumenloop/lumenloop-backend/issues/46
 ---
 
 ## Finding
