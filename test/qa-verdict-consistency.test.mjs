@@ -107,48 +107,53 @@ describe("QA verdict consistency", () => {
     expect(prompt).not.toContain("most key facts are absent");
   });
 
-  it("keeps freeze-list must-avoid items off dated, source-scoped, or non-exhaustive lists under rubric v2.11", () => {
+  it("bounds the freeze-clause exemption under rubric v2.11", () => {
+    // Compound avoid item shaped like the control case q-eco-defi-market-map:
+    // the freeze clause is exempt on a dated list; the other conditions are not.
     const golden = {
-      answer: "As of 2026-09-03, check the live advisory feeds rather than treating this list as permanent. The three repository advisories are A, B, and C.",
-      keyFacts: ["Names all three dated advisories.", "Requires live re-checking."],
+      answer: "A defensible market map is a dated, source-relative snapshot. As of 2026-07-10 the directory showed many DEX and lending entries; oracles have several live providers.",
+      keyFacts: ["Uses dated source-relative counts with operator and status checks."],
       avoid: [
-        "Do NOT claim there is only one advisory or freeze the list permanently.",
-        "Do NOT describe conditional impacts as universal."
+        "Do NOT hard-code a timeless crowded/whitespace map, infer maturity from tags, or assert a category is empty without a strict dated search and operator verification.",
+        "Do NOT freeze a top-rated roster, star count, ordering, repository topology, or score threshold."
       ],
       notes: ""
     };
-    const expectedRule = [
-      "- A must-avoid item that forbids freezing, pinning, or hard-coding a list, count, roster, ordering, or map as permanent, complete, exhaustive, timeless, or network-wide does NOT fire on a candidate that presents its list as dated, source-scoped, or non-exhaustive (an as-of date, a named source or query, or an explicit statement that the list may be incomplete).",
-      "A dated, source-scoped, or non-exhaustive list is not a frozen list, and a sourced count or ordering inside it is not a frozen count or ordering.",
-      "When such a candidate omits an item the golden lists, record the omitted item in missingFacts as a missing key fact; do not record a fired avoid.",
-      "The item still fires when the candidate asserts completeness or permanence without that framing.",
-      "This rule never excuses CONCRETE WRONG CONTENT inside the list: a specific false statement, such as calling a category empty or single-provider when the golden names live members, still binds under the rule above even when the list is dated and source-scoped."
-    ].join(" ");
-    const candidateAnswer = "As of 2026-10-07, the indexed release notes show advisories A and B. This is not a complete list; check the advisory page directly.";
+    const exemptCandidate = "As of 2026-10-07, per the Scout directory, the roster is A and B. This is not a complete list; check the directory directly.";
+    const permanenceCandidate = "As of 2026-10-07, per Scout, the roster is A and B. Keep this roster permanently. Never query it again.";
+    const exemption = "That freeze clause does NOT fire on a candidate that presents its list as dated, source-scoped, or non-exhaustive (an as-of date, a named source or query, or an explicit statement that the list may be incomplete): a dated, source-scoped, or non-exhaustive list is not a frozen list, and a sourced count or ordering inside it is not a frozen count or ordering.";
+    const missingFactRule = "When such a candidate omits an item the golden lists, record the omitted item in missingFacts as a missing key fact; do not record a fired avoid.";
+    const permanenceLimit = "(a) An explicit permanence or completeness claim overrides it: a candidate that calls its list permanent, final, complete, exhaustive, or the only entries, or tells the reader not to re-check it, fires the freeze clause even when the same answer carries a date or a source.";
+    const clauseLimit = "(b) The exemption covers only the freeze clause. Every other condition in the same must-avoid item — for example inferring maturity from tags, or calling a category empty without the operator verification the item demands — binds on its own terms whether or not the list is dated.";
+    const contentLimit = "(c) The exemption never excuses CONCRETE WRONG CONTENT inside the list: a specific false statement, such as calling a category empty or single-provider when the golden names live members, still binds under the rule above.";
 
-    const nonTrap = buildJudgePrompt({
-      question: "Are there known security advisories I should patch?",
-      golden,
-      tags: { freshness: "scheduled" },
-      candidateAnswer,
-      transcriptEvidence: ""
-    });
-    const trap = buildJudgePrompt({
-      question: "Synthetic list trap",
-      golden,
-      tags: { freshness: "stable", trap: "fabrication-bait" },
-      candidateAnswer,
-      transcriptEvidence: ""
-    });
-
+    for (const candidateAnswer of [exemptCandidate, permanenceCandidate]) {
+      for (const tags of [{ freshness: "stable" }, { freshness: "stable", trap: "fabrication-bait" }]) {
+        const prompt = buildJudgePrompt({
+          question: "Where is the ecosystem crowded versus whitespace?",
+          golden,
+          tags,
+          candidateAnswer,
+          transcriptEvidence: ""
+        });
+        expect(prompt).toContain(candidateAnswer);
+        expect(prompt).toContain("- FREEZE CLAUSES. Some must-avoid items forbid freezing, pinning, or hard-coding a list, count, roster, ordering, or map as permanent, complete, exhaustive, timeless, or network-wide.");
+        expect(prompt).toContain(exemption);
+        expect(prompt).toContain(missingFactRule);
+        expect(prompt).toContain("Three limits bound this exemption.");
+        expect(prompt).toContain(permanenceLimit);
+        expect(prompt).toContain(clauseLimit);
+        expect(prompt).toContain(contentLimit);
+        const bindingRuleIndex = prompt.indexOf("- Must-avoid items bind only on what you can check from the candidate answer itself");
+        const freezeRuleIndex = prompt.indexOf("- FREEZE CLAUSES.");
+        expect(bindingRuleIndex).toBeGreaterThan(-1);
+        expect(freezeRuleIndex).toBeGreaterThan(bindingRuleIndex);
+        expect(prompt.indexOf(permanenceLimit)).toBeGreaterThan(prompt.indexOf(exemption));
+        expect(prompt).not.toContain("asserts completeness or permanence without that framing");
+        expect(prompt).toContain("Non-empty avoidMatches ALWAYS means \"wrong\"; a fired avoid is never a minor slip.");
+      }
+    }
     expect(JUDGE_RUBRIC).toBe("v2.11");
-    expect(nonTrap).toContain(expectedRule);
-    expect(trap).toContain(expectedRule);
-    const bindingRuleIndex = nonTrap.indexOf("- Must-avoid items bind only on what you can check from the candidate answer itself");
-    const freezeRuleIndex = nonTrap.indexOf(expectedRule);
-    expect(bindingRuleIndex).toBeGreaterThan(-1);
-    expect(freezeRuleIndex).toBeGreaterThan(bindingRuleIndex);
-    expect(nonTrap).toContain("Non-empty avoidMatches ALWAYS means \"wrong\"; a fired avoid is never a minor slip.");
   });
 
   it("requires an issue and the missing corrective distinction for a capped non-trap partial", () => {

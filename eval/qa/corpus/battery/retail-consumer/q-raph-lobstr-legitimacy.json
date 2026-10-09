@@ -19,7 +19,7 @@
       "Do NOT say app-store presence or popularity proves cryptographic safety.",
       "Do NOT make an era-independent claim that every LOBSTR key was always stored only locally or only server-side."
     ],
-    "notes": "Status phrased to avoid turning a dated product assessment into a permanent guarantee."
+    "notes": "Status phrased to avoid turning a dated product assessment into a permanent guarantee. REQUIRED BEHAVIOR beyond the key facts: install only through links reached from lobstr.co and verify the app publisher. 2FA, multisig, and hardware signing stay conditional."
   },
   "tags": {
     "category": "retail-consumer",
@@ -160,8 +160,8 @@
       }
     ],
     "verified": {
-      "date": "2026-09-04",
-      "by": "golden follow-up review 2026-09-04 (Fable 5.1 xhigh; .agents/rounds/2026-09-03-truth-maintenance/golden-followup-fable.md)",
+      "date": "2026-10-09",
+      "by": "golden-truth lane G fix round, 2026-10-09 r1009b round (Claude Fable 5.1, high); independent review finding 2 (lane report tmp/report-gospel.md, Fix round)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -192,15 +192,16 @@
         "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — pre-September 1, 2020 keys 'stored inside our platform in encrypted form', migration deadline July 10, 2026, unmigrated wallets stop working until migrated.",
         "Live re-check 2026-09-04: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — 'We (the LOBSTR team) do not have access to users' Recovery phrases, Secret keys, Recovery codes, or Account passwords'; 'Do not share your Recovery Phrase and Secret key with anyone'.",
         "Sibling sweep 2026-09-04: grep LOBSTR|on-device|server-side|Recovery Phrase over eval/qa/corpus/battery → only q-raph-lobstr-legitimacy states a LOBSTR key-storage location; q-eco-lobstr-wallet says non-custodial only; no contradiction.",
-        "Re-judge 2026-09-04: not run (this lane makes no paid calls). The 2026-09-04T05-40-51-variantA row failed on an era-independent local-only claim and the missing pre-2020 exception; the corrected answer contradicts that claim more directly, so the expected direction is unchanged."
+        "Re-judge 2026-09-04: not run (this lane makes no paid calls). The 2026-09-04T05-40-51-variantA row failed on an era-independent local-only claim and the missing pre-2020 exception; the corrected answer contradicts that claim more directly, so the expected direction is unchanged.",
+        "Required-behavior note 2026-10-09: the official-install-path instruction already in the golden answer is now named as required behavior in golden.notes (the case schema caps key facts at five, and the five existing facts stay); truth, asOf, and reverifyBy unchanged.",
+        "Live re-check 2026-10-09: https://lobstr.co/ — the official site lists 'LOBSTR for iOS' and 'LOBSTR for Android' and links https://play.google.com/store/apps/details?id=com.lobstr.client, so the publisher can be checked from a lobstr.co-reached link (class A, HTTP 200).",
+        "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — 'Always verify the domain and email addresses where the communication is coming from'; 'type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site'; red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; phishing uses 'dummy websites ... to induce you to enter your secret key' (class A, HTTP 200).",
+        "Sibling sweep 2026-10-09: re-read all nine scam-check traps against their golden answers (q-raph-claimable-balance-safety, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet); each directed protective instruction is now a key fact or named as supporting background; no contradiction between siblings."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
-        "freshness-drift",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata",
-        "eval-authoring — the 2026-08-31 answer omitted the encrypted server copy that its own corroboration row verified; corrected 2026-09-04 (.agents/rounds/2026-09-03-truth-maintenance/golden-followup-fable.md)"
+        ".agents/TODO.md — Make the claimable-balance safety warning a key fact",
+        "independent review of the lane (2026-10-09): a protective behavior the golden answer directs was absent from the key facts, so trap grading could treat it as background"
       ]
     },
     "origin": "raph wallet-lobstr-legitimacy-recovery-storage"

@@ -8,13 +8,14 @@
     "answer": "Stellar is an open network, so someone can create an asset or a claimable balance without first getting your approval. Receiving a reference to an asset is not the same as safely holding, trusting, or endorsing it: non-XLM assets generally need a trustline before they can be held, and a claimable balance still has its own claim conditions. Judge an asset by its issuer and independent official information, not its code, logo, or a message sent with it.",
     "keyFacts": [
       "Explains the open-network premise without calling every unsolicited asset fraudulent.",
-      "States the trustline distinction for non-XLM assets."
+      "States the trustline distinction for non-XLM assets.",
+      "Tells the user to judge an asset by its issuer and independent official information."
     ],
     "avoid": [
       "Do NOT say unsolicited entries let the sender spend the recipient's funds.",
       "Do NOT assert every unsolicited asset is fraudulent."
     ],
-    "notes": "Avoid claims are deliberately narrow."
+    "notes": "Avoid claims are deliberately narrow. The issuer-verification advice (key fact 3) is required behavior, not background."
   },
   "tags": {
     "category": "retail-consumer",
@@ -91,8 +92,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-10-09",
+      "by": "golden-truth lane G fix round, 2026-10-09 r1009b round (Claude Fable 5.1, high); independent review finding 2 (lane report tmp/report-gospel.md, Fix round)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -104,11 +105,16 @@
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
         "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimable balances have legitimate uses; class B CAP-0023 defines the entry; class D sweep found abuse reports and legitimate uses.",
         "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — a trustline is needed for any asset except XLM; class B Stellar-ledger-entries.x separates native from issued assets.",
-        "Sibling sweep 2026-08-31: grep spam token|scam token|weird claimable|unsolicited asset → 1 other cases; read q-raph-unsolicited-airdrop; lane report also read q-raph-remove-scam-token, q-ti-enumerate-holders-airdrop; no contradiction"
+        "Sibling sweep 2026-08-31: grep spam token|scam token|weird claimable|unsolicited asset → 1 other cases; read q-raph-unsolicited-airdrop; lane report also read q-raph-remove-scam-token, q-ti-enumerate-holders-airdrop; no contradiction",
+        "Key-fact addition 2026-10-09: the issuer-verification advice already in the golden answer and corroboration row 2 became key fact 3; truth unchanged.",
+        "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — 'Always verify the domain and email addresses where the communication is coming from'; 'type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site'; red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; phishing uses 'dummy websites ... to induce you to enter your secret key' (class A, HTTP 200).",
+        "Live re-check 2026-10-09: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md (raw) — issuer metadata lives at 'https://DOMAIN/.well-known/stellar.toml'; ORG_URL 'must be hosted on the same domain'; 'Issuers that list verified information ... will be prioritized'; the verification photo names the issuing public key (class B, HTTP 200).",
+        "Sibling sweep 2026-10-09: re-read all nine scam-check traps against their golden answers (q-raph-claimable-balance-safety, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet); each directed protective instruction is now a key fact or named as supporting background; no contradiction between siblings."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        ".agents/TODO.md — Make the claimable-balance safety warning a key fact",
+        "independent review of the lane (2026-10-09): a protective behavior the golden answer directs was absent from the key facts, so trap grading could treat it as background"
       ]
     },
     "origin": "raph scam-claimable-balance-open-network"

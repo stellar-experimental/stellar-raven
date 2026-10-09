@@ -8,14 +8,15 @@
     "answer": "On Stellar, an issued asset is identified by both its code and issuer, so matching a ticker or logo is not enough. Get the official issuer from the legitimate project's own site or documentation, then compare it with the wallet/explorer entry before adding a trustline or trading. To delete an on-ledger trustline, first cancel offers or pool references and reduce its balance and liabilities to zero, then submit `ChangeTrust` with limit 0 through a trusted wallet or tool. Hiding an asset is only a wallet-display action, and an unclaimed claimable balance is not itself a trustline. Do not sign unfamiliar links or dispose of a balance to a random address; returning an issued balance to its exact issuer may burn it but can still be blocked by authorization or account state.",
     "keyFacts": [
       "Uses code plus issuer as the asset identity check.",
-      "Qualifies removal on zero balance/no liabilities and wallet support."
+      "Qualifies removal on zero balance/no liabilities and wallet support.",
+      "Warns not to sign unfamiliar links or send the balance to a random address."
     ],
     "avoid": [
       "Do NOT identify an asset by ticker alone.",
       "Do NOT promise any trustline can be removed while it has balance/liabilities.",
       "Do NOT equate hiding an asset with deleting its trustline or promise return-to-issuer always succeeds."
     ],
-    "notes": "Safety advice, not an assertion that a specific asset is fraudulent."
+    "notes": "Safety advice, not an assertion that a specific asset is fraudulent. The no-sign, no-random-address warning (key fact 3) is required behavior, not background."
   },
   "tags": {
     "category": "retail-consumer",
@@ -89,8 +90,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-31",
-      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
+      "date": "2026-10-09",
+      "by": "golden-truth lane G fix round, 2026-10-09 r1009b round (Claude Fable 5.1, high); independent review finding 2 (lane report tmp/report-gospel.md, Fix round)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -102,11 +103,16 @@
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
         "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-ledger-entries.x#L24-L62 — credit assets carry assetCode plus issuer; class F ten issuers share code USDC.",
         "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Change Trust deletes a trustline; class B ChangeTrustOpFrame.cpp blocks a limit below the held balance and liabilities.",
-        "Sibling sweep 2026-08-31: grep scam token|fake token|ChangeTrust|trustline remove|issuer → 81 other cases; read q-edge-asset-site-scam-detection, q-aas-trustline-limit-lifecycle, q-ti-enumerate-holders-airdrop; no contradiction"
+        "Sibling sweep 2026-08-31: grep scam token|fake token|ChangeTrust|trustline remove|issuer → 81 other cases; read q-edge-asset-site-scam-detection, q-aas-trustline-limit-lifecycle, q-ti-enumerate-holders-airdrop; no contradiction",
+        "Key-fact addition 2026-10-09: the no-sign, no-random-address warning already in the golden answer became key fact 3; truth, asOf, and reverifyBy unchanged.",
+        "Live re-check 2026-10-09: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — 'Always verify the domain and email addresses where the communication is coming from'; 'type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site'; red flags include 'assets that were sent to you in tiny amounts through a claimable balance'; phishing uses 'dummy websites ... to induce you to enter your secret key' (class A, HTTP 200).",
+        "Live re-check 2026-10-09: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md (raw) — issuer metadata lives at 'https://DOMAIN/.well-known/stellar.toml'; ORG_URL 'must be hosted on the same domain'; 'Issuers that list verified information ... will be prioritized'; the verification photo names the issuing public key (class B, HTTP 200).",
+        "Sibling sweep 2026-10-09: re-read all nine scam-check traps against their golden answers (q-raph-claimable-balance-safety, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-n3-wallet-hacked-support-redirect, q-n3-issues-842-backup-faucet-wallet); each directed protective instruction is now a key fact or named as supporting background; no contradiction between siblings."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        ".agents/TODO.md — Make the claimable-balance safety warning a key fact",
+        "independent review of the lane (2026-10-09): a protective behavior the golden answer directs was absent from the key facts, so trap grading could treat it as background"
       ]
     },
     "origin": "raph scam-token-detect-and-remove-trustline"
