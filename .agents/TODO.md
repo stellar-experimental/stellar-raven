@@ -197,7 +197,8 @@ Use one acceptance helper that computes all twelve checks. Evidence:
 2026-10-09 step 1 (Codex frontier xhigh; Claude Fable review agrees). Whole-content anchors in the
 ungated replica only. Rejected; step 2 did not run.
 
-- The change keeps all 43,520 current-source gated scores. Legacy top-five gated hits stay at 1194.
+- The change keeps all 43,520 current-source gated scores. Page selection raises legacy top-five gated
+  hits from 1192 to 1194.
 - Graded rows change on 32 current-source and 30 fresh-source cases.
 - Holdout forbidden captures rise from 10 to 12, above the ceiling. Extended top1 falls from 93 to 84.
 - Checks 4, 5, 7, 8, 10, and 12 fail on both sources. Check 6 also fails on the fresh source, through
@@ -208,9 +209,11 @@ ungated replica only. Rejected; step 2 did not run.
 - Check 8: all positives and ordinary negatives pass. The three deferred `it.fails` controls fail.
 - The unchanged baseline fails checks 5, 8, and 12 on current sources.
 
-The reusable helper is `rounds/2026-10-09-followup/routing-step1/acceptance.mjs`. It reads saved runs
-from a `tmp/routing3/` layout; `eval/results/2026-10-09-routing-step1-evidence.tar.gz` (local, ignored)
-restores that layout. Check 1 is a
+The acceptance helper is `rounds/2026-10-09-followup/routing-step1/acceptance.mjs`. It reads saved
+runs, manifests, and inventories from a `tmp/routing3/` layout, and `snapshot.mjs` in the same folder
+switches the sources. A fresh checkout does not have the step 1 inputs. They exist only in the owner's
+ignored local archive `eval/results/2026-10-09-routing-step1-evidence.tar.gz`. The next attempt
+measures its own baseline and candidate runs into that layout. Check 1 is a
 controlled probe: neither source carries literal `yieldblox` or `reflector` routing phrases. Check 12
 requires zero per-row grade changes between sources, which is stricter than a fingerprint-only
 re-baseline. The next attempt starts at step 2 (schema `keywords` as rank-only evidence) from the
@@ -262,9 +265,13 @@ PR #247 (2026-10-09) returns a successful `codemode.skill.read` as
 of the 13 tool-level errors (5 B3 rows, 4 T rows). PR #249 also accepts documented comma-joined array
 arguments and names failed-call reasons in the source-basis `calls:` line.
 
-Done when: the next authorized QA round counts skill-read shape errors, rejected comma-joined
-arguments, and failed calls whose reason the answer missed, from its stored transcripts. Compare the
-counts with the tool-surface round. This item authorizes no spend.
+Done when: the next authorized QA round counts three things from its stored transcripts:
+
+- skill-read shape errors;
+- rejected comma-joined arguments;
+- failed calls whose reason the answer missed.
+
+Compare the counts with the tool-surface round. This item authorizes no spend.
 
 ## Dependencies
 
