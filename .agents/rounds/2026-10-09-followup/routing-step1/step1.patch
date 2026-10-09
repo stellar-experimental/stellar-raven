@@ -1,0 +1,130 @@
+diff --git a/src/catalog/scoring.ts b/src/catalog/scoring.ts
+index b74d7b48..3a0dbb35 100644
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -9,7 +9,8 @@
+  * Routing keywords blend at 1.0 with routing-coherence and schema checks.
+  * Query aliases provide general canonical forms through QUERY_TOKEN_ALIASES.
+  * Acronym rescue contracts content-word spans when source text supplies the acronym.
+- * The ungated replica keeps the scoring scale while removing the coverage gate.
++ * The ungated replica requires a whole content anchor in each scored field.
++ * Its field weights and coverage bonuses retain the vendor scale.
+  *
+  * searchCatalogPage uses ungated scores for short-page filling and targeted
+  * full-page replacement. Service diversity and replacement belong to search.ts.
+@@ -178,6 +179,9 @@ type EntryScorer = (entry: ScorableEntry, query: PreparedQueryForm) => number |
+ 
+ const gatedEntryScorer: EntryScorer = (entry, query) => scoreEntry(entry, query.query);
+ const ungatedEntryScorer: EntryScorer = (entry, query) => scoreEntryUngatedPrepared(entry, query);
++// Acronym rescue belongs to the gated tier. Keep its existing comparison score.
++const acronymComparisonScorer: EntryScorer = (entry, query) =>
++  scoreEntryUngatedPrepared(entry, query, false);
+ 
+ /**
+  * Base score with the build-time keyword fields blended in.
+@@ -379,7 +383,7 @@ function acronymRescueScore(
+ ): number | null {
+   let best = aliasMaxScore(entry, query, gatedEntryScorer);
+   if (best !== null || query.acronyms.length === 0) return best;
+-  const ungated = aliasMaxScore(entry, query, ungatedEntryScorer);
++  const ungated = aliasMaxScore(entry, query, acronymComparisonScorer);
+   // Only source description text can witness an acronym. Lowercase keyword
+   // fields and accidental initials in ordinary words cannot admit a variant.
+   const acronyms = new Set(entry.description.match(/\b[A-Z]{3,6}\b/g) ?? []);
+@@ -431,24 +435,18 @@ export function scoreEntryWeightedUngated(
+ }
+ 
+ /**
+- * Gate-free replica of the vendored scorer. Mirrors
+- * vendor/search-scoring.ts `scoreField`/`scoreEntry` line for line EXCEPT
+- * the coverage gate (vendor line 130) is dropped — entries still need at
+- * least one matched token. Kept here so the vendor file stays byte-identical
+- * (as with keyword double-scoring); if the vendor scorer is ever
+- * re-vendored, update this replica to match.
+- *
+- * DRIFT GUARD: because the ONLY difference is the gate, the replica must
+- * score identically to the vendor wherever the vendor passes —
+- * test/scoring.test.ts sweeps the real manifest against a query battery and
+- * asserts `scoreEntry(e,q) !== null ⇒ scoreEntryUngated(e,q) === scoreEntry(e,q)`.
+- * A re-vendor that changes upstream math fails that suite loudly instead of
+- * silently desyncing tier 2.
++ * Gate-free replica of the vendored scorer with whole-content field anchors.
++ * A field needs a non-stopword whole-token match before it contributes any
++ * score. Existing plural canonicalization can establish that match. After
++ * admission, the field retains vendor phrase, prefix, and substring scoring.
++ * The coverage bonus stays unchanged; the coverage gate stays absent.
++ * The gated acronym comparison disables this new field admission rule so
++ * the gated tier retains its accepted scoring contract.
+  *
+  * Re-vendor checklist for an @cloudflare/codemode upgrade:
+  *  1. Field weights + tokenization/normalization (vendor FIELD_WEIGHTS,
+  *     normalizeSearchText, tokenize) — mirror any change into this replica,
+- *     then make the drift suite green again.
++ *     then verify both anchored scores and the gated acronym comparison.
+  *  2. Coverage-gate semantics (thresholds, exactPhrase escape) — the gate is
+  *     the one line deliberately absent here; if its meaning changes, re-check
+  *     search.ts's tier-2 rationale, not just this file.
+@@ -469,13 +467,21 @@ function scoreFieldUngated(
+   query: string,
+   queryTokens: readonly string[],
+   value: string | undefined,
+-  weight: number
++  weight: number,
++  requireContentAnchor: boolean
+ ): UngatedFieldScore {
+   const raw = normalizeSearchText(value ?? "");
+   const fieldTokens = tokenize(value ?? "");
+   if (raw.length === 0) {
+     return { score: 0, matchedTokens: new Set(), exactPhrase: false };
+   }
++  if (requireContentAnchor && !queryTokens.some((token) =>
++    !STOPWORDS.has(token) && fieldTokens.some((word) =>
++      !STOPWORDS.has(word) && canonicalRoutingToken(word) === canonicalRoutingToken(token)
++    )
++  )) {
++    return { score: 0, matchedTokens: new Set(), exactPhrase: false };
++  }
+   let score = 0;
+   const matchedTokens = new Set<string>();
+   const exactPhrase = query.length > 0 && raw.includes(query);
+@@ -499,7 +505,7 @@ function scoreFieldUngated(
+   return { score, matchedTokens, exactPhrase };
+ }
+ 
+-// Exported for the drift-guard suite (test/scoring.test.ts) ONLY — product
++// Exported for scoring tests ONLY — product
+ // code must go through scoreEntryWeightedUngated, which applies the structural adjustments.
+ export function scoreEntryUngated(entry: ScorableEntry, query: string): number | null {
+   return scoreEntryUngatedPrepared(entry, prepareQueryForm(query));
+@@ -507,23 +513,25 @@ export function scoreEntryUngated(entry: ScorableEntry, query: string): number |
+ 
+ function scoreEntryUngatedPrepared(
+   entry: ScorableEntry,
+-  prepared: PreparedQueryForm
++  prepared: PreparedQueryForm,
++  requireContentAnchor = true
+ ): number | null {
+   const normalizedQuery = normalizeSearchText(prepared.query);
+   const queryTokens = prepared.tokens;
+   if (normalizedQuery.length === 0 || queryTokens.length === 0) return null;
+ 
+   const fields: UngatedFieldScore[] = [
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.id, UNGATED_FIELD_WEIGHTS.id),
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.name, UNGATED_FIELD_WEIGHTS.name),
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.service, UNGATED_FIELD_WEIGHTS.service),
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.id, UNGATED_FIELD_WEIGHTS.id, requireContentAnchor),
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.name, UNGATED_FIELD_WEIGHTS.name, requireContentAnchor),
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.service, UNGATED_FIELD_WEIGHTS.service, requireContentAnchor),
+     scoreFieldUngated(
+       normalizedQuery,
+       queryTokens,
+       entry.description,
+-      UNGATED_FIELD_WEIGHTS.description
++      UNGATED_FIELD_WEIGHTS.description,
++      requireContentAnchor
+     ),
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.kind, UNGATED_FIELD_WEIGHTS.kind)
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.kind, UNGATED_FIELD_WEIGHTS.kind, requireContentAnchor)
+   ];
+ 
+   const matchedTokens = new Set<string>();
