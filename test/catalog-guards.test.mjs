@@ -17,8 +17,11 @@ import {
   attachRunnableSkills,
   assertNoNonExposedRefs,
   assertBuildAuthorityIdsResolve,
-  assertScoutExclusionsResolve
+  assertScoutExclusionsResolve,
+  buildScout
 } from "../scripts/build-catalog.mjs";
+import { extractRoutingExclusions, extractRoutingPhrases } from "../src/catalog/extract-routing-phrases.ts";
+import { extractKeywords } from "../src/catalog/extract-keywords.ts";
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { rewriteScoutRefs, scoutRefRewrites } from "../scripts/description-notes.mjs";
 
@@ -108,10 +111,6 @@ describe("attachRunnableSkills — fail-loud drift guards (design §5)", () => {
 describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", () => {
   const textFields = {
     description: (text) => text,
-    keywords: (text) => [text],
-    routingKeywords: (text) => [text],
-    routingPhrases: (text) => [{ field: "purpose", tokens: [text] }],
-    routingExclusions: (text) => [{ tokens: ["avoid", text] }],
     knownAliases: (text) => [text],
     knownAliasTriggers: (text) => [text],
     inputSchema: (text) => ({ type: "object", properties: { value: { description: text } } }),
@@ -125,6 +124,30 @@ describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", 
         .toThrow(/ADR-0003 leak/);
     });
   }
+
+  const tokenFields = {
+    keywords: (text) => extractKeywords(text),
+    routingKeywords: (text) => extractKeywords(text),
+    routingPhrases: (text) => extractRoutingPhrases({ purpose: [text] }),
+    routingExclusions: (text) => extractRoutingExclusions([text])
+  };
+  for (const [field, extract] of Object.entries(tokenFields)) {
+    it.each(["reviewSubmission", "getRwaAssets", "/api/hackathons/review"])(
+      `rejects real extracted tokens for %s in ${field}`, (reference) => {
+        const entry = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
+        const value = extract(`Use ${reference} here.`);
+        expect(value.length).toBeGreaterThan(0);
+        expect(() => assertNoNonExposedRefs([{ ...entry, [field]: value }])).toThrow(/ADR-0003 leak/);
+      }
+    );
+  }
+
+  it("keeps phrase boundaries when checking token sequences", () => {
+    const entry = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
+    expect(() => assertNoNonExposedRefs([{ ...entry,
+      routingExclusions: [{ tokens: ["review"] }, { tokens: ["submission"] }]
+    }])).not.toThrow();
+  });
 
   it("rejects an excluded child path after the Scout rewrite", () => {
     const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
@@ -226,5 +249,39 @@ describe("assertBuildAuthorityIdsResolve — role ids are pinned to skills that 
     expect(() => assertBuildAuthorityIdsResolve(entries)).toThrow(
       /BUILD_AUTHORITY_SKILL_ROLES names skills that no longer exist: skills\.stellar-dev\.dapp/
     );
+  });
+});
+
+
+describe("Scout raw routing sources follow ADR-0003 before extraction", () => {
+  const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+  for (const field of ["purpose", "useWhen", "exampleQuestions", "keywords", "notFor"]) {
+    it.each(["reviewSubmission", "get_rwa_assets", "/api/hackathons%2Freview"])(
+      `rejects %s in raw x-routing.${field}`, (reference) => {
+        const changed = structuredClone(inventory);
+        const text = `Use ${reference} here.`;
+        changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+          [field]: field === "purpose" ? text : [text]
+        };
+        expect(() => buildScout(changed)).toThrow(new RegExp(`x-routing\\.${field}`));
+      }
+    );
+  }
+
+  it("checks excluded notFor targets before the extractor drops them", () => {
+    const changed = structuredClone(inventory);
+    changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+      notFor: ["judging a single entry -> scout.reviewSubmission"]
+    };
+    expect(() => buildScout(changed)).toThrow(/x-routing\.notFor/);
+  });
+
+  it("preserves a source with only clean notFor strings", () => {
+    const changed = structuredClone(inventory);
+    const notFor = ["historical account balances -> stellarDocs.searchApiRpc"];
+    changed.openapi.paths["/api/hackathons"].get["x-routing"] = { notFor };
+    expect(buildScout(changed).routingPhraseExtras.get("scout.getHackathons")).toEqual({
+      purpose: [], useWhen: [], exampleQuestions: [], keywords: [], notFor
+    });
   });
 });

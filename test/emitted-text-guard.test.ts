@@ -57,6 +57,29 @@ describe("assertNoNonExposedRefsInText", () => {
     }
   });
 
+  it("rejects snake_case and case variants of every excluded Scout name", () => {
+    for (const name of NON_EXPOSED_SCOUT_OP_NAMES) {
+      const snake = name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
+      for (const reference of [snake, `scout.${snake}`, name.toUpperCase()]) {
+        expect(() => assertNoNonExposedRefsInText(`Use ${reference}.`, "emitted text"))
+          .toThrow(/excluded scout operation name/);
+      }
+    }
+  });
+
+  it.each(["/api/Hackathons/review", "/API/HACKATHONS/REVIEW",
+    "/api/hackathons%2Freview", "%2Fapi%2Fhackathons%2Freview",
+    "100% coverage: /api/hackathons%2freview", "%ZZ /api/hackathons%2Freview"])(
+    "rejects encoded or case variants of an excluded path: %s", (text) => {
+      expect(() => assertNoNonExposedRefsInText(text, "emitted text"))
+        .toThrow("/api/hackathons/review");
+    }
+  );
+
+  it("preserves clean text with malformed percent encoding", () => {
+    expect(() => assertNoNonExposedRefsInText("100% %ZZ %E0%A4%A", "emitted text")).not.toThrow();
+  });
+
   it("rejects the excluded child path that an exposed prefix once hid", () => {
     expect(() => assertNoNonExposedRefsInText(
       "See GET /api/hackathons/review before you apply.", "emitted text"

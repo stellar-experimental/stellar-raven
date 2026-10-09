@@ -23,7 +23,11 @@ describe("Scout references use complete paths", () => {
     "/api/hackathons;review",
     "/api/hackathons:review",
     "/other/api/hackathons",
-    "prefix/api/hackathons"
+    "prefix/api/hackathons",
+    "https://stellarlight.xyz/api/hackathons",
+    "GET https://stellarlight.xyz/api/hackathons",
+    "/api/hackathons/{id}",
+    "/api/hackathons/"
   ])("preserves a longer path: %s", (path) => {
     const text = `See ${path} before you apply.`;
     expect(rewriteScoutRefs(text, pairs)).toBe(text);
@@ -35,6 +39,7 @@ describe("Scout references use complete paths", () => {
     ["(/api/hackathons)", "(scout.getHackathons)"],
     ["`/api/hackathons`", "`scout.getHackathons`"],
     ["/api/hackathons.", "scout.getHackathons."],
+    ["/api/hackathons; more text", "scout.getHackathons; more text"],
     ["/api/hackathons?limit=5", "scout.getHackathons?limit=5"],
     ["GET /api/hackathons/{slug}", "scout.getHackathon"],
     ["use get_hackathons", "use getHackathons"]
@@ -57,9 +62,8 @@ describe("Scout schema descriptions remove excluded operation names", () => {
     const scrubbed = scrubNonExposedScoutSchemaRefs(meta);
     const original = meta.properties.warnings.description;
     const expected = original
-      .replaceAll("getQualityReport", "upstream quality report")
-      .replaceAll("verifyClaim", "upstream verify claim")
-      .replaceAll("getRwaAssets", "upstream rwa assets");
+      .replace(", getQualityReport, verifyClaim", "")
+      .replace(", getRwaAssets", "");
     expect(scrubbed.properties.warnings.description).toBe(expected);
     expect(meta.properties.warnings.description).toBe(original);
     expect(() => assertNoNonExposedRefsInText(JSON.stringify(scrubbed), "Meta schema")).not.toThrow();
@@ -84,6 +88,34 @@ describe("Scout schema descriptions remove excluded operation names", () => {
     expect(scrubNonExposedScoutSchemaRefs(schema)).toEqual(schema);
     expect(() => assertNoNonExposedRefsInText(JSON.stringify(schema), "schema data"))
       .toThrow("reviewSubmission");
+  });
+
+  it.each(["/api/rwa/assets", "/api/feedback-forms", "/api/feedbacks", "/api/feedback/",
+    "https://stellarlight.xyz/api/feedback"])("preserves a longer or hosted schema path: %s", (path) => {
+    expect(scrubNonExposedScoutSchemaRefs({ description: path })).toEqual({ description: path });
+  });
+
+  it.each(["GET /api/hackathons/review", "/api/hackathons/review"])(
+    "scrubs an absent-from-spec schema path: %s", (path) => {
+      expect(scrubNonExposedScoutSchemaRefs({ description: `See ${path}.` }))
+        .toEqual({ description: "See upstream review." });
+    }
+  );
+
+  it("removes excluded items at either list boundary and preserves clean lists", () => {
+    for (const description of [
+      "Policy (getRwaAssets, listAudits, getStablecoins).",
+      "Policy (listAudits, getStablecoins, scout.reviewSubmission).",
+      "Policy (GET_RWA_ASSETS, listAudits, getStablecoins)."
+    ]) {
+      expect(scrubNonExposedScoutSchemaRefs({ description })).toEqual({
+        description: "Policy (listAudits, getStablecoins)."
+      });
+    }
+    const clean = { description: "Policy (listAudits,  getStablecoins)." };
+    expect(scrubNonExposedScoutSchemaRefs(clean)).toEqual(clean);
+    expect(scrubNonExposedScoutSchemaRefs({ description: "(getRwaAssets, reviewSubmission)" }))
+      .toEqual({ description: "" });
   });
 
   it("preserves the existing excluded-path scrub", () => {
