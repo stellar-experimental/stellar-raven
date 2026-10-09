@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import {
   EXCLUDED_LUMENLOOP_OPS,
+  NON_EXPOSED_SCOUT_OP_NAMES,
   RETIRED_ONBOARDING_SKILLS,
   RETIRED_PARTNER_ONBOARDING_SKILLS
 } from "../scripts/exposure.mjs";
@@ -43,6 +44,52 @@ describe("assertNoNonExposedRefsInText", () => {
         "demo tool description"
       )
     ).toThrow(/lumenloop\.request_research/);
+  });
+
+  it("rejects every excluded Scout name, bare and service-qualified", () => {
+    expect(NON_EXPOSED_SCOUT_OP_NAMES.has("reviewSubmission")).toBe(true);
+    expect(NON_EXPOSED_SCOUT_OP_NAMES.has("getRwaAssets")).toBe(true);
+    for (const name of NON_EXPOSED_SCOUT_OP_NAMES) {
+      for (const reference of [name, `scout.${name}`]) {
+        expect(() => assertNoNonExposedRefsInText(`Use ${reference} here.`, "emitted text"))
+          .toThrow(name);
+      }
+    }
+  });
+
+  it("rejects snake_case and case variants of every excluded Scout name", () => {
+    for (const name of NON_EXPOSED_SCOUT_OP_NAMES) {
+      const snake = name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
+      for (const reference of [snake, `scout.${snake}`, name.toUpperCase()]) {
+        expect(() => assertNoNonExposedRefsInText(`Use ${reference}.`, "emitted text"))
+          .toThrow(/excluded scout operation name/);
+      }
+    }
+  });
+
+  it.each(["/api/Hackathons/review", "/API/HACKATHONS/REVIEW",
+    "/api/hackathons%2Freview", "%2Fapi%2Fhackathons%2Freview",
+    "100% coverage: /api/hackathons%2freview", "%ZZ /api/hackathons%2Freview"])(
+    "rejects encoded or case variants of an excluded path: %s", (text) => {
+      expect(() => assertNoNonExposedRefsInText(text, "emitted text"))
+        .toThrow("/api/hackathons/review");
+    }
+  );
+
+  it("preserves clean text with malformed percent encoding", () => {
+    expect(() => assertNoNonExposedRefsInText("100% %ZZ %E0%A4%A", "emitted text")).not.toThrow();
+  });
+
+  it("rejects the excluded child path that an exposed prefix once hid", () => {
+    expect(() => assertNoNonExposedRefsInText(
+      "See GET /api/hackathons/review before you apply.", "emitted text"
+    )).toThrow("/api/hackathons/review");
+  });
+
+  it("does not match an excluded name inside a longer identifier", () => {
+    expect(() => assertNoNonExposedRefsInText(
+      "reviewSubmissionCount getRwaAssetsExtra prereviewSubmission", "emitted text"
+    )).not.toThrow();
   });
 
   it("throws on a retired-skill id taken from the real exclusion data", () => {

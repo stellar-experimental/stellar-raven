@@ -42,6 +42,17 @@ import { KNOWN_ALIAS_PACKS } from "./catalog-data/known-aliases.mjs";
 import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
 
+function guardedTokens(text) {
+  assertNoNonExposedRefsInText(text, "operation keyword source");
+  return tokenize(text);
+}
+
+export function guardedExtractKeywords(body, options) {
+  assertNoNonExposedRefsInText(body, "keyword source");
+  for (const text of options?.exclude ?? []) assertNoNonExposedRefsInText(text, "keyword exclusion source");
+  return extractKeywords(body, options);
+}
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_PATH = join(ROOT, "catalog", "manifest.json");
 
@@ -105,7 +116,7 @@ function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } =
     ops.map((e) => [
       e.id,
       new Set(
-        tokenize(
+        guardedTokens(
           [
             ...schemaTextParts(e.inputSchema),
             ...schemaTextParts(e.outputSchema),
@@ -124,7 +135,7 @@ function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } =
     const tokens = tokenSetById.get(entry.id);
     if (!tokens) return entry;
     const distinctive = [...tokens].filter((t) => (df.get(t) ?? 0) <= maxDf);
-    const keywords = extractKeywords(distinctive.join(" "), {
+    const keywords = guardedExtractKeywords(distinctive.join(" "), {
       exclude: [
         entry.id,
         entry.service,
@@ -160,7 +171,7 @@ function attachRoutingKeywords(entries, bodiesById) {
     // evict previously-visible terms from a broad operation. Scout 1.7.18's
     // largest set is 149 tokens; 256 keeps it whole while still bounding the
     // Worker-bundled manifest.
-    const routingKeywords = extractKeywords(bodies.join("\n"), {
+    const routingKeywords = guardedExtractKeywords(bodies.join("\n"), {
       exclude: [entry.id, entry.service, entry.kind, entry.description],
       cap: 256
     });
@@ -300,18 +311,18 @@ function validateAliasReceipt(receipt) {
 export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) {
   const searchableEntries = catalogEntries.filter((entry) => entry.searchable !== false);
   const services = new Set(searchableEntries.map((entry) => entry.service));
-  const namespaceTokens = new Set([...services].flatMap(tokenize).map(canonicalRoutingToken));
+  const namespaceTokens = new Set([...services].flatMap(guardedTokens).map(canonicalRoutingToken));
   const nameTokens = new Set(searchableEntries
-    .flatMap((entry) => tokenize(entry.id.split(".").at(-1))).map(canonicalRoutingToken));
+    .flatMap((entry) => guardedTokens(entry.id.split(".").at(-1))).map(canonicalRoutingToken));
   const descriptionTokensByService = new Map();
   const entriesByServiceToken = new Map();
   const operationNamesByService = new Map();
   for (const entry of searchableEntries) {
     const descriptionTokens = descriptionTokensByService.get(entry.service) ?? new Set();
-    for (const token of tokenize(entry.description).map(canonicalRoutingToken)) descriptionTokens.add(token);
+    for (const token of guardedTokens(entry.description).map(canonicalRoutingToken)) descriptionTokens.add(token);
     descriptionTokensByService.set(entry.service, descriptionTokens);
     const counts = entriesByServiceToken.get(entry.service) ?? new Map();
-    const tokens = new Set(tokenize([
+    const tokens = new Set(guardedTokens([
       entry.id, entry.service, entry.kind, entry.description,
       ...(entry.keywords ?? []), ...(entry.routingKeywords ?? [])
     ].join("\n")).map(canonicalRoutingToken));
@@ -321,7 +332,7 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
     entriesByServiceToken.set(entry.service, counts);
     if (entry.kind === "operation") {
       const names = operationNamesByService.get(entry.service) ?? new Set();
-      for (const token of tokenize(entry.id.split(".").at(-1)).map(canonicalRoutingToken)) {
+      for (const token of guardedTokens(entry.id.split(".").at(-1)).map(canonicalRoutingToken)) {
         names.add(token);
       }
       operationNamesByService.set(entry.service, names);
@@ -350,7 +361,7 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
   for (const entry of entries) {
     const otherServices = [...services].filter((service) => service !== entry.service);
     const titles = titlesById.get(entry.id) ?? [];
-    const distinctive = tokenize(titles.join("\n"))
+    const distinctive = guardedTokens(titles.join("\n"))
       .filter((token) => {
         const canonical = canonicalRoutingToken(token);
         if (namespaceTokens.has(canonical)) return false;
@@ -384,10 +395,10 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
 // must break the build (stale exclusion = a write endpoint may have moved),
 // not silently stop matching.
 export function assertScoutExclusionsResolve(openapi) {
-  const present = new Set();
+  const present = new Map();
   for (const [path, pathItem] of Object.entries(openapi.paths)) {
     for (const method of HTTP_METHODS) {
-      if (pathItem[method]) present.add(`${method.toUpperCase()} ${path}`);
+      if (pathItem[method]) present.set(`${method.toUpperCase()} ${path}`, pathItem[method].operationId);
     }
   }
   const stale = [...EXCLUDED_SCOUT_OPS].filter((k) => !present.has(k));
@@ -395,6 +406,13 @@ export function assertScoutExclusionsResolve(openapi) {
     throw new Error(
       `EXCLUDED_SCOUT_OPS no longer present in the scout OpenAPI: ${stale.join(", ")}. ` +
         `Upstream renamed or removed them — reconcile the exclusion list in build-catalog.mjs.`
+    );
+  }
+  const renamed = [...EXCLUDED_SCOUT_OPERATIONS].filter(([signature, name]) => present.get(signature) !== name);
+  if (renamed.length > 0) {
+    throw new Error(
+      `Excluded Scout operation names changed: ${renamed.map(([signature]) => signature).join(", ")}. ` +
+        "Reconcile EXCLUDED_SCOUT_OPERATIONS so bare-name guards follow the source contract."
     );
   }
   const newlyListed = [...SCOUT_PATHS_ABSENT_FROM_SPEC].filter((path) => path in openapi.paths);
@@ -507,6 +525,7 @@ import {
 } from "./description-notes.mjs";
 import {
   EXCLUDED_LUMENLOOP_OPS,
+  EXCLUDED_SCOUT_OPERATIONS,
   EXCLUDED_SCOUT_OPS,
   SCOUT_PATHS_ABSENT_FROM_SPEC,
   RETIRED_ONBOARDING_SKILLS,
@@ -677,7 +696,7 @@ function scoutOutputSchema(op, openapi) {
   return schema ? inlineRefs(schema, openapi) : null;
 }
 
-function buildScout(inv) {
+export function buildScout(inv) {
   const entries = [];
   // Scout 1.7.16 (sls-051 structural fix) moved routing vocabulary — synonym
   // chains, region/product terms, question exemplars — out of description
@@ -734,6 +753,13 @@ function buildScout(inv) {
           keywords: asStrings(routing.keywords),
           notFor: asStrings(routing.notFor)
         };
+        for (const [field, texts] of Object.entries(source)) {
+          for (const text of texts) {
+            // Exclusions emit only the intent clause, as extractRoutingExclusions does.
+            const emittedText = field === "notFor" ? text.split(/\s*->\s*/u, 1)[0] ?? "" : text;
+            assertNoNonExposedRefsInText(emittedText, `scout.${opId} x-routing.${field}`);
+          }
+        }
         const parts = [
           ...source.purpose,
           ...source.useWhen,
@@ -742,6 +768,8 @@ function buildScout(inv) {
         ];
         if (parts.length > 0) {
           routingExtras.set(`scout.${opId}`, [parts.join("\n")]);
+        }
+        if (parts.length > 0 || source.notFor.length > 0) {
           routingPhraseExtras.set(`scout.${opId}`, source);
         }
       }
@@ -966,7 +994,7 @@ function buildSkills(manifest, texts, arm) {
           sectionEnd++;
         }
         const keywords = emitSectionKeywords
-          ? extractKeywords(bodyLines.slice(i + 1, sectionEnd).join("\n"), {
+          ? guardedExtractKeywords(bodyLines.slice(i + 1, sectionEnd).join("\n"), {
               exclude: [sectionId, heading, "skills", "skill-section"]
             })
           : [];
@@ -995,7 +1023,7 @@ function buildSkills(manifest, texts, arm) {
         const heading = headingLine ? plainText(headingLine.replace(/^#+ /, "")) : file.path;
         const fileEntryId = `${skillId}#file:${file.path}`;
         const fileKeywords = emitSectionKeywords
-          ? extractKeywords(fileLines.join("\n"), {
+          ? guardedExtractKeywords(fileLines.join("\n"), {
               exclude: [fileEntryId, heading, "skills", "skill-section"]
             })
           : [];
@@ -1142,7 +1170,7 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
 //
 // The "any service.op token not in opIds" check needs the full assembled
 // manifest as an allowlist, so it stays here; the other three checks (raw
-// excluded scout path, retired-skill ref, excluded lumenloop op name) are
+// excluded scout path, retired-skill ref, excluded operation names) are
 // allowlist-free and factored into scripts/emitted-text-guard.mjs so any
 // OTHER emitted text (e.g. the /demo page/prompts) can run them too without
 // a manifest — see assertNoNonExposedRefsInText.
@@ -1159,6 +1187,7 @@ export function assertNoNonExposedRefs(entries) {
       ...(entry.keywords ?? []),
       ...(entry.routingKeywords ?? []),
       ...(entry.routingPhrases ?? []).flatMap((phrase) => phrase.tokens),
+      ...(entry.routingExclusions ?? []).flatMap((exclusion) => exclusion.tokens),
       ...(entry.knownAliases ?? []),
       ...(entry.knownAliasTriggers ?? []),
       // Operation and runnable-skill schemas ship to the model through

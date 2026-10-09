@@ -64,7 +64,13 @@ export function lumenloopOpExcluded(tool) {
 //                                     Raven has no approval or budget gate for it
 //  POST /api/partners/match stays exposed: its OpenAPI description declares
 //                                     pure AI ranking over published partners
-export { EXCLUDED_SCOUT_OPS, SCOUT_PATHS_ABSENT_FROM_SPEC } from "../src/policy/scout-exposure.ts";
+export {
+  EXCLUDED_SCOUT_OPERATIONS,
+  EXCLUDED_SCOUT_OPS,
+  NON_EXPOSED_SCOUT_OP_NAMES,
+  SCOUT_OPERATIONS_ABSENT_FROM_SPEC,
+  SCOUT_PATHS_ABSENT_FROM_SPEC
+} from "../src/policy/scout-exposure.ts";
 
 // Retired skills — exclusion as DATA (ADR-0003; decision 2026-07-03).
 // The Lumenloop onboarding skills teach RAW HTTP/REST or MCP-connector access
