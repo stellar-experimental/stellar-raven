@@ -10,7 +10,8 @@
  * Console output and the returned value cross separate redacted boundaries.
  *
  * The final result receives truncation and reserved-marker escaping.
- * Truncation or source metadata adds a bounded source-basis footer.
+ * Truncation, source metadata, or an error call adds a bounded footer.
+ * SOURCE BASIS marks truncation; SOURCE METADATA marks an untruncated footer.
  * Only a truncated result with an owner can receive a stored artifact.
  * Logs and errors have independent model-output caps and are not persisted.
  */
@@ -424,7 +425,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     let text = escapeSourceManifestMarkerCollisions(result.text);
     let sourceBasis: BuildSourceBasisManifestInput | undefined;
     const sourceMetadata = sourceMetadataFromOperationLedger(opLedger);
-    if (result.truncated || sourceMetadata.length > 0) {
+    if (result.truncated || sourceMetadata.length > 0 || opLedger.some((call) => call.outcome === "error")) {
       let artifact: SourceBasisArtifact = { state: "absent", reason: "unavailable" };
       if (result.truncated) {
         const serialized = serializedResult(redactedResult);

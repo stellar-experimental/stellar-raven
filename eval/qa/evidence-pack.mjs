@@ -13,7 +13,7 @@ const INITIAL_CLAIM_SNIPPET_CHARS = 520;
 const MIN_CLAIM_SNIPPET_CHARS = 260;
 const SOURCE_BASIS_MARKER = "\n--- SOURCE BASIS ---";
 // Host provenance sidecar on untruncated results (src/policy/source-basis.ts).
-// A loss boundary signal, unlike SOURCE BASIS: it does not set `truncated`.
+// It does not signal a loss boundary or set `truncated`, unlike SOURCE BASIS.
 const SOURCE_METADATA_MARKER = "\n--- SOURCE METADATA ---";
 const LEGACY_TRUNCATION_MARKER = "\n--- TRUNCATED ---";
 const CONSOLE_MARKER = "\n\n--- console (";
@@ -1316,7 +1316,7 @@ function truncationLine(entries) {
   return footers.join(" | ");
 }
 
-/** Host provenance sidecars are NOT loss boundaries; they carry as-of/matchMode. */
+/** Host provenance sidecars carry source metadata and error call reasons without a loss boundary. */
 function provenanceLine(entries) {
   const footers = [];
   for (const [index, entry] of entries.entries()) {

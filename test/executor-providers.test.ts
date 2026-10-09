@@ -53,6 +53,32 @@ function fnsOf(providers: Sandbox, name: string) {
 }
 
 describe("host structural service evidence", () => {
+  it("keeps soft-empty outcomes distinct from failures without adding a reason", async () => {
+    const calls: OpLedgerCall[] = [];
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl: async () => Response.json({ error: "unknown project timed out" }, { status: 404 }),
+      onOpCall: (call) => calls.push(call)
+    });
+    const result = await fnsOf(providers, "scout").getHackathon!({ slug: "unknown" });
+    expect(result).toMatchObject({ ok: false, error: { kind: "soft-empty", status: 404 } });
+    expect(calls[0]).toMatchObject({ outcome: "soft-empty", reason: undefined });
+  });
+
+  it("keeps arbitrary argument keys and upstream messages out of failure reasons", async () => {
+    const calls: OpLedgerCall[] = [];
+    const fetchImpl: FetchLike = async () => Response.json({
+      error: "private upstream body https://example.test/?key=test-key-not-real-1234",
+      code: "test-key-not-real-1234"
+    }, { status: 500 });
+    const providers = buildSandbox(catalog, skillSource, env, { fetchImpl, onOpCall: (call) => calls.push(call) });
+    await fnsOf(providers, "lumenloop").get_document!({
+      collection: "articles", id: 123,
+      "https://example.test/?key=test-key-not-real-1234": "private value"
+    });
+    await fnsOf(providers, "scout").searchResearch!({ q: "base reserve" });
+    expect(calls.map((call) => call.reason)).toEqual(["invalid-args: arguments", "http-500"]);
+  });
+
   it.each([
     ["positive rows", { projects: [{ slug: "soroswap" }], meta: { total: 1 } }, true],
     ["detail data with an empty auxiliary collection", { name: "Reflector", tags: [] }, true],

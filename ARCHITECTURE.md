@@ -104,6 +104,9 @@ Every service call follows this host-side path:
 manifest entry → argument guard → adapter → response normalization → secret redaction
 ```
 
+The host splits documented comma forms in array parameters before validation.
+The guard still rejects unknown array values.
+
 The model supplies arguments, but the manifest supplies the endpoint, credential mapping, and schema.
 Service payloads can contain source URLs; request credentials remain host-side.
 Build-excluded operations have no entry or callable function.
@@ -121,9 +124,15 @@ This provides one model-facing copy of the bounded output.
 The host redacts the final result before applying `truncateForModel`.
 The configured token budget determines a character cut at four characters per token.
 Reserved source-manifest markers receive escaping even when the result fits.
-A source-basis footer appears after truncation or when the host ledger contains source metadata.
+A footer appears after truncation, captured source metadata, or an error call.
+`--- SOURCE BASIS ---` marks a truncated result.
+`--- SOURCE METADATA ---` marks every untruncated footer, including error call reasons.
+Soft-empty calls have no failure reason and do not trigger a footer.
 The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
+Each failed call includes a reason of at most 64 characters.
+Reasons use fixed labels and declared parameter names, with no upstream text or argument values.
+The footer remains bounded to 1600 characters.
 
 Unavailable artifacts receive narrower rerun advice instead of a callable artifact-read instruction.
 

@@ -1,6 +1,7 @@
 import { CHARS_PER_TOKEN, DEFAULT_MAX_TOKENS, truncateForModel, type Truncated } from "./truncate.ts";
 
 export const SOURCE_BASIS_MANIFEST_MAX_CHARS = 1600;
+export const SOURCE_BASIS_REASON_MAX_CHARS = 64;
 export const SOURCE_BASIS_MARKER = "--- SOURCE BASIS ---";
 export const SOURCE_METADATA_MARKER = "--- SOURCE METADATA ---";
 
@@ -78,6 +79,8 @@ export type SourceBasisCall = {
   op: string;
   outcome: SourceBasisCallOutcome;
   ms: number;
+  /** Host-generated failure label, excluding upstream text and argument values. */
+  reason?: string;
 };
 
 export type SourceBasisArtifact =
@@ -98,7 +101,7 @@ export type BuildSourceBasisManifestInput = {
   canonicalUrls?: string[];
   artifact?: SourceBasisArtifact;
   skillSectionAdvice?: boolean;
-  /** False only when metadata, rather than truncation, caused this block. */
+  /** False when source metadata or error calls cause an untruncated SOURCE METADATA footer. */
   truncated?: boolean;
 };
 
@@ -275,6 +278,9 @@ function serializeManifest(
 
 function guidanceLine(input: BuildSourceBasisManifestInput): string {
   if (input.truncated === false) {
+    if (input.calls.some((call) => call.outcome === "error")) {
+      return "host-captured call failures survived sandbox projection; treat failed reads as inconclusive and preserve any source metadata.";
+    }
     return "host-captured source metadata survived sandbox projection; preserve its dates, modes, and counts when answering.";
   }
   const skillClause = input.skillSectionAdvice
@@ -304,7 +310,8 @@ function callsLine(calls: SourceBasisCall[], limit: number): string {
   const shown = calls.slice(0, Math.max(0, limit)).map((call) => {
     const op = truncateAtom(call.op, MAX_ATOM_CHARS);
     const ms = Number.isFinite(call.ms) ? `${Math.max(0, Math.round(call.ms))}ms` : "?ms";
-    return `${op}=${call.outcome}/${ms}`;
+    const reason = call.reason ? ` [${truncateAtom(call.reason, SOURCE_BASIS_REASON_MAX_CHARS)}]` : "";
+    return `${op}=${call.outcome}/${ms}${reason}`;
   });
   const totals = callTotals(calls);
   const suffix = calls.length > shown.length ? ` (+${calls.length - shown.length} more; ${totals})` : ` (${totals})`;

@@ -103,6 +103,12 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(EXECUTE_DESCRIPTION).toMatch(/never API, security, maintenance, or production authority/i);
   });
 
+  it("distinguishes an untruncated footer from a truncation boundary", () => {
+    expect(EXECUTE_DESCRIPTION).toContain("captured source metadata, or an error call");
+    expect(EXECUTE_DESCRIPTION).toContain("Only `--- SOURCE BASIS ---` marks truncation");
+    expect(EXECUTE_DESCRIPTION).toContain("`--- SOURCE METADATA ---` marks an untruncated footer");
+  });
+
   it("states one coherent cross-tier score and promotion contract", () => {
     const scoreDescription = searchHitSchema.shape.score.description ?? "";
     const tierDescription = searchHitSchema.shape.tier.description ?? "";

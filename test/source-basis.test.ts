@@ -3,6 +3,7 @@ import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs"
 import {
   SOURCE_BASIS_MARKER,
   SOURCE_BASIS_MANIFEST_MAX_CHARS,
+  SOURCE_BASIS_REASON_MAX_CHARS,
   SOURCE_METADATA_MARKER,
   buildSourceBasisManifest,
   escapeSourceManifestMarkerCollisions,
@@ -88,7 +89,7 @@ describe("source-basis manifest", () => {
     );
     const text = buildSourceBasisManifest({
       shape: sourceBasisShapeFromValue(wideObject),
-      calls: calls(250),
+      calls: calls(250).map((call) => ({ ...call, reason: "r".repeat(500) })),
       canonicalUrls: Array.from(
         { length: 80 },
         (_, i) => `https://user:secret@example${i}.test/a/very/long/path/${"b".repeat(80)}?token=secret#frag`
@@ -103,6 +104,16 @@ describe("source-basis manifest", () => {
     expect(text).toContain("guidance:");
   });
 
+  it("limits each reason while preserving the existing calls line totals", () => {
+    const text = buildSourceBasisManifest({
+      shape: validObjectShape,
+      calls: [{ op: "scout.searchResearch", outcome: "error", ms: 0, reason: "r".repeat(500) }]
+    });
+    const reason = /\[([^\]]+)\]/.exec(text)?.[1];
+    expect(reason?.length).toBe(SOURCE_BASIS_REASON_MAX_CHARS);
+    expect(text).toContain("totals ok=0 error=1 soft-empty=0");
+  });
+
   it("bounds and deduplicates oversized allowlisted source metadata", () => {
     const repeated = Array.from({ length: 200 }, () => ({
       op: "scout.searchRepos",
@@ -111,7 +122,7 @@ describe("source-basis manifest", () => {
     }));
     const text = buildSourceBasisManifest({
       shape: validArrayShape,
-      calls: calls(2),
+      calls: calls(1),
       sourceMetadata: repeated,
       artifact: { state: "absent", reason: "not-truncated" },
       truncated: false

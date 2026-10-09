@@ -456,10 +456,11 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
 
       expect(outcome.ok).toBe(true);
       if (!outcome.ok) throw new Error(outcome.error);
-      expect(JSON.parse(outcome.result)).toMatchObject({
+      expect(parseResultJsonWithMetadata(outcome.result)).toMatchObject({
         ok: false,
         error: { service: "scout", kind: "error", status: 200, message: warning }
       });
+      expect(outcome.sourceBasis?.calls[0]?.reason).toBe("timeout");
       expect(outcome.operationSummary).toEqual({ total: 1, ok: 0, error: 1, softEmpty: 0 });
       expect(outcome.evidenceSummary.kind).toBe("service-inconclusive");
     }
@@ -1021,7 +1022,9 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      expect(JSON.parse(outcome.result)).toEqual({ dataIsUndefined: true, note: "write-through ok" });
+      expect(parseResultJsonWithMetadata(outcome.result))
+        .toEqual({ dataIsUndefined: true, note: "write-through ok" });
+      expect(outcome.sourceBasis?.calls[0]?.reason).toBe("invalid-args: query");
       expect(outcome.logs.join("\n")).toContain("[envelope] lumenloop.search_directory");
     }
   });
