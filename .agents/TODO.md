@@ -216,25 +216,6 @@ Done when: ok results carry measured inconclusive and as-of signals, the instruc
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
-## Catalog build
-
-### Close the excluded-path rewrite gap in the leak guards
-
-The 2026-10-06 drift review (Grok 4.7 high) probed the emitted-text guards with Scout 1.9.71
-inputs. `scripts/description-notes.mjs:156-157` rewrites operation paths with `split` and `join`.
-An excluded path that extends an exposed path is rewritten into an exposed-looking name: the input
-`See GET /api/hackathons/review before you apply.` becomes `See scout.getHackathons/review before
-you apply.`, and both `assertNoNonExposedRefsInText` and `scripts/emitted-text-guard.mjs` pass it. A
-bare excluded operation name (`reviewSubmission`) in a description, keyword, or routing phrase also
-passes, and `routingExclusions` is outside the scanned fields (`scripts/build-catalog.mjs:1157-1168`).
-No current manifest leaks a path. The current Scout `Meta.warnings` description already names the
-excluded `getQualityReport`, `verifyClaim`, and `getRwaAssets` as bare words, so a bare-name rule
-needs a scrub for that text first. Evidence: `rounds/2026-10-06-truth-maintenance/review-drift-grok.md`.
-
-Done when: the path rewrite matches whole path segments only, the guards reject a bare excluded
-operation name in every emitted text field including `routingExclusions`, tests cover all three
-probes, and `node scripts/build-catalog.mjs` still passes on the current inventory.
-
 ## Dependencies
 
 ### Remove the vitest pool override when the pool updates

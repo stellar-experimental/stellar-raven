@@ -20,6 +20,7 @@ import {
   assertScoutExclusionsResolve
 } from "../scripts/build-catalog.mjs";
 import { RUNNERS } from "../src/skills/runners/index.ts";
+import { rewriteScoutRefs, scoutRefRewrites } from "../scripts/description-notes.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIGEST = "skills.lumenloop.stellar-ecosystem-digest";
@@ -37,6 +38,18 @@ describe("Scout exposure data matches the source contract", () => {
   it("requires an exposure decision when a skill-only collection enters OpenAPI", () => {
     const changed = structuredClone(inventory.openapi);
     changed.paths["/api/repos"] = { get: { operationId: "listRepos" } };
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("Previously unlisted Scout paths");
+  });
+
+  it("rejects a renamed excluded operation even when its path stays the same", () => {
+    const changed = structuredClone(inventory.openapi);
+    changed.paths["/api/quality"].get.operationId = "renamedQualityReport";
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("operation names changed");
+  });
+
+  it("requires an exposure decision when the reviewed submission operation enters this older inventory", () => {
+    const changed = structuredClone(inventory.openapi);
+    changed.paths["/api/hackathons/review"] = { get: { operationId: "reviewSubmission" } };
     expect(() => assertScoutExclusionsResolve(changed)).toThrow("Previously unlisted Scout paths");
   });
 });
@@ -93,6 +106,41 @@ describe("attachRunnableSkills — fail-loud drift guards (design §5)", () => {
 });
 
 describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", () => {
+  const textFields = {
+    description: (text) => text,
+    keywords: (text) => [text],
+    routingKeywords: (text) => [text],
+    routingPhrases: (text) => [{ field: "purpose", tokens: [text] }],
+    routingExclusions: (text) => [{ tokens: ["avoid", text] }],
+    knownAliases: (text) => [text],
+    knownAliasTriggers: (text) => [text],
+    inputSchema: (text) => ({ type: "object", properties: { value: { description: text } } }),
+    outputSchema: (text) => ({ type: "object", properties: { value: { description: text } } })
+  };
+
+  for (const [field, value] of Object.entries(textFields)) {
+    it.each(["reviewSubmission", "getRwaAssets"])(`rejects bare %s in ${field}`, (name) => {
+      const entry = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
+      expect(() => assertNoNonExposedRefs([{ ...entry, [field]: value(`Use ${name} here.`) }]))
+        .toThrow(/ADR-0003 leak/);
+    });
+  }
+
+  it("rejects an excluded child path after the Scout rewrite", () => {
+    const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+    const text = "See GET /api/hackathons/review before you apply.";
+    const description = rewriteScoutRefs(text, scoutRefRewrites(inventory.openapi));
+    expect(description).toBe(text);
+    const entry = preAttachEntries().find((entry) => entry.id === "scout.getHackathons");
+    expect(() => assertNoNonExposedRefs([{ ...entry, description }])).toThrow(/ADR-0003 leak/);
+  });
+
+  it.each(["inputSchema", "outputSchema"])("rejects a bare excluded name in runnable %s", (field) => {
+    const entry = attachRunnableSkills(preAttachEntries(), RUNNERS).find((entry) => entry.id === DIGEST);
+    expect(() => assertNoNonExposedRefs([{ ...entry, [field]: { description: "Use reviewSubmission." } }]))
+      .toThrow(/ADR-0003 leak/);
+  });
+
   it("passes on the real attached entries (the build's own steady state)", () => {
     expect(() => assertNoNonExposedRefs(attachRunnableSkills(preAttachEntries(), RUNNERS))).not.toThrow();
   });

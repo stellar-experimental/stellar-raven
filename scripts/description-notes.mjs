@@ -68,7 +68,7 @@ export function assertSkillDescriptionOverrideIdsResolve(skillIds, consumer) {
 // build-super-spec.mjs (in-sandbox spec) so the two surfaces cannot drift.
 // ---------------------------------------------------------------------------
 
-import { EXCLUDED_SCOUT_OPS } from "./exposure.mjs";
+import { EXCLUDED_SCOUT_OPS, NON_EXPOSED_SCOUT_OP_NAMES } from "./exposure.mjs";
 
 const SCOUT_HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
 
@@ -138,9 +138,9 @@ const regexEscape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
  * Rewrite raw REST references and snake_case tool names in `text` using the
  * pairs from scoutRefRewrites(openapi).
  *
- * Path-shaped needles (contain "/") use plain longest-first substring
- * replacement — the "/" delimiters make them unambiguous, and longest-first
- * ordering keeps "/api/partners" from eating "/api/partners/match".
+ * Path-shaped needles (contain "/") match complete paths, never prefixes
+ * of a longer segment or a child path. Longest-first ordering still resolves
+ * method-qualified references before bare paths.
  * Token-shaped needles (snake names) match only as standalone tokens: never
  * inside a longer identifier ([\w] boundaries on both sides) and never when
  * preceded by "." (the lookbehind), so a rerun over already-rewritten text
@@ -160,7 +160,10 @@ export function rewriteScoutRefs(text, pairs) {
   let out = text;
   for (const [needle, replacement] of pairs) {
     if (needle.includes("/")) {
-      out = out.split(needle).join(replacement);
+      out = out.replace(
+        new RegExp(`(?<![\\w/.-])${regexEscape(needle)}(?![\\w/{}%+~@=:$&;-]|\\.[\\w])`, "g"),
+        replacement
+      );
     } else {
       out = out.replace(
         new RegExp(`(?<![\\w.])${regexEscape(needle)}(?![\\w])`, "g"),
@@ -181,6 +184,18 @@ export function rewriteScoutRefs(text, pairs) {
  * receives the same treatment. The catalog guard remains the fail-loud
  * backstop for references in non-description schema fields.
  */
+const SCOUT_SCHEMA_REF_REWRITES = [
+  ...[...EXCLUDED_SCOUT_OPS].flatMap((signature) => {
+    const path = signature.slice(signature.indexOf(" ") + 1);
+    const label = `upstream ${path.split("/").filter(Boolean).at(-1).replaceAll("-", " ")}`;
+    return [[signature, label], [path, label]];
+  }),
+  ...[...NON_EXPOSED_SCOUT_OP_NAMES].map((name) => {
+    const words = name.replace(/^(get|list)(?=[A-Z])/, "").replace(/([a-z0-9])([A-Z])/g, "$1 $2");
+    return [name, `upstream ${words.toLowerCase()}`];
+  })
+].sort((a, b) => b[0].length - a[0].length);
+
 export function scrubNonExposedScoutSchemaRefs(value) {
   if (Array.isArray(value)) return value.map(scrubNonExposedScoutSchemaRefs);
   if (!value || typeof value !== "object") return value;
@@ -193,18 +208,15 @@ export function scrubNonExposedScoutSchemaRefs(value) {
     }
 
     let description = item;
-    const rewrites = [...EXCLUDED_SCOUT_OPS]
-      .flatMap((signature) => {
-        const path = signature.slice(signature.indexOf(" ") + 1);
-        const label = `upstream ${path.split("/").filter(Boolean).at(-1).replaceAll("-", " ")}`;
-        return [
-          [signature, label],
-          [path, label]
-        ];
-      })
-      .sort((a, b) => b[0].length - a[0].length);
-    for (const [needle, replacement] of rewrites) {
-      description = description.split(needle).join(replacement);
+    for (const [needle, replacement] of SCOUT_SCHEMA_REF_REWRITES) {
+      if (needle.includes("/")) {
+        description = description.split(needle).join(replacement);
+      } else {
+        description = description.replace(
+          new RegExp(`(?<![\\w])(?:scout\\.)?${regexEscape(needle)}(?![\\w])`, "g"),
+          replacement
+        );
+      }
     }
     out[key] = description;
   }

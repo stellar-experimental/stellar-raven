@@ -384,10 +384,10 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
 // must break the build (stale exclusion = a write endpoint may have moved),
 // not silently stop matching.
 export function assertScoutExclusionsResolve(openapi) {
-  const present = new Set();
+  const present = new Map();
   for (const [path, pathItem] of Object.entries(openapi.paths)) {
     for (const method of HTTP_METHODS) {
-      if (pathItem[method]) present.add(`${method.toUpperCase()} ${path}`);
+      if (pathItem[method]) present.set(`${method.toUpperCase()} ${path}`, pathItem[method].operationId);
     }
   }
   const stale = [...EXCLUDED_SCOUT_OPS].filter((k) => !present.has(k));
@@ -395,6 +395,13 @@ export function assertScoutExclusionsResolve(openapi) {
     throw new Error(
       `EXCLUDED_SCOUT_OPS no longer present in the scout OpenAPI: ${stale.join(", ")}. ` +
         `Upstream renamed or removed them — reconcile the exclusion list in build-catalog.mjs.`
+    );
+  }
+  const renamed = [...EXCLUDED_SCOUT_OPERATIONS].filter(([signature, name]) => present.get(signature) !== name);
+  if (renamed.length > 0) {
+    throw new Error(
+      `Excluded Scout operation names changed: ${renamed.map(([signature]) => signature).join(", ")}. ` +
+        "Reconcile EXCLUDED_SCOUT_OPERATIONS so bare-name guards follow the source contract."
     );
   }
   const newlyListed = [...SCOUT_PATHS_ABSENT_FROM_SPEC].filter((path) => path in openapi.paths);
@@ -507,6 +514,7 @@ import {
 } from "./description-notes.mjs";
 import {
   EXCLUDED_LUMENLOOP_OPS,
+  EXCLUDED_SCOUT_OPERATIONS,
   EXCLUDED_SCOUT_OPS,
   SCOUT_PATHS_ABSENT_FROM_SPEC,
   RETIRED_ONBOARDING_SKILLS,
@@ -1142,7 +1150,7 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
 //
 // The "any service.op token not in opIds" check needs the full assembled
 // manifest as an allowlist, so it stays here; the other three checks (raw
-// excluded scout path, retired-skill ref, excluded lumenloop op name) are
+// excluded scout path, retired-skill ref, excluded operation names) are
 // allowlist-free and factored into scripts/emitted-text-guard.mjs so any
 // OTHER emitted text (e.g. the /demo page/prompts) can run them too without
 // a manifest — see assertNoNonExposedRefsInText.
@@ -1159,6 +1167,7 @@ export function assertNoNonExposedRefs(entries) {
       ...(entry.keywords ?? []),
       ...(entry.routingKeywords ?? []),
       ...(entry.routingPhrases ?? []).flatMap((phrase) => phrase.tokens),
+      ...(entry.routingExclusions ?? []).flatMap((exclusion) => exclusion.tokens),
       ...(entry.knownAliases ?? []),
       ...(entry.knownAliasTriggers ?? []),
       // Operation and runnable-skill schemas ship to the model through
