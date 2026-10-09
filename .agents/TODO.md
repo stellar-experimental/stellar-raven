@@ -48,6 +48,11 @@ Scout DeepWiki note for `stellar/stellar-horizon`. The 2026-09-29 monitor failed
 `improvements/stellar-light-scout/sls-087-horizon-protocol-ceiling-note-stale.md`; the retired
 predecessor receipt is `sls-080` in `improvements/resolved.json`.
 
+2026-10-09: the blocker cleared. Upstream closed issue 1738 on 2026-10-08. The reading returned `29`.
+The source at the response's `scannedRef` (`ee5241ec`) also defines `29`. `sls-087` is
+`fixed-upstream`. Its drain needs a distinct reviewer and a resolution comment on issue 1738.
+Evidence: `rounds/2026-10-09-continuation/horizon-monitor.json`.
+
 During each improvements or drift round, run one free `scout.explainRepo` reading against the
 existing local Raven server for `stellar/stellar-horizon`: "Which Horizon ingestion constant pins
 the highest supported protocol version, and what is its value?" Record the value, `generatedAt`,
