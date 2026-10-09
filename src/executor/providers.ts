@@ -537,8 +537,8 @@ function describeCatalogEntry(catalog: Catalog, id?: unknown) {
       ...(availableSections.length > 0 ? { availableSections } : {}),
       usage:
         availableSections.length > 0
-          ? `read sections via codemode.skill.read(${JSON.stringify(entry.id)}, { sections: [...] }) — section keys in availableSections`
-          : `read the whole skill via codemode.skill.read(${JSON.stringify(entry.id)})`
+          ? `read sections via codemode.skill.read(${JSON.stringify(entry.id)}, { sections: [...] }) — section keys in availableSections; the result arrives under r.data.sections`
+          : `read the whole skill via codemode.skill.read(${JSON.stringify(entry.id)}) — the result arrives under r.data.content`
     };
   }
   if (entry.kind === "skill-section") {
