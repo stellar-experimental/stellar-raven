@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-10-01",
+  "updated": "2026-10-09",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -226,6 +226,22 @@
     "sk-028": {
       "repo": "Stellar-Light/stellar-scout",
       "reason": "The Scout skill repository owns the SKILL.md and API reference text that state the Builders directory size."
+    },
+    "sd-055": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The archival and simulation examples are source content owned by stellar/stellar-docs."
+    },
+    "sd-056": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The ledger-header units and field list are source content owned by stellar/stellar-docs."
+    },
+    "sd-057": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Anchor Platform admin guide asset-ID explanation is source content owned by stellar/stellar-docs."
+    },
+    "sd-058": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The fee-payer signing and x402 XDR extraction examples are source content owned by stellar/stellar-docs."
     }
   }
 }

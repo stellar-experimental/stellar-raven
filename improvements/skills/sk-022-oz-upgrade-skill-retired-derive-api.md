@@ -21,6 +21,9 @@ probe:
     status: 200
     contains:
       - "#[derive(UpgradeableMigratable)]"
+recurrences:
+  - date: 2026-10-09
+    evidence: "Current OpenZeppelin skill main remains 6f215af60eb60017ab1a933ce9d22a479cd42b26. Its SHA-256 remains 80f565dbf623c2c0ca400c0591023f91ede9f314d487dabd255a449a83579b71. The skill still recommends retired derive and Internal APIs. Current documentation and contract-utils source teach direct Upgradeable implementation. The v0.7.2 macros source has no upgrade derives. The prior removal timeline remains unchanged."
 ---
 
 ## Finding
@@ -37,6 +40,13 @@ It also states that there is no Migratable trait.
 The skill therefore teaches retired APIs as current.
 
 ## Evidence
+
+Fresh public checks on 2026-10-09 reproduce the retired guidance.
+The [current skill source](https://github.com/OpenZeppelin/openzeppelin-skills/blob/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/upgrade-stellar-contracts/SKILL.md) has the same recorded SHA-256.
+The seven repeated derive claims remain.
+The [current documentation](https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable) still teaches direct `Upgradeable` implementation.
+The [v0.7.2 macro source](https://github.com/OpenZeppelin/stellar-contracts/blob/v0.7.2/packages/macros/src/lib.rs) defines no upgrade derive macros.
+The observed skill revision remains unchanged; this is no new introduction-date claim.
 
 On 2026-09-04, the skill at commit 6f215af recommended both derive macros as "the recommended way".
 The derive claim appears in seven places: the description item (2), the module component table,

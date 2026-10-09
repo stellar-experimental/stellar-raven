@@ -14,7 +14,10 @@ evidence:
   - "No swap was simulated or submitted. This evidence shows adapter configuration and pause state, not swap success or liquidity."
   - "Dedupe 2026-09-17: no soroswap/docs or soroswap/aggregator issue or PR covers Phoenix, Aqua, testnet status, or supported AMMs. Open soroswap/docs #39 (generic upgrade checklist) and #42 (deployed contracts, empty body) do not cover adapter status."
   - upstream issue filed 2026-09-17: https://github.com/soroswap/docs/issues/47
-  - "2026-10-06 issue state: a third-party contributor (SrvFernandes) commented on 2026-10-02 with /claim #47 and opened https://github.com/soroswap/docs/pull/48. The PR is open at head 08bccc152a4b7f3e7f8df40b467205ea8cb3f503 with no checks and no review. Its diff removes both stale labels and marks Soroswap, Phoenix, and Aqua as mainnet. No maintainer has replied."
+  - "2026-10-06 issue-state snapshot: a third-party contributor (SrvFernandes) commented on 2026-10-02 with /claim #47 and opened PR 48. The PR is open at head 08bccc152a4b7f3e7f8df40b467205ea8cb3f503 with no checks and no review. Its diff removes both stale labels and marks Soroswap, Phoenix, and Aqua as mainnet. No maintainer has replied."
+  - "2026-10-09 removal: the third-party PR 48 no longer exists. The public soroswap/docs repository remains accessible. A direct PR read returns HTTP 404. The contributor account SrvFernandes and its /claim comments no longer exist. The recorded head commit 08bccc152a4b7f3e7f8df40b467205ea8cb3f503 still resolves in soroswap/docs. This removal does not prove a deployed fix."
+  - 2026-10-09 https://api.github.com/users/SrvFernandes returns HTTP 404; https://api.github.com/repos/soroswap/docs/issues/47/comments contains no contributor /claim comment.
+  - 2026-10-09 https://api.github.com/repos/soroswap/docs/commits/08bccc152a4b7f3e7f8df40b467205ea8cb3f503 returns HTTP 200.
 recurrences:
   - date: 2026-10-06
     evidence: "soroswap/docs main is still 1d7a3c8a85616918415056ad2a0f6d2177fc1948. concepts/aggregator.mdx lines 13-14 still mark Phoenix and Aqua (currently on Testnet). aggregator/supported-amms.mdx lines 3 and 12 still mark Aquarius coming soon. The published pages docs.soroswap.finance/concepts/aggregator and /aggregator/supported-amms return HTTP 200 with the same phrases."

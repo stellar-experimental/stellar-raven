@@ -11,6 +11,8 @@ evidence:
 recurrences:
   - date: 2026-08-11
     evidence: Article 8228 still combines a staged roadmap with present-tense capability language in an untyped projection.
+  - date: 2026-10-09
+    evidence: "The public QPP summary still says enterprise wallets can shift immediately. Its linked primary source says the quantum-safe signer and required primitives are missing today. Stage 1 and Stage 2 remain roadmap stages. Mainnet reports protocol 29; current CAP-0087 says Accepted with Protocol version TBD. This check makes no target-protocol or first-bad-version claim."
 ---
 
 ## Finding
@@ -21,6 +23,13 @@ signer support as absent and staged, but untyped summarization can restate the
 roadmap as current network functionality.
 
 ## Evidence
+
+Fresh public checks on 2026-10-09 reproduce the roadmap wording gap.
+The [Lumenloop summary](https://lumenloop.com/news/introducing-quantum-preparedness-plan) still says enterprise wallets can shift immediately.
+The [linked primary source](https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan) says the quantum-safe signer and required primitives are missing today.
+The current [CAP-0087](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md) has `Status: Accepted` and `Protocol version: TBD`.
+The [public network](https://horizon.stellar.org/) reports protocol `29`.
+This check does not infer deployment from CAP acceptance or identify a target protocol.
 
 P4 N2 captured the future-tense and staged timeline in its 2026-07-11 candidate
 review. On 2026-07-13, the public Lumenloop page was compared with its linked
