@@ -1,0 +1,259 @@
+{
+  "schema": "qa-planning-text-review-v1",
+  "date": "2026-10-09",
+  "reviewer": "Lane H author",
+  "definition": "Planning text describes the assistant's current tool work or preparation of the answer. A leading readiness preamble qualifies when it introduces an answer, introduces source evidence, or explicitly confirms completed preparation. A source transition follows the same rule as an answer transition.",
+  "inputSha256": "e6378d595a2bdbbf3cb898eb633336ab5f7c4b218665e81fd87d8bc64f2b13ca",
+  "counts": {
+    "jsonFiles": 378,
+    "resultFiles": 364,
+    "rows": 5610,
+    "nonEmptyAnswers": 2765,
+    "missingAnswers": 2830,
+    "emptyAnswers": 15,
+    "matchedAnswers": 32,
+    "matches": 33,
+    "firstLineCueAnswers": 38,
+    "matchedFirstLineCueAnswers": 32,
+    "unmatchedFirstLineCueAnswers": 6,
+    "uniqueAnswerTexts": 2615
+  },
+  "sampleMethod": "The first 20 candidates in SHA-256 order of file, row index, and answer hash.",
+  "limits": [
+    "The author reviewed a fresh deterministic sample after the independent review. No independent reviewer checked these revised labels.",
+    "The original screen matched 28 of 38 first-line cue answers. The revised screen matches 32 of 38.",
+    "Six first-line cue answers remain unmatched. A cue can introduce a legitimate evidence summary.",
+    "The first-line cue gap does not measure recall. This sample does not measure production prevalence.",
+    "The historical 155/500 broad screen used a different answer set and rule.",
+    "The sample contains answer preparation preambles. It contains no tool action match."
+  ],
+  "rows": [
+    {
+      "file": "2026-08-04T17-14-05-variantA.json",
+      "fileSha256": "bfa90b1f6186243738250da53371858f65309e4262cd87d5bb68a3e8e2690288",
+      "rowIndex": 5,
+      "id": "q-crp-custodial-vs-noncustodial-wallets",
+      "answerSha256": "02f454eafdb5ef1af8026181a9c5fb18dff88d1df5ddeabb3acf80401c1c10a7",
+      "excerpt": "Now I have solid grounding for both the custody-model doc and SEP-31 mechanics. Enough evidence to answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-14T13-57-07-variantA.json",
+      "fileSha256": "a0c7c9de3d87df42b82a2eec3df50ecece180589b0c8a2371614dbebae68b7f2",
+      "rowIndex": 11,
+      "id": "q-sep53-message-signing",
+      "answerSha256": "d544659ab004f383e5064eb418d105540315b86a71f7e0b2c6601c775eaf338a",
+      "excerpt": "Now I have everything needed.",
+      "label": "uncertain",
+      "reason": "The preamble states readiness but does not name an answer or action."
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json",
+      "fileSha256": "8ff401115216e37cee27d78948b3bad408c30fe6915a54dd3d938a44ae7ecf02",
+      "rowIndex": 56,
+      "id": "q-protocol-parallel-execution",
+      "answerSha256": "839a578b7ce0c7575b7855bf87c3a1e44c2c53a63d66a2ac6acb110acbd2dc4d",
+      "excerpt": "Now I have solid, dated evidence to answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-27T00-02-11-variantA.json",
+      "fileSha256": "e0c46a1926adab92f85b084f2d46b4b0b78f8d4b19b7e0bfab23d00dead2e0e6",
+      "rowIndex": 80,
+      "id": "q-soroban-auth-recursion-dos-audit",
+      "answerSha256": "d922f3af183cfcd4dc8493ccdd9ff0f9f261a94f985a8bcc09a8e1a3b509f3ea",
+      "excerpt": "Now I have the full finding text. Both audits confirm the same result, so this is well-grounded.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly confirms completed preparation."
+    },
+    {
+      "file": "2026-08-04T16-23-45-variantA.json",
+      "fileSha256": "7509798751eaad226c42b45dd039ca9623f61045e74ee07c8f049f51789506ea",
+      "rowIndex": 2,
+      "id": "q-aas-claimable-predicates-expiry-reserves",
+      "answerSha256": "7d0bc970a9678fc93938efe43c349b3feb83ec002660bad0563a72250e82d247",
+      "excerpt": "Now I have everything grounded. Here's the full picture:",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-07T15-02-27-variantA.json",
+      "fileSha256": "120933ad5f8c26ba63c306c0b5df04d8150c84ede83f53b5477d1fe088339ee9",
+      "rowIndex": 1,
+      "id": "q-live-oracle-repo-triage",
+      "answerSha256": "5cca773c547a865cd7b8a2e622bcb8c6e70d4fef4fe5dd00d89b4436dfd10967",
+      "excerpt": "Now I have grounded evidence across the official docs, GitHub repo scores, and third-party audits/incidents. Here's the answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-02T16-55-19-variantB.json",
+      "fileSha256": "b96dbbb7014bff17c435b37f1f4cad1db9a9ec7d0696b9dcec4e92d5ba767d9b",
+      "rowIndex": 1,
+      "id": "q-asset-sac-functions",
+      "answerSha256": "d3c763bdce09760159f87cdf68635e5549a8c88adcbcff87f600b06f1d461158",
+      "excerpt": "Now I have confirmed the full function list, grounded in the Stellar developer docs. Here's the answer:",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-28T19-27-08-variantA.json",
+      "fileSha256": "3fa1bf01fe831e999c5282b332ec1309b7dcb9804e6cc4ec41135ab0681531dd",
+      "rowIndex": 71,
+      "id": "q-sep-53-sign-verify-message",
+      "answerSha256": "8499547ecedfb70e2accb09bad060b24a1dd0b7020c1d1aa6a01fa2cb48a1129",
+      "excerpt": "Now I have enough grounded detail to answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-09T19-53-07-variantA.json",
+      "fileSha256": "1165f2e6f833fad094119875943e3d09c859d069ead7c4b260373d6a124377c0",
+      "rowIndex": 15,
+      "id": "q-pc-fee-bump-channel-accounts-feepool",
+      "answerSha256": "1beeb0c85bcf18caf7ff18e9757681748f6fe330ae973edeea5144dd76f2d653",
+      "excerpt": "Now I have everything needed for a complete, grounded answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-04T19-10-47-variantA.json",
+      "fileSha256": "440026ee7e0e0266ef4211bdfc4da0cf59b8e1aae39d884f19613cf7786aacc1",
+      "rowIndex": 9,
+      "id": "q-hist-scp-rewrite-2015",
+      "answerSha256": "81b7485d3c168005f7613b75ad47319e635f4dda72b0971bfccae7a562eae49a",
+      "excerpt": "Now I have solid grounded evidence to answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-04T23-10-23-variantA.json",
+      "fileSha256": "cff1e27544af8fadbe8058841e4655f11407c790a5f7b593a1e0f3175d97b3c2",
+      "rowIndex": 7,
+      "id": "q-soroban-x402-auth-entry-signing",
+      "answerSha256": "1aa19a172288cd9bc39a19e89ec2f6d721cbc125a132bc656d56eb763a423e68",
+      "excerpt": "Now I have enough grounded evidence to answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-09T19-53-07-variantA.json",
+      "fileSha256": "1165f2e6f833fad094119875943e3d09c859d069ead7c4b260373d6a124377c0",
+      "rowIndex": 17,
+      "id": "q-protocol-ledger-entry-types",
+      "answerSha256": "ba04c5d7b116978a8e763a60a9c53b36409d733f09be58e068483ec691c9db21",
+      "excerpt": "Now I have the complete list of ledger entry types from the official glossary. This gives a full, precise answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-30T03-43-11-variantA.json",
+      "fileSha256": "211577ce0dcb7c994dcc1bbec0be7cc0fca534c6638be261420d21a761502387",
+      "rowIndex": 5,
+      "id": "q-asset-issue-asset-howto",
+      "answerSha256": "164a2fa372fdf4018b6feed398be01dbc09d4f01f87572cecd3e93e86c417cb6",
+      "excerpt": "Now I have everything grounded. Here's the walkthrough.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-27T18-59-44-variantA.json",
+      "fileSha256": "78170de4d3879d3a54d248309337500be58b40bb79b4e2bf58238a0c5cf2a295",
+      "rowIndex": 3,
+      "id": "q-edge-strupey-ambiguous-stellar-history",
+      "answerSha256": "e368e8ee19f5b459973ca032d3e2c931c244b6999af9285fed3fa9a89a9d4f20",
+      "excerpt": "Now I have solid grounding. Here's what the sources show.",
+      "label": "planning",
+      "reason": "The readiness preamble introduces source evidence and follows the same rule as an answer transition."
+    },
+    {
+      "file": "2026-07-13T06-20-51-variantA.json",
+      "fileSha256": "764df2bb3d1d913fe92fdcde245972d59a081b17d633a7d0342bae6fa08e621f",
+      "rowIndex": 28,
+      "id": "q-ti-explain-repo-payload-status",
+      "answerSha256": "60cfdef26be08d795144d78ebe115d4b344f698a346da8650a578d035be898d0",
+      "excerpt": "Now I have both the source-code answer and the docs-side corroboration. Here's the grounded answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-06T18-48-22-variantA.json",
+      "fileSha256": "de4736d1da6fb495b4412841c94b829d378222ecd2d4a4790935f371f527a67c",
+      "rowIndex": 28,
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "answerSha256": "76635a1baa6a75be4edb551940ad5ad44af555426ba289074f19e28a582c5c39",
+      "excerpt": "Now I have everything grounded. Here's the answer:",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-07-13T04-34-30-variantA.json",
+      "fileSha256": "905c3776523ee8932437921938490f2cf079ac129cc0813dcf3eacc51b432b14",
+      "rowIndex": 4,
+      "id": "q-asset-rwa-tokenized-freshness",
+      "answerSha256": "cc8b8252e5baf70e883181bfee6e2e7544715f76c30c4303eca4c188cfc563ed",
+      "excerpt": "Now I have a consistent, well-sourced growth trajectory. I have enough evidence to answer.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+      "fileSha256": "e3517cf81b724016ac33f84be1deb9c4e17207507a2c8f2b841e08876465e5f4",
+      "rowIndex": 39,
+      "id": "q-hist-soroban-launch-protocol20",
+      "answerSha256": "ee7179fce7b996ff21964a3b8fc26c1d1a23a50eda228cb2ffe9e4d1fb34e20b",
+      "excerpt": "Now I have solid, dated evidence to answer both parts.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+      "fileSha256": "4c4f141e9ded358f54a26de93a8345ae8f28ab49555a28cbc42868db83f2c209",
+      "rowIndex": 71,
+      "id": "q-sep-43-web-wallet-api",
+      "answerSha256": "c4ca70d22089a83f3c080dd3b57dfd1c4715a696effec8493c21b6195a65877b",
+      "excerpt": "Now I have enough to answer precisely, sourced directly from the SEP text.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly introduces an answer or source evidence."
+    },
+    {
+      "file": "2026-08-30T03-43-11-variantA.json",
+      "fileSha256": "211577ce0dcb7c994dcc1bbec0be7cc0fca534c6638be261420d21a761502387",
+      "rowIndex": 24,
+      "id": "q-eco-pyusd-stellar-freshness",
+      "answerSha256": "350d89029ef620e8b70d54df738acbec96a1af9bd1d27d9d5620a1047c419202",
+      "excerpt": "Now I have a clear timeline. This confirms it.",
+      "label": "planning",
+      "reason": "The readiness preamble explicitly confirms completed preparation."
+    }
+  ],
+  "rules": [
+    {
+      "id": "let-me-action",
+      "pattern": "\\blet me\\s+(?:(?:now|first|just|quickly)\\s+)?(?:search|call|check|look up|look into|fetch|query|use|find|verify|read|retrieve|pull|gather|inspect|compose|write|draft|summarize)\\b",
+      "flags": "gi"
+    },
+    {
+      "id": "future-action",
+      "pattern": "\\b(?:I['’]ll|I will|I['’]m going to|I am going to|I need to)\\s+(?:(?:now|first)\\s+)?(?:search|call|check|look up|look into|fetch|query|use|find|verify|read|retrieve|pull|gather|inspect|compose|write|draft|summarize)\\b",
+      "flags": "g"
+    },
+    {
+      "id": "answer-readiness",
+      "pattern": "\\bNow I have\\b[^\\n.!?]{0,240}",
+      "flags": "g"
+    }
+  ],
+  "summary": {
+    "reviewed": 20,
+    "planning": 19,
+    "falsePositive": 0,
+    "uncertain": 1,
+    "precision": 1,
+    "precisionLower": 0.95,
+    "precisionUpper": 1,
+    "coversSample": true
+  }
+}

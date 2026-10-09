@@ -385,6 +385,63 @@ Re-judging records preflight and postflight executable identities separately fro
 An identity or attestation failure remains visible even when judging also fails.
 Missing grades produce `agreement: null`; they do not count as disagreements.
 
+### Flip panel annotations
+
+Flip reports identify `verdict.meta.panelEscalationSkipped: "max-panel-cases"` separately for each compared verdict.
+The label is `skipped-max-panel-cases`.
+The marker `judgeTierUsed: "panel"` gives the label `panel-result`.
+Other verdicts receive `no-panel-metadata`; `panelSize` does not determine the label.
+The last label does not prove panel agreement.
+
+The `--flips-vs` dry run prints `flipPanelConfidence`; paid artifacts retain it under `meta`.
+Its `source` field describes the saved source verdict before re-judging.
+Its `flipsVs` field describes the verdict from the `--flips-vs` file.
+The field `skippedPanelRoles` lists the affected roles without assuming paired-arm identity.
+Paired JSON reports include the case ID, look, grades, labels, and `skippedPanelArms` for each flip.
+The paired text report lists skipped-panel rows and their arms.
+These annotations change no selected ID, grade, panel cap, or comparison denominator.
+
+### Offline planning-text diagnostic
+
+[planning-text.mjs](planning-text.mjs) scans saved `rows[].answer` fields without model calls.
+It scans JSON files recursively and records source hashes.
+It reports possible action statements and answer preparation preambles.
+It excludes common Markdown quotations, code examples, uncertainty explanations, and conditional follow-up offers.
+[Reviewed examples](../../test/fixtures/qa-planning-text-examples.json) define the tested positive and negative cases.
+A leading readiness preamble qualifies when it introduces an answer, introduces source evidence, or explicitly confirms completed preparation.
+Source transitions follow the same rule as answer transitions.
+
+```sh
+node eval/qa/planning-text.mjs <results-directory> --sample-size 20
+node eval/qa/planning-text.mjs <results-directory> --sample-size 20 --review <review.json>
+```
+
+The sample uses SHA-256 order over each file path, row index, and answer hash.
+Review rows contain `file`, `rowIndex`, `answerSha256`, `label`, and `reason`.
+Review labels are `planning`, `falsePositive`, or `uncertain`; the review also records `inputSha256`.
+The review must include `counts` and `summary` that match the recomputed values.
+The CLI rejects different source hashes and rows that do not match candidates.
+It also rejects mismatched counts, mismatched summaries, and reviews that do not cover the sample.
+It reports precision among decided labels and bounds that include uncertain labels.
+
+The screen can mistake evidence summaries for answer preparation.
+Unusual quotation forms can produce false positives; unmatched English forms can produce false negatives.
+Counts measure saved row occurrences, including repeated answers and mixed historical runs.
+The diagnostic changes no answer, judge grade, prompt, or release gate.
+[The October 9 review](reviewed/2026-10-09-planning-text.json) records 378 files and 2,765 non-empty answers.
+The revised screen matched 32 answer occurrences with 33 matches; 2,615 answer texts were unique.
+The author reviewed a fresh deterministic sample of 20 matched answers.
+The sample has 19 planning preambles, no false positives, and one uncertain case.
+Precision among the 19 decided labels is `19/19 = 100%`.
+The uncertain label gives a sample precision range of `95%–100%`.
+This range measures label uncertainty, not statistical confidence.
+The original screen matched `28/38` first-line cue answers; the revised screen matches `32/38`.
+Six cue-leading answers remain unmatched; these cues can also introduce legitimate evidence summaries.
+The report gives the first-line cue expression and counts; this measured gap does not establish recall.
+The historical `155/500` broad screen used a different answer set and rule.
+The sample covers answer preparation preambles; it contains no tool action match.
+These historical counts do not establish recall or production prevalence.
+
 ## Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
 
 [paired-verdict.mjs](paired-verdict.mjs) is an experimental stored-result printer, not a release gate.

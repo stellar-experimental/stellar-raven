@@ -34,6 +34,7 @@ import {
   JUDGE_RUBRIC
 } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
+import { panelConfidence } from "./panel-confidence.mjs";
 import {
   PLAYGROUND_ARTIFACT_CONTRACT,
   assertNotPlaygroundQuarantine,
@@ -744,7 +745,18 @@ function selectRows(results, { ids, flipsVs, allowEmpty, casesRef, judgeModel },
     if (!allowEmpty) fail(message);
     console.warn(`warning: ${message}`);
   }
-  return { mode: "flips-vs", rows: selected, baselinePath, baselineSha256, baselineGuard, initialJudging: false };
+  const flipPanelConfidence = selected.map((row) => {
+    const roles = {
+      source: panelConfidence(row.verdict),
+      flipsVs: panelConfidence(baselineById.get(row.id).verdict)
+    };
+    return {
+      id: row.id,
+      ...roles,
+      skippedPanelRoles: Object.keys(roles).filter((role) => roles[role] === "skipped-max-panel-cases")
+    };
+  });
+  return { mode: "flips-vs", rows: selected, baselinePath, baselineSha256, baselineGuard, flipPanelConfidence, initialJudging: false };
 }
 
 export async function rejudgeRows({
@@ -930,6 +942,7 @@ async function main() {
           sourceResultsPath,
           selectedIds: selection.rows.map((row) => row.id),
           initialJudging: selection.initialJudging,
+          ...(selection.flipPanelConfidence ? { flipPanelConfidence: selection.flipPanelConfidence } : {}),
           guards
         },
         null,
@@ -968,6 +981,7 @@ async function main() {
       ...(selection.baselinePath ? { baselinePath: selection.baselinePath, baselineSha256: selection.baselineSha256 } : {}),
       mode: selection.mode,
       initialJudging: selection.initialJudging,
+      ...(selection.flipPanelConfidence ? { flipPanelConfidence: selection.flipPanelConfidence } : {}),
       selectedIds: selection.rows.map((row) => row.id),
       emptySelection: selection.rows.length === 0,
       sourceCasesPath: identity.sourceCasesPath,

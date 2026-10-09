@@ -287,6 +287,32 @@ function matrixTotal(matrix) {
 }
 
 describe("paired QA verdict", () => {
+  it.each(["baseline", "candidate", "both", "absent", "panel", "tier-panel", "size-only"])(
+    "reports %s panel metadata without changing the paired estimates",
+    (kind) => {
+      const baseline = result(Array(100).fill("partial"));
+      const candidate = result(["correct", ...Array(99).fill("partial")]);
+      const before = compare(baseline, candidate);
+      for (const [arm, artifact] of [["baseline", baseline], ["candidate", candidate]]) {
+        if (kind === arm || kind === "both") artifact.rows[0].verdict.meta = { panelEscalationSkipped: "max-panel-cases" };
+        else if (kind === "panel") artifact.rows[0].verdict.meta = { judgeTierUsed: "panel", panelSize: 3, panelDisagreement: false };
+        else if (kind === "tier-panel") artifact.rows[0].verdict.meta = { judgeTierUsed: "panel" };
+        else if (kind === "size-only") artifact.rows[0].verdict.meta = { judgeTierUsed: "single", panelSize: 3 };
+      }
+      const after = compare(baseline, candidate);
+      const skippedPanelArms = ["baseline", "candidate"].filter((arm) => kind === arm || kind === "both");
+      const status = (arm) => skippedPanelArms.includes(arm) ? "skipped-max-panel-cases" : ["panel", "tier-panel"].includes(kind) ? "panel-result" : "no-panel-metadata";
+      expect(after.flipPanelConfidence).toEqual([{ id: "case-000", look: 1,
+        baselineGrade: "partial", candidateGrade: "correct", baseline: status("baseline"), candidate: status("candidate"), skippedPanelArms }]);
+      const { flipPanelConfidence: _before, ...previousDecision } = before;
+      const { flipPanelConfidence: _after, ...currentDecision } = after;
+      expect(currentDecision).toEqual(previousDecision);
+      expect(baseline.meta.judgeTiering.maxPanelCases).toBe(34);
+      expect(candidate.meta.judgeTiering.maxPanelCases).toBe(34);
+      expect(formatPairedVerdict(after)).toContain(`skipped-max-panel-cases=${skippedPanelArms.length ? 1 : 0}/1`);
+      if (skippedPanelArms.length) expect(formatPairedVerdict(after)).toContain(`case-000@1:${skippedPanelArms.join("+")}`);
+    }
+  );
   it("hashes canonical judge-facing case input and ignores harmless key order", () => {
     const first = {
       question: "Question?",
@@ -418,6 +444,22 @@ describe("paired QA verdict", () => {
       "experimental-margin-cleared",
       "repeat-rule"
     ]);
+  });
+
+  it("keeps skipped-panel labels separate for each look", () => {
+    const baseline = result(Array(100).fill("correct"));
+    const candidate = result([...Array(5).fill("partial"), ...Array(95).fill("correct")]);
+    const repeats = { baseline: structuredClone(baseline), candidate: structuredClone(candidate) };
+    const before = compare(baseline, candidate, repeats);
+    baseline.rows[0].verdict.meta = { panelEscalationSkipped: "max-panel-cases" };
+    repeats.candidate.rows[0].verdict.meta = { panelEscalationSkipped: "max-panel-cases" };
+    const after = compare(baseline, candidate, repeats);
+    expect(after.flipPanelConfidence.filter((row) => row.id === "case-000").map((row) => ({
+      look: row.look, skippedPanelArms: row.skippedPanelArms
+    }))).toEqual([{ look: 1, skippedPanelArms: ["baseline"] }, { look: 2, skippedPanelArms: ["candidate"] }]);
+    expect(after.denominator).toBe(before.denominator);
+    expect(after.estimates).toEqual(before.estimates);
+    expect(after.transitions).toEqual(before.transitions);
   });
 
   it("counts each T1 attempt by look before applying union exclusions by ID", () => {

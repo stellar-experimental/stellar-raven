@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
+import { panelConfidence } from "./panel-confidence.mjs";
 import {
   REMOTE_IDENTITY_GUARD_SCHEMA,
   compareRemoteIdentityVectors,
@@ -662,6 +663,7 @@ function stageData(baselineRuns, candidateRuns) {
   const exclusions = { content: [], T4: [], T5: [] };
   const candidateOnly = { T4: [], T5: [] };
   const caseDeltas = [];
+  const flipPanelConfidence = [];
 
   for (const id of selectedIds) {
     const observations = runMaps.map(({ baseline, candidate }) => ({
@@ -693,6 +695,20 @@ function stageData(baselineRuns, candidateRuns) {
     for (const [lookIndex, pair] of classified.entries()) {
       if (pair.baseline.track === "T1" && pair.candidate.track === "T1") {
         transitions.perLook[lookIndex].matrix[pair.baseline.grade][pair.candidate.grade] += 1;
+        if (pair.baseline.grade !== pair.candidate.grade) {
+          const arms = {
+            baseline: panelConfidence(observations[lookIndex].baseline.verdict),
+            candidate: panelConfidence(observations[lookIndex].candidate.verdict)
+          };
+          flipPanelConfidence.push({
+            id,
+            look: lookIndex + 1,
+            baselineGrade: pair.baseline.grade,
+            candidateGrade: pair.candidate.grade,
+            ...arms,
+            skippedPanelArms: Object.keys(arms).filter((arm) => arms[arm] === "skipped-max-panel-cases")
+          });
+        }
       }
     }
     const excludedTrack = classified.some((pair) => pair.baseline.track === "T5" || pair.candidate.track === "T5")
@@ -717,7 +733,7 @@ function stageData(baselineRuns, candidateRuns) {
     caseDeltas.push(deltas.map((delta) => delta / classified.length));
   }
 
-  return { selectedIds, caseDeltas, transitions, exclusions, candidateOnly };
+  return { selectedIds, caseDeltas, transitions, exclusions, candidateOnly, flipPanelConfidence };
 }
 
 function resultContract(margin) {
@@ -747,6 +763,7 @@ function analyzeRuns(baselineRuns, candidateRuns, { margin }) {
       transitions: emptyTransitions(baselineRuns.length),
       exclusions: { content: [], T4: [], T5: [] },
       candidateOnly: { T4: [], T5: [] },
+      flipPanelConfidence: [],
       rubricTuple: rubricTuple(baselineRuns[0] ?? {}),
       contract: resultContract(margin)
     };
@@ -900,11 +917,17 @@ function labeledResult(result) {
 
 export function formatPairedVerdict(result) {
   const reasonText = result.reasons.map((item) => `${item.code}: ${item.message}`).join("; ");
+  const flips = result.flipPanelConfidence;
+  const capped = flips.filter((flip) => flip.skippedPanelArms.length);
+  const panelText = capped.map((flip) =>
+    `${flip.id}@${flip.look}:${flip.skippedPanelArms.join("+")}`
+  ).join(",") || "none";
   return (
     `${displayedVerdict(result)} eligible=${result.denominator}/${result.selected} ` +
     `excluded=${exclusionCount(result)} (content=${result.exclusions.content.length}, ` +
     `T4=${result.exclusions.T4.length}, T5=${result.exclusions.T5.length}) ` +
-    `look=${result.runPairs}/${MAX_PAIRED_RUNS} ${estimateText(result)} reasons=${reasonText}`
+    `look=${result.runPairs}/${MAX_PAIRED_RUNS} ${estimateText(result)} reasons=${reasonText} ` +
+    `skipped-max-panel-cases=${capped.length}/${flips.length} skipped-panel-rows=${panelText}`
   );
 }
 
@@ -965,6 +988,7 @@ function commandFailure(message) {
     transitions: emptyTransitions(0),
     exclusions: { content: [], T4: [], T5: [] },
     candidateOnly: { T4: [], T5: [] },
+    flipPanelConfidence: [],
     rubricTuple: { judgeModel: null, rubric: null, pack: null },
     contract: resultContract(NO_CHANGE_CONFIDENCE_RADIUS)
   });
