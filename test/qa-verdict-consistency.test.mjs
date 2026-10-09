@@ -95,7 +95,7 @@ describe("QA verdict consistency", () => {
       transcriptEvidence: ""
     });
 
-    expect(JUDGE_RUBRIC).toBe("v2.10");
+    expect(JUDGE_RUBRIC).toBe("v2.11");
     expect(prompt).toContain("KEY FACTS (each must be present in the candidate");
     expect(prompt).toContain("Work through the key facts one by one before scoring.");
     expect(prompt).toContain('"missingFacts": ["key facts absent from the candidate"]');
@@ -105,6 +105,50 @@ describe("QA verdict consistency", () => {
     expect(prompt).not.toContain("TRAP CASE");
     expect(prompt).not.toContain("complete behavior required by the current golden is the core answer");
     expect(prompt).not.toContain("most key facts are absent");
+  });
+
+  it("keeps freeze-list must-avoid items off dated, source-scoped, or non-exhaustive lists under rubric v2.11", () => {
+    const golden = {
+      answer: "As of 2026-09-03, check the live advisory feeds rather than treating this list as permanent. The three repository advisories are A, B, and C.",
+      keyFacts: ["Names all three dated advisories.", "Requires live re-checking."],
+      avoid: [
+        "Do NOT claim there is only one advisory or freeze the list permanently.",
+        "Do NOT describe conditional impacts as universal."
+      ],
+      notes: ""
+    };
+    const expectedRule = [
+      "- A must-avoid item that forbids freezing, pinning, or hard-coding a list, count, roster, ordering, or map as permanent, complete, exhaustive, timeless, or network-wide does NOT fire on a candidate that presents its list as dated, source-scoped, or non-exhaustive (an as-of date, a named source or query, or an explicit statement that the list may be incomplete).",
+      "A dated, source-scoped, or non-exhaustive list is not a frozen list, and a sourced count or ordering inside it is not a frozen count or ordering.",
+      "When such a candidate omits an item the golden lists, record the omitted item in missingFacts as a missing key fact; do not record a fired avoid.",
+      "The item still fires when the candidate asserts completeness or permanence without that framing.",
+      "This rule never excuses CONCRETE WRONG CONTENT inside the list: a specific false statement, such as calling a category empty or single-provider when the golden names live members, still binds under the rule above even when the list is dated and source-scoped."
+    ].join(" ");
+    const candidateAnswer = "As of 2026-10-07, the indexed release notes show advisories A and B. This is not a complete list; check the advisory page directly.";
+
+    const nonTrap = buildJudgePrompt({
+      question: "Are there known security advisories I should patch?",
+      golden,
+      tags: { freshness: "scheduled" },
+      candidateAnswer,
+      transcriptEvidence: ""
+    });
+    const trap = buildJudgePrompt({
+      question: "Synthetic list trap",
+      golden,
+      tags: { freshness: "stable", trap: "fabrication-bait" },
+      candidateAnswer,
+      transcriptEvidence: ""
+    });
+
+    expect(JUDGE_RUBRIC).toBe("v2.11");
+    expect(nonTrap).toContain(expectedRule);
+    expect(trap).toContain(expectedRule);
+    const bindingRuleIndex = nonTrap.indexOf("- Must-avoid items bind only on what you can check from the candidate answer itself");
+    const freezeRuleIndex = nonTrap.indexOf(expectedRule);
+    expect(bindingRuleIndex).toBeGreaterThan(-1);
+    expect(freezeRuleIndex).toBeGreaterThan(bindingRuleIndex);
+    expect(nonTrap).toContain("Non-empty avoidMatches ALWAYS means \"wrong\"; a fired avoid is never a minor slip.");
   });
 
   it("requires an issue and the missing corrective distinction for a capped non-trap partial", () => {
@@ -710,7 +754,7 @@ describe("QA verdict consistency", () => {
     });
   });
 
-  it("requests semantic core and avoid fields under rubric v2.10", async () => {
+  it("requests semantic core and avoid fields under rubric v2.11", async () => {
     const verdict = await judgeWithFakeClaude(
       {
         rationale: "The candidate has the correct core answer and fires no avoid.",
@@ -735,7 +779,7 @@ describe("QA verdict consistency", () => {
     expect(verdict).toMatchObject({
       score: "correct",
       costUsd: 0.25,
-      rubric: "v2.10",
+      rubric: "v2.11",
       packVersion: "p6"
     });
   });

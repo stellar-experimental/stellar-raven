@@ -243,7 +243,7 @@ A projected answer without that envelope can remain `indeterminate`.
 
 ## Judging rubric and score comparability
 
-The default judge model is `claude-sonnet-5`, with rubric `v2.10` and evidence pack `p6`.
+The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p6`.
 [judge.mjs](judge.mjs) owns the prompt and rubric. [evidence-pack.mjs](evidence-pack.mjs) owns evidence selection and serialization.
 
 For ordinary cases, `correct` requires all substantive key facts and no wrong claim or fired avoid.
@@ -257,6 +257,9 @@ A completed safe behavior can be correct without background facts that only expl
 
 The judge ignores style, length, and citation format.
 Beyond-golden details remain unverified unless the evidence establishes a contradiction.
+A must-avoid item about a frozen, permanent, complete, or network-wide list does not fire on a list the candidate presents as dated, source-scoped, or non-exhaustive.
+An omitted list item in such an answer is a missing key fact, not a fired avoid.
+Concrete wrong content inside the list still fires, such as a category called empty when the golden names live members.
 For non-stable cases, the bounded evidence pack supports sourced changes from the golden snapshot.
 Pack absence does not prove source absence.
 The pack omits detected A/V `created_at` values and preserves source-basis boundaries.
