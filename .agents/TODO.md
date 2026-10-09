@@ -231,7 +231,8 @@ rank-only evidence, from the accepted baseline. Rejected; step 3 did not run.
   rank weight. An admission-only variant alone reproduces the check 10 and check 11 failures. The
   weight change causes the OpenZeppelin, Friendbot, and multisig losses.
 - Check 11 is a selector gap in `src/catalog/search.ts`. The quota replacement cannot fire when a
-  service is at or above its quota. A general fix replaces the weakest same-service entry.
+  service is above its quota. A general fix lets it fire at or above the quota, and it replaces the
+  weakest same-service entry.
 - Check 10 is not a selector gap. Without the schema-only Docs admission, the Groth16 page is short.
   A stronger Docs entry then fills it above the ZK skill. Every rank-only keyword attempt repeats
   this loss.
@@ -640,6 +641,6 @@ Routing step 2 showed that any rank-only keyword change drops the Groth16 ZK ski
 rank 3 to 4. A stronger Docs entry fills the short page above it on its own evidence. The holdout
 top3 floor (26) then fails. See "Preserve structured routing intent…" and its step 2 evidence.
 
-Options: lower the holdout top3 floor to 25 for a repair that passes every other check, or require
-a skill-evidence change before the keyword step. Safe default: keep the floor, and do not start the
+Option 1: lower the holdout top3 floor to 25 for a repair that passes every other check. Option 2:
+require a skill-evidence change before the keyword step. Safe default: keep the floor, and do not start the
 next routing attempt.

@@ -97,7 +97,8 @@ Its SHA-256 is `e3517cf81b724016ac33f84be1deb9c4e17207507a2c8f2b841e08876465e5f4
 
 Both reproduced hashes equal their saved pack hashes.
 The replay reads the saved answer, case input, tags, and transcript.
-`tmp/trace-saved-pack.mjs` exports selection helpers in memory for read-only inspection.
+`trace-saved-pack.mjs` (in this folder) exports selection helpers in memory for read-only inspection.
+It reads the ignored saved result, so it runs only where that file exists.
 It never edits the source module.
 `tmp/saved-pack-trace.json` records the replay and the new diagnostic output.
 
@@ -121,7 +122,7 @@ The new diagnostic reports six matching terms from the saved result.
 It does not establish that the documented API remains current.
 
 The synthetic replay supplies a separate pressure control:
-`node tmp/replay-pack-boundary.mjs`.
+`node .agents/rounds/2026-10-09-continuation/pack-omission/replay-pack-boundary.mjs`.
 Fourteen source claims retain all fourteen dates but lose nine complete prose probes.
 Both 12,000 and 100,000 character budgets lose the same nine probes.
 This shows why isolated date coverage cannot establish claim coverage.

@@ -12,8 +12,8 @@ Out:
 - Paid QA rounds: "Count skill-read shape errors…", the answer-style measurement, and the `ai`
   upgrade measurement.
 - Items that wait on upstream: PR #2837, the vitest pool, `agents`, and codemode 0.5.3. A
-  2026-10-09 check found no change: pool 0.23.0 still pins `wrangler` 4.124.0, `agents` 0.28.0 is
-  the latest, codemode 0.5.3 is the latest, and PR #2837 is open at `0c20e720`.
+  2026-10-09 check found no change. Pool 0.23.0 still pins `wrangler` 4.124.0. `agents` 0.28.0 and
+  codemode 0.5.3 are the latest releases. PR #2837 is open at `0c20e720`.
 - Monitor items with no fired trigger.
 
 ## Lanes
@@ -33,7 +33,7 @@ The orchestrator is Claude Opus, so it reviews nothing.
 
 ## Ledger
 
-- Lanes started 2026-10-09. Worktrees `/Users/kalepail/Desktop/raven-{r2,e,h,u,p}` on branches
+- Lanes started 2026-10-09. Worktrees `raven-{r2,e,h,u,p}` (beside the main checkout) on branches
   `r1009d/{r2,e,h,u,p}`, from `main` at `ef3843e3`. Panes: R2 `w3W:p33`, E `w3W:p34`, H `w3W:p35`,
   U `w3W:p36`, P `w3W:p37`. Each lane has a placeholder `.dev.vars` and generated types.
 - The R2 worktree holds the extracted step 1 archive under `tmp/`.
@@ -52,8 +52,10 @@ The orchestrator is Claude Opus, so it reviews nothing.
     limit.
   - R2: the reviewer agrees with the rejection. It adds the sub-change split and the selector
     analysis now in the TODO.
-- Full local test runs failed only on load timeouts (load average about 107 with five lanes). Each
-  failed file passed alone. CI passed on every PR.
+- For the merged lanes, full local test runs failed only on load timeouts. The load average was
+  about 107 with five lanes. Each failed file passed alone, and CI passed on every PR.
+- The rejected R2 candidate had 22 unit failures. Five come from its keyword and page changes; the
+  rest are load timeouts and a sandbox `ps` denial. The restored R2 tree passed the full suite.
 - PR #255 changes `src/demo`. Deployed as version `0d36cc09-4c33-4894-af91-3203b4a8ab18`. Both
   hosts return 200 on `/` and 401 with the Bearer challenge on unauthenticated `POST /mcp`.
 - PR #256 changes the `re-judge.mjs` (`7b293cbe…`) and `paired-verdict.mjs` (`025168fa…`)
@@ -62,14 +64,14 @@ The orchestrator is Claude Opus, so it reviews nothing.
 ## Outcome
 
 - **Lane U, merged.** [#254](https://github.com/stellar-experimental/stellar-raven/pull/254)
-  (`8eb8c396`). New verified findings `sls-092` (Blend first place stored under a later event) and
-  `sls-093` (repo search labels a spelling correction `strict`). Nothing posted upstream.
+  (`8eb8c396`). `sls-092` records the Blend first place under a later event. `sls-093` records
+  repo search labelling a spelling correction `strict`. Both are verified. Nothing went upstream.
 - **Lane P, merged and deployed.** [#255](https://github.com/stellar-experimental/stellar-raven/pull/255)
   (`ff5be052`), version `0d36cc09`. Native and no-plugin Playground calls now settle costs. Live
   model availability and live Gateway costs stay unverified.
 - **Lane H, merged.** [#256](https://github.com/stellar-experimental/stellar-raven/pull/256)
-  (`8c95ff4d`). Flip reports name skipped panels; the planning-text screen matches 32 of 2,765
-  stored answers (sample: 19 planning, 0 false positives, 1 uncertain).
+  (`8c95ff4d`). Flip reports name skipped panels. The planning-text screen matches 32 of 2,765
+  stored answers. Its reviewed sample has 19 planning, 0 false positives, and 1 uncertain.
 - **Lane E, merged.** [#257](https://github.com/stellar-experimental/stellar-raven/pull/257)
   (`7697d424`). The stable-row diagnostic is read-only. The pack analysis is in
   [pack-omission/](2026-10-09-continuation/pack-omission/); its repair moves to the TODO item

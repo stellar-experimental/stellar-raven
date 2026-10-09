@@ -1,4 +1,4 @@
-import { buildTranscriptEvidencePack, findTranscriptEvidencePackOmissions } from '../eval/qa/evidence-pack.mjs';
+import { buildTranscriptEvidencePack, findTranscriptEvidencePackOmissions } from '../../../../eval/qa/evidence-pack.mjs';
 
 // Synthetic evidence demonstrates the general selection boundary, not the missing Beans row.
 const claims = Array.from({ length: 14 }, (_, index) => `Claim ${index}: release date is 2026-09-${String(index + 1).padStart(2, '0')}.`);
@@ -11,8 +11,9 @@ const transcript = claims.map((claim, index) => ({
   })
 }));
 const input = { tags: { freshness: 'live' }, candidateAnswer: claims.join('\n'), transcript, golden: {} };
-for (const maxChars of [12000, 100000]) {
+const runs = [12000, 100000].map((maxChars) => {
   const pack = buildTranscriptEvidencePack({ ...input, maxChars });
-  console.log(JSON.stringify({ maxChars, packChars: pack.length,
-    diagnostic: findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: pack, claims }) }, null, 2));
-}
+  return { maxChars, packChars: pack.length,
+    diagnostic: findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: pack, claims }) };
+});
+console.log(JSON.stringify(runs, null, 2));

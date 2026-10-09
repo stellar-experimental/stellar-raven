@@ -1,7 +1,7 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { buildTranscriptEvidencePack, findTranscriptEvidencePackOmissions } from '../eval/qa/evidence-pack.mjs';
-import { diagnoseRow } from '../eval/qa/diagnose-stable-evidence.mjs';
+import { buildTranscriptEvidencePack, findTranscriptEvidencePackOmissions } from '../../../../eval/qa/evidence-pack.mjs';
+import { diagnoseRow } from '../../../../eval/qa/diagnose-stable-evidence.mjs';
 const path = 'eval/qa/results/2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json';
 const bytes = readFileSync(path);
 const data = JSON.parse(bytes);
@@ -26,5 +26,4 @@ for (const id of ['q-hist-quantum-preparedness-plan', 'q-soroban-oz-upgradeable-
     diagnostic: diagnoseRow(row) });
 }
 const report = { source: path, sourceSha256: createHash('sha256').update(bytes).digest('hex'), output };
-writeFileSync('tmp/saved-pack-trace.json', JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify(report,null,2));
+console.log(JSON.stringify(report, null, 2));
