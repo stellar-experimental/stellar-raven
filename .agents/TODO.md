@@ -215,11 +215,10 @@ switches the sources. A fresh checkout does not have the step 1 inputs. They exi
 ignored local archive `eval/results/2026-10-09-routing-step1-evidence.tar.gz`. The next attempt
 measures its own baseline and candidate runs into that layout.
 
-Check 1 is a
-controlled probe: neither source carries literal `yieldblox` or `reflector` routing phrases. Check 12
-requires zero per-row grade changes between sources, which is stricter than a fingerprint-only
-re-baseline. The next attempt starts at step 2 (schema `keywords` as rank-only evidence) from the
-accepted baseline, not on top of step 1.
+Check 1 is a controlled probe: neither source carries literal `yieldblox` or `reflector` routing
+phrases. Check 12 requires zero per-row grade changes between sources, which is stricter than a
+fingerprint-only re-baseline. The next attempt starts at step 2 (schema `keywords` as rank-only
+evidence). It starts from the accepted baseline, without the step 1 patch.
 
 Acceptance checks:
 
