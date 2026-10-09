@@ -157,7 +157,7 @@ The final result boundary still applies when a script returns artifact data.
 
 ## 4. The envelope contract
 
-Service operations and skill runners return this contract:
+Service operations, skill reads, and skill runners return this contract:
 
 ```text
 { ok: true, data }
@@ -194,7 +194,7 @@ The provider prelude installs non-enumerable accessors to catch wrong-level read
 
 Enumerable keys, spreads, JSON, and returned envelopes keep their ordinary shapes.
 The guard uses accessors because provider RPC cannot serialize a Proxy envelope.
-Discovery helpers use their documented shapes; skill reads keep content at the top level.
+Discovery helpers use their documented shapes. Skill reads use the same envelope guard as service calls.
 
 ## 5. Discovery inside the sandbox
 
@@ -207,7 +207,7 @@ The flat provider functions support nested helper spelling through the prelude.
 | `codemode.search(queryOrOpts)` | Returns hits, counts, tiers, confidence, and bounded recovery advice. Invalid filters or IDs return errors. |
 | `codemode.catalog({ kind?, service?, compact? })` | Returns manifest entries without host transport or provenance. `compact: true` omits schemas. |
 | `codemode.describe(id)` | Resolves an exact ID and returns full schemas, signatures, section navigation, and usage instructions. |
-| `codemode.skill.read(name, { sections? })` | Returns pinned playbook content or selected sections at the top level. |
+| `codemode.skill.read(name, { sections? })` | Returns pinned playbook content or selected sections under `data`, with exact source URLs. |
 | `codemode.skill.run(name, input)` | Calls a registered first-party runner and returns a service-call envelope. |
 | `codemode.artifact.info(id)` / `codemode.artifact.read(id)` | Return owner-bound metadata or data through service-call envelopes. |
 

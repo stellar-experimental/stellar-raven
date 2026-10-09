@@ -4942,7 +4942,7 @@
         },
         "responses": {
           "200": {
-            "description": "{ ok: true, id, url (main SKILL.md pinned address), content? (whole skill) | sections?: [{section, content, url (exact pinned address for that section)}], availableSections } or { ok: false, error }."
+            "description": "{ ok: true, data: { id, url (main SKILL.md pinned address), content? (whole skill) | sections?: [{section, content, url (exact pinned address for that section)}], availableSections, notice? } } or { ok: false, error: { kind, message, hint? } }."
           }
         },
         "summary": "Read one pinned skill's full SKILL.md, or only the requested sections.",

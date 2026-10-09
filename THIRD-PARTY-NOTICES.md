@@ -26,7 +26,7 @@ Upstream remains the source.
 
 **3. Responses carry upstream content and provenance.** Whole-skill reads preserve upstream YAML
 frontmatter. Companion-file reads include any upstream YAML frontmatter. Heading-section reads
-return only the requested `##` section. The top-level `url` names the pinned main `SKILL.md`. Each
+return only the requested `##` section. `data.url` names the pinned main `SKILL.md`. Each
 returned section names its exact pinned source in its own `url`. Whether the forwarded metadata and
 source URLs satisfy each upstream license is an open question for counsel.
 

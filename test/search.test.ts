@@ -1317,7 +1317,7 @@ describe("searchCatalog — availableSections on skill hits", () => {
     const r = await readSkill(catalog, skillSource, hit.id);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect([...hit.availableSections!].sort()).toEqual([...r.availableSections].sort());
+    expect([...hit.availableSections!].sort()).toEqual([...r.data.availableSections].sort());
   });
 
   it("keeps the field OFF operation hits", () => {

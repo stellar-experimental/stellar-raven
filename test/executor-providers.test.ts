@@ -8,11 +8,12 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, type Catalog } from "../src/catalog/search.ts";
-import { buildSandbox, hasServiceData, type OpLedgerCall } from "../src/executor/providers.ts";
+import { buildSandbox, buildCodemodeProvider, hasServiceData, type OpLedgerCall } from "../src/executor/providers.ts";
 import type { FetchLike } from "../src/adapters/types.ts";
 import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
 import type { SkillSource } from "../src/skills/source.ts";
+import type { SkillReadResult } from "../src/skills/store.ts";
 import {
   put as putArtifact,
   type ArtifactPutInput
@@ -198,7 +199,7 @@ describe("sandbox surface shape", () => {
     expect(codemode.prelude).toContain("run: async (name, input)");
     expect(codemode.prelude).toContain("codemode.skill_run(name, input)");
     // … and RETURNS the service envelope through the SAME guard operations
-    // get (no .data-trap inversion — that is skill.read's shape, not run's).
+    // get, with the same envelope shape as skill.read.
     expect(codemode.prelude).toContain('__guardEnvelope(raw, "codemode.skill.run")');
   });
 });
@@ -767,57 +768,59 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
   });
 });
 
-describe("skill.read result-shape guard (.data points at top-level content)", () => {
-  // Shared generated-scope reconstruction (module-level guardedNamespaces),
-  // narrowed to the codemode namespace this suite drives.
+describe("skill.read service-call envelope guard", () => {
   function guardedCodemode() {
     return guardedNamespaces().codemode as unknown as {
-      skill: { read: (name: string, opts?: unknown) => Promise<Record<string, unknown>> };
+      skill: { read: (name: string, opts?: unknown) => Promise<SkillReadResult> };
     };
   }
   const SKILL_ID = "skills.lumenloop.stellar-project-dossier";
 
-  it("ok whole-read: .data throws a pointer to content/sections; content/id/availableSections read fine", async () => {
-    const codemode = guardedCodemode();
-    const r = (await codemode.skill.read(SKILL_ID)) as {
-      ok: boolean;
-      content: string;
-      availableSections: string[];
-    };
+  it("guards whole-read payload keys and preserves source URLs", async () => {
+    const r = await guardedCodemode().skill.read(SKILL_ID);
     expect(r.ok).toBe(true);
-    expect(r.content).toContain("#"); // top-level content untouched
-    expect(Array.isArray(r.availableSections)).toBe(true);
-    expect(() => (r as Record<string, unknown>).data).toThrow(/skill content sits at the top level/);
-    expect(() => (r as Record<string, unknown>).data).toThrow(/use r\.content .* or r\.sections/);
+    if (!r.ok) throw new Error(r.error.message);
+    expect(r.data.content).toContain("#");
+    expect(r.data.availableSections.length).toBeGreaterThan(0);
+    expect(r.data.url).toBe(catalog.entries.find((e) => e.id === SKILL_ID)!.transport!.url);
+    expect(() => (r as Record<string, unknown>).content).toThrow(/use r\.data\.content/);
+    expect(() => (r as Record<string, unknown>).availableSections).toThrow(/use r\.data\.availableSections/);
+    expect(Object.keys(r)).toEqual(["ok", "data"]);
+    expect(JSON.parse(JSON.stringify(r))).toEqual({ ok: true, data: r.data });
+    expect({ ...r }).toEqual({ ok: true, data: r.data });
   });
 
-  it("ok section-read: .sections reads fine, .data still throws the corrective pointer", async () => {
+  it("guards section-read payload keys and preserves each section URL", async () => {
     const codemode = guardedCodemode();
-    const whole = (await codemode.skill.read(SKILL_ID)) as { availableSections: string[] };
-    const key = whole.availableSections[0]!;
-    const r = (await codemode.skill.read(SKILL_ID, { sections: [key] })) as {
-      ok: boolean;
-      sections: unknown[];
+    const whole = await codemode.skill.read(SKILL_ID);
+    if (!whole.ok) throw new Error(whole.error.message);
+    const key = whole.data.availableSections[0]!;
+    const r = await codemode.skill.read(SKILL_ID, { sections: [key] });
+    if (!r.ok) throw new Error(r.error.message);
+    expect(r.data.sections).toHaveLength(1);
+    expect(r.data.sections![0]!.url).toBe(whole.data.url);
+    expect(() => (r as Record<string, unknown>).sections).toThrow(/use r\.data\.sections/);
+  });
+
+  it("allows write-through decoration of a guarded payload key", async () => {
+    const r = await guardedCodemode().skill.read(SKILL_ID) as Record<string, unknown>;
+    expect(() => r.content).toThrow(/use r\.data\.content/);
+    r.content = "decoration";
+    expect(r.content).toBe("decoration");
+    expect(Object.keys(r)).toContain("content");
+  });
+
+  it("guards reads without service providers", async () => {
+    const provider = buildCodemodeProvider(catalog, skillSource);
+    const codemode = { ...provider.fns };
+    new Function("codemode", provider.prelude!)(codemode);
+    const nested = codemode as unknown as {
+      skill: { read: (name: string) => Promise<SkillReadResult> };
     };
-    expect(r.ok).toBe(true);
-    expect(Array.isArray(r.sections)).toBe(true);
-    expect(() => (r as Record<string, unknown>).data).toThrow(/\.data/);
-  });
-
-  it("the .data trap is non-enumerable: keys/JSON stay clean (no phantom key)", async () => {
-    const codemode = guardedCodemode();
-    const r = (await codemode.skill.read(SKILL_ID)) as object;
-    expect(Object.keys(r)).not.toContain("data");
-    expect(JSON.stringify(r)).not.toContain('"data"');
-  });
-
-  it("write-through: assigning .data self-replaces and reads back (decorating the result is legal)", async () => {
-    const codemode = guardedCodemode();
-    const r = (await codemode.skill.read(SKILL_ID)) as Record<string, unknown>;
-    expect(() => r.data).toThrow(/\.data/); // read-before-write still throws
-    r.data = 123; // does not throw
-    expect(r.data).toBe(123);
-    expect(Object.keys(r)).toContain("data"); // enumerable now
+    const r = await nested.skill.read(SKILL_ID);
+    if (!r.ok) throw new Error(r.error.message);
+    expect(r.data.content).toContain("#");
+    expect(() => (r as Record<string, unknown>).content).toThrow(/use r\.data\.content/);
   });
 
   it("failed read routes through the envelope guard: r.data undefined + one [envelope] warning naming the call", async () => {
@@ -1348,10 +1351,10 @@ describe("codemode fns", () => {
   it("skill_read serves pinned source content", async () => {
     const r = (await codemode.skill_read!("skills.lumenloop.stellar-project-dossier", {})) as {
       ok: boolean;
-      content?: string;
+      data: { content: string };
     };
     expect(r.ok).toBe(true);
-    expect(r.content).toContain("#");
+    expect(r.data.content).toContain("#");
   });
 
   it("skill_read reports only exact catalog-declared build-authority roles", async () => {

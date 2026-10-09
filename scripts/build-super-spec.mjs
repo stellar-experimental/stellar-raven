@@ -607,7 +607,7 @@ function buildSkillsPaths(skillIndex, runnableIndex) {
         responses: {
           200: {
             description:
-              "{ ok: true, id, url (main SKILL.md pinned address), content? (whole skill) | sections?: [{section, content, url (exact pinned address for that section)}], availableSections } or { ok: false, error }."
+              "{ ok: true, data: { id, url (main SKILL.md pinned address), content? (whole skill) | sections?: [{section, content, url (exact pinned address for that section)}], availableSections, notice? } } or { ok: false, error: { kind, message, hint? } }."
           }
         },
         "x-service": "skills",

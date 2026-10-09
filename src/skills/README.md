@@ -66,21 +66,24 @@ Unknown option keys fail validation.
 async () => {
   const r = await codemode.skill.read("skills.lumenloop.stellar-ecosystem-digest");
   if (!r.ok) return r;
-  return { id: r.id, availableSections: r.availableSections };
+  return { id: r.data.id, availableSections: r.data.availableSections };
 }
 ```
 
-A whole read returns content at the top level, not under `data`.
-A section read returns selected section content and each section's pinned URL.
+A successful read returns `{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`.
+A whole read returns `data.content`.
+Failures return `{ ok: false, error: { kind, message, hint? } }`.
+A section read returns `data.sections` with each section's content and exact pinned URL.
 Accepted section selectors include slugs, exact heading text, and `file:` keys.
 Unknown sections fail the whole request and list the available sections.
 A heading in the body but absent from the catalog fails closed.
 The runtime and builder use the same section-slug rules.
-`availableSections` lists cataloged addresses on successful reads and whole-skill search hits.
+`data.availableSections` lists cataloged addresses on successful reads.
+Whole-skill search hits list the same addresses under `availableSections`.
 
 Whole reads preserve upstream license material.
 They retain the full body for in-sandbox inspection.
-A large read can carry an advisory `notice` asking the script to return sections or aggregates.
+A large read can carry an advisory `data.notice` asking the script to return sections or aggregates.
 The model-output cap applies to the script's final return, not to data available inside the sandbox.
 
 ## `codemode.skill.run`

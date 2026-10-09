@@ -1408,9 +1408,9 @@ until official docs confirm them.</p>
     <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use that same
     envelope. The discovery helpers answer at the top level instead: <code>codemode.search</code>
     gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
-    <code>r.signature</code> and <code>r.inputSchema</code>, <code>codemode.skill.read(id)</code>
-    gives <code>r.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
-    <code>r.sections</code>.</li>
+    <code>r.signature</code> and <code>r.inputSchema</code>. <code>codemode.skill.read(id)</code>
+    gives <code>r.data.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
+    <code>r.data.sections</code>.</li>
   <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
     <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
     service answered with nothing — that is inconclusive, not proof something does not exist.

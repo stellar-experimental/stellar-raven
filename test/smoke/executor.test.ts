@@ -1092,16 +1092,16 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(parsed.slugs).toEqual(["smoke-project"]);
   });
 
-  it("guards a skill.read result: reading .data throws a pointer to top-level content", async () => {
+  it("guards a skill.read result: reading .content points to data.content", async () => {
     const outcome = await run(`async () => {
       const skill = await codemode.skill.read("skills.lumenloop.stellar-project-dossier");
       let dataReadError = "";
       try {
-        skill.data; // wrong shape — skill content is top-level, not under .data
+        skill.content; // wrong level: content lives under data
       } catch (e) {
         dataReadError = String(e && e.message);
       }
-      return { ok: skill.ok, hasContent: typeof skill.content === "string", dataReadError };
+      return { ok: skill.ok, hasContent: typeof skill.data.content === "string", dataReadError };
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
@@ -1112,8 +1112,33 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       };
       expect(parsed.ok).toBe(true);
       expect(parsed.hasContent).toBe(true);
-      expect(parsed.dataReadError).toContain("top level");
+      expect(parsed.dataReadError).toContain("use r.data.content");
       expect(outcome.evidenceSummary.kind).toBe("skill-content");
+    }
+  });
+
+  it("returns skill sections and errors in service-call envelopes across RPC", async () => {
+    const outcome = await run(`async () => {
+      const id = "skills.lumenloop.stellar-project-dossier";
+      const whole = await codemode.skill.read(id);
+      if (!whole.ok) throw new Error(whole.error.message);
+      const key = whole.data.availableSections[0];
+      const section = await codemode.skill.read(id, { sections: [key] });
+      const unknownSection = await codemode.skill.read(id, { sections: ["missing-section"] });
+      const unknownId = await codemode.skill.read("skills.missing.id");
+      return { keys: Object.keys(whole), url: whole.data.url, section, unknownSection, unknownId };
+    }`);
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) throw new Error(outcome.error);
+    const result = JSON.parse(outcome.result);
+    expect(result.keys).toEqual(["ok", "data"]);
+    expect(result.section.ok).toBe(true);
+    expect(result.section.data.sections).toHaveLength(1);
+    expect(result.section.data.url).toBe(result.url);
+    expect(result.section.data.sections[0].url).toBe(result.url);
+    for (const error of [result.unknownSection, result.unknownId]) {
+      expect(Object.keys(error)).toEqual(["ok", "error"]);
+      expect(error).toMatchObject({ ok: false, error: { service: "skills", kind: "error" } });
     }
   });
 
@@ -1147,7 +1172,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
         confidence: found.ok ? found.confidence : null,
         recoveryMetadata: found.ok ? found.recoveryMetadata : null,
         allCallable: catalog.entries.every((e) => !("policy" in e)), // ADR-0003: no policy layer
-        skillOk: skill.ok === true && skill.availableSections.length > 0
+        skillOk: skill.ok === true && skill.data.availableSections.length > 0
       };
     }`);
     expect(outcome.ok).toBe(true);
