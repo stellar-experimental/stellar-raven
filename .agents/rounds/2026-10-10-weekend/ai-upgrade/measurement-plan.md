@@ -20,12 +20,20 @@ The question includes answers, because strictness can change tool arguments and 
 
 | Arm | Commit | Worktree |
 | --- | --- | --- |
-| BASE | `d15a4ce52c997577313779872d9f89de7725debc` (`main`) | a detached worktree that the coordinator makes |
+| BASE | `0dc353b992b8c0688c051909b5b07b8e14956134` (`main`; amendment 1) | a detached worktree that the coordinator makes |
 | CANDIDATE | the frozen head of branch `w1010/s` | `raven-w1010-s` or a clean copy at that commit |
 
 The coordinator records the full CANDIDATE commit before launch.
 If `main` moves before launch, rebase the branch and set BASE to the new merge base.
 A changed BASE needs a plan amendment.
+
+**Amendment 1 (2026-10-10, operator).** `main` moved from `d15a4ce5` to `0dc353b9` before launch.
+The two new commits (#262, #263) change only `.agents/`, `improvements/`, and paired-launch tests.
+They change no file under `src/`, `eval/qa/`, `eval/playground/`, `catalog/`, `specs/`, or `scripts/`.
+The operator rebased `w1010/s` onto `0dc353b9` without conflicts.
+The `src/` and `package.json` diff and the `package-lock.json` and `test/` diff are byte-identical to the reviewed diff.
+BASE is now `0dc353b9`. BASE still locks `ai` 7.0.79 and `@ai-sdk/openai` 4.0.47.
+No other part of the plan changes.
 
 `git diff --stat "$BASE" "$CANDIDATE"` must list only these paths:
 
@@ -429,7 +437,7 @@ The coordinator fills each `<…>` value from recorded receipts.
 ```sh
 # 0. Variables. $B must be outside the repository and must not be the paired-launch directory.
 B=/private/tmp/raven-ai-upgrade
-BASE=d15a4ce52c997577313779872d9f89de7725debc
+BASE=0dc353b992b8c0688c051909b5b07b8e14956134
 CANDIDATE=<frozen w1010/s head, full SHA>
 BASE_WT=<detached BASE worktree path>
 CAND_WT=<CANDIDATE worktree path>
