@@ -324,7 +324,7 @@ describe("QA transcript evidence pack", () => {
     });
 
     expect(pack).toContain('path="articles[0]" source="Protocol 23 release article"');
-    expect(pack).toContain("span: articles[0]={title: Protocol 23 release article | summary: An article source. | date: 2025-11-05T00:00:00Z}");
+    expect(pack).toContain("span: articles={title: Protocol 23 release article | summary: An article source. | date: 2025-11-05T00:00:00Z}");
     expect(pack).toContain('title="Protocol 23 release article" date="2025-11-05T00:00:00Z"');
     expect(pack).toContain('articles[0].date="2025-11-05T00:00:00Z"');
     expect(pack).not.toContain("av_metadata_date");
