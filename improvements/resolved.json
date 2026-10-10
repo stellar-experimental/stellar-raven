@@ -2587,6 +2587,24 @@
       "reviewEvidence": "Terra high independently repeated original direct upstream triggers, issuer TOML and Horizon checks, adjacent residuals, and persistent references; .agents/rounds/2026-09-09-scout-retirement-live-terra.md. Upstream retirement is separate from rejected Raven catalog adoption.",
       "sourceCommit": "1de777ed60471ec134a13c8c4d66e332c7709940",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1de777ed60471ec134a13c8c4d66e332c7709940/improvements/stellar-light-scout/sls-084-status-basis-openapi-enum.md"
+    },
+    {
+      "id": "sls-087",
+      "title": "Scout returns a stale Horizon protocol ceiling for a current-source question. The answer states MaxSupportedProtocolVersion = 28. The…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-09-29",
+      "resolved": "2026-10-10",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1738"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1805"
+      ],
+      "liveRecheck": "2026-10-10T13:55:35.982Z GET https://stellarlight.xyz/api/repos/explain?repo=stellar/stellar-horizon&q=Which Horizon ingestion constant pins the highest supported protocol version, and what is its value? returned MaxSupportedProtocolVersion = 29 with answerSource knowledge-note, answerAsOf 2026-10-08T00:00:00Z, and codeVerified.scannedRef ee5241ec8d9a3233b574ea432ec313b304b6851d; internal/ingest/main.go at that ref defines MaxSupportedProtocolVersion uint32 = 29 at line 38, SHA-256 8ea8c735f70863f0df17deaf4452ab0858ca0609d21be6ea0cc046976bd6db59; the note links commit 430a28e79b3b43c213840e45523519ca11251c0a; the explicit current-value query at 13:55:44.718Z also returned 29",
+      "reviewEvidence": "Claude Fable 5.1 high distinct drain review on 2026-10-10 (DRAIN-OK); resolution comment https://github.com/Stellar-Light/stellarlight/issues/1738#issuecomment-6098261074",
+      "sourceCommit": "d15a4ce52c997577313779872d9f89de7725debc",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d15a4ce52c997577313779872d9f89de7725debc/improvements/stellar-light-scout/sls-087-horizon-protocol-ceiling-note-stale.md"
     }
   ]
 }
