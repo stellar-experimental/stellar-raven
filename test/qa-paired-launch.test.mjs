@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, realpathSync, symlinkSync, unlinkSync } from "node:fs";
+import { copyFileSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, realpathSync, symlinkSync, unlinkSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,9 +7,19 @@ import { describe, expect, it } from "vitest";
 import { reserveInvocation, processTable, withLaunchCleanup, OwnedProcesses, PROCESS_GUARD, processGuardSha256, managedEnvironment } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch-runtime.mjs";
 import { createClaudePin } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-claude-pin.mjs";
 import { agentEnvironmentIdentity } from "../eval/lib/executable-identity.mjs";
-import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, PORTS } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
+import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, launchEnvironment, PORTS } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
 import { executeFrozen, validateStoredJudgeArtifact } from "../.agents/rounds/2026-10-01-backlog-closeout/execute-frozen.mjs";
-import { pairedCollectionPlanSha256 } from "../eval/qa/paired-collection-supervisor.mjs";
+import { pairedCollectionPlanSha256, devVarsIdentity, validateAuthorizedPairedCollectionPlan, validatePairedCollectionPlan } from "../eval/qa/paired-collection-supervisor.mjs";
+import { assertPlanCommandSyntax, buildPairedPlan, selectionSnapshot } from "../.agents/rounds/2026-10-01-backlog-closeout/assemble-paired-plan.mjs";
+import { stratifiedSample } from "../eval/qa/lib.mjs";
+import { PAIRED_CAPACITY_CONTRACT } from "../eval/qa/check-paired-capacity.mjs";
+import { loadJudgeStabilityRegister } from "../eval/qa/judge-stability.mjs";
+import { assertRunQaCliSyntax } from "../eval/qa/run-qa.mjs";
+import { parseArgs as parseRejudge } from "../eval/qa/re-judge.mjs";
+import { assertP6OutputAvailable, parseP6SelfTestCli } from "../eval/qa/run-p6-judge-self-test.mjs";
+import { JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
+import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
+import { acceptedCapacityArtifact, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
 
 function emptyJournal() {
   return {schema:'qa-paired-launch-processes-v2',identities:[],groups:[],retiredGroups:[],cleanup:{complete:true}};
@@ -528,3 +538,91 @@ import {writeFileSync} from 'node:fs';writeFileSync(process.argv[2],agentEnviron
     expect(readFileSync(path.join(root,'assembly'),'utf8')).toBe(readFileSync(path.join(root,'later-phase'),'utf8'));
   } finally {rmSync(root,{recursive:true,force:true});}
 },10_000);
+
+describe('paired plan assembly',()=>{
+  const INSTRUMENTS=['run-qa.mjs','paired-verdict.mjs','paired-collection-supervisor.mjs','paired-collection-control.mjs',
+    'exact-old-runtime-adapter.mjs','probe-remote-identities.mjs','check-paired-capacity.mjs',
+    'run-p6-judge-self-test.mjs','judge.mjs','evidence-pack.mjs','re-judge.mjs','cases.json'];
+  const judge={model:JUDGE_MODEL,rubric:JUDGE_RUBRIC,packVersion:PACK_VERSION};
+
+  // Simulated launch records around real instrument bytes and the real corpus.
+  function assemblyFixture(judgeConstants=judge) {
+    const root=mkdtempSync(path.join(os.tmpdir(),'paired-assembly-'));
+    const revision='a'.repeat(40);
+    const env={...launchEnvironment(revision,{}),PAIRED_RUN:path.join(root,'run'),PAIRED_PROCESS_GUARD:PROCESS_GUARD};
+    for (const [name,key] of [['baseline-runner','PAIRED_BR'],['candidate-runner','PAIRED_CR'],
+      ['baseline-server','PAIRED_BS'],['candidate-server','PAIRED_CS']]) env[key]=path.join(root,name);
+    mkdirSync(env.PAIRED_RUN);
+    for (const runner of [env.PAIRED_BR,env.PAIRED_CR]) {
+      mkdirSync(path.join(runner,'eval/qa'),{recursive:true});
+      for (const name of INSTRUMENTS) copyFileSync(path.resolve('eval/qa',name),path.join(runner,'eval/qa',name));
+    }
+    for (const server of [env.PAIRED_BS,env.PAIRED_CS]) {
+      mkdirSync(server);
+      writeFileSync(path.join(server,'.dev.vars'),'ZETA=two\nALPHA=one\n');
+    }
+    copyFileSync(path.resolve('.agents/rounds/2026-10-01-backlog-closeout/paired-stability-register.json'),
+      path.join(env.PAIRED_RUN,'paired-stability-register.json'));
+    writeFileSync(path.join(env.PAIRED_RUN,'capacity.json'),
+      `${JSON.stringify(acceptedCapacityArtifact(new Date().toISOString()),null,2)}\n`);
+    writeFileSync(path.join(env.PAIRED_RUN,'stable.sha256'),`${'d'.repeat(64)}\n`);
+    const salt='9'.repeat(64);
+    const selected=selectionSnapshot(env.PAIRED_CR,stratifiedSample);
+    expect(selectionSnapshot(env.PAIRED_BR,stratifiedSample)).toEqual(selected);
+    const claudePath=path.join(env.PAIRED_RUN,'claude-bin/claude');
+    const binary={resolvedPath:claudePath,sha256:'e'.repeat(64)};
+    const environment={sha256:'f'.repeat(64)};
+    const plan=buildPairedPlan({env,selected,binary,environment,
+      immutableClaude:{schema:'qa-paired-claude-pin-v1',claudePath,sha256:binary.sha256},
+      register:loadJudgeStabilityRegister(path.join(env.PAIRED_RUN,'paired-stability-register.json'),{verifySources:false}),
+      capacityContract:PAIRED_CAPACITY_CONTRACT,surfaces:{baseline:'1'.repeat(64),candidate:'2'.repeat(64)},
+      devVars:{salt,...devVarsIdentity(env.PAIRED_BS,salt)},judge:judgeConstants});
+    const inspectWorktree=worktree=>({root:worktree,commonDir:root,
+      revision:worktree===env.PAIRED_BS ? env.PAIRED_BASE : revision});
+    return {root,env,plan,inspectWorktree};
+  }
+
+  function completeP6(plan) {
+    const hashes=plan.arms.candidate.inputHashes;
+    writeFileSync(plan.p6.summaryArtifactPath,`${JSON.stringify(passingP6Summary({wrapperSha256:plan.p6.wrapperSha256,
+      runnerRevision:plan.p6.command[plan.p6.command.indexOf('--runner-revision')+1],claudePath:plan.p6.claudePath,
+      claudeBinarySha256:hashes.agentBinarySha256,claudeEnvironmentSha256:hashes.agentEnvironmentSha256}),null,2)}\n`);
+  }
+
+  it('freezes a plan that passes every runner parser and the complete supervisor validator',()=>{
+    const {root,env,plan,inspectWorktree}=assemblyFixture();
+    try {
+      expect(plan.flipRejudge.judgeTuple).toEqual({...judge,judgePanel:1});
+      expect(plan.selected.activeCorpusCount).toBeGreaterThanOrEqual(200);
+      assertPlanCommandSyntax(plan,{assertRunQaCliSyntax,parseRejudge,parseP6SelfTestCli});
+      // P6 runs after assembly; its summary folder is the launch-record folder that launchPaired creates.
+      expect(path.dirname(plan.p6.summaryArtifactPath)).toBe(env.PAIRED_RUN);
+      expect(()=>assertP6OutputAvailable(plan.p6.summaryArtifactPath)).not.toThrow();
+      completeP6(plan);
+      expect(validatePairedCollectionPlan(plan,{inspectWorktree})).toBe(plan);
+      expect(validateAuthorizedPairedCollectionPlan(plan,pairedCollectionPlanSha256(plan))).toBe(pairedCollectionPlanSha256(plan));
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it.each([
+    ['a stale rubric',{rubric:'v2.10'}],
+    ['another pack',{packVersion:'p5'}],
+    ['another judge model',{model:'claude-opus-5'}]
+  ])('rejects a flip tuple with %s',(_,change)=>{
+    const {root,plan,inspectWorktree}=assemblyFixture(judge);
+    try {
+      completeP6(plan);
+      const wrong=structuredClone(plan);
+      Object.assign(wrong.flipRejudge.judgeTuple,change);
+      expect(()=>validatePairedCollectionPlan(wrong,{inspectWorktree})).toThrow(/flipRejudge\.judgeTuple does not match/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('rejects a plan assembled from a stale rubric constant',()=>{
+    const {root,plan,inspectWorktree}=assemblyFixture({...judge,rubric:'v2.10'});
+    try {
+      completeP6(plan);
+      expect(()=>validatePairedCollectionPlan(plan,{inspectWorktree})).toThrow(/flipRejudge\.judgeTuple does not match/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+});
