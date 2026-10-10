@@ -149,6 +149,15 @@ const DEMO_SEARCH_DEFAULT_LIMIT = 5;
 const DEMO_HIT_DESCRIPTION_CHARS = 220;
 const DEMO_HIT_SIGNATURE_CHARS = 400;
 
+// Both tools opt out of provider strict mode on purpose. The Playground sends
+// the production MCP input schemas, and MCP clients call them best-effort, so
+// strict decoding would measure a different contract. Strict mode would also
+// need every `search` field required and nullable, and the schemas use
+// `minLength`, which OpenAI does not list as a supported strict keyword.
+// The OpenAI Responses provider sends `strict: false` for an omitted value too;
+// stating it here keeps a provider default from making the choice.
+const DEMO_TOOL_STRICT = false;
+
 function clip(text: string, max: number): string {
   return text.length <= max ? text : `${text.slice(0, max)}… [clipped for the demo]`;
 }
@@ -268,6 +277,7 @@ export function buildDemoTools(opts: {
   const search = tool({
     description: `${SEARCH_DESCRIPTION}\n\nPlayground evidence rule: search hits are navigation metadata and callable signatures, not sufficient factual evidence for the answer. Use execute to obtain factual service or skill results.`,
     inputSchema: z.object(rankedSearchInputSchema),
+    strict: DEMO_TOOL_STRICT,
     execute: async (args) => {
       const id = crypto.randomUUID();
       emit({ type: "tool-start", id, tool: "search", input: args });
@@ -407,6 +417,7 @@ export function buildDemoTools(opts: {
   const execute = tool({
     description: EXECUTE_DESCRIPTION,
     inputSchema: z.object(executeInputSchema),
+    strict: DEMO_TOOL_STRICT,
     execute: async (args) => {
       const id = crypto.randomUUID();
       emit({ type: "tool-start", id, tool: "execute", input: args });
