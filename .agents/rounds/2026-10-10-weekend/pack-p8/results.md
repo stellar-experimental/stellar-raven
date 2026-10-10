@@ -174,7 +174,13 @@ number instead of a span is a pack regression.
   `2029+` detail, which the saved source holds and both packs omit.
 - R5-1 was open at the time of R6: the support diagnostic kept the whole `provenance:` line and the
   `(+N more)` suffix. R6's probes accepted `18126` (a character counter) and `20` (`(+20 more)`) as
-  support. The p8b preparation closes it as a diagnostic-only change; see
-  [amendment-p8b.md](amendment-p8b.md).
+  support. Commit `e7ca3fb0` closes it as a diagnostic-only change: the provenance line keeps only its
+  `sourceMetadata` values (such as `generatedAt` dates), and counters never count.
+  [r5-1-check.json](r5-1-check.json) shows all 64 packs and 64 full prompts of this run byte-identical,
+  and no change in the 48 recomputed vote checks. The StellarTerm vote keeps its `2026-10-08` support,
+  because that date is real source metadata.
+- The refreshed [replay-p8.json](replay-p8.json) (at `e7ca3fb0`) keeps the omission-row result
+  (12 of 12) and the item counts. Missing control probes rise by 19 in each column, to 426 (p6),
+  239 (p7), and 227 (p8), because counters no longer count. The ordering does not change.
 - R6 recommends a prospective Stage 2 amendment and a fixed three-call continuation on the
   StellarTerm row. Both are in [amendment-p8b.md](amendment-p8b.md). This run stays BLOCKED.
