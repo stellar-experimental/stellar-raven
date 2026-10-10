@@ -424,8 +424,11 @@ supported claims. The pre-spend review (R4) approved p8 and the
 [p8 plan](rounds/2026-10-10-weekend/pack-p8/measurement-plan-p8.md) with fixes, now applied at
 `36e77d40`. The [p8 re-measurement](rounds/2026-10-10-weekend/pack-p8/results.md) ran on
 2026-10-10 ($9.08). Stages 1 and 3 pass. Stage 2 fails its literal rule on one row, where p8 shows
-an accurate source item that contradicts the answer. The post-run review and an owner decision on
-that rule remain.
+an accurate source item that contradicts the answer. The post-run review (R6) confirmed the block.
+The prospective [amendment p8b](rounds/2026-10-10-weekend/pack-p8/amendment-p8b.md) defines an
+evidence-fidelity Stage 2 rule and a fixed three-call continuation on that row ($0.85 cap). It needs
+a pre-spend review and owner approval. Do not merge `w1010/r` as a diagnostic-only change: p8 is the
+active judge pack on this branch.
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
