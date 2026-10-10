@@ -1218,9 +1218,11 @@ const PACK_LABEL_LINE_RE =
 
 /**
  * The parts of a serialized pack that are source text: rendered spans, snippets, summaries, source
- * record names, and source field names with their values. Headings, counters (entry and alsoIn
- * numbers, paths and array indexes, the truncation footer), anchor and term labels, match lists,
- * and notices are pack-generated, so they never count as support.
+ * record names, source field names with their values, and the values in host source metadata.
+ * Headings, counters (entry and alsoIn numbers, paths and array indexes, the truncation footer,
+ * `(+N more)` suffixes, and the provenance line's shape, character, token, timing, and call
+ * counters), anchor and term labels, match lists, and notices are pack-generated, so they never
+ * count as support. This filter is diagnostic only; it never changes the judge pack.
  */
 export function packSourceEvidenceText(pack) {
   const kept = [];
@@ -1247,8 +1249,22 @@ export function packSourceEvidenceText(pack) {
       kept.push(line.replace(/ matched="(?:[^"\\]|\\.)*"/, ""));
       continue;
     }
+    // A provenance line keeps only its sourceMetadata values, as field name and value. Those values
+    // come from the service response, such as generatedAt dates and counts.total. The operation
+    // names, shape, character and token counts, call timings, and totals are host counters.
+    if (line.startsWith("provenance: ")) {
+      const values = [];
+      for (const section of line.matchAll(/sourceMetadata: (.*?)(?= \| execute#\d+: |$)/g)) {
+        for (const entry of section[1].matchAll(/(?:^|;\s*)\S+\s+([\w.[\]-]+)=("(?:[^"\\]|\\.)*"|[^;\s]+)/g)) {
+          values.push(`${entry[1].replace(/\[\d+\]/g, "").split(".").at(-1)}=${entry[2]}`);
+        }
+      }
+      if (values.length) kept.push(values.join("; "));
+      continue;
+    }
     const indented = line.match(/^ {3}(?:span|snippet|summary): (.*)$/);
-    kept.push(indented ? indented[1] : line);
+    // A "(+N more)" suffix counts hidden URLs; it is not source text.
+    kept.push(indented ? indented[1] : line.replace(/ \(\+\d+ more\)/g, ""));
   }
   return kept.join("\n");
 }
