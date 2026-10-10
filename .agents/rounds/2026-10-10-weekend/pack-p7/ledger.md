@@ -26,8 +26,13 @@ a logged-in first-party account before spend.
 - 24 dry runs (12 invocations × 2 arms): all exit 0, and all report `goldenTime.violations: []`.
 - Revision mode, `cases.matches: true`: S1b, S1c, S2a, S2c, S2d, S2e, S3c, S3d.
 - Worktree mode, `cases.matches: false` (expected for the incomplete files): S1a, S2b, S3a, S3b.
-  The observed cases SHA-256 for those files is
-  `55831c3cd80f93316a5ca1dff2c8e5dc9e717ede1b70d4050d9742ebe162196f`.
+  The observed cases SHA-256 depends on the source file:
+  - S1a, S2b, and S3b (the 94-row `2026-10-07T19-43-18` source):
+    `55831c3cd80f93316a5ca1dff2c8e5dc9e717ede1b70d4050d9742ebe162196f`.
+  - S3a (the 20-row `2026-10-07T16-51-53` source):
+    `7a3401a19f524e0a4f0d8f619c85aecf469cc5404da1d5b2fb7532fc33490017`.
+  - Both arms record the same hash for each invocation. The first version of this ledger gave the
+    94-row hash for all four; the post-run review corrected it.
 - `node eval/qa/judge.mjs --self-test-static`: GREEN in both arm worktrees.
 - A dry run does not check the pins. The paid run checks them before its first call.
 
@@ -61,3 +66,6 @@ Row IDs per invocation are in the plan's row-selection tables.
 - All 24 artifacts report postflight `passed`, with no binary or environment change.
 - Artifact paths and SHA-256 values: [rejudge-artifacts.json](rejudge-artifacts.json).
 - Reading and verdict: [results.md](results.md).
+- Post-run review: [post-run-review/rr3-review.md](post-run-review/rr3-review.md) (Codex frontier
+  `gpt-6-astra`, high effort). `POST-RUN: DISPUTED` on five items; it confirms the p7 block.
+  `results.md` carries the five corrections.
