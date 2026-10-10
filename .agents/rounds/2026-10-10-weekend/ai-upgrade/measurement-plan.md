@@ -162,6 +162,10 @@ Excluded, with the reason:
 - Anthropic and Google provider changes: no model of either vendor is in the production chain.
   With `strict: false`, `@ai-sdk/anthropic` sends `strict: false` where it supports strict tools.
   That is the Anthropic default. `@ai-sdk/google` acts only on `strict: true`.
+- OpenAI-compatible chat transports for control models. `workers-ai-provider/openai` uses the Chat Completions path.
+  That path sends `strict` whenever the tool sets it, so the Grok control model `xai/grok-4.6` now receives `strict: false`.
+  xAI acceptance of that field is unverified. It is a control-lane model, not production.
+  Verify it in the model gauntlet before the next control-model lane. This plan does not cover it.
 - UI streams, tool approvals, tool search, batches, speech, images, embeddings, and realtime APIs.
 
 The MCP `search` and `execute` path does not import `ai` (2026-10-02 review).
@@ -218,6 +222,8 @@ Start only after the coordinator gives the release signal for the server slot.
 Do not run while another lane's paid measurement is active.
 Stop each server before the next one starts.
 Do not change a running server's checkout. Do not rely on hot reload.
+Nobody sends a manual, browser, or `--preflight` turn to the eval server during collection.
+Such a turn shifts the log-to-row mapping in "Saving `demo-step` events".
 
 ## Launch checkpoints
 
@@ -237,6 +243,18 @@ Record private figures privately. Never commit Gateway spend or production usage
 4. **Freeze.** Both worktrees are clean. Both diffs match the "Arms" section.
    Both generations are recorded. Both arms pass `npm run test:smoke`.
 5. **Dry runs.** The two `--dry-run` commands below select the expected IDs.
+6. **Judge executable pin.** The collection shell sets `DISABLE_AUTOUPDATER=1`.
+   A private directory `$B/bin` is first on `PATH` and holds only a `claude` link to the versioned executable file.
+   `judge-pin.mjs` records the identity, and the coordinator records `JUDGE_SHA256`.
+   Re-check the pin with `judge-pin.mjs "$B/bin" "$JUDGE_SHA256"` before each judged command.
+   A changed pin stops the method before the next paid call. A new pin needs a reviewed amendment.
+   Run paid commands as `node scripts/run-playground-semantic-eval.mjs` in that shell.
+   `npm run` changes `PATH`, so it is not used for paid commands.
+7. **Installed SDK receipt.** The run generation does not hash `node_modules`.
+   So, from each arm's worktree, read the installed `ai` and `@ai-sdk/openai` versions.
+   Do this at checkpoint time and again just before each server start.
+   BASE must print `7.0.79 4.0.47`. CANDIDATE must print `7.0.137 4.0.91`.
+   A different value blocks that server start.
 
 A missed checkpoint blocks launch.
 A Gateway refusal during collection is a transport failure. It does not replace checkpoint 3.
@@ -255,7 +273,7 @@ A probe passes only when all of these are true:
 - `finishReason === "stop"` and a non-empty answer;
 - the server log turn has `attemptedModels` equal to `["openai/gpt-5.6-terra"]`;
 - that turn has `inputTokens`, `outputTokens`, and `totalTokens` above 0;
-- the `demo-step` token sums equal the `demo-chat` totals (`demo-steps.mjs` exit 0).
+- the `demo-step` token sums equal the `demo-chat` totals (`demo-steps.mjs --strict-usage` exit 0).
 
 The probe is the first turn in its server log, so the correlation is exact.
 Record the cost, the three token counts, and the call counts side by side.
@@ -387,7 +405,9 @@ The worktree stays clean, as `dev:eval` requires.
 `.agents/rounds/2026-10-10-weekend/ai-upgrade/demo-steps.mjs` reads one log.
 It groups events into turns in log order.
 For each turn, it reports the attempted models, step count, finish reason, search and execute counts, and final-step facts.
-It exits 1 on a tool call in step 7, a step-usage mismatch, or an unfinished turn.
+It exits 1 on a tool call in step 7 or an unfinished turn.
+It lists each step-usage sum that differs from the turn total under `usageMismatches`.
+With `--strict-usage`, a usage mismatch also exits 1. Use that flag for the receipt probes only.
 `DEMO_CAPS.maxSteps` is 7, so step 7 is the tools-disabled final step.
 
 Map log turns to result rows by order.
@@ -416,8 +436,17 @@ CAND_WT=<CANDIDATE worktree path>
 HELPER="$CAND_WT/.agents/rounds/2026-10-10-weekend/ai-upgrade/demo-steps.mjs"
 IDS=q-anchor-list-builders-discovery,q-asset-stablecoin-issuers-discovery,q-protocol-base-reserve-min-balance,q-scf-build-award-cap,q-sep-45-contract-auth,q-soroban-storage-types
 export DEMO_MODEL_OVERRIDE=openai/gpt-5.6-terra DEMO_OPENAI_API_MODE=responses DEMO_REASONING_EFFORT_OVERRIDE=none
-mkdir -p "$B/caps" "$B/results" "$B/server"
+PIN="$CAND_WT/.agents/rounds/2026-10-10-weekend/ai-upgrade/judge-pin.mjs"
+SDK='console.log(require("./node_modules/ai/package.json").version, require("./node_modules/@ai-sdk/openai/package.json").version)'
+mkdir -p "$B/caps" "$B/results" "$B/server" "$B/bin"
 # Write the seven cap files from the "Budget and caps" section.
+
+# Judge executable pin, in the collection shell. Use this shell for every later step.
+export DISABLE_AUTOUPDATER=1
+ln -s "$(realpath "$(/usr/bin/which claude)")" "$B/bin/claude"   # link to the versioned file
+export PATH="$B/bin:$PATH"
+node "$PIN" "$B/bin" > "$B/judge-pin.json"     # record JUDGE_SHA256 from its sha256 field
+JUDGE_SHA256=<sha256 from $B/judge-pin.json>
 
 # 1. Freeze checks, from $CAND_WT.
 git diff --stat "$BASE" "$CANDIDATE"
@@ -434,6 +463,7 @@ npm run test:smoke
 npm run eval:playground -- --print-generation   # record BASE_GENERATION or CANDIDATE_GENERATION
 npm run eval:playground -- --dry-run --ids "$IDS"
 npm run eval:playground -- --dry-run --ids q-soroban-storage-types --no-judge
+node -e "$SDK"                                  # BASE: 7.0.79 4.0.47; CANDIDATE: 7.0.137 4.0.91
 
 # 4. Launch checkpoints.
 test ! -e /private/tmp/stellar-raven-paired-launch && echo "paired-launch directory absent"
@@ -442,44 +472,53 @@ cf ai-gateway gateways get stellar-raven-demo   # read the spend limit privately
 # Read today's Gateway spend in the dashboard. Confirm headroom for $27 plus public traffic.
 
 # 5. Server base-a, from $BASE_WT, in the assigned pane.
+node -e "$SDK"                                  # must print 7.0.79 4.0.47
 npm run dev:eval -- --var DEMO_MODEL_OVERRIDE:openai/gpt-5.6-terra \
   --var DEMO_OPENAI_API_MODE:responses --var DEMO_REASONING_EFFORT_OVERRIDE:none 2>&1 | tee "$B/server/base-a.log"
 # Check "eval server revision $BASE". Set URL to the bound loopback origin.
 
 # 6. BASE receipt probe, from $BASE_WT.
-npm run eval:playground -- --confirm-paid --max-budget-usd 1 --url "$URL" --server-generation "$BASE_GENERATION" --round-cap-context "$B/caps/receipt-base.json" --ids q-soroban-storage-types --no-judge --out-dir "$B/results/receipt-base"
-node "$HELPER" "$B/server/base-a.log"           # turn 1; apply the receipt gate
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 1 --url "$URL" --server-generation "$BASE_GENERATION" --round-cap-context "$B/caps/receipt-base.json" --ids q-soroban-storage-types --no-judge --out-dir "$B/results/receipt-base"
+node "$HELPER" "$B/server/base-a.log" --strict-usage   # turn 1; apply the receipt gate
 
 # 7. Baseline 1, from $BASE_WT.
 node eval/qa/probe-remote-identities.mjs --sha256
-npm run eval:playground -- --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$BASE_GENERATION" --round-cap-context "$B/caps/baseline-1.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/baseline-1"
+node "$PIN" "$B/bin" "$JUDGE_SHA256"
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$BASE_GENERATION" --round-cap-context "$B/caps/baseline-1.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/baseline-1"
 node "$HELPER" "$B/server/base-a.log"           # turns 2-7
 # Stop the base-a server. Update candidate-1.json from actual counts.
 
-# 8. Server candidate, from $CAND_WT, with the same dev:eval command, tee to "$B/server/candidate.log".
+# 8. Server candidate, from $CAND_WT. First `node -e "$SDK"` must print 7.0.137 4.0.91.
+# Then the same dev:eval command, with tee to "$B/server/candidate.log".
 # Check "eval server revision $CANDIDATE". Set URL again.
 
 # 9. CANDIDATE receipt probe, from $CAND_WT.
-npm run eval:playground -- --confirm-paid --max-budget-usd 1 --url "$URL" --server-generation "$CANDIDATE_GENERATION" --round-cap-context "$B/caps/receipt-candidate.json" --ids q-soroban-storage-types --no-judge --out-dir "$B/results/receipt-candidate"
-node "$HELPER" "$B/server/candidate.log"        # turn 1; apply the receipt gate
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 1 --url "$URL" --server-generation "$CANDIDATE_GENERATION" --round-cap-context "$B/caps/receipt-candidate.json" --ids q-soroban-storage-types --no-judge --out-dir "$B/results/receipt-candidate"
+node "$HELPER" "$B/server/candidate.log" --strict-usage   # turn 1; apply the receipt gate
 
 # 10. Candidate 1 and candidate 2, from $CAND_WT. Update candidate-2.json between them.
 node eval/qa/probe-remote-identities.mjs --sha256
-npm run eval:playground -- --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$CANDIDATE_GENERATION" --round-cap-context "$B/caps/candidate-1.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/candidate-1"
+node "$PIN" "$B/bin" "$JUDGE_SHA256"
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$CANDIDATE_GENERATION" --round-cap-context "$B/caps/candidate-1.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/candidate-1"
 node "$HELPER" "$B/server/candidate.log"        # turns 2-7
 node eval/qa/probe-remote-identities.mjs --sha256
-npm run eval:playground -- --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$CANDIDATE_GENERATION" --round-cap-context "$B/caps/candidate-2.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/candidate-2"
+node "$PIN" "$B/bin" "$JUDGE_SHA256"
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$CANDIDATE_GENERATION" --round-cap-context "$B/caps/candidate-2.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/candidate-2"
 node "$HELPER" "$B/server/candidate.log"        # turns 8-13
 # Stop the candidate server. Update baseline-2.json from actual counts.
 
-# 11. Server base-b, from $BASE_WT, tee to "$B/server/base-b.log". Check the revision line. Set URL.
+# 11. Server base-b, from $BASE_WT. First `node -e "$SDK"` must print 7.0.79 4.0.47.
+# Then dev:eval with tee to "$B/server/base-b.log". Check the revision line. Set URL.
 node eval/qa/probe-remote-identities.mjs --sha256
-npm run eval:playground -- --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$BASE_GENERATION" --round-cap-context "$B/caps/baseline-2.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/baseline-2"
+node "$PIN" "$B/bin" "$JUDGE_SHA256"
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$BASE_GENERATION" --round-cap-context "$B/caps/baseline-2.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/baseline-2"
 node "$HELPER" "$B/server/base-b.log"           # turns 1-6
 node eval/qa/probe-remote-identities.mjs --sha256
 
-# 12. Conditional replacement only. Load the failed arm. Probe sources before and after.
-npm run eval:playground -- --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$REPLACEMENT_GENERATION" --round-cap-context "$B/caps/replacement.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/replacement"
+# 12. Conditional replacement only. Load the failed arm after its SDK receipt.
+# Probe sources before and after. Run the judge pin check first.
+node "$PIN" "$B/bin" "$JUDGE_SHA256"
+node scripts/run-playground-semantic-eval.mjs --confirm-paid --max-budget-usd 5 --url "$URL" --server-generation "$REPLACEMENT_GENERATION" --round-cap-context "$B/caps/replacement.json" --ids "$IDS" --judge-model claude-sonnet-5 --out-dir "$B/results/replacement"
 
 # 13. Stop the last server. Then regrade each accepted result without model calls.
 npm run eval:plan -- "$RESULT_FILE"
@@ -499,7 +538,11 @@ Apply these rules to all four method runs. A run that fails one is incomplete:
 - `finishReason === "stop"` and a non-empty final answer in every row;
 - no HTTP or SSE error, no `clientError`, and no unfinished tool call;
 - exactly one valid `eval-cost` frame for each row;
-- `demo-steps.mjs` exit 0 for the run's turns.
+- `demo-steps.mjs` exit 0 for the run's turns, without `--strict-usage`.
+
+A step-usage mismatch in a method run does not make the run incomplete.
+A reviewer reconciles each entry in `usageMismatches` before the merge.
+The reviewer records the cause, for example an errored step without usage.
 
 An incomplete CANDIDATE run caused by a tool-loop defect blocks the merge.
 Tool-loop defects are a tool-choice error, a tool call on step 7, and a turn that ends without an answer after a tool error.
@@ -553,6 +596,7 @@ Two repetitions show instability. They do not establish statistical significance
 The merge needs all of these:
 
 - an accepted independent review of this plan and of the CANDIDATE diff;
+- an unchanged judge pin and matching SDK receipts for every server start;
 - two passing receipt probes;
 - four complete analysis slots with intact pins and complete costs; one replacement can fill one slot;
 - no routing regression in any case and no verified answer regression;

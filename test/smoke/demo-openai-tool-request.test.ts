@@ -22,6 +22,11 @@ import { buildDemoTools } from "../../src/demo/tools";
 // the production factory, capture the requests, and fail when the `strict`
 // field, a parameter schema, or the reviewed follow-up request shape changes.
 // Descriptions are not pinned here; other tests own them.
+//
+// The tool-loop test rebuilds the `streamText` call from the production tool
+// builder, model factory, settings, and `prepareDemoStep`. It does not run
+// `src/demo/chat.ts`, so it omits `abortSignal`, `onStepFinish`, and the step
+// limit. test/smoke/server.test.ts covers the assembled route.
 
 type FunctionTool = { type: string; name: string; strict?: unknown; parameters: unknown };
 type RequestBody = {
@@ -32,6 +37,8 @@ type RequestBody = {
   reasoning?: unknown;
   input?: Array<Record<string, unknown>>;
 };
+
+const FINAL_STEP_POLICY = "Final-step policy: tools are disabled now.";
 
 function stable(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
@@ -168,22 +175,44 @@ describe("Playground tools on the OpenAI Responses wire", () => {
     const bodies = await capturedToolLoop();
     expect(bodies).toHaveLength(2);
     const [first, final] = bodies as [RequestBody, RequestBody];
-    const settings = { temperature: 0.1, max_output_tokens: DEMO_CAPS.maxOutputTokens, reasoning: { effort: "none" } };
+    const settings = {
+      model: "gpt-5.6-terra",
+      temperature: 0.1,
+      max_output_tokens: DEMO_CAPS.maxOutputTokens,
+      reasoning: { effort: "none" },
+      stream: true
+    };
+    // Exact top-level keys: a new provider field fails here until reviewed.
+    expect(Object.keys(first).sort()).toEqual(
+      ["input", "max_output_tokens", "model", "reasoning", "stream", "temperature", "tool_choice", "tools"]
+    );
     expect(first).toMatchObject({ ...settings, tool_choice: "auto" });
     expect(first.tools?.map((entry) => entry.name)).toEqual(["search", "execute"]);
 
     // The tools-disabled final step sends no tools and no tool choice.
+    expect(Object.keys(final).sort()).toEqual(
+      ["input", "max_output_tokens", "model", "reasoning", "stream", "temperature"]
+    );
     expect(final).toMatchObject(settings);
-    expect(final).not.toHaveProperty("tools");
-    expect(final).not.toHaveProperty("tool_choice");
 
-    const history = (final.input ?? []).filter((item) => item.type !== undefined);
-    expect(history.map((item) => [item.type, item.call_id])).toEqual([
+    // Every input item, in order: the system text, the user turn, then the tool loop.
+    const items = (input: RequestBody["input"]) =>
+      (input ?? []).map((item) => [item.role ?? item.type, item.call_id ?? null]);
+    expect(items(first.input)).toEqual([["developer", null], ["user", null]]);
+    expect(items(final.input)).toEqual([
+      ["developer", null],
+      ["user", null],
       ["function_call", "call_valid"],
       ["function_call", "call_invalid"],
       ["function_call_output", "call_valid"],
       ["function_call_output", "call_invalid"]
     ]);
+    expect(first.input?.[0]?.content).toBe(DEMO_SYSTEM_PROMPT);
+    expect(String(final.input?.[0]?.content)).toContain(DEMO_SYSTEM_PROMPT);
+    expect(String(final.input?.[0]?.content)).toContain(FINAL_STEP_POLICY);
+    expect(final.input?.[1]).toEqual({ role: "user", content: [{ type: "input_text", text: "capture" }] });
+
+    const history = (final.input ?? []).slice(2);
     // A valid result is the tool's JSON output as is.
     expect(JSON.parse(String(history[2]?.output))).toHaveProperty("hits");
     // An invalid input reaches the model as an `error` object, not bare text.

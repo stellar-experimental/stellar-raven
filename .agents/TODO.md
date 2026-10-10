@@ -340,6 +340,10 @@ Only two parts differ: the `strict: false` field, and invalid-input tool errors 
 `test/smoke/demo-openai-tool-request.test.ts` pins that reviewed shape, including the final tools-disabled step.
 The free gates pass on the branch.
 
+The explicit `strict: false` also reaches the OpenAI-compatible chat transport of control models.
+The Grok control model `xai/grok-4.6` now receives a `strict` field; xAI acceptance is unverified.
+Verify it in the model gauntlet before the next control-model lane.
+
 Next, run the measurement plan after its independent review.
 It adapts the judged, two-repetition design of `rounds/2026-10-01-backlog-closeout/authority-plan.md`.
 Earlier evidence: `rounds/2026-10-02-raven-next-followup.md` and its `review-ai-plan-astra.md`.
