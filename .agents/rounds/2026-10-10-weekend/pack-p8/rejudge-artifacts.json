@@ -1,0 +1,89 @@
+{
+  "schema": "p8-rejudge-artifacts-v1",
+  "note": "Arm A (p6) entries are the reused p7-run artifacts, with their recorded SHA-256. Arm B (p8) entries are added after the paid run, one per invocation. Artifacts live in the ignored eval/qa/results/ folders of the arm worktrees.",
+  "armA": {
+    "reused": true,
+    "sourceManifest": ".agents/rounds/2026-10-10-weekend/pack-p7/rejudge-artifacts.json",
+    "pack": "p6",
+    "commit": "d15a4ce5"
+  },
+  "armB": {
+    "pack": "p8",
+    "commit": "36e77d4067e1a0d0c5156c0eaf1ee2904200b21b",
+    "worktree": "/Users/kalepail/Desktop/raven-p8-arm"
+  },
+  "artifacts": [
+    {
+      "invocation": "S1a",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-06-18-rejudge.json",
+      "sha256": "eec972801081608ef0be17ac2b9183eb562ee1c69f0bbd8301d915915c9c009a"
+    },
+    {
+      "invocation": "S1b",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-08-01-rejudge.json",
+      "sha256": "fccbf260c28189b739d6788b56b0fa616dc24dc0147c0af40465339238081bd6"
+    },
+    {
+      "invocation": "S1c",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-14-50-rejudge.json",
+      "sha256": "5f2758d37c775a5374add5f2c0a46ae1e138f60d720160d327a26588dff969f3"
+    },
+    {
+      "invocation": "S2a",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-19-20-rejudge.json",
+      "sha256": "03756b7018ed6c159cff40344bcfb2b262b6b64bab57c8ed1a4d2c5179c70c6c"
+    },
+    {
+      "invocation": "S2b",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-35-47-rejudge.json",
+      "sha256": "008fba5ff0efb779f940549d30bb8e5408315510344b992d7d89b16c9c12d586"
+    },
+    {
+      "invocation": "S2c",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-41-20-rejudge.json",
+      "sha256": "5682db5ee36beb71351cc5bedff95b6dff3d911ab0e9f5cfc3f4bf9858ceef48"
+    },
+    {
+      "invocation": "S2d",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-43-58-rejudge.json",
+      "sha256": "47770ac16a82aff7c05b3fe39e3adcbe346ea23fb4eb054592799d95992631db"
+    },
+    {
+      "invocation": "S2e",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-44-23-rejudge.json",
+      "sha256": "294a4cbb3370888404e000ff44f636c4360f0015d5cc4d2c3c385c04fb7af340"
+    },
+    {
+      "invocation": "S3a",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-48-23-rejudge.json",
+      "sha256": "a30561216ecaa3342d214e55a96920e4365353bf53799bf0df63f279a9fcfbe6"
+    },
+    {
+      "invocation": "S3b",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-51-34-rejudge.json",
+      "sha256": "48806c4fa18f306e6d686c8dd5a0b4a96cccc9c9d617e03093f5e61373586a49"
+    },
+    {
+      "invocation": "S3c",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-53-03-rejudge.json",
+      "sha256": "7ae40a6ae39aa72408fc7f3f3c5a7b9f54b9809acbd64c8ceb82fd74e153de28"
+    },
+    {
+      "invocation": "S3d",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-56-43-rejudge.json",
+      "sha256": "cbe1b34b2211d5384e48563ce8bf31aa9571d0264db0ed229928f9bcc4c4a902"
+    }
+  ]
+}

@@ -1,9 +1,14 @@
 # Pre-spend measurement brief: pack p8 versus the p6 baseline
 
 Date: 2026-10-10. Status: not run. This brief authorizes nothing by itself.
-The owner approves the spend. An independent pre-spend review of the p8 code and this brief must
-pass before the first paid call. This brief follows the "Minimal re-measurement" section of the
+The owner approves the spend. This brief follows the "Minimal re-measurement" section of the
 [post-run review](../pack-p7/post-run-review/rr3-review.md).
+
+The pre-spend review (R4, Claude Fable 5.1) approved the code and the plan with fixes. This
+revision applies them. The reviewed p8 code is now commit
+`36e77d4067e1a0d0c5156c0eaf1ee2904200b21b`. A bounded delta re-review of this revision and of
+commit `36e77d40` must pass before the first paid call. Pins, commits, the launcher, and the run
+log are in [ledger.md](ledger.md).
 
 ## Question
 
@@ -12,14 +17,16 @@ on stored-correct rows and without a false upgrade on stored-wrong rows?
 
 ## Offline evidence (free, done)
 
-[replay-p8.mjs](replay-p8.mjs) wrote [replay-p8.json](replay-p8.json). Support counts only
-rendered source text (`packSourceEvidenceText`), so an omission label can no longer count.
+[replay-p8.mjs](replay-p8.mjs) wrote [replay-p8.json](replay-p8.json) at commit `36e77d40`.
+Support counts only source text (`packSourceEvidenceText`). Labels, notices, entry and `alsoIn`
+numbers, paths and array indexes, and the truncation footer never count. The replay applies that
+one filter to p6, p7, and p8, so all three columns changed from the first version of this table.
 
 | Check | p6 | p7 | p8 |
 |---|---|---|---|
 | Omission rows: supported disputed claims held (of 12) | 2 | 11 | 12 |
-| Control inventory (207 rows): answer probes missing | 384 | 198 | 190 |
-| Control inventory: rows with 2 or fewer source items | 131 | 136 | 123 |
+| Control inventory (207 rows): answer probes missing | 407 | 220 | 208 |
+| Control inventory: rows with 2 or fewer source items | 131 | 136 | 122 |
 | Stable rows: judge prompt identical to p6 (of 131) | — | 131 | 131 |
 
 - p8 shows the three required sentences as real spans with their source records:
@@ -29,7 +36,7 @@ rendered source text (`packSourceEvidenceText`), so an omission label can no lon
   answer's "immediately" next to the differing "expected to be able to move ... in 2026" wording.
 - The quantum support span is the primary QPP sentence "Enterprise wallets can shift to
   quantum-safe contract accounts immediately." It is not the Decrypt sentence that p6 showed.
-- 19 of 207 control rows miss more answer probes under p8 than under p6.
+- 20 of 207 control rows miss more answer probes under p8 than under p6.
 - The 32 measured rows: all 32 arm-A prompts and all 32 arm-B prompts reproduce their recorded
   SHA-256. All 32 p8 prompts differ from the p7 prompts, and only in the evidence block.
 
@@ -40,7 +47,7 @@ Offline support does not prove a better grade. Only a judge run can show the gra
 | Arm | Code | Pack | Rubric | Model | Panel | Calls |
 |---|---|---|---|---|---|---|
 | A (baseline) | reused verdicts from `d15a4ce5` | `p6` | `v2.11` | `claude-sonnet-5` | 3 | 0 (reused) |
-| B (candidate) | detached worktree at the reviewed p8 commit | `p8` | `v2.11` | `claude-sonnet-5` | 3 | 96 |
+| B (candidate) | detached worktree at `36e77d40` | `p8` | `v2.11` | `claude-sonnet-5` | 3 | 96 |
 
 Arm A reuses the 32 arm-A verdicts from the p7 run, listed in
 [../pack-p7/rejudge-artifacts.json](../pack-p7/rejudge-artifacts.json). Reuse is valid only when
@@ -94,46 +101,68 @@ bounded authorization. Do not raise a cap during the run.
 
 ## Pins before spend
 
-Use the p7 run's procedure: a private first `PATH` entry with only a link to the versioned Claude
-executable, `DISABLE_AUTOUPDATER=1`, an `env -i` shell with fixed `HOME`, `USER`, `LOGNAME`,
-`SHELL`, `TMPDIR`, and `PATH`, and `node` called directly. Recompute both hashes in that shell
-before the first paid call. They must equal the arm-A pins above. Write the pins, the arm-B commit,
-and every check to `.agents/rounds/2026-10-10-weekend/pack-p8/ledger.md` before spend.
+Use the committed launcher in [launcher/](launcher/). [ledger.md](ledger.md) records the exact
+frozen values: `PATH` is `/private/tmp/claude-501/w1010/r-pin/bin:/usr/bin:/bin:/usr/sbin:/sbin`,
+`TMPDIR` is `/var/folders/j9/g5kf8n6j6js86_zvj2lcr8kh0000gn/T/`, and `HOME`, `USER`, `LOGNAME`,
+`SHELL`, and `DISABLE_AUTOUPDATER=1` are fixed under `env -i`. `node` is called directly.
+`launcher/run-inv-p8.sh` points arm B at `/Users/kalepail/Desktop/raven-p8-arm` and refuses any HEAD
+other than `36e77d4067e1a0d0c5156c0eaf1ee2904200b21b`. Do not use the p7 launcher under
+`/private/tmp/claude-501/w1010/r-pin/`; it points arm B at `raven-p7-arm`.
+Recompute both hashes through `launcher/run-node.sh` before the first paid call. They must equal
+the arm-A pins above. Record the result in the ledger.
 
 ## Commands
 
-Preflight, free:
+Preflight, free. Run the launcher from this worktree (`raven-w1010-r`):
 
 ```sh
-git worktree add --detach ../raven-p8-arm <reviewed p8 commit>
-# In ../raven-p8-arm, for each source file (add --cases-ref worktree for S1a, S2b, S3a, S3b):
-node eval/qa/re-judge.mjs <absolute source.json> --ids <ids> --judge-panel 3 --allow-non-identical --dry-run
+git worktree add --detach ../raven-p8-arm 36e77d4067e1a0d0c5156c0eaf1ee2904200b21b
+# For each invocation in launcher/invocations.tsv (the launcher adds --cases-ref worktree where needed):
+.agents/rounds/2026-10-10-weekend/pack-p8/launcher/run-inv-p8.sh <invocation> dry
+# In ../raven-p8-arm:
 node eval/qa/judge.mjs --self-test-static
-node .agents/rounds/2026-10-10-weekend/pack-p8/replay-p8.mjs <saved results dir>
+# In raven-w1010-r, where pack-p7/post-run-review/saved-data/ exists:
+node .agents/rounds/2026-10-10-weekend/pack-p8/replay-p8.mjs /Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results
+node .agents/rounds/2026-10-10-weekend/pack-p8/analyze-rejudge-p8.mjs
 ```
 
 Every dry run must exit 0 with `goldenTime.violations` empty, and the revision-mode case guard must
 match. A dry run does not check the pins; the paid run checks them before its first call.
-The replay output must equal the committed `replay-p8.json` apart from its `revisions` field,
-and `revisions.p8PackModuleClean` must be `true`. The p8 pack code is commit `89c53461`.
 
-Paid, only after approval and the pre-spend review:
+The replay runs in `raven-w1010-r`, not in the arm-B worktree. Its parts B and E read
+`pack-p7/post-run-review/saved-data/`, an ignored folder that exists only here; a fresh worktree has
+none of it. `git diff 36e77d40 HEAD -- eval/qa/evidence-pack.mjs` must be empty in this tree. The
+output must equal the committed `replay-p8.json` apart from `revisions.p8`, and
+`revisions.p8PackModuleClean` must be `true`. The reading script must report 32 arm-A rows, every
+arm-A pack rebuilt to its recorded hash, and no arm-B rows.
+
+Paid, only after owner approval and the bounded delta re-review:
 
 ```sh
-# 1. The seven-call judge self-test, from the clean arm-B worktree.
-node eval/qa/run-p6-judge-self-test.mjs \
-  --runner-revision <reviewed p8 commit> \
-  --claude-path <pinned link> \
-  --expect-claude-binary-sha256 <sha256> \
-  --expect-claude-environment-sha256 <sha256> \
+# 1. The seven-call judge self-test. Run it with ../raven-p8-arm as the current directory.
+/Users/kalepail/Desktop/raven-w1010-r/.agents/rounds/2026-10-10-weekend/pack-p8/launcher/run-node.sh \
+  eval/qa/run-p6-judge-self-test.mjs \
+  --runner-revision 36e77d4067e1a0d0c5156c0eaf1ee2904200b21b \
+  --claude-path /private/tmp/claude-501/w1010/r-pin/bin/claude \
+  --expect-claude-binary-sha256 c9b5341637becbd423ddffc5b254afb645682a3868cb708bbc6cc0e7bb419937 \
+  --expect-claude-environment-sha256 ff926b437c1538395659ddf31b24d6268f61097ad4527eaf55738d0ccbe446ac \
   --out eval/qa/results/<stamp>-p8-selftest.json
-# 2. The arm-B re-judge, one invocation per source file, in stage order.
-node eval/qa/re-judge.mjs <absolute source.json> --ids <ids> --judge-panel 3 --allow-non-identical \
-  [--cases-ref worktree] --max-budget-usd <file cap> \
-  --claude-path <pinned link> \
-  --expect-agent-binary-sha256 <sha256> \
-  --expect-agent-environment-sha256 <sha256>
+# 2. The arm-B re-judge from raven-w1010-r, one invocation per source file, in stage order (S1a ... S3d).
+.agents/rounds/2026-10-10-weekend/pack-p8/launcher/run-inv-p8.sh <invocation> paid
+# 3. After each invocation: add its path and SHA-256 to rejudge-artifacts.json, then read it.
+node .agents/rounds/2026-10-10-weekend/pack-p8/analyze-rejudge-p8.mjs > .agents/rounds/2026-10-10-weekend/pack-p8/rejudge-summary-p8.json
 ```
+
+## Predeclared reading
+
+[rejudge-artifacts.json](rejudge-artifacts.json) is predeclared. It holds the 12 reused arm-A
+invocations with their SHA-256 values, copied from the p7 manifest. The operator adds the 12 arm-B
+entries as they finish. [analyze-rejudge-p8.mjs](analyze-rejudge-p8.mjs) is the predeclared reading
+command; it is fixed before any grade is known. For each row it reports both panels, votes, costs,
+reuse, pack hashes, each vote's recorded `evidenceSupportCheck`, and a support check recomputed
+with the current span-only diagnostic on rebuilt packs. The recorded arm-A checks used the older
+diagnostic, which counted labels and counters; read the recomputed check for both arms. The script
+flags every row that the stage rules below require a reader to check.
 
 ## Stop rules
 
