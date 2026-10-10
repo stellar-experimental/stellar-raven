@@ -3,8 +3,15 @@
 Date: 2026-10-10. Author and operator: lane R (Claude Opus 5.5). Method:
 [amendment-p8b.md](amendment-p8b.md). Reading output: [p8b-reading.json](p8b-reading.json).
 
-**Verdict under the predeclared reading: PASS, provisional.** The result is not final. The mandatory
-post-run review (see the last section) must finish, and the orchestrator must reconcile every finding.
+**Verdict: NOT ACCEPTED.** The mechanical gate passed. The post-run review (R8,
+[post-run-review-p8b/rr8-review.md](post-run-review-p8b/rr8-review.md)) found two issues:
+
+- R8-1 (blocking): the scope of the candidate sentence is unresolved. So the evidence correction
+  is not confirmed, and the cause of the lower grade is unresolved.
+- R8-2: votes 1 and 2 apply must-avoid item 4 in a disputed way.
+
+The amended rule says: "An unresolved cause blocks acceptance." The operator's provisional pass
+(below) is superseded. Every panel and every vote stays in the record.
 
 **The original p8 run stays BLOCKED.** Its predeclared Stage 2 rule failed on this row
 ([results.md](results.md)). This continuation does not change that result.
@@ -91,8 +98,9 @@ The new panel score is lower than the baseline (direction `down`). The panel dis
   fields="status="Live", …"`. The p6 pack omits this record and shows only the URL.
 - This is the predeclared evidence check of the amendment. It was done before the spend.
 
-## Reading of each rationale
+## Operator reading of each rationale (superseded by R8)
 
+This is the operator's reading before the post-run review. It is kept as recorded.
 The reading applies the amended Stage 2 rule to the new panel only. It checks each rationale for
 missing context, unsupported inference, and source identity.
 
@@ -112,9 +120,15 @@ Mechanical checks from `p8b-reading.json`:
 No vote rests on lost support, a changed meaning, a removed qualifier, a misattributed source, or a
 notice. No lower vote has an unresolved cause. Under the predeclared reading, the continuation passes.
 
-## Points for the post-run reviewer
+R8 does not accept this conclusion. Each vote reads the StellarTerm source value correctly, but each
+vote assumes the broad sentence reading (R8-1). Vote 2 quotes the sentence as "StellarTerm (classic
+SDEX UI)... marked Inactive". That ellipsis removes ", and Comet", which hides the disputed
+attachment. The operator reading missed this.
 
-These points do not change the predeclared reading. The reviewer must assess them.
+## Points raised for the post-run reviewer
+
+The operator raised these points before the review. R8 found that point 1 and point 3 block or
+qualify the result (R8-1 and R8-2).
 
 1. **Sentence interpretation.** The p6 baseline vote 1 read the sentence narrowly: only Comet is
    "marked Inactive". It called the sentence "a bit ambiguous". The predeclared reading treats this as
@@ -138,11 +152,39 @@ Stage 1 and Stage 3 keep their unchanged rules and their p8 readings (both passe
 continuation does not measure them again. The other three p8 Stage 2 downgrades keep the
 predeclared variance classification, with no statistical variance claim.
 
-## Post-run review (mandatory, not done by the author)
+## Post-run review (R8)
 
-- Reviewer: Codex frontier `gpt-6-astra` at high effort.
-- Fallback, in order: Grok `grok-4.7` at high, then Claude Fable `claude-fable-5-1` at high.
-- Claude Opus is not eligible: the author and the orchestrator are both Claude Opus.
-- The orchestrator records the tier, model, and effort, and any skip reason.
-- The orchestrator reconciles every finding before this result is final or p8 is used for judge input.
+- Reviewer: Codex frontier `gpt-6-astra` at high effort. No fallback was used. Claude Opus was not
+  eligible, because the author and the orchestrator are both Claude Opus.
+- Review: [post-run-review-p8b/rr8-review.md](post-run-review-p8b/rr8-review.md), at HEAD `2cc429a4`.
+  It made no paid call.
+- Verdict: `POST-RUN: NOT ACCEPTED: R8-1 unresolved candidate sentence scope and evidence-correction
+  cause; R8-2 disputed must-avoid mapping`.
+- The mechanical gate passed independently. R8 rebuilt the input, both packs, both prompts, and
+  `p8b-reading.json` exactly.
+
+| Finding | Reconciliation |
+|---|---|
+| R8-1 (blocking) | Accepted. The sentence has two plausible readings. The source value (StellarTerm `Live`) is certain, but the candidate claim is not. The p8 pack keeps the StellarTerm record but drops the Comet and Zenex records that p6 showed. That context supports the narrow reading. So lost relevant context cannot be ruled out as a cause. The continuation is NOT ACCEPTED. |
+| R8-2 | Accepted. Must-avoid item 4 concerns unsupported memory. The answer cites a real retrieved result, so a summary error is not memory. Any avoid match forces `wrong` under `v2.11`. So the two `wrong` grades include a disputed rubric step. Vote 3 gives `partial` on the same contradiction with no avoid match. |
+
+Results after reconciliation:
+
+- The continuation is NOT ACCEPTED. It does not clear the measurement gate for p8.
+- The original p8 run stays BLOCKED.
+- Every panel and vote stays: p6 C/C/P, p7 C/C/C, p8 W/P/P, and p8b W/W/P.
+- The saved answer, the accurate StellarTerm item, and every vote stay unchanged.
+- R8 authorizes no retry and no replacement call. Another identical panel cannot settle the sentence
+  meaning.
 - The merge note in the amendment still applies: do not merge `w1010/r` as a diagnostic-only change.
+
+## Next repair
+
+1. **Sibling records (R8-1).** Pack p8 keeps the status record of StellarTerm only. It drops the
+   status records of the other entities in the same claim sentence (Comet, Zenex, Phoenix, Octarine,
+   Noether, and Raum Network). Pack p6 showed the Comet and Zenex records. A next pack must keep the
+   sibling records of the entity list in a claim sentence. Then a judge can see the full context
+   that bears on the sentence scope.
+2. **Must-avoid mapping (R8-2).** Judges map a sourced summary error to must-avoid item 4
+   ("unsupported memory"). Under `v2.11`, that match forces `wrong`. This is a rubric question, not
+   a pack question. It needs a separate TODO, which the orchestrator records on main.

@@ -1,7 +1,7 @@
 # Amendment p8b: prospective Stage 2 rule and a fixed three-call continuation
 
 Date: 2026-10-10. Status: approved 2026-10-10 by the orchestrator under the owner's delegation.
-Run 2026-10-10 (one invocation, $0.38); see the run log and [results-p8b.md](results-p8b.md).
+Run 2026-10-10 (one invocation, $0.38): NOT ACCEPTED after review R8; see the run log and [results-p8b.md](results-p8b.md).
 The R7 delta re-review returned `PRE-SPEND: LAUNCH-OK`. The approval covers only the single P8B invocation.
 Before any paid call, this amendment needs a favorable independent pre-spend review and the owner's
 approval, both recorded in the run log. The first pre-spend review (R7,
@@ -266,5 +266,10 @@ from active judge construction.
 - Artifact: `/Users/kalepail/Desktop/raven-p8-arm/eval/qa/results/2026-10-10T19-39-59-rejudge.json`,
   SHA-256 `26fd63b54533e4f3f1686af88765a5a2ec1682fcc91c175e3f5ee25d2e9b9d30`.
 - [p8b-reading.json](p8b-reading.json): `ready-for-reading`, 0 gate failures, votes W/W/P.
-- [results-p8b.md](results-p8b.md): the predeclared reading passes, provisionally. The mandatory
-  post-run review remains. The original p8 run stays BLOCKED.
+- [results-p8b.md](results-p8b.md): the operator reading passed provisionally, before the review.
+- Post-run review R8 (Codex frontier `gpt-6-astra`, high;
+  [post-run-review-p8b/rr8-review.md](post-run-review-p8b/rr8-review.md)): `POST-RUN: NOT ACCEPTED`.
+  R8-1: the candidate sentence scope and the evidence-correction cause are unresolved. R8-2: the
+  must-avoid mapping is disputed.
+- Result: the continuation is **NOT ACCEPTED**. The original p8 run stays BLOCKED. Every panel and
+  vote stays. The next repair is in [results-p8b.md](results-p8b.md).

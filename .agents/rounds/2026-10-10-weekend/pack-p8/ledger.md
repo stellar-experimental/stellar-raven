@@ -89,4 +89,7 @@ operator adds one arm-B entry per invocation (path and SHA-256) to
 - p8b continuation ([amendment-p8b.md](amendment-p8b.md)): 19:39Z preflight passed (7 of 7);
   19:39:59Z to 19:42:30Z one P8B invocation, 3 calls, $0.3773904 of the $0.85 file cap. No retry
   and no other paid call. Gate: `ready-for-reading`. Reading: [results-p8b.md](results-p8b.md),
-  provisional pass, post-run review pending. The p8 run stays BLOCKED.
+  operator pass, provisional. Post-run review R8 (Codex frontier `gpt-6-astra`, high;
+  [post-run-review-p8b/rr8-review.md](post-run-review-p8b/rr8-review.md)): NOT ACCEPTED on R8-1
+  (unresolved sentence scope and cause) and R8-2 (disputed must-avoid mapping). The continuation is
+  NOT ACCEPTED, and the p8 run stays BLOCKED. Every panel and vote stays.
