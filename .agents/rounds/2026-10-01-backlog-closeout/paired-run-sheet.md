@@ -25,7 +25,8 @@ It made no paid call, started no server, and ran no live probe.
 It did not run `paired-launch.mjs` or create the launch-record directory.
 
 The new template tuple is `claude-sonnet-5 / claude-sonnet-5 / v2.11 / p6 / stability-boundary-v1 / 0.75 / 34`.
-The pack stays `p6`; the pack repair lands after this run.
+The pack stays `p6`.
+The TODO item "Repair claim-support selection in the p6 judge pack" lands after this run.
 
 ### Drift found and fixed
 
@@ -42,7 +43,8 @@ The pack stays `p6`; the pack repair lands after this run.
 ### Drift found that needs no repair
 
 - Six instruments changed bytes: `run-qa.mjs` (#243), `paired-verdict.mjs` (#256), `judge.mjs` (#238, #250, #252), `re-judge.mjs` (#256), `run-p6-judge-self-test.mjs` (#253), and `evidence-pack.mjs` (#249).
-  Assembly recomputes their hashes at launch; the table below previews them.
+  Assembly recomputes their hashes at launch.
+  The table below previews them.
 - No frozen command flag changed. #243 and #256 added artifact fields only.
 - The P6 wrapper now refuses a missing output folder (#253).
   `launchPaired` creates the launch-record folder first, and `p6-summary.json` is inside it.
@@ -56,19 +58,21 @@ The pack stays `p6`; the pack repair lands after this run.
 - The candidate server now uses Wrangler `4.149.0` (#248) and serves `public/` as static assets (#237).
   `scripts/run-eval-server.mjs` did not change. The launch-day listener step remains the real check.
 - The baseline revision, the adapter, the probe, and the capacity check did not change.
-  The supervisor, the control module, the process guard, and the stability snapshot did not change.
+  The control module, the process guard, and the stability snapshot did not change.
+  The supervisor changed in #206, before the 2026-10-01 preparation, and is unchanged since then.
 - The weekend UTC check, the `86,400,000 ms` capacity freshness check, and cleanup did not change.
 
 ### Preview at `0a60ca49005200e1ffd8b6e780fbfb30f1c6b057`
 
-These instrument bytes equal main `d15a4ce5`; the re-preparation changed no instrument.
+These instrument bytes equal main `d15a4ce5`.
+The re-preparation changed no instrument.
 All values are **preview, recompute at launch**.
 
 | Instrument | SHA-256 | Changed since `bcfa617f` |
 | --- | --- | --- |
 | `eval/qa/run-qa.mjs` | `33af8e93fb5ac595646b67991997f380b8adb99a07c4e086190e71df7f8222d5` | yes |
 | `eval/qa/paired-verdict.mjs` | `025168fa8806db93df102431c2fe64c809bb74a267657bd518d69e888720fd72` | yes |
-| `eval/qa/paired-collection-supervisor.mjs` | `eadaa8f972a5e18b2eb6321461bb65244769c99bb8a12ba61124b57d3fbcf591` | no (equals the preparation column) |
+| `eval/qa/paired-collection-supervisor.mjs` | `eadaa8f972a5e18b2eb6321461bb65244769c99bb8a12ba61124b57d3fbcf591` | yes (#206); unchanged since the 2026-10-01 preparation |
 | `eval/qa/paired-collection-control.mjs` | `1f3e4ce3bdbb6679c4e6e8e59c433c3093ecab98eaa0bbdb74b3ad5a06a76bb7` | no |
 | `eval/qa/exact-old-runtime-adapter.mjs` | `473690c7f10d5384be252bb97f9aa16ee88428d23589779289f5910c08e60303` | no |
 | `eval/qa/probe-remote-identities.mjs` | `bde386a01ceb5bfdd325f3cd24369e00e2c111f7b4747ec7c0c9e77bc84485ef` | no |
