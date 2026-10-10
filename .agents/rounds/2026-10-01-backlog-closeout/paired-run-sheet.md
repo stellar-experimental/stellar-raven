@@ -3,6 +3,7 @@
 Prepared on 2026-10-01 at `bcfa617ffcb6e58e6a7498a1e42135a059535402`.
 The owner approved spend on 2026-10-01 and deferred the run.
 This preparation made no paid call and started no server or live probe.
+The 2026-10-10 re-preparation below records the drift since then and its repair.
 
 Use one clean launch revision that contains this repair and all accepted round changes.
 Do not use the uncommitted preparation worktree as a runner.
@@ -16,9 +17,85 @@ The [final review](../2026-09-03-truth-maintenance/final-launch-contract-review-
 Record the current repair review and all resolved findings before signature.
 General spend approval does not replace that signature.
 
+## 2026-10-10 re-preparation
+
+Main moved from `bcfa617f` to `d15a4ce5` after the first preparation.
+This lane audited the launch path against every change in that range.
+It made no paid call, started no server, and ran no live probe.
+It did not run `paired-launch.mjs` or create the launch-record directory.
+
+The new template tuple is `claude-sonnet-5 / claude-sonnet-5 / v2.11 / p6 / stability-boundary-v1 / 0.75 / 34`.
+The pack stays `p6`.
+The TODO item "Repair claim-support selection in the p6 judge pack" lands after this run.
+
+### Drift found and fixed
+
+- The assembler froze `rubric: 'v2.10'` in `flipRejudge.judgeTuple`.
+  `eval/qa/judge.mjs` now exports `JUDGE_RUBRIC = "v2.11"`.
+  The supervisor rejects a tuple that differs from that export, so plan validation would stop the launch.
+  The assembler now reads `JUDGE_MODEL`, `JUDGE_RUBRIC`, and `PACK_VERSION` from the candidate runner.
+  The tuple and every `--judge-model` flag use those values.
+- No test ran an assembled plan through the complete supervisor validator.
+  `test/qa-paired-launch.test.mjs` now does this with simulated launch records, the real corpus, and real instrument bytes.
+  The plan passes every runner parser and the validator.
+  A stale rubric, another pack, or another judge model fails the test.
+
+### Drift found that needs no repair
+
+- Six instruments changed bytes: `run-qa.mjs` (#243), `paired-verdict.mjs` (#256), `judge.mjs` (#238, #250, #252), `re-judge.mjs` (#256), `run-p6-judge-self-test.mjs` (#253), and `evidence-pack.mjs` (#249).
+  Assembly recomputes their hashes at launch.
+  The table below previews them.
+- No frozen command flag changed. #243 and #256 added artifact fields only.
+- The P6 wrapper now refuses a missing output folder (#253).
+  `launchPaired` creates the launch-record folder first, and `p6-summary.json` is inside it.
+- The P6 static preflight is green at rubric `v2.11`: 15 of 15 prompt fixtures match (#252).
+  The wrapper still registers seven paid candidates for seven calls.
+- The judge CLI child now receives `API_TIMEOUT_MS=240000` and `CLAUDE_CODE_MAX_RETRIES=2` (#238).
+  The binary and environment pins still hash the operator environment, so no new flag, variable, or pin applies.
+- The corpus keeps 501 active cases and the same 200 sampled IDs.
+  The 200-ID table and composition below remain current.
+  Fifteen selected cases changed content, so `contentSha256` and `casesFileSha256` changed.
+- The candidate server now uses Wrangler `4.149.0` (#248) and serves `public/` as static assets (#237).
+  `scripts/run-eval-server.mjs` did not change. The launch-day listener step remains the real check.
+- The baseline revision, the adapter, the probe, and the capacity check did not change.
+  The control module, the process guard, and the stability snapshot did not change.
+  The supervisor changed in #206, before the 2026-10-01 preparation, and is unchanged since then.
+- The weekend UTC check, the `86,400,000 ms` capacity freshness check, and cleanup did not change.
+
+### Preview at `0a60ca49005200e1ffd8b6e780fbfb30f1c6b057`
+
+These instrument bytes equal main `d15a4ce5`.
+The re-preparation changed no instrument.
+All values are **preview, recompute at launch**.
+
+| Instrument | SHA-256 | Changed since `bcfa617f` |
+| --- | --- | --- |
+| `eval/qa/run-qa.mjs` | `33af8e93fb5ac595646b67991997f380b8adb99a07c4e086190e71df7f8222d5` | yes |
+| `eval/qa/paired-verdict.mjs` | `025168fa8806db93df102431c2fe64c809bb74a267657bd518d69e888720fd72` | yes |
+| `eval/qa/paired-collection-supervisor.mjs` | `eadaa8f972a5e18b2eb6321461bb65244769c99bb8a12ba61124b57d3fbcf591` | yes (#206); unchanged since the 2026-10-01 preparation |
+| `eval/qa/paired-collection-control.mjs` | `1f3e4ce3bdbb6679c4e6e8e59c433c3093ecab98eaa0bbdb74b3ad5a06a76bb7` | no |
+| `eval/qa/exact-old-runtime-adapter.mjs` | `473690c7f10d5384be252bb97f9aa16ee88428d23589779289f5910c08e60303` | no |
+| `eval/qa/probe-remote-identities.mjs` | `bde386a01ceb5bfdd325f3cd24369e00e2c111f7b4747ec7c0c9e77bc84485ef` | no |
+| `eval/qa/check-paired-capacity.mjs` | `59a52b96e890f0de4babb911022ed863c4ad5a62a6473b146007544143e8f3a9` | no |
+| `eval/qa/run-p6-judge-self-test.mjs` | `50f00268d598037893e2ee04cd41d622b23f5b960182940907413b5656096332` | yes |
+| `eval/qa/judge.mjs` | `8dfb04f7cd2276342593566bf1aac193d5a7ef0bc7492010b20f9dc45bec14a7` | yes |
+| `eval/qa/re-judge.mjs` | `7b293cbef0d392befb9f5794fce8467c8c0d469e8f9d7e6ae1174a0f2346fae1` | yes |
+| `eval/qa/evidence-pack.mjs` | `506e771fd4902a860192621d0073379a9fba684c2cb92f4b0a229bd306a49ed2` | yes |
+| Launch process guard | `af355f0c81014a8385a62dd5a67fdfcb9742a9baf219fa613fb4872f6df0f303` | no |
+| Repository stability snapshot | `1cbd7d46e5c19f72b8feef6ef5df88880c27ab704e4f39ecebe51cd1666fdb99` | no |
+
+| Corpus pin | SHA-256 | Changed since `bcfa617f` |
+| --- | --- | --- |
+| `idsSha256` | `54118e3410ff3dd3ce34c07a1b0b6f5d92ed8e14b1d05d0546623c3a222a51fc` | no |
+| `contentSha256` | `72eb6a3c6cd3ccdd69fdfa263f4307503a12014a14587a25c1bb1854cbbb906f` | yes |
+| `casesFileSha256` | `2093621e541bfc938eba304be4f98f8811e704bb7a33baa96057071d6534e794` | yes |
+| `activeCorpusIdsSha256` | `7da0fb70fd8a580e98c7dd81ea21a259f9841bea5107b9cfe3e20f4f8d87ded8` | no |
+
+The "Preview, recompute at launch" section keeps the 2026-10-01 values as history.
+
 ## Launch window and values
 
-Start on Saturday `2026-10-03T00:00:00Z` or Sunday `2026-10-04T00:00:00Z`.
+Start on Saturday `2026-10-10T00:00:00Z` or Sunday `2026-10-11T00:00:00Z`, or on a later weekend UTC day.
 Use a weekend UTC day start, even when the local date is Friday or Saturday.
 The answering deadline is four hours.
 Finish the method within the same UTC calendar day.
@@ -407,7 +484,7 @@ Denominator: explicit --ids, selected.count 200, activeCorpusCount <launch activ
   selected-content SHA-256: <recomputed>
   cases-file SHA-256: <recomputed>   ordered-active SHA-256: <recomputed>
   Both runner worktrees recompute all four values.
-Tuple: claude-sonnet-5 / claude-sonnet-5 / v2.10 / p6 / stability-boundary-v1 / 0.75 / 34.
+Tuple: claude-sonnet-5 / claude-sonnet-5 / v2.11 / p6 / stability-boundary-v1 / 0.75 / 34.
 Flags: --variant A --surface search-execute --search-tool search; --judge-panel absent.
 Baseline: 90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0, add-missing, surface <sha256>.
 Candidate and runner: <one clean 40-character revision>, verify-native, surface <sha256>.

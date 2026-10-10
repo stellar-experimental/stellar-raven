@@ -640,6 +640,7 @@ import the scripts from the round folder.
 
 PR #256 (2026-10-09) changed the `re-judge.mjs` and `paired-verdict.mjs` implementation hashes.
 Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
+The run sheet's 2026-10-10 re-preparation fixed the rubric `v2.11` tuple and lists the other drift.
 
 ### B. Choose how the routing repair treats the Groth16 holdout loss
 
