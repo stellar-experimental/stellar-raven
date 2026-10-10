@@ -428,7 +428,10 @@ an accurate source item that contradicts the answer. The post-run review (R6) co
 The prospective [amendment p8b](rounds/2026-10-10-weekend/pack-p8/amendment-p8b.md) defines an
 evidence-fidelity Stage 2 rule and a fixed three-call continuation on that row ($0.85 cap). The
 pre-spend review R7 blocked it on a missing reading command and error-vote rule; both are now fixed.
-A bounded delta re-review and owner approval remain. Do not merge `w1010/r` as a diagnostic-only change: p8 is the
+The delta re-review returned LAUNCH-OK, and the continuation ran on 2026-10-10 ($0.38). Its
+[result](rounds/2026-10-10-weekend/pack-p8/results-p8b.md) is a provisional pass under the
+predeclared reading (W/W/P, each vote on the confirmed StellarTerm correction). The mandatory
+post-run review remains. The original p8 run stays BLOCKED. Do not merge `w1010/r` as a diagnostic-only change: p8 is the
 active judge pack on this branch.
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 

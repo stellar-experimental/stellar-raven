@@ -1,6 +1,7 @@
 # Amendment p8b: prospective Stage 2 rule and a fixed three-call continuation
 
 Date: 2026-10-10. Status: approved 2026-10-10 by the orchestrator under the owner's delegation.
+Run 2026-10-10 (one invocation, $0.38); see the run log and [results-p8b.md](results-p8b.md).
 The R7 delta re-review returned `PRE-SPEND: LAUNCH-OK`. The approval covers only the single P8B invocation.
 Before any paid call, this amendment needs a favorable independent pre-spend review and the owner's
 approval, both recorded in the run log. The first pre-spend review (R7,
@@ -258,4 +259,12 @@ from active judge construction.
 
 ## Run log
 
-Not run.
+- 2026-10-10, 19:39Z: all 7 preflight items passed. The approval and the R7 delta review
+  (`PRE-SPEND: LAUNCH-OK`) are recorded in `pre-spend-review-p8b/`.
+- 2026-10-10, 19:39:59Z to 19:42:30Z: one paid invocation, `run-inv-p8.sh P8B paid`, exit 0. There
+  was no retry and no other paid call. 3 calls cost $0.3773904 of the $0.85 file cap.
+- Artifact: `/Users/kalepail/Desktop/raven-p8-arm/eval/qa/results/2026-10-10T19-39-59-rejudge.json`,
+  SHA-256 `26fd63b54533e4f3f1686af88765a5a2ec1682fcc91c175e3f5ee25d2e9b9d30`.
+- [p8b-reading.json](p8b-reading.json): `ready-for-reading`, 0 gate failures, votes W/W/P.
+- [results-p8b.md](results-p8b.md): the predeclared reading passes, provisionally. The mandatory
+  post-run review remains. The original p8 run stays BLOCKED.
