@@ -412,11 +412,11 @@ const savedRowProjections = [
       "com.beansapp.app",
       "scfAsOf=\"2026-08-12\"",
       "scfTotalAwardedUSD=\"490160\"",
-      "\"scfAwardedRounds\":[10,15,21,29]",
+      "scfAwardedRounds=[10, 15, 21, 29]",
       "Beans-BV/beans-gitflow",
       "lastCommitAt=\"2026-08-04T03:16:07.000Z\"",
       "Beans-BV/dotnet-stellar-sdk",
-      "\"lastCommitAt\":\"2026-07-22T02:35:24.000Z\"",
+      "path=\"records[1].activitySignals\" source=\"dotnet-stellar-sdk\"",
       "commits90d=\"14\"",
       "https://communityfund.stellar.org/project/beans-app-noa"
     ]
@@ -1092,7 +1092,7 @@ const savedRowProjections = [
       "transcriptSha256": "85cc858005af3f9d3d244b6ff4c19b9d69667c95edcde1b6d1a330e689d75c3a",
       "projectionSha256": "f74dbc32edc25bbefe205b0a19c1b7629ad66f3de1a11ac6cfbc4bab322b866b",
       "savedRowRequiredPackTerms": [
-        "name=\"Stellar Hacks: Blend\"",
+        "path=\"hackathons[0].name\" source=\"Stellar Hacks: Blend\"",
         "startDate=\"2025-06-18\"",
         "endDate=\"2025-07-07\"",
         "title=\"Stellar: The Blockchain Wall Street Was Quietly Waiting For\"",

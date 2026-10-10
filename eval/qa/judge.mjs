@@ -1180,7 +1180,7 @@ export async function runJudgeSelfTestStatic({ log = console.log } = {}) {
     longEvidence.includes("Alpha Town Hall") &&
     longEvidence.includes("Signal Backstop migration") &&
     longEvidence.includes("North Capital") &&
-    longEvidence.includes("claimSnippets:") &&
+    longEvidence.includes("claimSupport:") &&
     longEvidence.includes("$42,000 moved in seven minutes") &&
     !longEvidence.includes("v=secret") &&
     !longEvidence.includes("#frag");
