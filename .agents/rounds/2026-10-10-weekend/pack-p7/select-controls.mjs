@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Offline control selection for a paid p7 re-judge. It reads ignored saved results, rebuilds p6
 // and p7 packs, and selects stored-correct non-stable p6 rows whose p6 pack reproduces exactly.
+// It also selects stored-wrong no-false-upgrade controls.
 // It also checks that stable rows keep identical judge prompts. It makes no model call.
 //
 // Usage (from the repository root):
@@ -39,6 +40,8 @@ const answerOmissions = (row, text) => {
 };
 
 const candidates = [];
+const wrongCandidates = [];
+const stageOneIds = new Set();
 const stable = { rows: 0, identicalPrompts: 0, differingPrompts: [] };
 const costs = [];
 const sources = {};
@@ -65,10 +68,17 @@ for (const path of jsonFiles(resultsDir)) {
       else stable.differingPrompts.push(`${file}|${row.id}`);
       continue;
     }
-    if (row.verdict.score !== "correct" || omissionKeys.has(`${file}|${row.id}`)) continue;
+    const storedWrongNoOmission = row.verdict.score === "wrong" &&
+      row.verdict.evidenceSupportCheck?.status === "no-pack-omission";
+    // Stage 1 measures the stored-p6 omission rows; they are never controls.
+    if (omissionKeys.has(`${file}|${row.id}`)) {
+      stageOneIds.add(row.id);
+      continue;
+    }
+    if (row.verdict.score !== "correct" && !storedWrongNoOmission) continue;
     const packs = { p6: p6.buildTranscriptEvidencePack(input), p7: buildTranscriptEvidencePack(input) };
     if (!packs.p6 || sha256(packs.p6) !== row.evidencePack.sha256) continue;
-    candidates.push({
+    (storedWrongNoOmission ? wrongCandidates : candidates).push({
       file,
       id: row.id,
       service: row.tags?.service ?? null,
@@ -89,6 +99,13 @@ for (const candidate of candidates) byId.set(candidate.id, candidate);
 const unique = [...byId.values()].sort((a, b) => a.id.localeCompare(b.id));
 const step = unique.length / Math.min(CONTROL_COUNT, unique.length);
 const controls = Array.from({ length: Math.min(CONTROL_COUNT, unique.length) }, (_, index) => unique[Math.floor(index * step)]);
+// No-false-upgrade controls: stored wrong with a saved no-pack-omission check, one row per case ID
+// (the latest file wins), excluding case IDs already in Stage 1 or in the correct controls.
+// Arm B must not score them higher than arm A.
+const usedIds = new Set([...stageOneIds, ...controls.map((row) => row.id)]);
+const wrongById = new Map();
+for (const candidate of wrongCandidates) if (!usedIds.has(candidate.id)) wrongById.set(candidate.id, candidate);
+const falseUpgradeControls = [...wrongById.values()].sort((a, b) => a.id.localeCompare(b.id));
 const sorted = [...costs].sort((a, b) => a - b);
 const quantile = (q) => sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))] : null;
 
@@ -112,5 +129,7 @@ console.log(JSON.stringify({
     p7: candidates.reduce((sum, row) => sum + row.p7AnswerProbeOmissions, 0),
     rowsWorseUnderP7: candidates.filter((row) => row.p7AnswerProbeOmissions > row.p6AnswerProbeOmissions).map((row) => `${row.file}|${row.id}`)
   },
-  controls
+  controls,
+  falseUpgradeRule: "non-stable, stored p6 pack with exact p6 rebuild, stored score wrong, saved evidenceSupportCheck.status no-pack-omission, saved caseInput; one row per case ID, latest file; case IDs in Stage 1 (stored-p6 omission rows) or the correct controls excluded",
+  falseUpgradeControls
 }, null, 2));

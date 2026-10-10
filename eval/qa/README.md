@@ -272,15 +272,23 @@ The pack omits detected A/V `created_at` values and preserves source-basis bound
 The `claimSupport` section shows exact execute-result spans for anchors in the candidate answer.
 Anchors are quoted clauses, complete version strings, exact terms, candidate terms, and phrases shared by the answer and the results.
 Anchors come only from the answer and the saved results; judge verdicts never select judge input.
-Each unit names its execute entry, tool, outcome, truncation state, JSON path, and source record.
+Each unit names its execute entry, truncation state, JSON path, and source record.
+It names the tool only for a direct operation result, and the outcome only for an error.
 A span keeps whitespace normalized and URLs sanitized; `...` marks a cut, and a cut never splits an anchor.
 Short field values carry their field name, and a small record keeps its fields together in one span.
+Span labels never include a generated array index, so an index cannot match a number anchor.
+Bare numbers rank last among anchors, and the day of a written date is not an anchor.
 An anchor counts as shown only when a final rendered span still contains it.
 So a secondary anchor that a shorter span loses gets its own unit.
 The pack recomputes that coverage after each budget cut.
 `claimSupportOmitted` lists matched anchors whose spans did not fit, with their entries.
+It lists clauses and names first and bare numbers last; a listed anchor can belong to a different record.
 `caseSnippets` holds question and golden terms that the answer does not use.
-The budget stays 12,000 characters: source items and fields shrink first, then spans, then units.
+The budget stays 12,000 characters.
+Summaries shrink first, then source items go to 8 and fields to 16, then spans shrink.
+Support units then drop to 24 before source items drop below 8, so roster answers keep their records.
+After that, items, fields, URLs, and case-snippet text shrink.
+Then units drop to 12, case snippets go, and the last units go.
 Stable rows still receive no pack.
 
 [verdict-consistency.mjs](verdict-consistency.mjs) validates issue arrays, avoid indexes, and score consistency.

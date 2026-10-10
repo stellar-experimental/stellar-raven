@@ -39,9 +39,10 @@
   "uniqueCandidateIds": 32,
   "candidateAnswerProbeOmissions": {
     "p6": 266,
-    "p7": 45,
+    "p7": 56,
     "rowsWorseUnderP7": [
-      "2026-10-07-tool-surface-qa/2026-10-07T16-51-53-variantA.json|q-asset-rwa-tokenized-freshness"
+      "2026-10-07-tool-surface-qa/2026-10-07T16-51-53-variantA.json|q-asset-rwa-tokenized-freshness",
+      "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-asset-rwa-tokenized-freshness"
     ]
   },
   "controls": [
@@ -53,7 +54,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.2494526,
       "p6Chars": 11911,
-      "p7Chars": 11839,
+      "p7Chars": 11878,
       "p6AnswerProbeOmissions": 14,
       "p7AnswerProbeOmissions": 0
     },
@@ -65,7 +66,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.0823754,
       "p6Chars": 11979,
-      "p7Chars": 11851,
+      "p7Chars": 11939,
       "p6AnswerProbeOmissions": 3,
       "p7AnswerProbeOmissions": 0
     },
@@ -77,7 +78,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.3218966,
       "p6Chars": 11981,
-      "p7Chars": 11738,
+      "p7Chars": 11863,
       "p6AnswerProbeOmissions": 5,
       "p7AnswerProbeOmissions": 1
     },
@@ -89,7 +90,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.0619342,
       "p6Chars": 11667,
-      "p7Chars": 11837,
+      "p7Chars": 11939,
       "p6AnswerProbeOmissions": 0,
       "p7AnswerProbeOmissions": 0
     },
@@ -101,7 +102,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.2787446,
       "p6Chars": 11992,
-      "p7Chars": 11947,
+      "p7Chars": 11749,
       "p6AnswerProbeOmissions": 12,
       "p7AnswerProbeOmissions": 0
     },
@@ -113,7 +114,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.1956966,
       "p6Chars": 11816,
-      "p7Chars": 10628,
+      "p7Chars": 10325,
       "p6AnswerProbeOmissions": 1,
       "p7AnswerProbeOmissions": 0
     },
@@ -125,7 +126,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.050556199999999996,
       "p6Chars": 5042,
-      "p7Chars": 5040,
+      "p7Chars": 4798,
       "p6AnswerProbeOmissions": 0,
       "p7AnswerProbeOmissions": 0
     },
@@ -137,7 +138,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.1657526,
       "p6Chars": 9846,
-      "p7Chars": 8145,
+      "p7Chars": 7515,
       "p6AnswerProbeOmissions": 1,
       "p7AnswerProbeOmissions": 0
     },
@@ -149,7 +150,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.288865,
       "p6Chars": 11698,
-      "p7Chars": 11826,
+      "p7Chars": 11933,
       "p6AnswerProbeOmissions": 2,
       "p7AnswerProbeOmissions": 0
     },
@@ -161,7 +162,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.2097606,
       "p6Chars": 8824,
-      "p7Chars": 11871,
+      "p7Chars": 11955,
       "p6AnswerProbeOmissions": 3,
       "p7AnswerProbeOmissions": 1
     },
@@ -173,7 +174,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.09462219999999999,
       "p6Chars": 11334,
-      "p7Chars": 11796,
+      "p7Chars": 11885,
       "p6AnswerProbeOmissions": 2,
       "p7AnswerProbeOmissions": 0
     },
@@ -185,7 +186,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.2898062,
       "p6Chars": 11965,
-      "p7Chars": 11922,
+      "p7Chars": 11890,
       "p6AnswerProbeOmissions": 7,
       "p7AnswerProbeOmissions": 0
     },
@@ -197,7 +198,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.0600942,
       "p6Chars": 9332,
-      "p7Chars": 11978,
+      "p7Chars": 11977,
       "p6AnswerProbeOmissions": 7,
       "p7AnswerProbeOmissions": 0
     },
@@ -209,7 +210,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.06531619999999999,
       "p6Chars": 9600,
-      "p7Chars": 8132,
+      "p7Chars": 7831,
       "p6AnswerProbeOmissions": 0,
       "p7AnswerProbeOmissions": 0
     },
@@ -221,7 +222,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.1230044,
       "p6Chars": 10241,
-      "p7Chars": 10922,
+      "p7Chars": 9819,
       "p6AnswerProbeOmissions": 0,
       "p7AnswerProbeOmissions": 0
     },
@@ -233,7 +234,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.0653202,
       "p6Chars": 12000,
-      "p7Chars": 11830,
+      "p7Chars": 11810,
       "p6AnswerProbeOmissions": 4,
       "p7AnswerProbeOmissions": 0
     },
@@ -245,7 +246,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.246287,
       "p6Chars": 11621,
-      "p7Chars": 11921,
+      "p7Chars": 11940,
       "p6AnswerProbeOmissions": 1,
       "p7AnswerProbeOmissions": 0
     },
@@ -257,7 +258,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.07829420000000001,
       "p6Chars": 11978,
-      "p7Chars": 11994,
+      "p7Chars": 11955,
       "p6AnswerProbeOmissions": 2,
       "p7AnswerProbeOmissions": 0
     },
@@ -269,7 +270,7 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.2505466,
       "p6Chars": 7541,
-      "p7Chars": 11452,
+      "p7Chars": 10449,
       "p6AnswerProbeOmissions": 8,
       "p7AnswerProbeOmissions": 2
     },
@@ -281,9 +282,84 @@
       "storedRubric": "v2.10",
       "storedCostUsd": 0.0495882,
       "p6Chars": 7145,
-      "p7Chars": 10788,
+      "p7Chars": 9953,
       "p6AnswerProbeOmissions": 0,
       "p7AnswerProbeOmissions": 0
+    }
+  ],
+  "falseUpgradeRule": "non-stable, stored p6 pack with exact p6 rebuild, stored score wrong, saved evidenceSupportCheck.status no-pack-omission, saved caseInput; one row per case ID, latest file; case IDs in Stage 1 (stored-p6 omission rows) or the correct controls excluded",
+  "falseUpgradeControls": [
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T16-51-53-variantA.json",
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "service": "scout",
+      "freshness": "live",
+      "storedRubric": "v2.10",
+      "storedCostUsd": 0.15947340000000002,
+      "p6Chars": 11983,
+      "p7Chars": 11862,
+      "p6AnswerProbeOmissions": 5,
+      "p7AnswerProbeOmissions": 0
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+      "id": "q-scf-verified-members",
+      "service": "scout",
+      "freshness": "live",
+      "storedRubric": "v2.10",
+      "storedCostUsd": 0.0892902,
+      "p6Chars": 11500,
+      "p7Chars": 11853,
+      "p6AnswerProbeOmissions": 6,
+      "p7AnswerProbeOmissions": 4
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+      "id": "q-sor-force-fast-archival-localnet",
+      "service": "stellarDocs",
+      "freshness": "scheduled",
+      "storedRubric": "v2.10",
+      "storedCostUsd": 0.2909346,
+      "p6Chars": 11567,
+      "p7Chars": 11958,
+      "p6AnswerProbeOmissions": 12,
+      "p7AnswerProbeOmissions": 1
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+      "id": "q-soroban-sdk-cve",
+      "service": "scout",
+      "freshness": "scheduled",
+      "storedRubric": "v2.10",
+      "storedCostUsd": 0.2573846,
+      "p6Chars": 11948,
+      "p7Chars": 11984,
+      "p6AnswerProbeOmissions": 2,
+      "p7AnswerProbeOmissions": 0
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json",
+      "id": "q-ti-freighter-localhost-not-detected",
+      "service": "stellarDocs",
+      "freshness": "scheduled",
+      "storedRubric": "v2.10",
+      "storedCostUsd": 0.0940514,
+      "p6Chars": 11867,
+      "p7Chars": 11929,
+      "p6AnswerProbeOmissions": 1,
+      "p7AnswerProbeOmissions": 0
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+      "id": "q-tool-sdk-repos-discovery",
+      "service": "scout",
+      "freshness": "scheduled",
+      "storedRubric": "v2.10",
+      "storedCostUsd": 0.2774934,
+      "p6Chars": 11935,
+      "p7Chars": 11886,
+      "p6AnswerProbeOmissions": 1,
+      "p7AnswerProbeOmissions": 8
     }
   ]
 }
