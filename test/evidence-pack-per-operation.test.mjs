@@ -144,7 +144,7 @@ describe("QA transcript evidence pack", () => {
   });
 
   it("uses a new pack version for changed evidence selection", () => {
-    expect(PACK_VERSION).toBe("p6");
+    expect(PACK_VERSION).toBe("p7");
   });
 
   it("admits direct manifest-operation results but still ignores top-level search metadata", () => {
@@ -304,7 +304,7 @@ describe("QA transcript evidence pack", () => {
     expect(pack).toContain('title="Mixed research source" date="2026-01-01T00:00:00Z"');
   });
 
-  it("keeps a non-A/V claim snippet unchanged when an A/V row is nearby", () => {
+  it("keeps a non-A/V source date when an A/V row is nearby", () => {
     const result = JSON.stringify({
       av: [{
         title: "Talk about Protocol 23",
@@ -323,7 +323,10 @@ describe("QA transcript evidence pack", () => {
       transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
     });
 
-    expect(pack).toContain('"date":"2025-11-05T00:00:00Z"');
+    expect(pack).toContain('path="articles[0]" source="Protocol 23 release article"');
+    expect(pack).toContain("span: articles[0]={title: Protocol 23 release article | summary: An article source. | date: 2025-11-05T00:00:00Z}");
+    expect(pack).toContain('title="Protocol 23 release article" date="2025-11-05T00:00:00Z"');
+    expect(pack).toContain('articles[0].date="2025-11-05T00:00:00Z"');
     expect(pack).not.toContain("av_metadata_date");
     expect(pack).not.toContain("2026-05-04T00:00:00Z");
   });
@@ -344,8 +347,8 @@ describe("QA transcript evidence pack", () => {
       transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
     });
 
-    expect(pack).toContain('"created_at":"2025-11-05T00:00:00Z"');
-    expect(pack).toContain('"date":"2025-11-05T00:00:00Z"');
+    expect(pack).toContain('created_at="2025-11-05T00:00:00Z"');
+    expect(pack).toContain('title="Protocol 23 release article" date="2025-11-05T00:00:00Z"');
     expect(pack).not.toContain("av_metadata");
   });
 
@@ -428,7 +431,7 @@ describe("QA transcript evidence pack", () => {
     expect(pack).not.toContain("2026-02-04T00:00:00Z");
   });
 
-  it("keeps an A/V passage snippet while removing its created_at field", () => {
+  it("keeps an A/V passage span while removing its created_at field", () => {
     const result = JSON.stringify({ results: [{
       av_id: "av-123",
       title: "Protocol 23 passage",
@@ -450,11 +453,10 @@ describe("QA transcript evidence pack", () => {
       }]
     });
 
-    expect(pack).toContain('"title":"Protocol 23 passage"');
-    expect(pack).toContain('"channel":"Stellar Dev"');
-    expect(pack).toContain('"summary":"The passage gives the short context."');
-    expect(pack).toContain('"long_summary":"The passage gives the unique exact score 4.81 for Protocol 23."');
-    expect(pack).toContain("4.81");
+    expect(pack).toContain('path="results[0]" source="Protocol 23 passage"');
+    expect(pack).toContain("long_summary: The passage gives the unique exact score 4.81 for Protocol 23.");
+    expect(pack).toContain('channel="Stellar Dev"');
+    expect(pack).toContain("summary: The passage gives the short context.");
     expect(pack).not.toContain("2026-06-20T00:00:00Z");
   });
 
