@@ -300,9 +300,9 @@ phrasing rules those signals replace, the full instructions are shorter, and a r
 measurement shows no regression in abstention or absence answers.
 
 Status (2026-10-10): branch `w1010/a` implements the signals and drops four phrasing rules
-(7,864 to 7,760 characters). The [design note](rounds/2026-10-10-weekend/answer-style/design.md)
+(7,864 to 7,839 characters). The [design note](rounds/2026-10-10-weekend/answer-style/design.md)
 names each change. The [measurement brief](rounds/2026-10-10-weekend/answer-style/measurement-plan.md)
-waits for its pre-spend review and the owner's budget authorization.
+passed its independent pre-spend review and waits for the owner's budget authorization.
 
 ## Executor and policy
 
