@@ -1402,11 +1402,11 @@ until official docs confirm them.</p>
 
 <h2>Troubleshooting</h2>
 <ul>
-  <li><b>Read the envelope first.</b> Every service call resolves to <code>{ ok: true, data }</code>
-    or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
+  <li><b>Read the envelope first.</b> Every service call resolves to
+    <code>{ ok: true, data, asOf, asOfBasis, inconclusive? }</code> or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
     <code>r.data.projects</code>, never <code>r.projects</code>. <code>codemode.skill.run</code>,
-    <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use that same
-    envelope. The discovery helpers answer at the top level instead: <code>codemode.search</code>
+    <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use the same
+    envelope without the <code>asOf</code> and <code>inconclusive</code> signals. The discovery helpers answer at the top level instead: <code>codemode.search</code>
     gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
     <code>r.signature</code> and <code>r.inputSchema</code>. <code>codemode.skill.read(id)</code>
     gives <code>r.data.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives

@@ -800,7 +800,8 @@ async function main() {
         "(POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. " +
         "Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, inconclusive? } or " +
         "{ ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. " +
-        "`asOf` is the upstream data date when the payload states one, else the host observation time; " +
+        "`asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host " +
+        "observation time, and `asOfBasis` names which; " +
         "`inconclusive` is \"empty\" or \"candidates\" when the host can show it. Every path in this spec is callable — exposure " +
         "is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never " +
         "sees keys.",

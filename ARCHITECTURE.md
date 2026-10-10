@@ -130,6 +130,8 @@ A footer appears after truncation, an ok service call, or an error call.
 Soft-empty calls have no failure reason and do not trigger a footer.
 The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
+A clean ok-only run has no truncation, no failed call, and no captured source metadata.
+Its compact footer keeps only the marker, `calls:`, `observedAt:`, and `guidance:` lines.
 Each ok call with an `inconclusive` signal carries an `[inconclusive: empty]` or `[inconclusive: candidates]` marker.
 The call totals keep the inconclusive count after the budget drops per-call entries.
 An `observedAt:` line gives the latest host observation time across ok calls.
@@ -158,7 +160,7 @@ Custom metadata stores MIME type, sizing, digest, expiry, request/Ray IDs, catal
 The runner receives the owner in each execute call context.
 API-key and Playground requests have no artifact owner.
 The loopback-dev branch uses `dev-local` after the hostname and environment checks pass.
-An untruncated source-basis footer reports an absent artifact with reason `not-truncated`.
+A full untruncated source-basis footer reports an absent artifact with reason `not-truncated`.
 
 `codemode.artifact.info(id)` returns metadata through the host provider.
 `codemode.artifact.read(id)` returns stored data inside the sandbox for further projection.
@@ -187,8 +189,9 @@ The operation dispatcher in [src/executor/providers.ts](src/executor/providers.t
 { ok: true, data, asOf, asOfBasis, inconclusive? }
 ```
 
-`asOf` is the upstream data date when an allowlisted path holds a parseable date string.
-The precedence is `dataAsOf`, then `asOf`, then `generatedAt`, each at the payload root before `meta`.
+`asOf` is the upstream data date when an allowlisted data-date path holds a parseable date string.
+The precedence is `dataAsOf`, then `asOf`, each at the payload root before `meta`.
+`generatedAt` stamps response generation, so it never becomes `asOf`.
 `asOfBasis` names that path.
 Otherwise `asOf` is the host clock when the response arrived, and `asOfBasis` is `"observed"`.
 `inconclusive` is `"empty"` when `hasServiceData` finds no rows and no scalar detail.

@@ -585,7 +585,7 @@ describe("docs page truthfulness", () => {
       // skill.run and both artifact reads keep the service-call envelope
       [
         "skill.run + artifact.info + artifact.read → r.data envelope",
-        /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+that\s+same\s+envelope/
+        /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+the\s+same\s+envelope\s+without\s+the\s+<code>asOf<\/code>\s+and\s+<code>inconclusive<\/code>\s+signals/
       ]
     ];
     for (const [label, pattern] of mappings) {
@@ -1295,7 +1295,7 @@ describe("execute behavior", () => {
     const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
     expect(text).toContain("--- EVIDENCE RECOVERY ---");
     expect(text).toContain("structurally empty collections");
-    expect(text).toContain("{ ok: true, data } envelopes remain unchanged");
+    expect(text).toContain('Each carries `inconclusive: "empty"`; they are inconclusive for an open-world negative');
     expect(text).toContain("--- EVIDENCE CHECKPOINT ---");
     expect(text).toContain("scout.searchResearch (broader-research");
   });

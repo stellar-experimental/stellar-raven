@@ -173,7 +173,10 @@ describe("host structural service evidence", () => {
     const calls: OpLedgerCall[] = [];
     const fetchImpl: FetchLike = async (url) =>
       String(url).includes("/rfps")
-        ? Response.json({ rfps: [], meta: { generatedAt: "2026-08-26T12:00:00Z", counts: { total: 0 } } })
+        ? Response.json({
+            rfps: [],
+            meta: { generatedAt: "2026-08-26T12:00:00Z", dataAsOf: "2026-08-25", counts: { total: 0 } }
+          })
         : Response.json({ success: true, data: { count: 1, projects: [{ slug: "soroswap" }] }, error: null });
     const providers = buildSandbox(catalog, skillSource, env, { fetchImpl, onOpCall: (call) => calls.push(call) });
 
@@ -183,8 +186,8 @@ describe("host structural service evidence", () => {
     expect(empty).toMatchObject({
       ok: true,
       inconclusive: "empty",
-      asOf: "2026-08-26T12:00:00Z",
-      asOfBasis: "data.meta.generatedAt"
+      asOf: "2026-08-25",
+      asOfBasis: "data.meta.dataAsOf"
     });
     expect(exact).toMatchObject({ ok: true, asOfBasis: "observed" });
     expect(exact).not.toHaveProperty("inconclusive");
@@ -240,6 +243,16 @@ describe("host structural service evidence", () => {
         observedAt
       )
     ).toEqual({ asOf: "2026-10-08", asOfBasis: "data.meta.dataAsOf" });
+    // generatedAt stamps response generation, not the data: it never becomes asOf.
+    expect(
+      asOfSignal(
+        [
+          { path: "data.generatedAt", value: "2026-10-09T08:00:00Z" },
+          { path: "data.meta.generatedAt", value: "2026-10-09T08:00:00Z" }
+        ],
+        observedAt
+      )
+    ).toEqual({ asOf: observedAt, asOfBasis: "observed" });
     expect(
       asOfSignal(
         [
@@ -603,6 +616,27 @@ async function guardSyntheticPayload<T>(payload: T): Promise<{ ok: true; data: T
 }
 
 describe("envelope guard prelude (fail-loud wrong-level access)", () => {
+  it("lets the envelope signal own r.asOf when the payload has its own asOf key", async () => {
+    const ns = guardedNamespaces(undefined, (namespaces) => {
+      namespaces.lumenloop!.search_directory = async () => ({
+        ok: true,
+        data: { asOf: null, projects: [] },
+        asOf: "2026-10-10T12:00:00.000Z",
+        asOfBasis: "observed",
+        inconclusive: "empty"
+      });
+    });
+    const r = (await ns.lumenloop!.search_directory!({ query: "synthetic" })) as Record<string, unknown> & {
+      data: { asOf: unknown };
+    };
+    // Accepted behavior: the envelope keys are not trapped, so r.asOf is the
+    // host signal and the payload value stays at r.data.asOf.
+    expect(r.asOf).toBe("2026-10-10T12:00:00.000Z");
+    expect(r.asOfBasis).toBe("observed");
+    expect(r.inconclusive).toBe("empty");
+    expect(r.data.asOf).toBeNull();
+    expect(() => r.projects).toThrow(/use r\.data\.projects/);
+  });
 
   const directoryFetch: FetchLike = async () =>
     new Response(
