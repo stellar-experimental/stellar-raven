@@ -817,6 +817,9 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.hits[0]?.signature).toContain("SearchDirectoryInput");
     expect(structured.nextSteps).toMatch(/execute/i);
     expect(structured.nextSteps).toContain("filter raw row JSON");
+    expect(structured.nextSteps).toContain(
+      "Every call resolves to { ok: true, data, asOf, asOfBasis, inconclusive? } or { ok: false, error:"
+    );
     expect(structured.nextSteps).toContain("at most two `scout.searchRepos`/`scout.searchProjects`");
     expect(structured.nextSteps).toContain("three returned candidates");
     expect(structured.nextSteps).toMatch(/single-step how-to or debugging/i);
