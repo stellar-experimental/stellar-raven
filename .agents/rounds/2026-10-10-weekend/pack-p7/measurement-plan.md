@@ -30,19 +30,38 @@ Only the pack differs. Stored grades used rubric `v2.10`, so they are not the ba
 | Arm | Code | Pack | Rubric | Model | Panel |
 |---|---|---|---|---|---|
 | A (baseline) | detached worktree at `d15a4ce5` | `p6` | `v2.11` | `claude-sonnet-5` | 3 |
-| B (candidate) | detached worktree at the reviewed head of `w1010/r` | `p7` | `v2.11` | `claude-sonnet-5` | 3 |
+| B (candidate) | detached worktree at `7e00ede2` (reviewed `w1010/r` code) | `p7` | `v2.11` | `claude-sonnet-5` | 3 |
 
-Arm B runs before any merge. Record the arm-B commit SHA in the round ledger before spend. It must
-be the head that the delta re-review approved. Arm A reproduces p6 from the pre-change commit;
-the repository keeps no dual pack code.
+Arm B runs before any merge, at `7e00ede2`. The delta re-review approved that code. Later commits
+on `w1010/r` change only round documents. Record both arm commits in the ledger before spend.
+Arm A reproduces p6 from the pre-change commit; the repository keeps no dual pack code.
+
+The ledger for this measurement is `.agents/rounds/2026-10-10-weekend/pack-p7/ledger.md`.
+It records the pins, the commands, every artifact path and SHA-256, and every stop decision.
 
 The judge prompt text is identical at both revisions. The 15 `PROMPT_SHA256_FIXTURES` in
 `runJudgeSelfTestStatic` pin the template with a fixed evidence string; they do not exercise p7.
 
 Both arms read the source files from the main checkout. Pass each source as an absolute path
 under `/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/`, because the arm
-worktrees hold no results. Both arms use the default `--cases-ref`. `re-judge.mjs` then pins case
-content to each source file's recorded `meta.sourceIdentity.runnerRevision`.
+worktrees hold no results.
+
+Case content depends on the source file:
+
+- Five files are complete runs. Both arms use the default `--cases-ref`. `re-judge.mjs` then pins
+  case content to the file's recorded `meta.sourceIdentity.runnerRevision`, and the
+  revision-pinned case guard must match.
+- Two files are incomplete runs: `2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json`
+  (94 of 100 rows) and `2026-10-07-tool-surface-qa/2026-10-07T16-51-53-variantA.json`
+  (20 of 100 rows). Their `inputSnapshot.casesSha256` covers all 100 selected cases, but the
+  revision-pinned guard hashes only the recorded rows. So no revision can match, and the default
+  dry run exits 1. Both arms run these two files with `--cases-ref worktree`.
+  The case content is then the tracked `eval/qa/cases.json`, which is identical at `d15a4ce5`
+  and `7e00ede2`. Both arms read the same content, but it is the current corpus, not the
+  snapshot of the saved run. Record `casesMode` and the observed cases SHA-256 in the ledger.
+  These files affect 6 rows: Stage 1 `q-defi-etherfuse-stablebonds`; Stage 2
+  `q-agent-identity-erc8004-stellar`, `q-protocol-27-cap-0071`, `q-soroban-token-transfer-pattern`;
+  Stage 3 `q-ti-freighter-localhost-not-detected`, `q-defi-bridge-evm-to-stellar-axelar`.
 
 Every run writes a separate `qa-rejudge-v1` artifact into its own worktree's `eval/qa/results/`.
 It never replaces a stored verdict, a frozen adapter-measurement verdict, or a denominator.
@@ -131,7 +150,7 @@ Assert these in the shell that runs the paid commands, before the first paid cal
    SHA-256 of the resolved executable, and the environment identity:
    `node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)'`.
 4. Write the executable path, its version, both hashes, the arm-A commit (`d15a4ce5`), and the
-   arm-B commit SHA to the round ledger.
+   arm-B commit (`7e00ede2`) to the ledger.
 5. Call `node` directly, not through `npm run`, so `PATH` does not change.
 
 Use the same executable and environment hashes in every invocation of both arms. A changed pin
@@ -143,14 +162,18 @@ Preflight, free:
 
 ```sh
 git worktree add --detach ../raven-p6-arm d15a4ce5
-git worktree add --detach ../raven-p7-arm <reviewed w1010/r SHA>
-# In each arm worktree, for each source file:
+git worktree add --detach ../raven-p7-arm 7e00ede2
+# In each arm worktree, for each source file (add --cases-ref worktree for the two incomplete files):
 node eval/qa/re-judge.mjs <absolute source.json> --ids <ids> --judge-panel 3 --allow-non-identical --dry-run
 node eval/qa/judge.mjs --self-test-static
 ```
 
 Both arms report a non-identical tuple (source `v2.10`/`p6`), so both need `--allow-non-identical`.
-Confirm that the case guard matches and that `goldenTime.violations` is empty for every file.
+Every dry run must exit 0 with `goldenTime.violations` empty. For the five complete files,
+`guards.cases.matches` must be `true` in revision mode. For the two incomplete files, the dry run
+reports `casesMode: "worktree"` and `cases.matches: false`; that is the expected state.
+A dry run checks flag format only. It does not check the executable or environment pins.
+The paid run checks the pins before its first call and stops on a mismatch.
 The static self-test must print GREEN in both worktrees. The dry run and the self-test prove the
 import path; `re-judge.mjs` needs no install.
 
@@ -158,6 +181,7 @@ Paid, per source file and arm, only after approval and the delta re-review:
 
 ```sh
 node eval/qa/re-judge.mjs <absolute source.json> --ids <ids> --judge-panel 3 --allow-non-identical \
+  [--cases-ref worktree, for the two incomplete files only] \
   --max-budget-usd <file cap from the table> \
   --claude-path <absolute path of the pinned executable> \
   --expect-agent-binary-sha256 <sha256> \
@@ -165,6 +189,7 @@ node eval/qa/re-judge.mjs <absolute source.json> --ids <ids> --judge-panel 3 --a
 ```
 
 Run Stage 1, then Stage 2, then Stage 3. Record every artifact path and SHA-256 in the ledger.
+Within a stage, the two arms may run at the same time, because each invocation has its own cap.
 
 ## Stop rules
 
