@@ -281,6 +281,11 @@ Done when: ok results carry measured inconclusive and as-of signals, the instruc
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
+Status (2026-10-10): branch `w1010/a` implements the signals and drops four phrasing rules
+(7,864 to 7,760 characters). The [design note](rounds/2026-10-10-weekend/answer-style/design.md)
+names each change. The [measurement brief](rounds/2026-10-10-weekend/answer-style/measurement-plan.md)
+waits for its pre-spend review and the owner's budget authorization.
+
 ## Executor and policy
 
 ### Count skill-read shape errors in the next authorized QA round
