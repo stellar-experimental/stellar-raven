@@ -1,7 +1,8 @@
 const EVIDENCE_PACK_MAX_CHARS = 12000;
-// p7 adds candidate-anchored claim-support spans whose coverage is measured on the
-// final serialized text. It keeps the p6 A/V created_at exclusions and the p5 evidence boundaries.
-export const PACK_VERSION = "p7";
+// p8 adds a discriminative claim-word fallback to the p7 claim-support spans, moves omitted
+// anchors to audit-only metadata, and counts only rendered source text as support. It keeps the
+// p6 A/V created_at exclusions and the p5 evidence boundaries.
+export const PACK_VERSION = "p8";
 const MAX_CANONICAL_URLS = 8;
 const MAX_CITED_SOURCE_TITLES = 24;
 const MAX_CITED_SOURCE_FIELDS = 24;
@@ -16,14 +17,23 @@ const INITIAL_SUPPORT_SPAN_CHARS = 360;
 const MID_SUPPORT_SPAN_CHARS = 200;
 const MIN_SUPPORT_SPAN_CHARS = 120;
 // Support units drop to this count before source items drop below 8, so roster answers keep records.
-const SUPPORT_UNIT_ITEM_FLOOR = 24;
+const SUPPORT_UNIT_ITEM_FLOOR = 28;
 const SUPPORT_UNIT_FLOOR = 12;
 const MAX_SUPPORT_OCCURRENCES_PER_ANCHOR = 24;
 const MAX_ALTERNATE_SUPPORT_UNITS = 6;
 const MAX_PHRASE_ANCHORS = 24;
 const MAX_PHRASE_ANCHORS_PER_CLAIM = 3;
 const PHRASE_ANCHOR_MIN_TOKENS = 4;
-const MAX_LISTED_SUPPORT_OMISSIONS = 24;
+const MAX_FALLBACK_UNITS = 16;
+const MAX_FALLBACK_UNITS_PER_CLAIM = 2;
+const FALLBACK_MIN_CLAIM_WORDS = 3;
+const FALLBACK_STOP_WORDS = new Set([
+  "about", "after", "also", "been", "before", "being", "both", "could", "does", "each", "from",
+  "have", "here", "into", "just", "like", "made", "make", "many", "more", "most", "much", "must",
+  "only", "other", "over", "same", "should", "some", "such", "than", "that", "their", "them",
+  "then", "there", "these", "they", "this", "those", "through", "under", "very", "were", "what",
+  "when", "where", "which", "while", "will", "with", "would", "your"
+]);
 const SOURCE_BASIS_MARKER = "\n--- SOURCE BASIS ---";
 // Host provenance sidecar on untruncated results (src/policy/source-basis.ts).
 // It does not signal a loss boundary or set `truncated`, unlike SOURCE BASIS.
@@ -1202,11 +1212,40 @@ function containsExactSupport(text, term) {
   return haystack.toLowerCase().includes(term.toLowerCase());
 }
 
+const PACK_LABEL_LINE_RE =
+  /^(?:--- TRANSCRIPT SOURCE BASIS ---$|shape:|calls:|claimSupport:|claimSupportNotice:|claimSupportOmitted:|claimSnippets:|caseSnippets:|sourceItems:|- none extracted$)/;
+
+/**
+ * The parts of a serialized pack that are source text: rendered spans, snippets, summaries, and
+ * source fields. Headings, counters, anchor and term labels, match lists, and omission notices are
+ * pack-generated, so they never count as support.
+ */
+export function packSourceEvidenceText(pack) {
+  const kept = [];
+  for (const line of String(pack ?? "").split("\n")) {
+    if (PACK_LABEL_LINE_RE.test(line)) continue;
+    if (/^\d+\. (?:anchors|claimWords)=\[/.test(line)) {
+      const source = line.match(/ source="((?:[^"\\]|\\.)*)"/);
+      if (source) kept.push(source[1]);
+      continue;
+    }
+    if (/^\d+\. term="/.test(line)) continue;
+    if (/^\d+\. title=/.test(line)) {
+      kept.push(line.replace(/ matched="(?:[^"\\]|\\.)*"/, ""));
+      continue;
+    }
+    const indented = line.match(/^ {3}(?:span|snippet|summary): (.*)$/);
+    kept.push(indented ? indented[1] : line);
+  }
+  return kept.join("\n");
+}
+
 export function findTranscriptEvidencePackOmissions({
   transcript = [],
   transcriptEvidence = "",
   claims = []
 } = {}) {
+  transcriptEvidence = packSourceEvidenceText(transcriptEvidence);
   const exactTerms = exactSupportTerms(claims.join("\n"));
   const fullTranscriptResults = executeEntries(transcript).map((entry) => stripAnsi(entry.result));
   const supportedTerms = exactTerms.filter((term) =>
@@ -1322,7 +1361,8 @@ function answerClaimRanges(answer) {
     if (cleanText(answer.slice(start, end))) ranges.push({ start, end });
     start = end;
   };
-  for (const match of answer.matchAll(/[.!?]+(?=\s|$)|\n/g)) close((match.index ?? 0) + match[0].length);
+  // A sentence can end inside a closing quote or bracket: ... "2029+." Source: ...
+  for (const match of answer.matchAll(/[.!?]+["'”’)\]]*(?=\s|$)|\n/g)) close((match.index ?? 0) + match[0].length);
   close(answer.length);
   return ranges.length ? ranges : [{ start: 0, end: answer.length }];
 }
@@ -1657,7 +1697,7 @@ export function claimSupportAnchors({ candidateAnswer = "", question = "", golde
       for (const list of lists) if (list[round]) ordered.push(list[round]);
     }
   }
-  return ordered.map(({ rank: _rank, ...anchor }, id) => ({ ...anchor, id }));
+  return ordered.map(({ rank: _rank, ...anchor }, id) => ({ ...anchor, tier: tier(anchor), id }));
 }
 
 function anchorOccurrences(anchors, segments) {
@@ -1757,14 +1797,240 @@ function rankSupportCandidates({ anchor, candidates, anchors, covered, usedEntri
     );
 }
 
-function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanChars }) {
+// A light stem: words of six or more letters compare on their first five, so "maturing" meets
+// "mature". Numbers and short words compare whole.
+function wordStem(word) {
+  return /\d/.test(word) || word.length < 6 ? word : word.slice(0, 5);
+}
+
+function isContentWord(word) {
+  return /\d/.test(word) ? word.length >= 2 : word.length >= 4 && !PROSE_SUPPORT_STOP_WORDS.has(word) && !FALLBACK_STOP_WORDS.has(word);
+}
+
+// Claim words are the content words of one answer claim, lowercase words included. A number
+// counts unless it is the day of a written date (Aug 26, 2026).
+function claimWordsOf(text) {
+  const words = [];
+  for (const match of String(text).matchAll(SUPPORT_TOKEN_RE)) {
+    const word = match[0].toLowerCase();
+    const start = match.index ?? 0;
+    if (/\d/.test(word)) {
+      if (word.length < 2) continue;
+      if (WRITTEN_DATE_BEFORE_DAY.test(text.slice(Math.max(0, start - 12), start)) ||
+          WRITTEN_DATE_AFTER_DAY.test(text.slice(start + word.length, start + word.length + 12))) continue;
+    } else if (!isContentWord(word)) {
+      continue;
+    }
+    words.push(wordStem(word));
+  }
+  return [...new Set(words)];
+}
+
+// Source sentences with their words, plus each word's sentence frequency, for the fallback.
+function supportSentences(segments) {
+  const sentences = [];
+  for (const segment of segments) {
+    const text = segment.text;
+    let from = 0;
+    const close = (to) => {
+      if (to > from && cleanText(text.slice(from, to))) {
+        const tokens = supportTokens(text.slice(from, to));
+        sentences.push({
+          segmentIndex: segment.index,
+          from,
+          to,
+          words: new Set(tokens.map(wordStem)),
+          contentWords: new Set(tokens.filter(isContentWord).map(wordStem)).size
+        });
+      }
+      from = to;
+    };
+    if (!segment.compact) {
+      for (let at = 0; at < text.length; at += 1) if (isSentenceEnd(text, at)) close(at + 1);
+    }
+    close(text.length);
+  }
+  const frequency = new Map();
+  for (const sentence of sentences) for (const word of sentence.words) frequency.set(word, (frequency.get(word) ?? 0) + 1);
+  return { sentences, frequency };
+}
+
+function fallbackClaims(answer, sentences, frequency) {
+  const index = new Map();
+  sentences.forEach((sentence, at) => {
+    for (const word of sentence.words) {
+      const list = index.get(word) ?? [];
+      list.push(at);
+      index.set(word, list);
+    }
+  });
+  return answerClaimRanges(answer).map((range, claimIndex) => {
+    const words = claimWordsOf(answer.slice(range.start, range.end)).filter((word) => frequency.has(word));
+    const counts = new Map();
+    for (const word of words) for (const at of index.get(word) ?? []) counts.set(at, (counts.get(at) ?? 0) + 1);
+    // A related sentence shares at least three claim words, and either 30% of the claim's words or
+    // half of its own content words, so a short source sentence can still qualify.
+    const need = (at) => Math.max(
+      FALLBACK_MIN_CLAIM_WORDS,
+      Math.min(Math.ceil(words.length * 0.3), Math.ceil(sentences[at].contentWords * 0.5))
+    );
+    const candidates = [...counts].filter(([at, count]) => count >= need(at)).map(([at]) => at).sort((a, b) => a - b);
+    return { claimIndex, words, candidates };
+  }).filter((claim) => claim.words.length >= FALLBACK_MIN_CLAIM_WORDS && claim.candidates.length);
+}
+
+// For each answer claim, add the source sentence that covers the most new, discriminative claim
+// words. A word is discriminative when few source sentences contain it. A claim word counts as
+// shown only in a specific-anchor or fallback span related to that claim (one that shares at
+// least three of its words). Lower-tier units can be cut later, so they do not count. When a
+// lower-tier unit already shows the chosen sentence, that unit is promoted instead of repeated.
+function selectFallbackUnits({ claims, sentences, frequency, segments, bySegment, anchors, units, spans, spanChars }) {
+  const total = Math.max(1, sentences.length);
+  const rare = Math.max(2, Math.floor(total * 0.02));
+  const weight = (word) => Math.log(1 + total / (frequency.get(word) ?? total));
+  const spanStems = units
+    .filter((unit) => anchors[unit.primary].tier === 0)
+    .map((unit) => new Set(supportTokens(unit.span).map(wordStem)));
+  const added = [];
+  for (const claim of claims) {
+    const shownWords = new Set();
+    const showRelated = (stems) => {
+      const shared = claim.words.filter((word) => stems.has(word));
+      if (shared.length >= FALLBACK_MIN_CLAIM_WORDS) shared.forEach((word) => shownWords.add(word));
+    };
+    spanStems.forEach(showRelated);
+    for (let round = 0; round < MAX_FALLBACK_UNITS_PER_CLAIM && added.length < MAX_FALLBACK_UNITS; round += 1) {
+      let best = null;
+      for (const at of claim.candidates) {
+        const sentence = sentences[at];
+        const fresh = claim.words.filter((word) => sentence.words.has(word) && !shownWords.has(word));
+        // A new rare word must be a word, not a number: numbers already have exact anchors.
+        if (!fresh.some((word) => !/\d/.test(word) && (frequency.get(word) ?? 0) <= rare)) continue;
+        // The sentence must be about the claim: at least 30% of its own content words are claim
+        // words, and it shares four claim words, or adds two new ones at a 50% share.
+        const overlap = claim.words.filter((word) => sentence.words.has(word)).length;
+        const share = overlap / Math.max(1, sentence.contentWords);
+        if (share < 0.3 || (overlap < 4 && (fresh.length < 2 || share < 0.5))) continue;
+        const score = fresh.reduce((sum, word) => sum + weight(word), 0);
+        if (!best || score > best.score) best = { sentence, fresh, score };
+      }
+      if (!best) break;
+      const segment = segments[best.sentence.segmentIndex];
+      const focus = best.fresh.filter((word) => !/\d/.test(word) && (frequency.get(word) ?? 0) <= rare)
+        .map((word) => new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegExp(word)}`, "iu").exec(segment.text.slice(best.sentence.from, best.sentence.to)))
+        .filter(Boolean)
+        .sort((a, b) => a.index - b.index)[0];
+      const start = best.sentence.from + (focus?.index ?? 0);
+      const window = centeredWindow(best.sentence.from, best.sentence.to, start, start + (focus?.[0].length ?? 0), spanChars);
+      const span = renderSupportSpan(segment, window);
+      const holder = units.find((unit) =>
+        !unit.fallback && unit.segment.index === segment.index && unit.window.from <= start && start < unit.window.to);
+      if (holder) {
+        if (holder.promoted) break;
+        holder.promoted = true;
+        holder.claimIndex = claim.claimIndex;
+        const holderStems = new Set(supportTokens(holder.span).map(wordStem));
+        spanStems.push(holderStems);
+        showRelated(holderStems);
+        continue;
+      }
+      const spanTokens = supportTokens(span);
+      const spanWords = new Set(spanTokens.map(wordStem));
+      // Label the unit with the source's own word forms for the claim words it adds.
+      const claimWords = unique(best.fresh.filter((word) => spanWords.has(word))
+        .map((stem) => spanTokens.find((token) => wordStem(token) === stem) ?? stem));
+      if (!claimWords.length || spans.has(span.toLowerCase())) break;
+      const inSegment = [...new Set((bySegment.get(segment.index) ?? []).map((item) => item.anchorId))].sort((a, b) => a - b);
+      added.push({
+        span,
+        segment,
+        window,
+        covered: anchorsInRenderedSpan(span, inSegment, anchors),
+        claimWords,
+        claimIndex: claim.claimIndex,
+        primary: null,
+        alternate: false,
+        fallback: true
+      });
+      spans.add(span.toLowerCase());
+      spanStems.push(spanWords);
+      showRelated(spanWords);
+    }
+    if (added.length < MAX_FALLBACK_UNITS) {
+      const related = selectRelatedStatement({ claim, sentences, weight, segments, units, added, spans, spanChars });
+      if (related) {
+        added.push(related);
+        spans.add(related.span.toLowerCase());
+      }
+    }
+  }
+  return added;
+}
+
+// Keep one differing statement for a claim: the unshown sentence that shares the most claim
+// words (at least four), from a record that no related unit already shows. It can state the claim
+// differently or contradict it; the pack shows it without deciding which statement is true.
+function selectRelatedStatement({ claim, sentences, weight, segments, units, added, spans, spanChars }) {
+  const relatedSegments = new Set(
+    [...units, ...added]
+      .filter((unit) => {
+        const stems = new Set(supportTokens(unit.span).map(wordStem));
+        return claim.words.filter((word) => stems.has(word)).length >= FALLBACK_MIN_CLAIM_WORDS;
+      })
+      .map((unit) => unit.segment.index)
+  );
+  let best = null;
+  for (const at of claim.candidates) {
+    const sentence = sentences[at];
+    if (relatedSegments.has(sentence.segmentIndex)) continue;
+    const shared = claim.words.filter((word) => sentence.words.has(word));
+    if (shared.length < FALLBACK_MIN_CLAIM_WORDS + 1) continue;
+    const score = shared.reduce((sum, word) => sum + weight(word), 0);
+    if (!best || score > best.score) best = { sentence, shared, score };
+  }
+  if (!best) return null;
+  const segment = segments[best.sentence.segmentIndex];
+  const window = centeredWindow(best.sentence.from, best.sentence.to, best.sentence.from, best.sentence.from, spanChars);
+  const span = renderSupportSpan(segment, window);
+  if (spans.has(span.toLowerCase())) return null;
+  return {
+    span,
+    segment,
+    window,
+    covered: [],
+    claimWords: [],
+    claimIndex: claim.claimIndex,
+    primary: null,
+    alternate: false,
+    fallback: true,
+    related: true
+  };
+}
+
+function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanChars, fallback }) {
   const covered = new Set();
   const usedEntries = new Set();
   const unrenderable = new Set();
   const units = [];
   const spans = new Set();
-  for (const anchor of anchors) {
-    if (covered.has(anchor.id) || !occurrences[anchor.id].length) continue;
+  // Claims take turns inside each tier. An anchor with no transcript match takes no turn, so a
+  // claim whose first anchors are unmatched still gets an early unit.
+  const turnOrder = [];
+  for (const level of [0, 1, 2, 3]) {
+    const byClaim = new Map();
+    for (const anchor of anchors) {
+      if (anchor.tier !== level || !occurrences[anchor.id].length) continue;
+      const list = byClaim.get(anchor.claimIndex) ?? [];
+      list.push(anchor);
+      byClaim.set(anchor.claimIndex, list);
+    }
+    const lists = [...byClaim.keys()].sort((a, b) => a - b).map((claim) => byClaim.get(claim));
+    for (let round = 0; lists.some((list) => round < list.length); round += 1) {
+      for (const list of lists) if (list[round]) turnOrder.push(list[round]);
+    }
+  }
+  for (const anchor of turnOrder) {
+    if (covered.has(anchor.id)) continue;
     const ranked = rankSupportCandidates({
       anchor,
       candidates: occurrences[anchor.id],
@@ -1789,6 +2055,7 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     // No rendered span keeps the anchor, for example when URL sanitization removes it.
     if (!placed) unrenderable.add(anchor.id);
   }
+  const fallbackUnits = selectFallbackUnits({ ...fallback, segments, bySegment, anchors, units, spans, spanChars });
   let alternates = 0;
   for (const anchor of anchors) {
     if (alternates >= MAX_ALTERNATE_SUPPORT_UNITS) break;
@@ -1802,6 +2069,29 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     spans.add(unit.span.toLowerCase());
     alternates += 1;
   }
+  // Budget order: specific anchors, multi-word names, single words, bare numbers, then
+  // other-source units. Cuts drop units from the end of this order. A fallback unit holds claim
+  // words that no related unit shows, so it sits right after its claim's first specific-anchor
+  // unit, or after all specific-anchor units when its claim has none.
+  const rank = (unit) => unit.alternate ? 4 : unit.related ? 2 : unit.fallback || unit.promoted ? 0 : anchors[unit.primary].tier;
+  const order = new Map(units.map((unit, at) => [unit, at]));
+  const specific = units
+    .map((unit, at) => ({ unit, at }))
+    .filter(({ unit }) => !unit.alternate && anchors[unit.primary].tier === 0);
+  // Place a claim-word unit after its claim's first specific-anchor unit; for a claim without
+  // one, place it before the first unit of a later claim. This keeps claim order under cuts.
+  const slot = (claimIndex) => {
+    const own = specific.find(({ unit }) => anchors[unit.primary].claimIndex === claimIndex);
+    if (own) return own.at + 0.5;
+    const later = specific.find(({ unit }) => anchors[unit.primary].claimIndex > claimIndex);
+    return later ? later.at - 0.5 : specific.length + 0.5;
+  };
+  [...fallbackUnits.filter((unit) => !unit.related), ...units.filter((unit) => unit.promoted)].forEach((unit, at) =>
+    order.set(unit, slot(unit.claimIndex) + at / 1000));
+  // A related statement ranks with single words, in claim order.
+  fallbackUnits.filter((unit) => unit.related).forEach((unit, at) => order.set(unit, units.length + unit.claimIndex + at / 1000));
+  units.push(...fallbackUnits);
+  units.sort((a, b) => rank(a) - rank(b) || order.get(a) - order.get(b));
   for (const unit of units) {
     const core = cleanText(unit.segment.text.slice(unit.window.from, unit.window.to)).toLowerCase();
     unit.alsoIn = core.length < 24 ? [] : unique(
@@ -1813,12 +2103,11 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
   return { units, unrenderable };
 }
 
-function supportUnitLines(unit, index, anchors) {
-  const anchorList = unit.covered.map((id) => truncate(anchors[id].value, 60));
-  const shown = anchorList.slice(0, 5).map((value) => JSON.stringify(value)).join(", ");
+// A unit shows its provenance and its source text. The anchors and claim words that selected it
+// are audit-only, so no candidate-derived label can read as source evidence.
+function supportUnitLines(unit, index) {
   const meta = [
-    `${index + 1}. anchors=[${shown}${anchorList.length > 5 ? `, +${anchorList.length - 5} more` : ""}]`,
-    `entry=${unit.segment.entryIndex + 1}`,
+    `${index + 1}. entry=${unit.segment.entryIndex + 1}`,
     // The calls line names each entry; a unit names only a direct tool and an error outcome.
     /(?:^|__)execute$/.test(unit.segment.tool) ? "" : `tool="${truncate(unit.segment.tool, 80)}"`,
     unit.segment.outcome === "error" ? "outcome=error" : "",
@@ -1826,27 +2115,38 @@ function supportUnitLines(unit, index, anchors) {
     `path="${truncate(unit.segment.path, 90)}"`,
     unit.segment.source ? `source="${truncate(unit.segment.source, 100)}"` : "",
     unit.alsoIn.length ? `alsoIn=${unit.alsoIn.map((entryIndex) => entryIndex + 1).join(",")}` : "",
-    unit.alternate ? "role=other-source" : ""
+    unit.alternate ? "role=other-source" : unit.related ? "role=related-statement" : ""
   ].filter(Boolean).join(" ");
   return [meta, `   span: ${unit.span}`];
 }
 
-// Listing order: clauses and names first, then dates and amounts, then bare numbers.
-function omissionListRank(anchor) {
-  if (BARE_NUMBER_RE.test(anchor.value)) return 2;
-  return /^\$?\s?\d/.test(anchor.value) ? 1 : 0;
-}
-
-function supportOmissionLine(omitted, anchors, occurrences, segments, unrenderable) {
-  if (!omitted.length) return "claimSupportOmitted: none";
-  const ordered = [...omitted].sort((a, b) => omissionListRank(anchors[a]) - omissionListRank(anchors[b]) || a - b);
-  const listed = ordered.slice(0, MAX_LISTED_SUPPORT_OMISSIONS).map((id) => {
-    const entriesSeen = unique(occurrences[id].map((occurrence) => segments[occurrence.segmentIndex].entryIndex + 1));
-    const reason = unrenderable.has(id) ? "; no rendered span keeps it, such as a URL part that sanitization removes" : "";
-    return `${JSON.stringify(truncate(anchors[id].value, 60))} (entry=${entriesSeen.slice(0, 4).join(",")}${reason})`;
-  });
-  const more = omitted.length > listed.length ? `; +${omitted.length - listed.length} more` : "";
-  return `claimSupportOmitted: ${omitted.length} candidate anchors occur in execute results, but their spans did not fit the pack; an occurrence alone does not establish a claim, and a listed anchor can belong to a different record: ${listed.join("; ")}${more}`;
+// Audit-only record of matched anchors that no kept unit shows. It never enters the judge pack.
+function supportAudit({ units, unrenderable, anchors, occurrences, segments }) {
+  const covered = new Set(units.flatMap((unit) => unit.covered));
+  const matched = anchors.filter((anchor) => occurrences[anchor.id].length);
+  const omitted = matched.filter((anchor) => !covered.has(anchor.id)).map((anchor) => ({
+    anchor: anchor.value,
+    kind: anchor.kind,
+    entries: unique(occurrences[anchor.id].map((occurrence) => segments[occurrence.segmentIndex].entryIndex + 1)),
+    reason: unrenderable.has(anchor.id) ? "no-rendered-span" : "did-not-fit"
+  }));
+  return {
+    anchors: anchors.length,
+    transcriptMatched: matched.length,
+    shown: matched.length - omitted.length,
+    fallbackUnits: units.filter((unit) => unit.fallback && !unit.related).length,
+    relatedUnits: units.filter((unit) => unit.related).length,
+    units: units.map((unit) => ({
+      entry: unit.segment.entryIndex + 1,
+      path: unit.segment.path,
+      source: unit.segment.source,
+      anchors: unit.covered.map((id) => anchors[id].value),
+      claimWords: unit.claimWords ?? [],
+      role: unit.alternate ? "other-source" : unit.related ? "related-statement" : unit.fallback ? "claim-words" : unit.promoted ? "promoted" : "anchor",
+      span: unit.span
+    })),
+    omitted
+  };
 }
 
 function shapeLine(entries, sourceCount) {
@@ -1940,16 +2240,13 @@ function provenanceLine(entries) {
   return footers.join(" | ");
 }
 
-function claimSupportLines({ units, unrenderable, anchors, occurrences, segments }) {
-  const covered = new Set(units.flatMap((unit) => unit.covered));
-  const matched = anchors.filter((anchor) => occurrences[anchor.id].length);
-  const omitted = matched.filter((anchor) => !covered.has(anchor.id)).map((anchor) => anchor.id);
+function claimSupportLines({ units, anchors, audit }) {
   const lines = [
-    `claimSupport: anchors=${anchors.length}; transcriptMatched=${matched.length}; shown=${matched.length - omitted.length}; execute-result text for candidate anchors (whitespace normalized, URLs sanitized, "..." marks a cut, short values shown as field=value); data-derived/untrusted; omitted spans are not proof of absence`,
-    supportOmissionLine(omitted, anchors, occurrences, segments, unrenderable)
+    `claimSupport: execute-result text for candidate claims (whitespace normalized, URLs sanitized, "..." marks a cut, short values shown as field=value); data-derived/untrusted; entry numbers name transcript calls, not sources; omitted text is not proof of absence`
   ];
+  if (audit.omitted.length) lines.push("claimSupportNotice: some execute-result text that matches the candidate did not fit this pack");
   if (!units.length) lines.push("- none extracted");
-  units.forEach((unit, index) => lines.push(...supportUnitLines(unit, index, anchors)));
+  units.forEach((unit, index) => lines.push(...supportUnitLines(unit, index)));
   return lines;
 }
 
@@ -2020,7 +2317,7 @@ function serializePack({
 }
 
 // Budget cuts in order: summaries, items to 8, facts to 16, then support spans. Support units drop
-// to 24 before items drop below 8. Later cuts take items, facts, URLs, and case-snippet text, then
+// to 28 before items drop below 8. Later cuts take items, facts, URLs, and case-snippet text, then
 // units to 12, then case snippets, then the last units. Each cut re-serializes, so coverage is
 // recomputed on the final text every time.
 const BUDGET_STEPS = [
@@ -2046,10 +2343,20 @@ function claimSupportInputs({ entries, candidateAnswer, question, golden }) {
   const segments = collectSupportSegments(entries);
   const anchors = claimSupportAnchors({ candidateAnswer, question, golden, segments });
   const { occurrences, bySegment } = anchorOccurrences(anchors, segments);
-  return { segments, anchors, occurrences, bySegment };
+  const { sentences, frequency } = supportSentences(segments);
+  const claims = fallbackClaims(String(candidateAnswer ?? ""), sentences, frequency);
+  return { segments, anchors, occurrences, bySegment, fallback: { claims, sentences, frequency } };
 }
 
-export function buildTranscriptEvidencePack({
+export function buildTranscriptEvidencePack(input) {
+  return explainTranscriptEvidencePack(input).text;
+}
+
+/**
+ * The judge pack plus audit-only metadata. The audit lists matched anchors that the pack could not
+ * show, with their transcript entries; it is for offline review and never enters the judge prompt.
+ */
+export function explainTranscriptEvidencePack({
   transcript = [],
   candidateAnswer = "",
   question = "",
@@ -2057,9 +2364,10 @@ export function buildTranscriptEvidencePack({
   tags,
   maxChars = EVIDENCE_PACK_MAX_CHARS
 }) {
-  if (!shouldIncludeTranscriptEvidence(tags)) return "";
+  const empty = { text: "", audit: null };
+  if (!shouldIncludeTranscriptEvidence(tags)) return empty;
   const entries = executeEntries(transcript);
-  if (!entries.length) return "";
+  if (!entries.length) return empty;
 
   const terms = extractEvidenceTerms({ candidateAnswer, golden });
   const factTerms = orderedUnique([...exactSupportTerms(candidateAnswer), ...terms]);
@@ -2098,11 +2406,13 @@ export function buildTranscriptEvidencePack({
   for (;;) {
     const { units, unrenderable } = supportUnitsAt(state.supportSpanChars);
     state.supportUnitLimit = Math.min(state.supportUnitLimit, units.length);
+    const kept = units.slice(0, state.supportUnitLimit);
+    const audit = { packVersion: PACK_VERSION, ...supportAudit({ ...support, unrenderable, units: kept }) };
     const text = serializePack({
       entries,
       ranked,
       facts,
-      claimSupport: { ...support, unrenderable, units: units.slice(0, state.supportUnitLimit) },
+      claimSupport: { ...support, units: kept, audit },
       caseSnippets,
       candidateAnswer,
       itemLimit: state.itemLimit,
@@ -2112,9 +2422,9 @@ export function buildTranscriptEvidencePack({
       caseSnippetChars: state.caseSnippetChars,
       urlLimit: state.urlLimit
     });
-    if (text.length <= maxChars) return text;
+    if (text.length <= maxChars) return { text, audit };
     if (BUDGET_STEPS.some((step) => step(state))) continue;
-    return `${text.slice(0, Math.max(0, maxChars - 3))}...`;
+    return { text: `${text.slice(0, Math.max(0, maxChars - 3))}...`, audit };
   }
 }
 
