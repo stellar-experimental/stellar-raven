@@ -411,28 +411,6 @@ saved omission rows, and new fixture classes.
 The repair changes judge inputs. It needs a new pack version, an independent review, and its own
 authorized measurement. Land it after the paired run (owner decision A), or pin p6 for that run.
 Do not change frozen adapter-measurement artifacts or replace their verdicts.
-
-Branch `w1010/r` (2026-10-10) implements this repair as pack `p7`.
-The [offline replay](rounds/2026-10-10-weekend/pack-p7/replay-p7-omissions.json) holds the
-transcript support for 12 of 12 supported disputed claims; p6 holds 2.
-The [paired re-judge](rounds/2026-10-10-weekend/pack-p7/results.md) ran on 2026-10-10 ($18.19).
-One stored-correct control fell to `wrong` with a pack cause, so p7 is blocked. The
-[post-run review](rounds/2026-10-10-weekend/pack-p7/post-run-review/rr3-review.md) confirmed the
-block and corrected five readings. Pack `p8` implements its general repair. The
-[p8 replay](rounds/2026-10-10-weekend/pack-p8/replay-p8.json) holds real spans for 12 of 12
-supported claims. The pre-spend review (R4) approved p8 and the
-[p8 plan](rounds/2026-10-10-weekend/pack-p8/measurement-plan-p8.md) with fixes, now applied at
-`36e77d40`. The [p8 re-measurement](rounds/2026-10-10-weekend/pack-p8/results.md) ran on
-2026-10-10 ($9.08). Stages 1 and 3 pass. Stage 2 fails its literal rule on one row, where p8 shows
-an accurate source item that contradicts the answer. The post-run review (R6) confirmed the block.
-The prospective [amendment p8b](rounds/2026-10-10-weekend/pack-p8/amendment-p8b.md) defines an
-evidence-fidelity Stage 2 rule and a fixed three-call continuation on that row ($0.85 cap). The
-pre-spend review R7 blocked it on a missing reading command and error-vote rule; both are now fixed.
-The delta re-review returned LAUNCH-OK, and the continuation ran on 2026-10-10 ($0.38). Its
-[result](rounds/2026-10-10-weekend/pack-p8/results-p8b.md) is a provisional pass under the
-predeclared reading (W/W/P, each vote on the confirmed StellarTerm correction). The mandatory
-post-run review remains. The original p8 run stays BLOCKED. Do not merge `w1010/r` as a diagnostic-only change: p8 is the
-active judge pack on this branch.
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
