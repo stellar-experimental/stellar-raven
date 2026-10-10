@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   buildTranscriptEvidencePack,
+  explainTranscriptEvidencePack,
   findTranscriptEvidencePackOmissions
 } from "../eval/qa/evidence-pack.mjs";
 
-// p7 claim-support fixtures. Every assertion reads the final serialized pack text.
+// Claim-support fixtures (p7 anchors, p8 fallback and audit). Assertions read the final serialized
+// pack text; omission checks read the audit-only metadata.
 const CASE = {
   question: "What do the returned records say?",
   golden: {
@@ -20,8 +22,13 @@ function execute(result, extra = {}) {
   return { tool: "mcp__raven__execute", result: text, resultChars: text.length, isError: false, ...extra };
 }
 
+const audits = new Map();
+
 function pack(candidateAnswer, transcript, extra = {}) {
-  return buildTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
+  const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
+  expect(buildTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra })).toBe(text);
+  audits.set(text, audit);
+  return text;
 }
 
 /** The claimSupport section of a final pack, as lines. */
@@ -32,18 +39,28 @@ function supportSection(text) {
   return lines.slice(start, end);
 }
 
-/** Each support unit as one header line plus its span line. */
+/**
+ * Each support unit as its header line and span line. The anchors and claim words that selected a
+ * unit are audit-only, so `labels` comes from the audit of the same pack, in the same order.
+ */
 function supportUnits(text) {
   const lines = supportSection(text);
   const units = [];
   lines.forEach((line, index) => {
-    if (/^\d+\. anchors=/.test(line)) units.push({ header: line, span: lines[index + 1] ?? "" });
+    if (/^\d+\. entry=/.test(line)) units.push({ header: line, span: lines[index + 1] ?? "" });
+  });
+  const audited = audits.get(text)?.units ?? [];
+  units.forEach((unit, index) => {
+    unit.labels = audited[index] ? [...audited[index].anchors, ...audited[index].claimWords] : [];
   });
   return units;
 }
 
-function omissionLine(text) {
-  return text.split("\n").find((line) => line.startsWith("claimSupportOmitted:"));
+/** Audit-only omitted anchors for the same input. They never appear in the judge pack. */
+function omitted(candidateAnswer, transcript, extra = {}) {
+  const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
+  expect(text).not.toContain("claimSupportOmitted");
+  return audit.omitted.map((item) => item.anchor);
 }
 
 function noOmissions(transcript, text, claims) {
@@ -58,7 +75,7 @@ const filler = (count, prefix = "Routine") =>
     summary: `${prefix} context sentence about unrelated ecosystem work. `.repeat(12)
   }));
 
-describe("p7 claim support: replayable coverage", () => {
+describe("claim support: replayable coverage", () => {
   it("keeps a late lowercase narrative clause that the answer repeats without quotes", () => {
     const summary =
       `${"The program opened with routine context about grants and events. ".repeat(14)}` +
@@ -112,12 +129,13 @@ describe("p7 claim support: replayable coverage", () => {
     })];
     const answer = "The SDK shipped v3.5.0 as stable. The older line reached v2.1.0.";
     const text = pack(answer, transcript);
+    const audited = omitted(answer, transcript);
     const units = supportUnits(text);
 
-    const tagged = units.find((unit) => unit.header.includes('"v3.5.0"'));
+    const tagged = units.find((unit) => unit.labels.includes("v3.5.0"));
     expect(tagged?.span).toBe("   span: releases={tag: v3.5.0 | note: Stable SDK release.}");
-    expect(units.some((unit) => unit.header.includes('"v2.1.0"'))).toBe(false);
-    expect(omissionLine(text)).not.toContain("v2.1.0");
+    expect(units.some((unit) => unit.labels.includes("v2.1.0"))).toBe(false);
+    expect(audited).not.toContain("v2.1.0");
   });
 
   it("keeps a repository and its commit date in one unit", () => {
@@ -150,7 +168,7 @@ describe("p7 claim support: replayable coverage", () => {
     expect(units.some((unit) => unit.span.includes("MigrationHook"))).toBe(true);
     // The two anchors are too far apart for one bounded span.
     expect(units.some((unit) => unit.span.includes("UpgradeableInternal") && unit.span.includes("MigrationHook"))).toBe(false);
-    expect(omissionLine(text)).toBe("claimSupportOmitted: none");
+    expect(omitted(answer, transcript)).toEqual([]);
   });
 
   it("keeps all fourteen dated prose claims of the synthetic pressure control", () => {
@@ -167,15 +185,16 @@ describe("p7 claim support: replayable coverage", () => {
   });
 });
 
-describe("p7 claim support: controls", () => {
+describe("claim support: controls", () => {
   it("never matches a number against a generated array index", () => {
     const names = Array.from({ length: 40 }, (_, index) => `Issuer ${String.fromCharCode(65 + (index % 26))}${index}`);
     const transcript = [execute({ names })];
-    const text = pack("The report was dated Aug 26, 2026, and it lists 26 issuers.", transcript);
+    const answer = "The report was dated Aug 26, 2026, and it lists 26 issuers.";
+    const text = pack(answer, transcript);
 
     expect(text).not.toMatch(/names\[\d+\]=/);
-    expect(supportUnits(text).some((unit) => unit.header.includes('"26"'))).toBe(false);
-    expect(omissionLine(text)).toBe("claimSupportOmitted: none");
+    expect(supportUnits(text).some((unit) => unit.labels.includes("26"))).toBe(false);
+    expect(omitted(answer, transcript)).toEqual([]);
   });
 
   it("does not anchor the day number of a written date", () => {
@@ -183,11 +202,11 @@ describe("p7 claim support: controls", () => {
     const dateOnly = pack("The round closed on Aug 26, 2026.", transcript);
     const counted = pack("The program ran 26 rounds by Aug 26, 2026.", transcript);
 
-    expect(supportUnits(dateOnly).some((unit) => unit.header.includes('"26"'))).toBe(false);
-    expect(supportUnits(counted).some((unit) => unit.header.includes('"26"'))).toBe(true);
+    expect(supportUnits(dateOnly).some((unit) => unit.labels.includes("26"))).toBe(false);
+    expect(supportUnits(counted).some((unit) => unit.labels.includes("26"))).toBe(true);
   });
 
-  it("ranks bare numbers after names and lists them last among omissions", () => {
+  it("drops bare numbers before names and keeps omitted anchors out of the judge pack", () => {
     const records = Array.from({ length: 10 }, (_, index) => ({
       name: `Vault ${String.fromCharCode(65 + index)}${String.fromCharCode(97 + index)}x`,
       count: 7100 + index
@@ -195,16 +214,23 @@ describe("p7 claim support: controls", () => {
     const transcript = [execute({ records })];
     const answer = records.map((record) => `${record.name} holds ${record.count} accounts.`).join("\n");
     const text = pack(answer, transcript, { maxChars: 1600 });
-    const line = omissionLine(text);
-    const listed = [...line.matchAll(/"([^"]+)" \(entry=/g)].map((match) => match[1]);
+    const lost = omitted(answer, transcript, { maxChars: 1600 });
+    const lostNames = lost.filter((value) => !/^\d+$/.test(value));
+    const lostNumbers = lost.filter((value) => /^\d+$/.test(value));
 
-    expect(line).toContain("a listed anchor can belong to a different record");
-    const firstNumber = listed.findIndex((value) => /^\d+$/.test(value));
-    expect(firstNumber).toBeGreaterThan(0);
-    expect(listed.slice(firstNumber).every((value) => /^\d+$/.test(value))).toBe(true);
+    expect(text).toContain("claimSupportNotice: some execute-result text that matches the candidate did not fit this pack");
+    expect(text).not.toMatch(/entry=\d+[;)]/);
+    expect(lostNumbers.length).toBeGreaterThan(0);
+    expect(lostNames.length).toBeLessThan(records.length);
+    // Kept units that show only bare numbers come after every unit that shows a name.
+    const labels = supportUnits(text).map((unit) => unit.labels);
+    const numberOnly = labels.map((list) => list.length > 0 && list.every((value) => /^\d+$/.test(value)));
+    const firstNumberOnly = numberOnly.indexOf(true);
+    if (firstNumberOnly >= 0) expect(numberOnly.slice(firstNumberOnly).every(Boolean)).toBe(true);
+    for (const value of lost) expect(supportSection(text).join("\n")).not.toContain(`"${value}"`);
   });
 
-  it("keeps source items for a roster answer before it drops below 24 support units", () => {
+  it("keeps source items for a roster answer before it drops below 28 support units", () => {
     const wallets = Array.from({ length: 40 }, (_, index) => ({
       title: `Wallet ${index} App`,
       url: `https://example.test/wallet/${index}`,
@@ -216,16 +242,17 @@ describe("p7 claim support: controls", () => {
     const items = text.split("\n").filter((line) => /^\d+\. title=/.test(line)).length;
 
     expect(text.length).toBeLessThanOrEqual(12000);
-    expect(supportUnits(text).length).toBeGreaterThanOrEqual(24);
+    expect(supportUnits(text).length).toBeGreaterThanOrEqual(28);
     expect(items).toBeGreaterThan(2);
   });
 
   it("does not support a number from a larger number, a date, or a decimal", () => {
     const transcript = [execute({ grant: { amount: "12,000 USDC", window: "2026-02-20", score: "4.2000" } })];
-    const text = pack("The grant was 2,000 USDC and 20 reviewers scored it 2000.", transcript);
+    const answer = "The grant was 2,000 USDC and 20 reviewers scored it 2000.";
+    const text = pack(answer, transcript);
 
-    expect(supportUnits(text).some((unit) => /"2,000"|"20"|"2000"/.test(unit.header))).toBe(false);
-    expect(omissionLine(text)).toBe("claimSupportOmitted: none");
+    expect(supportUnits(text).some((unit) => unit.labels.some((value) => ["2,000", "20", "2000"].includes(value)))).toBe(false);
+    expect(omitted(answer, transcript)).toEqual([]);
   });
 
   it("matches an amount in another written form but not a larger amount", () => {
@@ -236,18 +263,18 @@ describe("p7 claim support: controls", () => {
     const text = pack("Stellar DeFi TVL was $174.4M. The grant was $96,000.", transcript);
     const units = supportUnits(text);
 
-    expect(units.find((unit) => unit.header.includes('"$174.4M"'))?.span).toContain("$174.4 million at the end of Q1");
-    const grant = units.find((unit) => unit.header.includes('"$96,000"'));
+    expect(units.find((unit) => unit.labels.includes("$174.4M"))?.span).toContain("$174.4 million at the end of Q1");
+    const grant = units.find((unit) => unit.labels.includes("$96,000"));
     expect(grant?.span).toBe("   span: grants={amountUSD: 96000 | other: $1174.4 million in another network}");
     // The larger $1174.4 million in the same span does not count as $174.4M.
-    expect(grant?.header).not.toContain('"$174.4M"');
+    expect(grant?.labels).not.toContain("$174.4M");
   });
 
   it("matches a quotation that drops a short source word", () => {
     const transcript = [execute({ hits: [{ snippet: "lets third-party applications, such as **wallets**, to **cash**-**in** (deposit) USDC on Stellar" }] })];
     const text = pack('The page says it lets "third-party applications, such as wallets, cash-in (deposit) USDC on Stellar".', transcript);
 
-    expect(supportUnits(text).some((unit) => unit.header.includes("third-party applications"))).toBe(true);
+    expect(supportUnits(text).some((unit) => unit.labels.some((value) => value.includes("third-party applications")))).toBe(true);
   });
 
   it("shows the record that holds an answer number and prefers the claim's own record", () => {
@@ -258,12 +285,12 @@ describe("p7 claim support: controls", () => {
       ]
     })];
     const text = pack("Alpha Bridge received 2,000 USDC.", transcript);
-    const unit = supportUnits(text).find((item) => item.header.includes('"2,000 USDC"'));
+    const unit = supportUnits(text).find((item) => item.labels.includes("2,000 USDC"));
 
     expect(unit?.header).toContain('source="Alpha Bridge"');
 
     const unrelated = pack("Gamma Pool received 2,000 USDC.", transcript);
-    const shown = supportUnits(unrelated).find((item) => item.header.includes('"2,000 USDC"'));
+    const shown = supportUnits(unrelated).find((item) => item.labels.includes("2,000 USDC"));
     expect(shown?.header).toMatch(/source="(?:Beta Vault|Alpha Bridge)"/);
   });
 
@@ -278,7 +305,7 @@ describe("p7 claim support: controls", () => {
     expect(units.find((unit) => unit.span.includes("2026-03-01"))?.header).toContain("entry=1");
     const other = units.find((unit) => unit.span.includes("2026-04-01"));
     expect(other?.header).toContain("entry=2");
-    expect(other?.header).toContain("role=other-source");
+    expect(other?.header).toMatch(/role=(?:other-source|related-statement)/);
   });
 
   it("keeps support from a clipped JSON string and keeps the truncation footer", () => {
@@ -326,15 +353,15 @@ describe("p7 claim support: controls", () => {
     }));
     const transcript = [execute({ records })];
     const answer = records.map((record) => record.note).join("\n");
-    const text = pack(answer, transcript, { maxChars: 3000 });
-    const header = supportSection(text)[0];
-    const [, anchors, matched, shown] = header.match(/anchors=(\d+); transcriptMatched=(\d+); shown=(\d+)/).map(Number);
-    const omitted = Number(omissionLine(text).match(/claimSupportOmitted: (\d+)/)?.[1] ?? 0);
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: answer, transcript, maxChars: 3000 });
 
     expect(text.length).toBeLessThanOrEqual(3000);
-    expect(anchors).toBeGreaterThanOrEqual(matched);
-    expect(omitted).toBeGreaterThan(0);
-    expect(shown + omitted).toBe(matched);
+    expect(audit.anchors).toBeGreaterThanOrEqual(audit.transcriptMatched);
+    expect(audit.omitted.length).toBeGreaterThan(0);
+    expect(audit.shown + audit.omitted.length).toBe(audit.transcriptMatched);
+    expect(audit.omitted.every((item) => item.entries.length > 0)).toBe(true);
+    expect(text).toContain("claimSupportNotice:");
+    expect(text).not.toContain("claimSupportOmitted");
   });
 
   it("keeps stable rows without a pack", () => {
@@ -358,5 +385,125 @@ describe("p7 claim support: controls", () => {
     const transcript = [execute({ projects: filler(25) }), execute({ projects: filler(25, "Second") })];
     const answer = "Routine record 3 and Second record 7 describe unrelated ecosystem work.";
     expect(pack(answer, transcript)).toBe(pack(answer, transcript));
+  });
+});
+
+describe("claim support: p8 claim-word fallback and audit-only omissions", () => {
+  const spansOf = (text) => supportUnits(text).map((unit) => unit.span).join("\n");
+
+  it("keeps a lowercase paraphrase that supports a claim word no anchor covers", () => {
+    const transcript = [
+      execute({ article: {
+        title: "Tessera Pay roadmap",
+        content: `${"Roadmap context about merchant tooling. ".repeat(12)}Merchants are expected to settle pool payouts in 2027 through Tessera Pay.`
+      } }),
+      execute({ news: { title: "Tessera Pay launch recap", long_summary: `${"Launch recap context. ".repeat(10)}With the pool live, merchants can settle payouts instantly through Tessera Pay.` } }),
+      execute({ projects: filler(30) })
+    ];
+    const answer = "Tessera Pay lets merchants settle pool payouts instantly.";
+    const text = pack(answer, transcript);
+    const units = supportUnits(text);
+
+    expect(text.length).toBeLessThanOrEqual(12000);
+    const instant = units.find((unit) => unit.span.includes("settle payouts instantly"));
+    expect(instant?.header).toContain('source="Tessera Pay launch recap"');
+    // The differing statement stays beside it; p8 does not decide which one is true.
+    expect(units.some((unit) => unit.span.includes("expected to settle pool payouts in 2027"))).toBe(true);
+  });
+
+  it("finds the support sentence among many records that repeat the same name", () => {
+    const records = Array.from({ length: 12 }, (_, index) => ({
+      title: `Orion Vault update ${index}`,
+      summary: `Orion Vault published routine update ${index} about dashboards and fees.`
+    }));
+    records.push({ title: "Orion Vault risk policy", summary: "During audits, Orion Vault halts withdrawals for every pool." });
+    const transcript = [execute({ records }), execute({ projects: filler(25) })];
+    const text = pack("Orion Vault halts withdrawals during audits.", transcript);
+
+    const unit = supportUnits(text).find((item) => item.span.includes("halts withdrawals"));
+    expect(unit?.header).toContain('source="Orion Vault risk policy"');
+    expect(noOmissions(transcript, text, ["Orion Vault halts withdrawals during audits."])).toEqual({ omittedTerms: [], omittedProse: [] });
+  });
+
+  it("names the same source for two retrievals of one article", () => {
+    const article = (content) => ({ full: [{ title: "Introducing the Vela Plan", url: "https://example.test/vela-plan", content }] });
+    const transcript = [
+      execute(article("The Vela Plan has three stages for wallet migration.")),
+      execute({ projects: filler(10) }),
+      execute(article("The Vela Plan has three stages for wallet migration. Researchers showed the old curve needs only 812 logical units to break."))
+    ];
+    const answer = "The Vela Plan has three stages. Researchers showed the old curve needs only 812 logical units to break.";
+    const text = pack(answer, transcript);
+    const unit = supportUnits(text).find((item) => item.span.includes("812 logical units"));
+
+    expect(unit?.header).toContain("entry=3");
+    expect(unit?.header).toContain('source="Introducing the Vela Plan"');
+    expect(text).toContain("entry numbers name transcript calls, not sources");
+  });
+
+  it("never counts a pack label, counter, or omission notice as support", () => {
+    const transcript = [execute({ record: { title: "Lumen Bonds", content: "These bills mature on 2026-12-31 or earlier." } })];
+    const claims = ["Claims the bonds mature on 2026-12-31"];
+    const labelOnly = [
+      "--- TRANSCRIPT SOURCE BASIS ---",
+      "claimSupport: execute-result text for candidate claims; anchors=1; transcriptMatched=1; shown=0",
+      'claimSupportOmitted: 1 candidate anchors occur in execute results: "2026-12-31" (entry=1)',
+      "claimSupportNotice: some execute-result text that matches the candidate did not fit this pack",
+      '1. anchors=["2026-12-31"] entry=1 path="record.content" source="Lumen Bonds"',
+      "   span: Lumen Bonds",
+      '2. term="2026-12-31" entry=1 tool="mcp__raven__execute" resultChars=80',
+      "sourceItems: data-derived/untrusted",
+      '1. title="Lumen Bonds" matched="2026-12-31"'
+    ].join("\n");
+    const check = findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: labelOnly, claims });
+
+    expect(check.status).toBe("pack-omission");
+    expect(check.omittedTerms).toContain("2026-12-31");
+    const withSpan = `${labelOnly}\n3. entry=1 path="record.content" source="Lumen Bonds"\n   span: These bills mature on 2026-12-31 or earlier.`;
+    expect(findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: withSpan, claims }).omittedTerms).toEqual([]);
+  });
+
+  it("keeps omitted anchors and their entries out of the judge pack", () => {
+    const records = Array.from({ length: 40 }, (_, index) => ({
+      name: `Relay ${index} Hub`,
+      note: `Relay ${index} Hub routes ${3000 + index} transfers per day for partner desks.`
+    }));
+    const transcript = [execute({ records })];
+    const answer = records.map((record) => record.note).join("\n");
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: answer, transcript, maxChars: 4000 });
+
+    expect(audit.omitted.length).toBeGreaterThan(0);
+    expect(text).toContain("claimSupportNotice:");
+    expect(text).not.toMatch(/anchors=\[|claimWords=\[|claimSupportOmitted|transcriptMatched=/);
+    for (const item of audit.omitted) expect(text).not.toContain(`"${item.anchor}" (entry=`);
+  });
+
+  it("adds no fallback span from an unrelated record or for a fabricated claim", () => {
+    const transcript = [execute({
+      records: [
+        { title: "Nova Swap fees", summary: "Nova Swap charges a percentage fee for deposits on weekends." },
+        { title: "Kite Lend audit", summary: "Kite Lend was audited by a third-party firm before launch." }
+      ]
+    })];
+    const answer = "Vega Bridge charges a flat fee for withdrawals. Vega Bridge was audited by Halborn before its token launch.";
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: answer, transcript });
+
+    expect(spansOf(text)).not.toContain("Nova Swap");
+    expect(spansOf(text)).not.toContain("Kite Lend");
+    expect(audit.units.filter((unit) => unit.role === "claim-words")).toEqual([]);
+  });
+
+  it("stays inside the budget with fallback units under pressure", () => {
+    const records = Array.from({ length: 30 }, (_, index) => ({
+      title: `Harbor ${index} desk`,
+      summary: `${"Desk context sentence for routine operations. ".repeat(6)}Harbor ${index} desk clears overnight batches quietly after the settlement window closes.`
+    }));
+    const transcript = [execute({ records })];
+    const answer = records.map((_, index) => `Harbor ${index} desk clears overnight batches quietly.`).join("\n");
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: answer, transcript });
+
+    expect(text.length).toBeLessThanOrEqual(12000);
+    expect(audit.units.length).toBeGreaterThan(0);
+    expect(supportUnits(text)).toHaveLength(audit.units.length);
   });
 });

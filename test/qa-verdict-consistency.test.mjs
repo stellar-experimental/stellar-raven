@@ -796,7 +796,7 @@ describe("QA verdict consistency", () => {
       score: "correct",
       costUsd: 0.25,
       rubric: "v2.11",
-      packVersion: "p7"
+      packVersion: "p8"
     });
   });
 
