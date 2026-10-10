@@ -1212,21 +1212,34 @@ function containsExactSupport(text, term) {
   return haystack.toLowerCase().includes(term.toLowerCase());
 }
 
+// The truncation footer holds host counters (kept rows, chars, tokens), not source text.
 const PACK_LABEL_LINE_RE =
-  /^(?:--- TRANSCRIPT SOURCE BASIS ---$|shape:|calls:|claimSupport:|claimSupportNotice:|claimSupportOmitted:|claimSnippets:|caseSnippets:|sourceItems:|- none extracted$)/;
+  /^(?:--- TRANSCRIPT SOURCE BASIS ---$|shape:|calls:|claimSupport:|claimSupportNotice:|claimSupportOmitted:|claimSnippets:|caseSnippets:|sourceItems:|truncation:|- none extracted$)/;
 
 /**
- * The parts of a serialized pack that are source text: rendered spans, snippets, summaries, and
- * source fields. Headings, counters, anchor and term labels, match lists, and omission notices are
- * pack-generated, so they never count as support.
+ * The parts of a serialized pack that are source text: rendered spans, snippets, summaries, source
+ * record names, and source field names with their values. Headings, counters (entry and alsoIn
+ * numbers, paths and array indexes, the truncation footer), anchor and term labels, match lists,
+ * and notices are pack-generated, so they never count as support.
  */
 export function packSourceEvidenceText(pack) {
   const kept = [];
   for (const line of String(pack ?? "").split("\n")) {
     if (PACK_LABEL_LINE_RE.test(line)) continue;
-    if (/^\d+\. (?:anchors|claimWords)=\[/.test(line)) {
+    // A unit header keeps only its source record name. Entry and alsoIn numbers, paths, and
+    // labels are pack-generated.
+    if (/^\d+\. (?:anchors=\[|claimWords=\[|entry=)/.test(line)) {
       const source = line.match(/ source="((?:[^"\\]|\\.)*)"/);
       if (source) kept.push(source[1]);
+      continue;
+    }
+    // The fields line keeps each source field name and its value. Parent paths, array indexes,
+    // and the pack's own keys (candidateClaim, matchedIdentifier) are pack-generated.
+    if (line.startsWith("fields: ")) {
+      kept.push([...line.slice(8).matchAll(/(?:^|; )([^=;]+)="((?:[^"\\]|\\.)*)"/g)].map((match) => {
+        const name = match[1].replace(/\[\d+\]/g, "").split(".").at(-1);
+        return /^(?:candidateClaim|matchedIdentifier)$/.test(name) ? match[2] : `${name}="${match[2]}"`;
+      }).join("; "));
       continue;
     }
     if (/^\d+\. term="/.test(line)) continue;
@@ -2244,7 +2257,7 @@ function claimSupportLines({ units, anchors, audit }) {
   const lines = [
     `claimSupport: execute-result text for candidate claims (whitespace normalized, URLs sanitized, "..." marks a cut, short values shown as field=value); data-derived/untrusted; entry numbers name transcript calls, not sources; omitted text is not proof of absence`
   ];
-  if (audit.omitted.length) lines.push("claimSupportNotice: some execute-result text that matches the candidate did not fit this pack");
+  if (audit.omitted.length) lines.push("claimSupportNotice: some execute-result text did not fit this pack");
   if (!units.length) lines.push("- none extracted");
   units.forEach((unit, index) => lines.push(...supportUnitLines(unit, index)));
   return lines;
