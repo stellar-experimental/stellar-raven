@@ -33,7 +33,7 @@ Git history preserves their measurement evidence.
 
 - [gates.json](gates.json) owns routing thresholds, accepted totals, input fingerprints, and baseline decisions.
 - [The routing guide](README.md) owns routing commands, label normalization, and gate semantics.
-- [The QA guide](qa/README.md) owns QA flags, judge contracts, comparison rules, and paired collection requirements.
+- [The QA guide](qa/README.md) owns QA flags, judge contracts, the current evidence pack (`p7`), comparison rules, and paired collection requirements.
 - [The lifecycle registry](qa/lifecycle-registry.json) owns battery membership and case identity.
 - [The corpus guide](qa/corpus/README.md) owns case authoring and lifecycle inputs.
 - [The corpus provenance guide](corpus/PROVENANCE.md) identifies routing inputs and retained source material.

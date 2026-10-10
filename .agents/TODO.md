@@ -411,6 +411,12 @@ saved omission rows, and new fixture classes.
 The repair changes judge inputs. It needs a new pack version, an independent review, and its own
 authorized measurement. Land it after the paired run (owner decision A), or pin p6 for that run.
 Do not change frozen adapter-measurement artifacts or replace their verdicts.
+
+Branch `w1010/r` (2026-10-10) implements this repair as pack `p7`.
+The [offline replay](rounds/2026-10-10-weekend/pack-p7/replay-p7-omissions.json) holds the
+transcript support for 12 of 12 supported disputed claims; p6 holds 2.
+The [measurement plan](rounds/2026-10-10-weekend/pack-p7/measurement-plan.md) defines the paid
+paired re-judge. The independent review and that measurement remain open.
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized

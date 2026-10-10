@@ -243,7 +243,7 @@ A projected answer without that envelope can remain `indeterminate`.
 
 ## Judging rubric and score comparability
 
-The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p6`.
+The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p7`.
 [judge.mjs](judge.mjs) owns the prompt and rubric. [evidence-pack.mjs](evidence-pack.mjs) owns evidence selection and serialization.
 
 For ordinary cases, `correct` requires all substantive key facts and no wrong claim or fired avoid.
@@ -267,6 +267,22 @@ For non-stable cases, the bounded evidence pack supports sourced changes from th
 Pack absence does not prove source absence.
 The pack omits detected A/V `created_at` values and preserves source-basis boundaries.
 
+### Claim support in pack `p7`
+
+The `claimSupport` section shows exact execute-result spans for anchors in the candidate answer.
+Anchors are quoted clauses, complete version strings, exact terms, candidate terms, and phrases shared by the answer and the results.
+Anchors come only from the answer and the saved results; judge verdicts never select judge input.
+Each unit names its execute entry, tool, outcome, truncation state, JSON path, and source record.
+A span keeps whitespace normalized and URLs sanitized; `...` marks a cut, and a cut never splits an anchor.
+Short field values carry their field name, and a small record keeps its fields together in one span.
+An anchor counts as shown only when a final rendered span still contains it.
+So a secondary anchor that a shorter span loses gets its own unit.
+The pack recomputes that coverage after each budget cut.
+`claimSupportOmitted` lists matched anchors whose spans did not fit, with their entries.
+`caseSnippets` holds question and golden terms that the answer does not use.
+The budget stays 12,000 characters: source items and fields shrink first, then spans, then units.
+Stable rows still receive no pack.
+
 [verdict-consistency.mjs](verdict-consistency.mjs) validates issue arrays, avoid indexes, and score consistency.
 A consistency error preserves `judgeScore`, sets `coreAnswer: null`, and records violations.
 It does not parse answer prose to decide which avoid fired.
@@ -276,6 +292,8 @@ A model or contract mismatch requires an explicitly labeled comparison under a c
 Changes to grading semantics require a rubric-version change.
 Changes to evidence selection or serialization require a pack-version change.
 Use prompt-hash fixtures to demonstrate that a comment or formatting change preserves prompt bytes.
+The code keeps only the current pack. To rebuild an earlier pack, import `eval/qa/evidence-pack.mjs` from the revision that defined it.
+For `p6`, use revision `d15a4ce5`, as in [the p7 replay](../../.agents/rounds/2026-10-10-weekend/pack-p7/replay-p7-omissions.mjs).
 
 The sampler allocates by service, sorts IDs, and selects evenly spaced cases.
 Corpus growth can change membership even when the requested sample size stays fixed.
@@ -412,7 +430,7 @@ For an approved paid run, replace `--dry-run` with these flags:
 | `--dry-run` | Inspect selection and guards without paid calls |
 | `--help` / `-h` | Print the parser's full usage contract |
 
-`--cases-ref` does not establish pack identity. A `p3` source still differs from a `p6` re-judge.
+`--cases-ref` does not establish pack identity. A `p6` source still differs from a `p7` re-judge.
 Non-identical comparisons cannot establish identical-input judge variance.
 `--allow-non-identical` does not waive baseline guards for `--flips-vs`.
 `--allow-golden-drift` does not waive case, tuple, or baseline identity checks.
