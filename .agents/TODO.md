@@ -415,8 +415,10 @@ Do not change frozen adapter-measurement artifacts or replace their verdicts.
 Branch `w1010/r` (2026-10-10) implements this repair as pack `p7`.
 The [offline replay](rounds/2026-10-10-weekend/pack-p7/replay-p7-omissions.json) holds the
 transcript support for 12 of 12 supported disputed claims; p6 holds 2.
-The [measurement plan](rounds/2026-10-10-weekend/pack-p7/measurement-plan.md) defines the paid
-paired re-judge. The independent review and that measurement remain open.
+The [paired re-judge](rounds/2026-10-10-weekend/pack-p7/results.md) ran on 2026-10-10 ($18.19).
+p7 repaired support (Stage 1) with no false upgrade (Stage 3). One stored-correct control fell to
+`wrong` with a pack cause (Stage 2), so p7 is blocked and returns for repair. The post-run review
+remains open.
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
