@@ -291,8 +291,12 @@ It says only that some execute-result text did not fit; it names no anchor, entr
 That metadata never enters the judge prompt.
 `findTranscriptEvidencePackOmissions` counts only source text in a pack.
 That is spans, snippets, summaries, source record names, and source field names with their values.
+It also counts the values in a `provenance:` line's `sourceMetadata`, such as a `generatedAt` date or `counts.total`.
+Those values come from the service response.
 Headings, anchor and term labels, match lists, and notices never count as support.
 Counters never count either: entry and `alsoIn` numbers, paths and array indexes, and the `truncation:` footer.
+`(+N more)` suffixes and the provenance line's operation names, shape, character, token, timing, and call counts never count.
+This filter is diagnostic only; it never changes the judge pack or the judge prompt.
 `caseSnippets` holds question and golden terms that the answer does not use.
 The budget stays 12,000 characters.
 Summaries shrink first, then source items go to 8 and fields to 16, then spans shrink.

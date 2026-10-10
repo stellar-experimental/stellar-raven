@@ -484,6 +484,33 @@ describe("claim support: p8 claim-word fallback and audit-only omissions", () =>
     expect(packSourceEvidenceText(countersOnly)).toBe(['name="Desk 3"', "Desk 3", "name=Desk 3"].join("\n"));
   });
 
+  it("never counts a provenance character counter or a (+N more) suffix as support (R6 probes)", () => {
+    const transcript = [execute({ report: { totalChars: 18126, extraLinks: 20 } })];
+    const pack = [
+      "--- TRANSCRIPT SOURCE BASIS ---",
+      "canonicalUrls: data-derived/untrusted; https://example.test/report (+20 more)",
+      "provenance: execute#1: --- SOURCE METADATA --- shape: object; 18126 chars; ~4531 tokens; 1 top-level keys calls: scout.searchProjects=ok/420ms (totals ok=1 error=0 soft-empty=0)"
+    ].join("\n");
+
+    for (const number of ["18126", "20"]) {
+      const check = findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: pack, claims: [`Claims the report has ${number} items`] });
+      expect(check.status).toBe("pack-omission");
+      expect(check.omittedTerms).toContain(number);
+    }
+    expect(packSourceEvidenceText(pack)).toBe("canonicalUrls: data-derived/untrusted; https://example.test/report");
+  });
+
+  it("keeps a real source-metadata date in the provenance line as support", () => {
+    const result = `${JSON.stringify({ ok: true, data: { projects: [] } })}\n--- SOURCE METADATA --- sourceMetadata: scout.searchProjects data.meta.generatedAt="2026-10-08T00:04:52.749Z"`;
+    const transcript = [execute(result)];
+    const pack = 'provenance: execute#1: --- SOURCE METADATA --- shape: object; 900 chars sourceMetadata: scout.searchProjects data.meta.generatedAt="2026-10-08T00:04:52.749Z"; scout.searchProjects data.meta.counts.total=178';
+    const check = findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: pack, claims: ["Claims the directory was generated on 2026-10-08"] });
+
+    expect(check.transcriptSupportedTerms).toBe(1);
+    expect(check.omittedTerms).toEqual([]);
+    expect(packSourceEvidenceText(pack)).toBe('generatedAt="2026-10-08T00:04:52.749Z"; total=178');
+  });
+
   it("keeps omitted anchors and their entries out of the judge pack", () => {
     const records = Array.from({ length: 40 }, (_, index) => ({
       name: `Relay ${index} Hub`,
