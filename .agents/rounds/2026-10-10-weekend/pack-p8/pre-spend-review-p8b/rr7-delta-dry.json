@@ -1,0 +1,58 @@
+{
+  "sourceResultsPath": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+  "selectedIds": [
+    "q-defi-arbitrage-pathpayment-bots"
+  ],
+  "initialJudging": false,
+  "guards": {
+    "cases": {
+      "expectedCasesSha256": "460c06c3dd5edf2d7263f104c7d59313aab1c095ef6cb35fcf8f180b9e6793e1",
+      "actualCasesSha256": "460c06c3dd5edf2d7263f104c7d59313aab1c095ef6cb35fcf8f180b9e6793e1",
+      "expectedCaseIdsSha256": "2aff18e4569a80e971cd089d6deb3a0ed2c7ed2189e2870f27248c1f3705d873",
+      "actualCaseIdsSha256": "2aff18e4569a80e971cd089d6deb3a0ed2c7ed2189e2870f27248c1f3705d873",
+      "missingCaseIds": [],
+      "orderMatches": true,
+      "matches": true
+    },
+    "casesMode": "revision",
+    "historicalCases": {
+      "requested": "ae39dcc9fcde983f75709f95964f9f080a8c0091",
+      "resolvedCommit": "ae39dcc9fcde983f75709f95964f9f080a8c0091",
+      "repositoryRelativeCasesPath": "eval/qa/cases.json",
+      "selectedCasesSha256": "460c06c3dd5edf2d7263f104c7d59313aab1c095ef6cb35fcf8f180b9e6793e1",
+      "guard": {
+        "expectedCasesSha256": "460c06c3dd5edf2d7263f104c7d59313aab1c095ef6cb35fcf8f180b9e6793e1",
+        "actualCasesSha256": "460c06c3dd5edf2d7263f104c7d59313aab1c095ef6cb35fcf8f180b9e6793e1",
+        "expectedCaseIdsSha256": "2aff18e4569a80e971cd089d6deb3a0ed2c7ed2189e2870f27248c1f3705d873",
+        "actualCaseIdsSha256": "2aff18e4569a80e971cd089d6deb3a0ed2c7ed2189e2870f27248c1f3705d873",
+        "missingCaseIds": [],
+        "orderMatches": true,
+        "matches": true
+      }
+    },
+    "tuple": {
+      "source": {
+        "model": "claude-sonnet-5",
+        "rubric": "v2.10",
+        "packVersion": "p6"
+      },
+      "current": {
+        "model": "claude-sonnet-5",
+        "rubric": "v2.11",
+        "packVersion": "p8"
+      },
+      "matches": false
+    },
+    "goldenTime": {
+      "matches": true,
+      "finishedAt": "2026-10-08T02:40:37.666Z",
+      "checkedIds": [
+        "q-defi-arbitrage-pathpayment-bots"
+      ],
+      "violations": [],
+      "allowGoldenDrift": false
+    },
+    "allowNonIdentical": true,
+    "wouldRefuse": false
+  }
+}
