@@ -1243,6 +1243,7 @@ export function findTranscriptEvidencePackOmissions({
 
 const SUPPORT_TOKEN_RE = /[\p{L}\p{N}]+/gu;
 const SUPPORT_SEPARATOR = "[^\\p{L}\\p{N}]+";
+const QUOTED_SEPARATOR = "[^\\p{L}\\p{N}]+(?:[\\p{L}\\p{N}]{1,12}[^\\p{L}\\p{N}]+){0,2}?";
 const VERSION_ANCHOR_RE =
   /(?<![\p{L}\p{N}.])(?:v\d+(?:\.\d+)+|\d+\.\d+\.\d+(?:\.\d+)?)(?:-(?:alpha|beta|rc|pre|preview|dev|canary|next)(?:\.?\d+)*)?(?![\p{L}\p{N}]|[.-][\p{L}\p{N}])/giu;
 
@@ -1257,20 +1258,35 @@ function supportTokens(value) {
 function supportAnchorRegExp(anchor) {
   if (anchor.kind === "phrase" || (anchor.kind === "quoted" && supportTokens(anchor.value).length >= 3)) {
     const tokens = supportTokens(anchor.value).map(escapeRegExp);
-    return new RegExp(`(?<![\\p{L}\\p{N}])${tokens.join(SUPPORT_SEPARATOR)}(?![\\p{L}\\p{N}])`, "giu");
+    // A quotation may drop a short word, so up to two source words may sit between quoted words.
+    const separator = anchor.kind === "quoted" ? QUOTED_SEPARATOR : SUPPORT_SEPARATOR;
+    return new RegExp(`(?<![\\p{L}\\p{N}])${tokens.join(separator)}(?![\\p{L}\\p{N}])`, "giu");
   }
   if (anchor.kind === "version") {
     const core = escapeRegExp(anchor.value.replace(/^v/i, ""));
     return new RegExp(`(?<![\\p{N}.])v?${core}(?![\\p{N}]|[.-][\\p{L}\\p{N}])`, "giu");
   }
-  if (/^\$?\s?\d[\d,]*(?:\.\d+)?$/.test(anchor.value)) {
-    // A bare number never matches inside a date, version, identifier, path, or larger number.
-    return new RegExp(`(?<![\\p{L}\\p{N}.,_/:-])${escapeRegExp(anchor.value)}(?![\\p{L}\\p{N}_/-]|[.,:]\\p{N})`, "giu");
+  const scaled = anchor.value.match(/^(\$?)\s?(\d[\d,]*(?:\.\d+)?)\s?([KMB])$/i);
+  if (scaled) {
+    // An abbreviated amount also matches its spelled-out scale: $174.4M and $174.4 million.
+    const scale = { k: "k|thousand", m: "m|mn|million", b: "b|bn|billion" }[scaled[3].toLowerCase()];
+    return new RegExp(
+      `(?<![\\p{L}\\p{N}.,_/:-])${scaled[1] ? "\\$\\s?" : "\\$?\\s?"}${escapeRegExp(scaled[2])}\\s?(?:${scale})(?![\\p{L}\\p{N}])`,
+      "giu"
+    );
   }
-  if (isIdentifierLikeClaimTerm(anchor.value) && !/^\d{4}-\d{2}-\d{2}$/.test(anchor.value)) {
+  const number = anchor.value.match(/^(\$?)\s?(\d[\d,]*(?:\.\d+)?)$/);
+  if (number) {
+    // A bare number never matches inside a date, version, identifier, path, or larger number.
+    // Thousands separators and a currency sign are optional in the source: $96,000 matches 96000.
+    const digits = escapeRegExp(number[2]).replace(/,/g, ",?");
+    return new RegExp(`(?<![\\p{L}\\p{N}.,_/:-])${number[1] ? "\\$?\\s?" : ""}${digits}(?![\\p{L}\\p{N}_/-]|[.,:]\\p{N})`, "giu");
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(anchor.value) || /^\$?\s?\d/.test(anchor.value)) return termMatchRegExp(anchor.value, "gi");
+  if (isIdentifierLikeClaimTerm(anchor.value)) {
     return new RegExp(`(?<![\\p{L}\\p{N}_./-])${escapeRegExp(anchor.value)}(?![\\p{L}\\p{N}_./-])`, "giu");
   }
-  return termMatchRegExp(anchor.value, "gi");
+  return new RegExp(escapeRegExp(anchor.value), "gi");
 }
 
 // Every match of an anchor in text. A URL anchor matches a URL whose sanitized form is equal.
@@ -1368,7 +1384,10 @@ function isScalarArray(value) {
     value.every((item) => item === null || ["string", "number", "boolean"].includes(typeof item) && String(item).length <= 120);
 }
 
+// A string array keeps its exact JSON text. Other arrays separate items with ", " so that each
+// number keeps its own boundaries.
 function renderScalarArray(key, values) {
+  if (values.every((item) => typeof item === "string")) return `${key}=${JSON.stringify(values)}`;
   return `${key}=[${values.map((item) => typeof item === "string" ? JSON.stringify(item) : String(item)).join(", ")}]`;
 }
 
@@ -1758,7 +1777,7 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
       placed = true;
       break;
     }
-    // Every occurrence sits inside text that URL sanitization removes.
+    // No rendered span keeps the anchor, for example when URL sanitization removes it.
     if (!placed) unrenderable.add(anchor.id);
   }
   let alternates = 0;
@@ -1806,7 +1825,7 @@ function supportOmissionLine(omitted, anchors, occurrences, segments, unrenderab
   if (!omitted.length) return "claimSupportOmitted: none";
   const listed = omitted.slice(0, MAX_LISTED_SUPPORT_OMISSIONS).map((id) => {
     const entriesSeen = unique(occurrences[id].map((occurrence) => segments[occurrence.segmentIndex].entryIndex + 1));
-    const reason = unrenderable.has(id) ? "; only inside a URL part that sanitization removes" : "";
+    const reason = unrenderable.has(id) ? "; no rendered span keeps it, such as a URL part that sanitization removes" : "";
     return `${JSON.stringify(truncate(anchors[id].value, 60))} (entry=${entriesSeen.slice(0, 4).join(",")}${reason})`;
   });
   const more = omitted.length > listed.length ? `; +${omitted.length - listed.length} more` : "";
