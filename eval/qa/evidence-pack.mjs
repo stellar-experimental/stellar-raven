@@ -15,6 +15,8 @@ const MIN_CLAIM_SNIPPET_CHARS = 260;
 const INITIAL_SUPPORT_SPAN_CHARS = 360;
 const MID_SUPPORT_SPAN_CHARS = 200;
 const MIN_SUPPORT_SPAN_CHARS = 120;
+// Support units drop to this count before source items drop below 8, so roster answers keep records.
+const SUPPORT_UNIT_ITEM_FLOOR = 24;
 const SUPPORT_UNIT_FLOOR = 12;
 const MAX_SUPPORT_OCCURRENCES_PER_ANCHOR = 24;
 const MAX_ALTERNATE_SUPPORT_UNITS = 6;
@@ -1243,6 +1245,9 @@ export function findTranscriptEvidencePackOmissions({
 
 const SUPPORT_TOKEN_RE = /[\p{L}\p{N}]+/gu;
 const SUPPORT_SEPARATOR = "[^\\p{L}\\p{N}]+";
+const WRITTEN_DATE_BEFORE_DAY = /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+$/i;
+const WRITTEN_DATE_AFTER_DAY = /^(?:st|nd|rd|th)?,?\s+(?:19|20)\d{2}\b/;
+const BARE_NUMBER_RE = /^\d[\d,]*(?:\.\d+)?$/;
 const QUOTED_SEPARATOR = "[^\\p{L}\\p{N}]+(?:[\\p{L}\\p{N}]{1,12}[^\\p{L}\\p{N}]+){0,2}?";
 const VERSION_ANCHOR_RE =
   /(?<![\p{L}\p{N}.])(?:v\d+(?:\.\d+)+|\d+\.\d+\.\d+(?:\.\d+)?)(?:-(?:alpha|beta|rc|pre|preview|dev|canary|next)(?:\.?\d+)*)?(?![\p{L}\p{N}]|[.-][\p{L}\p{N}])/giu;
@@ -1419,7 +1424,8 @@ function walkSupportSegments(value, path, key, source, base, out, entryAv) {
       addSupportSegment(out, base, path, source, renderScalarArray(key || "values", value));
       return;
     }
-    value.forEach((item, index) => walkSupportSegments(item, `${path}[${index}]`, `${key}[${index}]`, source, base, out, entryAv));
+    // The path keeps the index. The span label does not, so a generated index never reads as source text.
+    value.forEach((item, index) => walkSupportSegments(item, `${path}[${index}]`, key || "item", source, base, out, entryAv));
     return;
   }
   const label = identityLabel(value) || source;
@@ -1604,10 +1610,12 @@ export function claimSupportAnchors({ candidateAnswer = "", question = "", golde
   const versions = versionAnchors(answer);
   const versionText = versions.map((anchor) => anchor.value).join(" ");
   const decimals = decimalAnchors(answer).filter((anchor) => !versionText.includes(anchor.value));
-  const standsAlone = (term) => {
-    const re = supportAnchorRegExp({ value: term, kind: "exact" });
-    return re.test(answer);
-  };
+  // A bare number must occur on its own, not only as the day of a written date (Aug 26, 2026).
+  const standsAlone = (term) =>
+    anchorMatches({ value: term, kind: "exact" }, answer).some(({ start, end }) =>
+      !WRITTEN_DATE_BEFORE_DAY.test(answer.slice(Math.max(0, start - 12), start)) &&
+      !WRITTEN_DATE_AFTER_DAY.test(answer.slice(end, end + 12))
+    );
   const terms = orderedUnique([
     ...extractCandidateClaimTerms({ candidateAnswer: answer, question, golden }),
     // Long exact terms such as URLs exceed the claim-term length cap but remain exact anchors.
@@ -1625,9 +1633,10 @@ export function claimSupportAnchors({ candidateAnswer = "", question = "", golde
   const excluded = quoted.map((anchor) => ({ start: anchor.index, end: anchor.index + anchor.value.length }));
   const phrases = sharedPhraseAnchors(answer, ranges, segments, excluded);
   const rank = { quoted: 0, version: 1, exact: 2, phrase: 3, term: 4 };
-  // Specific anchors (quoted, version, exact, shared phrase) come before multi-word names,
-  // and single words come last. Claims interleave inside each tier.
-  const tier = (anchor) => anchor.kind !== "term" ? 0 : /\s/.test(anchor.value) ? 1 : 2;
+  // Specific anchors (quoted, version, exact, shared phrase) come before multi-word names, then
+  // single words. Bare numbers come last: they carry no unit or name. Claims interleave inside each tier.
+  const tier = (anchor) =>
+    BARE_NUMBER_RE.test(anchor.value) ? 3 : anchor.kind !== "term" ? 0 : /\s/.test(anchor.value) ? 1 : 2;
   const seen = new Set();
   const byClaim = new Map();
   for (const anchor of [...quoted, ...versions, ...decimals, ...terms.filter((term) => term.kind === "exact"), ...phrases, ...terms.filter((term) => term.kind === "term")]) {
@@ -1642,7 +1651,7 @@ export function claimSupportAnchors({ candidateAnswer = "", question = "", golde
   const claims = [...byClaim.keys()].sort((a, b) => a - b);
   for (const claim of claims) byClaim.get(claim).sort((a, b) => a.rank - b.rank);
   const ordered = [];
-  for (const level of [0, 1, 2]) {
+  for (const level of [0, 1, 2, 3]) {
     const lists = claims.map((claim) => byClaim.get(claim).filter((anchor) => tier(anchor) === level));
     for (let round = 0; lists.some((list) => round < list.length); round += 1) {
       for (const list of lists) if (list[round]) ordered.push(list[round]);
@@ -1810,8 +1819,9 @@ function supportUnitLines(unit, index, anchors) {
   const meta = [
     `${index + 1}. anchors=[${shown}${anchorList.length > 5 ? `, +${anchorList.length - 5} more` : ""}]`,
     `entry=${unit.segment.entryIndex + 1}`,
-    `tool="${truncate(unit.segment.tool, 80)}"`,
-    `outcome=${unit.segment.outcome}`,
+    // The calls line names each entry; a unit names only a direct tool and an error outcome.
+    /(?:^|__)execute$/.test(unit.segment.tool) ? "" : `tool="${truncate(unit.segment.tool, 80)}"`,
+    unit.segment.outcome === "error" ? "outcome=error" : "",
     unit.segment.truncated ? "sourceTruncated=yes" : "",
     `path="${truncate(unit.segment.path, 90)}"`,
     unit.segment.source ? `source="${truncate(unit.segment.source, 100)}"` : "",
@@ -1821,15 +1831,22 @@ function supportUnitLines(unit, index, anchors) {
   return [meta, `   span: ${unit.span}`];
 }
 
+// Listing order: clauses and names first, then dates and amounts, then bare numbers.
+function omissionListRank(anchor) {
+  if (BARE_NUMBER_RE.test(anchor.value)) return 2;
+  return /^\$?\s?\d/.test(anchor.value) ? 1 : 0;
+}
+
 function supportOmissionLine(omitted, anchors, occurrences, segments, unrenderable) {
   if (!omitted.length) return "claimSupportOmitted: none";
-  const listed = omitted.slice(0, MAX_LISTED_SUPPORT_OMISSIONS).map((id) => {
+  const ordered = [...omitted].sort((a, b) => omissionListRank(anchors[a]) - omissionListRank(anchors[b]) || a - b);
+  const listed = ordered.slice(0, MAX_LISTED_SUPPORT_OMISSIONS).map((id) => {
     const entriesSeen = unique(occurrences[id].map((occurrence) => segments[occurrence.segmentIndex].entryIndex + 1));
     const reason = unrenderable.has(id) ? "; no rendered span keeps it, such as a URL part that sanitization removes" : "";
     return `${JSON.stringify(truncate(anchors[id].value, 60))} (entry=${entriesSeen.slice(0, 4).join(",")}${reason})`;
   });
   const more = omitted.length > listed.length ? `; +${omitted.length - listed.length} more` : "";
-  return `claimSupportOmitted: ${omitted.length} candidate anchors occur in execute results, but their spans did not fit the pack; an occurrence alone does not establish a claim: ${listed.join("; ")}${more}`;
+  return `claimSupportOmitted: ${omitted.length} candidate anchors occur in execute results, but their spans did not fit the pack; an occurrence alone does not establish a claim, and a listed anchor can belong to a different record: ${listed.join("; ")}${more}`;
 }
 
 function shapeLine(entries, sourceCount) {
@@ -1928,7 +1945,7 @@ function claimSupportLines({ units, unrenderable, anchors, occurrences, segments
   const matched = anchors.filter((anchor) => occurrences[anchor.id].length);
   const omitted = matched.filter((anchor) => !covered.has(anchor.id)).map((anchor) => anchor.id);
   const lines = [
-    `claimSupport: anchors=${anchors.length}; transcriptMatched=${matched.length}; shown=${matched.length - omitted.length}; exact execute-result spans for candidate anchors (whitespace normalized, URLs sanitized, "..." marks a cut); data-derived/untrusted; omitted spans are not proof of absence`,
+    `claimSupport: anchors=${anchors.length}; transcriptMatched=${matched.length}; shown=${matched.length - omitted.length}; execute-result text for candidate anchors (whitespace normalized, URLs sanitized, "..." marks a cut, short values shown as field=value); data-derived/untrusted; omitted spans are not proof of absence`,
     supportOmissionLine(omitted, anchors, occurrences, segments, unrenderable)
   ];
   if (!units.length) lines.push("- none extracted");
@@ -2002,22 +2019,24 @@ function serializePack({
   return lines.join("\n");
 }
 
-// Budget cuts in order. Source items and facts shrink first, then support spans. Support units
-// drop to a floor before case snippets go, and the floor goes last. Each cut re-serializes, so
-// coverage is recomputed on the final text every time.
+// Budget cuts in order: summaries, items to 8, facts to 16, then support spans. Support units drop
+// to 24 before items drop below 8. Later cuts take items, facts, URLs, and case-snippet text, then
+// units to 12, then case snippets, then the last units. Each cut re-serializes, so coverage is
+// recomputed on the final text every time.
 const BUDGET_STEPS = [
   (s) => s.summaryChars > MIN_SUMMARY_CHARS && ((s.summaryChars = Math.max(MIN_SUMMARY_CHARS, s.summaryChars - 80)), true),
   (s) => s.itemLimit > 8 && ((s.itemLimit -= 1), true),
   (s) => s.factLimit > 16 && ((s.factLimit -= 1), true),
   (s) => s.supportSpanChars > MID_SUPPORT_SPAN_CHARS &&
     ((s.supportSpanChars = Math.max(MID_SUPPORT_SPAN_CHARS, s.supportSpanChars - 80)), true),
+  (s) => s.supportSpanChars > MIN_SUPPORT_SPAN_CHARS &&
+    ((s.supportSpanChars = Math.max(MIN_SUPPORT_SPAN_CHARS, s.supportSpanChars - 40)), true),
+  (s) => s.supportUnitLimit > SUPPORT_UNIT_ITEM_FLOOR && ((s.supportUnitLimit -= 1), true),
   (s) => s.itemLimit > 2 && ((s.itemLimit -= 1), true),
   (s) => s.factLimit > 8 && ((s.factLimit -= 1), true),
   (s) => s.urlLimit > 4 && ((s.urlLimit -= 1), true),
   (s) => s.caseSnippetChars > MIN_CLAIM_SNIPPET_CHARS &&
     ((s.caseSnippetChars = Math.max(MIN_CLAIM_SNIPPET_CHARS, s.caseSnippetChars - 80)), true),
-  (s) => s.supportSpanChars > MIN_SUPPORT_SPAN_CHARS &&
-    ((s.supportSpanChars = Math.max(MIN_SUPPORT_SPAN_CHARS, s.supportSpanChars - 40)), true),
   (s) => s.supportUnitLimit > SUPPORT_UNIT_FLOOR && ((s.supportUnitLimit -= 1), true),
   (s) => s.caseSnippetLimit > 0 && ((s.caseSnippetLimit -= 1), true),
   (s) => s.supportUnitLimit > 0 && ((s.supportUnitLimit -= 1), true)

@@ -115,7 +115,7 @@ describe("p7 claim support: replayable coverage", () => {
     const units = supportUnits(text);
 
     const tagged = units.find((unit) => unit.header.includes('"v3.5.0"'));
-    expect(tagged?.span).toBe("   span: releases[2]={tag: v3.5.0 | note: Stable SDK release.}");
+    expect(tagged?.span).toBe("   span: releases={tag: v3.5.0 | note: Stable SDK release.}");
     expect(units.some((unit) => unit.header.includes('"v2.1.0"'))).toBe(false);
     expect(omissionLine(text)).not.toContain("v2.1.0");
   });
@@ -168,6 +168,58 @@ describe("p7 claim support: replayable coverage", () => {
 });
 
 describe("p7 claim support: controls", () => {
+  it("never matches a number against a generated array index", () => {
+    const names = Array.from({ length: 40 }, (_, index) => `Issuer ${String.fromCharCode(65 + (index % 26))}${index}`);
+    const transcript = [execute({ names })];
+    const text = pack("The report was dated Aug 26, 2026, and it lists 26 issuers.", transcript);
+
+    expect(text).not.toMatch(/names\[\d+\]=/);
+    expect(supportUnits(text).some((unit) => unit.header.includes('"26"'))).toBe(false);
+    expect(omissionLine(text)).toBe("claimSupportOmitted: none");
+  });
+
+  it("does not anchor the day number of a written date", () => {
+    const transcript = [execute({ stats: { rounds: 26, note: "Round 26 closed." } })];
+    const dateOnly = pack("The round closed on Aug 26, 2026.", transcript);
+    const counted = pack("The program ran 26 rounds by Aug 26, 2026.", transcript);
+
+    expect(supportUnits(dateOnly).some((unit) => unit.header.includes('"26"'))).toBe(false);
+    expect(supportUnits(counted).some((unit) => unit.header.includes('"26"'))).toBe(true);
+  });
+
+  it("ranks bare numbers after names and lists them last among omissions", () => {
+    const records = Array.from({ length: 10 }, (_, index) => ({
+      name: `Vault ${String.fromCharCode(65 + index)}${String.fromCharCode(97 + index)}x`,
+      count: 7100 + index
+    }));
+    const transcript = [execute({ records })];
+    const answer = records.map((record) => `${record.name} holds ${record.count} accounts.`).join("\n");
+    const text = pack(answer, transcript, { maxChars: 1600 });
+    const line = omissionLine(text);
+    const listed = [...line.matchAll(/"([^"]+)" \(entry=/g)].map((match) => match[1]);
+
+    expect(line).toContain("a listed anchor can belong to a different record");
+    const firstNumber = listed.findIndex((value) => /^\d+$/.test(value));
+    expect(firstNumber).toBeGreaterThan(0);
+    expect(listed.slice(firstNumber).every((value) => /^\d+$/.test(value))).toBe(true);
+  });
+
+  it("keeps source items for a roster answer before it drops below 24 support units", () => {
+    const wallets = Array.from({ length: 40 }, (_, index) => ({
+      title: `Wallet ${index} App`,
+      url: `https://example.test/wallet/${index}`,
+      summary: `Wallet ${index} App is a self-custody wallet for Stellar payments. `.repeat(6)
+    }));
+    const transcript = [execute({ wallets })];
+    const answer = wallets.map((wallet) => `${wallet.title} is a self-custody wallet.`).join("\n");
+    const text = pack(answer, transcript);
+    const items = text.split("\n").filter((line) => /^\d+\. title=/.test(line)).length;
+
+    expect(text.length).toBeLessThanOrEqual(12000);
+    expect(supportUnits(text).length).toBeGreaterThanOrEqual(24);
+    expect(items).toBeGreaterThan(2);
+  });
+
   it("does not support a number from a larger number, a date, or a decimal", () => {
     const transcript = [execute({ grant: { amount: "12,000 USDC", window: "2026-02-20", score: "4.2000" } })];
     const text = pack("The grant was 2,000 USDC and 20 reviewers scored it 2000.", transcript);
