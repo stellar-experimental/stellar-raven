@@ -52,4 +52,12 @@ Row IDs per invocation are in the plan's row-selection tables.
 
 ## Run log
 
-Artifacts, costs, and stop decisions follow in [results.md](results.md).
+- 16:06Z: Stage 1 started (both arms). 16:19Z: Stage 1 done, 36 calls, $3.7438.
+- 16:19Z: Stage 2 started. 16:48Z: Stage 2 done, 120 calls, $10.6642.
+- 16:48Z: Stage 3 started. 17:02Z: Stage 3 done, 36 calls, $3.7797.
+- Total: 24 invocations, 192 calls, $18.1876 of the $55.00 cap. No other paid call.
+- Stop decisions: none. After each file, a checker read the artifact for status, missing costs,
+  a call over $0.60, more than two errors, and (arm A) the stored p6 pack hash. No check fired.
+- All 24 artifacts report postflight `passed`, with no binary or environment change.
+- Artifact paths and SHA-256 values: [rejudge-artifacts.json](rejudge-artifacts.json).
+- Reading and verdict: [results.md](results.md).

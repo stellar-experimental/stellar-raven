@@ -1,0 +1,150 @@
+{
+  "schema": "p7-rejudge-artifacts-v1",
+  "note": "Artifacts live in the ignored eval/qa/results/ of the two arm worktrees.",
+  "artifacts": [
+    {
+      "invocation": "S1a",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-06-18-rejudge.json",
+      "sha256": "eec972801081608ef0be17ac2b9183eb562ee1c69f0bbd8301d915915c9c009a"
+    },
+    {
+      "invocation": "S1a",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-06-18-rejudge.json",
+      "sha256": "7469b2ef29b2436052f7626c672098fe4fe4cd71c5863a14f5fe03e1bc38c3ac"
+    },
+    {
+      "invocation": "S1b",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-08-01-rejudge.json",
+      "sha256": "fccbf260c28189b739d6788b56b0fa616dc24dc0147c0af40465339238081bd6"
+    },
+    {
+      "invocation": "S1b",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-08-22-rejudge.json",
+      "sha256": "21334edf479cad501589e24caa6034a9a3cef9653cd097682913991900a6b33e"
+    },
+    {
+      "invocation": "S1c",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-14-50-rejudge.json",
+      "sha256": "5f2758d37c775a5374add5f2c0a46ae1e138f60d720160d327a26588dff969f3"
+    },
+    {
+      "invocation": "S1c",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-16-04-rejudge.json",
+      "sha256": "e7514e2f037fdc3c44fd198b3f7ac1f65d726d049ae71e0f246932b762351b94"
+    },
+    {
+      "invocation": "S2a",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-19-20-rejudge.json",
+      "sha256": "03756b7018ed6c159cff40344bcfb2b262b6b64bab57c8ed1a4d2c5179c70c6c"
+    },
+    {
+      "invocation": "S2a",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-19-20-rejudge.json",
+      "sha256": "9f94b23af2f09f5ddc75cd11ea06674e32711ed055428f1e4922e7a9b7b8b6cd"
+    },
+    {
+      "invocation": "S2b",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-35-47-rejudge.json",
+      "sha256": "008fba5ff0efb779f940549d30bb8e5408315510344b992d7d89b16c9c12d586"
+    },
+    {
+      "invocation": "S2b",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-35-55-rejudge.json",
+      "sha256": "e21679848abac6ea46522d20a103bfb94409b4e6d887cd2771c2edbb4560a346"
+    },
+    {
+      "invocation": "S2c",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-41-20-rejudge.json",
+      "sha256": "5682db5ee36beb71351cc5bedff95b6dff3d911ab0e9f5cfc3f4bf9858ceef48"
+    },
+    {
+      "invocation": "S2c",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-42-03-rejudge.json",
+      "sha256": "9ed97a9aa913488f72611bbafb873be968f9719f7bdd3779c83b7cf6273a19ce"
+    },
+    {
+      "invocation": "S2d",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-43-58-rejudge.json",
+      "sha256": "47770ac16a82aff7c05b3fe39e3adcbe346ea23fb4eb054592799d95992631db"
+    },
+    {
+      "invocation": "S2d",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-44-56-rejudge.json",
+      "sha256": "fcdfc74001a169f16dc0cfdf6000241343b3e9faede147a0f18f640f01a347c9"
+    },
+    {
+      "invocation": "S2e",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-44-23-rejudge.json",
+      "sha256": "294a4cbb3370888404e000ff44f636c4360f0015d5cc4d2c3c385c04fb7af340"
+    },
+    {
+      "invocation": "S2e",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-45-26-rejudge.json",
+      "sha256": "14c254f12f2124b165329cf7cfd6657062da943e6bfe9dfe1529e93242637a91"
+    },
+    {
+      "invocation": "S3a",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-48-23-rejudge.json",
+      "sha256": "a30561216ecaa3342d214e55a96920e4365353bf53799bf0df63f279a9fcfbe6"
+    },
+    {
+      "invocation": "S3a",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-48-23-rejudge.json",
+      "sha256": "0bcdde72686fe4cf9b4b1655f693f409c9d8d04de6f01cc1c152ec81f9468b57"
+    },
+    {
+      "invocation": "S3b",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-51-34-rejudge.json",
+      "sha256": "48806c4fa18f306e6d686c8dd5a0b4a96cccc9c9d617e03093f5e61373586a49"
+    },
+    {
+      "invocation": "S3b",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-50-41-rejudge.json",
+      "sha256": "5bf9b85d543ad2960dab491e131057ed755538d41e38d70ee6d1dec10ce5ce36"
+    },
+    {
+      "invocation": "S3c",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-53-03-rejudge.json",
+      "sha256": "7ae40a6ae39aa72408fc7f3f3c5a7b9f54b9809acbd64c8ceb82fd74e153de28"
+    },
+    {
+      "invocation": "S3c",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-52-30-rejudge.json",
+      "sha256": "34d90fa47be5db44fee002418992237bd8cc8994b59d3df05cb2166a2204c916"
+    },
+    {
+      "invocation": "S3d",
+      "arm": "A",
+      "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-56-43-rejudge.json",
+      "sha256": "cbe1b34b2211d5384e48563ce8bf31aa9571d0264db0ed229928f9bcc4c4a902"
+    },
+    {
+      "invocation": "S3d",
+      "arm": "B",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-55-56-rejudge.json",
+      "sha256": "4a388df6bfc2bed936ce0c1e427a666a172f3d45552885eea2f44b8c3d44a792"
+    }
+  ]
+}
