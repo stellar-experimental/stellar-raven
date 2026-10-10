@@ -1,0 +1,150 @@
+[
+  {
+    "scenario": "over-0.60",
+    "calls": [
+      {
+        "call": 1,
+        "authorization": 0.85,
+        "score": "correct",
+        "coreAnswer": "correct",
+        "missingFacts": [],
+        "wrongClaims": [],
+        "avoidMatches": [],
+        "rationale": "Mock complete answer",
+        "costUsd": 0.61
+      },
+      {
+        "call": 2,
+        "authorization": 0.24,
+        "score": "correct",
+        "coreAnswer": "correct",
+        "missingFacts": [],
+        "wrongClaims": [],
+        "avoidMatches": [],
+        "rationale": "Mock complete answer",
+        "costUsd": 0.1
+      },
+      {
+        "call": 3,
+        "authorization": 0.14,
+        "score": "correct",
+        "coreAnswer": "correct",
+        "missingFacts": [],
+        "wrongClaims": [],
+        "avoidMatches": [],
+        "rationale": "Mock complete answer",
+        "costUsd": 0.1
+      }
+    ],
+    "score": "correct",
+    "runState": {},
+    "budget": {
+      "claimed": true,
+      "authorizedUsd": 0.85,
+      "reportedSpendUsd": 0.81,
+      "remainingUsd": 0.04,
+      "expectedCalls": 3,
+      "reportedCalls": 3,
+      "missingCosts": 0,
+      "exhausted": false,
+      "stoppedBefore": null,
+      "calls": [
+        {
+          "method": "re-judge",
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "attempt": 1,
+          "authorizedUsd": 0.85,
+          "costUsd": 0.61
+        },
+        {
+          "method": "re-judge",
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "attempt": 2,
+          "authorizedUsd": 0.24,
+          "costUsd": 0.1
+        },
+        {
+          "method": "re-judge",
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "attempt": 3,
+          "authorizedUsd": 0.14,
+          "costUsd": 0.1
+        }
+      ]
+    }
+  },
+  {
+    "scenario": "error-vote",
+    "calls": [
+      {
+        "call": 1,
+        "authorization": 0.85,
+        "score": "error",
+        "coreAnswer": "correct",
+        "missingFacts": [],
+        "wrongClaims": [],
+        "avoidMatches": [],
+        "rationale": "Mock CLI failure",
+        "costUsd": 0.1
+      },
+      {
+        "call": 2,
+        "authorization": 0.75,
+        "score": "correct",
+        "coreAnswer": "correct",
+        "missingFacts": [],
+        "wrongClaims": [],
+        "avoidMatches": [],
+        "rationale": "Mock complete answer",
+        "costUsd": 0.1
+      },
+      {
+        "call": 3,
+        "authorization": 0.65,
+        "score": "correct",
+        "coreAnswer": "correct",
+        "missingFacts": [],
+        "wrongClaims": [],
+        "avoidMatches": [],
+        "rationale": "Mock complete answer",
+        "costUsd": 0.1
+      }
+    ],
+    "score": "correct",
+    "runState": {},
+    "budget": {
+      "claimed": true,
+      "authorizedUsd": 0.85,
+      "reportedSpendUsd": 0.3,
+      "remainingUsd": 0.55,
+      "expectedCalls": 3,
+      "reportedCalls": 3,
+      "missingCosts": 0,
+      "exhausted": false,
+      "stoppedBefore": null,
+      "calls": [
+        {
+          "method": "re-judge",
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "attempt": 1,
+          "authorizedUsd": 0.85,
+          "costUsd": 0.1
+        },
+        {
+          "method": "re-judge",
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "attempt": 2,
+          "authorizedUsd": 0.75,
+          "costUsd": 0.1
+        },
+        {
+          "method": "re-judge",
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "attempt": 3,
+          "authorizedUsd": 0.65,
+          "costUsd": 0.1
+        }
+      ]
+    }
+  }
+]

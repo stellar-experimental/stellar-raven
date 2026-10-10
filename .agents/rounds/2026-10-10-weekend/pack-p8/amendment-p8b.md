@@ -1,7 +1,11 @@
 # Amendment p8b: prospective Stage 2 rule and a fixed three-call continuation
 
 Date: 2026-10-10. Status: not run. This file authorizes nothing by itself.
-Before any paid call, this amendment needs an independent pre-spend review and the owner's approval.
+Before any paid call, this amendment needs a favorable independent pre-spend review and the owner's
+approval, both recorded in the run log. The first pre-spend review (R7,
+[pre-spend-review-p8b/rr7-review.md](pre-spend-review-p8b/rr7-review.md)) returned
+`PRE-SPEND: BLOCK` on R7-1 (no continuation reading command) and R7-2 (no error-vote rule). This
+revision applies both and the minor items. A bounded delta re-review of this revision is required.
 
 The p8 run stays BLOCKED under its predeclared rule ([results.md](results.md)). This amendment does
 not change that result. It applies only to the separately declared continuation below. It follows
@@ -87,7 +91,57 @@ change. Neither changes for this continuation:
 - The p8 self-test on 2026-10-10 passed 7 of 7 with this code and these pins.
 
 The recorded `evidenceSupportCheck` in the new artifact uses the pre-R5-1 diagnostic of `36e77d40`.
-Read the recomputed check from `analyze-rejudge-p8.mjs`, which uses the current diagnostic.
+The continuation reading command below recomputes it with the current diagnostic.
+
+## Continuation reading command (R7-1)
+
+`analyze-rejudge-p8.mjs` reads only the 32 historical pairs, so it cannot read this continuation.
+A dedicated command does:
+
+- [p8b-artifacts.json](p8b-artifacts.json) is the continuation manifest. It names the row, the saved
+  input, the expected pack and prompt hashes, the pins, the reused p6 baseline (arm A of S2a, with
+  its SHA-256), and the historical p7 and p8 arm-B panels of S2a (with their SHA-256). Its
+  `continuation` field is `null` until the run. After the single invocation, the operator sets it to
+  the new artifact's path and SHA-256. Nobody edits the baseline or historical entries, and
+  `rejudge-artifacts.json` (the 32-pair p8 manifest) stays unchanged.
+- [analyze-p8b.mjs](analyze-p8b.mjs) is the reading command. It rebuilds the row's p8 pack and full
+  prompt from the saved input and stops unless both hashes match. It reports the p6 baseline panel,
+  both historical panels separately, and the new panel. It applies the acceptance gate (R7-2 below),
+  recomputes the span-only support diagnostic for each new vote, and lists every new rationale, each
+  StellarTerm citation, any `claimSupportNotice` citation, and any entry-number mention.
+
+The exact command, from `raven-w1010-r` (where the saved input exists):
+
+```sh
+node .agents/rounds/2026-10-10-weekend/pack-p8/analyze-p8b.mjs > .agents/rounds/2026-10-10-weekend/pack-p8/p8b-reading.json
+```
+
+Proof before spend, with no paid call:
+
+- Without a continuation, the command reports `status: "not-run"`, the baseline (C/C/P), and both
+  historical panels (p7: C/C/C; p8: W/P/P). Both input hashes match.
+- `--stand-in historical` reads the historical p8 S2a panel as if it were the continuation:
+  [p8b-standin-historical.json](p8b-standin-historical.json) reports `ready-for-reading`, 3 graded
+  votes, direction `down`, and a StellarTerm citation in all 3 votes.
+- `--stand-in error-vote` turns vote 1 of that stand-in into an error vote in memory:
+  [p8b-standin-error-vote.json](p8b-standin-error-vote.json) reports `INCONCLUSIVE` with
+  "an error vote has no grade".
+
+## Acceptance gate and error votes (R7-2)
+
+The re-judge runner can complete with an error vote inside a panel (R7's probe:
+`error/correct/correct` becomes `correct`, with three costs and no stop). So this amendment fixes
+the rule before spend:
+
+- Acceptance needs all of these: exactly 3 judge calls; all 3 graded (zero error votes); 3 reported
+  costs; every call's input hash equal to the expected prompt (`3cc71873…`) and answer; pack `p8`
+  with SHA-256 `ac9c47b6…`; model, rubric, and panel as declared; a `successful` outcome; a passed
+  postflight; a passed identity guard with the declared pins; and no call over the $0.60
+  after-invocation checkpoint.
+- Any error vote, missing cost, or failed check makes the continuation **INCONCLUSIVE**. It is not
+  accepted. There is no retry and no replacement call, and p8 stays BLOCKED.
+- Only a continuation that passes this gate goes to the predeclared reading below.
+- `analyze-p8b.mjs` applies this gate mechanically and reports each failure.
 
 ## Predeclared evidence check for this row (done before spend, from saved data)
 
@@ -100,7 +154,8 @@ Read the recomputed check from `analyze-rejudge-p8.mjs`, which uses the current 
   field, the same directory snapshot that the answer cites ("generated 2026-10-08").
 - Competing support: no other execute result gives StellarTerm a status. No qualification in the
   transcript says that the directory status is stale.
-- Pack locations: the p6 pack does not show StellarTerm. The p8 pack shows it as source item 8:
+- Pack locations: the p6 pack omits the StellarTerm status record (it shows the URL under
+  `canonicalUrls`). The p8 pack shows the record as source item 8:
   `title="StellarTerm" url="https://stellarlight.xyz/project/stellarterm" fields="status="Live", …"`.
 - The p8 run's three arm-B votes all cite this item against the answer.
 
@@ -122,6 +177,17 @@ fidelity failure.
 5. `node eval/qa/judge.mjs --self-test-static` through the launcher in `raven-p8-arm` is GREEN.
 6. `node .agents/rounds/2026-10-10-weekend/pack-p8/verify-r5-1.mjs` in `raven-w1010-r` reports 64 of
    64 packs and prompts identical, including this row's arm-A and arm-B hashes above.
+7. `node .agents/rounds/2026-10-10-weekend/pack-p8/analyze-p8b.mjs` reports `status: "not-run"`, both
+   input hashes matching, the baseline C/C/P, and the historical panels C/C/C (p7) and W/P/P (p8).
+   `p8b-artifacts.json` has `continuation: null`.
+
+## After the invocation
+
+1. Set `continuation` in `p8b-artifacts.json` to the new artifact's path and SHA-256. Change nothing
+   else in that file.
+2. Run the reading command and save its output as `p8b-reading.json`.
+3. If its status is `INCONCLUSIVE`, record that result; stop.
+4. If its status is `ready-for-reading`, apply the predeclared reading below to every rationale.
 
 ## Launch command (one invocation, no retry)
 
@@ -142,14 +208,20 @@ with the pinned `--claude-path` and both pin hashes.
   or a CLI failure. A failed or partial invocation is reported as it is.
 - Stop and report if the artifact records a pack other than `p8`, a pack SHA-256 other than
   `ac9c47b6…`, or a prompt SHA-256 other than `3cc71873…`.
-- Stop and report if any call costs more than $0.60, any cost is missing, or the identity guard does
-  not pass. The file cap ($0.85) is enforced by `re-judge.mjs`.
+- After the invocation, the operator checks every call cost. $0.60 is an after-invocation checkpoint,
+  not a per-call cap: `re-judge.mjs` passes the remaining file budget to each call, so one call above
+  $0.60 can occur before the checkpoint. A call above $0.60, a missing cost, or a failed identity
+  check makes the result INCONCLUSIVE under the gate above.
+- The file cap ($0.85) is the only cap that `re-judge.mjs` enforces. The judge adapter can still make
+  up to two internal CLI transport retries inside one judge call; the method itself is never repeated.
 - Make no other paid call.
 
 ## Predeclared reading
 
-Apply the amended Stage 2 rule to the new panel only. Read every new rationale for missing context,
-unsupported inference, and source identity.
+Apply this reading only after the acceptance gate passes. Apply the amended Stage 2 rule to the new
+panel only. Read every new rationale for missing context, unsupported inference, and source identity.
+Keep the p6 baseline's vote-1 rationale in view: it reads the candidate sentence more narrowly. That is
+a sentence-interpretation difference, not competing source evidence.
 
 - **Pass:** every vote that lowers the grade rests on the confirmed StellarTerm evidence correction
   (or on another confirmed evidence correction, or on an answer-visible golden contradiction), and no
@@ -169,9 +241,12 @@ rows, and both historical panels for this row.
 
 ## Independent review after the run
 
-The post-run review is mandatory. Reviewer: Codex frontier (`gpt-6-astra`) at high effort. Fallback:
-Grok (`grok-4.7`) at high, then Claude Opus at high in a fresh session. The orchestrator reconciles
-every finding before the result is recorded or p8 is used for judge input.
+The post-run review is mandatory. Reviewer: Codex frontier (`gpt-6-astra`) at high effort.
+The reviewer must differ from the author and from the orchestrator. Both are Claude Opus here, so
+Claude Opus is not eligible, and a fresh session does not make it eligible. Fallback, in order: Grok
+(`grok-4.7`) at high, then Claude Fable (`claude-fable-5-1`) at high. Record the reviewer's tier,
+model, and effort, and why an earlier choice was skipped. The orchestrator reconciles every finding
+before the result is recorded or p8 is used for judge input.
 
 ## Merge note (from R6)
 
