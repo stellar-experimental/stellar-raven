@@ -10,13 +10,46 @@ The artifacts are in the ignored `eval/qa/results/` folders of the two arm workt
 
 **The p7 result is blocked. The change returns for repair.**
 
-- Stage 1 passes. p7 repairs the claim support on the omission rows.
-- Stage 3 passes. p7 causes no false upgrade on the stored-wrong rows.
+- Stage 1 passes its predeclared judge-behavior rule. It does not show complete source-span support:
+  one row's support exists only in the `claimSupportOmitted` line (see the correction below).
+- Stage 3 passes. None of its six panel scores increased.
 - Stage 2 fails. One stored-correct control falls from `correct` to `wrong`, and the cause is in
   the p7 pack. The plan's rule says that any pack regression blocks the p7 result.
 
-The post-run independent review is still required. I did not do it. The plan names Codex frontier
-(`gpt-6-astra`) at high effort as the reviewer.
+## Corrections after the post-run review
+
+The mandatory post-run review is [post-run-review/rr3-review.md](post-run-review/rr3-review.md)
+(Codex frontier `gpt-6-astra`, high effort). It confirms the p7 block and disputes five items.
+This file now states each item as the review established it.
+
+1. **Support claim versus omission metadata.** `findTranscriptEvidencePackOmissions` searches the
+   whole serialized pack, so it counts the `claimSupportOmitted` line as support. For
+   `q-defi-etherfuse-stablebonds`, the p7 pack has no span with the maturity sentence or `90`;
+   only the omission line lists `"90 days" (entry=2)` and `"90" (entry=2)`. Without that line,
+   the check reports `pack-omission` with `omittedTerms: ["90"]`. So "0 arm-B omission votes"
+   is a diagnostic count, not proof that the supporting spans survived. The full sample has 9
+   arm-A omission votes: 8 in Stage 1 and 1 in Stage 3 (Axelar).
+2. **Dormant-account source inference.** Arm-B vote 2 for `q-pc-quantum-preparedness-dormant`
+   used `entry 4` from the omission line to call the INRIA figures a different source. That is
+   false. Execute entry 4 is another retrieval of the same QPP article (`Introducing the Quantum
+   Preparedness Plan`, the stellar.org URL), and its content holds the INRIA, `1,193 logical
+   qubits`, `44%`, and NIST text. The judge read a transcript entry number as a source identity.
+   The cause of the panel upgrade (W/W/W to P/P/C) stays unresolved.
+3. **RPC downgrade cause.** For `q-ti-rpc-gettransactions-pagination-xdr`, arm-B vote 3 cites a
+   `getLedgers` example with `startLedger` and `limit` that only the p7 pack shows (support unit
+   21). So the pack can have contributed to one vote. The other two votes cite the answer-visible
+   golden contradiction. The cause is mixed or unresolved, not pure judge variance. It is not a
+   lost-support regression and does not fail the Stage 1 rule.
+4. **Quantum regression mechanism.** The loss comes from selection, not from the budget. At span
+   widths of 440 and 120 characters, no selected unit holds "migrate immediately". At
+   `maxChars: 100000`, the pack has 26,736 characters and still omits it. The selector does not
+   keep a second sentence that gives different support for a claim whose anchors other sentences
+   already cover. The lost Decrypt summary supports the answer's wording; it does not show that
+   the capability shipped.
+5. **S3a cases hash.** The ledger gave one worktree-mode cases hash to all four such invocations.
+   S3a uses the 20-row source and has `7a3401a19f524e0a4f0d8f619c85aecf469cc5404da1d5b2fb7532fc33490017`.
+   S1a, S2b, and S3b use the 94-row source and have
+   `55831c3cd80f93316a5ca1dff2c8e5dc9e717ede1b70d4050d9742ebe162196f`. Both arms match.
 
 ## Method completeness
 
@@ -74,18 +107,20 @@ fabricated or absent from evidence.
 | `q-hist-quantum-preparedness-plan` | wrong (W W P) | wrong (P W W) | same |
 | `q-soroban-oz-upgradeable-macro` | wrong (W W W) | wrong (W W W) | same |
 
-- Support: in arm A, 5 of 6 rows have at least one vote with `evidenceSupportCheck: pack-omission`
-  (8 votes). In arm B, no vote has it.
+- Support diagnostic: in arm A, 5 of 6 rows have at least one vote with
+  `evidenceSupportCheck: pack-omission` (8 votes). In arm B, no vote has it. This count includes
+  the omission line as support (correction 1). For `q-defi-etherfuse-stablebonds`, the support is
+  in that line only; this row passes on judge behavior, not on source-span support.
 - No arm-B wrong claim calls supported text fabricated or absent. The held `wrong` grades come
   from golden contradictions: the quantum row's "already shipping" claim against a Draft CAP, the
   macro row's retired API, and the deploy row's own code inconsistency.
 - The blend-tvl upgrade is a repair. Its rationale relies on values that the pack shows
   (`tvlUSD`, `tvlAsOf`, the $80M and $100.6M figures). It does not rely on the omission line.
-- The rpc downgrade has no pack cause. The arm-B rationale cites an answer-visible example that
-  joins `startLedger` and `cursor`, against the golden's exclusivity rule. Arm A had split votes.
-  This is judge variance.
+- The rpc downgrade has a mixed or unresolved cause (correction 3). Two arm-B votes cite the
+  answer's example that joins `startLedger` and `cursor`, against the golden's exclusivity rule.
+  Arm-B vote 3 also cites a `getLedgers` example that only the p7 pack shows.
 
-**Stage 1: pass.**
+**Stage 1: pass on the judge-behavior rule. Source-span support is not complete.**
 
 ## Stage 2: stored-correct controls (20)
 
@@ -100,8 +135,9 @@ Result: 17 same, 1 up, 2 down.
   shows that span. The p6 pack showed a different source snippet, "enabling enterprise wallets to
   migrate immediately", which supports the answer's wording. The p7 pack does not hold that
   snippet. The answer's "immediately" is a single lowercase word. It is not an anchor, and the
-  answer shares no 4-word phrase with that source sentence. So p7 dropped supporting evidence and
-  kept a span that reads as a contradiction.
+  answer shares no 4-word phrase with that source sentence. The selector does not keep a second
+  sentence for a claim whose anchors other sentences already cover. The loss is in selection, not
+  in the budget: a 100,000-character pack also omits it (correction 4).
 - `q-gap-leaderboard-project-not-builder`: correct (C C P) to partial (P P P). No pack cause.
   Both rationales name the same minor omission (the leaderboard's developer macro block). Arm A
   calls it trivial; arm B caps at partial. Neither pack holds the term. This is judge variance.
@@ -112,10 +148,10 @@ Result: 17 same, 1 up, 2 down.
   qubits" (entry=4)` and `"INRIA" (entry=4)`. No arm-B vote repeats the arm-A objection.
   Arm-B vote 2 uses that line's entry number: it says the research "comes from a separate research
   source (entry 4), not the QPP announcement (entry 1)", and it records that as a wrong claim.
-  So a judge did read the omission line as evidence of where content lives. Here it supported a
-  wrong claim, not an upgrade. No arm-B rationale says the omission line establishes the figure.
-  The stored grade is `correct`. The move toward it can come from the omission line or from
-  variance; the rationales do not decide this.
+  That inference is false (correction 2): entry 4 is another retrieval of the same QPP article,
+  and it holds the INRIA paragraph. The judge read a transcript entry number as a source identity.
+  No arm-B rationale says the omission line establishes the figure. The cause of the upgrade stays
+  unresolved, and the artifacts cannot show that the omission line caused no false upgrade.
 
 **Stage 2: fail (one pack regression).**
 
@@ -134,6 +170,7 @@ Rule: the stage passes when no row scores higher in arm B. An upgrade that cites
 | `q-tool-sdk-repos-discovery` | partial (P W P) | partial (P P P) |
 
 0 up, 6 same, 0 down. No Stage 3 rationale or wrong claim uses the omission line.
+The arm-A Axelar row has one `pack-omission` vote; arm B has none (a diagnostic count; see correction 1).
 Across all 96 arm-B votes, one vote uses its entry numbers (`q-pc-quantum-preparedness-dormant`,
 Stage 2; see above). No vote names `claimSupportOmitted`.
 
@@ -141,13 +178,14 @@ Stage 2; see above). No vote names `claimSupportOmitted`.
 
 ## What the result means
 
-- p7 removes the pack-omission class that it targets: 8 arm-A votes against 0 arm-B votes.
-- The omission line caused no false upgrade in this sample. But one judge vote read its entry
-  numbers as evidence of a record's source. The caution text did not stop that use.
+- The support diagnostic falls from 9 arm-A omission votes to 0 arm-B votes. That count treats
+  the omission line as support, so it overstates the repair (correction 1).
+- No Stage 3 panel score increased. One judge vote read an omission-line entry number as a source
+  identity and drew a false conclusion (correction 2). The caution text did not stop that use.
 - p7 can still drop support that p6 showed by chance. p6 showed it through wide raw windows
   around unrelated anchors. A claim word that is not an anchor, and that the source states in other
-  words, gets no unit in p7. Under budget pressure, p7 can then show only a span that reads as a
-  contradiction.
+  words, gets no unit in p7. The selector then keeps another sentence for the same claim, which
+  can read as a contradiction. A larger budget does not fix this (correction 4).
 - Panels split more often in arm A (12 of 32 rows) than in arm B (8 of 32 rows).
 
 ## Limits
@@ -156,5 +194,5 @@ Stage 2; see above). No vote names `claimSupportOmitted`.
 - The sample is 32 rows. It cannot rule out rarer regressions.
 - Rows from the two incomplete source files use the current corpus, not the saved run's snapshot.
   Both arms read the same content.
-- The attribution of each changed score is my reading of the rationales. The post-run review must
-  check it.
+- The attribution of each changed score was my reading of the rationales. The post-run review
+  checked it and corrected three attributions (corrections 2, 3, and 4).
