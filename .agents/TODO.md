@@ -416,9 +416,12 @@ Branch `w1010/r` (2026-10-10) implements this repair as pack `p7`.
 The [offline replay](rounds/2026-10-10-weekend/pack-p7/replay-p7-omissions.json) holds the
 transcript support for 12 of 12 supported disputed claims; p6 holds 2.
 The [paired re-judge](rounds/2026-10-10-weekend/pack-p7/results.md) ran on 2026-10-10 ($18.19).
-p7 repaired support (Stage 1) with no false upgrade (Stage 3). One stored-correct control fell to
-`wrong` with a pack cause (Stage 2), so p7 is blocked and returns for repair. The post-run review
-remains open.
+One stored-correct control fell to `wrong` with a pack cause, so p7 is blocked. The
+[post-run review](rounds/2026-10-10-weekend/pack-p7/post-run-review/rr3-review.md) confirmed the
+block and corrected five readings. Pack `p8` implements its general repair. The
+[p8 replay](rounds/2026-10-10-weekend/pack-p8/replay-p8.json) holds real spans for 12 of 12
+supported claims. The [p8 plan](rounds/2026-10-10-weekend/pack-p8/measurement-plan-p8.md) needs a
+pre-spend review and owner approval before its paid run ($29.80 cap).
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
