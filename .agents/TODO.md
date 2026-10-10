@@ -44,14 +44,15 @@ resolver gates.
 The rejected `repository-tooling-recovery-v2` implementation does not ship
 ([closeout](rounds/2026-08-31-rejected-experiments-closeout.md)). Its freshness blocker is the
 Scout DeepWiki note for `stellar/stellar-horizon`. The 2026-09-29 monitor failed: the answer gave
-`28`, while the source at the response's `scannedRef` defined `29`. The active finding is
-`improvements/stellar-light-scout/sls-087-horizon-protocol-ceiling-note-stale.md`; the retired
-predecessor receipt is `sls-080` in `improvements/resolved.json`.
+`28`, while the source at the response's `scannedRef` defined `29`. That finding (`sls-087`) and its
+predecessor (`sls-080`) are retired receipts in `improvements/resolved.json`.
 
 2026-10-09: the blocker cleared. Upstream closed issue 1738 on 2026-10-08. The reading returned `29`.
-The source at the response's `scannedRef` (`ee5241ec`) also defines `29`. `sls-087` is
-`fixed-upstream`. Its drain needs a distinct reviewer and a resolution comment on issue 1738.
-Evidence: `rounds/2026-10-09-continuation/horizon-monitor.json`.
+The source at the response's `scannedRef` (`ee5241ec`) also defines `29`. Evidence:
+`rounds/2026-10-09-continuation/horizon-monitor.json`. On 2026-10-10 a distinct reviewer repeated the
+check, Raven posted the resolution comment on issue 1738, and `sls-087` drained. The note is a curated
+dated fact, so a later protocol bump can make it stale again. If this monitor fails again, file a new
+id and cite both receipts.
 
 During each improvements or drift round, run one free `scout.explainRepo` reading against the
 existing local Raven server for `stellar/stellar-horizon`: "Which Horizon ingestion constant pins
