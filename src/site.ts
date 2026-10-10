@@ -1331,7 +1331,7 @@ function docTrace(): string {
   <span class="k">return</span> { note: <span class="s">"no matches"</span> };
 <span class="k">const</span> top = found.<span class="s">data</span>.projects[<span class="k">0</span>];       <span class="c">// payloads live under .data</span>
 <span class="k">return await</span> <span class="p">${secondService}.</span><span class="p">${secondOp}</span>({ q: <span class="s">\`\${top.name} liquidity\`</span> });  <span class="c">// composition</span></pre>
-  <div class="trace-note">Every service call resolves to <b>{ ok: true, data }</b> or
+  <div class="trace-note">Every service call resolves to <b>{ ok: true, data, asOf }</b> or
     <b>{ ok: false, error }</b>. It never throws across the tool boundary.</div>
 </div>`;
 }
@@ -1414,7 +1414,11 @@ until official docs confirm them.</p>
   <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
     <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
     service answered with nothing — that is inconclusive, not proof something does not exist.
-    Widen the search across families before concluding a negative.</li>
+    An ok result can also carry <code>inconclusive</code>: <code>"empty"</code> when it has no
+    rows, or <code>"candidates"</code> when its rows are only similarity or research matches.
+    Widen the search across families before concluding a negative. Each ok result also carries
+    <code>asOf</code>: the upstream data date when the service states one, else the time Raven
+    observed the response.</li>
   <li><b>Big results get truncated.</b> Output is capped near the model's context budget. When a
     truncated response reports an available artifact, read the full payload back inside execute
     with <code>codemode.artifact.read(id)</code>, then return only the fields you need. Artifacts

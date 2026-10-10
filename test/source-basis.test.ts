@@ -43,6 +43,36 @@ function calls(count: number): SourceBasisCall[] {
 }
 
 describe("source-basis manifest", () => {
+  it("marks inconclusive ok calls and keeps the observation time when calls are dropped", () => {
+    const input: BuildSourceBasisManifestInput = {
+      shape: validArrayShape,
+      calls: [
+        { op: "lumenloop.search_directory", outcome: "ok", ms: 12, inconclusive: "empty" },
+        { op: "lumenloop.search_content_semantic", outcome: "ok", ms: 30, inconclusive: "candidates" },
+        { op: "stellarDocs.search_docs", outcome: "ok", ms: 8 },
+        { op: "scout.getHackathon", outcome: "soft-empty", ms: 5, inconclusive: "empty" }
+      ],
+      observedAt: "2026-10-10T12:00:00.000Z",
+      artifact: { state: "absent", reason: "not-truncated" },
+      truncated: false
+    };
+    const text = buildSourceBasisManifest(input);
+    expect(text.startsWith(SOURCE_METADATA_MARKER)).toBe(true);
+    expect(text).toContain(
+      "calls: lumenloop.search_directory=ok/12ms [inconclusive: empty]; " +
+        "lumenloop.search_content_semantic=ok/30ms [inconclusive: candidates]; " +
+        "stellarDocs.search_docs=ok/8ms; scout.getHackathon=soft-empty/5ms " +
+        "(totals ok=3 (2 inconclusive) error=0 soft-empty=1)"
+    );
+    expect(text).toContain("\nobservedAt: 2026-10-10T12:00:00.000Z\n");
+    expect(text).toContain("inconclusive markers");
+
+    const tight = buildSourceBasisManifest(input, { maxChars: 420 });
+    expect(tight.length).toBeLessThanOrEqual(420);
+    expect(tight).toContain("4 calls omitted (totals ok=3 (2 inconclusive) error=0 soft-empty=1)");
+    expect(tight).toContain("\nobservedAt: 2026-10-10T12:00:00.000Z\n");
+  });
+
   it("reports the required count for each shape variant and primitive fallback", () => {
     expect(validObjectShape).toEqual({ kind: "object", serializedChars: 20, totalKeys: 2 });
     expect(validArrayShape).toEqual({ kind: "array", serializedChars: 20, totalItems: 2 });
@@ -134,7 +164,7 @@ describe("source-basis manifest", () => {
     expect(text).toContain("sourceMetadata:");
     expect(text).toContain("scout.searchRepos data.meta.generatedAt=");
     expect(text).toContain("199 duplicates");
-    expect(text).toContain("host-captured source metadata survived sandbox projection");
+    expect(text).toContain("host-captured call outcomes and source metadata survived sandbox projection");
   });
 
   it("deduplicates metadata values that differ only after the rendered prefix", () => {

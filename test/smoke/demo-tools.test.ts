@@ -409,7 +409,7 @@ describe("demo tools at the worker boundary", () => {
     expect(recovery.nextSteps).toContain("Navigation only");
     expect(recovery.nextSteps).toContain("not factual evidence");
     expect(recovery.nextSteps).toContain("`codemode.search`");
-    expect(recovery.nextSteps).toContain("`soft-empty` is inconclusive");
+    expect(recovery.nextSteps).toContain('`soft-empty` and an ok `inconclusive` ("empty" or "candidates") are inconclusive');
     expect(recovery.nextSteps).toContain("Scores share one scale");
     expect(recovery.nextSteps).toContain(">=1.6x");
     expect(recovery.nextSteps).toContain("hit order is authoritative");
@@ -673,7 +673,7 @@ describe("demo tools at the worker boundary", () => {
       }
       return Response.json({
         projects: [{ name: "Example", slug: "example" }],
-        meta: { counts: { returned: 1, total: 1 } }
+        meta: { counts: { returned: 1, total: 1 }, matchMode: "semantic" }
       });
     });
 
