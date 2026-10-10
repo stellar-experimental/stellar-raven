@@ -72,4 +72,16 @@ operator adds one arm-B entry per invocation (path and SHA-256) to
 
 ## Run log
 
-Not run.
+- 18:17Z: free preflight repeated. Pins reproduce through the launcher. Both trees are clean.
+  12 of 12 dry runs exit 0. The arm-B static self-test is GREEN. The replay equals `replay-p8.json`
+  apart from `revisions.p8`. The reading script rebuilds all 32 arm-A packs.
+- 18:19Z to 18:20Z: paid judge self-test. 7 of 7 grades match; total $0.2822. Output
+  `raven-p8-arm/eval/qa/results/2026-10-10T18-19-55-p8-selftest.json`
+  (SHA-256 `dbf292c7c6abde342ccf27c7912717d7b8db63aab6074f8bbc69e287e435b99d`).
+- 18:21Z to 19:12Z: 12 arm-B invocations in stage order through `launcher/run-inv-p8.sh`.
+  96 calls, $8.8021. Every artifact is `successful`, pack `p8`, postflight `passed`.
+  Paths and SHA-256 values are in [rejudge-artifacts.json](rejudge-artifacts.json).
+- Stop decisions: none. After each file, a checker read status, pack version, missing costs, any
+  call over $0.60, and error verdicts. One consistency-error vote occurred (S3c); the limit is two.
+- Total paid spend: $9.0843 of the $29.80 cap. No other paid call.
+- Reading and verdict: [results.md](results.md).

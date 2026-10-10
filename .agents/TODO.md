@@ -422,7 +422,10 @@ block and corrected five readings. Pack `p8` implements its general repair. The
 [p8 replay](rounds/2026-10-10-weekend/pack-p8/replay-p8.json) holds real spans for 12 of 12
 supported claims. The pre-spend review (R4) approved p8 and the
 [p8 plan](rounds/2026-10-10-weekend/pack-p8/measurement-plan-p8.md) with fixes, now applied at
-`36e77d40`. A bounded delta re-review and owner approval remain before the paid run ($29.80 cap).
+`36e77d40`. The [p8 re-measurement](rounds/2026-10-10-weekend/pack-p8/results.md) ran on
+2026-10-10 ($9.08). Stages 1 and 3 pass. Stage 2 fails its literal rule on one row, where p8 shows
+an accurate source item that contradicts the answer. The post-run review and an owner decision on
+that rule remain.
 `eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
