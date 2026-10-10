@@ -1,6 +1,7 @@
 # Amendment p8b: prospective Stage 2 rule and a fixed three-call continuation
 
-Date: 2026-10-10. Status: not run. This file authorizes nothing by itself.
+Date: 2026-10-10. Status: approved 2026-10-10 by the orchestrator under the owner's delegation.
+The R7 delta re-review returned `PRE-SPEND: LAUNCH-OK`. The approval covers only the single P8B invocation.
 Before any paid call, this amendment needs a favorable independent pre-spend review and the owner's
 approval, both recorded in the run log. The first pre-spend review (R7,
 [pre-spend-review-p8b/rr7-review.md](pre-spend-review-p8b/rr7-review.md)) returned

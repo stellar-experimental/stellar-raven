@@ -180,3 +180,74 @@ Acceptance would not establish general accuracy, statistical equivalence, or 32 
 It would not authorize another paid call.
 
 PRE-SPEND: BLOCK: R7-1 continuation diagnostic path; R7-2 error-vote acceptance rule
+
+## Delta re-review
+
+I reviewed only commit `b783a18bed405ca43e601b53cafc43c39181def3` against the R7 findings.
+I read the reconciliation section in `/private/tmp/claude-501/w1010/r-report.md`.
+Both blocking findings are resolved.
+The minor corrections are also complete.
+I made no paid call, started no server, and changed no tracked file.
+
+### R7-1: resolved
+
+The separate `p8b-artifacts.json` maps the continuation to the saved input and the p6 baseline.
+It retains both historical B panels separately.
+Its `continuation` field remains `null`.
+The original 32-pair manifest is unchanged.
+
+The new `analyze-p8b.mjs` verifies the artifact hashes and rebuilds the expected p8 pack and prompt.
+It recomputes the current support diagnostic for each new vote.
+It reports all rationales and keeps the baseline's first rationale visible.
+The amendment gives the exact command and the steps for recording the new artifact.
+It permits no replacement of a historical panel.
+
+### R7-2: resolved
+
+The amendment now requires three graded calls, zero error votes, and three reported costs.
+It also requires matching inputs, the declared tuple, successful completion, and passed identity checks.
+The command checks these requirements before returning `ready-for-reading`.
+Any error vote makes the continuation `INCONCLUSIVE`.
+That result cannot pass, permit a retry, or permit a replacement call.
+The p8 result stays BLOCKED in that case.
+
+A `ready-for-reading` status is not an acceptance decision.
+The operator and independent reviewer must still assess every rationale under the amended evidence rule.
+The requirement blocks an evidence failure regardless of the grade.
+
+### Repeated free checks
+
+All four requested commands exited 0.
+
+| Command | Confirmed result |
+|---|---|
+| `analyze-p8b.mjs` | `not-run`; both input hashes match; baseline C/C/P; historical p7 C/C/C and p8 W/P/P. |
+| `analyze-p8b.mjs --stand-in historical` | `ready-for-reading`; three graded votes; lower grade; three StellarTerm citations; recomputed diagnostics present. |
+| `analyze-p8b.mjs --stand-in error-vote` | `INCONCLUSIVE`; two graded votes; failure message `an error vote has no grade`. |
+| `launcher/run-inv-p8.sh P8B dry` | One declared row; revision mode; matching cases; no golden-time violation; declared model, rubric, and pack. |
+
+Both stand-in outputs exactly match the committed JSON outputs.
+They use historical evidence and make no new measurement.
+The stand-in mode explicitly bypasses the historical artifact's larger row count and file cap.
+The ordinary continuation path retains both checks.
+
+The saved outputs are [default](rr7-delta-default.json), [historical](rr7-delta-historical.json), [error-vote](rr7-delta-error-vote.json), and [dry run](rr7-delta-dry.json).
+
+### Minor corrections and disposition
+
+The amendment now states that p6 retains the StellarTerm URL but omits its status record.
+It identifies $0.60 as an after-invocation checkpoint and $0.85 as the enforced file cap.
+It distinguishes internal transport retries from prohibited method retries.
+The reviewer selection excludes both the author and the orchestrator, including the Claude Opus fallback.
+The mandatory independent post-run review remains in place.
+
+This commit changes no judge input construction or paid runner code.
+It creates no requirement for another paid self-test.
+The prior evidence checks remain applicable within this bounded review.
+
+Launch clearance covers only the declared P8B invocation after the required owner approval and preflight checks.
+It does not authorize additional paid calls, a merge, or a deployment.
+The original p8 run remains BLOCKED.
+Only an accepted prospective result can clear its separate measurement gate for a later active-p8 merge.
+
+PRE-SPEND: LAUNCH-OK
