@@ -123,7 +123,7 @@ describe("QA judge CLI evidence", () => {
       consistencyViolations: [],
       costUsd: 0.375,
       rubric: "v2.11",
-      packVersion: "p6",
+      packVersion: "p7",
       cliFailure: {
         kind: "nonzero-exit",
         exitStatus: 1,
@@ -1933,7 +1933,7 @@ describe("QA judge CLI evidence", () => {
       rationale: "The candidate gives the required answer.",
       costUsd: 0.25,
       rubric: "v2.11",
-      packVersion: "p6",
+      packVersion: "p7",
       promptSha256: verdict.promptSha256
     });
     expect(verdict).not.toHaveProperty("cliFailure");
