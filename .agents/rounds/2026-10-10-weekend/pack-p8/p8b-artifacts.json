@@ -1,0 +1,41 @@
+{
+  "schema": "p8b-artifacts-v1",
+  "note": "Continuation manifest for amendment-p8b.md. Fill continuation after the single P8B invocation; never edit baseline or historical.",
+  "row": "q-defi-arbitrage-pathpayment-bots",
+  "invocation": "P8B",
+  "savedInput": ".agents/rounds/2026-10-10-weekend/pack-p8/post-run-review/saved-data/rr6-S2a-B-q-defi-arbitrage-pathpayment-bots-input.json",
+  "expected": {
+    "packVersion": "p8",
+    "packSha256": "ac9c47b6be31afb685b94112c6c205fd7387580ea5ae935a72b5681e02caa1d0",
+    "promptSha256": "3cc7187326b5487ae31fb433efcbe87f5eea060e992852eca54c68d4c3b1887e",
+    "model": "claude-sonnet-5",
+    "rubric": "v2.11",
+    "panel": 3,
+    "calls": 3,
+    "capUsd": 0.85,
+    "checkpointUsd": 0.6,
+    "binarySha256": "c9b5341637becbd423ddffc5b254afb645682a3868cb708bbc6cc0e7bb419937",
+    "environmentSha256": "ff926b437c1538395659ddf31b24d6268f61097ad4527eaf55738d0ccbe446ac",
+    "runnerRevision": "36e77d4067e1a0d0c5156c0eaf1ee2904200b21b"
+  },
+  "baseline": {
+    "label": "p6 arm A (reused)",
+    "packSha256": "76eec18f8cecd31e1fa7cdd3c68a6f3d85dfe1c42e0cce76a2a09903a3f6ebe8",
+    "promptSha256": "ee8a879f38f60476aa96d7be0e0dc946a45cd448c43185c127c78a9d85955d9e",
+    "path": "/Users/kalepail/Desktop/raven-p6-arm/eval/qa/results/2026-10-10T16-19-20-rejudge.json",
+    "sha256": "03756b7018ed6c159cff40344bcfb2b262b6b64bab57c8ed1a4d2c5179c70c6c"
+  },
+  "historical": [
+    {
+      "label": "p7 run arm B (S2a)",
+      "path": "/Users/kalepail/Desktop/raven-p7-arm/eval/qa/results/2026-10-10T16-19-20-rejudge.json",
+      "sha256": "9f94b23af2f09f5ddc75cd11ea06674e32711ed055428f1e4922e7a9b7b8b6cd"
+    },
+    {
+      "label": "p8 run arm B (S2a)",
+      "path": "/Users/kalepail/Desktop/raven-p8-arm/eval/qa/results/2026-10-10T18-33-13-rejudge.json",
+      "sha256": "76c46fffe6c20696d4f42d0e381abef62168c5f2bece4cb5ab436ad1781f02a0"
+    }
+  ],
+  "continuation": null
+}
