@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   buildTranscriptEvidencePack,
   explainTranscriptEvidencePack,
-  findTranscriptEvidencePackOmissions
+  findTranscriptEvidencePackOmissions,
+  packSourceEvidenceText
 } from "../eval/qa/evidence-pack.mjs";
 
 // Claim-support fixtures (p7 anchors, p8 fallback and audit). Assertions read the final serialized
@@ -218,7 +219,7 @@ describe("claim support: controls", () => {
     const lostNames = lost.filter((value) => !/^\d+$/.test(value));
     const lostNumbers = lost.filter((value) => /^\d+$/.test(value));
 
-    expect(text).toContain("claimSupportNotice: some execute-result text that matches the candidate did not fit this pack");
+    expect(text).toContain("claimSupportNotice: some execute-result text did not fit this pack");
     expect(text).not.toMatch(/entry=\d+[;)]/);
     expect(lostNumbers.length).toBeGreaterThan(0);
     expect(lostNames.length).toBeLessThan(records.length);
@@ -448,7 +449,7 @@ describe("claim support: p8 claim-word fallback and audit-only omissions", () =>
       "--- TRANSCRIPT SOURCE BASIS ---",
       "claimSupport: execute-result text for candidate claims; anchors=1; transcriptMatched=1; shown=0",
       'claimSupportOmitted: 1 candidate anchors occur in execute results: "2026-12-31" (entry=1)',
-      "claimSupportNotice: some execute-result text that matches the candidate did not fit this pack",
+      "claimSupportNotice: some execute-result text did not fit this pack",
       '1. anchors=["2026-12-31"] entry=1 path="record.content" source="Lumen Bonds"',
       "   span: Lumen Bonds",
       '2. term="2026-12-31" entry=1 tool="mcp__raven__execute" resultChars=80',
@@ -461,6 +462,26 @@ describe("claim support: p8 claim-word fallback and audit-only omissions", () =>
     expect(check.omittedTerms).toContain("2026-12-31");
     const withSpan = `${labelOnly}\n3. entry=1 path="record.content" source="Lumen Bonds"\n   span: These bills mature on 2026-12-31 or earlier.`;
     expect(findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: withSpan, claims }).omittedTerms).toEqual([]);
+  });
+
+  it("never counts p8 header numbers, field indexes, or the truncation footer as support", () => {
+    const transcript = [execute({ records: Array.from({ length: 20 }, (_, index) => ({ name: `Desk ${index}`, rows: 12 })) })];
+    const claims = ["Claims the desk kept 12 rows"];
+    const countersOnly = [
+      "--- TRANSCRIPT SOURCE BASIS ---",
+      'fields: records[12].name="Desk 3"',
+      "claimSupport: execute-result text for candidate claims; entry numbers name transcript calls, not sources",
+      "claimSupportNotice: some execute-result text did not fit this pack",
+      '1. entry=12 sourceTruncated=yes path="records[12]" source="Desk 3" alsoIn=12',
+      "   span: name=Desk 3",
+      "truncation: execute#1: --- SOURCE BASIS --- kept 12 of 40 rows; ~12 tokens"
+    ].join("\n");
+    const check = findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: countersOnly, claims });
+
+    expect(check.status).toBe("pack-omission");
+    expect(check.omittedTerms).toContain("12");
+    // The field name with its value, the source record name, and the span still count.
+    expect(packSourceEvidenceText(countersOnly)).toBe(['name="Desk 3"', "Desk 3", "name=Desk 3"].join("\n"));
   });
 
   it("keeps omitted anchors and their entries out of the judge pack", () => {

@@ -286,10 +286,13 @@ Short field values carry their field name, and a small record keeps its fields t
 Span labels never include a generated array index, and the day of a written date is not an anchor.
 The anchors and claim words that selected a unit stay out of the pack.
 When matched text does not fit, the pack shows only the general `claimSupportNotice` line.
+It says only that some execute-result text did not fit; it names no anchor, entry, or count.
 `explainTranscriptEvidencePack` returns the pack and audit-only metadata: each unit's anchors and claim words, and each omitted anchor with its entries.
 That metadata never enters the judge prompt.
-`findTranscriptEvidencePackOmissions` counts only source text in a pack: spans, snippets, summaries, and source fields.
-Headings, counters, anchor and term labels, match lists, and notices never count as support.
+`findTranscriptEvidencePackOmissions` counts only source text in a pack.
+That is spans, snippets, summaries, source record names, and source field names with their values.
+Headings, anchor and term labels, match lists, and notices never count as support.
+Counters never count either: entry and `alsoIn` numbers, paths and array indexes, and the `truncation:` footer.
 `caseSnippets` holds question and golden terms that the answer does not use.
 The budget stays 12,000 characters.
 Summaries shrink first, then source items go to 8 and fields to 16, then spans shrink.
