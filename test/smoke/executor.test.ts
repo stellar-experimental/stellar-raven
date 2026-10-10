@@ -97,11 +97,11 @@ describe("executor evidence operation catalog guard", () => {
     const catalog = getCatalog();
     const withoutDirectory: Catalog = {
       ...catalog,
-      entries: catalog.entries.filter((entry) => entry.id !== "lumenloop.search_directory")
+      entries: catalog.entries.filter((entry) => entry.id !== "scout.searchRepos")
     };
 
     expect(() => assertExecutorEvidenceOperationIds(withoutDirectory)).toThrow(
-      'Executor candidate evidence operation "lumenloop.search_directory" is missing from the exposed catalog'
+      'Executor prior-art evidence operation "scout.searchRepos" is missing from the exposed catalog'
     );
   });
 
@@ -112,14 +112,14 @@ describe("executor evidence operation catalog guard", () => {
     const wrongKind: Catalog = {
       ...catalog,
       entries: catalog.entries.map((entry) =>
-        entry.id === "lumenloop.search_directory"
-          ? { ...skill, id: "lumenloop.search_directory" }
+        entry.id === "scout.searchRepos"
+          ? { ...skill, id: "scout.searchRepos" }
           : entry
       )
     };
 
     expect(() => assertExecutorEvidenceOperationIds(wrongKind)).toThrow(
-      'Executor candidate evidence operation "lumenloop.search_directory" must resolve to an exposed operation, found kind "skill"'
+      'Executor prior-art evidence operation "scout.searchRepos" must resolve to an exposed operation, found kind "skill"'
     );
   });
 });
@@ -352,7 +352,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
         await new Promise((resolve) => setTimeout(resolve, 25));
         return Response.json({
           success: true,
-          data: { count: 1, projects: [{ slug: "alpha" }] },
+          data: { count: 1, projects: [{ slug: "alpha" }], match_mode: "semantic" },
           error: null,
           meta: { tool: "search_directory", format: "json" }
         });
@@ -501,7 +501,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(outcome.sourceBasis?.sourceMetadata).toHaveLength(3);
   });
 
-  it("leaves compact results unchanged when an operation has no allowlisted metadata", async () => {
+  it("appends the observation time and candidate marker to a compact ok result", async () => {
     vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
       const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
       expect(url.pathname).toBe("/v1/tools/search_content_semantic");
@@ -521,8 +521,14 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     if (!outcome.ok) throw new Error(outcome.error);
     expect(outcome.ok).toBe(true);
     expect(outcome.truncated).toBe(false);
-    expect(outcome.result).toBe('["A grounded result"]');
-    expect(outcome.sourceBasis).toBeUndefined();
+    expect(outcome.result.startsWith(`["A grounded result"]\n${SOURCE_METADATA_MARKER}\n`)).toBe(true);
+    expect(outcome.result).toContain(
+      "calls: lumenloop.search_content_semantic=ok/"
+    );
+    expect(outcome.result).toContain("[inconclusive: candidates] (totals ok=1 (1 inconclusive)");
+    expect(outcome.result).toMatch(/\nobservedAt: \d{4}-\d{2}-\d{2}T[\d:.]+Z\n/);
+    expect(outcome.sourceBasis?.truncated).toBe(false);
+    expect(outcome.operationSummary).toMatchObject({ inconclusive: 1, candidateEvidence: 1 });
   });
 
   it("escapes model text that could impersonate the final source-metadata boundary", async () => {
@@ -587,7 +593,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       if (url.pathname.endsWith("/v1/tools/search_directory")) {
         return Response.json({
           success: true,
-          data: { count: 1, projects: [{ slug: "example" }] },
+          data: { count: 1, projects: [{ slug: "example" }], match_mode: "semantic" },
           error: null,
           meta: { tool: "search_directory", format: "json" }
         });
@@ -692,7 +698,8 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(scoutDirectory.ok).toBe(true);
     if (!scoutDirectory.ok) throw new Error(scoutDirectory.error);
-    expect(scoutDirectory.operationSummary?.candidateEvidence).toBe(1);
+    // A keyword project match is not a candidate lane; only a semantic or corrected match mode is.
+    expect(scoutDirectory.operationSummary?.candidateEvidence).toBeUndefined();
     expect(scoutDirectory.recoveryHint?.mode).toBe("narrow-only");
     expect(scoutDirectory.recoveryHint?.sourceOperations).toEqual(["scout.searchProjects"]);
     expect(scoutDirectory.recoveryHint?.candidates.map((candidate) => candidate.id)).toEqual([
@@ -1090,7 +1097,12 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       payload: { count: number; projects: { slug: string }[] };
       slugs: string[];
     };
-    expect(parsed.raw).toEqual({ ok: true, data: { count: 1, projects: [{ slug: "smoke-project" }] } });
+    expect(parsed.raw).toEqual({
+      ok: true,
+      data: { count: 1, projects: [{ slug: "smoke-project" }] },
+      asOf: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
+      asOfBasis: "observed"
+    });
     expect(parsed.payload).toEqual({ count: 1, projects: [{ slug: "smoke-project" }] });
     expect(parsed.slugs).toEqual(["smoke-project"]);
   });
@@ -1283,7 +1295,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as {
+      const parsed = JSON.parse(outcome.result.split(`\n${SOURCE_METADATA_MARKER}`)[0]!) as {
         ok: boolean;
         window: { dateStart: string; dateEnd: string };
         softEmpty: boolean;

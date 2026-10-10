@@ -48,8 +48,25 @@ export type AdapterError = {
   details?: unknown;
 };
 
+/**
+ * Host-derived evidence signals on an ok service-call result. Adapters never
+ * set them; the operation dispatcher (src/executor/providers.ts) derives them
+ * from the result shape, the catalog retrieval profile, and allowlisted
+ * upstream metadata. Failed envelopes carry none of them.
+ */
+export type InconclusiveSignal = "empty" | "candidates";
+
 export type AdapterResult =
-  | { ok: true; data: unknown }
+  | {
+      ok: true;
+      data: unknown;
+      /** Upstream-stated data date, else the host observation time (ISO-8601). */
+      asOf?: string;
+      /** The allowlisted payload path that supplied `asOf`, or "observed". */
+      asOfBasis?: string;
+      /** Present only when the rows are structurally empty or only candidates. */
+      inconclusive?: InconclusiveSignal;
+    }
   | { ok: false; error: AdapterError };
 
 export function okResult(data: unknown): AdapterResult {

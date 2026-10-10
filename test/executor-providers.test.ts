@@ -8,7 +8,14 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, type Catalog } from "../src/catalog/search.ts";
-import { buildSandbox, buildCodemodeProvider, hasServiceData, type OpLedgerCall } from "../src/executor/providers.ts";
+import {
+  asOfSignal,
+  buildSandbox,
+  buildCodemodeProvider,
+  hasServiceData,
+  inconclusiveSignal,
+  type OpLedgerCall
+} from "../src/executor/providers.ts";
 import type { FetchLike } from "../src/adapters/types.ts";
 import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
@@ -114,10 +121,12 @@ describe("host structural service evidence", () => {
     });
     await fnsOf(providers, "lumenloop").search_directory!({ query: "error" });
     await fnsOf(providers, "lumenloop").search_directory!({ query: "soft-empty" });
-    expect(calls).toMatchObject([
-      { outcome: "error", hasServiceData: undefined },
-      { outcome: "soft-empty", hasServiceData: undefined }
-    ]);
+    expect(calls.map((call) => call.outcome)).toEqual(["error", "soft-empty"]);
+    for (const call of calls) {
+      expect(call.hasServiceData).toBeUndefined();
+      expect(call.inconclusive).toBeUndefined();
+      expect(call.observedAt).toBeUndefined();
+    }
   });
 
   it("captures only the named source-metadata locations", async () => {
@@ -158,6 +167,88 @@ describe("host structural service evidence", () => {
       }
     ]);
     expect(JSON.stringify(calls[0]?.sourceMetadata)).not.toContain("excluded");
+  });
+
+  it("adds host-derived asOf and inconclusive signals to ok envelopes and the ledger", async () => {
+    const calls: OpLedgerCall[] = [];
+    const fetchImpl: FetchLike = async (url) =>
+      String(url).includes("/rfps")
+        ? Response.json({ rfps: [], meta: { generatedAt: "2026-08-26T12:00:00Z", counts: { total: 0 } } })
+        : Response.json({ success: true, data: { count: 1, projects: [{ slug: "soroswap" }] }, error: null });
+    const providers = buildSandbox(catalog, skillSource, env, { fetchImpl, onOpCall: (call) => calls.push(call) });
+
+    const empty = await fnsOf(providers, "scout").getRfps!({});
+    const exact = await fnsOf(providers, "lumenloop").search_directory!({ query: "soroswap" });
+
+    expect(empty).toMatchObject({
+      ok: true,
+      inconclusive: "empty",
+      asOf: "2026-08-26T12:00:00Z",
+      asOfBasis: "data.meta.generatedAt"
+    });
+    expect(exact).toMatchObject({ ok: true, asOfBasis: "observed" });
+    expect(exact).not.toHaveProperty("inconclusive");
+    const observed = (exact as { asOf: string }).asOf;
+    expect(new Date(observed).toISOString()).toBe(observed);
+    expect(calls.map((call) => call.inconclusive)).toEqual(["empty", undefined]);
+    expect(calls.every((call) => typeof call.observedAt === "string")).toBe(true);
+  });
+
+  it.each([
+    ["empty rows on any lane", "scout.getPeople", { people: [] }, undefined, "empty"],
+    ["semantic lane rows", "lumenloop.search_content_semantic", { results: [{ id: 1 }] }, undefined, "candidates"],
+    ["research lane rows", "scout.searchResearch", { items: [{ id: 1 }] }, undefined, "candidates"],
+    ["A/V lane rows", "lumenloop.find_av_passages", { passages: [{ id: 1 }] }, undefined, "candidates"],
+    ["substring directory rows", "lumenloop.search_directory", { projects: [{ slug: "x" }] }, undefined, undefined],
+    [
+      "semantic directory fallback",
+      "lumenloop.search_directory",
+      { projects: [{ slug: "x" }], match_mode: "semantic" },
+      [{ path: "data.match_mode", value: "semantic" }],
+      "candidates"
+    ],
+    [
+      "strict keyword project match",
+      "scout.searchProjects",
+      { projects: [{ slug: "x" }] },
+      [{ path: "data.meta.matchMode", value: "strict" }],
+      undefined
+    ],
+    [
+      "spelling-corrected project match",
+      "scout.searchProjects",
+      { projects: [{ slug: "x" }] },
+      [{ path: "data.meta.matchMode", value: "corrected" }],
+      "candidates"
+    ],
+    ["corpus docs rows", "stellarDocs.search_docs", { hits: [{ url: "https://x" }] }, undefined, undefined]
+  ] as const)("derives inconclusive for %s", (_label, id, data, metadata, expected) => {
+    const entry = catalog.entries.find((candidate) => candidate.id === id);
+    expect(entry, id).toBeDefined();
+    expect(inconclusiveSignal(entry!, data, metadata ? [...metadata] : undefined)).toBe(expected);
+  });
+
+  it("prefers the most specific parseable upstream date, else the observation time", () => {
+    const observedAt = "2026-10-10T12:00:00.000Z";
+    expect(asOfSignal(undefined, observedAt)).toEqual({ asOf: observedAt, asOfBasis: "observed" });
+    expect(
+      asOfSignal(
+        [
+          { path: "data.meta.generatedAt", value: "2026-10-09T08:00:00Z" },
+          { path: "data.meta.dataAsOf", value: "2026-10-08" }
+        ],
+        observedAt
+      )
+    ).toEqual({ asOf: "2026-10-08", asOfBasis: "data.meta.dataAsOf" });
+    expect(
+      asOfSignal(
+        [
+          { path: "data.dataAsOf", value: "not a date" },
+          { path: "data.meta.scfRound.asOf", value: "2026-08-26" }
+        ],
+        observedAt
+      )
+    ).toEqual({ asOf: observedAt, asOfBasis: "observed" });
   });
 });
 
@@ -626,7 +717,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     const r = (await ns.lumenloop!.search_directory!({ query: "soroswap" })) as {
       data: object;
     };
-    expect(Object.keys(r).sort()).toEqual(["data", "ok"]);
+    expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "data", "ok"]);
     expect(r.data).toBeInstanceOf(Object);
     expect(JSON.stringify(r)).toContain('"count":1'); // stringify never hits a trap
     // A script returning the raw envelope must still serialize across RPC.
@@ -717,7 +808,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
       expect(() => r.count).toThrow(/use r\.data\.count/); // read-before-write still throws
       r.count = 99; // does not throw
       expect(r.count).toBe(99); // reads back
-      expect(Object.keys(r).sort()).toEqual(["count", "data", "ok"]); // enumerable now
+      expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "count", "data", "ok"]); // enumerable now
       expect(JSON.parse(JSON.stringify(r)).count).toBe(99);
       expect((structuredClone(r) as unknown as { count: number }).count).toBe(99);
       expect(r.data.count).toBe(1); // the payload is NOT written through to

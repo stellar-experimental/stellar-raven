@@ -10,7 +10,7 @@
  * Console output and the returned value cross separate redacted boundaries.
  *
  * The final result receives truncation and reserved-marker escaping.
- * Truncation, source metadata, or an error call adds a bounded footer.
+ * Truncation, an ok call, or an error call adds a bounded footer.
  * SOURCE BASIS marks truncation; SOURCE METADATA marks an untruncated footer.
  * Only a truncated result with an owner can receive a stored artifact.
  * Logs and errors have independent model-output caps and are not persisted.
@@ -51,7 +51,9 @@ export type ExecuteOperationSummary = {
   evidenceData?: number;
   error: number;
   softEmpty: number;
-  /** Successful calls whose operation contract returns semantic/directory/research candidates. */
+  /** Successful calls carrying any host-derived `inconclusive` signal. */
+  inconclusive?: number;
+  /** Successful calls marked `inconclusive: "candidates"` (candidate lane or semantic match mode). */
   candidateEvidence?: number;
   /** Successful Scout project/repository calls whose contracts can return prior-art candidates. */
   priorArtCandidates?: number;
@@ -120,14 +122,6 @@ export type ExecuteRunnerOptions = {
 };
 
 const EVIDENCE_OPERATION_IDS = {
-  candidate: new Set([
-    "lumenloop.search_directory",
-    "lumenloop.search_content_semantic",
-    "lumenloop.find_av_passages",
-    "lumenloop.find_similar_scf_submissions",
-    "scout.searchProjects",
-    "scout.searchResearch"
-  ]),
   "prior-art": new Set(["scout.searchProjects", "scout.searchRepos", "scout.explainRepo"])
 } as const;
 
@@ -155,6 +149,7 @@ const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"]);
 function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
   const summary: ExecuteOperationSummary = { total: calls.length, ok: 0, error: 0, softEmpty: 0 };
   let evidenceData = 0;
+  let inconclusive = 0;
   let candidateEvidence = 0;
   let priorArtCandidates = 0;
   for (const call of calls) {
@@ -163,10 +158,12 @@ function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperat
     else summary.softEmpty += 1;
     const hasEvidenceData = call.outcome === "ok" && call.hasServiceData !== false;
     if (hasEvidenceData) evidenceData += 1;
-    if (hasEvidenceData && EVIDENCE_OPERATION_IDS.candidate.has(call.op)) candidateEvidence += 1;
+    if (call.outcome === "ok" && call.inconclusive) inconclusive += 1;
+    if (hasEvidenceData && call.inconclusive === "candidates") candidateEvidence += 1;
     if (hasEvidenceData && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
   }
   if (evidenceData > 0) summary.evidenceData = evidenceData;
+  if (inconclusive > 0) summary.inconclusive = inconclusive;
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
   return summary;
@@ -176,6 +173,15 @@ function sourceMetadataFromOperationLedger(calls: readonly OpLedgerCall[]): Sour
   return calls.flatMap((call) =>
     (call.sourceMetadata ?? []).map((field) => ({ op: call.op, ...field }))
   );
+}
+
+/** Latest host observation time across ok calls; ISO strings sort chronologically. */
+function latestObservedAt(calls: readonly OpLedgerCall[]): string | undefined {
+  let latest: string | undefined;
+  for (const call of calls) {
+    if (call.outcome === "ok" && call.observedAt && (!latest || call.observedAt > latest)) latest = call.observedAt;
+  }
+  return latest;
 }
 
 function evidenceRecoveryHint(
@@ -425,7 +431,8 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     let text = escapeSourceManifestMarkerCollisions(result.text);
     let sourceBasis: BuildSourceBasisManifestInput | undefined;
     const sourceMetadata = sourceMetadataFromOperationLedger(opLedger);
-    if (result.truncated || sourceMetadata.length > 0 || opLedger.some((call) => call.outcome === "error")) {
+    // A soft-empty-only run has no data to date or mark; its envelopes already say soft-empty.
+    if (result.truncated || opLedger.some((call) => call.outcome !== "soft-empty")) {
       let artifact: SourceBasisArtifact = { state: "absent", reason: "unavailable" };
       if (result.truncated) {
         const serialized = serializedResult(redactedResult);
@@ -495,6 +502,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
         shape: sourceBasisShapeFromTruncation(redactedResult, result),
         calls: opLedger,
         sourceMetadata,
+        observedAt: latestObservedAt(opLedger),
         canonicalUrls: sanitizeCanonicalUrls(collectCanonicalUrlCandidates(redactedResult)),
         artifact,
         skillSectionAdvice: skillRead,

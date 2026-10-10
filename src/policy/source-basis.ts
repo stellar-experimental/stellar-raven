@@ -1,3 +1,4 @@
+import type { InconclusiveSignal } from "../adapters/types.ts";
 import { CHARS_PER_TOKEN, DEFAULT_MAX_TOKENS, truncateForModel, type Truncated } from "./truncate.ts";
 
 export const SOURCE_BASIS_MANIFEST_MAX_CHARS = 1600;
@@ -81,6 +82,8 @@ export type SourceBasisCall = {
   ms: number;
   /** Host-generated failure label, excluding upstream text and argument values. */
   reason?: string;
+  /** Host-derived signal on an ok call: structurally empty rows or only candidates. */
+  inconclusive?: InconclusiveSignal;
 };
 
 export type SourceBasisArtifact =
@@ -98,6 +101,8 @@ export type BuildSourceBasisManifestInput = {
   shape: SourceBasisShape;
   calls: SourceBasisCall[];
   sourceMetadata?: SourceMetadataEntry[];
+  /** Latest host observation time across ok service calls (ISO-8601). */
+  observedAt?: string;
   canonicalUrls?: string[];
   artifact?: SourceBasisArtifact;
   skillSectionAdvice?: boolean;
@@ -268,6 +273,7 @@ function serializeManifest(
       `sourceMetadata: ${sourceMetadataLine(sourceMetadata, limits.sourceMetadataLimit)}`
     );
   }
+  if (input.observedAt) lines.push(`observedAt: ${truncateAtom(input.observedAt, MAX_ATOM_CHARS)}`);
   lines.push(
     `canonicalUrls: ${urlsLine(urls, input.canonicalUrls?.length ?? 0, limits.urlLimit)}`,
     `artifact: ${artifactLine(input.artifact)}`,
@@ -281,7 +287,7 @@ function guidanceLine(input: BuildSourceBasisManifestInput): string {
     if (input.calls.some((call) => call.outcome === "error")) {
       return "host-captured call failures survived sandbox projection; treat failed reads as inconclusive and preserve any source metadata.";
     }
-    return "host-captured source metadata survived sandbox projection; preserve its dates, modes, and counts when answering.";
+    return "host-captured call outcomes and source metadata survived sandbox projection; preserve their dates, modes, counts, and inconclusive markers when answering.";
   }
   const skillClause = input.skillSectionAdvice
     ? " This run read skill content: return specific sections or aggregates, not whole skill bodies."
@@ -311,7 +317,8 @@ function callsLine(calls: SourceBasisCall[], limit: number): string {
     const op = truncateAtom(call.op, MAX_ATOM_CHARS);
     const ms = Number.isFinite(call.ms) ? `${Math.max(0, Math.round(call.ms))}ms` : "?ms";
     const reason = call.reason ? ` [${truncateAtom(call.reason, SOURCE_BASIS_REASON_MAX_CHARS)}]` : "";
-    return `${op}=${call.outcome}/${ms}${reason}`;
+    const inconclusive = call.outcome === "ok" && call.inconclusive ? ` [inconclusive: ${call.inconclusive}]` : "";
+    return `${op}=${call.outcome}/${ms}${reason}${inconclusive}`;
   });
   const totals = callTotals(calls);
   const suffix = calls.length > shown.length ? ` (+${calls.length - shown.length} more; ${totals})` : ` (${totals})`;
@@ -417,7 +424,9 @@ function sourceBasisCallTotals(calls: SourceBasisCall[]): Record<SourceBasisCall
 
 function callTotals(calls: SourceBasisCall[]): string {
   const totals = sourceBasisCallTotals(calls);
-  return `totals ok=${totals.ok} error=${totals.error} soft-empty=${totals["soft-empty"]}`;
+  const inconclusive = calls.filter((call) => call.outcome === "ok" && call.inconclusive).length;
+  const okDetail = inconclusive > 0 ? ` (${inconclusive} inconclusive)` : "";
+  return `totals ok=${totals.ok}${okDetail} error=${totals.error} soft-empty=${totals["soft-empty"]}`;
 }
 
 function truncateAtom(value: string, maxChars: number): string {

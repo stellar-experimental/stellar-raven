@@ -124,12 +124,15 @@ This provides one model-facing copy of the bounded output.
 The host redacts the final result before applying `truncateForModel`.
 The configured token budget determines a character cut at four characters per token.
 Reserved source-manifest markers receive escaping even when the result fits.
-A footer appears after truncation, captured source metadata, or an error call.
+A footer appears after truncation, an ok service call, or an error call.
 `--- SOURCE BASIS ---` marks a truncated result.
 `--- SOURCE METADATA ---` marks every untruncated footer, including error call reasons.
 Soft-empty calls have no failure reason and do not trigger a footer.
 The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
+Each ok call with an `inconclusive` signal carries an `[inconclusive: empty]` or `[inconclusive: candidates]` marker.
+The call totals keep the inconclusive count after the budget drops per-call entries.
+An `observedAt:` line gives the latest host observation time across ok calls.
 Each failed call includes a reason of at most 64 characters.
 Reasons use fixed labels and declared parameter names, with no upstream text or argument values.
 The footer remains bounded to 1600 characters.
@@ -177,7 +180,24 @@ Service operations, skill reads, and skill runners return this contract:
 A soft-empty result means the service returned no usable evidence.
 An empty successful payload remains successful data with no positive rows.
 Neither form proves an open-world absence.
-The host ledger classifies empty success as inconclusive without changing the public envelope.
+
+The operation dispatcher in [src/executor/providers.ts](src/executor/providers.ts) adds evidence signals to each ok service-operation result:
+
+```text
+{ ok: true, data, asOf, asOfBasis, inconclusive? }
+```
+
+`asOf` is the upstream data date when an allowlisted path holds a parseable date string.
+The precedence is `dataAsOf`, then `asOf`, then `generatedAt`, each at the payload root before `meta`.
+`asOfBasis` names that path.
+Otherwise `asOf` is the host clock when the response arrived, and `asOfBasis` is `"observed"`.
+`inconclusive` is `"empty"` when `hasServiceData` finds no rows and no scalar detail.
+It is `"candidates"` when the payload has rows and the catalog retrieval lane is `semantic`, `research`, or `av`.
+It is also `"candidates"` when the captured `matchMode` or `match_mode` is `"semantic"` or `"corrected"`.
+The signal never judges row relevance, so adjacent or off-target rows stay unmarked.
+Failed envelopes, skill reads, skill runs, and artifact reads carry none of these fields.
+The run-level `candidateEvidence` count, which triggers the candidate-evidence block, counts `"candidates"` calls.
+[The design note](.agents/rounds/2026-10-10-weekend/answer-style/design.md) records which instruction sentences these signals replace.
 
 Scout can return HTTP 200 for a page that lost a backend read.
 It states the loss in `meta.partial: true` and lists the reads in `meta.failedReads`.
