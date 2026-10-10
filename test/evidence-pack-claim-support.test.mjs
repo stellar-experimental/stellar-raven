@@ -176,6 +176,28 @@ describe("p7 claim support: controls", () => {
     expect(omissionLine(text)).toBe("claimSupportOmitted: none");
   });
 
+  it("matches an amount in another written form but not a larger amount", () => {
+    const transcript = [execute({
+      tvl: { summary: "Stellar DeFi TVL stood at $174.4 million at the end of Q1." },
+      grants: { amountUSD: 96000, other: "$1174.4 million in another network" }
+    })];
+    const text = pack("Stellar DeFi TVL was $174.4M. The grant was $96,000.", transcript);
+    const units = supportUnits(text);
+
+    expect(units.find((unit) => unit.header.includes('"$174.4M"'))?.span).toContain("$174.4 million at the end of Q1");
+    const grant = units.find((unit) => unit.header.includes('"$96,000"'));
+    expect(grant?.span).toBe("   span: grants={amountUSD: 96000 | other: $1174.4 million in another network}");
+    // The larger $1174.4 million in the same span does not count as $174.4M.
+    expect(grant?.header).not.toContain('"$174.4M"');
+  });
+
+  it("matches a quotation that drops a short source word", () => {
+    const transcript = [execute({ hits: [{ snippet: "lets third-party applications, such as **wallets**, to **cash**-**in** (deposit) USDC on Stellar" }] })];
+    const text = pack('The page says it lets "third-party applications, such as wallets, cash-in (deposit) USDC on Stellar".', transcript);
+
+    expect(supportUnits(text).some((unit) => unit.header.includes("third-party applications"))).toBe(true);
+  });
+
   it("shows the record that holds an answer number and prefers the claim's own record", () => {
     const transcript = [execute({
       awards: [
