@@ -23,16 +23,12 @@ import {
   EXCLUDED_LUMENLOOP_OPS,
   EXCLUDED_SCOUT_OPS,
   NON_EXPOSED_SCOUT_OP_NAMES,
-  SCOUT_OPERATIONS_ABSENT_FROM_SPEC,
   RETIRED_SKILL_REF_RE
 } from "./exposure.mjs";
 
 // Share the runtime scrub pattern instead of maintaining another retired-id list.
 const RETIRED_SKILL_RE = RETIRED_SKILL_REF_RE;
-const RAW_SCOUT_PATHS = [
-  ...EXCLUDED_SCOUT_OPS,
-  ...SCOUT_OPERATIONS_ABSENT_FROM_SPEC.keys()
-].map((signature) => signature.split(" ")[1]);
+const RAW_SCOUT_PATHS = [...EXCLUDED_SCOUT_OPS].map((signature) => signature.split(" ")[1]);
 const SCOUT_NAME_SPELLINGS = [...NON_EXPOSED_SCOUT_OP_NAMES].flatMap((name) => [
   name, name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase()
 ]);

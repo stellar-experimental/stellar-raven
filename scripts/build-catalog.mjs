@@ -397,18 +397,31 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
 export function assertScoutExclusionsResolve(openapi) {
   const present = new Map();
   for (const [path, pathItem] of Object.entries(openapi.paths)) {
-    for (const method of HTTP_METHODS) {
+    for (const method of OPENAPI_OPERATION_METHODS) {
       if (pathItem[method]) present.set(`${method.toUpperCase()} ${path}`, pathItem[method].operationId);
     }
   }
-  const stale = [...EXCLUDED_SCOUT_OPS].filter((k) => !present.has(k));
+  const stale = [...EXCLUDED_SCOUT_OPERATIONS.keys()].filter((k) => !present.has(k));
   if (stale.length > 0) {
     throw new Error(
       `EXCLUDED_SCOUT_OPS no longer present in the scout OpenAPI: ${stale.join(", ")}. ` +
         `Upstream renamed or removed them — reconcile the exclusion list in build-catalog.mjs.`
     );
   }
-  const renamed = [...EXCLUDED_SCOUT_OPERATIONS].filter(([signature, name]) => present.get(signature) !== name);
+  // Optional exclusions may be absent from the accepted inventory, but a
+  // newly listed operation at their path must match the reviewed method.
+  const optionalPaths = new Set([...OPTIONAL_EXCLUDED_SCOUT_OPERATIONS.keys()]
+    .map((signature) => signature.split(" ")[1]));
+  const unreviewed = [...present.keys()].filter((signature) =>
+    optionalPaths.has(signature.split(" ")[1]) && !EXCLUDED_SCOUT_OPS.has(signature));
+  if (unreviewed.length > 0) {
+    throw new Error(
+      `Unreviewed Scout operation appeared at an excluded path: ${unreviewed.join(", ")}. ` +
+        "Review its exposure before accepting the new method."
+    );
+  }
+  const renamed = [...EXCLUDED_SCOUT_OPERATIONS, ...OPTIONAL_EXCLUDED_SCOUT_OPERATIONS]
+    .filter(([signature, name]) => present.has(signature) && present.get(signature) !== name);
   if (renamed.length > 0) {
     throw new Error(
       `Excluded Scout operation names changed: ${renamed.map(([signature]) => signature).join(", ")}. ` +
@@ -527,6 +540,7 @@ import {
   EXCLUDED_LUMENLOOP_OPS,
   EXCLUDED_SCOUT_OPERATIONS,
   EXCLUDED_SCOUT_OPS,
+  OPTIONAL_EXCLUDED_SCOUT_OPERATIONS,
   SCOUT_PATHS_ABSENT_FROM_SPEC,
   RETIRED_ONBOARDING_SKILLS,
   lumenloopOpExcluded,
@@ -659,6 +673,9 @@ function buildLumenloop(inv) {
 // ---------------------------------------------------------------------------
 
 const HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
+// Drift guards inspect every OpenAPI operation, including methods that the
+// catalog builder does not emit. Keep the emitted-method set unchanged.
+const OPENAPI_OPERATION_METHODS = [...HTTP_METHODS, "head", "options", "trace"];
 
 function scoutInputSchema(op, pathItem, openapi) {
   const properties = {};
