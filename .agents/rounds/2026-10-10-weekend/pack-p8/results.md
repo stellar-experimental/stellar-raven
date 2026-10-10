@@ -7,11 +7,12 @@ re-review (R5: CODE-DELTA APPROVE, PLAN-DELTA LAUNCH-OK).
 Data: [rejudge-artifacts.json](rejudge-artifacts.json) (12 reused arm-A and 12 new arm-B artifacts,
 with SHA-256) and [rejudge-summary-p8.json](rejudge-summary-p8.json) (output of the predeclared
 [analyze-rejudge-p8.mjs](analyze-rejudge-p8.mjs)). The artifacts are in the ignored
-`eval/qa/results/` folders of `raven-p7-arm` (arm A) and `raven-p8-arm` (arm B).
+`eval/qa/results/` folders of `raven-p6-arm` (arm A) and `raven-p8-arm` (arm B).
 
 ## Verdict
 
-**Under the predeclared rules, the p8 result is blocked.**
+**BLOCKED. Under the predeclared rules, the p8 result is blocked.**
+The mandatory post-run review (R6) confirms this verdict. See "Post-run review (R6)" below.
 
 - Stage 1 passes. The p8 pack shows the support as real spans, and no arm-B vote calls that text
   fabricated or absent.
@@ -27,7 +28,8 @@ misreading. A change to that rule needs a reviewed amendment; I did not apply on
 The p7 regression is resolved: the quantum control (`2026-10-07T23-25-14`) no longer reads the pack
 as a contradiction. Its panel is P/P/C, not W/W/W.
 
-The post-run independent review is mandatory and not done. I did not review my own run.
+The mandatory post-run review is [post-run-review/rr6-review.md](post-run-review/rr6-review.md)
+(R6, `POST-RUN: CONFIRMED`). I did not review my own run.
 
 ## Method completeness
 
@@ -65,7 +67,9 @@ Arm A made no call. Its verdicts are the p6 verdicts from the p7 run. All 32 arm
 | S3d | 9 | $2.45 | $0.7861 | $0.1087 |
 | **Total** | **103** | **$29.80** | **$9.0843** | |
 
-Stage spend: Stage 1 $1.8821, Stage 2 $5.1232, Stage 3 $1.7970, self-test $0.2822.
+Stage spend: Stage 1 $1.8821, Stage 2 $5.1231, Stage 3 $1.7970, self-test $0.2822.
+These figures round the sum of the raw call costs. An earlier version showed Stage 2 as $5.1232,
+the sum of the rounded file figures; R6 corrected it.
 
 ## Stage 1: omission rows (6)
 
@@ -114,8 +118,9 @@ Result: 14 same, 2 up, 4 down.
 | `q-agent-identity-erc8004-stellar` | partial (P P P) | correct (P C C) | Up. Vote 3 says the answer is "consistent with transcript source-basis entries 10-17"; it uses entry numbers as locations, not as source identities. |
 | `q-pc-quantum-preparedness-dormant` | wrong (W W W) | partial (P P P) | Up. Dormant-account check: the p8 pack shows the INRIA paragraph ("1,193 logical qubits") as a span from entry 4, record "Introducing the Quantum Preparedness Plan". No vote repeats the false source inference of the p7 run. All three votes cite the answer's "readiness targeted for 2027" for Stage 3. Vote 3 also says the NIST "2030+ to 2029+" detail is not in the evidence; the transcript has it, but neither pack shows it. |
 
-The other 14 rows keep their score. The stage rule needs a reading only for a lower score, so I did
-not read their rationales in full.
+The other 14 rows keep their score. I did not read their rationales in full, although the plan
+required every individual rationale in both arms. R6 completed that reading for all rows and both
+arms and found no additional blocking pack cause.
 
 **Stage 2: fail (one pack regression under the predeclared rule; the cited evidence is accurate).**
 
@@ -150,5 +155,26 @@ number instead of a span is a pack regression.
 - Rows from the two incomplete source files use the current corpus. Both arms read the same content.
 - Per review R5, the diagnostic still counts `provenance:` and `(+N more)` counters. This file cites
   no support-check result for a bare-number claim.
-- The attribution of each changed score is my reading of the rationales. The post-run review must
-  check it.
+- The attribution of each changed score was my reading of the rationales. R6 checked it.
+
+## Post-run review (R6)
+
+[post-run-review/rr6-review.md](post-run-review/rr6-review.md), `POST-RUN: CONFIRMED`.
+
+- R6 confirms the BLOCKED verdict. It rebuilt all 64 packs and all 64 full prompts and matched every
+  recorded hash, pin, budget, and panel score.
+- R6 read all individual rationales in both arms. That completes the reading that this file skipped
+  for 14 unchanged Stage 2 rows. It found no additional blocking pack cause.
+- R6 agrees that the RPC downgrade has a mixed cause and that the other three Stage 2 downgrades
+  have no identified p8 cause. That classification is the plan's attribution rule, not a measured
+  variance rate.
+- R6 adds a residual finding: in `q-scf-funding-by-category`, arm-B vote 2 treats the
+  `2026-10-03` snapshot date as fabricated because the compact pack omits it. The saved source holds
+  it, and both packs omit it. In the dormant-account row, arm-B vote 3 likewise rejects the NIST
+  `2029+` detail, which the saved source holds and both packs omit.
+- R5-1 was open at the time of R6: the support diagnostic kept the whole `provenance:` line and the
+  `(+N more)` suffix. R6's probes accepted `18126` (a character counter) and `20` (`(+20 more)`) as
+  support. The p8b preparation closes it as a diagnostic-only change; see
+  [amendment-p8b.md](amendment-p8b.md).
+- R6 recommends a prospective Stage 2 amendment and a fixed three-call continuation on the
+  StellarTerm row. Both are in [amendment-p8b.md](amendment-p8b.md). This run stays BLOCKED.
