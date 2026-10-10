@@ -23,27 +23,30 @@ export const EXCLUDED_SCOUT_OPERATIONS = new Map([
   ["GET /api/rwa", "getRwaAssets"]
 ]);
 
-export const EXCLUDED_SCOUT_OPS = new Set(EXCLUDED_SCOUT_OPERATIONS.keys());
-
-// The 1.9.71 review names this operation, but the current 1.9.61 inventory
-// does not contain it. Guard its name and path without refreshing inventory.
-// A later addition must pass the existing absent-path exposure gate.
-export const SCOUT_OPERATIONS_ABSENT_FROM_SPEC = new Map([
+// Reviewed exclusions not yet in the accepted inventory. Scout 1.9.72 lists
+// this operation, while the accepted 1.9.61 snapshot does not. Its presence
+// must not block refresh or expose it; validate its exact method and name
+// when listed. Move it above when an inventory containing it is accepted.
+// Submission review stays excluded until its routing contract passes the
+// routing gates and independent exposure review.
+export const OPTIONAL_EXCLUDED_SCOUT_OPERATIONS = new Map([
   ["GET /api/hackathons/review", "reviewSubmission"]
+]);
+
+export const EXCLUDED_SCOUT_OPS = new Set([
+  ...EXCLUDED_SCOUT_OPERATIONS.keys(),
+  ...OPTIONAL_EXCLUDED_SCOUT_OPERATIONS.keys()
 ]);
 
 export const NON_EXPOSED_SCOUT_OP_NAMES = new Set([
   ...EXCLUDED_SCOUT_OPERATIONS.values(),
-  ...SCOUT_OPERATIONS_ABSENT_FROM_SPEC.values()
+  ...OPTIONAL_EXCLUDED_SCOUT_OPERATIONS.values()
 ]);
 
 // Public skill prose also describes this collection, but Scout's OpenAPI does
 // not list it. The catalog builder checks that absence so a future addition
 // requires a new exposure decision instead of silently changing this policy.
-export const SCOUT_PATHS_ABSENT_FROM_SPEC = new Set([
-  "/api/repos",
-  ...[...SCOUT_OPERATIONS_ABSENT_FROM_SPEC.keys()].map((operation) => operation.split(" ")[1]!)
-]);
+export const SCOUT_PATHS_ABSENT_FROM_SPEC = new Set(["/api/repos"]);
 
 export const EXCLUDED_SCOUT_PATHS = new Set([
   ...[...EXCLUDED_SCOUT_OPS].map((operation) => operation.split(" ")[1]!),
