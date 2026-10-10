@@ -263,6 +263,13 @@ function serializeManifest(
     shapeDetailLimit: number;
   }
 ): string {
+  if (isCompactFooter(input, sourceMetadata)) {
+    // A clean ok-only run: shape, URLs, and artifact state carry nothing here.
+    const compact = [SOURCE_METADATA_MARKER, `calls: ${callsLine(input.calls, limits.callLimit)}`];
+    if (input.observedAt) compact.push(`observedAt: ${truncateAtom(input.observedAt, MAX_ATOM_CHARS)}`);
+    compact.push(`guidance: ${guidanceLine(input, true)}`);
+    return compact.join("\n");
+  }
   const lines = [
     input.truncated === false ? SOURCE_METADATA_MARKER : SOURCE_BASIS_MARKER,
     `shape: ${shapeLine(input.shape, limits.shapeDetailLimit)}`,
@@ -282,10 +289,22 @@ function serializeManifest(
   return lines.join("\n");
 }
 
-function guidanceLine(input: BuildSourceBasisManifestInput): string {
+/** Untruncated, no failed call, and no captured source metadata. */
+function isCompactFooter(input: BuildSourceBasisManifestInput, sourceMetadata: NormalizedSourceMetadata): boolean {
+  return (
+    input.truncated === false &&
+    sourceMetadata.entries.length === 0 &&
+    !input.calls.some((call) => call.outcome === "error")
+  );
+}
+
+function guidanceLine(input: BuildSourceBasisManifestInput, compact = false): string {
   if (input.truncated === false) {
     if (input.calls.some((call) => call.outcome === "error")) {
       return "host-captured call failures survived sandbox projection; treat failed reads as inconclusive and preserve any source metadata.";
+    }
+    if (compact) {
+      return "host-captured call outcomes survived sandbox projection; preserve observedAt and any inconclusive markers when answering.";
     }
     return "host-captured call outcomes and source metadata survived sandbox projection; preserve their dates, modes, counts, and inconclusive markers when answering.";
   }

@@ -49,8 +49,8 @@ describe("server instructions — Claude Code 2KB budget", () => {
       "codemode.artifact.info(id)", // truncation recovery
       "exact-match — never guess", // id discipline
       "open-world identity, history, or topic",
-      "ok: true, data, asOf, inconclusive?", // host-derived ok signals
-      "`asOf` dates the data",
+      "ok: true, data, asOf, asOfBasis, inconclusive?", // host-derived ok signals
+      '`asOf` is an upstream-stated date, or the observation time when `asOfBasis` is "observed"',
       '`inconclusive` is "empty" (no rows) or "candidates"',
       "`inconclusive`, off-target, or adjacent ok rows ground nothing",
       "lumenloop.search_content_semantic",

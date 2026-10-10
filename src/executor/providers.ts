@@ -253,14 +253,16 @@ const MATCH_MODE_PATHS = new Set<SourceMetadataPath>([
   "data.meta.matchMode",
   "data.meta.match_mode"
 ]);
-/** Upstream data-date paths, most specific first. */
+/**
+ * Upstream data-date paths, most specific first. `generatedAt` is excluded:
+ * it stamps response generation, not the data, and adds nothing over the
+ * host observation time.
+ */
 const AS_OF_PATHS: readonly SourceMetadataPath[] = [
   "data.dataAsOf",
   "data.meta.dataAsOf",
   "data.asOf",
-  "data.meta.asOf",
-  "data.generatedAt",
-  "data.meta.generatedAt"
+  "data.meta.asOf"
 ];
 
 /**
@@ -286,8 +288,8 @@ export function inconclusiveSignal(
 }
 
 /**
- * The upstream-stated data date when an allowlisted path holds a parseable
- * date string (copied exactly), else the host observation time.
+ * The upstream-stated data date when an allowlisted data-date path holds a
+ * parseable date string (copied exactly), else the host observation time.
  */
 export function asOfSignal(
   sourceMetadata: readonly SourceMetadataField[] | undefined,
@@ -394,7 +396,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
     '      if (r.ok && r.data && typeof r.data === "object" && !Array.isArray(r.data)) {',
     "        for (const key of Object.keys(r.data)) {",
     '          if (__envelopeKeys.has(key)) continue;',
-    '          const msg = call + \' result: ".\' + key + \'" is on the data payload, not the envelope — use r.data.\' + key + " (every call resolves to { ok: true, data } | { ok: false, error })";',
+    '          const msg = call + \' result: ".\' + key + \'" is on the data payload, not the envelope — use r.data.\' + key + " (an ok result keeps its payload under r.data; a failure is { ok: false, error })";',
     "          __trap(key, {",
     "            get() { throw new Error(msg); },",
     "            set(value) { Object.defineProperty(this, key, { value, writable: true, enumerable: true, configurable: true }); }",
@@ -666,7 +668,7 @@ function describeCatalogEntry(catalog: Catalog, id?: unknown) {
     ...(signature ? { signature } : {}),
     inputSchema: entry.inputSchema,
     outputSchema: entry.outputSchema,
-    usage: "call it exactly as the signature's callable line shows — the payload arrives under r.data ({ ok: true, data } | { ok: false, error }), never at the top level"
+    usage: "call it exactly as the signature's callable line shows — the payload arrives under r.data ({ ok: true, data, asOf, asOfBasis, inconclusive? } | { ok: false, error }), never at the top level"
   };
 }
 

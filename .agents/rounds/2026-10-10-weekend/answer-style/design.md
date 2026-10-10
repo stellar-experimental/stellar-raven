@@ -45,6 +45,10 @@ The dispatcher sets `inconclusive` on an ok result only when host data proves it
 | `"candidates"` | The payload has rows, and the catalog `retrievalProfile.lane` is `semantic`, `research`, or `av`. | Catalog metadata |
 | `"candidates"` | The payload has rows, and captured `matchMode` or `match_mode` is `"semantic"` or `"corrected"`. | Allowlisted upstream metadata |
 
+Scout `meta.matchMode` values `loose-1` and `majority` stay unmarked. They are relaxed keyword
+tiers, so their rows are still keyword-confirmed. Only `semantic` (no keyword tier matched) and
+`corrected` (spelling correction only) mark candidates.
+
 The match-mode rule covers directory searches that fall back to vector neighbours. Lumenloop
 `search_directory` documents `match_mode: "semantic"` for that case. Scout documents
 `meta.matchMode` `"semantic"` (no keyword tier matched) and `"corrected"` (rows matched only
@@ -68,10 +72,15 @@ block) now counts calls with `inconclusive: "candidates"`. This replaces the han
 
 Every ok service result carries `asOf` (an ISO-8601 string) and `asOfBasis`:
 
-- When the upstream payload states a parseable date at an allowlisted path, `asOf` is that exact
-  string, and `asOfBasis` is the path. The precedence is `data.dataAsOf`, `data.meta.dataAsOf`,
-  `data.asOf`, `data.meta.asOf`, `data.generatedAt`, `data.meta.generatedAt`.
+- When the upstream payload states a parseable data date at an allowlisted path, `asOf` is that
+  exact string, and `asOfBasis` is the path. The precedence is `data.dataAsOf`,
+  `data.meta.dataAsOf`, `data.asOf`, `data.meta.asOf`.
 - Otherwise `asOf` is the host clock when the response arrived, and `asOfBasis` is `"observed"`.
+
+`generatedAt` is not a data date. Scout documents it as a response-generation stamp, so it adds
+nothing over the host observation time. It still appears on the footer `sourceMetadata:` line, but
+it never becomes `asOf`. For most Docs, Scout, and Lumenloop calls, no data date exists, so
+`asOf` is the observation time. The instructions therefore name `asOfBasis` beside `asOf`.
 
 The host has no per-operation volatility flag. All three services serve mutable data, and docs
 pages change too. One rule for every ok result is simpler than a hand-kept volatile list, and it
@@ -88,6 +97,11 @@ truncation, and `--- SOURCE METADATA ---` marks an untruncated footer. The 1,600
 budget does not change. The budget loop drops per-call atoms first. The totals keep the
 inconclusive count, and the `observedAt:` line is fixed.
 
+A clean ok-only run (no truncation, no failed call, no captured source metadata) gets a compact
+footer: the marker, `calls:`, `observedAt:`, and `guidance:`. On such a run the `shape:`,
+`canonicalUrls:`, and `artifact:` lines carry nothing. The compact form costs about 300
+characters instead of about 456 for a one-call run. Every other trigger keeps the full form.
+
 ### Rejected options
 
 - **A new `--- EVIDENCE SIGNALS ---` block.** It duplicates the footer's `calls:` and
@@ -101,7 +115,7 @@ inconclusive count, and the `observedAt:` line is fixed.
 
 Measured on `main` `d15a4ce5`: `BASE_SERVER_INSTRUCTIONS` 1,977 characters, full
 `SERVER_INSTRUCTIONS` 7,864 characters. The micro-map does not carry answer-style rules, so it does
-not change.
+not change. On the branch after the review fixes: 1,952 and 7,839 characters.
 
 ### Removed (a signal replaces it)
 
@@ -116,7 +130,7 @@ not change.
 
 | Before | After | Why |
 |---|---|---|
-| "Every service call resolves to { ok: true, data } or …" | "… { ok: true, data, asOf, inconclusive? } or …", plus one sentence that defines the two fields. | The envelope contract must name the new fields. |
+| "Every service call resolves to { ok: true, data } or …" | "… { ok: true, data, asOf, asOfBasis, inconclusive? } or …", plus one sentence that defines `asOf` with its basis and one that defines `inconclusive`. | The envelope contract must name the new fields. A client that reads only the clipped base text must see that `asOf` can be the observation time. |
 | "…ok rows that are empty, off-target, adjacent, or only semantic candidates are inconclusive: make one broad pass." | "…`inconclusive`, off-target, or adjacent ok rows ground nothing: make one broad pass." | The signal now names the empty and candidate classes. Off-target and adjacent stay, because the host cannot detect them. |
 
 ### Kept (and why)
@@ -134,12 +148,14 @@ not change.
 
 ## Surfaces to update
 
-- `src/executor/providers.ts`: derive the signals; let the envelope guard skip the new keys.
+- `src/executor/providers.ts`: derive the signals; let the envelope guard skip the new keys;
+  update the guard error message and the `codemode.describe` usage line.
 - `src/executor/run.ts`: count inconclusive and candidate calls from the ledger; footer trigger;
   `observedAt`.
 - `src/policy/source-basis.ts`: per-call marker, totals, `observedAt:` line, guidance text.
 - `src/mcp/tools.ts`: `BASE_SERVER_INSTRUCTIONS`; envelope and footer text in
-  `EXECUTE_DESCRIPTION`.
+  `EXECUTE_DESCRIPTION`; the `--- EVIDENCE RECOVERY ---` block, which now names
+  `inconclusive: "empty"`.
 - `src/demo/tools.ts`, `src/site.ts`, `scripts/build-super-spec.mjs` (then `npm run spec:build`):
   envelope wording.
 - `ARCHITECTURE.md` and the `retrieval-system-audit` evidence contract: current envelope and
@@ -152,7 +168,7 @@ not change.
   cases against a control slice.
 - **Candidate-block trigger change.** A substring directory match no longer adds the candidate
   block. Three operations newly add it. The measurement attributes the bundle, not each part.
-- **Footer on more runs.** An untruncated footer costs about 150 tokens. The QA cost
-  estimate includes it.
+- **Footer on more runs.** A compact footer costs about 75 tokens, and a full untruncated
+  footer about 115 tokens. The QA cost estimate includes it.
 - **Clock precision.** The Workers clock advances only across I/O. Each `asOf` with basis
   `"observed"` is the time after the response arrived, which is the correct observation time.
