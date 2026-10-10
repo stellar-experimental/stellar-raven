@@ -1,6 +1,6 @@
 # Pre-spend measurement brief: pack p8 versus the p6 baseline
 
-Date: 2026-10-10. Status: not run. This brief authorizes nothing by itself.
+Date: 2026-10-10. Status: ran on 2026-10-10; BLOCKED (see [results.md](results.md)). This brief authorizes nothing further.
 The owner approves the spend. This brief follows the "Minimal re-measurement" section of the
 [post-run review](../pack-p7/post-run-review/rr3-review.md).
 

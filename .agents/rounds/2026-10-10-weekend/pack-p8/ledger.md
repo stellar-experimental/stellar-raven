@@ -1,7 +1,8 @@
 # Ledger: pack p8 re-measurement
 
-Plan: [measurement-plan-p8.md](measurement-plan-p8.md). Status: not run. No paid call is authorized
-until the owner approves and the bounded delta re-review of the revised plan passes.
+Plan: [measurement-plan-p8.md](measurement-plan-p8.md). Status: ran on 2026-10-10 (18:17Z to 19:12Z),
+$9.0843 of the $29.80 cap. Result: BLOCKED under the predeclared Stage 2 rule; see [results.md](results.md).
+The post-run review (R6) confirms the block. No further paid call is authorized by this plan.
 
 ## Commits
 
