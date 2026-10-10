@@ -5,7 +5,8 @@ Collector: lane S (Claude Opus 5.5). Collection date: 2026-10-10.
 
 ## Verdict
 
-**No regression found. The merge waits for one non-author review step.**
+**No regression found. The non-author result review accepts the result: MERGE-OK-WITH-FIXES.**
+The review is [`review-result-fable.md`](review-result-fable.md). This document applies its findings 1 to 4.
 
 - All four method runs are complete. Both receipt probes pass. No replacement ran.
 - No case shows a routing regression. Two readers agree on all 24 routing classes.
@@ -14,13 +15,15 @@ Collector: lane S (Claude Opus 5.5). Collection date: 2026-10-10.
 - No CANDIDATE row has a tool-loop defect. No arm has a tool error.
 - The source probe value did not change during collection.
 
-Two items stay open before the merge:
+The two review items are closed by [`review-result-fable.md`](review-result-fable.md) (Claude Fable 5.1, not the author):
 
-1. The plan requires a reviewer other than the author to trace each grade difference and to review every answer against its golden.
-   This document gives the author's traces in "Verified-answer rule". The non-author review has not run.
+1. The reviewer re-derived every number, traced each grade difference, and reviewed every answer against its golden.
+   The reviewer confirms that no difference is SDK-caused (see "Verified-answer rule").
 2. The strictness diagnostics show strong evidence that BASE decoded `search` in strict mode.
-   The CANDIDATE sends `strict: false`, so the decoding of `search` changes. This screen shows no cost of that change.
-   The reviewer must accept this change in the open review (see "Strictness diagnostics").
+   The CANDIDATE sends `strict: false`, so the decoding of `search` changes.
+   The reviewer finds the inference sound and the CANDIDATE behavior acceptable, and slightly better (see "Strictness diagnostics").
+
+Only the merge-time check of the owner's paired collection window stays open.
 
 The claim stays narrow. This is a primary-model, six-case Playground screen.
 It does not cover the fallback model, clipped clients, failure paths, or the MCP headline.
@@ -84,9 +87,9 @@ It does not prove that SDK behavior is unchanged.
 
 | Checkpoint | Result |
 | --- | --- |
-| Paired window | The paired-launch directory was absent at each server start. |
+| Paired window | The paired-launch directory was absent at about 14:30Z, at 15:48Z, and before each server start (15:49Z, 15:54Z, 16:02Z). The orchestrator relayed the owner's spend approval and the window: stop all servers before 23:00Z, because the owner's paired collection starts after 00:00Z. **The ledger has no line for this checkpoint.** These facts come from the collector's session record only. |
 | Server slot | The count was 0 before each start (after the orchestrator stopped its test server). |
-| Gateway headroom | Read privately before collection. The headroom covered $27 plus public traffic. |
+| Gateway headroom | Read privately once, at 14:31:36Z. That is 78 minutes before the first paid call (15:50:08Z). It was not read again. The headroom covered $27 plus public traffic. The round spent $3.41. |
 | Freeze | Both worktrees were clean. Generations were recorded. Both arms passed `npm run test:smoke`. |
 | Dry runs | Both dry runs selected the expected IDs. |
 | Judge pin | Passed before each judged run. |
@@ -188,7 +191,7 @@ A verified answer regression needs a worse grade in both CANDIDATE repetitions t
 | SEP-45 | partial, partial | partial, partial | No. Same grades. |
 | storage | partial, partial | partial, partial | No. Same grades. |
 
-Author's traces of the grade differences (the non-author reviewer must confirm them):
+Author's traces of the grade differences. The non-author review confirms them and adds evidence:
 
 - **SCF award: judge reaction to the observation date, plus judge variance.**
   All four answers give "up to US$150,000, paid in XLM, in four installments". No answer has a wrong claim.
@@ -208,7 +211,10 @@ Author's traces of the grade differences (the non-author reviewer must confirm t
 - **Anchor (historically disputed `correct`).** All four answers list the 15-project Scout "Anchor" category snapshot, dated 2026-10-10.
   The judge accepts the count difference from the golden's 27 as a different dated scope.
   Candidate 2 adds names that the judge calls unverified, not fabricated.
-  The reviewer must check this case against its golden and the executed evidence, as the plan requires.
+  The non-author review checked every project name in each answer against that run's own `execute` result.
+  All names are in the model-visible evidence, in all four runs. This includes candidate 2's Alfred Pay, Blox Global,
+  Trace Finance, FinClusive, CLPX, Zeam Money, and Etherfuse. So the judge's "unverified" remark is wrong; no name is fabricated.
+  The reviewer accepts the four `correct` grades.
 
 Source drift: the source probe printed `1a927dce05ba9a1b4e7481c85ebfc7c4d4110aa2cb681de0f0a11fc7d43c0c7b` before each run and after the last run.
 So no verdict difference crosses a changed probe value. A matching value does not prove that every page stayed the same.
@@ -238,6 +244,17 @@ Reading:
 - No arm has an invalid-input error, so the CANDIDATE `{"error": …}` wrapping was not exercised.
 - Loop shapes: every turn in every run has 3 steps and 1 `execute` call. `search` counts are 14, 14, 16, and 14.
 
+## Observation for triage: inner `execute` calls without `query`
+
+This is an observation for the orchestrator to triage. It is not a merge item.
+
+- Some service calls inside `execute` fail with the message "invalid arguments … no call was made".
+- `stellarDocs.search_anchor_sep_docs` fails this way in every anchor row. `stellarDocs.search_asset_token_docs` fails in one stablecoin row per arm.
+- The cause: the model omits the required `query` argument.
+- The host reports these calls as failed evidence. They are not tool errors and not tool-loop defects.
+- Both arms show the pattern, so the SDK upgrade does not cause it.
+- The reviewer found no `improvements/` entry for this pattern. It is a candidate finding for the improvements pipeline.
+
 ## Final step and usage
 
 - `finalStepCoverage` is 0 in all three server logs. No turn reached step 7. Every turn ended after 3 steps.
@@ -264,7 +281,7 @@ Token totals for the six method turns, from the server logs:
 | No routing regression and no verified answer regression | Met on the author's reading. Routing is confirmed by a blind second reader. |
 | Protocol controls pass in both CANDIDATE repetitions | Met (6 of 6 class E). |
 | No tool-loop defect in a CANDIDATE row | Met. No step-7 tool call, no tool-choice error, no failed tool. |
-| Reconciled source drift, judge differences, and upstream findings | **Open.** The non-author reviewer must confirm the traces above and review each answer against its golden. |
+| Reconciled source drift, judge differences, and upstream findings | Met by [`review-result-fable.md`](review-result-fable.md). The missing-`query` pattern below is a candidate upstream finding for both arms. It does not block the merge. |
 | Merge outside the owner's paired collection window | For the merger to check at merge time. |
 
 ## Artifacts
