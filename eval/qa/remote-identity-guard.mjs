@@ -4,7 +4,7 @@ import { accessSync, constants, readFileSync, realpathSync, statSync } from "nod
 import path from "node:path";
 
 export const REMOTE_IDENTITY_VECTOR_SCHEMA = "qa-remote-identity-vector-v1";
-export const REMOTE_IDENTITY_GUARD_SCHEMA = "qa-remote-identity-guard-v1";
+export const REMOTE_IDENTITY_GUARD_SCHEMA = "qa-remote-identity-guard-v2";
 export const REMOTE_IDENTITY_SERVICES = ["scout", "lumenloop", "stellarDocs"];
 export const REMOTE_IDENTITY_REQUEST_TIMEOUT_MS = 20_000;
 export const REMOTE_IDENTITY_RETRY_DELAYS_MS = Object.freeze([250, 1_000]);
@@ -20,6 +20,13 @@ export const REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS = REMOTE_IDENTITY_DOCS_QUERY_
 );
 export const REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS =
   REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS + 5_000;
+// The guard waits before each repeat of one capture after an unavailable probe.
+export const REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS = Object.freeze([30_000, 60_000, 120_000]);
+export const REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS =
+  REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.length + 1;
+export const REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS =
+  REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS * REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS +
+  REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.reduce((total, delayMs) => total + delayMs, 0);
 
 const SERVICE_FIELDS = {
   scout: ["openapiVersion", "canonicalOpenapiSha256"],
@@ -34,6 +41,10 @@ const HASH_FIELDS = new Set([
 ]);
 const SAFE_IDENTITY = /^[A-Za-z0-9][A-Za-z0-9._:+/-]{0,127}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
+const PROBE_LINE_PREFIX = "remote-identity-probe: ";
+const PROBE_RETRY_LINE = /; retrying in \d+ ms$/;
+const SAFE_PROBE_REASON = /^[\x20-\x7e]{1,200}$/;
+const SECRET_SHAPE = /=|[A-Za-z0-9+/_-]{32,}|bearer|authorization|api[-_ ]?key|password|secret/i;
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -101,8 +112,29 @@ function artifactPathFor(resolvedPath, repoRoot) {
   return path.basename(resolvedPath);
 }
 
+/** Keep only an allowlisted final probe line and the count of probe retry lines. */
+export function probeStderrDiagnostics(stderr) {
+  const probeLines = String(stderr ?? "")
+    .split(/\r?\n/)
+    .filter((line) => line.startsWith(PROBE_LINE_PREFIX))
+    .map((line) => line.slice(PROBE_LINE_PREFIX.length));
+  const last = probeLines.at(-1);
+  return {
+    reason: typeof last === "string" && SAFE_PROBE_REASON.test(last) && !SECRET_SHAPE.test(last)
+      ? last
+      : null,
+    probeRetryLines: probeLines.filter((line) => PROBE_RETRY_LINE.test(line)).length
+  };
+}
+
 export class RemoteIdentityProbeError extends Error {
-  constructor(kind, probePath, { status = null, signal = null, timedOut = false } = {}) {
+  constructor(kind, probePath, {
+    status = null,
+    signal = null,
+    timedOut = false,
+    reason = null,
+    probeRetryLines = null
+  } = {}) {
     const statusText = status === null ? "none" : String(status);
     const signalText = signal ?? "none";
     super(
@@ -110,7 +142,7 @@ export class RemoteIdentityProbeError extends Error {
     );
     this.name = "RemoteIdentityProbeError";
     this.code = "remote-identity-probe";
-    this.diagnostics = { kind, path: probePath, status, signal, timedOut };
+    this.diagnostics = { kind, path: probePath, status, signal, timedOut, reason, probeRetryLines };
   }
 }
 
@@ -164,7 +196,7 @@ function publicProbeRecord(probeIdentity) {
   };
 }
 
-/** Run the pinned probe with a minimal environment and retain no raw output. */
+/** Run the pinned probe with a minimal environment and retain no raw output beyond diagnostics. */
 export function captureRemoteIdentity(probeIdentity, {
   spawnSyncImpl = spawnSync,
   timeoutMs = REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS,
@@ -183,6 +215,7 @@ export function captureRemoteIdentity(probeIdentity, {
     stdio: ["ignore", "pipe", "pipe"]
   });
   const probePath = current.artifactPath;
+  const stderrDiagnostics = probeStderrDiagnostics(result.stderr);
   if (result.error || result.status !== 0 || result.signal) {
     const timedOut = result.error?.code === "ETIMEDOUT";
     const kind = timedOut
@@ -197,19 +230,26 @@ export function captureRemoteIdentity(probeIdentity, {
     throw new RemoteIdentityProbeError(kind, probePath, {
       status: result.status ?? null,
       signal: result.signal ?? null,
-      timedOut
+      timedOut,
+      ...stderrDiagnostics
     });
   }
   let parsed;
   try {
     parsed = JSON.parse(String(result.stdout ?? ""));
   } catch {
-    throw new RemoteIdentityProbeError("invalid-json", probePath);
+    throw new RemoteIdentityProbeError("invalid-json", probePath, {
+      status: result.status,
+      ...stderrDiagnostics
+    });
   }
   try {
     return parseRemoteIdentityVector(parsed);
   } catch {
-    throw new RemoteIdentityProbeError("invalid-vector", probePath);
+    throw new RemoteIdentityProbeError("invalid-vector", probePath, {
+      status: result.status,
+      ...stderrDiagnostics
+    });
   }
 }
 
@@ -221,11 +261,20 @@ export class RemoteIdentityGuardError extends Error {
   }
 }
 
-/** A failure permanently closes this instance and forbids resume. */
+function sleepSync(delayMs) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delayMs);
+}
+
+/**
+ * A failure permanently closes this instance and forbids resume.
+ * Only an unavailable probe repeats a capture; every vector check runs once per capture.
+ */
 export function createRemoteIdentityGuard({
   probeIdentity,
   expectedVectorSha256,
-  capture = captureRemoteIdentity
+  capture = captureRemoteIdentity,
+  sleep = sleepSync,
+  onCaptureRetry = () => {}
 }) {
   if (typeof expectedVectorSha256 !== "string" || !SHA256.test(expectedVectorSha256)) {
     throw new Error(
@@ -244,6 +293,7 @@ export function createRemoteIdentityGuard({
     skippedReason: null
   };
   const captures = [];
+  const failedCaptureAttempts = [];
 
   const fail = ({
     reason,
@@ -277,22 +327,56 @@ export function createRemoteIdentityGuard({
 
   const captureVector = (phase, context) => {
     let vector;
-    try {
-      vector = parseRemoteIdentityVector(capture(probeIdentity));
-    } catch (error) {
-      fail({
-        reason: "probe-unavailable",
-        phase,
-        context,
-        beforeVector: phase === "after" ? pendingCall?.vector ?? null : baselineVector,
-        diagnostics: error?.diagnostics ?? {
-          kind: "capture-error",
-          path: probeIdentity?.artifactPath ?? probeIdentity?.path ?? "unknown",
-          status: null,
-          signal: null,
-          timedOut: false
+    for (let captureAttempt = 1; ; captureAttempt += 1) {
+      try {
+        vector = parseRemoteIdentityVector(capture(probeIdentity));
+        break;
+      } catch (error) {
+        const retryable = error instanceof RemoteIdentityProbeError;
+        const diagnostics = retryable
+          ? error.diagnostics
+          : {
+              kind: "capture-error",
+              path: probeIdentity?.artifactPath ?? probeIdentity?.path ?? "unknown",
+              status: null,
+              signal: null,
+              timedOut: false,
+              reason: null,
+              probeRetryLines: null
+            };
+        failedCaptureAttempts.push({
+          sequence: failedCaptureAttempts.length + 1,
+          failedAt: new Date().toISOString(),
+          phase,
+          id: context.id,
+          attempt: context.attempt,
+          captureAttempt,
+          kind: diagnostics.kind,
+          reason: diagnostics.reason ?? null,
+          probeRetryLines: diagnostics.probeRetryLines ?? null
+        });
+        if (retryable && captureAttempt < REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS) {
+          const delayMs = REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS[captureAttempt - 1];
+          onCaptureRetry({
+            phase,
+            id: context.id,
+            attempt: context.attempt,
+            captureAttempt,
+            maximumAttempts: REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
+            kind: diagnostics.kind,
+            delayMs
+          });
+          sleep(delayMs);
+          continue;
         }
-      });
+        fail({
+          reason: "probe-unavailable",
+          phase,
+          context,
+          beforeVector: phase === "after" ? pendingCall?.vector ?? null : baselineVector,
+          diagnostics
+        });
+      }
     }
     captures.push({
       sequence: captures.length + 1,
@@ -387,7 +471,9 @@ export function createRemoteIdentityGuard({
             path: probeIdentity?.artifactPath ?? "unknown",
             status: null,
             signal: null,
-            timedOut: false
+            timedOut: false,
+            reason: null,
+            probeRetryLines: null
           }
         });
       }
@@ -425,6 +511,11 @@ export function createRemoteIdentityGuard({
         successfulCaptureCount: captures.length,
         completedAnsweringCalls,
         captures: [...captures],
+        captureRetryPolicy: {
+          maximumAttempts: REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
+          delaysMs: [...REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS]
+        },
+        failedCaptureAttempts: failedCaptureAttempts.map((entry) => ({ ...entry })),
         failure,
         sameAuthorizationResumeAllowed: false,
         requiresNewAuthorization: failure !== null

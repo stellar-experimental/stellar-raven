@@ -4,15 +4,23 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
+  REMOTE_IDENTITY_GUARD_SCHEMA,
+  REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
+  REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS,
+  REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS,
   REMOTE_IDENTITY_VECTOR_SCHEMA,
+  RemoteIdentityProbeError,
   captureRemoteIdentity,
   compareRemoteIdentityVectors,
   createRemoteIdentityGuard,
   parseRemoteIdentityVector,
+  probeStderrDiagnostics,
   remoteIdentityProbeIdentity,
   remoteIdentityVectorSha256,
   runRemoteIdentityGuardedCall
 } from "../eval/qa/remote-identity-guard.mjs";
+import { PAIRED_COLLECTION_DEADLINE_MS } from "../eval/qa/paired-collection-supervisor.mjs";
 import {
   applyCollectionComparability,
   collectionComparabilityReasons,
@@ -495,5 +503,326 @@ describe("QA remote identity call guard", () => {
     expect(finalized.completeness.aggregatesAllowed).toBe(false);
     expect(finalized.summary).toBeNull();
     expect(finalized.metrics).toBeNull();
+  });
+});
+
+function unavailable(kind = "nonzero-exit", reason = "Lumenloop tools response is incomplete") {
+  return new RemoteIdentityProbeError(kind, "eval/qa/test-probe", {
+    status: kind === "timeout" ? null : 1,
+    timedOut: kind === "timeout",
+    reason,
+    probeRetryLines: 1
+  });
+}
+
+function guardedCall(guard, id, paidCalls = []) {
+  return runRemoteIdentityGuardedCall({
+    guard,
+    context: { id, attempt: 1 },
+    authorize: () => ({ id }),
+    call: () => {
+      paidCalls.push(id);
+      return { costUsd: 0.1 };
+    },
+    recordSpend: () => {}
+  });
+}
+
+describe("QA remote identity probe stderr diagnostics", () => {
+  it("keeps the last allowlisted probe line and counts probe retry lines", () => {
+    const stderr = [
+      "remote-identity-probe: Scout OpenAPI attempt 1/3 failed (HTTP 503); retrying in 250 ms",
+      "unrelated stderr text",
+      "remote-identity-probe: Scout OpenAPI attempt 2/3 failed (timeout); retrying in 1000 ms",
+      "remote-identity-probe: Stellar Docs title pagination changed during capture",
+      ""
+    ].join("\n");
+    expect(probeStderrDiagnostics(stderr)).toEqual({
+      reason: "Stellar Docs title pagination changed during capture",
+      probeRetryLines: 2
+    });
+  });
+
+  it.each([
+    ["an unprefixed line", "Lumenloop tools response is incomplete"],
+    ["an assignment shape", "remote-identity-probe: failed with key=abc"],
+    ["a long token", `remote-identity-probe: failed ${"a1".repeat(20)}`],
+    ["a credential word", "remote-identity-probe: bad Authorization header"],
+    ["non-ASCII text", "remote-identity-probe: caf\u00e9 failed"],
+    ["a control character", "remote-identity-probe: failed\tagain"],
+    ["more than 200 characters", `remote-identity-probe: ${"x ".repeat(101)}`],
+    ["an empty reason", "remote-identity-probe: "]
+  ])("rejects %s", (_label, stderr) => {
+    expect(probeStderrDiagnostics(stderr).reason).toBeNull();
+  });
+
+  it("returns no reason for empty stderr", () => {
+    expect(probeStderrDiagnostics(undefined)).toEqual({ reason: null, probeRetryLines: 0 });
+  });
+
+  it("keeps the probe reason and never keeps stdout or other stderr text", () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "qa-remote-probe-"));
+    try {
+      const command = path.join(root, "probe");
+      writeFileSync(command, [
+        "#!/bin/sh",
+        "printf '%s\\n' 'stdout-secret'",
+        "printf '%s\\n' 'stderr-secret' >&2",
+        "printf '%s\\n' 'remote-identity-probe: Scout OpenAPI attempt 1/3 failed (HTTP 502); retrying in 250 ms' >&2",
+        "printf '%s\\n' 'remote-identity-probe: Lumenloop tools response is incomplete' >&2",
+        "exit 1",
+        ""
+      ].join("\n"));
+      chmodSync(command, 0o755);
+      const digest = createHash("sha256").update(readFileSync(command)).digest("hex");
+      let caught;
+      try {
+        captureRemoteIdentity(remoteIdentityProbeIdentity(command, digest));
+      } catch (error) {
+        caught = error;
+      }
+      expect(caught.diagnostics).toEqual({
+        kind: "nonzero-exit",
+        path: "probe",
+        status: 1,
+        signal: null,
+        timedOut: false,
+        reason: "Lumenloop tools response is incomplete",
+        probeRetryLines: 1
+      });
+      expect(JSON.stringify({ message: caught.message, ...caught })).not.toMatch(/stdout-secret|stderr-secret/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("QA remote identity capture retry", () => {
+  it("bounds the worst-case wait for one capture inside the paired deadline", () => {
+    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(145_000);
+    expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBe(4 * 145_000 + 210_000);
+    expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBeLessThan(PAIRED_COLLECTION_DEADLINE_MS / 16);
+  });
+
+  it("retries an unavailable capture, then continues with a matching vector", () => {
+    const baseline = vector();
+    const sleeps = [];
+    const notices = [];
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: queuedCapture([
+        baseline,
+        baseline,
+        unavailable(),
+        unavailable("timeout", null),
+        unavailable("invalid-json", null),
+        baseline,
+        baseline,
+        baseline
+      ]),
+      sleep: (delayMs) => sleeps.push(delayMs),
+      onCaptureRetry: (notice) => notices.push(notice)
+    });
+    const paidCalls = [];
+
+    guardedCall(guard, "a", paidCalls);
+    guardedCall(guard, "b", paidCalls);
+    guard.postflight();
+
+    expect(paidCalls).toEqual(["a", "b"]);
+    expect(sleeps).toEqual([...REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS]);
+    expect(notices.map(({ captureAttempt, delayMs }) => [captureAttempt, delayMs])).toEqual([
+      [1, 30_000],
+      [2, 60_000],
+      [3, 120_000]
+    ]);
+    const record = guard.record();
+    expect(record).toMatchObject({
+      schema: REMOTE_IDENTITY_GUARD_SCHEMA,
+      matches: true,
+      failure: null,
+      successfulCaptureCount: 5,
+      completedAnsweringCalls: 2,
+      captureRetryPolicy: { maximumAttempts: 4, delaysMs: [30_000, 60_000, 120_000] },
+      requiresNewAuthorization: false
+    });
+    expect(record.successfulCaptureCount).toBe(record.captures.length);
+    expect(record.captures.map(({ phase, id }) => [phase, id])).toEqual([
+      ["before", "a"],
+      ["after", "a"],
+      ["before", "b"],
+      ["after", "b"],
+      ["postflight", null]
+    ]);
+    expect(record.failedCaptureAttempts).toEqual([
+      expect.objectContaining({
+        sequence: 1,
+        phase: "before",
+        id: "b",
+        attempt: 1,
+        captureAttempt: 1,
+        kind: "nonzero-exit",
+        reason: "Lumenloop tools response is incomplete",
+        probeRetryLines: 1,
+        failedAt: expect.any(String)
+      }),
+      expect.objectContaining({
+        sequence: 2,
+        phase: "before",
+        id: "b",
+        captureAttempt: 2,
+        kind: "timeout",
+        reason: null
+      }),
+      expect.objectContaining({ sequence: 3, captureAttempt: 3, kind: "invalid-json" })
+    ]);
+  });
+
+  it("checks a retried vector against the baseline", () => {
+    const baseline = vector();
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: queuedCapture([baseline, unavailable(), changedVector("scout")]),
+      sleep: () => {}
+    });
+
+    expect(() => guardedCall(guard, "a")).toThrow(/scout/);
+    expect(guard.record()).toMatchObject({
+      matches: false,
+      failure: { reason: "identity-changed", phase: "after", changedServices: ["scout"] }
+    });
+    expect(guard.record().failedCaptureAttempts).toHaveLength(1);
+  });
+
+  it("stops after four failed attempts and records every attempt", () => {
+    const baseline = vector();
+    const sleeps = [];
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: queuedCapture([
+        baseline,
+        baseline,
+        unavailable(),
+        unavailable(),
+        unavailable("timeout", null),
+        unavailable()
+      ]),
+      sleep: (delayMs) => sleeps.push(delayMs)
+    });
+    const paidCalls = [];
+
+    guardedCall(guard, "a", paidCalls);
+    expect(() => guardedCall(guard, "b", paidCalls)).toThrow(/probe is unavailable/);
+
+    expect(paidCalls).toEqual(["a"]);
+    expect(sleeps).toEqual([30_000, 60_000, 120_000]);
+    const record = guard.record();
+    expect(record).toMatchObject({
+      matches: false,
+      successfulCaptureCount: 2,
+      completedAnsweringCalls: 1,
+      requiresNewAuthorization: true,
+      failure: {
+        reason: "probe-unavailable",
+        phase: "before",
+        id: "b",
+        attempt: 1,
+        diagnostics: {
+          kind: "nonzero-exit",
+          reason: "Lumenloop tools response is incomplete",
+          probeRetryLines: 1
+        }
+      }
+    });
+    expect(record.failedCaptureAttempts.map(({ sequence, captureAttempt, id }) => [
+      sequence,
+      captureAttempt,
+      id
+    ])).toEqual([
+      [1, 1, "b"],
+      [2, 2, "b"],
+      [3, 3, "b"],
+      [4, 4, "b"]
+    ]);
+    expect(record.failedCaptureAttempts).toHaveLength(REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS);
+    expect(() => guard.beforeCall({ id: "c", attempt: 1 })).toThrow(/already stopped/);
+  });
+
+  it.each([
+    ["an identity change", () => [vector(), changedVector("lumenloop")], /lumenloop/],
+    ["a pre-arm mismatch", () => [changedVector("scout")], /pre-arm SHA-256/]
+  ])("never retries %s", (_label, captures, message) => {
+    const sleeps = [];
+    let captureCount = 0;
+    const queued = queuedCapture(captures());
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: (identity) => {
+        captureCount += 1;
+        return queued(identity);
+      },
+      sleep: (delayMs) => sleeps.push(delayMs)
+    });
+
+    expect(() => guardedCall(guard, "a")).toThrow(message);
+    expect(sleeps).toEqual([]);
+    expect(captureCount).toBe(captures().length);
+    expect(guard.record().failedCaptureAttempts).toEqual([]);
+  });
+
+  it("never retries a missing baseline", () => {
+    const sleeps = [];
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: () => {
+        throw new Error("must not capture");
+      },
+      sleep: (delayMs) => sleeps.push(delayMs)
+    });
+
+    expect(() => guard.postflight()).toThrow(/baseline is missing/);
+    expect(sleeps).toEqual([]);
+    expect(guard.record().failedCaptureAttempts).toEqual([]);
+  });
+
+  it("does not retry a capture error that is not a probe error", () => {
+    const sleeps = [];
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: queuedCapture([new Error("secret capture failure")]),
+      sleep: (delayMs) => sleeps.push(delayMs)
+    });
+
+    expect(() => guardedCall(guard, "a")).toThrow(/probe is unavailable/);
+    expect(sleeps).toEqual([]);
+    expect(guard.record().failedCaptureAttempts).toEqual([
+      expect.objectContaining({ captureAttempt: 1, kind: "capture-error", reason: null })
+    ]);
+    expect(JSON.stringify(guard.record())).not.toContain("secret capture failure");
+  });
+
+  it("retries an unavailable postflight capture", () => {
+    const baseline = vector();
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: queuedCapture([baseline, baseline, unavailable(), baseline]),
+      sleep: () => {}
+    });
+
+    guardedCall(guard, "a");
+    guard.postflight();
+
+    expect(guard.record()).toMatchObject({
+      matches: true,
+      postflight: { attempted: true, matches: true },
+      failedCaptureAttempts: [expect.objectContaining({ phase: "postflight", id: null })]
+    });
   });
 });

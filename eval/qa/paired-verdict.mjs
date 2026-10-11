@@ -11,7 +11,9 @@ import { pathToFileURL } from "node:url";
 import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
 import {
+  REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
+  REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
   compareRemoteIdentityVectors,
   parseRemoteIdentityVector,
   remoteIdentityVectorSha256
@@ -293,6 +295,34 @@ function artifactProblems(result, label) {
       throw new Error("guard vectors differ");
     }
     const callCaptures = remoteGuard.captures.slice(0, -1);
+    const retryPolicy = remoteGuard.captureRetryPolicy;
+    if (
+      retryPolicy?.maximumAttempts !== REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
+      !same(retryPolicy?.delaysMs, [...REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS]) ||
+      !Array.isArray(remoteGuard.failedCaptureAttempts)
+    ) {
+      throw new Error("guard retry record is incomplete");
+    }
+    // A comparable record keeps every failed attempt, and a later capture of that call succeeded.
+    const failedAttemptsByCall = new Map();
+    for (const [index, entry] of remoteGuard.failedCaptureAttempts.entries()) {
+      const callKey = JSON.stringify([entry?.phase, entry?.id ?? null, entry?.attempt ?? null]);
+      const captureAttempt = (failedAttemptsByCall.get(callKey) ?? 0) + 1;
+      if (
+        entry?.sequence !== index + 1 ||
+        entry.captureAttempt !== captureAttempt ||
+        captureAttempt >= REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
+        entry.kind === "capture-error" ||
+        !remoteGuard.captures.some((capture) => (
+          capture.phase === entry.phase &&
+          (capture.id ?? null) === (entry.id ?? null) &&
+          (capture.attempt ?? null) === (entry.attempt ?? null)
+        ))
+      ) {
+        throw new Error("guard retry record is inconsistent");
+      }
+      failedAttemptsByCall.set(callKey, captureAttempt);
+    }
     if (
       remoteGuard.captures.at(-1)?.phase !== "postflight" ||
       remoteGuard.captures.at(-1)?.sequence !== remoteGuard.successfulCaptureCount ||

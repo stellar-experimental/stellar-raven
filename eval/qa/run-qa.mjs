@@ -1720,7 +1720,13 @@ async function main() {
   );
   const remoteIdentityGuard = createRemoteIdentityGuard({
     probeIdentity: remoteIdentityProbe,
-    expectedVectorSha256: parseRequiredFlagValue(args, "--expect-remote-identity-sha256")
+    expectedVectorSha256: parseRequiredFlagValue(args, "--expect-remote-identity-sha256"),
+    onCaptureRetry: ({ phase, id, captureAttempt, maximumAttempts, kind, delayMs }) => {
+      console.error(
+        `remote identity ${phase} capture for ${id ?? "postflight"} failed (${kind}), ` +
+        `attempt ${captureAttempt}/${maximumAttempts}; retrying in ${delayMs} ms`
+      );
+    }
   });
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
