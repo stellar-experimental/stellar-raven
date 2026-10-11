@@ -26,8 +26,10 @@ export const REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS = Object.freeze([30_000, 60
 export const REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS =
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.length + 1;
 export const REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS = 1_000;
-// A before-call check may reuse the previous call's after-call capture up to this age.
+// A before-call check may reuse the previous call's after-call capture up to this monotonic age.
 export const REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS = 60_000;
+// Wall-clock timestamps are for reporting. They may drift from the monotonic elapsed time by this much.
+export const REMOTE_IDENTITY_WALL_CLOCK_TOLERANCE_MS = 300_000;
 export const REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS =
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS * REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS +
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.reduce((total, delayMs) => total + delayMs, 0);
@@ -351,9 +353,11 @@ function sleepSync(delayMs) {
  * A failure or a cancellation permanently closes this instance and forbids resume.
  * Only an unavailable probe repeats a capture; every vector check runs once per capture.
  * `beforeCall` reuses the previous call's after-call capture when no call started since and
- * that capture is at most `REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS` old. The first
- * `beforeCall` and `postflight` always capture fresh. The reused vector goes through the same
- * comparisons, and its check records `reusedFromSequence`.
+ * that capture is at most `REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS` old on the monotonic
+ * clock. The first `beforeCall` and `postflight` always capture fresh. The reused vector goes
+ * through the same comparisons, and its check records `reusedFromSequence`.
+ * Each record keeps a wall-clock time for reporting and `elapsedMs`, the whole monotonic
+ * milliseconds since the guard started. Order and reuse age use only `elapsedMs`.
  * `checkCancelled` throws when the collection is cancelled. The guard calls it before each
  * probe, after each wait slice, and last in `beforeCall`, just before the answering call.
  */
@@ -364,7 +368,8 @@ export function createRemoteIdentityGuard({
   sleep = sleepSync,
   onCaptureRetry = () => {},
   checkCancelled = () => {},
-  now = Date.now
+  now = Date.now,
+  monotonicNow = () => performance.now()
 }) {
   if (typeof expectedVectorSha256 !== "string" || !SHA256.test(expectedVectorSha256)) {
     throw new Error(
@@ -387,6 +392,8 @@ export function createRemoteIdentityGuard({
   const checks = [];
   const failedCaptureAttempts = [];
   const timestamp = () => new Date(now()).toISOString();
+  const monotonicOrigin = monotonicNow();
+  const elapsed = () => Math.floor(monotonicNow() - monotonicOrigin);
 
   const fail = ({
     reason,
@@ -441,10 +448,11 @@ export function createRemoteIdentityGuard({
     }
   };
 
-  const recordCheck = (phase, context, vector, reusedFromSequence) => {
+  const recordCheck = (phase, context, vector, reusedFromSequence, elapsedMs = elapsed()) => {
     checks.push({
       sequence: checks.length + 1,
       checkedAt: timestamp(),
+      elapsedMs,
       phase,
       id: context.id,
       attempt: context.attempt,
@@ -457,10 +465,12 @@ export function createRemoteIdentityGuard({
     const source = reusableAfterCheck;
     reusableAfterCheck = null;
     if (source === null || baselineVector === null) return null;
-    const ageMs = now() - source.checkedAtMs;
+    // One monotonic reading decides the reuse and dates its record.
+    const elapsedMs = elapsed();
+    const ageMs = elapsedMs - source.elapsedMs;
     if (ageMs < 0 || ageMs > REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS) return null;
     assertNotCancelled("before", context);
-    recordCheck("before", context, source.vector, source.sequence);
+    recordCheck("before", context, source.vector, source.sequence, elapsedMs);
     return source.vector;
   };
 
@@ -487,6 +497,7 @@ export function createRemoteIdentityGuard({
         failedCaptureAttempts.push({
           sequence: failedCaptureAttempts.length + 1,
           failedAt: timestamp(),
+          elapsedMs: elapsed(),
           phase,
           id: context.id,
           attempt: context.attempt,
@@ -584,7 +595,7 @@ export function createRemoteIdentityGuard({
       const afterCheck = checks.at(-1);
       reusableAfterCheck = {
         sequence: afterCheck.sequence,
-        checkedAtMs: Date.parse(afterCheck.checkedAt),
+        elapsedMs: afterCheck.elapsedMs,
         vector: afterVector
       };
       return afterVector;

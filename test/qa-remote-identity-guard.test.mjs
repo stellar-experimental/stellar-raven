@@ -78,7 +78,7 @@ function queuedCapture(values) {
   };
 }
 
-// Each reading is past the reuse age, so every before-call check captures fresh.
+// Each monotonic reading is past the reuse age, so every before-call check captures fresh.
 function staleClock() {
   let nowMs = Date.parse("2026-10-11T00:00:00.000Z");
   return () => {
@@ -163,7 +163,7 @@ describe("QA remote identity call guard", () => {
       probeIdentity: fakeProbeIdentity(),
       expectedVectorSha256: remoteIdentityVectorSha256(baseline),
       capture: queuedCapture([baseline, baseline, baseline, baseline, baseline]),
-      now: staleClock()
+      monotonicNow: staleClock()
     });
     const paidCalls = [];
 
@@ -651,7 +651,7 @@ describe("QA remote identity capture reuse at a row boundary", () => {
         return queued(identity);
       },
       sleep: () => {},
-      now
+      monotonicNow: now
     });
     return { guard, probes: () => probes };
   }
@@ -693,13 +693,13 @@ describe("QA remote identity capture reuse at a row boundary", () => {
       [7, "postflight", null, null]
     ]);
     expect(record.checks[2].vectorSha256).toBe(record.checks[1].vectorSha256);
-    expect(Date.parse(record.checks[2].checkedAt) - Date.parse(record.checks[1].checkedAt)).toBe(5_000);
+    expect(record.checks[2].elapsedMs - record.checks[1].elapsedMs).toBe(5_000);
   });
 
   it.each([
     ["at the age limit", REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS, 2],
     ["past the age limit", REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS + 1, null],
-    ["after the clock moves back", -1, null]
+    ["after the monotonic reading moves back", -1, null]
   ])("decides reuse %s", (_label, delayMs, reusedFromSequence) => {
     const now = manualClock();
     const harness = countingGuard([vector(), vector(), vector(), vector()], now);
@@ -710,6 +710,45 @@ describe("QA remote identity capture reuse at a row boundary", () => {
 
     expect(harness.guard.record().checks[2]).toMatchObject({ phase: "before", id: "b", reusedFromSequence });
     expect(harness.probes()).toBe(reusedFromSequence === null ? 4 : 3);
+  });
+
+  it("decides reuse on the monotonic clock when the wall clock moves back", () => {
+    const monotonic = manualClock();
+    const wall = manualClock();
+    let probes = 0;
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: () => {
+        probes += 1;
+        return vector();
+      },
+      now: wall,
+      monotonicNow: monotonic
+    });
+
+    guardedCall(guard, "a");
+    monotonic.advance(120_000);
+    wall.advance(120_000 - 90_000);
+    guardedCall(guard, "b");
+
+    expect(probes).toBe(4);
+    const checks = guard.record().checks;
+    expect(checks[2]).toMatchObject({ phase: "before", id: "b", reusedFromSequence: null, elapsedMs: 120_000 });
+    expect(Date.parse(checks[2].checkedAt) - Date.parse(checks[1].checkedAt)).toBe(30_000);
+  });
+
+  it("dates a reuse with the same monotonic reading that decided it", () => {
+    const monotonic = manualClock();
+    const harness = countingGuard([vector(), vector(), vector()], monotonic);
+
+    guardedCall(harness.guard, "a");
+    monotonic.advance(42_000);
+    guardedCall(harness.guard, "b");
+
+    const checks = harness.guard.record().checks;
+    expect(checks.map(({ elapsedMs }) => elapsedMs)).toEqual([0, 0, 42_000, 42_000]);
+    expect(checks[2].reusedFromSequence).toBe(2);
   });
 
   it("reuses the after-call capture for a retry attempt of the same row", () => {
@@ -792,7 +831,7 @@ describe("QA remote identity capture retry", () => {
       ]),
       sleep: (delayMs) => sleeps.push(delayMs),
       onCaptureRetry: (notice) => notices.push(notice),
-      now: staleClock()
+      monotonicNow: staleClock()
     });
     const paidCalls = [];
 
@@ -884,7 +923,7 @@ describe("QA remote identity capture retry", () => {
         unavailable()
       ]),
       sleep: (delayMs) => sleeps.push(delayMs),
-      now: staleClock()
+      monotonicNow: staleClock()
     });
     const paidCalls = [];
 
@@ -1028,7 +1067,7 @@ describe("QA remote identity cancellation during a retry wait", () => {
       checkCancelled: () => {
         if (cancelled) throw new CancelledError();
       },
-      now
+      monotonicNow: now
     });
     return {
       guard,

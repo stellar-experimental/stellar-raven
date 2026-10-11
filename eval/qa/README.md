@@ -109,8 +109,13 @@ It receives only `PATH` and records no repository credentials.
 
 The runner checks remote identity around every answering call and during final postflight.
 A before-call check reuses the previous call's after-call capture when no call started since and that capture is at most 60 s old.
-Otherwise it captures fresh. The first before-call check and the postflight always capture fresh.
+The guard measures that age on a monotonic clock. Otherwise it captures fresh.
+The first before-call check and the postflight always capture fresh.
 A reused vector goes through the same comparisons, and its entry in `meta.remoteIdentityGuard.checks[]` records `reusedFromSequence`.
+A reuse cannot see an identity change that starts and ends between two fresh captures.
+Each check and failed attempt records a wall-clock time for reports and `elapsedMs`, the monotonic time since the guard started.
+The paired validator binds each before and after pair to the rows' `attempts.agent[]` in execution order.
+It orders checks and failed attempts by `elapsedMs`. Each wall-clock time must stay within 300,000 ms of that elapsed time.
 The probe makes two Algolia calls: Stellar Docs settings, and one multi-query request for title pages 0 to 9.
 When the probe is unavailable, the guard repeats that one capture after 30 s, 60 s, and 120 s.
 `meta.remoteIdentityGuard.failedCaptureAttempts[]` records each failed attempt with its kind and sanitized probe reason.

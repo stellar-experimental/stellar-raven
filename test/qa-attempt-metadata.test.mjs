@@ -62,7 +62,8 @@ function collection(captures) {
       const next = captures.shift();
       if (next instanceof Error) throw next;
       return next;
-    }
+    },
+    monotonicNow: () => Date.now()
   });
   const run = (id, number, result = outcome()) => {
     const startedAtMs = Date.now();

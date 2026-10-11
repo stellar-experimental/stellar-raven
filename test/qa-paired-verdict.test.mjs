@@ -23,6 +23,8 @@ import {
   REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
   REMOTE_IDENTITY_VECTOR_SCHEMA,
+  createRemoteIdentityGuard,
+  runRemoteIdentityGuardedCall,
   remoteIdentityVectorSha256
 } from "../eval/qa/remote-identity-guard.mjs";
 
@@ -78,7 +80,9 @@ function tiering(overrides = {}) {
 }
 
 const GUARD_START_MS = Date.parse("2026-10-11T02:00:00.000Z");
-const guardCheckedAt = (sequence) => new Date(GUARD_START_MS + sequence * 10_000).toISOString();
+// The fixture guard starts its monotonic clock at GUARD_START_MS, so the wall clock equals start + elapsed.
+const guardWallAt = (elapsedMs) => new Date(GUARD_START_MS + elapsedMs).toISOString();
+const guardCheckedAt = (sequence) => guardWallAt(sequence * 10_000);
 
 // Each later before-call check reuses the previous after-call capture 10 s later.
 function guardChecks(ids, vectorSha256) {
@@ -86,6 +90,7 @@ function guardChecks(ids, vectorSha256) {
     {
       sequence: index * 2 + 1,
       checkedAt: guardCheckedAt(index * 2 + 1),
+      elapsedMs: (index * 2 + 1) * 10_000,
       phase: "before",
       id,
       attempt: 1,
@@ -95,6 +100,7 @@ function guardChecks(ids, vectorSha256) {
     {
       sequence: index * 2 + 2,
       checkedAt: guardCheckedAt(index * 2 + 2),
+      elapsedMs: (index * 2 + 2) * 10_000,
       phase: "after",
       id,
       attempt: 1,
@@ -105,6 +111,7 @@ function guardChecks(ids, vectorSha256) {
   checks.push({
     sequence: ids.length * 2 + 1,
     checkedAt: guardCheckedAt(ids.length * 2 + 1),
+    elapsedMs: (ids.length * 2 + 1) * 10_000,
     phase: "postflight",
     id: null,
     attempt: null,
@@ -114,8 +121,57 @@ function guardChecks(ids, vectorSha256) {
   return checks;
 }
 
-function freshBeforeCheck(guard, index, checkedAt) {
-  guard.checks[index] = { ...guard.checks[index], checkedAt, reusedFromSequence: null };
+// Moves the elapsed time, and optionally the wall clock, of checks[index] and every later check.
+function shiftGuardChecks(guard, index, elapsedDeltaMs, wallDeltaMs = elapsedDeltaMs) {
+  for (const check of guard.checks.slice(index)) {
+    check.elapsedMs += elapsedDeltaMs;
+    check.checkedAt = new Date(Date.parse(check.checkedAt) + wallDeltaMs).toISOString();
+  }
+}
+
+// Builds a guard record with the producer. Row `retriedRow` gets a second answering attempt.
+function producedGuardRecord(result, { retriedRow }) {
+  const vector = result.meta.remoteIdentityGuard.baselineVector;
+  let clockMs = GUARD_START_MS;
+  const guard = createRemoteIdentityGuard({
+    probeIdentity: {
+      contract: REMOTE_IDENTITY_VECTOR_SCHEMA,
+      artifactPath: "eval/qa/probe-remote-identities.mjs",
+      sha256: REMOTE_PROBE_SHA256,
+      expectedSha256: REMOTE_PROBE_SHA256,
+      matches: true
+    },
+    expectedVectorSha256: remoteIdentityVectorSha256(vector),
+    capture: () => {
+      clockMs += 500;
+      return structuredClone(vector);
+    },
+    now: () => clockMs,
+    monotonicNow: () => clockMs
+  });
+  for (const [index, row] of result.rows.entries()) {
+    const numbers = index === retriedRow ? [1, 2] : [1];
+    row.attempts.agent = numbers.map((number) => ({ number }));
+    for (const number of numbers) {
+      runRemoteIdentityGuardedCall({
+        guard,
+        context: { id: row.id, attempt: number },
+        authorize: () => ({}),
+        call: () => {
+          clockMs += 20_000;
+          return { costUsd: 0.1 };
+        },
+        recordSpend: () => {}
+      });
+      clockMs += 2_000;
+    }
+  }
+  guard.postflight();
+  return guard.record();
+}
+
+function freshBeforeCheck(guard, index) {
+  guard.checks[index] = { ...guard.checks[index], reusedFromSequence: null };
   guard.successfulCaptureCount += 1;
   guard.reusedCaptureCount -= 1;
 }
@@ -217,6 +273,7 @@ function result(grades, {
         caseInputSha256: caseInputSha256(caseInput),
         tags: caseInput.tags,
         agent: { failure: failures[id] ?? null },
+        attempts: { agent: [{ number: 1 }], judge: [] },
         verdict: { score: grade }
       };
     })
@@ -721,18 +778,22 @@ describe("paired QA verdict", () => {
   it.each([
     ["a fresh capture at every check", (guard) => {
       for (const [index, check] of guard.checks.entries()) {
-        if (check.reusedFromSequence !== null) freshBeforeCheck(guard, index, check.checkedAt);
+        if (check.reusedFromSequence !== null) freshBeforeCheck(guard, index);
       }
     }],
     ["a reuse at the age limit", (guard) => {
-      guard.checks[4].checkedAt = new Date(
-        Date.parse(guard.checks[3].checkedAt) + REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS
-      ).toISOString();
+      shiftGuardChecks(guard, 4, REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS - 10_000);
+    }],
+    ["a wall clock moved back 90 s", (guard) => {
+      shiftGuardChecks(guard, 4, 0, -90_000);
+    }],
+    ["a producer record with a retried row", (guard, candidate) => {
+      candidate.meta.remoteIdentityGuard = producedGuardRecord(candidate, { retriedRow: 3 });
     }]
   ])("accepts a guard record with %s", (_label, mutate) => {
     const baseline = result(Array(100).fill("partial"));
     const candidate = result(Array(100).fill("partial"));
-    mutate(candidate.meta.remoteIdentityGuard);
+    mutate(candidate.meta.remoteIdentityGuard, candidate);
 
     expect(compare(baseline, candidate).reasons).not.toContainEqual(
       expect.objectContaining({ code: "remote-identity-guard" })
@@ -743,10 +804,11 @@ describe("paired QA verdict", () => {
     const baseline = result(Array(100).fill("partial"));
     const candidate = result(Array(100).fill("partial"));
     const guard = candidate.meta.remoteIdentityGuard;
-    freshBeforeCheck(guard, 2, "2026-10-11T02:05:00.000Z");
+    freshBeforeCheck(guard, 2);
     guard.failedCaptureAttempts = [1, 2, 3].map((captureAttempt) => ({
       sequence: captureAttempt,
-      failedAt: `2026-10-11T02:0${captureAttempt}:00.000Z`,
+      failedAt: guardWallAt(20_000 + captureAttempt * 2_000),
+      elapsedMs: 20_000 + captureAttempt * 2_000,
       phase: "before",
       id: "case-001",
       attempt: 1,
@@ -769,6 +831,7 @@ describe("paired QA verdict", () => {
     candidate.meta.remoteIdentityGuard.failedCaptureAttempts = [{
       sequence: 1,
       failedAt: "2099-01-01T00:00:00.000Z",
+      elapsedMs: 5_000,
       phase: "before",
       id: "case-000",
       attempt: 1,
@@ -781,6 +844,24 @@ describe("paired QA verdict", () => {
     expect(() => calibrationFromPairedArtifacts(baseline, candidate)).toThrow(/remote-identity-guard/);
   });
 
+  it.each([
+    ["an after-call check for a call that never ran", (guard) => {
+      Object.assign(guard.checks[1], { id: "never-called", attempt: 99 });
+    }],
+    ["checks for calls outside the results", (guard) => {
+      for (const check of guard.checks.slice(0, -1)) Object.assign(check, { id: "not-in-results", attempt: 700 });
+    }],
+    ["a postflight years before the first check", (guard) => {
+      guard.checks.at(-1).checkedAt = "2020-01-01T00:00:00.000Z";
+    }]
+  ])("rejects %s in recalibration", (_label, mutate) => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    mutate(candidate.meta.remoteIdentityGuard);
+
+    expect(() => calibrationFromPairedArtifacts(baseline, candidate)).toThrow(/remote-identity-guard/);
+  });
+
   const reuseCounts = (guard, mutate) => {
     mutate();
     guard.successfulCaptureCount -= 1;
@@ -788,10 +869,10 @@ describe("paired QA verdict", () => {
   };
 
   const retriedGuard = (guard) => {
-    guard.checks[0].checkedAt = "2026-10-11T02:00:10.000Z";
     guard.failedCaptureAttempts = [{
       sequence: 1,
-      failedAt: "2026-10-11T02:00:05.000Z",
+      failedAt: guardWallAt(5_000),
+      elapsedMs: 5_000,
       phase: "before",
       id: "case-000",
       attempt: 1,
@@ -829,21 +910,47 @@ describe("paired QA verdict", () => {
     ["unallowlisted reason", (guard) => { retriedGuard(guard).reason = "PATH /synthetic/private/bin"; }],
     ["negative retry-line count", (guard) => { retriedGuard(guard).probeRetryLines = -1; }],
     ["invalid failure date", (guard) => { retriedGuard(guard).failedAt = "yesterday"; }],
-    ["failure after its success", (guard) => {
+    ["failure wall clock far from its elapsed time", (guard) => {
       retriedGuard(guard).failedAt = "2099-01-01T00:00:00.000Z";
     }],
+    ["failure after its success", (guard) => {
+      const entry = retriedGuard(guard);
+      entry.elapsedMs = 10_001;
+      entry.failedAt = guardWallAt(10_001);
+    }],
+    ["failure before the check that precedes its call", (guard) => {
+      const entry = retriedGuard(guard);
+      freshBeforeCheck(guard, 2);
+      Object.assign(entry, { id: "case-001", elapsedMs: 19_999, failedAt: guardWallAt(19_999) });
+    }],
+    ["postflight failure before the last call check", (guard) => {
+      const entry = retriedGuard(guard);
+      const lastCall = guard.checks.at(-2);
+      Object.assign(entry, {
+        phase: "postflight",
+        id: null,
+        attempt: null,
+        elapsedMs: lastCall.elapsedMs - 1,
+        failedAt: guardWallAt(lastCall.elapsedMs - 1)
+      });
+    }],
+    ["failure without an elapsed time", (guard) => { delete retriedGuard(guard).elapsedMs; }],
     ["success without a check time", (guard) => {
       retriedGuard(guard);
       delete guard.checks[0].checkedAt;
     }],
-    ["failure dates out of order", (guard) => {
+    ["failure elapsed times out of order", (guard) => {
       const entry = retriedGuard(guard);
-      freshBeforeCheck(guard, 2, "2026-10-11T02:05:00.000Z");
+      freshBeforeCheck(guard, 2);
+      entry.elapsedMs = 25_000;
+      entry.id = "case-001";
+      entry.failedAt = guardWallAt(25_000);
       guard.failedCaptureAttempts.push({
         ...entry,
         sequence: 2,
-        id: "case-001",
-        failedAt: "2026-10-11T01:00:00.000Z"
+        id: "case-000",
+        elapsedMs: 5_000,
+        failedAt: guardWallAt(5_000)
       });
     }],
     ["failed attempt whose only success is a reuse", (guard) => {
@@ -888,14 +995,41 @@ describe("paired QA verdict", () => {
     ["reuse of a before-call check", (guard) => { guard.checks[4].reusedFromSequence = 3; }],
     ["reuse of a later check", (guard) => { guard.checks[4].reusedFromSequence = 6; }],
     ["reuse past the age limit", (guard) => {
-      guard.checks[4].checkedAt = new Date(
-        Date.parse(guard.checks[3].checkedAt) + REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS + 1
-      ).toISOString();
+      shiftGuardChecks(guard, 4, REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS - 10_000 + 1);
+    }],
+    ["reuse past the age limit with a wall clock that hides it", (guard) => {
+      shiftGuardChecks(guard, 4, 110_000, -90_000);
     }],
     ["reuse dated before its source", (guard) => {
-      guard.checks[4].checkedAt = new Date(Date.parse(guard.checks[3].checkedAt) - 1).toISOString();
+      guard.checks[4].elapsedMs = guard.checks[3].elapsedMs - 1;
+    }],
+    ["check without an elapsed time", (guard) => { delete guard.checks[2].elapsedMs; }],
+    ["fractional elapsed time", (guard) => { guard.checks[2].elapsedMs += 0.5; }],
+    ["elapsed time moving back", (guard) => { guard.checks[6].elapsedMs = guard.checks[5].elapsedMs - 1; }],
+    ["wall clock past the tolerance", (guard) => { shiftGuardChecks(guard, 4, 0, -300_001); }],
+    ["postflight years before the first check", (guard) => {
+      guard.checks.at(-1).checkedAt = "2020-01-01T00:00:00.000Z";
+    }],
+    ["after-call check for a call that never ran", (guard) => {
+      Object.assign(guard.checks[1], { id: "never-called", attempt: 99 });
+    }],
+    ["after-call check for another attempt", (guard) => { guard.checks[1].attempt = 2; }],
+    ["checks for calls outside the results", (guard) => {
+      for (const check of guard.checks.slice(0, -1)) Object.assign(check, { id: "not-in-results", attempt: 700 });
+    }],
+    ["checks in a different order from the rows", (guard) => {
+      for (const index of [0, 1]) guard.checks[index].id = "case-001";
+      for (const index of [2, 3]) guard.checks[index].id = "case-000";
+    }],
+    ["row without attempt evidence", (guard, candidate) => { delete candidate.rows[4].attempts; }],
+    ["row with a skipped attempt number", (guard, candidate) => {
+      candidate.rows[4].attempts.agent = [{ number: 2 }];
+    }],
+    ["row attempt without its guard pair", (guard, candidate) => {
+      candidate.rows[4].attempts.agent.push({ number: 2 });
     }],
     ["low call count", (guard) => { guard.completedAnsweringCalls -= 1; }],
+    ["high call count", (guard) => { guard.completedAnsweringCalls += 1; }],
     ["drifted final vector", (guard) => {
       guard.finalVector.services.scout.openapiVersion = "1.9.31";
       guard.postflight.vectorSha256 = remoteIdentityVectorSha256(guard.finalVector);
