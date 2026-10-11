@@ -1,7 +1,10 @@
 # Answer-style guidance as result data — design decision
 
-Status: implemented on branch `w1010/a`. The paired QA measurement ran on 2026-10-11 and FAILED
-on one abstention row. The merge is blocked. See [`measurement-ledger.md`](measurement-ledger.md).
+Status: implemented on branch `w1010/a`. The paired QA measurement ran on 2026-10-11. The
+independent result review ([`review-result-astra.md`](review-result-astra.md)) rates it
+INDETERMINATE: the candidate arm shows a repeated Strupey attribution failure, but its baseline
+confirmation re-judge is T4. The merge is blocked. See
+[`measurement-ledger.md`](measurement-ledger.md).
 
 Source item: `.agents/TODO.md`, "Move answer-style guidance from server instructions into result
 data".
