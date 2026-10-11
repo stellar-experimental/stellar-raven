@@ -10,6 +10,7 @@ import {
   LOOK_Z,
   MINIMUM_ELIGIBLE_IDS,
   NO_CHANGE_CONFIDENCE_RADIUS,
+  calibrationFromPairedArtifacts,
   caseInputPayload,
   caseInputSha256,
   classifyPairedRow,
@@ -159,7 +160,10 @@ function result(grades, {
             vectorSha256: remoteIdentitySha256
           }
         ],
+        captureRetryPolicy: { maximumAttempts: 4, delaysMs: [30_000, 60_000, 120_000] },
+        failedCaptureAttempts: [],
         failure: null,
+        cancellation: null,
         sameAuthorizationResumeAllowed: false,
         requiresNewAuthorization: false
       },
@@ -680,8 +684,126 @@ describe("paired QA verdict", () => {
     );
   });
 
+  it("accepts a guard record whose unavailable captures succeeded on retry", () => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    const guard = candidate.meta.remoteIdentityGuard;
+    guard.captures[2] = {
+      ...guard.captures[2],
+      id: "id-2",
+      attempt: 1,
+      capturedAt: "2026-10-11T02:05:00.000Z"
+    };
+    guard.failedCaptureAttempts = [1, 2, 3].map((captureAttempt) => ({
+      sequence: captureAttempt,
+      failedAt: `2026-10-11T02:0${captureAttempt}:00.000Z`,
+      phase: "before",
+      id: "id-2",
+      attempt: 1,
+      captureAttempt,
+      kind: "nonzero-exit",
+      reason: "Lumenloop tools response is incomplete",
+      probeRetryLines: 0
+    }));
+
+    const compared = compare(baseline, candidate);
+
+    expect(compared.reasons).not.toContainEqual(
+      expect.objectContaining({ code: "remote-identity-guard" })
+    );
+  });
+
+  it("rejects an invalid retry record in recalibration", () => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    candidate.meta.remoteIdentityGuard.failedCaptureAttempts = [{
+      sequence: 1,
+      failedAt: "2099-01-01T00:00:00.000Z",
+      phase: "before",
+      id: "case-000",
+      attempt: 1,
+      captureAttempt: 1,
+      kind: "nonzero-exit",
+      reason: null,
+      probeRetryLines: 0
+    }];
+
+    expect(() => calibrationFromPairedArtifacts(baseline, candidate)).toThrow(/remote-identity-guard/);
+  });
+
+  const retriedGuard = (guard) => {
+    guard.captures[0] = {
+      ...guard.captures[0],
+      id: "id-1",
+      attempt: 1,
+      capturedAt: "2026-10-11T02:01:10.000Z"
+    };
+    guard.failedCaptureAttempts = [{
+      sequence: 1,
+      failedAt: "2026-10-11T02:00:30.000Z",
+      phase: "before",
+      id: "id-1",
+      attempt: 1,
+      captureAttempt: 1,
+      kind: "timeout",
+      reason: null,
+      probeRetryLines: 2
+    }];
+    return guard.failedCaptureAttempts[0];
+  };
+
   it.each([
     ["missing record", (guard, candidate) => { delete candidate.meta.remoteIdentityGuard; }],
+    ["previous guard schema", (guard) => { guard.schema = "qa-remote-identity-guard-v1"; }],
+    ["missing retry policy", (guard) => { delete guard.captureRetryPolicy; }],
+    ["changed retry delays", (guard) => { guard.captureRetryPolicy.delaysMs = [10_000, 30_000]; }],
+    ["missing failed-attempt list", (guard) => { delete guard.failedCaptureAttempts; }],
+    ["exhausted capture attempts", (guard) => {
+      const entry = retriedGuard(guard);
+      guard.failedCaptureAttempts = [1, 2, 3, 4].map((captureAttempt) => ({
+        ...entry,
+        sequence: captureAttempt,
+        captureAttempt
+      }));
+    }],
+    ["skipped capture attempt", (guard) => { retriedGuard(guard).captureAttempt = 2; }],
+    ["recorded cancellation", (guard) => {
+      guard.cancellation = { phase: "before", id: "id-1", attempt: 1, cancelledAt: "2026-10-11T02:00:00.000Z" };
+    }],
+    ["missing failure kind", (guard) => { delete retriedGuard(guard).kind; }],
+    ["unknown failure kind", (guard) => { retriedGuard(guard).kind = "identity-changed"; }],
+    ["missing reason field", (guard) => { delete retriedGuard(guard).reason; }],
+    ["missing retry-line count", (guard) => { delete retriedGuard(guard).probeRetryLines; }],
+    ["extra failed-attempt field", (guard) => { retriedGuard(guard).stderr = "text"; }],
+    ["unallowlisted reason", (guard) => { retriedGuard(guard).reason = "PATH /synthetic/private/bin"; }],
+    ["negative retry-line count", (guard) => { retriedGuard(guard).probeRetryLines = -1; }],
+    ["invalid failure date", (guard) => { retriedGuard(guard).failedAt = "yesterday"; }],
+    ["failure after its success", (guard) => {
+      retriedGuard(guard).failedAt = "2099-01-01T00:00:00.000Z";
+    }],
+    ["success without a capture time", (guard) => {
+      retriedGuard(guard);
+      delete guard.captures[0].capturedAt;
+    }],
+    ["failure dates out of order", (guard) => {
+      const entry = retriedGuard(guard);
+      guard.captures[2] = {
+        ...guard.captures[2],
+        id: "id-2",
+        attempt: 1,
+        capturedAt: "2026-10-11T02:05:00.000Z"
+      };
+      guard.failedCaptureAttempts.push({
+        ...entry,
+        sequence: 2,
+        id: "id-2",
+        failedAt: "2026-10-11T01:00:00.000Z"
+      });
+    }],
+    ["unknown phase", (guard) => { retriedGuard(guard).phase = "during"; }],
+    ["broken failed-attempt sequence", (guard) => { retriedGuard(guard).sequence = 2; }],
+    ["failed attempt without a later capture", (guard) => { retriedGuard(guard).id = "unknown"; }],
+    ["non-probe capture error", (guard) => { retriedGuard(guard).kind = "capture-error"; }],
     ["matches false", (guard) => { guard.matches = false; }],
     ["failure present", (guard) => { guard.failure = { reason: "probe-unavailable" }; }],
     ["probe hash mismatch", (guard) => { guard.probe.expectedSha256 = "0".repeat(64); }],

@@ -108,7 +108,12 @@ It receives only `PATH` and records no repository credentials.
 [probe-remote-identities.mjs](probe-remote-identities.mjs) defines canonicalization, retry limits, and timeout bounds.
 
 The runner captures remote identity around every answering call and during final postflight.
-A failed capture or changed vector stops further spending and suppresses aggregates.
+When the probe is unavailable, the guard repeats that one capture after 30 s, 60 s, and 120 s.
+`meta.remoteIdentityGuard.failedCaptureAttempts[]` records each failed attempt with its kind and sanitized probe reason.
+The reason is the last `remote-identity-probe: ` stderr line, kept only when it matches a known probe message form.
+In a paired run, the guard checks cancellation before each probe, during each wait, and before the answering call.
+A repeated capture goes through the same vector checks. The guard never repeats a mismatch or a missing baseline.
+Four failed attempts for one capture, or a changed vector, stop further spending and suppress aggregates.
 The artifact keeps completed rows, unattempted IDs, and the failed guard.
 It records `meta.comparable: false` and `meta.aggregatesSuppressed: true`.
 A stopped artifact cannot resume under the same authorization.

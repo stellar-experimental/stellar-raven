@@ -93,6 +93,111 @@ All values are **preview, recompute at launch**.
 
 The "Preview, recompute at launch" section keeps the 2026-10-01 values as history.
 
+## 2026-10-11 amendment: stopped attempt and guard retry
+
+### The stopped attempt
+
+The paired run started on 2026-10-11 at 00:11:54 UTC at launch revision `0dc353b992b8c0688c051909b5b07b8e14956134`.
+The guard stopped both arms at row 146 of 200 at 02:01:11 UTC.
+Each arm kept 145 of 200 rows.
+The baseline guard recorded `failure.reason: "probe-unavailable"` in phase `before` for `q-sep53-message-signing`.
+Its diagnostics were `kind: "nonzero-exit"`, `status: 1`, and `timedOut: false`.
+Each arm had 290 successful captures before the stop. Every vector matched the pre-arm vector `1a927dce…`.
+
+| Phase | Reported spend |
+| --- | ---: |
+| P6 judge self-test | `$0.2831632` |
+| Baseline collection, 145 rows | `$35.9631006` |
+| Candidate collection, 145 rows | `$36.5161806` |
+| Total | `$72.7624444` |
+
+Both artifacts record `meta.comparable: false` and suppressed aggregates.
+The collected rows support no claim. No judge, comparison, or flip phase ran.
+
+### Cause
+
+The runner kept no probe stderr, so the stopped run did not record the exact error.
+The stopped artifacts contain no probe stderr and no HTTP status. The exact cause is not established.
+
+A later free trial ran 100 serial probes. All 100 passed with no retry.
+A second free trial ran 100 rounds of two concurrent probes, as the two arms do.
+148 of 200 probes passed. Both probes failed in rounds 44 to 68 and in round 100.
+Each of the 52 failures was an Algolia HTTP 429 on a Stellar Docs call: settings, title page count, or remaining title pages.
+The probe's own retries after 250 ms and 1 s also received HTTP 429.
+The trial log has no timestamps. It does not show how long a 429 period lasts.
+The orchestrator observed a period of about 80 to 90 seconds. That duration is an unverified operator observation.
+Round 100 was the last round, so the log shows no recovery after it.
+
+The probe uses the public DocSearch search key.
+The orchestrator reports that the Raven server uses a different Algolia key in the same application.
+The retained records do not establish the key identity of the stopped run's server.
+The two server logs from the stopped run have 1849 upstream operation records and 5 Stellar Docs error records.
+Those error records have no HTTP status. Their count does not show whether answering received HTTP 429.
+
+Thus an Algolia HTTP 429 on the probe's Stellar Docs calls is the reproduced failure.
+It is the likely cause of the stopped run, but the stopped run's records do not prove it.
+
+### Fix
+
+`eval/qa/remote-identity-guard.mjs` now writes guard schema `qa-remote-identity-guard-v2`.
+
+- An unavailable probe repeats the same capture after 30 s, 60 s, and 120 s. One capture has at most 4 attempts.
+  Any `RemoteIdentityProbeError` kind, including `timeout`, counts as unavailable.
+- `failedCaptureAttempts[]` records each failed attempt. `captureRetryPolicy` records the policy.
+- Each failure keeps a `diagnostics.reason` and the count `diagnostics.probeRetryLines`.
+  The reason is the last `remote-identity-probe: ` stderr line, without the prefix.
+  The guard keeps it only when it matches a known probe message form with fixed labels and bounded numbers.
+  Other text gives `null`. The guard keeps no stdout and no other stderr text.
+  All 52 failure lines in the concurrent trial match the allowlist.
+- A successful repeat goes through the same pre-arm and baseline comparisons.
+  The guard never repeats a vector mismatch, a pre-arm mismatch, an identity change, or a missing baseline.
+- The guard checks the paired cancellation before each probe, after each 1 s slice of a wait, and just before the answering call.
+  The supervisor writes its cancellation file before it sends IPC, so a blocked wait sees the file.
+  A cancellation stops the arm within about 1 s of a wait. It starts no further probe or answering call.
+  The guard records `cancellation` and skips the postflight probe with `skippedReason: "collection-cancelled"`.
+  The runner then saves its completed rows and the guard record.
+- `eval/qa/paired-verdict.mjs` accepts only the v2 record with `cancellation: null` and the exact retry policy.
+  Each failed attempt must have every field, a probe error kind, an allowlisted or `null` reason, and a valid date.
+  Its date must not be later than the successful capture of the same call. Failure dates must not decrease.
+
+The probe file and its retry constants did not change, so its pinned hash stays the same.
+The guard does not change the probe's request rate. Two arms still start their before-row probes at the same release.
+
+### New meaning of "a probe failure"
+
+The stop rule "The guard stops either arm for … a probe failure" now means four failed attempts for one capture.
+A failed attempt that a later attempt of the same capture replaces is not a stop.
+
+### Worst-case wait
+
+One probe process has a `145,000 ms` timeout. One capture can wait at most 4 × `145,000 ms` + `210,000 ms` = `790,000 ms` (13.2 min).
+When each attempt fails fast, the attempts start near 0, 30, 90, and 210 s.
+So the guard covers an unavailable period of about 3.5 min plus the probe durations. It does not guarantee more.
+The stopped run took 109.2 min for 145 rows, from the first to the last successful capture.
+At that rate, 200 rows take about 151 min. That leaves about 89 min before the four-hour supervisor deadline.
+This is a linear estimate, not a completion guarantee.
+The supervisor has no per-row, heartbeat, or readiness timeout during rows.
+Its 30 s drain, 5 s termination grace, and 1 s IPC drain start only after a cancel or a child exit.
+A cancelled wait stops within about 1 s, inside the 30 s drain.
+A probe process that is already running cannot stop early. It can run for up to 145 s, which is longer than the drain.
+In that case the supervisor can terminate the arm before it saves its artifact. This limit existed before this fix.
+The 10 min agent timeout covers only the answering CLI, not the guard capture.
+The arms wait for each other at each row, so a wait in one arm delays both arms.
+
+### Next attempt
+
+- The next attempt needs a new launch revision that contains this fix, a new assembled plan, and a new signed authorization.
+- A delta review of the guard change and this amendment must complete before the signature.
+  The [guard retry review](guard-retry-review-astra.md) records it. Codex `gpt-6-astra` at high
+  effort returned CODE-DELTA: CHANGES and PLAN-DELTA: BLOCKED at `111cad3d`. After the fixes, it returned
+  CODE-DELTA: APPROVE and PLAN-DELTA: LAUNCH-OK at `386e2c86`.
+- Before the new launch, move (archive) the old launch record `/private/tmp/stellar-raven-paired-launch/`. Do not edit it.
+  `launchPaired` creates that folder with a non-recursive `mkdirSync`, so it stops when the old folder is still there.
+- The old run's `--remove-worktrees` step is complete. Its cleanup record has `complete: true`, and no `paired-*` worktree remains.
+- The launch must still run on a weekend UTC day, and it captures a new capacity record and a new stable vector.
+- Stop all trial probe traffic before the launch, so that the shared key can recover before the capacity and stable checks.
+- Identify the archived record in the new attempt's record.
+
 ## Launch window and values
 
 Start on Saturday `2026-10-10T00:00:00Z` or Sunday `2026-10-11T00:00:00Z`, or on a later weekend UTC day.

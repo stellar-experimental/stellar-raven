@@ -493,6 +493,8 @@ Before the first paid call, stop when any item below holds:
 During collection, the supervisor stops both arms when any item below holds:
 
 - The guard stops either arm for an identity change, a probe failure, or a pre-arm mismatch.
+  Amendment 2026-10-11: a probe failure means four failed attempts for one capture. See the
+  [run sheet amendment](../2026-10-01-backlog-closeout/paired-run-sheet.md#2026-10-11-amendment-stopped-attempt-and-guard-retry).
 - Either arm reaches its `$80` cap, omits a reported cost, or loses the `raven` MCP connection.
 - Either child exits before a successful completion, sends malformed IPC, breaks the row order,
   or reports a readiness record that does not match the manifest.
