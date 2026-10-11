@@ -1,7 +1,7 @@
 # Answer-style guidance as result data — design decision
 
-Status: implemented on branch `w1010/a`. The merge waits for the paired QA measurement in
-[`measurement-plan.md`](measurement-plan.md).
+Status: implemented on branch `w1010/a`. The paired QA measurement ran on 2026-10-11 and FAILED
+on one abstention row. The merge is blocked. See [`measurement-ledger.md`](measurement-ledger.md).
 
 Source item: `.agents/TODO.md`, "Move answer-style guidance from server instructions into result
 data".
