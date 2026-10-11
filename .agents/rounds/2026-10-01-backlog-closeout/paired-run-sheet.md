@@ -314,6 +314,35 @@ After the fixes, it returned CODE-DELTA: APPROVE and PLAN-DELTA: LAUNCH-OK at `6
 
 - Identify the archived record in the new attempt's record.
 
+### Attempt 3: stopped by a baseline server crash
+
+The orchestrator first started attempt 3 at `2026-10-11T05:05:42Z` with a revision that does not exist.
+The launcher stopped at worktree creation with no probe, server, or paid call. That record is archived at
+`eval/qa/results/2026-10-11-paired-attempt-3a-bad-revision` (main checkout, ignored).
+
+Attempt 3 then ran at `8bca416700f25ceb085d82f54693b313b189a14e` from `2026-10-11T05:05:58Z`, after the
+DocSearch key was idle for more than one hour. The capacity v3 check passed, and the stable probe returned
+`1a927dce…` three times. The orchestrator signed plan `49ee7a49…` under the owner's delegation. P6 passed all
+seven grades for $0.2845572.
+
+The probe repair held. Each arm made 142 answering calls with 0 failed capture attempts. In each arm, 141
+before-checks reused the previous after-check.
+
+At `2026-10-11T07:02:39Z`, the baseline server (`90d0ba75`, Wrangler 4.120.1) stopped with an empty
+`[ERROR]` line. It had run for 1 h 56 min. The next baseline answering call failed with "required MCP server
+raven was failed in system init", and the postflight could not read the server on port 8791. The supervisor
+cancelled both arms. The candidate server (Wrangler 4.149.0) did not fail in attempt 1 or attempt 3.
+
+- Spend: P6 $0.2845572, baseline $35.9055856, candidate $37.2913486, total $73.4814914. No judging ran.
+- The rows support no claim. Both artifacts are non-comparable.
+- The Wrangler debug log ends at the crash with debug and log entries only, and no error entry. The
+  orchestrator could not read the macOS unified log. The crash cause is unknown.
+- Record: `eval/qa/results/2026-10-11-paired-attempt-3`, with `baseline-wrangler-debug.log`.
+
+The total for the three attempts is $146.2439358. The orchestrator stopped the method for this weekend
+instead of starting a fourth paid attempt with an unexplained crash. A free soak test of the baseline server
+comes first (`.agents/TODO.md`, owner decision A).
+
 ## Launch window and values
 
 Start on Saturday `2026-10-10T00:00:00Z` or Sunday `2026-10-11T00:00:00Z`, or on a later weekend UTC day.
