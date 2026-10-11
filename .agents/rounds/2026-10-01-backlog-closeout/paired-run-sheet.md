@@ -201,10 +201,12 @@ The arms wait for each other at each row, so a wait in one arm delays both arms.
 
 Attempt 2 ran from launch revision `826be10f`, which contains the guard retry fix.
 Its capacity check passed at `2026-10-11T02:45:44Z`.
-Its stable pre-arm probe then failed at about 02:55Z, before plan assembly.
-That was about 30 minutes after the orchestrator's trial probes ended.
-The probe's last stderr lines show HTTP 429 on "Stellar Docs settings" and "Stellar Docs title page count".
-Each request failed its 3 attempts, and the probe exited.
+Its stable pre-arm probe then failed before plan assembly.
+The stderr file has no timestamps. Its modification time is about 02:55Z.
+The orchestrator reports that its trial probes ended about 30 minutes before that.
+The stderr file shows HTTP 429 on "Stellar Docs settings" and "Stellar Docs title page count".
+It shows three failed settings attempts and two failed title page count attempts.
+Then the probe exited with the settings error.
 No plan was assembled or signed. No P6, collection, or judge phase ran. The spend was `$0`.
 The record is archived at `eval/qa/results/2026-10-11-paired-attempt-2-prelaunch` in the main checkout.
 
@@ -235,19 +237,32 @@ The PR #265 retry waits at most about 3.5 minutes, so it cannot recover an hourl
 4. The guard writes schema `qa-remote-identity-guard-v3`. A before-call check reuses the previous call's
    after-call capture when no call started since and that capture is at most 60 s old.
    Otherwise it captures fresh. The first before-call check and the postflight always capture fresh.
-   Each entry in `checks[]` records `checkedAt` and `reusedFromSequence`.
+   The guard measures the reuse age on a monotonic clock, so a wall-clock correction cannot extend it.
+   Each entry in `checks[]` and `failedCaptureAttempts[]` records a wall-clock time for reports and `elapsedMs`.
+   `elapsedMs` is the whole monotonic milliseconds since the guard started. One reading decides a reuse and dates it.
+   Each check also records `reusedFromSequence`.
    The record counts fresh probes in `successfulCaptureCount` and reuses in `reusedCaptureCount`.
    Every comparison and the cancellation check before the answering call stay.
-   `eval/qa/paired-verdict.mjs` accepts only v3. A reuse must point to the immediately previous,
-   fresh after-call check of the previous call, with the same vector, at most 60 s earlier.
-5. The PR #265 capture retry and cancellation behavior did not change.
+5. `eval/qa/paired-verdict.mjs` accepts only v3 records.
+   Each before and after pair must have the context of the next answering call in the rows' `attempts.agent[]`, in execution order.
+   Each row must have attempts numbered from 1, and `completedAnsweringCalls` must equal the number of attempts.
+   A reuse must point to the immediately previous, fresh after-call check, with the same vector, at most 60,000 ms earlier in `elapsedMs`.
+   Checks and failed attempts must not move back in `elapsedMs`.
+   A failed attempt must fall between the check before its call and the call's fresh successful check.
+   Each wall-clock time must stay within 300,000 ms of the elapsed time since the first check.
+6. The PR #265 capture retry and cancellation behavior did not change.
 
 This fix changes the probe, capacity check, guard, and paired-verdict file hashes.
 The preview hash tables above are history. Plan assembly recomputes every pin, so no pin needs a manual edit.
 
-The stop rule meaning does not change, so the dated plan needs no new note.
-The guard still stops an arm for an identity change, four failed attempts for one capture, or a pre-arm mismatch.
-A reused check can only delay the detection of a change by one call: the next after-call check finds it.
+The reuse changes the observation rule. The dated plan's stop rules have a marked amendment for it.
+The guard still stops an arm for an observed identity change, four failed attempts for one capture, or a pre-arm mismatch.
+A change that persists until the next successful capture stops the arm at that capture.
+At most one more answering call starts in each arm's guard before that detection or capture exhaustion.
+A temporary change that starts after one fresh capture and ends before the next fresh capture is not observed.
+The earlier design captured before every call and could stop before that call.
+The new authorization copies the amended stop rules, so the owner signs this rule.
+The dated plan also marks `qa-paired-capacity-check-v3` as the current capacity contract.
 
 ### Algolia call budget
 
@@ -267,7 +282,7 @@ So a row needs about 1 + 2/288 = 1.007 fresh captures.
 
 The first hour holds the capacity check, the stable probe, and the first rows.
 Its expected load is 10 + 4 + 321 = about 335 calls. That leaves a margin of about 665 calls (66%) under 1,000.
-Without any reuse, the first hour is about 651 calls, with a margin of about 349 calls.
+Without any reuse, the first hour is about 10 + 637 = 647 calls, with a margin of about 353 calls.
 A full run of 200 rows for each arm makes about 824 Algolia calls in about 151 minutes.
 Probe retries and capture retries add calls. The budget does not include them.
 Algolia documents that the limit applies to each of the three servers in a cluster. This budget counts against one server.
@@ -278,7 +293,7 @@ In that hour, no trial probe, live comparison, or other process on this IP may u
 
 ### Live comparison
 
-One live comparison ran at `2026-10-11T03:57:41Z`, about one hour after the attempt 2 HTTP 429.
+One live comparison ran at `2026-10-11T03:57:41Z`, about one hour after the attempt 2 stderr file's modification time.
 It ran the `826be10f` probe and then the new probe in one process, with no retry.
 Both probes returned the same vector bytes, with vector SHA-256 `1a927dce…`.
 That vector equals the attempt 1 pre-arm vector.

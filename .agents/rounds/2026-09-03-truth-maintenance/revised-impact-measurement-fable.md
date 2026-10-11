@@ -94,6 +94,11 @@ than 22 hours without a Scout release. Scout shipped 30 spec versions in the sev
 | Stability register | `/private/tmp/stellar-raven-tm-paired-stability.json`, SHA-256 `06d3835b63ae05f40f808b9890628add8b905f32f60a65df19cbee1a751f9480`, 538 cases | launch review pins |
 | Baseline revision | `90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0`, adapter mode `add-missing` | ledger and launch review |
 
+**Amendment 2026-10-11.** The "Guard semantics", "Guard cost", "Guard timeout", and "Capacity
+contract" rows are dated evidence. The current guard reuses some captures; see the stop rules. One
+capture now makes six public requests and two Algolia calls, and the probe process timeout is
+75,000 ms. The current capacity contract is in the capacity gate section.
+
 The sampler is deterministic and depends only on IDs and service tags. Golden text edits do not
 move membership. Added or removed cases do. The supervisor forbids `--sample`, so the sampler only
 derives the explicit `--ids` list that the manifest freezes.
@@ -310,6 +315,13 @@ The plan binds the free two-agent capacity check as a fixed contract:
 - The supervisor verifies the artifact bytes against `capacity.artifactSha256`. It verifies the
   executing instrument and both runner copies against `capacity.instrumentSha256`.
 
+**Amendment 2026-10-11.** The current contract is `qa-paired-capacity-check-v3`. Each capture
+makes six public identity requests. Expected responses: 12, with Scout 2, Lumenloop 6, and Stellar
+Docs 4. The thresholds require 12 responses and 12 successful responses. The other thresholds,
+the schedule, and the freshness rule do not change. The v2 text above and the v2 artifact below
+are dated evidence. See the
+[run sheet amendment](../2026-10-01-backlog-closeout/paired-run-sheet.md#fix-fewer-algolia-calls).
+
 The authoritative v2 artifact is recorded in [`paired-capacity-check-terra.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md):
 
 | Item | Value |
@@ -495,6 +507,13 @@ During collection, the supervisor stops both arms when any item below holds:
 - The guard stops either arm for an identity change, a probe failure, or a pre-arm mismatch.
   Amendment 2026-10-11: a probe failure means four failed attempts for one capture. See the
   [run sheet amendment](../2026-10-01-backlog-closeout/paired-run-sheet.md#2026-10-11-amendment-stopped-attempt-and-guard-retry).
+  Amendment 2026-10-11 (capture reuse): a before-call check reuses the previous call's after-call
+  capture when no call started since and that capture is at most 60 s old on a monotonic clock.
+  The first before-call check and the postflight always capture fresh.
+  A change that persists until the next successful capture stops the arm at that capture. At most
+  one more answering call starts in each arm's guard before that detection or capture exhaustion.
+  A temporary change that starts after one fresh capture and ends before the next fresh capture
+  is not observed. The earlier design captured before every call and could stop before that call.
 - Either arm reaches its `$80` cap, omits a reported cost, or loses the `raven` MCP connection.
 - Either child exits before a successful completion, sends malformed IPC, breaks the row order,
   or reports a readiness record that does not match the manifest.
@@ -615,7 +634,7 @@ Claude path: <p6.claudePath>.  Binary: <sha256>.  Environment: <sha256>.
 Runner bytes: run-qa <sha256>, paired-verdict <sha256>, supervisor <sha256>, control <sha256>.
 Contract bytes: capacity instrument <sha256>, P6 wrapper <sha256>, judge <sha256>,
   re-judge <sha256>, evidence pack <sha256>.
-Capacity: artifact <absolute path> <sha256>, completedAt <timestamp>, fixed v2 contract;
+Capacity: artifact <absolute path> <sha256>, completedAt <timestamp>, fixed v3 contract;
   launch before completedAt + 86,400,000 ms.
 P6: runner arm <baseline|candidate>, summary <absolute path>; the path must not exist.
 Worktrees: baselineRunner <path>, candidateRunner <path>,
