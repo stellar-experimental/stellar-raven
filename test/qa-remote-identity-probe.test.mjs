@@ -229,7 +229,7 @@ describe("production remote identity Stellar Docs title capture", () => {
     await probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] });
 
     expect(requests).toHaveLength(6);
-    expect(requests.filter((url) => url.includes(".algolia.net/"))).toHaveLength(2);
+    expect(requests.filter((url) => new URL(url).hostname.endsWith(".algolia.net"))).toHaveLength(2);
     expect(titleBatches).toEqual([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]);
   });
 
