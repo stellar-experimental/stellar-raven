@@ -24,6 +24,7 @@ export const REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS =
 export const REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS = Object.freeze([30_000, 60_000, 120_000]);
 export const REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS =
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.length + 1;
+export const REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS = 1_000;
 export const REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS =
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS * REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS +
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.reduce((total, delayMs) => total + delayMs, 0);
@@ -42,9 +43,19 @@ const HASH_FIELDS = new Set([
 const SAFE_IDENTITY = /^[A-Za-z0-9][A-Za-z0-9._:+/-]{0,127}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const PROBE_LINE_PREFIX = "remote-identity-probe: ";
-const PROBE_RETRY_LINE = /; retrying in \d+ ms$/;
-const SAFE_PROBE_REASON = /^[\x20-\x7e]{1,200}$/;
-const SECRET_SHAPE = /=|[A-Za-z0-9+/_-]{32,}|bearer|authorization|api[-_ ]?key|password|secret/i;
+export const REMOTE_IDENTITY_PROBE_ERROR_KINDS = Object.freeze([
+  "missing",
+  "not-file",
+  "not-executable",
+  "hash-mismatch",
+  "timeout",
+  "output-overflow",
+  "signal",
+  "spawn-error",
+  "nonzero-exit",
+  "invalid-json",
+  "invalid-vector"
+]);
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -112,6 +123,77 @@ function artifactPathFor(resolvedPath, repoRoot) {
   return path.basename(resolvedPath);
 }
 
+// The pinned probe builds every expected message from these fixed labels and fields.
+const PROBE_REQUEST_LABELS = [
+  "Scout OpenAPI",
+  "Lumenloop OpenAPI",
+  "Lumenloop public tools",
+  "Lumenloop public skills",
+  "Stellar Docs settings",
+  "Stellar Docs title page count",
+  "Stellar Docs remaining title pages"
+];
+const PROBE_SHAPE_LABELS = [
+  "Scout OpenAPI",
+  "Scout OpenAPI version",
+  "Lumenloop OpenAPI",
+  "Lumenloop OpenAPI version",
+  "Lumenloop tools response",
+  "Lumenloop tools data",
+  "Lumenloop tools hint",
+  "Lumenloop tools scope",
+  "Lumenloop skills response",
+  "Lumenloop skills data",
+  "Lumenloop skill archives",
+  "Lumenloop skill note",
+  "Lumenloop skill versions",
+  "Stellar Docs settings",
+  "Stellar Docs title response"
+];
+const alternatives = (values) => values.map((value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+const PROBE_REQUEST_LABEL = `(?:${alternatives(PROBE_REQUEST_LABELS)})`;
+const PROBE_RETRY_MESSAGE = new RegExp(
+  `^${PROBE_REQUEST_LABEL} attempt [1-9]/[1-9] failed \\((?:HTTP [1-5][0-9]{2}|timeout|network error)\\); ` +
+  "retrying in [0-9]{1,5} ms$"
+);
+const PROBE_MESSAGE_PATTERNS = [
+  PROBE_RETRY_MESSAGE,
+  new RegExp(`^${PROBE_REQUEST_LABEL} returned HTTP [1-5][0-9]{2}$`),
+  new RegExp(
+    `^${PROBE_REQUEST_LABEL} (?:returned invalid JSON|timed out|had a network error|exhausted its retry limit)$`
+  ),
+  new RegExp(`^(?:${alternatives(PROBE_SHAPE_LABELS)}) must be (?:an object|a non-empty string)$`)
+];
+const PROBE_FIXED_MESSAGES = new Set([
+  "Lumenloop tools response is incomplete",
+  "Lumenloop tools response count does not match its tools",
+  "Lumenloop skills response is incomplete",
+  "Stellar Docs title response is incomplete",
+  "Stellar Docs title response is truncated",
+  "Stellar Docs title page count is invalid",
+  "Stellar Docs remaining title pages are incomplete",
+  "Stellar Docs title pagination changed during capture",
+  "remote identity vector must be an object",
+  `remote identity vector schema must be ${REMOTE_IDENTITY_VECTOR_SCHEMA}`,
+  "remote identity vector must contain exactly: schema, services",
+  "remote identity services must be an object",
+  `remote identity services must contain exactly: ${[...REMOTE_IDENTITY_SERVICES].sort().join(", ")}`,
+  ...Object.entries(SERVICE_FIELDS).flatMap(([service, fields]) => [
+    `remote identity service ${service} must be an object`,
+    `remote identity service ${service} must contain exactly: ${[...fields].sort().join(", ")}`,
+    ...fields.map((field) => HASH_FIELDS.has(field)
+      ? `remote identity ${service}.${field} must be a lowercase SHA-256`
+      : `remote identity ${service}.${field} must be a safe identity token`)
+  ])
+]);
+
+/** True only for a known probe message form with bounded numeric fields. */
+export function isAllowlistedProbeReason(value) {
+  return typeof value === "string" &&
+    value.length <= 200 &&
+    (PROBE_FIXED_MESSAGES.has(value) || PROBE_MESSAGE_PATTERNS.some((pattern) => pattern.test(value)));
+}
+
 /** Keep only an allowlisted final probe line and the count of probe retry lines. */
 export function probeStderrDiagnostics(stderr) {
   const probeLines = String(stderr ?? "")
@@ -120,10 +202,8 @@ export function probeStderrDiagnostics(stderr) {
     .map((line) => line.slice(PROBE_LINE_PREFIX.length));
   const last = probeLines.at(-1);
   return {
-    reason: typeof last === "string" && SAFE_PROBE_REASON.test(last) && !SECRET_SHAPE.test(last)
-      ? last
-      : null,
-    probeRetryLines: probeLines.filter((line) => PROBE_RETRY_LINE.test(line)).length
+    reason: isAllowlistedProbeReason(last) ? last : null,
+    probeRetryLines: probeLines.filter((line) => PROBE_RETRY_MESSAGE.test(line)).length
   };
 }
 
@@ -266,15 +346,18 @@ function sleepSync(delayMs) {
 }
 
 /**
- * A failure permanently closes this instance and forbids resume.
+ * A failure or a cancellation permanently closes this instance and forbids resume.
  * Only an unavailable probe repeats a capture; every vector check runs once per capture.
+ * `checkCancelled` throws when the collection is cancelled. The guard calls it before each
+ * probe, after each wait slice, and last in `beforeCall`, just before the answering call.
  */
 export function createRemoteIdentityGuard({
   probeIdentity,
   expectedVectorSha256,
   capture = captureRemoteIdentity,
   sleep = sleepSync,
-  onCaptureRetry = () => {}
+  onCaptureRetry = () => {},
+  checkCancelled = () => {}
 }) {
   if (typeof expectedVectorSha256 !== "string" || !SHA256.test(expectedVectorSha256)) {
     throw new Error(
@@ -285,6 +368,7 @@ export function createRemoteIdentityGuard({
   let finalVector = null;
   let pendingCall = null;
   let failure = null;
+  let cancellation = null;
   let completedAnsweringCalls = 0;
   let postflight = {
     attempted: false,
@@ -325,9 +409,33 @@ export function createRemoteIdentityGuard({
     throw new RemoteIdentityGuardError(message);
   };
 
+  const assertNotCancelled = (phase, context) => {
+    try {
+      checkCancelled();
+    } catch (error) {
+      cancellation ??= {
+        phase,
+        id: context.id,
+        attempt: context.attempt,
+        cancelledAt: new Date().toISOString()
+      };
+      throw error;
+    }
+  };
+
+  const waitBeforeRetry = (delayMs, phase, context) => {
+    for (let waitedMs = 0; waitedMs < delayMs;) {
+      const sliceMs = Math.min(REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS, delayMs - waitedMs);
+      sleep(sliceMs);
+      waitedMs += sliceMs;
+      assertNotCancelled(phase, context);
+    }
+  };
+
   const captureVector = (phase, context) => {
     let vector;
     for (let captureAttempt = 1; ; captureAttempt += 1) {
+      assertNotCancelled(phase, context);
       try {
         vector = parseRemoteIdentityVector(capture(probeIdentity));
         break;
@@ -366,7 +474,7 @@ export function createRemoteIdentityGuard({
             kind: diagnostics.kind,
             delayMs
           });
-          sleep(delayMs);
+          waitBeforeRetry(delayMs, phase, context);
           continue;
         }
         fail({
@@ -391,7 +499,7 @@ export function createRemoteIdentityGuard({
   };
 
   const assertActive = () => {
-    if (failure) {
+    if (failure || cancellation) {
       throw new RemoteIdentityGuardError(
         "remote identity guard already stopped this authorization"
       );
@@ -420,6 +528,7 @@ export function createRemoteIdentityGuard({
           changedServices: comparison.changedServices
         });
       }
+      assertNotCancelled("before", context);
       pendingCall = { ...context, vector };
       return vector;
     },
@@ -451,12 +560,12 @@ export function createRemoteIdentityGuard({
     },
 
     postflight() {
-      if (failure) {
+      if (failure || cancellation) {
         postflight = {
           attempted: false,
           matches: false,
           vectorSha256: null,
-          skippedReason: "guard-already-stopped"
+          skippedReason: failure ? "guard-already-stopped" : "collection-cancelled"
         };
         return null;
       }
@@ -517,8 +626,9 @@ export function createRemoteIdentityGuard({
         },
         failedCaptureAttempts: failedCaptureAttempts.map((entry) => ({ ...entry })),
         failure,
+        cancellation: cancellation ? { ...cancellation } : null,
         sameAuthorizationResumeAllowed: false,
-        requiresNewAuthorization: failure !== null
+        requiresNewAuthorization: failure !== null || cancellation !== null
       };
     }
   };

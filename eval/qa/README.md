@@ -110,7 +110,8 @@ It receives only `PATH` and records no repository credentials.
 The runner captures remote identity around every answering call and during final postflight.
 When the probe is unavailable, the guard repeats that one capture after 30 s, 60 s, and 120 s.
 `meta.remoteIdentityGuard.failedCaptureAttempts[]` records each failed attempt with its kind and sanitized probe reason.
-The reason is the last `remote-identity-probe: ` stderr line, kept only when it passes a strict allowlist.
+The reason is the last `remote-identity-probe: ` stderr line, kept only when it matches a known probe message form.
+In a paired run, the guard checks cancellation before each probe, during each wait, and before the answering call.
 A repeated capture goes through the same vector checks. The guard never repeats a mismatch or a missing baseline.
 Four failed attempts for one capture, or a changed vector, stop further spending and suppress aggregates.
 The artifact keeps completed rows, unattempted IDs, and the failed guard.

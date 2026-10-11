@@ -14,7 +14,9 @@ import {
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
+  REMOTE_IDENTITY_PROBE_ERROR_KINDS,
   compareRemoteIdentityVectors,
+  isAllowlistedProbeReason,
   parseRemoteIdentityVector,
   remoteIdentityVectorSha256
 } from "./remote-identity-guard.mjs";
@@ -188,6 +190,70 @@ function collectionTuple(result) {
   };
 }
 
+const FAILED_CAPTURE_ATTEMPT_KEYS = [
+  "attempt",
+  "captureAttempt",
+  "failedAt",
+  "id",
+  "kind",
+  "phase",
+  "probeRetryLines",
+  "reason",
+  "sequence"
+];
+
+function isoTimestampMs(value) {
+  if (typeof value !== "string") return null;
+  const ms = Date.parse(value);
+  return Number.isFinite(ms) && new Date(ms).toISOString() === value ? ms : null;
+}
+
+function sameCall(left, right) {
+  return left.phase === right.phase && left.id === right.id && left.attempt === right.attempt;
+}
+
+/** A comparable record keeps every failed attempt, and a later capture of that call succeeded. */
+function validateFailedCaptureAttempts(failedAttempts, captures) {
+  const failedAttemptsByCall = new Map();
+  let previousFailedAtMs = -Infinity;
+  for (const [index, entry] of failedAttempts.entries()) {
+    if (!entry || typeof entry !== "object" || !same(Object.keys(entry).sort(), FAILED_CAPTURE_ATTEMPT_KEYS)) {
+      throw new Error("guard failed attempt has the wrong fields");
+    }
+    const postflightCall = entry.phase === "postflight";
+    const failedAtMs = isoTimestampMs(entry.failedAt);
+    if (
+      entry.sequence !== index + 1 ||
+      !["before", "after", "postflight"].includes(entry.phase) ||
+      (postflightCall
+        ? entry.id !== null || entry.attempt !== null
+        : typeof entry.id !== "string" || !entry.id || !Number.isInteger(entry.attempt) || entry.attempt < 1) ||
+      !REMOTE_IDENTITY_PROBE_ERROR_KINDS.includes(entry.kind) ||
+      !(entry.reason === null || isAllowlistedProbeReason(entry.reason)) ||
+      !(entry.probeRetryLines === null ||
+        (Number.isInteger(entry.probeRetryLines) && entry.probeRetryLines >= 0)) ||
+      failedAtMs === null ||
+      failedAtMs < previousFailedAtMs
+    ) {
+      throw new Error("guard failed attempt is invalid");
+    }
+    const callKey = JSON.stringify([entry.phase, entry.id, entry.attempt]);
+    const captureAttempt = (failedAttemptsByCall.get(callKey) ?? 0) + 1;
+    const success = captures.find((capture) => sameCall(capture, entry));
+    const successAtMs = isoTimestampMs(success?.capturedAt);
+    if (
+      entry.captureAttempt !== captureAttempt ||
+      captureAttempt >= REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
+      successAtMs === null ||
+      successAtMs < failedAtMs
+    ) {
+      throw new Error("guard failed attempt has no later successful capture");
+    }
+    failedAttemptsByCall.set(callKey, captureAttempt);
+    previousFailedAtMs = failedAtMs;
+  }
+}
+
 function rowIds(result) {
   return Array.isArray(result?.rows) ? result.rows.map((row) => row?.id) : [];
 }
@@ -297,32 +363,14 @@ function artifactProblems(result, label) {
     const callCaptures = remoteGuard.captures.slice(0, -1);
     const retryPolicy = remoteGuard.captureRetryPolicy;
     if (
+      remoteGuard.cancellation !== null ||
       retryPolicy?.maximumAttempts !== REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
       !same(retryPolicy?.delaysMs, [...REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS]) ||
       !Array.isArray(remoteGuard.failedCaptureAttempts)
     ) {
       throw new Error("guard retry record is incomplete");
     }
-    // A comparable record keeps every failed attempt, and a later capture of that call succeeded.
-    const failedAttemptsByCall = new Map();
-    for (const [index, entry] of remoteGuard.failedCaptureAttempts.entries()) {
-      const callKey = JSON.stringify([entry?.phase, entry?.id ?? null, entry?.attempt ?? null]);
-      const captureAttempt = (failedAttemptsByCall.get(callKey) ?? 0) + 1;
-      if (
-        entry?.sequence !== index + 1 ||
-        entry.captureAttempt !== captureAttempt ||
-        captureAttempt >= REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
-        entry.kind === "capture-error" ||
-        !remoteGuard.captures.some((capture) => (
-          capture.phase === entry.phase &&
-          (capture.id ?? null) === (entry.id ?? null) &&
-          (capture.attempt ?? null) === (entry.attempt ?? null)
-        ))
-      ) {
-        throw new Error("guard retry record is inconsistent");
-      }
-      failedAttemptsByCall.set(callKey, captureAttempt);
-    }
+    validateFailedCaptureAttempts(remoteGuard.failedCaptureAttempts, remoteGuard.captures);
     if (
       remoteGuard.captures.at(-1)?.phase !== "postflight" ||
       remoteGuard.captures.at(-1)?.sequence !== remoteGuard.successfulCaptureCount ||

@@ -5,6 +5,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
+  REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
   REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS,
@@ -14,6 +15,7 @@ import {
   captureRemoteIdentity,
   compareRemoteIdentityVectors,
   createRemoteIdentityGuard,
+  isAllowlistedProbeReason,
   parseRemoteIdentityVector,
   probeStderrDiagnostics,
   remoteIdentityProbeIdentity,
@@ -546,6 +548,12 @@ describe("QA remote identity probe stderr diagnostics", () => {
   it.each([
     ["an unprefixed line", "Lumenloop tools response is incomplete"],
     ["an assignment shape", "remote-identity-probe: failed with key=abc"],
+    ["a URL with a path credential", "remote-identity-probe: https://example.invalid/token/demo-token-123"],
+    ["a short token", "remote-identity-probe: Scout OpenAPI returned HTTP 503 tok-12345"],
+    ["an environment value", "remote-identity-probe: PATH /synthetic/private/bin"],
+    ["an unknown label", "remote-identity-probe: Private API returned HTTP 503"],
+    ["an unbounded status", "remote-identity-probe: Scout OpenAPI returned HTTP 50312"],
+    ["an unknown error text", "remote-identity-probe: Cannot read properties of undefined"],
     ["a long token", `remote-identity-probe: failed ${"a1".repeat(20)}`],
     ["a credential word", "remote-identity-probe: bad Authorization header"],
     ["non-ASCII text", "remote-identity-probe: caf\u00e9 failed"],
@@ -554,6 +562,20 @@ describe("QA remote identity probe stderr diagnostics", () => {
     ["an empty reason", "remote-identity-probe: "]
   ])("rejects %s", (_label, stderr) => {
     expect(probeStderrDiagnostics(stderr).reason).toBeNull();
+  });
+
+  it.each([
+    "Scout OpenAPI attempt 2/3 failed (network error); retrying in 1000 ms",
+    "Stellar Docs settings returned HTTP 429",
+    "Lumenloop public skills returned invalid JSON",
+    "Stellar Docs title page count timed out",
+    "Lumenloop tools hint must be a non-empty string",
+    "Stellar Docs title page count is invalid",
+    "remote identity scout.openapiVersion must be a safe identity token",
+    "remote identity service lumenloop must contain exactly: advertisedContractIdentity, canonicalInventorySha256"
+  ])("accepts the known probe message %s", (message) => {
+    expect(isAllowlistedProbeReason(message)).toBe(true);
+    expect(probeStderrDiagnostics(`remote-identity-probe: ${message}\n`).reason).toBe(message);
   });
 
   it("returns no reason for empty stderr", () => {
@@ -631,7 +653,10 @@ describe("QA remote identity capture retry", () => {
     guard.postflight();
 
     expect(paidCalls).toEqual(["a", "b"]);
-    expect(sleeps).toEqual([...REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS]);
+    expect(sleeps.every((delayMs) => delayMs <= REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS)).toBe(true);
+    expect(sleeps.reduce((total, delayMs) => total + delayMs, 0)).toBe(
+      REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.reduce((total, delayMs) => total + delayMs, 0)
+    );
     expect(notices.map(({ captureAttempt, delayMs }) => [captureAttempt, delayMs])).toEqual([
       [1, 30_000],
       [2, 60_000],
@@ -718,7 +743,7 @@ describe("QA remote identity capture retry", () => {
     expect(() => guardedCall(guard, "b", paidCalls)).toThrow(/probe is unavailable/);
 
     expect(paidCalls).toEqual(["a"]);
-    expect(sleeps).toEqual([30_000, 60_000, 120_000]);
+    expect(sleeps.reduce((total, delayMs) => total + delayMs, 0)).toBe(210_000);
     const record = guard.record();
     expect(record).toMatchObject({
       matches: false,
@@ -824,5 +849,142 @@ describe("QA remote identity capture retry", () => {
       postflight: { attempted: true, matches: true },
       failedCaptureAttempts: [expect.objectContaining({ phase: "postflight", id: null })]
     });
+  });
+});
+
+describe("QA remote identity cancellation during a retry wait", () => {
+  class CancelledError extends Error {
+    constructor() {
+      super("paired collection cancelled");
+      this.code = "paired-collection-cancelled";
+    }
+  }
+
+  function cancellableGuard(captures, { cancelAfterSleptMs = Infinity } = {}) {
+    let sleptMs = 0;
+    let cancelled = false;
+    let probes = 0;
+    const queued = queuedCapture(captures);
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: (identity) => {
+        probes += 1;
+        return queued(identity);
+      },
+      sleep: (delayMs) => {
+        sleptMs += delayMs;
+        if (sleptMs >= cancelAfterSleptMs) cancelled = true;
+      },
+      checkCancelled: () => {
+        if (cancelled) throw new CancelledError();
+      }
+    });
+    return {
+      guard,
+      cancel: () => { cancelled = true; },
+      sleptMs: () => sleptMs,
+      probes: () => probes
+    };
+  }
+
+  it("stops a before-call wait within one slice and starts no later answering call", () => {
+    const baseline = vector();
+    const harness = cancellableGuard(
+      [baseline, baseline, unavailable(), baseline],
+      { cancelAfterSleptMs: 5_000 }
+    );
+    const paidCalls = [];
+
+    guardedCall(harness.guard, "a", paidCalls);
+    expect(() => guardedCall(harness.guard, "b", paidCalls)).toThrow(/cancelled/);
+
+    expect(paidCalls).toEqual(["a"]);
+    expect(harness.sleptMs()).toBe(5_000);
+    expect(harness.probes()).toBe(3);
+    const record = harness.guard.record();
+    expect(record).toMatchObject({
+      matches: true,
+      failure: null,
+      completedAnsweringCalls: 1,
+      successfulCaptureCount: 2,
+      requiresNewAuthorization: true,
+      cancellation: { phase: "before", id: "b", attempt: 1, cancelledAt: expect.any(String) }
+    });
+    expect(record.failedCaptureAttempts).toEqual([
+      expect.objectContaining({ phase: "before", id: "b", captureAttempt: 1 })
+    ]);
+    expect(() => harness.guard.beforeCall({ id: "c", attempt: 1 })).toThrow(/already stopped/);
+    expect(harness.guard.postflight()).toBeNull();
+    expect(harness.guard.record().postflight).toMatchObject({
+      attempted: false,
+      skippedReason: "collection-cancelled"
+    });
+    expect(harness.probes()).toBe(3);
+  });
+
+  it("checks cancellation after a successful capture and before the answering call", () => {
+    const baseline = vector();
+    let cancelled = false;
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(baseline),
+      capture: () => {
+        cancelled = true;
+        return structuredClone(baseline);
+      },
+      checkCancelled: () => {
+        if (cancelled) throw new CancelledError();
+      }
+    });
+    const paidCalls = [];
+
+    expect(() => guardedCall(guard, "a", paidCalls)).toThrow(/cancelled/);
+    expect(paidCalls).toEqual([]);
+    expect(guard.record().cancellation).toMatchObject({ phase: "before", id: "a" });
+  });
+
+  it("keeps a completed answer when an after-call wait is cancelled", () => {
+    const baseline = vector();
+    const harness = cancellableGuard([baseline, unavailable()], { cancelAfterSleptMs: 1_000 });
+    const rows = [];
+
+    expect(() => runRemoteIdentityGuardedCall({
+      guard: harness.guard,
+      context: { id: "a", attempt: 1 },
+      authorize: () => ({}),
+      call: () => ({ id: "a", costUsd: 0.1 }),
+      onCompleted: (row) => rows.push(row),
+      recordSpend: () => {}
+    })).toThrow(/cancelled/);
+
+    expect(rows).toEqual([{ id: "a", costUsd: 0.1 }]);
+    expect(harness.probes()).toBe(2);
+    expect(harness.guard.record()).toMatchObject({
+      completedAnsweringCalls: 1,
+      cancellation: { phase: "after", id: "a", attempt: 1 },
+      failedCaptureAttempts: [expect.objectContaining({ phase: "after", captureAttempt: 1 })]
+    });
+    expect(collectionComparabilityReasons({
+      collectionError: new CancelledError(),
+      postflightError: null,
+      remoteIdentityPostflightError: null,
+      collectionSourceIdentityGuard: { matches: true, changedKeys: [] },
+      remoteIdentityGuardRecord: harness.guard.record()
+    })).toEqual([
+      "collection failed: paired collection cancelled",
+      "remote identity guard stopped by collection cancellation"
+    ]);
+  });
+
+  it("does not probe again after a cancellation that arrives between attempts", () => {
+    const baseline = vector();
+    const harness = cancellableGuard([baseline, baseline, unavailable(), baseline]);
+    guardedCall(harness.guard, "a");
+    harness.cancel();
+
+    expect(() => guardedCall(harness.guard, "b")).toThrow(/cancelled/);
+    expect(harness.probes()).toBe(2);
+    expect(harness.sleptMs()).toBe(0);
   });
 });

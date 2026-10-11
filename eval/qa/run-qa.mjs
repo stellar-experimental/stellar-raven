@@ -1600,6 +1600,9 @@ export function collectionComparabilityReasons({
       `source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`
     );
   }
+  if (remoteIdentityGuardRecord.cancellation) {
+    reasons.push("remote identity guard stopped by collection cancellation");
+  }
   if (!remoteIdentityGuardRecord.matches) {
     const failure = remoteIdentityGuardRecord.failure;
     if (failure?.reason === "identity-changed") {
@@ -1726,7 +1729,9 @@ async function main() {
         `remote identity ${phase} capture for ${id ?? "postflight"} failed (${kind}), ` +
         `attempt ${captureAttempt}/${maximumAttempts}; retrying in ${delayMs} ms`
       );
-    }
+    },
+    // The supervisor writes the cancellation file before IPC, so a blocked wait still sees it.
+    checkCancelled: () => pairedControl?.assertActive()
   });
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
