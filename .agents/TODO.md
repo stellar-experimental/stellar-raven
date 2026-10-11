@@ -278,27 +278,75 @@ being told how to talk. The review capture also cut off the 7,864-character `SER
 Today the envelope carries `error.kind: "soft-empty"` and adapter hints. It has no general
 inconclusive flag or as-of field on ok results.
 
+Draft PR #268 (branch `w1010/a`, do not merge) adds `inconclusive` and `asOf` signals, an `observedAt`
+footer, and removes four instruction rules (7,864 to 7,839 characters). Its 2026-10-11 ABBA
+measurement (34 rows, four collections, $47.92 of $84) is INDETERMINATE after the independent
+result review (`rounds/2026-10-10-weekend/answer-style/review-result-astra.md` on that PR):
+
+- Both candidate runs answered `q-edge-strupey-ambiguous-stellar-history` wrong: the answer promoted
+  a spelling-corrected Scout match despite `inconclusive: "candidates"`. Both baseline runs were
+  correct. The baseline re-judge was a T4 consistency error, so the confirmation is incomplete,
+  but the regression diagnosis stands.
+- The "activity" improvement is a judge artifact. The quantum-row improvement reproduced.
+- The word `inconclusive` names both an ok-but-empty field and the soft-empty kind. One candidate
+  answer merged them. That risks the soft-empty versus data distinction in `AGENTS.md`.
+
+Next: restore the removed tail "…otherwise say unverified or ask for context", settle the
+`inconclusive` wording against soft-empty, review the change, and measure again under a new
+authorization.
+
 Done when: ok results carry measured inconclusive and as-of signals, the instructions drop the
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
 ## Executor and policy
 
-### Count skill-read shape errors in the next authorized QA round
+### Reduce `data.sections` misreads after a sectioned skill read
 
 PR #247 (2026-10-09) returns a successful `codemode.skill.read` as
 `{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`. In the
-[tool-surface round](rounds/2026-10-07-tool-surface-qa.md), scripts read `.data` on a skill read in 9
-of the 13 tool-level errors (5 B3 rows, 4 T rows). PR #249 also accepts documented comma-joined array
-arguments and names failed-call reasons in the source-basis `calls:` line.
+[tool-surface round](rounds/2026-10-07-tool-surface-qa.md), scripts read a skill result without
+`.data` in 9 of 13 tool-level errors. PR #249 also accepts documented comma-joined array arguments
+and names failed-call reasons in the source-basis `calls:` line.
 
-Done when: the next authorized QA round counts three things from its stored transcripts:
+The 2026-10-11 answer-style measurement (136 rows: B1, C1, C2, B2) counted the three behaviors.
+The result review is `rounds/2026-10-10-weekend/answer-style/review-result-astra.md` on draft PR
+#268.
 
-- skill-read shape errors;
-- rejected comma-joined arguments;
-- failed calls whose reason the answer missed.
+| Run | Skill-shape errors (scripts / rows) | Rejected comma-joined arguments | Failed calls with an omitted reason (calls / rows) |
+|---|---:|---:|---:|
+| B1 | 2 / 2 | 0 | 2 / 2 |
+| C1 | 1 / 1 | 0 | 2 / 1 |
+| C2 | 2 / 1 | 0 | 7 / 4 |
+| B2 | 0 / 0 | 0 | 1 / 1 |
 
-Compare the counts with the tool-surface round. This item authorizes no spend.
+- No script read a skill result without `.data`. The PR #247 shape problem did not recur.
+- All five shape errors misread the `data.sections` array: they treat a section object as a string,
+  read `data.content` on a sectioned read, or index sections by a `file:` name. Rows:
+  `q-edge-noinfo-sep-9999`, `q-soroban-cross-contract-call` (twice), `q-stellar-recurring-payments`.
+- No host rejected a comma-joined array argument.
+- The omitted reasons cover invalid paths, invalid numeric IDs, unknown operations, and one script
+  error. Four of the twelve calls are the unknown `searchBuilders` operation on the Strupey row.
+
+Next, check the existing `skill.read` guidance and the `sections` example text before proposing a
+mechanism. A change to model-facing text needs its own measurement.
+
+Done when: a reviewed change, or a recorded no-change decision, addresses the `sections` misread,
+and a later authorized QA round recounts the three behaviors.
+
+### Triage calls to `stellarDocs.search_anchor_sep_docs` without `query`
+
+The `ai` upgrade result review (`rounds/2026-10-10-weekend/ai-upgrade/review-result-fable.md`)
+found that every anchor row in both arms called `stellarDocs.search_anchor_sep_docs` without the
+required `query`. One stablecoin row in each arm did the same with `search_asset_token_docs`. The
+host returned "invalid arguments … no call was made" and reported the call as failed evidence, so
+the envelope behaved as designed. Both arms show the pattern, so the SDK did not cause it.
+
+Decide whether the operation's schema, description, or `search` card leads the model to omit the
+argument. Check stored transcripts first (free). File an `improvements/` finding only for an
+upstream cause; an own-repo cause gets a scoped fix with a test.
+
+Done when: the cause is recorded, and a fix or a no-change decision has its evidence.
 
 ## Dependencies
 
@@ -327,33 +375,16 @@ global `miniflare` overrides are removed, and `npm audit`, `npm run test:smoke`,
 single-`workerd` check still pass. Remove the `agents` override when an `agents` release accepts SDK
 1.31.0 and client 2.2.0 or later.
 
-### Upgrade `ai` and `@ai-sdk/*` past the OpenAI tool-strictness default change
+### Verify that xAI accepts the explicit tool `strict` field
 
-`main` locks `ai` 7.0.79 and `@ai-sdk/openai` 4.0.47.
-`@ai-sdk/openai` 4.0.77 changed an omitted tool `strict` from "not sent" to `strict: false`.
-Branch `w1010/s` updates to `ai` 7.0.137 and `@ai-sdk/openai` 4.0.91, with the other `@ai-sdk/*` packages.
-It sets `strict: false` on both Playground tools on purpose (`src/demo/tools.ts`).
-The reasons and the change inventory are in `rounds/2026-10-10-weekend/ai-upgrade/measurement-plan.md`.
+PR #267 (2026-10-11) upgraded `ai` to 7.0.137 and `@ai-sdk/openai` to 4.0.91, and it sets
+`strict: false` on both Playground tools. That field also reaches the OpenAI-compatible chat
+transport of the control models. The Grok control model `xai/grok-4.6` now receives it, and xAI
+acceptance is unverified. The measured release verdict is in
+`rounds/2026-10-10-weekend/ai-upgrade/results.md`.
 
-An offline capture compared the requests on both lockfiles.
-Only two parts differ: the `strict: false` field, and invalid-input tool errors wrapped in an `error` object.
-`test/smoke/demo-openai-tool-request.test.ts` pins that reviewed shape, including the final tools-disabled step.
-The free gates pass on the branch.
-
-The explicit `strict: false` also reaches the OpenAI-compatible chat transport of control models.
-The Grok control model `xai/grok-4.6` now receives a `strict` field; xAI acceptance is unverified.
-Verify it in the model gauntlet before the next control-model lane.
-
-Next, run the measurement plan after its independent review.
-It adapts the judged, two-repetition design of `rounds/2026-10-01-backlog-closeout/authority-plan.md`.
-Earlier evidence: `rounds/2026-10-02-raven-next-followup.md` and its `review-ai-plan-astra.md`.
-
-Do not run or merge the update during the owner's paired collection window.
-
-Done when:
-
-- a measurement shows no routing regression and no verified answer regression;
-- the branch merges with the request-shape test unchanged, or with a reviewed update.
+Done when: the model gauntlet shows that `xai/grok-4.6` accepts the request before the next
+control-model lane, or a reviewed change omits the field for that transport.
 
 ## Eval instruments
 
@@ -381,29 +412,39 @@ host execution.
 
 ### Repair claim-support selection in the p6 judge pack
 
-The 2026-10-01 adapter comparison graded a disputed Beans row Wrong
-(`q-live-beans-cross-service-reconcile`). The p6 pack omitted transcript details, and the judges
-called them fabricated. That artifact (`2026-10-01T22-05-47-variantA.json`) is not retained.
+The judge still uses p6. Two repairs were measured on 2026-10-10 and neither cleared the gate.
+Draft PR #264 holds the code, the plans, the results, and every review. Do not merge it.
+The re-judge artifacts are in the ignored `eval/qa/results/2026-10-10-pack-rejudge/` folder.
 
-The [2026-10-09 analysis](rounds/2026-10-09-continuation/pack-omission/pack-omission-analysis.md)
-replayed two saved pack-omission rows with exact p6 hashes:
+- p7 ($18.19) lost the supporting snippet of a stable quantum row (Stage 2).
+- p8 ($9.0843) recovered the omission rows, with no false fabrication call in Stage 1.
+  One Stage 2 row moved down (StellarTerm), so the predeclared rule blocks p8.
+- The reviewed p8b continuation ($0.3774, one row, three calls) was not accepted (review R8):
+  - R8-1: p8 drops the status records of the other entities in the same claim sentence
+    (Comet, Zenex, and others) that p6 showed. The candidate sentence scope stays unresolved.
+  - R8-2 belongs to the rubric item below.
 
-- `q-hist-quantum-preparedness-plan`: a source phrase is not a candidate term, so no snippet holds it.
-- `q-soroban-oz-upgradeable-macro`: final shortening around another anchor removes a selected macro.
-- A 100,000-character budget repairs neither row.
-
-Proposed repair: build evidence units with exact source spans, and measure coverage on the final
-serialized text. Recompute coverage after each budget cut. Record an omission when a claim's
-evidence cannot fit. The analysis lists the replayable coverage: the two rows above, nine other
-saved omission rows, and new fixture classes.
-
-The repair changes judge inputs. It needs a new pack version, an independent review, and its own
-authorized measurement. Land it after the paired run (owner decision A), or pin p6 for that run.
-Do not change frozen adapter-measurement artifacts or replace their verdicts.
-`eval/qa/diagnose-stable-evidence.mjs` (#257) reports bounded support offline in the meantime.
+Next repair: start from the p8 span units on PR #264. Keep the sibling records of every entity
+list in a claim sentence, and measure that coverage on the final text. Replay the p6, p7, and p8
+rows offline first. A new pack version needs an independent review and its own authorized
+measurement, with the R6 Stage 2 evidence-correction rule predeclared.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
 measurement shows no grade regression.
+
+### Decide whether a sourced summary error matches must-avoid "unsupported memory"
+
+In the p8b continuation, two of three judges matched a candidate's misread directory status to
+the must-avoid item "Do NOT claim unsupported memory is a source-supported current observation".
+Any avoid match forces `wrong` under rubric `v2.11`. The third judge recorded the same
+contradiction as a wrong claim and gave `partial`. Review R8 (PR #264,
+`pack-p8/post-run-review-p8b/rr8-review.md`) found that the saved evidence does not show memory.
+
+Decide whether the rubric or the judge prompt must separate a misread retrieved source from
+unsupported memory. A change is a judging-semantics change: it needs the paid seven-call
+self-test, an independent review, and a paired re-judge.
+
+Done when: a reviewed decision is recorded, and any rubric change has its measurement.
 
 ### Re-check the upstream codemode short-token repair
 
@@ -616,21 +657,32 @@ in a round ledger, `eval/qa/README.md`, or a decision record, then delete the de
 
 ### A. Authorize the supervised paired subset measurement
 
-The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing the canonical plan hash.
-Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
-Run it on a quiet machine. Under a heavy load average, the `ps` calls of the launch cleanup can
-time out. Cleanup then stops safely for manual action and causes no extra spend.
-Leave the public DocSearch key idle for at least one hour before the capacity check. The run
-sheet's "Algolia call budget" section gives the reason.
+The owner approved spend on 2026-10-01 and delegated the signature on 2026-10-10. Use
+[the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md) and its "2026-10-11
+amendment". Three launches on 2026-10-11 produced no result. They spent $146.2439 in total, and
+their rows support no claim. Each record is archived, moved unchanged, under
+`eval/qa/results/2026-10-11-paired-attempt-*` in the main checkout (ignored).
 
-After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
-or delete the round's launch scripts, `paired-stability-register.json`,
-`test/qa-paired-launch.test.mjs`, and `test/qa-paired-claude-pin.test.mjs` together. Both tests
-import the scripts from the round folder.
+- Attempt 1 (`0dc353b9`, $72.7624): the guard stopped both arms at row 146, because the public
+  DocSearch key reached its limit of 1000 calls per hour. PRs #265 and #266 repaired this.
+- Attempt 2 (`826be10f`, $0): the stable pre-arm probe got HTTP 429 before any paid call.
+- Attempt 3 (`8bca4167`, $73.4815): the probe repair held (zero failed probes; 141 of 142
+  before-checks reused in each arm). Then the baseline server (`90d0ba75`, Wrangler 4.120.1)
+  stopped at 07:02:39Z, after 1 h 56 min, with an empty `[ERROR]`. The supervisor stopped both
+  arms at about row 143. The Wrangler debug log is in the attempt 3 archive.
 
-PR #256 (2026-10-09) changed the `re-judge.mjs` and `paired-verdict.mjs` implementation hashes.
+Next step (free): soak-test the baseline server at `90d0ba75` for at least 3 hours under replayed
+MCP load from the attempt 3 transcripts, with the same remote AI binding and cf-token procedure.
+Find the crash cause before the next paid attempt. A full collection needs about 2.5 hours of
+baseline uptime. Run on a quiet machine, and leave the DocSearch key idle for at least one hour
+before the capacity check.
+
+The launch tooling stays in the round folder until the next attempt ends or the owner retires the
+method. Then either promote it into `eval/qa/` with its test, or delete the round's launch scripts,
+`paired-stability-register.json`, `test/qa-paired-launch.test.mjs`, and
+`test/qa-paired-claude-pin.test.mjs` together. Both tests import the scripts from the round folder.
+
 Assemble the plan again before you sign its hash. The dated hashes in the run sheet are history.
-The run sheet's 2026-10-10 re-preparation fixed the rubric `v2.11` tuple and lists the other drift.
 
 ### B. Choose how the routing repair treats the Groth16 holdout loss
 
