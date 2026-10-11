@@ -552,6 +552,7 @@ describe("QA remote identity probe stderr diagnostics", () => {
     ["a short token", "remote-identity-probe: Scout OpenAPI returned HTTP 503 tok-12345"],
     ["an environment value", "remote-identity-probe: PATH /synthetic/private/bin"],
     ["an unknown label", "remote-identity-probe: Private API returned HTTP 503"],
+    ["a retired probe label", "remote-identity-probe: Stellar Docs remaining title pages returned HTTP 429"],
     ["an unbounded status", "remote-identity-probe: Scout OpenAPI returned HTTP 50312"],
     ["an unknown error text", "remote-identity-probe: Cannot read properties of undefined"],
     ["a long token", `remote-identity-probe: failed ${"a1".repeat(20)}`],
@@ -568,9 +569,10 @@ describe("QA remote identity probe stderr diagnostics", () => {
     "Scout OpenAPI attempt 2/3 failed (network error); retrying in 1000 ms",
     "Stellar Docs settings returned HTTP 429",
     "Lumenloop public skills returned invalid JSON",
-    "Stellar Docs title page count timed out",
+    "Stellar Docs title pages timed out",
     "Lumenloop tools hint must be a non-empty string",
     "Stellar Docs title page count is invalid",
+    "Stellar Docs title pages are incomplete",
     "remote identity scout.openapiVersion must be a safe identity token",
     "remote identity service lumenloop must contain exactly: advertisedContractIdentity, canonicalInventorySha256"
   ])("accepts the known probe message %s", (message) => {
@@ -621,8 +623,8 @@ describe("QA remote identity probe stderr diagnostics", () => {
 
 describe("QA remote identity capture retry", () => {
   it("bounds the worst-case wait for one capture inside the paired deadline", () => {
-    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(145_000);
-    expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBe(4 * 145_000 + 210_000);
+    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(75_000);
+    expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBe(4 * 75_000 + 210_000);
     expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBeLessThan(PAIRED_COLLECTION_DEADLINE_MS / 16);
   });
 

@@ -148,69 +148,170 @@ describe("production remote identity canonicalization", () => {
     expect(Object.keys(built.services)).toEqual(["scout", "lumenloop", "stellarDocs"]);
     expect(JSON.stringify(built)).not.toMatch(/captured|timestamp|generatedAt/);
   });
+});
 
-  it("uses seven public requests and exactly seven current Docs searches", async () => {
-    const requests = [];
-    const titleBatches = [];
+const DOCS_PAGE_SIZE = 100;
+const DOCS_PAGE_BOUND = 10;
+
+function upstreamSource(url) {
+  if (url.endsWith("/api/openapi.json")) return { info: { version: "1.9.30" }, paths: {} };
+  if (url.endsWith("/v1/openapi.json")) return { info: { version: "1.0.0" }, paths: {} };
+  if (url.endsWith("/v1/tools")) {
+    return {
+      success: true,
+      data: { count: 1, hint: "public", scope: "guest", tools: [{ name: "a" }], workflows: [] }
+    };
+  }
+  if (url.endsWith("/v1/skills")) {
+    return {
+      success: true,
+      data: { count: 1, archives: {}, note: "public skills", versions: {}, skills: [{ name: "skill-a" }] }
+    };
+  }
+  if (url.endsWith("/settings")) return { searchableAttributes: ["title"] };
+  return null;
+}
+
+function docsTitleHits(nbHits) {
+  return Array.from({ length: nbHits }, (_, index) => ({
+    hierarchy: { lvl1: `Title ${index % 3 === 0 ? index - 1 : index}` },
+    url_without_anchor: `https://developers.stellar.org/docs/page-${(nbHits - index) % 97}`
+  }));
+}
+
+// Serves each title query by its own page, as Algolia does with a 100-hit key cap.
+function docsTitlePage(page, { nbHits, hits = docsTitleHits(nbHits) }) {
+  const nbPages = Math.min(DOCS_PAGE_BOUND, Math.ceil(nbHits / DOCS_PAGE_SIZE));
+  return {
+    page,
+    nbPages,
+    nbHits,
+    hitsPerPage: DOCS_PAGE_SIZE,
+    hits: hits.slice(page * DOCS_PAGE_SIZE, (page + 1) * DOCS_PAGE_SIZE)
+  };
+}
+
+function upstream(state, { mutateResults = (results) => results } = {}) {
+  const requests = [];
+  const titleBatches = [];
+  const fetchImpl = async (url, init = {}) => {
+    requests.push(url);
     const response = (value) => ({ ok: true, status: 200, text: async () => JSON.stringify(value) });
-    const result = await probeRemoteIdentities({
-      fetchImpl: async (url, init = {}) => {
-        requests.push({ url, init });
-        if (url.endsWith("/api/openapi.json")) {
-          return response({ info: { version: "1.9.30" }, paths: {} });
-        }
-        if (url.endsWith("/v1/openapi.json")) {
-          return response({ info: { version: "1.0.0" }, paths: {} });
-        }
-        if (url.endsWith("/v1/tools")) {
-          return response({
-            success: true,
-            data: { count: 1, hint: "public", scope: "guest", tools: [{ name: "a" }], workflows: [] }
-          });
-        }
-        if (url.endsWith("/v1/skills")) {
-          return response({
-            success: true,
-            data: {
-              count: 1,
-              archives: {},
-              note: "public skills",
-              versions: {},
-              skills: [{ name: "skill-a" }]
-            }
-          });
-        }
-        if (url.endsWith("/settings")) return response({ searchableAttributes: ["title"] });
-        const body = JSON.parse(init.body);
-        const pages = body.requests.map((request) => Number(
-          new URLSearchParams(request.params).get("page")
-        ));
-        titleBatches.push(pages);
-        return response({
-          results: pages.map((page) => ({
-            page,
-            nbPages: 7,
-            nbHits: 650,
-            hits: Array.from({ length: page === 6 ? 50 : 100 }, (_, index) => ({
-              hierarchy: { lvl1: `Title ${page}-${index}` },
-              url_without_anchor: `https://developers.stellar.org/page-${page}-${index}`
-            }))
-          }))
-        });
-      },
+    const source = upstreamSource(url);
+    if (source) return response(source);
+    const pages = JSON.parse(init.body).requests.map((request) => {
+      const params = new URLSearchParams(request.params);
+      expect(params.get("hitsPerPage")).toBe("1000");
+      expect(params.get("filters")).toBe("type:lvl1");
+      return Number(params.get("page"));
+    });
+    titleBatches.push(pages);
+    return response({ results: mutateResults(pages.map((page) => docsTitlePage(page, state))) });
+  };
+  return { fetchImpl, requests, titleBatches };
+}
+
+function expectedVector(state) {
+  const hits = state.hits ?? docsTitleHits(state.nbHits);
+  return buildRemoteIdentityVector({
+    scoutOpenapi: upstreamSource("/api/openapi.json"),
+    lumenloopOpenapi: upstreamSource("/v1/openapi.json"),
+    lumenloopTools: upstreamSource("/v1/tools"),
+    lumenloopSkills: upstreamSource("/v1/skills"),
+    stellarDocsSettings: upstreamSource("/settings"),
+    stellarDocsTitles: { nbHits: state.nbHits, hits }
+  });
+}
+
+describe("production remote identity Stellar Docs title capture", () => {
+  it("makes two Algolia calls and reads every bounded title page in one request", async () => {
+    const { fetchImpl, requests, titleBatches } = upstream({ nbHits: 650 });
+    await probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] });
+
+    expect(requests).toHaveLength(6);
+    expect(requests.filter((url) => url.includes(".algolia.net/"))).toHaveLength(2);
+    expect(titleBatches).toEqual([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]);
+  });
+
+  it.each([
+    ["one page", 1],
+    ["one full page", 100],
+    ["seven pages", 650],
+    ["the ten-page bound", 1_000]
+  ])("builds the vector from the complete title set for %s", async (_label, nbHits) => {
+    const { fetchImpl } = upstream({ nbHits });
+    const vector = await probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] });
+    // The previous probe passed exactly these hits, in page order, to the same builder.
+    expect(JSON.stringify(vector)).toBe(JSON.stringify(expectedVector({ nbHits })));
+  });
+
+  it("changes the title hash when one title changes", async () => {
+    const hits = docsTitleHits(650);
+    const changed = structuredClone(hits);
+    changed[640].hierarchy.lvl1 = "Changed title";
+    const original = await probeRemoteIdentities({ fetchImpl: upstream({ nbHits: 650, hits }).fetchImpl, retryDelaysMs: [] });
+    const updated = await probeRemoteIdentities({
+      fetchImpl: upstream({ nbHits: 650, hits: changed }).fetchImpl,
       retryDelaysMs: []
     });
+    expect(updated.services.stellarDocs.canonicalTitleSetSha256)
+      .not.toBe(original.services.stellarDocs.canonicalTitleSetSha256);
+  });
 
-    expect(requests).toHaveLength(7);
-    expect(titleBatches).toEqual([[0], [1, 2, 3, 4, 5, 6]]);
-    expect(result.schema).toBe(REMOTE_IDENTITY_VECTOR_SCHEMA);
+  it.each([
+    ["a missing page result", (results) => results.slice(1), /title pages are incomplete/],
+    ["an extra page result", (results) => [...results, results[0]], /title pages are incomplete/],
+    ["a zero page count", (results) => results.map((result) => ({ ...result, nbPages: 0 })), /page count is invalid/],
+    [
+      "a page count over the bound",
+      (results) => results.map((result) => ({ ...result, nbPages: 11 })),
+      /page count is invalid/
+    ],
+    [
+      "a wrong page number",
+      (results) => results.map((result, index) => index === 3 ? { ...result, page: 4 } : result),
+      /pagination changed/
+    ],
+    [
+      "a different page count on one page",
+      (results) => results.map((result, index) => index === 2 ? { ...result, nbPages: 6 } : result),
+      /pagination changed/
+    ],
+    [
+      "a different hit count on an unused page",
+      (results) => results.map((result, index) => index === 9 ? { ...result, nbHits: 651 } : result),
+      /pagination changed/
+    ],
+    [
+      "hits on a page past the reported page count",
+      (results) => results.map((result, index) => index === 7 ? { ...result, hits: results[0].hits } : result),
+      /pagination changed/
+    ],
+    [
+      "a missing hit list",
+      (results) => results.map((result, index) => index === 1 ? { ...result, hits: undefined } : result),
+      /pagination changed/
+    ],
+    [
+      "a short used page",
+      (results) => results.map((result, index) => index === 4 ? { ...result, hits: result.hits.slice(1) } : result),
+      /title response is truncated/
+    ]
+  ])("rejects %s", async (_label, mutateResults, message) => {
+    const { fetchImpl } = upstream({ nbHits: 650 }, { mutateResults });
+    await expect(probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] })).rejects.toThrow(message);
+  });
+
+  it("rejects a title set that the pagination bound truncates", async () => {
+    const { fetchImpl } = upstream({ nbHits: 1_001 });
+    await expect(probeRemoteIdentities({ fetchImpl, retryDelaysMs: [] })).rejects.toThrow(/truncated/);
   });
 });
 
 describe("production remote identity retries", () => {
-  it("aligns the process timeout with two complete retry phases", () => {
-    expect(REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS).toBe(140_000);
-    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(145_000);
+  it("aligns the process timeout with one complete retry phase", () => {
+    expect(REMOTE_IDENTITY_MAX_NETWORK_BUDGET_MS).toBe(70_000);
+    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(75_000);
   });
 
   it.each([

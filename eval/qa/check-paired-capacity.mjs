@@ -6,19 +6,19 @@ import { remoteIdentityVectorSha256 } from "./remote-identity-guard.mjs";
 
 const SERVICES = ["scout", "lumenloop", "stellarDocs"];
 
-export const PAIRED_CAPACITY_SCHEMA = "qa-paired-capacity-check-v2";
+export const PAIRED_CAPACITY_SCHEMA = "qa-paired-capacity-check-v3";
 export const PAIRED_CAPACITY_FRESHNESS_MS = 24 * 60 * 60 * 1_000;
 export const PAIRED_CAPACITY_CONTRACT = Object.freeze({
   schedule: Object.freeze({
     kind: "simultaneous-barrier-v1",
     answeringAgents: 2,
     capturesPerAgent: 1,
-    expectedResponses: 14,
-    expectedResponsesByService: Object.freeze({ scout: 2, lumenloop: 6, stellarDocs: 6 })
+    expectedResponses: 12,
+    expectedResponsesByService: Object.freeze({ scout: 2, lumenloop: 6, stellarDocs: 4 })
   }),
   thresholds: Object.freeze({
-    responses: 14,
-    successfulResponses: 14,
+    responses: 12,
+    successfulResponses: 12,
     httpErrors: 0,
     transportErrors: 0,
     retries: 0,
@@ -291,8 +291,8 @@ export async function runPairedCapacityCheck({ probe = probeRemoteIdentities } =
       schedule: PAIRED_CAPACITY_CONTRACT.schedule.kind,
       agentsReleasedTogether: 2,
       capturesPerAgent: 1,
-      publicRequestPattern: "one committed seven-response remote-identity capture per agent",
-      expectedRequestsPerSuccessfulAgent: 7,
+      publicRequestPattern: "one committed six-response remote-identity capture per agent",
+      expectedRequestsPerSuccessfulAgent: 6,
       paidModelCalls: 0,
       localServerUsed: false
     },

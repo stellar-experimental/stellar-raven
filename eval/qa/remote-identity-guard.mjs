@@ -9,7 +9,8 @@ export const REMOTE_IDENTITY_SERVICES = ["scout", "lumenloop", "stellarDocs"];
 export const REMOTE_IDENTITY_REQUEST_TIMEOUT_MS = 20_000;
 export const REMOTE_IDENTITY_RETRY_DELAYS_MS = Object.freeze([250, 1_000]);
 export const REMOTE_IDENTITY_MAX_RETRY_AFTER_MS = 5_000;
-const REMOTE_IDENTITY_DOCS_QUERY_PHASES = 2;
+// The probe sends its Algolia requests in one concurrent phase.
+const REMOTE_IDENTITY_DOCS_QUERY_PHASES = 1;
 const REMOTE_IDENTITY_MAX_RETRY_DELAY_MS = Math.max(
   REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
   ...REMOTE_IDENTITY_RETRY_DELAYS_MS
@@ -130,8 +131,7 @@ const PROBE_REQUEST_LABELS = [
   "Lumenloop public tools",
   "Lumenloop public skills",
   "Stellar Docs settings",
-  "Stellar Docs title page count",
-  "Stellar Docs remaining title pages"
+  "Stellar Docs title pages"
 ];
 const PROBE_SHAPE_LABELS = [
   "Scout OpenAPI",
@@ -170,8 +170,8 @@ const PROBE_FIXED_MESSAGES = new Set([
   "Lumenloop skills response is incomplete",
   "Stellar Docs title response is incomplete",
   "Stellar Docs title response is truncated",
+  "Stellar Docs title pages are incomplete",
   "Stellar Docs title page count is invalid",
-  "Stellar Docs remaining title pages are incomplete",
   "Stellar Docs title pagination changed during capture",
   "remote identity vector must be an object",
   `remote identity vector schema must be ${REMOTE_IDENTITY_VECTOR_SCHEMA}`,

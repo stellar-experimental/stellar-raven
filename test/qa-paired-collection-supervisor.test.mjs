@@ -1189,7 +1189,7 @@ describe("paired QA collection supervisor", () => {
   });
 
   it.each([
-    ["13 responses", (artifact) => { artifact.observed.responses = 13; }, /responses must equal 14/],
+    ["11 responses", (artifact) => { artifact.observed.responses = 11; }, /responses must equal 12/],
     ["one HTTP error", (artifact) => { artifact.observed.httpErrors = 1; }, /httpErrors must equal 0/],
     ["one transport error", (artifact) => { artifact.observed.transportErrors = 1; }, /transportErrors must equal 0/],
     ["one retry", (artifact) => { artifact.observed.retries = 1; }, /retries must equal 0/],
