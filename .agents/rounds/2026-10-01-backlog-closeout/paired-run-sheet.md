@@ -188,6 +188,9 @@ The arms wait for each other at each row, so a wait in one arm delays both arms.
 
 - The next attempt needs a new launch revision that contains this fix, a new assembled plan, and a new signed authorization.
 - A delta review of the guard change and this amendment must complete before the signature.
+  The [guard retry review](guard-retry-review-astra.md) records it. Codex `gpt-6-astra` at high
+  effort returned CODE-DELTA: CHANGES and PLAN-DELTA: BLOCKED at `111cad3d`. After the fixes, it returned
+  CODE-DELTA: APPROVE and PLAN-DELTA: LAUNCH-OK at `386e2c86`.
 - Before the new launch, move (archive) the old launch record `/private/tmp/stellar-raven-paired-launch/`. Do not edit it.
   `launchPaired` creates that folder with a non-recursive `mkdirSync`, so it stops when the old folder is still there.
 - The old run's `--remove-worktrees` step is complete. Its cleanup record has `complete: true`, and no `paired-*` worktree remains.
