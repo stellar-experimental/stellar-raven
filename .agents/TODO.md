@@ -632,6 +632,8 @@ The owner approved spend on 2026-10-01. Run on a weekend UTC day after signing t
 Use [the run sheet](rounds/2026-10-01-backlog-closeout/paired-run-sheet.md).
 Run it on a quiet machine. Under a heavy load average, the `ps` calls of the launch cleanup can
 time out. Cleanup then stops safely for manual action and causes no extra spend.
+Leave the public DocSearch key idle for at least one hour before the capacity check. The run
+sheet's "Algolia call budget" section gives the reason.
 
 After the run, or after a stop, either promote the launch tooling into `eval/qa/` with its test,
 or delete the round's launch scripts, `paired-stability-register.json`,

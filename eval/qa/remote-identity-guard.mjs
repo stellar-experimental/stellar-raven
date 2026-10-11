@@ -4,12 +4,13 @@ import { accessSync, constants, readFileSync, realpathSync, statSync } from "nod
 import path from "node:path";
 
 export const REMOTE_IDENTITY_VECTOR_SCHEMA = "qa-remote-identity-vector-v1";
-export const REMOTE_IDENTITY_GUARD_SCHEMA = "qa-remote-identity-guard-v2";
+export const REMOTE_IDENTITY_GUARD_SCHEMA = "qa-remote-identity-guard-v3";
 export const REMOTE_IDENTITY_SERVICES = ["scout", "lumenloop", "stellarDocs"];
 export const REMOTE_IDENTITY_REQUEST_TIMEOUT_MS = 20_000;
 export const REMOTE_IDENTITY_RETRY_DELAYS_MS = Object.freeze([250, 1_000]);
 export const REMOTE_IDENTITY_MAX_RETRY_AFTER_MS = 5_000;
-const REMOTE_IDENTITY_DOCS_QUERY_PHASES = 2;
+// The probe sends its Algolia requests in one concurrent phase.
+const REMOTE_IDENTITY_DOCS_QUERY_PHASES = 1;
 const REMOTE_IDENTITY_MAX_RETRY_DELAY_MS = Math.max(
   REMOTE_IDENTITY_MAX_RETRY_AFTER_MS,
   ...REMOTE_IDENTITY_RETRY_DELAYS_MS
@@ -25,6 +26,10 @@ export const REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS = Object.freeze([30_000, 60
 export const REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS =
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.length + 1;
 export const REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS = 1_000;
+// A before-call check may reuse the previous call's after-call capture up to this monotonic age.
+export const REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS = 60_000;
+// Wall-clock timestamps are for reporting. They may drift from the monotonic elapsed time by this much.
+export const REMOTE_IDENTITY_WALL_CLOCK_TOLERANCE_MS = 300_000;
 export const REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS =
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS * REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS +
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS.reduce((total, delayMs) => total + delayMs, 0);
@@ -130,8 +135,7 @@ const PROBE_REQUEST_LABELS = [
   "Lumenloop public tools",
   "Lumenloop public skills",
   "Stellar Docs settings",
-  "Stellar Docs title page count",
-  "Stellar Docs remaining title pages"
+  "Stellar Docs title pages"
 ];
 const PROBE_SHAPE_LABELS = [
   "Scout OpenAPI",
@@ -170,8 +174,8 @@ const PROBE_FIXED_MESSAGES = new Set([
   "Lumenloop skills response is incomplete",
   "Stellar Docs title response is incomplete",
   "Stellar Docs title response is truncated",
+  "Stellar Docs title pages are incomplete",
   "Stellar Docs title page count is invalid",
-  "Stellar Docs remaining title pages are incomplete",
   "Stellar Docs title pagination changed during capture",
   "remote identity vector must be an object",
   `remote identity vector schema must be ${REMOTE_IDENTITY_VECTOR_SCHEMA}`,
@@ -348,6 +352,12 @@ function sleepSync(delayMs) {
 /**
  * A failure or a cancellation permanently closes this instance and forbids resume.
  * Only an unavailable probe repeats a capture; every vector check runs once per capture.
+ * `beforeCall` reuses the previous call's after-call capture when no call started since and
+ * that capture is at most `REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS` old on the monotonic
+ * clock. The first `beforeCall` and `postflight` always capture fresh. The reused vector goes
+ * through the same comparisons, and its check records `reusedFromSequence`.
+ * Each record keeps a wall-clock time for reporting and `elapsedMs`, the whole monotonic
+ * milliseconds since the guard started. Order and reuse age use only `elapsedMs`.
  * `checkCancelled` throws when the collection is cancelled. The guard calls it before each
  * probe, after each wait slice, and last in `beforeCall`, just before the answering call.
  */
@@ -357,7 +367,9 @@ export function createRemoteIdentityGuard({
   capture = captureRemoteIdentity,
   sleep = sleepSync,
   onCaptureRetry = () => {},
-  checkCancelled = () => {}
+  checkCancelled = () => {},
+  now = Date.now,
+  monotonicNow = () => performance.now()
 }) {
   if (typeof expectedVectorSha256 !== "string" || !SHA256.test(expectedVectorSha256)) {
     throw new Error(
@@ -370,14 +382,18 @@ export function createRemoteIdentityGuard({
   let failure = null;
   let cancellation = null;
   let completedAnsweringCalls = 0;
+  let reusableAfterCheck = null;
   let postflight = {
     attempted: false,
     matches: false,
     vectorSha256: null,
     skippedReason: null
   };
-  const captures = [];
+  const checks = [];
   const failedCaptureAttempts = [];
+  const timestamp = () => new Date(now()).toISOString();
+  const monotonicOrigin = monotonicNow();
+  const elapsed = () => Math.floor(monotonicNow() - monotonicOrigin);
 
   const fail = ({
     reason,
@@ -391,7 +407,7 @@ export function createRemoteIdentityGuard({
     failure ??= {
       reason,
       phase,
-      failedAt: new Date().toISOString(),
+      failedAt: timestamp(),
       id: context.id,
       attempt: context.attempt,
       changedServices,
@@ -417,7 +433,7 @@ export function createRemoteIdentityGuard({
         phase,
         id: context.id,
         attempt: context.attempt,
-        cancelledAt: new Date().toISOString()
+        cancelledAt: timestamp()
       };
       throw error;
     }
@@ -430,6 +446,32 @@ export function createRemoteIdentityGuard({
       waitedMs += sliceMs;
       assertNotCancelled(phase, context);
     }
+  };
+
+  const recordCheck = (phase, context, vector, reusedFromSequence, elapsedMs = elapsed()) => {
+    checks.push({
+      sequence: checks.length + 1,
+      checkedAt: timestamp(),
+      elapsedMs,
+      phase,
+      id: context.id,
+      attempt: context.attempt,
+      vectorSha256: remoteIdentityVectorSha256(vector),
+      reusedFromSequence
+    });
+  };
+
+  const reusableBeforeVector = (context) => {
+    const source = reusableAfterCheck;
+    reusableAfterCheck = null;
+    if (source === null || baselineVector === null) return null;
+    // One monotonic reading decides the reuse and dates its record.
+    const elapsedMs = elapsed();
+    const ageMs = elapsedMs - source.elapsedMs;
+    if (ageMs < 0 || ageMs > REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS) return null;
+    assertNotCancelled("before", context);
+    recordCheck("before", context, source.vector, source.sequence, elapsedMs);
+    return source.vector;
   };
 
   const captureVector = (phase, context) => {
@@ -454,7 +496,8 @@ export function createRemoteIdentityGuard({
             };
         failedCaptureAttempts.push({
           sequence: failedCaptureAttempts.length + 1,
-          failedAt: new Date().toISOString(),
+          failedAt: timestamp(),
+          elapsedMs: elapsed(),
           phase,
           id: context.id,
           attempt: context.attempt,
@@ -486,14 +529,7 @@ export function createRemoteIdentityGuard({
         });
       }
     }
-    captures.push({
-      sequence: captures.length + 1,
-      capturedAt: new Date().toISOString(),
-      phase,
-      id: context.id,
-      attempt: context.attempt,
-      vectorSha256: remoteIdentityVectorSha256(vector)
-    });
+    recordCheck(phase, context, vector, null);
     finalVector = vector;
     return vector;
   };
@@ -510,7 +546,7 @@ export function createRemoteIdentityGuard({
     beforeCall(context) {
       assertActive();
       if (pendingCall) throw new Error("remote identity guard has an unfinished answering call");
-      const vector = captureVector("before", context);
+      const vector = reusableBeforeVector(context) ?? captureVector("before", context);
       if (baselineVector === null) {
         baselineVector = vector;
         if (remoteIdentityVectorSha256(vector) !== expectedVectorSha256) {
@@ -556,6 +592,12 @@ export function createRemoteIdentityGuard({
           changedServices: comparison.changedServices
         });
       }
+      const afterCheck = checks.at(-1);
+      reusableAfterCheck = {
+        sequence: afterCheck.sequence,
+        elapsedMs: afterCheck.elapsedMs,
+        vector: afterVector
+      };
       return afterVector;
     },
 
@@ -570,6 +612,7 @@ export function createRemoteIdentityGuard({
         return null;
       }
       if (pendingCall) throw new Error("remote identity guard has an unfinished answering call");
+      reusableAfterCheck = null;
       if (baselineVector === null) {
         fail({
           reason: "missing-baseline",
@@ -617,9 +660,10 @@ export function createRemoteIdentityGuard({
         baselineVector,
         finalVector,
         postflight,
-        successfulCaptureCount: captures.length,
+        successfulCaptureCount: checks.filter((check) => check.reusedFromSequence === null).length,
+        reusedCaptureCount: checks.filter((check) => check.reusedFromSequence !== null).length,
         completedAnsweringCalls,
-        captures: [...captures],
+        checks: checks.map((check) => ({ ...check })),
         captureRetryPolicy: {
           maximumAttempts: REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
           delaysMs: [...REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS]

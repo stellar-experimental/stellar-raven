@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS,
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
   REMOTE_IDENTITY_CAPTURE_WAIT_SLICE_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
@@ -77,6 +78,22 @@ function queuedCapture(values) {
   };
 }
 
+// Each monotonic reading is past the reuse age, so every before-call check captures fresh.
+function staleClock() {
+  let nowMs = Date.parse("2026-10-11T00:00:00.000Z");
+  return () => {
+    nowMs += REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS + 1;
+    return nowMs;
+  };
+}
+
+function manualClock(startMs = Date.parse("2026-10-11T00:00:00.000Z")) {
+  let nowMs = startMs;
+  const now = () => nowMs;
+  now.advance = (deltaMs) => { nowMs += deltaMs; };
+  return now;
+}
+
 function fakeProbeIdentity() {
   return {
     contract: REMOTE_IDENTITY_VECTOR_SCHEMA,
@@ -145,7 +162,8 @@ describe("QA remote identity call guard", () => {
     const guard = createRemoteIdentityGuard({
       probeIdentity: fakeProbeIdentity(),
       expectedVectorSha256: remoteIdentityVectorSha256(baseline),
-      capture: queuedCapture([baseline, baseline, baseline, baseline, baseline])
+      capture: queuedCapture([baseline, baseline, baseline, baseline, baseline]),
+      monotonicNow: staleClock()
     });
     const paidCalls = [];
 
@@ -172,12 +190,12 @@ describe("QA remote identity call guard", () => {
       sameAuthorizationResumeAllowed: false,
       requiresNewAuthorization: false
     });
-    expect(guard.record().captures.map((capture) => capture.phase)).toEqual([
-      "before",
-      "after",
-      "before",
-      "after",
-      "postflight"
+    expect(guard.record().checks.map(({ phase, reusedFromSequence }) => [phase, reusedFromSequence])).toEqual([
+      ["before", null],
+      ["after", null],
+      ["before", null],
+      ["after", null],
+      ["postflight", null]
     ]);
   });
 
@@ -552,6 +570,7 @@ describe("QA remote identity probe stderr diagnostics", () => {
     ["a short token", "remote-identity-probe: Scout OpenAPI returned HTTP 503 tok-12345"],
     ["an environment value", "remote-identity-probe: PATH /synthetic/private/bin"],
     ["an unknown label", "remote-identity-probe: Private API returned HTTP 503"],
+    ["a retired probe label", "remote-identity-probe: Stellar Docs remaining title pages returned HTTP 429"],
     ["an unbounded status", "remote-identity-probe: Scout OpenAPI returned HTTP 50312"],
     ["an unknown error text", "remote-identity-probe: Cannot read properties of undefined"],
     ["a long token", `remote-identity-probe: failed ${"a1".repeat(20)}`],
@@ -568,9 +587,10 @@ describe("QA remote identity probe stderr diagnostics", () => {
     "Scout OpenAPI attempt 2/3 failed (network error); retrying in 1000 ms",
     "Stellar Docs settings returned HTTP 429",
     "Lumenloop public skills returned invalid JSON",
-    "Stellar Docs title page count timed out",
+    "Stellar Docs title pages timed out",
     "Lumenloop tools hint must be a non-empty string",
     "Stellar Docs title page count is invalid",
+    "Stellar Docs title pages are incomplete",
     "remote identity scout.openapiVersion must be a safe identity token",
     "remote identity service lumenloop must contain exactly: advertisedContractIdentity, canonicalInventorySha256"
   ])("accepts the known probe message %s", (message) => {
@@ -619,10 +639,176 @@ describe("QA remote identity probe stderr diagnostics", () => {
   });
 });
 
+describe("QA remote identity capture reuse at a row boundary", () => {
+  function countingGuard(values, now) {
+    let probes = 0;
+    const queued = queuedCapture(values);
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: (identity) => {
+        probes += 1;
+        return queued(identity);
+      },
+      sleep: () => {},
+      monotonicNow: now
+    });
+    return { guard, probes: () => probes };
+  }
+
+  it("reuses the previous after-call capture and records the reuse", () => {
+    const now = manualClock();
+    const harness = countingGuard([vector(), vector(), vector(), vector(), vector()], now);
+    const paidCalls = [];
+
+    guardedCall(harness.guard, "a", paidCalls);
+    now.advance(5_000);
+    guardedCall(harness.guard, "b", paidCalls);
+    now.advance(5_000);
+    guardedCall(harness.guard, "c", paidCalls);
+    harness.guard.postflight();
+
+    expect(paidCalls).toEqual(["a", "b", "c"]);
+    expect(harness.probes()).toBe(5);
+    const record = harness.guard.record();
+    expect(record).toMatchObject({
+      schema: REMOTE_IDENTITY_GUARD_SCHEMA,
+      matches: true,
+      successfulCaptureCount: 5,
+      reusedCaptureCount: 2,
+      completedAnsweringCalls: 3
+    });
+    expect(record.checks.map(({ sequence, phase, id, reusedFromSequence }) => [
+      sequence,
+      phase,
+      id,
+      reusedFromSequence
+    ])).toEqual([
+      [1, "before", "a", null],
+      [2, "after", "a", null],
+      [3, "before", "b", 2],
+      [4, "after", "b", null],
+      [5, "before", "c", 4],
+      [6, "after", "c", null],
+      [7, "postflight", null, null]
+    ]);
+    expect(record.checks[2].vectorSha256).toBe(record.checks[1].vectorSha256);
+    expect(record.checks[2].elapsedMs - record.checks[1].elapsedMs).toBe(5_000);
+  });
+
+  it.each([
+    ["at the age limit", REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS, 2],
+    ["past the age limit", REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS + 1, null],
+    ["after the monotonic reading moves back", -1, null]
+  ])("decides reuse %s", (_label, delayMs, reusedFromSequence) => {
+    const now = manualClock();
+    const harness = countingGuard([vector(), vector(), vector(), vector()], now);
+
+    guardedCall(harness.guard, "a");
+    now.advance(delayMs);
+    guardedCall(harness.guard, "b");
+
+    expect(harness.guard.record().checks[2]).toMatchObject({ phase: "before", id: "b", reusedFromSequence });
+    expect(harness.probes()).toBe(reusedFromSequence === null ? 4 : 3);
+  });
+
+  it("decides reuse on the monotonic clock when the wall clock moves back", () => {
+    const monotonic = manualClock();
+    const wall = manualClock();
+    let probes = 0;
+    const guard = createRemoteIdentityGuard({
+      probeIdentity: fakeProbeIdentity(),
+      expectedVectorSha256: remoteIdentityVectorSha256(vector()),
+      capture: () => {
+        probes += 1;
+        return vector();
+      },
+      now: wall,
+      monotonicNow: monotonic
+    });
+
+    guardedCall(guard, "a");
+    monotonic.advance(120_000);
+    wall.advance(120_000 - 90_000);
+    guardedCall(guard, "b");
+
+    expect(probes).toBe(4);
+    const checks = guard.record().checks;
+    expect(checks[2]).toMatchObject({ phase: "before", id: "b", reusedFromSequence: null, elapsedMs: 120_000 });
+    expect(Date.parse(checks[2].checkedAt) - Date.parse(checks[1].checkedAt)).toBe(30_000);
+  });
+
+  it("dates a reuse with the same monotonic reading that decided it", () => {
+    const monotonic = manualClock();
+    const harness = countingGuard([vector(), vector(), vector()], monotonic);
+
+    guardedCall(harness.guard, "a");
+    monotonic.advance(42_000);
+    guardedCall(harness.guard, "b");
+
+    const checks = harness.guard.record().checks;
+    expect(checks.map(({ elapsedMs }) => elapsedMs)).toEqual([0, 0, 42_000, 42_000]);
+    expect(checks[2].reusedFromSequence).toBe(2);
+  });
+
+  it("reuses the after-call capture for a retry attempt of the same row", () => {
+    const now = manualClock();
+    const harness = countingGuard([vector(), vector(), vector()], now);
+    const attempt = (number, call) => runRemoteIdentityGuardedCall({
+      guard: harness.guard,
+      context: { id: "a", attempt: number },
+      authorize: () => ({}),
+      call,
+      recordSpend: () => {}
+    });
+
+    expect(() => attempt(1, () => { throw new Error("transport failure"); })).toThrow(/transport failure/);
+    now.advance(1_000);
+    attempt(2, () => ({ costUsd: 0.1 }));
+
+    expect(harness.probes()).toBe(3);
+    expect(harness.guard.record()).toMatchObject({ completedAnsweringCalls: 1, failure: null });
+    expect(harness.guard.record().checks.map(({ phase, attempt: number, reusedFromSequence }) => [
+      phase,
+      number,
+      reusedFromSequence
+    ])).toEqual([["before", 1, null], ["after", 1, null], ["before", 2, 2], ["after", 2, null]]);
+  });
+
+  it("captures the first before-call check and the postflight fresh", () => {
+    const now = manualClock();
+    const harness = countingGuard([vector(), vector(), vector()], now);
+
+    guardedCall(harness.guard, "a");
+    harness.guard.postflight();
+
+    expect(harness.probes()).toBe(3);
+    expect(harness.guard.record().checks.map(({ phase, reusedFromSequence }) => [phase, reusedFromSequence]))
+      .toEqual([["before", null], ["after", null], ["postflight", null]]);
+  });
+
+  it("compares a reused vector with the baseline and still detects a later change", () => {
+    const now = manualClock();
+    const harness = countingGuard([vector(), vector(), changedVector("stellarDocs")], now);
+    const paidCalls = [];
+
+    guardedCall(harness.guard, "a", paidCalls);
+    expect(() => guardedCall(harness.guard, "b", paidCalls)).toThrow(/stellarDocs/);
+
+    expect(paidCalls).toEqual(["a", "b"]);
+    expect(harness.guard.record().failure).toMatchObject({
+      reason: "identity-changed",
+      phase: "after",
+      id: "b",
+      changedServices: ["stellarDocs"]
+    });
+  });
+});
+
 describe("QA remote identity capture retry", () => {
   it("bounds the worst-case wait for one capture inside the paired deadline", () => {
-    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(145_000);
-    expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBe(4 * 145_000 + 210_000);
+    expect(REMOTE_IDENTITY_PROBE_PROCESS_TIMEOUT_MS).toBe(75_000);
+    expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBe(4 * 75_000 + 210_000);
     expect(REMOTE_IDENTITY_MAX_CAPTURE_WAIT_MS).toBeLessThan(PAIRED_COLLECTION_DEADLINE_MS / 16);
   });
 
@@ -644,7 +830,8 @@ describe("QA remote identity capture retry", () => {
         baseline
       ]),
       sleep: (delayMs) => sleeps.push(delayMs),
-      onCaptureRetry: (notice) => notices.push(notice)
+      onCaptureRetry: (notice) => notices.push(notice),
+      monotonicNow: staleClock()
     });
     const paidCalls = [];
 
@@ -672,8 +859,8 @@ describe("QA remote identity capture retry", () => {
       captureRetryPolicy: { maximumAttempts: 4, delaysMs: [30_000, 60_000, 120_000] },
       requiresNewAuthorization: false
     });
-    expect(record.successfulCaptureCount).toBe(record.captures.length);
-    expect(record.captures.map(({ phase, id }) => [phase, id])).toEqual([
+    expect(record.successfulCaptureCount).toBe(record.checks.length);
+    expect(record.checks.map(({ phase, id }) => [phase, id])).toEqual([
       ["before", "a"],
       ["after", "a"],
       ["before", "b"],
@@ -735,7 +922,8 @@ describe("QA remote identity capture retry", () => {
         unavailable("timeout", null),
         unavailable()
       ]),
-      sleep: (delayMs) => sleeps.push(delayMs)
+      sleep: (delayMs) => sleeps.push(delayMs),
+      monotonicNow: staleClock()
     });
     const paidCalls = [];
 
@@ -860,7 +1048,7 @@ describe("QA remote identity cancellation during a retry wait", () => {
     }
   }
 
-  function cancellableGuard(captures, { cancelAfterSleptMs = Infinity } = {}) {
+  function cancellableGuard(captures, { cancelAfterSleptMs = Infinity, now = staleClock() } = {}) {
     let sleptMs = 0;
     let cancelled = false;
     let probes = 0;
@@ -878,7 +1066,8 @@ describe("QA remote identity cancellation during a retry wait", () => {
       },
       checkCancelled: () => {
         if (cancelled) throw new CancelledError();
-      }
+      },
+      monotonicNow: now
     });
     return {
       guard,
@@ -986,5 +1175,20 @@ describe("QA remote identity cancellation during a retry wait", () => {
     expect(() => guardedCall(harness.guard, "b")).toThrow(/cancelled/);
     expect(harness.probes()).toBe(2);
     expect(harness.sleptMs()).toBe(0);
+  });
+
+  it("checks cancellation before it reuses a capture and starts no answering call", () => {
+    const baseline = vector();
+    const harness = cancellableGuard([baseline, baseline], { now: manualClock() });
+    const paidCalls = [];
+    guardedCall(harness.guard, "a", paidCalls);
+    harness.cancel();
+
+    expect(() => guardedCall(harness.guard, "b", paidCalls)).toThrow(/cancelled/);
+    expect(paidCalls).toEqual(["a"]);
+    expect(harness.probes()).toBe(2);
+    const record = harness.guard.record();
+    expect(record.cancellation).toMatchObject({ phase: "before", id: "b", attempt: 1 });
+    expect(record.checks).toHaveLength(2);
   });
 });

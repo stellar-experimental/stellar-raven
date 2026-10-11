@@ -62,7 +62,8 @@ function collection(captures) {
       const next = captures.shift();
       if (next instanceof Error) throw next;
       return next;
-    }
+    },
+    monotonicNow: () => Date.now()
   });
   const run = (id, number, result = outcome()) => {
     const startedAtMs = Date.now();
@@ -100,26 +101,27 @@ describe("QA attempt timestamps and identity capture links", () => {
     f.guard.postflight();
     expect(f.saved[0]).toMatchObject({ number: 1, startedAt: iso(0), endedAt: iso(30), durationMs: 30 });
     expect(f.order).toEqual(["authorize", "capture", "call", "save", "spend", "capture", "capture"]);
-    expect(f.guard.record().captures).toMatchObject([
-      { id: "fixture", attempt: 1, capturedAt: iso(10), phase: "before" },
-      { id: "fixture", attempt: 1, capturedAt: iso(40), phase: "after" },
-      { id: null, attempt: null, capturedAt: iso(50), phase: "postflight" }
+    expect(f.guard.record().checks).toMatchObject([
+      { id: "fixture", attempt: 1, checkedAt: iso(10), phase: "before", reusedFromSequence: null },
+      { id: "fixture", attempt: 1, checkedAt: iso(40), phase: "after", reusedFromSequence: null },
+      { id: null, attempt: null, checkedAt: iso(50), phase: "postflight", reusedFromSequence: null }
     ]);
     expect(f.ledger.reportedSpendUsd).toBe(0.1);
   });
 
   it("keeps distinct intervals for a transport retry and the first outcome", () => {
-    const f = collection([vector, vector, vector, vector]);
+    const f = collection([vector, vector, vector]);
     f.run("fixture", 1, outcome({ class: "transport", retryable: true }));
     f.run("fixture", 2);
     expect(f.saved).toMatchObject([
       { number: 1, failureClass: "transport", startedAt: iso(0), endedAt: iso(30) },
-      { number: 2, failureClass: null, startedAt: iso(40), endedAt: iso(70) }
+      { number: 2, failureClass: null, startedAt: iso(40), endedAt: iso(60) }
     ]);
     for (const attempt of f.saved) {
-      expect(f.guard.record().captures.filter((c) => c.id === attempt.id && c.attempt === attempt.number))
+      expect(f.guard.record().checks.filter((c) => c.id === attempt.id && c.attempt === attempt.number))
         .toHaveLength(2);
     }
+    expect(f.guard.record().checks[2]).toMatchObject({ attempt: 2, phase: "before", reusedFromSequence: 2 });
   });
 
   it("retains the completed interval when an after-call guard fails", () => {
@@ -133,6 +135,8 @@ describe("QA attempt timestamps and identity capture links", () => {
   it("retains partial collection without inventing an attempt after a before-call failure", () => {
     const f = collection([vector, vector, new Error("probe failed")]);
     f.run("first", 1);
+    // The after-call capture is past the reuse age, so the next before-call check probes.
+    vi.setSystemTime(START + 40 + 60_001);
     expect(() => f.run("second", 1)).toThrow(/probe is unavailable/);
     f.guard.postflight();
     const rows = [{ id: "first", answer: f.saved[0].answer, agent: f.saved[0].agent,
@@ -140,7 +144,7 @@ describe("QA attempt timestamps and identity capture links", () => {
     const artifact = JSON.parse(JSON.stringify({ rows, guard: f.guard.record() }));
     expect(artifact.rows).toHaveLength(1);
     expect(artifact.rows[0].attempts.agent[0]).toMatchObject({ startedAt: iso(0), endedAt: iso(30) });
-    expect(artifact.guard.failure).toMatchObject({ id: "second", attempt: 1, phase: "before", failedAt: iso(50) });
+    expect(artifact.guard.failure).toMatchObject({ id: "second", attempt: 1, phase: "before", failedAt: iso(60_051) });
     expect(artifact.guard.postflight.skippedReason).toBe("guard-already-stopped");
     const aggregates = collectionAggregates(rows, [{ id: "first" }, { id: "second" }], { judging: false });
     expect(aggregates.summary).toBeNull();

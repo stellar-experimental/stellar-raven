@@ -14,6 +14,11 @@ const DOCS_APPLICATION_ID = "VNSJF5AWIZ";
 const DOCS_INDEX_NAME = "crawler_Stellar Docs - Docusaurus";
 // Algolia documents this search-only key for the public Stellar Docs index.
 const DOCS_SEARCH_KEY = "c932e7670879e29070e269d202fb6740";
+// The key caps each query at 100 hits, and the index caps pagination at 1,000 hits.
+const STELLAR_DOCS_MAX_TITLE_PAGES = 10;
+const STELLAR_DOCS_TITLE_PAGE_NUMBERS = Object.freeze(
+  Array.from({ length: STELLAR_DOCS_MAX_TITLE_PAGES }, (_, page) => page)
+);
 
 export const REMOTE_IDENTITY_SOURCES = Object.freeze({
   scoutOpenapi: "https://stellarlight.xyz/api/openapi.json",
@@ -299,7 +304,7 @@ export async function probeRemoteIdentities(options = {}) {
     lumenloopTools,
     lumenloopSkills,
     stellarDocsSettings,
-    stellarDocsFirstTitleBatch
+    stellarDocsTitleBatch
   ] = await Promise.all([
     request({ label: "Scout OpenAPI", url: REMOTE_IDENTITY_SOURCES.scoutOpenapi }),
     request({ label: "Lumenloop OpenAPI", url: REMOTE_IDENTITY_SOURCES.lumenloopOpenapi }),
@@ -310,44 +315,31 @@ export async function probeRemoteIdentities(options = {}) {
       url: REMOTE_IDENTITY_SOURCES.stellarDocsSettings,
       init: { headers: docsHeaders }
     }),
-    request(docsTitleRequest([0], "Stellar Docs title page count"))
+    // One multi-query request reads every page the bound allows, so the probe makes two Algolia calls.
+    request(docsTitleRequest(STELLAR_DOCS_TITLE_PAGE_NUMBERS, "Stellar Docs title pages"))
   ]);
-  const firstTitleResults = stellarDocsFirstTitleBatch?.results;
-  if (
-    !Array.isArray(firstTitleResults) ||
-    firstTitleResults.length !== 1 ||
-    !Number.isInteger(firstTitleResults[0]?.nbPages) ||
-    firstTitleResults[0].nbPages < 1 ||
-    firstTitleResults[0].nbPages > 10
-  ) {
+  const titleResults = stellarDocsTitleBatch?.results;
+  if (!Array.isArray(titleResults) || titleResults.length !== STELLAR_DOCS_TITLE_PAGE_NUMBERS.length) {
+    throw new Error("Stellar Docs title pages are incomplete");
+  }
+  const { nbPages, nbHits } = titleResults[0] ?? {};
+  if (!Number.isInteger(nbPages) || nbPages < 1 || nbPages > STELLAR_DOCS_MAX_TITLE_PAGES) {
     throw new Error("Stellar Docs title page count is invalid");
   }
-  const remainingPageNumbers = Array.from(
-    { length: firstTitleResults[0].nbPages - 1 },
-    (_, index) => index + 1
-  );
-  const remainingTitleResults = remainingPageNumbers.length === 0
-    ? []
-    : (await request(docsTitleRequest(
-        remainingPageNumbers,
-        "Stellar Docs remaining title pages"
-      )))?.results;
-  if (!Array.isArray(remainingTitleResults) || remainingTitleResults.length !== remainingPageNumbers.length) {
-    throw new Error("Stellar Docs remaining title pages are incomplete");
-  }
-  const titlePages = [firstTitleResults[0], ...remainingTitleResults];
-  for (const [page, response] of titlePages.entries()) {
+  for (const [page, response] of titleResults.entries()) {
     if (
-      response.page !== page ||
-      response.nbPages !== firstTitleResults[0].nbPages ||
-      response.nbHits !== firstTitleResults[0].nbHits ||
-      !Array.isArray(response.hits)
+      response?.page !== page ||
+      response.nbPages !== nbPages ||
+      response.nbHits !== nbHits ||
+      !Array.isArray(response.hits) ||
+      (page >= nbPages && response.hits.length !== 0)
     ) {
       throw new Error("Stellar Docs title pagination changed during capture");
     }
   }
+  const titlePages = titleResults.slice(0, nbPages);
   const stellarDocsTitles = {
-    nbHits: firstTitleResults[0].nbHits,
+    nbHits,
     hits: titlePages.flatMap((page) => page.hits)
   };
   return buildRemoteIdentityVector({

@@ -30,6 +30,35 @@ function vector() {
   };
 }
 
+// Serves the public sources that the committed probe reads.
+function upstreamResponse(url, init) {
+  if (url.endsWith("/api/openapi.json")) return { info: { version: "1.9.30" }, paths: {} };
+  if (url.endsWith("/v1/openapi.json")) return { info: { version: "1.0.0" }, paths: {} };
+  if (url.endsWith("/v1/tools")) {
+    return {
+      success: true,
+      data: { count: 1, hint: "public", scope: "guest", tools: [{ name: "a" }], workflows: [] }
+    };
+  }
+  if (url.endsWith("/v1/skills")) {
+    return {
+      success: true,
+      data: { count: 1, archives: {}, note: "public skills", versions: {}, skills: [{ name: "skill-a" }] }
+    };
+  }
+  if (url.endsWith("/settings")) return { searchableAttributes: ["title"] };
+  const hits = Array.from({ length: 150 }, (_, index) => ({
+    hierarchy: { lvl1: `Title ${index}` },
+    url_without_anchor: `https://developers.stellar.org/docs/page-${index}`
+  }));
+  return {
+    results: JSON.parse(init.body).requests.map((request) => {
+      const page = Number(new URLSearchParams(request.params).get("page"));
+      return { page, nbPages: 2, nbHits: hits.length, hits: hits.slice(page * 100, page * 100 + 100) };
+    })
+  };
+}
+
 afterEach(() => {
   vi.unstubAllGlobals();
 });
@@ -80,31 +109,19 @@ describe("paired capacity check", () => {
     expect(summary.stellarDocs.transportErrors).toBe(1);
   });
 
-  it("releases two captures together and records matching vectors", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => new Response("{}", { status: 200 })));
-    const probe = async ({ fetchImpl }) => {
-      await Promise.all([
-        fetchImpl("https://stellarlight.xyz/api/openapi.json"),
-        fetchImpl("https://api.lumenloop.com/v1/openapi.json"),
-        fetchImpl("https://api.lumenloop.com/v1/tools"),
-        fetchImpl("https://api.lumenloop.com/v1/skills"),
-        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x/settings"),
-        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x/queries"),
-        fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x/queries")
-      ]);
-      return vector();
-    };
+  it("releases two committed probe captures together and records matching vectors", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (url, init = {}) => Response.json(upstreamResponse(url, init))));
 
-    const report = await runPairedCapacityCheck({ probe });
+    const report = await runPairedCapacityCheck();
 
     expect(report.schema).toBe(PAIRED_CAPACITY_SCHEMA);
     expect(report.contract).toEqual(PAIRED_CAPACITY_CONTRACT);
     expect(report.accepted).toBe(true);
     expect(report.rejectionReasons).toEqual([]);
     expect(report.method.paidModelCalls).toBe(0);
-    expect(report.observed.requests).toBe(14);
-    expect(report.observed.responses).toBe(14);
-    expect(report.observed.responsesByService).toEqual({ scout: 2, lumenloop: 6, stellarDocs: 6 });
+    expect(report.observed.requests).toBe(12);
+    expect(report.observed.responses).toBe(12);
+    expect(report.observed.responsesByService).toEqual({ scout: 2, lumenloop: 6, stellarDocs: 4 });
     expect(report.observed.transportErrors).toBe(0);
     expect(report.observed.maximumActiveFetches).toBeGreaterThan(1);
     expect(report.observed.vectorsMatch).toBe(true);
@@ -112,9 +129,9 @@ describe("paired capacity check", () => {
   });
 
   it.each([
-    ["request count", (report) => { report.observed.requests = 13; }, /requests must equal 14/],
-    ["response count", (report) => { report.observed.responses = 13; }, /responses must equal 14/],
-    ["successful response count", (report) => { report.observed.successfulResponses = 13; }, /successfulResponses must equal 14/],
+    ["request count", (report) => { report.observed.requests = 11; }, /requests must equal 12/],
+    ["response count", (report) => { report.observed.responses = 11; }, /responses must equal 12/],
+    ["successful response count", (report) => { report.observed.successfulResponses = 11; }, /successfulResponses must equal 12/],
     ["service response count", (report) => { report.observed.responsesByService.scout = 1; }, /service response counts mismatch/],
     ["agent result count", (report) => { report.agents.pop(); }, /agent result count mismatch/],
     ["HTTP errors", (report) => { report.observed.httpErrors = 1; }, /httpErrors must equal 0/],
@@ -132,7 +149,7 @@ describe("paired capacity check", () => {
       await Promise.all([
         fetchImpl("https://stellarlight.xyz/api/openapi.json"),
         ...Array.from({ length: 3 }, () => fetchImpl("https://api.lumenloop.com/v1/tools")),
-        ...Array.from({ length: 3 }, () => fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x"))
+        ...Array.from({ length: 2 }, () => fetchImpl("https://VNSJF5AWIZ-dsn.algolia.net/1/indexes/x"))
       ]);
       return vector();
     };

@@ -11,10 +11,12 @@ import { pathToFileURL } from "node:url";
 import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
 import {
+  REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS,
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
   REMOTE_IDENTITY_PROBE_ERROR_KINDS,
+  REMOTE_IDENTITY_WALL_CLOCK_TOLERANCE_MS,
   compareRemoteIdentityVectors,
   isAllowlistedProbeReason,
   parseRemoteIdentityVector,
@@ -193,6 +195,7 @@ function collectionTuple(result) {
 const FAILED_CAPTURE_ATTEMPT_KEYS = [
   "attempt",
   "captureAttempt",
+  "elapsedMs",
   "failedAt",
   "id",
   "kind",
@@ -212,45 +215,138 @@ function sameCall(left, right) {
   return left.phase === right.phase && left.id === right.id && left.attempt === right.attempt;
 }
 
-/** A comparable record keeps every failed attempt, and a later capture of that call succeeded. */
-function validateFailedCaptureAttempts(failedAttempts, captures) {
+const GUARD_CHECK_KEYS = [
+  "attempt",
+  "checkedAt",
+  "elapsedMs",
+  "id",
+  "phase",
+  "reusedFromSequence",
+  "sequence",
+  "vectorSha256"
+];
+
+function validCallContext(record, postflightCall) {
+  return postflightCall
+    ? record.id === null && record.attempt === null
+    : typeof record.id === "string" && record.id.length > 0 &&
+      Number.isInteger(record.attempt) && record.attempt >= 1;
+}
+
+/** The answering calls in execution order: each row's retained attempts, numbered from 1. */
+function answeringCallSequence(rows) {
+  return rows.flatMap((row) => {
+    const attempts = row?.attempts?.agent;
+    if (
+      !Array.isArray(attempts) ||
+      attempts.length === 0 ||
+      attempts.some((attempt, index) => attempt?.number !== index + 1)
+    ) {
+      throw new Error("row attempts are incomplete");
+    }
+    return attempts.map((attempt) => ({ id: row.id, attempt: attempt.number }));
+  });
+}
+
+/**
+ * The wall clock is for reporting. Order and reuse age use the monotonic `elapsedMs`; each
+ * wall-clock time stays within the tolerance of the elapsed time since the first check.
+ */
+function wallClockFits(record, wallMs, anchor) {
+  return wallMs !== null &&
+    Math.abs((wallMs - anchor.wallMs) - (record.elapsedMs - anchor.elapsedMs)) <=
+      REMOTE_IDENTITY_WALL_CLOCK_TOLERANCE_MS;
+}
+
+/**
+ * Each answering call has one before and one after check with its own context, in execution
+ * order, and a fresh postflight ends the list. Only a later before-call check may reuse a
+ * capture: the after-call capture of the previous call, with no check between them, at most
+ * the reuse age old on the monotonic clock.
+ */
+function validateGuardChecks(checks, baselineSha256, calls) {
+  if (checks.length !== calls.length * 2 + 1) throw new Error("guard checks do not cover the calls");
+  const anchor = { wallMs: isoTimestampMs(checks[0]?.checkedAt), elapsedMs: checks[0]?.elapsedMs };
+  let previousElapsedMs = 0;
+  for (const [index, check] of checks.entries()) {
+    const postflightCheck = index === checks.length - 1;
+    const expectedPhase = postflightCheck ? "postflight" : index % 2 === 0 ? "before" : "after";
+    const call = postflightCheck ? { id: null, attempt: null } : calls[Math.floor(index / 2)];
+    if (
+      !check ||
+      typeof check !== "object" ||
+      !same(Object.keys(check).sort(), GUARD_CHECK_KEYS) ||
+      check.sequence !== index + 1 ||
+      check.phase !== expectedPhase ||
+      !validCallContext(check, postflightCheck) ||
+      check.id !== call.id ||
+      check.attempt !== call.attempt ||
+      check.vectorSha256 !== baselineSha256 ||
+      !Number.isInteger(check.elapsedMs) ||
+      check.elapsedMs < previousElapsedMs ||
+      !wallClockFits(check, isoTimestampMs(check.checkedAt), anchor)
+    ) {
+      throw new Error("guard check is invalid");
+    }
+    previousElapsedMs = check.elapsedMs;
+    if (check.reusedFromSequence === null) continue;
+    const source = checks[index - 1];
+    const ageMs = check.elapsedMs - source?.elapsedMs;
+    if (
+      check.phase !== "before" ||
+      index === 0 ||
+      check.reusedFromSequence !== source.sequence ||
+      source.phase !== "after" ||
+      source.reusedFromSequence !== null ||
+      source.vectorSha256 !== check.vectorSha256 ||
+      !(ageMs >= 0 && ageMs <= REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS)
+    ) {
+      throw new Error("guard check reuse is invalid");
+    }
+  }
+}
+
+/**
+ * A comparable record keeps every failed attempt. Each one falls after the check before its
+ * call's fresh successful check and not after that success.
+ */
+function validateFailedCaptureAttempts(failedAttempts, checks) {
   const failedAttemptsByCall = new Map();
-  let previousFailedAtMs = -Infinity;
+  const anchor = { wallMs: isoTimestampMs(checks[0]?.checkedAt), elapsedMs: checks[0]?.elapsedMs };
+  let previousElapsedMs = 0;
   for (const [index, entry] of failedAttempts.entries()) {
     if (!entry || typeof entry !== "object" || !same(Object.keys(entry).sort(), FAILED_CAPTURE_ATTEMPT_KEYS)) {
       throw new Error("guard failed attempt has the wrong fields");
     }
-    const postflightCall = entry.phase === "postflight";
-    const failedAtMs = isoTimestampMs(entry.failedAt);
     if (
       entry.sequence !== index + 1 ||
       !["before", "after", "postflight"].includes(entry.phase) ||
-      (postflightCall
-        ? entry.id !== null || entry.attempt !== null
-        : typeof entry.id !== "string" || !entry.id || !Number.isInteger(entry.attempt) || entry.attempt < 1) ||
+      !validCallContext(entry, entry.phase === "postflight") ||
       !REMOTE_IDENTITY_PROBE_ERROR_KINDS.includes(entry.kind) ||
       !(entry.reason === null || isAllowlistedProbeReason(entry.reason)) ||
       !(entry.probeRetryLines === null ||
         (Number.isInteger(entry.probeRetryLines) && entry.probeRetryLines >= 0)) ||
-      failedAtMs === null ||
-      failedAtMs < previousFailedAtMs
+      !Number.isInteger(entry.elapsedMs) ||
+      entry.elapsedMs < previousElapsedMs ||
+      !wallClockFits(entry, isoTimestampMs(entry.failedAt), anchor)
     ) {
       throw new Error("guard failed attempt is invalid");
     }
     const callKey = JSON.stringify([entry.phase, entry.id, entry.attempt]);
     const captureAttempt = (failedAttemptsByCall.get(callKey) ?? 0) + 1;
-    const success = captures.find((capture) => sameCall(capture, entry));
-    const successAtMs = isoTimestampMs(success?.capturedAt);
+    const success = checks.find((check) => check.reusedFromSequence === null && sameCall(check, entry));
+    const lowerBoundMs = success ? checks[success.sequence - 2]?.elapsedMs ?? 0 : null;
     if (
       entry.captureAttempt !== captureAttempt ||
       captureAttempt >= REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
-      successAtMs === null ||
-      successAtMs < failedAtMs
+      !success ||
+      entry.elapsedMs < lowerBoundMs ||
+      entry.elapsedMs > success.elapsedMs
     ) {
       throw new Error("guard failed attempt has no later successful capture");
     }
     failedAttemptsByCall.set(callKey, captureAttempt);
-    previousFailedAtMs = failedAtMs;
+    previousElapsedMs = entry.elapsedMs;
   }
 }
 
@@ -335,11 +431,10 @@ function artifactProblems(result, label) {
       remoteGuard.probe?.matches !== true ||
       !/^[a-f0-9]{64}$/.test(remoteGuard.probe?.sha256 ?? "") ||
       remoteGuard.probe.sha256 !== remoteGuard.probe.expectedSha256 ||
-      !Number.isInteger(remoteGuard.completedAnsweringCalls) ||
-      remoteGuard.completedAnsweringCalls < result.rows.length ||
-      remoteGuard.successfulCaptureCount !== remoteGuard.completedAnsweringCalls * 2 + 1 ||
-      !Array.isArray(remoteGuard.captures) ||
-      remoteGuard.captures.length !== remoteGuard.successfulCaptureCount ||
+      !Array.isArray(remoteGuard.checks) ||
+      remoteGuard.successfulCaptureCount !==
+        remoteGuard.checks.filter((check) => check?.reusedFromSequence === null).length ||
+      remoteGuard.reusedCaptureCount !== remoteGuard.checks.length - remoteGuard.successfulCaptureCount ||
       remoteGuard.postflight?.attempted !== true ||
       remoteGuard.postflight.matches !== true ||
       remoteGuard.postflight.skippedReason !== null
@@ -360,7 +455,6 @@ function artifactProblems(result, label) {
     if (!compareRemoteIdentityVectors(remoteGuard.baselineVector, remoteGuard.finalVector).matches) {
       throw new Error("guard vectors differ");
     }
-    const callCaptures = remoteGuard.captures.slice(0, -1);
     const retryPolicy = remoteGuard.captureRetryPolicy;
     if (
       remoteGuard.cancellation !== null ||
@@ -370,17 +464,10 @@ function artifactProblems(result, label) {
     ) {
       throw new Error("guard retry record is incomplete");
     }
-    validateFailedCaptureAttempts(remoteGuard.failedCaptureAttempts, remoteGuard.captures);
-    if (
-      remoteGuard.captures.at(-1)?.phase !== "postflight" ||
-      remoteGuard.captures.at(-1)?.sequence !== remoteGuard.successfulCaptureCount ||
-      remoteGuard.captures.some((capture) => capture.vectorSha256 !== baselineSha256) ||
-      callCaptures.some((capture, index) => (
-        capture.sequence !== index + 1 || capture.phase !== (index % 2 === 0 ? "before" : "after")
-      ))
-    ) {
-      throw new Error("guard capture sequence is incomplete");
-    }
+    const calls = answeringCallSequence(result.rows);
+    if (remoteGuard.completedAnsweringCalls !== calls.length) throw new Error("guard call count differs");
+    validateGuardChecks(remoteGuard.checks, baselineSha256, calls);
+    validateFailedCaptureAttempts(remoteGuard.failedCaptureAttempts, remoteGuard.checks);
   } catch {
     problems.push(
       reason("remote-identity-guard", `${label} does not contain a complete remote identity guard`)

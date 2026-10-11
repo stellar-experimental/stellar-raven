@@ -34,25 +34,25 @@ export function acceptedCapacityArtifact(completedAt) {
       schedule: PAIRED_CAPACITY_CONTRACT.schedule.kind,
       agentsReleasedTogether: 2,
       capturesPerAgent: 1,
-      publicRequestPattern: "one committed seven-response remote-identity capture per agent",
-      expectedRequestsPerSuccessfulAgent: 7,
+      publicRequestPattern: "one committed six-response remote-identity capture per agent",
+      expectedRequestsPerSuccessfulAgent: 6,
       paidModelCalls: 0,
       localServerUsed: false
     },
     observed: {
       maximumActiveFetches: 2,
-      requests: 14,
-      responses: 14,
-      successfulResponses: 14,
+      requests: 12,
+      responses: 12,
+      successfulResponses: 12,
       httpErrors: 0,
       transportErrors: 0,
       retries: 0,
       retryAfterObserved: 0,
-      responsesByService: { scout: 2, lumenloop: 6, stellarDocs: 6 },
+      responsesByService: { scout: 2, lumenloop: 6, stellarDocs: 4 },
       services: {
         scout: capacityService(2),
         lumenloop: capacityService(6),
-        stellarDocs: capacityService(6)
+        stellarDocs: capacityService(4)
       },
       captureLatency: { count: 2, minMs: 5, p50Ms: 5, p95Ms: 6, maxMs: 6, meanMs: 6 },
       vectorsMatch: true,
