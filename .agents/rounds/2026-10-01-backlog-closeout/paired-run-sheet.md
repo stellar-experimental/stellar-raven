@@ -307,6 +307,11 @@ No Algolia response had an `X-RateLimit-*` header.
 So the run could not measure whether the limit counts a multi-query request as one call.
 The budget uses Algolia's documented rule: the limit counts API calls.
 That run was the last use of the key from this lane, at `03:57:41Z`.
+
+The [probe load review](probe-load-review-astra.md) records the delta review of this fix.
+Codex `gpt-6-astra` at high effort returned CODE-DELTA: CHANGES and PLAN-DELTA: BLOCKED at `8a662d80`.
+After the fixes, it returned CODE-DELTA: APPROVE and PLAN-DELTA: LAUNCH-OK at `63aed8fe`.
+
 - Identify the archived record in the new attempt's record.
 
 ## Launch window and values
