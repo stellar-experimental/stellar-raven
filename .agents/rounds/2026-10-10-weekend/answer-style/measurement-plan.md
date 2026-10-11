@@ -1,7 +1,8 @@
 # Answer-style signals — pre-spend QA measurement brief
 
-Status: **authorized and run on 2026-10-11. Result: FAIL.** The pins, the case swap, and the
-results are in [`measurement-ledger.md`](measurement-ledger.md).
+Status: **authorized and run on 2026-10-11. Result: INDETERMINATE** (independent result review,
+[`review-result-astra.md`](review-result-astra.md)). The pins, the case swap, and the results are
+in [`measurement-ledger.md`](measurement-ledger.md).
 Claude Fable 5.1 reviewed this brief as the independent pre-spend reviewer
 (`/private/tmp/claude-501/w1010/ar-review.md`). Its findings P1 to P5 are reconciled below, and
 the "Review reconciliation" section maps each one. The orchestrator authorized the budget under

@@ -281,9 +281,12 @@ Done when: ok results carry measured inconclusive and as-of signals, the instruc
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
-Status (2026-10-11): implemented on `w1010/a`. The measurement failed on
-`q-edge-strupey-ambiguous-stellar-history`, so the merge is blocked. Next: restore "otherwise say
-unverified or ask for context" and re-measure under a new authorization. See
+Status (2026-10-11): implemented on `w1010/a`. The measurement is INDETERMINATE: both candidate
+runs substitute Stroopy.AI for `q-edge-strupey-ambiguous-stellar-history`, but the baseline
+confirmation re-judge is T4. The merge is blocked. Next: restore "otherwise say unverified or ask
+for context" as a hypothesis, settle the `inconclusive` versus `soft-empty` wording, carry
+`metricDefinitions` in the judge evidence pack, and re-measure under a new authorization. The
+review also counts five bad skill-section reads (`data.sections`) across B1, C1, and C2. See
 `.agents/rounds/2026-10-10-weekend/answer-style/measurement-ledger.md`.
 
 Status (2026-10-10): branch `w1010/a` implements the signals and drops four phrasing rules

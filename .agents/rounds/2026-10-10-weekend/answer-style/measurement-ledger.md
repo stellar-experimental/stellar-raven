@@ -90,10 +90,15 @@ Re-judge selection: these four IDs, once in B1 and once in C1.
 
 | ID | B1 stored → re-judge | C1 stored → re-judge | Outcome |
 |---|---|---|---|
-| `q-edge-strupey-ambiguous-stellar-history` | correct → partial (effective; judge consistency flag `partial-without-issue`) | wrong → wrong (avoid 1 and 2 fire again) | Reproduced: C stays below B |
-| `q-gap-contracts-domain-empty` | correct → partial | wrong → partial | Not reproduced: judge variance |
-| `q-eco-most-active-defi-projects` | wrong → wrong | correct → correct | Reproduced improvement |
-| `q-pc-quantum-preparedness-dormant` | partial → partial | correct → correct | Reproduced improvement |
+| `q-edge-strupey-ambiguous-stellar-history` | correct → **error** (`failureClass: "consistency"`, `partial-without-issue`; T4) | wrong → wrong (avoid 1 and 2 fire again) | Confirmation incomplete: the baseline re-judge is T4 |
+| `q-gap-contracts-domain-empty` | correct → partial | wrong → partial | Not reproduced. The judge also rejects a real candidate-host field. |
+| `q-eco-most-active-defi-projects` | wrong → wrong | correct → correct | Judge artifact, not an improvement |
+| `q-pc-quantum-preparedness-dormant` | partial → partial | correct → correct | Missing-fact improvement reproduced (with unsupported extra advice) |
+
+Correction (2026-10-11, after the independent result review): the first version of this ledger
+read the B1 Strupey re-judge as "partial (effective)". That value is the diagnostic `judgeScore`.
+The final verdict is `score: "error"`, which records a judge failure and never grades the answer.
+It is a T4 outcome.
 
 ## Live checks
 
@@ -107,56 +112,97 @@ Re-judge selection: these four IDs, once in B1 and once in C1.
   2026-10-11T06:01Z) has 41 rows. The top `marketCapUSD` row is $537.6M, which matches the USDY
   row in the answers. The wrong grade is about product-class labels, not service data. It is not a
   consistent change.
-- `q-gap-contracts-domain-empty`: the candidate claim "the host marks an ok empty result
-  `inconclusive: \"empty\"`" is true for the candidate host. The change did not survive the
-  re-judge, so no live check can confirm it.
+- `q-gap-contracts-domain-empty`: the C1 claim "the host marks an ok empty result
+  `inconclusive: \"empty\"`" is true for the candidate host. Neither candidate answer called
+  `scout.listContracts`. The change did not survive the re-judge.
 - Not live-checked, because each is a single-run wrong and not a consistent change:
   `q-edge-noinfo-stellar-native-privacy-default` (C2; a check needs the Stellar Docs Algolia key,
   which this authorization reserves for the probe), `q-pc-sequence-numbers-ordering-replace` (C2;
   a stable CAP-0021 `minSeqNum` omission), and `q-defi-defindex-honest` (wrong in B1, C1, and C2;
   `truth.status: "disputed"`).
 
-## Result: FAIL
+## Result: INDETERMINATE
 
-Reading rule 3 needs zero confirmed consistent regressions in abstention and absence together.
-`q-edge-strupey-ambiguous-stellar-history` (abstention) is a consistent regression. It survived
-the re-judge and the live check. Rule 4 applies: the result is FAIL, and the merge is blocked.
+Independent result review: [`review-result-astra.md`](review-result-astra.md) (Codex
+`gpt-6-astra`, high). Verdict line: "RESULT-REVIEW: DISPUTED: INDETERMINATE". This section
+replaces the first reading (FAIL), which used the diagnostic `judgeScore` as a valid grade.
 
-| Slice | Rows | Excluded | Consistent regressions (confirmed) | Consistent improvements (re-judged) |
-|---|---|---|---|---|
-| Abstention | 8 | 0 | 1 (1) | 0 |
-| Absence | 8 | 1 | 1 (0) | 0 |
-| Volatile | 8 | 0 | 0 | 2 |
-| Control | 10 | 0 | 0 | 0 |
+The four collections are complete and comparable. Rule 4 needs a confirmed regression.
+Confirmation needs a valid re-judge pair, and the B1 Strupey re-judge is T4. The plan has no
+fallback for a failed confirmation re-judge, so the conservative disposition is INDETERMINATE.
+Rule 3 cannot give PASS either: a failed confirmation is not evidence of no regression. The merge
+stays blocked. A further paid confirmation needs a new bounded authorization.
+
+| Slice | Rows | Excluded | Observed consistent regressions | Confirmed | Notes |
+|---|---|---|---|---|---|
+| Abstention | 8 | 0 | 1 (Strupey) | Incomplete (baseline re-judge T4) | Real observed attribution failure |
+| Absence | 8 | 1 | 1 (contracts-domain) | No (re-judge partial / partial) | Judge rejects a real host field |
+| Volatile | 8 | 0 | 0 | — | Activity "improvement" is a judge artifact; quantum missing-fact improvement reproduced |
+| Control | 10 | 0 | 0 | — | — |
 
 Wrong counts (read first): B1 2, C1 4, C2 6, B2 3. Correct counts: B1 24, C1 22, C2 24, B2 23.
-Noise floor: B1 and B2 disagree on 8 rows. C1 and C2 disagree on 7 rows.
+Noise floor on the common eligible denominator of 33: B1/B2 8, C1/C2 7.
 
-Smallest removed sentence that the failed row needs: "…otherwise say unverified or ask for
-context." (the tail of the attribution rule). The C1 script read `inconclusive: "candidates"` on
-the Scout row, and the footer marked it. The answer still promoted the corrected match to the
-subject. The signal reached the client, but it did not replace the rule. Rule 6 applies: the row
-supplies a test, not new wording.
+### Strupey diagnosis (kept visible)
 
-## Monitor-only observations
+B1 and B2 reject an exact match and ask for clarification. C1 says the name "resolves to
+Stroopy.AI" and gives a detailed history. C2 marks the identity as inferred, but it still gives
+the Stroopy.AI history and does not ask for clarification. The C1 script read
+`inconclusive: "candidates"`, the Scout row carried `matchMode: "corrected"` and the
+identity-verification warning, and the footer marked the call. The signals reached the client.
+The agent still substituted the identity. This is a real observed agent attribution failure, not
+a missing warning or a service identity error.
 
-- `q-gap-contracts-domain-empty`: both candidate answers repeat the new `inconclusive: "empty"`
-  label for an ok empty result. C2 also merges it with soft-empty ("an empty/`soft-empty` result
-  is `inconclusive`"). The re-judge did not confirm a regression. The shared word "inconclusive"
-  for soft-empty and for an ok field still puts the AGENTS.md soft-empty versus data distinction
-  at risk. The golden says an ok empty result "is not a soft-empty error envelope".
-- `q-edge-open-world-recovery-after-narrow-miss`: the C1 answer quotes the
-  `inconclusive: "empty"/"candidates"` mechanics. The judge then failed its consistency check
-  (T4).
-- Two volatile rows improved and reproduced on re-judge. They do not offset an abstention
-  regression under the predeclared rules.
+The baseline panel grades also need disclosure: B1 panel `correct, correct, error`; B2 panel
+`correct, error, error`. The B2 `correct` rests on one valid panel vote.
+
+The measurement attributes one bundle. Restoring the removed tail "…otherwise say unverified or
+ask for context." is a hypothesis for a new measurement, not a proven isolated remedy. Existing
+candidate warnings already told the agent to verify identity, so the next change must first
+check why the agent ignored that guidance.
+
+### Activity row: judge artifact
+
+B1 and B2 transcript index 3 carry `meta.metricDefinitions.activity`, which defines activity as
+`github.commits90d` with recency as the tie-break. Both baseline answers use that definition and
+date their source. The judges claim activity means latest-commit recency, and the B1 re-judge
+repeats that premise. The evidence pack omitted `metricDefinitions` for the baseline rows. Do not
+count this row as a quality win.
+
+### Contracts-domain row (as the reviewer states it)
+
+C1 correctly describes the candidate host: `ok: true` plus `inconclusive: "empty"`. In
+`src/executor/providers.ts` that signal exists only on the successful branch. A `soft-empty`
+error returns through the separate `ok: false` branch. The judge's claim that the signal
+contradicts successful empty data is false. C2's phrase "empty/`soft-empty` result" does blur the
+distinction in the answer. Both answers omit explicit preservation of the returned counts and
+`generatedAt`. These are answer omissions or ambiguity. They do not show that the host conflates
+the two envelopes. The evidence alone does not justify a field rename.
+
+### Other monitor-only rows
+
+- `q-edge-open-world-recovery-after-narrow-miss`: the C1 judge failed its consistency check (T4).
+- `q-pc-quantum-preparedness-dormant`: both candidate answers recover the QPP dormant-holder
+  passage. C1 and C2 also give future-eligibility advice that the source does not support.
+- The review's per-row table covers every other wrong or partial row. None is a consistent change.
+
+## Next step
+
+1. Restore the removed tail "…otherwise say unverified or ask for context." as a hypothesis, after
+   a check of why the agent ignored the existing identity warnings.
+2. Settle the `inconclusive` versus `soft-empty` wording, so that answers do not merge an ok empty
+   result with a `soft-empty` error. The review finds no host conflation and does not prescribe a
+   rename.
+3. Fix the evaluation gaps that the review names: the evidence pack must carry
+   `metricDefinitions`, and judging must accept the candidate host contract.
+4. Re-measure under a new bounded authorization.
 
 ## Mechanism metrics
 
 | Metric | B1 | C1 | C2 | B2 |
 |---|---|---|---|---|
 | Volatile answers that state a date | 8/8 | 8/8 | 8/8 | 7/8 |
-| Abstention and absence answers with an absence phrase (regex; includes scoped uses) | 6/16 | 8/16 | 6/16 | 9/16 |
+| Abstention and absence answers with an absence phrase (regex; includes scoped statements and negations, so it does not measure unscoped claims) | 6/16 | 8/16 | 6/16 | 9/16 |
 | Avoid matches in abstention and absence | 0 | 3 | 2 | 0 |
 | Execute scripts that read `inconclusive` or `asOf` | 0 | 13 | 7 | 0 |
 | Execute results with a footer | 27/48 | 51/56 | 44/52 | 27/46 |
@@ -165,7 +211,9 @@ supplies a test, not new wording.
 | Plan regrade, required covered | 28/34 | 28/34 | 27/34 | 29/34 |
 
 All C-arm avoid matches in the abstention and absence slices come from the Strupey row and the
-contracts-domain row.
+contracts-domain row. The date regex misses the Unicode date in the B2 quantum answer, so 7/8 is
+not a complete manual date audit. The review's manual behavior counts (skill-shape errors, failed
+calls with omitted reasons) are in [`review-result-astra.md`](review-result-astra.md).
 
 ## Spend
 
