@@ -32,7 +32,7 @@ Authorization: the orchestrator signed it on 2026-10-11 under the owner's delega
 | Judge-stability register | Generated once from the stored results in the main checkout (538 cases, 199 artifacts), frozen read-only outside the runner. SHA-256 `73ed8a11f5ac290da200c3753eb2133814de5afb391c90ed94170efd5ac1b793` |
 | Server `.dev.vars` identity | One fresh salt for both worktrees. Both gave the same 10 names and hash `e4e67a8dc2ae9065a7410f749e1d341802cec182788edd0800e79c6d6a9faaa1`. |
 | Baseline surface | `656feeef8966cbac326db00479f69b3171c401e94c5c4239364d04a28e754c4a` (instructions 7,864 characters) |
-| Candidate surface | PENDING |
+| Candidate surface | `3de271a5ae860db88eaa84c8bf5644bb4456484bc272add757ccc5aeaef74d9d` (instructions 7,839 characters) |
 
 ## Case swap (before spend)
 
@@ -53,3 +53,30 @@ q-edge-noinfo-sep-9999,q-edge-noinfo-stellar-pos-staking-rewards,q-edge-noinfo-s
 ```
 
 All 34 IDs resolve in `eval/qa/cases.json` at the baseline revision, and all are `active`.
+
+## Collections
+
+| Run | Arm | Result stamp | Rows | `comparable` | Cost USD |
+|---|---|---|---|---|---|
+| B1 | Baseline | `2026-10-11T08-17-16` | 34 | true | 11.64 |
+| C1 | Candidate | `2026-10-11T09-04-33` | 34 | true | 12.08 |
+| C2 | Candidate | `2026-10-11T09-48-55` | 34 | true | 11.65 |
+| B2 | Baseline | `2026-10-11T10-36-13` | 34 | true | 11.85 |
+
+Each server start re-asserted its revision and surface before the next paid call. The baseline
+surface matched `656feeef…` at both starts. The candidate surface matched `3de271a5…`.
+
+## Consistent-change list (recorded before the re-judge spend)
+
+Rule: both candidate grades differ from both baseline grades in the same direction, after T4 and
+T5 exclusions.
+
+- `q-edge-strupey-ambiguous-stellar-history` (abstention): regression. B correct, correct; C wrong, wrong.
+- `q-gap-contracts-domain-empty` (absence): regression. B correct, correct; C wrong, wrong.
+- `q-eco-most-active-defi-projects` (volatile): improvement. B wrong, wrong; C correct, correct.
+- `q-pc-quantum-preparedness-dormant` (volatile): improvement. B partial, partial; C correct, correct.
+
+Excluded: `q-edge-open-world-recovery-after-narrow-miss`. C1 has a judge consistency failure (T4).
+Noise floor: B1 and B2 disagree on 8 rows. C1 and C2 disagree on 7 rows.
+
+Re-judge selection: these four IDs, once in B1 and once in C1.
