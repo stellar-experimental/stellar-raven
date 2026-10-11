@@ -196,6 +196,102 @@ The arms wait for each other at each row, so a wait in one arm delays both arms.
 - The old run's `--remove-worktrees` step is complete. Its cleanup record has `complete: true`, and no `paired-*` worktree remains.
 - The launch must still run on a weekend UTC day, and it captures a new capacity record and a new stable vector.
 - Stop all trial probe traffic before the launch, so that the shared key can recover before the capacity and stable checks.
+
+### Attempt 2: stopped before paid work
+
+Attempt 2 ran from launch revision `826be10f`, which contains the guard retry fix.
+Its capacity check passed at `2026-10-11T02:45:44Z`.
+Its stable pre-arm probe then failed at about 02:55Z, before plan assembly.
+That was about 30 minutes after the orchestrator's trial probes ended.
+The probe's last stderr lines show HTTP 429 on "Stellar Docs settings" and "Stellar Docs title page count".
+Each request failed its 3 attempts, and the probe exited.
+No plan was assembled or signed. No P6, collection, or judge phase ran. The spend was `$0`.
+The record is archived at `eval/qa/results/2026-10-11-paired-attempt-2-prelaunch` in the main checkout.
+
+### Key limit evidence
+
+The probe uses the public DocSearch key. A read with that key reports its own limits:
+`maxQueriesPerIPPerHour: 1000` and `maxHitsPerQuery: 100`.
+Algolia documents the first limit as API calls per hour for each IP address and key.
+It returns HTTP 429 above the limit.
+
+Attempt 1 made 580 probes in 109.2 minutes over both arms.
+Each probe made 3 Algolia calls: settings, title page count, and remaining title pages.
+That is 1,740 calls in 109.2 minutes, or about 956 calls per hour: 96% of the limit.
+The PR #265 retry waits at most about 3.5 minutes, so it cannot recover an hourly limit.
+
+### Fix: fewer Algolia calls
+
+1. The probe reads title pages 0 to 9 in one multi-query request, with the settings read in parallel.
+   It keeps only the pages below the reported `nbPages`. The existing `nbPages <= 10` bound stays.
+   All previous checks stay: page numbers, equal `nbPages` and `nbHits` on every page, and
+   `nbHits === hits.length`. A page past `nbPages` must also be empty.
+   So one probe makes 2 Algolia calls, not 3, and 6 public requests, not 7.
+   The key caps each page at 100 hits, and the bound allows 1,000 titles. A larger set fails closed as truncated.
+   The vector is byte-identical for the same upstream pages. A unit test proves it.
+2. The probe now has one Algolia phase, so its process timeout is `75,000 ms`, not `145,000 ms`.
+   This replaces the worst-case figures above: one capture waits at most 4 × `75,000 ms` + `210,000 ms` = `510,000 ms` (8.5 min).
+3. The capacity contract is now `qa-paired-capacity-check-v3`: 12 responses, with Scout 2, Lumenloop 6, and Stellar Docs 4.
+4. The guard writes schema `qa-remote-identity-guard-v3`. A before-call check reuses the previous call's
+   after-call capture when no call started since and that capture is at most 60 s old.
+   Otherwise it captures fresh. The first before-call check and the postflight always capture fresh.
+   Each entry in `checks[]` records `checkedAt` and `reusedFromSequence`.
+   The record counts fresh probes in `successfulCaptureCount` and reuses in `reusedCaptureCount`.
+   Every comparison and the cancellation check before the answering call stay.
+   `eval/qa/paired-verdict.mjs` accepts only v3. A reuse must point to the immediately previous,
+   fresh after-call check of the previous call, with the same vector, at most 60 s earlier.
+5. The PR #265 capture retry and cancellation behavior did not change.
+
+This fix changes the probe, capacity check, guard, and paired-verdict file hashes.
+The preview hash tables above are history. Plan assembly recomputes every pin, so no pin needs a manual edit.
+
+The stop rule meaning does not change, so the dated plan needs no new note.
+The guard still stops an arm for an identity change, four failed attempts for one capture, or a pre-arm mismatch.
+A reused check can only delay the detection of a change by one call: the next after-call check finds it.
+
+### Algolia call budget
+
+The budget uses attempt 1's pace: 145 rows in 109.2 minutes for each arm.
+That is 79.7 rows per hour for each arm, or 159.3 rows per hour for both arms.
+
+Attempt 1 had 288 row boundaries. At 286 of them, the next before-call capture came at most 60 s after the after-call capture.
+The baseline arm had 0 longer boundaries. The candidate arm had 2, and the longest was 78.2 s.
+So a row needs about 1 + 2/288 = 1.007 fresh captures.
+
+| Load | Calls per hour |
+| --- | ---: |
+| Previous design: 2 captures × 3 calls per row, both arms | about 956 |
+| New design, expected: 1.007 captures × 2 calls per row, both arms | about 321 |
+| New design, no reuse at all: 2 captures × 2 calls per row, both arms | about 637 |
+| One-time calls: capacity check 4, stable probe 6, first before-call checks 4, postflights 4 | 18 in total |
+
+The first hour holds the capacity check, the stable probe, and the first rows.
+Its expected load is 10 + 4 + 321 = about 335 calls. That leaves a margin of about 665 calls (66%) under 1,000.
+Without any reuse, the first hour is about 651 calls, with a margin of about 349 calls.
+A full run of 200 rows for each arm makes about 824 Algolia calls in about 151 minutes.
+Probe retries and capture retries add calls. The budget does not include them.
+Algolia documents that the limit applies to each of the three servers in a cluster. This budget counts against one server.
+
+The orchestrator must leave the key idle for at least one hour before the launch.
+The idle hour ends at the capacity check, which is the first Algolia call of the launch.
+In that hour, no trial probe, live comparison, or other process on this IP may use the public DocSearch key.
+
+### Live comparison
+
+One live comparison ran at `2026-10-11T03:57:41Z`, about one hour after the attempt 2 HTTP 429.
+It ran the `826be10f` probe and then the new probe in one process, with no retry.
+Both probes returned the same vector bytes, with vector SHA-256 `1a927dce…`.
+That vector equals the attempt 1 pre-arm vector.
+The old probe made 3 Algolia calls, and the new probe made 2.
+
+The title set had 674 `lvl1` hits. Algolia reported `nbPages: 7` and `hitsPerPage: 100` on every page.
+So the key's `maxHitsPerQuery: 100` caps the requested `hitsPerPage: 1000`.
+Pages 0 to 5 had 100 hits, and page 6 had 74.
+Pages 7 to 9 had 0 hits, with the same `nbPages` and `nbHits` as the used pages.
+No Algolia response had an `X-RateLimit-*` header.
+So the run could not measure whether the limit counts a multi-query request as one call.
+The budget uses Algolia's documented rule: the limit counts API calls.
+That run was the last use of the key from this lane, at `03:57:41Z`.
 - Identify the archived record in the new attempt's record.
 
 ## Launch window and values
