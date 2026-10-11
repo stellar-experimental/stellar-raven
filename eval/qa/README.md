@@ -107,7 +107,11 @@ The probe covers Scout OpenAPI, Lumenloop's public inventory, and Stellar Docs s
 It receives only `PATH` and records no repository credentials.
 [probe-remote-identities.mjs](probe-remote-identities.mjs) defines canonicalization, retry limits, and timeout bounds.
 
-The runner captures remote identity around every answering call and during final postflight.
+The runner checks remote identity around every answering call and during final postflight.
+A before-call check reuses the previous call's after-call capture when no call started since and that capture is at most 60 s old.
+Otherwise it captures fresh. The first before-call check and the postflight always capture fresh.
+A reused vector goes through the same comparisons, and its entry in `meta.remoteIdentityGuard.checks[]` records `reusedFromSequence`.
+The probe makes two Algolia calls: Stellar Docs settings, and one multi-query request for title pages 0 to 9.
 When the probe is unavailable, the guard repeats that one capture after 30 s, 60 s, and 120 s.
 `meta.remoteIdentityGuard.failedCaptureAttempts[]` records each failed attempt with its kind and sanitized probe reason.
 The reason is the last `remote-identity-probe: ` stderr line, kept only when it matches a known probe message form.

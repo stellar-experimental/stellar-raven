@@ -11,6 +11,7 @@ import { pathToFileURL } from "node:url";
 import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
 import {
+  REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS,
   REMOTE_IDENTITY_CAPTURE_RETRY_DELAYS_MS,
   REMOTE_IDENTITY_GUARD_SCHEMA,
   REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS,
@@ -212,8 +213,58 @@ function sameCall(left, right) {
   return left.phase === right.phase && left.id === right.id && left.attempt === right.attempt;
 }
 
-/** A comparable record keeps every failed attempt, and a later capture of that call succeeded. */
-function validateFailedCaptureAttempts(failedAttempts, captures) {
+const GUARD_CHECK_KEYS = [
+  "attempt",
+  "checkedAt",
+  "id",
+  "phase",
+  "reusedFromSequence",
+  "sequence",
+  "vectorSha256"
+];
+
+/**
+ * Checks alternate before and after for each call and end with a fresh postflight. Only a
+ * later before-call check may reuse a capture: the after-call capture of the previous call,
+ * with no check between them, at most the reuse age old.
+ */
+function validateGuardChecks(checks, baselineSha256) {
+  for (const [index, check] of checks.entries()) {
+    const postflightCheck = index === checks.length - 1;
+    const expectedPhase = postflightCheck ? "postflight" : index % 2 === 0 ? "before" : "after";
+    if (
+      !check ||
+      typeof check !== "object" ||
+      !same(Object.keys(check).sort(), GUARD_CHECK_KEYS) ||
+      check.sequence !== index + 1 ||
+      check.phase !== expectedPhase ||
+      (postflightCheck
+        ? check.id !== null || check.attempt !== null
+        : typeof check.id !== "string" || !check.id || !Number.isInteger(check.attempt) || check.attempt < 1) ||
+      check.vectorSha256 !== baselineSha256 ||
+      isoTimestampMs(check.checkedAt) === null
+    ) {
+      throw new Error("guard check is invalid");
+    }
+    if (check.reusedFromSequence === null) continue;
+    const source = checks[index - 1];
+    const ageMs = isoTimestampMs(check.checkedAt) - isoTimestampMs(source?.checkedAt);
+    if (
+      check.phase !== "before" ||
+      index === 0 ||
+      check.reusedFromSequence !== source.sequence ||
+      source.phase !== "after" ||
+      source.reusedFromSequence !== null ||
+      source.vectorSha256 !== check.vectorSha256 ||
+      !(ageMs >= 0 && ageMs <= REMOTE_IDENTITY_CAPTURE_REUSE_MAX_AGE_MS)
+    ) {
+      throw new Error("guard check reuse is invalid");
+    }
+  }
+}
+
+/** A comparable record keeps every failed attempt, and a later fresh capture of that call succeeded. */
+function validateFailedCaptureAttempts(failedAttempts, checks) {
   const failedAttemptsByCall = new Map();
   let previousFailedAtMs = -Infinity;
   for (const [index, entry] of failedAttempts.entries()) {
@@ -239,8 +290,8 @@ function validateFailedCaptureAttempts(failedAttempts, captures) {
     }
     const callKey = JSON.stringify([entry.phase, entry.id, entry.attempt]);
     const captureAttempt = (failedAttemptsByCall.get(callKey) ?? 0) + 1;
-    const success = captures.find((capture) => sameCall(capture, entry));
-    const successAtMs = isoTimestampMs(success?.capturedAt);
+    const success = checks.find((check) => check.reusedFromSequence === null && sameCall(check, entry));
+    const successAtMs = isoTimestampMs(success?.checkedAt);
     if (
       entry.captureAttempt !== captureAttempt ||
       captureAttempt >= REMOTE_IDENTITY_MAX_CAPTURE_ATTEMPTS ||
@@ -337,9 +388,11 @@ function artifactProblems(result, label) {
       remoteGuard.probe.sha256 !== remoteGuard.probe.expectedSha256 ||
       !Number.isInteger(remoteGuard.completedAnsweringCalls) ||
       remoteGuard.completedAnsweringCalls < result.rows.length ||
-      remoteGuard.successfulCaptureCount !== remoteGuard.completedAnsweringCalls * 2 + 1 ||
-      !Array.isArray(remoteGuard.captures) ||
-      remoteGuard.captures.length !== remoteGuard.successfulCaptureCount ||
+      !Array.isArray(remoteGuard.checks) ||
+      remoteGuard.checks.length !== remoteGuard.completedAnsweringCalls * 2 + 1 ||
+      remoteGuard.successfulCaptureCount !==
+        remoteGuard.checks.filter((check) => check?.reusedFromSequence === null).length ||
+      remoteGuard.reusedCaptureCount !== remoteGuard.checks.length - remoteGuard.successfulCaptureCount ||
       remoteGuard.postflight?.attempted !== true ||
       remoteGuard.postflight.matches !== true ||
       remoteGuard.postflight.skippedReason !== null
@@ -360,7 +413,6 @@ function artifactProblems(result, label) {
     if (!compareRemoteIdentityVectors(remoteGuard.baselineVector, remoteGuard.finalVector).matches) {
       throw new Error("guard vectors differ");
     }
-    const callCaptures = remoteGuard.captures.slice(0, -1);
     const retryPolicy = remoteGuard.captureRetryPolicy;
     if (
       remoteGuard.cancellation !== null ||
@@ -370,17 +422,8 @@ function artifactProblems(result, label) {
     ) {
       throw new Error("guard retry record is incomplete");
     }
-    validateFailedCaptureAttempts(remoteGuard.failedCaptureAttempts, remoteGuard.captures);
-    if (
-      remoteGuard.captures.at(-1)?.phase !== "postflight" ||
-      remoteGuard.captures.at(-1)?.sequence !== remoteGuard.successfulCaptureCount ||
-      remoteGuard.captures.some((capture) => capture.vectorSha256 !== baselineSha256) ||
-      callCaptures.some((capture, index) => (
-        capture.sequence !== index + 1 || capture.phase !== (index % 2 === 0 ? "before" : "after")
-      ))
-    ) {
-      throw new Error("guard capture sequence is incomplete");
-    }
+    validateGuardChecks(remoteGuard.checks, baselineSha256);
+    validateFailedCaptureAttempts(remoteGuard.failedCaptureAttempts, remoteGuard.checks);
   } catch {
     problems.push(
       reason("remote-identity-guard", `${label} does not contain a complete remote identity guard`)
