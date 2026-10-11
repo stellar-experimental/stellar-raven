@@ -299,6 +299,11 @@ Done when: ok results carry measured inconclusive and as-of signals, the instruc
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
+Status (2026-10-11): implemented on `w1010/a`. The measurement failed on
+`q-edge-strupey-ambiguous-stellar-history`, so the merge is blocked. Next: restore "otherwise say
+unverified or ask for context" and re-measure under a new authorization. See
+`.agents/rounds/2026-10-10-weekend/answer-style/measurement-ledger.md`.
+
 Status (2026-10-10): branch `w1010/a` implements the signals and drops four phrasing rules
 (7,864 to 7,839 characters). The [design note](rounds/2026-10-10-weekend/answer-style/design.md)
 names each change. The [measurement brief](rounds/2026-10-10-weekend/answer-style/measurement-plan.md)

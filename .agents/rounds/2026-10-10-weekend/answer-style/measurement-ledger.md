@@ -80,3 +80,101 @@ Excluded: `q-edge-open-world-recovery-after-narrow-miss`. C1 has a judge consist
 Noise floor: B1 and B2 disagree on 8 rows. C1 and C2 disagree on 7 rows.
 
 Re-judge selection: these four IDs, once in B1 and once in C1.
+
+## Directed re-judge
+
+| Run | Re-judge stamp | Cost USD |
+|---|---|---|
+| B1 | `2026-10-11T10-37-13-rejudge` | 0.33 |
+| C1 | `2026-10-11T10-38-57-rejudge` | 0.36 |
+
+| ID | B1 stored → re-judge | C1 stored → re-judge | Outcome |
+|---|---|---|---|
+| `q-edge-strupey-ambiguous-stellar-history` | correct → partial (effective; judge consistency flag `partial-without-issue`) | wrong → wrong (avoid 1 and 2 fire again) | Reproduced: C stays below B |
+| `q-gap-contracts-domain-empty` | correct → partial | wrong → partial | Not reproduced: judge variance |
+| `q-eco-most-active-defi-projects` | wrong → wrong | correct → correct | Reproduced improvement |
+| `q-pc-quantum-preparedness-dormant` | partial → partial | correct → correct | Reproduced improvement |
+
+## Live checks
+
+- `q-edge-strupey-ambiguous-stellar-history` (2026-10-11T10:42Z, public Scout API):
+  `/api/projects/resolve?q=Strupey` returns `found: false`. Its note says "No project in this
+  directory is named \"Strupey\"". `/api/projects/search?q=Strupey` returns one row, Stroopy.AI,
+  with `matchMode: "corrected"`: the query token does not occur in the row. Lumenloop
+  `get_project` for `stroopy-ai` in the C1 transcript has `other_names: []`. Both candidate answers
+  present Stroopy.AI's SCF history as the history of "Strupey". The wrong grade stands.
+- `q-eco-stablecoins-on-stellar` (wrong in C1, C2, and B2): Scout `/api/stablecoins` (dataAsOf
+  2026-10-11T06:01Z) has 41 rows. The top `marketCapUSD` row is $537.6M, which matches the USDY
+  row in the answers. The wrong grade is about product-class labels, not service data. It is not a
+  consistent change.
+- `q-gap-contracts-domain-empty`: the candidate claim "the host marks an ok empty result
+  `inconclusive: \"empty\"`" is true for the candidate host. The change did not survive the
+  re-judge, so no live check can confirm it.
+- Not live-checked, because each is a single-run wrong and not a consistent change:
+  `q-edge-noinfo-stellar-native-privacy-default` (C2; a check needs the Stellar Docs Algolia key,
+  which this authorization reserves for the probe), `q-pc-sequence-numbers-ordering-replace` (C2;
+  a stable CAP-0021 `minSeqNum` omission), and `q-defi-defindex-honest` (wrong in B1, C1, and C2;
+  `truth.status: "disputed"`).
+
+## Result: FAIL
+
+Reading rule 3 needs zero confirmed consistent regressions in abstention and absence together.
+`q-edge-strupey-ambiguous-stellar-history` (abstention) is a consistent regression. It survived
+the re-judge and the live check. Rule 4 applies: the result is FAIL, and the merge is blocked.
+
+| Slice | Rows | Excluded | Consistent regressions (confirmed) | Consistent improvements (re-judged) |
+|---|---|---|---|---|
+| Abstention | 8 | 0 | 1 (1) | 0 |
+| Absence | 8 | 1 | 1 (0) | 0 |
+| Volatile | 8 | 0 | 0 | 2 |
+| Control | 10 | 0 | 0 | 0 |
+
+Wrong counts (read first): B1 2, C1 4, C2 6, B2 3. Correct counts: B1 24, C1 22, C2 24, B2 23.
+Noise floor: B1 and B2 disagree on 8 rows. C1 and C2 disagree on 7 rows.
+
+Smallest removed sentence that the failed row needs: "…otherwise say unverified or ask for
+context." (the tail of the attribution rule). The C1 script read `inconclusive: "candidates"` on
+the Scout row, and the footer marked it. The answer still promoted the corrected match to the
+subject. The signal reached the client, but it did not replace the rule. Rule 6 applies: the row
+supplies a test, not new wording.
+
+## Monitor-only observations
+
+- `q-gap-contracts-domain-empty`: both candidate answers repeat the new `inconclusive: "empty"`
+  label for an ok empty result. C2 also merges it with soft-empty ("an empty/`soft-empty` result
+  is `inconclusive`"). The re-judge did not confirm a regression. The shared word "inconclusive"
+  for soft-empty and for an ok field still puts the AGENTS.md soft-empty versus data distinction
+  at risk. The golden says an ok empty result "is not a soft-empty error envelope".
+- `q-edge-open-world-recovery-after-narrow-miss`: the C1 answer quotes the
+  `inconclusive: "empty"/"candidates"` mechanics. The judge then failed its consistency check
+  (T4).
+- Two volatile rows improved and reproduced on re-judge. They do not offset an abstention
+  regression under the predeclared rules.
+
+## Mechanism metrics
+
+| Metric | B1 | C1 | C2 | B2 |
+|---|---|---|---|---|
+| Volatile answers that state a date | 8/8 | 8/8 | 8/8 | 7/8 |
+| Abstention and absence answers with an absence phrase (regex; includes scoped uses) | 6/16 | 8/16 | 6/16 | 9/16 |
+| Avoid matches in abstention and absence | 0 | 3 | 2 | 0 |
+| Execute scripts that read `inconclusive` or `asOf` | 0 | 13 | 7 | 0 |
+| Execute results with a footer | 27/48 | 51/56 | 44/52 | 27/46 |
+| Mean footer characters (when present) | 980 | 750 | 833 | 966 |
+| Execute errors (`isError`) | 1 | 1 | 3 | 1 |
+| Plan regrade, required covered | 28/34 | 28/34 | 27/34 | 29/34 |
+
+All C-arm avoid matches in the abstention and absence slices come from the Strupey row and the
+contracts-domain row.
+
+## Spend
+
+Collections $47.23 (B1 11.64, C1 12.08, C2 11.65, B2 11.85). Re-judges $0.69. Total $47.92 of the
+$84 cap. Every budgeted call reported a cost (`missingCosts` 0 in all six artifacts).
+
+## Records
+
+Result JSON, plan regrades, re-judge artifacts, surface reports, and the frozen register stay local
+under `eval/qa/results/2026-10-11-answer-style/` in the `w1010/a` worktree (gitignored). The
+runner worktree `raven-w1010-a-qa-runner` holds the originals. The two server worktrees were
+removed after the run.

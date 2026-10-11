@@ -1,9 +1,11 @@
 # Answer-style signals — pre-spend QA measurement brief
 
-Status: **reviewed, not authorized.** No paid call and no server start happened in this lane.
+Status: **authorized and run on 2026-10-11. Result: FAIL.** The pins, the case swap, and the
+results are in [`measurement-ledger.md`](measurement-ledger.md).
 Claude Fable 5.1 reviewed this brief as the independent pre-spend reviewer
 (`/private/tmp/claude-501/w1010/ar-review.md`). Its findings P1 to P5 are reconciled below, and
-the "Review reconciliation" section maps each one. The owner must authorize the budget.
+the "Review reconciliation" section maps each one. The orchestrator authorized the budget under
+the owner's delegation.
 
 Change under test: [`design.md`](design.md) (branch `w1010/a`).
 
