@@ -1318,7 +1318,7 @@ const WRITTEN_DATE_AFTER_DAY = /^(?:st|nd|rd|th)?,?\s+(?:19|20)\d{2}\b/;
 const BARE_NUMBER_RE = /^\d[\d,]*(?:\.\d+)?$/;
 const QUOTED_SEPARATOR = "[^\\p{L}\\p{N}]+(?:[\\p{L}\\p{N}]{1,12}[^\\p{L}\\p{N}]+){0,2}?";
 const VERSION_ANCHOR_RE =
-  /(?<![\p{L}\p{N}.])(?:v\d+(?:\.\d+)+|\d+\.\d+\.\d+(?:\.\d+)?)(?:-(?:alpha|beta|rc|pre|preview|dev|canary|next)(?:\.?\d+)*)?(?![\p{L}\p{N}]|[.-][\p{L}\p{N}])/giu;
+  /(?<![\p{L}\p{N}.])(?:v\d+(?:\.\d+)+|\d+\.\d+\.\d+(?:\.\d+)?)(?:-(?:alpha|beta|rc|pre|preview|dev|canary|next)\d*(?:\.\d+)*)?(?![\p{L}\p{N}]|[.-][\p{L}\p{N}])/giu;
 
 function isErrorEntry(entry) {
   return Boolean(entry.isError) || /^Execution failed:/i.test(String(entry.result ?? ""));
