@@ -319,6 +319,9 @@ function validateP6Contract(plan, identities) {
   if (typeof p6?.summaryArtifactPath !== "string" || !path.isAbsolute(p6.summaryArtifactPath)) {
     throw new Error("p6.summaryArtifactPath must be an absolute path");
   }
+  if (typeof p6?.listenersPath !== "string" || !path.isAbsolute(p6.listenersPath)) {
+    throw new Error("p6.listenersPath must be an absolute path");
+  }
   const runner = plan.worktrees[`${p6.runnerArm}Runner`];
   const runnerIdentity = identities[p6.runnerArm === "baseline" ? 0 : 1];
   const hashes = plan.arms[p6.runnerArm].inputHashes;
@@ -333,6 +336,8 @@ function validateP6Contract(plan, identities) {
     hashes.agentBinarySha256,
     "--expect-claude-environment-sha256",
     hashes.agentEnvironmentSha256,
+    "--paired-listeners",
+    p6.listenersPath,
     "--out",
     p6.summaryArtifactPath
   ];

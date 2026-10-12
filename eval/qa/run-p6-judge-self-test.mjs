@@ -11,6 +11,7 @@ import {
   executableIdentity
 } from "../lib/executable-identity.mjs";
 import {
+  assertDualBoundServersUnchanged,
   assertStableGitWorktreeIdentity,
   gitWorktreeIdentity
 } from "../lib/bound-server-identity.mjs";
@@ -191,6 +192,7 @@ export function runP6JudgeSelfTest({
   spawnSyncImpl = spawnSync,
   judgePath = JUDGE_PATH,
   attestIdentity = (expected) => attestP6SelfTestIdentity(expected),
+  beforeCall = () => {},
   log = console.log
 } = {}) {
   if (JUDGE_SELF_TEST_CANDIDATE_COUNT !== P6_SELF_TEST_CALLS) {
@@ -205,6 +207,7 @@ export function runP6JudgeSelfTest({
   const callRecords = [];
   for (let index = 0; index < P6_SELF_TEST_CALLS; index++) {
     assertStableP6SelfTestIdentity(before, attestIdentity(pins));
+    beforeCall(index);
     const child = spawnSyncImpl(process.execPath, candidateArgs(judgePath, index, before), {
       encoding: "utf8",
       maxBuffer: 4 * 1024 * 1024
@@ -254,6 +257,7 @@ export function parseP6SelfTestCli(args) {
     "--expect-claude-environment-sha256"
   ]);
   let out;
+  let pairedListeners;
   const values = {};
   for (let index = 0; index < args.length; index += 2) {
     const flag = args[index];
@@ -263,6 +267,13 @@ export function parseP6SelfTestCli(args) {
         throw new Error("p6 judge self-test requires one spaced --out path");
       }
       out = value;
+      continue;
+    }
+    if (flag === "--paired-listeners") {
+      if (!value || !path.isAbsolute(value) || pairedListeners !== undefined) {
+        throw new Error("p6 judge self-test requires one absolute --paired-listeners path");
+      }
+      pairedListeners = value;
       continue;
     }
     if (!flags.has(flag) || !value || value.startsWith("--") || Object.hasOwn(values, flag)) {
@@ -286,8 +297,20 @@ export function parseP6SelfTestCli(args) {
       SHA256_PATTERN,
       "--expect-claude-environment-sha256"
     ),
-    out
+    out,
+    ...(pairedListeners === undefined ? {} : { pairedListeners })
   };
+}
+
+// A paired launch passes its recorded listeners. Each paid call then requires the same server
+// processes, so a lost port stops the remaining calls. Nothing restarts a server.
+export function pairedListenerCheck(listenersPath, { readFile = readFileSync, identify } = {}) {
+  const records = JSON.parse(readFile(listenersPath, "utf8"));
+  const pairs = Object.fromEntries(Object.entries(records).map(([arm, record]) => [arm, record.identity]));
+  if (!Object.keys(pairs).length || Object.values(pairs).some((pair) => !pair?.adapter || !pair?.upstream)) {
+    throw new Error("--paired-listeners must name recorded listener pairs");
+  }
+  return () => assertDualBoundServersUnchanged(pairs, identify ? { identify } : undefined);
 }
 
 export function assertP6OutputAvailable(
@@ -347,7 +370,8 @@ function main(args) {
     return;
   }
   if (parsed.out) assertP6OutputAvailable(parsed.out);
-  const summary = runP6JudgeSelfTest({ pins: parsed });
+  const beforeCall = parsed.pairedListeners ? pairedListenerCheck(parsed.pairedListeners) : undefined;
+  const summary = runP6JudgeSelfTest({ pins: parsed, beforeCall });
   if (parsed.out) writeP6SummaryExclusive(parsed.out, summary);
 }
 

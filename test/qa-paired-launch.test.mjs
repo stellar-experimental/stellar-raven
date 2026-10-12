@@ -11,7 +11,7 @@ import { agentEnvironmentIdentity } from "../eval/lib/executable-identity.mjs";
 import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, launchEnvironment, PORTS,
   assertServersUnchanged, listenerTargets } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
 import { assertSharedServerToolchain, SERVER_TOOLCHAIN_SCHEMA, sharedWranglerEntry } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-server-toolchain.mjs";
-import { assertStableDualBoundServerIdentity } from "../eval/lib/bound-server-identity.mjs";
+import { assertDualBoundServersUnchanged } from "../eval/lib/bound-server-identity.mjs";
 import { executeFrozen, validateStoredJudgeArtifact } from "../.agents/rounds/2026-10-01-backlog-closeout/execute-frozen.mjs";
 import { pairedCollectionPlanSha256, devVarsIdentity, validateAuthorizedPairedCollectionPlan, validatePairedCollectionPlan } from "../eval/qa/paired-collection-supervisor.mjs";
 import { assertPlanCommandSyntax, buildPairedPlan, selectionSnapshot } from "../.agents/rounds/2026-10-01-backlog-closeout/assemble-paired-plan.mjs";
@@ -621,11 +621,15 @@ describe('paired server toolchain',()=>{
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 
-  it('refuses a workerd binary override',()=>{
+  it.each([
+    ['the workerd binary','MINIFLARE_WORKERD_PATH','/tmp/workerd'],
+    ['the esbuild binary','ESBUILD_BINARY_PATH','./custom-esbuild'],
+    ['a miniflare runtime setting','MINIFLARE_WORKERD_AUTOGATES','x']
+  ])('refuses an override of %s',(_,name,value)=>{
     const {root,env}=toolchainFixture();
     try {
-      expect(()=>assertSharedServerToolchain({...env,MINIFLARE_WORKERD_PATH:'/tmp/workerd'}))
-        .toThrow(/MINIFLARE_WORKERD_PATH/);
+      expect(()=>assertSharedServerToolchain({...env,[name]:value}))
+        .toThrow(`toolchain override variables are set: ${name}`);
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 });
@@ -635,6 +639,7 @@ describe('paired server listener stop',()=>{
   const listener=(port,pid)=>({port,pid,command:port%2 ? 'workerd' : 'node',cwd:`/worktrees/${port}`,revision,dirty:false});
   const pair=({adapterPort,upstreamPort},upstreamPid)=>({adapter:listener(adapterPort,String(adapterPort)),
     upstream:listener(upstreamPort,upstreamPid ?? String(upstreamPort))});
+  const check=identify=>({assertDualBoundServersUnchanged:pairs=>assertDualBoundServersUnchanged(pairs,{identify})});
 
   function listenerFixture() {
     const root=mkdtempSync(path.join(os.tmpdir(),'paired-listeners-'));
@@ -648,10 +653,9 @@ describe('paired server listener stop',()=>{
     const {root,env}=listenerFixture();
     try {
       const targets=[];
-      assertServersUnchanged(env,'p6',{assertStableDualBoundServerIdentity,
-        dualBoundServerIdentity:target=>{targets.push(target);return pair(target);}});
+      assertServersUnchanged(env,'p6',check(target=>{targets.push(target);return pair(target);}));
       expect(targets.map(({adapterPort,upstreamPort})=>[adapterPort,upstreamPort])).toEqual([[8789,8791],[8788,8790]]);
-      expect(targets[0].upstreamRevision).toBe(env.PAIRED_BASE);
+      expect(targets[0].adapterRevision).toBe(revision);
       expect(existsSync(path.join(root,'server-stop.json'))).toBe(false);
     } finally {rmSync(root,{recursive:true,force:true});}
   });
@@ -659,25 +663,25 @@ describe('paired server listener stop',()=>{
   it('stops and records the reason when a Wrangler process exits',()=>{
     const {root,env}=listenerFixture();
     try {
-      const dualBoundServerIdentity=target=>{
+      const identify=target=>{
         if (target.upstreamPort===8791) throw new Error('bound server identity on port 8791: expected one listener process, found 0');
         return pair(target);
       };
-      expect(()=>assertServersUnchanged(env,'collection',{assertStableDualBoundServerIdentity,dualBoundServerIdentity}))
-        .toThrow(/^baseline server stopped answering on its port or changed before collection: .*found 0; stop the method and do not restart a server$/);
+      expect(()=>assertServersUnchanged(env,'collection',check(identify)))
+        .toThrow(/^before collection: baseline server stopped answering on its port or changed: .*found 0; stop the method and do not restart a server$/);
       const stop=JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8'));
-      expect(stop).toMatchObject({phase:'collection',arm:'baseline'});
-      expect(stop.reason).toMatch(/expected one listener process, found 0/);
+      expect(stop.phase).toBe('collection');
+      expect(stop.reason).toMatch(/^before collection: baseline server .*expected one listener process, found 0$/);
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 
   it('stops when a runtime restart gives a public port to another process',()=>{
     const {root,env}=listenerFixture();
     try {
-      const dualBoundServerIdentity=target=>pair(target,target.upstreamPort===8790 ? '53679' : undefined);
-      expect(()=>assertServersUnchanged(env,'p6',{assertStableDualBoundServerIdentity,dualBoundServerIdentity}))
-        .toThrow(/^candidate server stopped answering on its port or changed before p6: bound server identity changed during paid calls \(pid\)/);
-      expect(JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8')).arm).toBe('candidate');
+      const identify=target=>pair(target,target.upstreamPort===8790 ? '53679' : undefined);
+      expect(()=>assertServersUnchanged(env,'p6',check(identify)))
+        .toThrow(/^before p6: candidate server stopped answering on its port or changed: bound server identity changed during paid calls \(pid\)/);
+      expect(JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8')).reason).toMatch(/candidate server/);
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 });
@@ -740,6 +744,9 @@ describe('paired plan assembly',()=>{
       assertPlanCommandSyntax(plan,{assertRunQaCliSyntax,parseRejudge,parseP6SelfTestCli});
       // P6 runs after assembly; its summary folder is the launch-record folder that launchPaired creates.
       expect(path.dirname(plan.p6.summaryArtifactPath)).toBe(env.PAIRED_RUN);
+      // Each P6 call checks the listeners that the launch recorded.
+      expect(plan.p6.listenersPath).toBe(path.join(env.PAIRED_RUN,'listeners.json'));
+      expect(plan.p6.command.slice(-4)).toEqual(['--paired-listeners',plan.p6.listenersPath,'--out',plan.p6.summaryArtifactPath]);
       expect(()=>assertP6OutputAvailable(plan.p6.summaryArtifactPath)).not.toThrow();
       completeP6(plan);
       expect(validatePairedCollectionPlan(plan,{inspectWorktree})).toBe(plan);

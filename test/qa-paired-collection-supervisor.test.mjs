@@ -306,9 +306,11 @@ function planFixture(activeCorpusCount = 500) {
         "--claude-path", "/usr/bin/claude",
         "--expect-claude-binary-sha256", inputHashes.agentBinarySha256,
         "--expect-claude-environment-sha256", inputHashes.agentEnvironmentSha256,
+        "--paired-listeners", path.join(base.root, "listeners.json"),
         "--out", p6SummaryArtifactPath
       ],
       summaryArtifactPath: p6SummaryArtifactPath,
+      listenersPath: path.join(base.root, "listeners.json"),
       claudePath: "/usr/bin/claude",
       wrapperSha256: files.p6WrapperSha256,
       judgeSha256: files.p6JudgeSha256,
@@ -1281,6 +1283,26 @@ describe("paired QA collection supervisor", () => {
       expect(message).toContain("differs at index 14");
       expect(message).toContain("(truncated)");
       expect(message).not.toContain("hidden-tail");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["a P6 command without the paired listener check", (plan) => {
+      const index = plan.p6.command.indexOf("--paired-listeners");
+      plan.p6.command.splice(index, 2);
+    }, /p6.command must freeze the exact wrapper command/],
+    ["another listener record path", (plan) => {
+      plan.p6.command[plan.p6.command.indexOf("--paired-listeners") + 1] = "/tmp/other.json";
+    }, /p6.command must freeze the exact wrapper command/],
+    ["a relative listener record path", (plan) => { plan.p6.listenersPath = "listeners.json"; },
+      /p6.listenersPath must be an absolute path/]
+  ])("rejects %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      mutate(plan);
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

@@ -72,17 +72,16 @@ export function listenerTargets(env) {
 
 // A lost or replaced listener stops the method before the next paid phase. Never restart a server:
 // a new listener process breaks the recorded identities, and the run is no longer comparable.
-export function assertServersUnchanged(env, phase, { dualBoundServerIdentity, assertStableDualBoundServerIdentity }) {
+export function assertServersUnchanged(env, phase, { assertDualBoundServersUnchanged }) {
   const records = JSON.parse(readFileSync(`${env.PAIRED_RUN}/listeners.json`, "utf8"));
-  for (const [arm, target] of Object.entries(listenerTargets(env))) {
-    try {
-      assertStableDualBoundServerIdentity(records[arm].identity, dualBoundServerIdentity(target));
-    } catch (error) {
-      const reason = `${arm} server stopped answering on its port or changed before ${phase}: ${error.message}`;
-      writeFileSync(`${env.PAIRED_RUN}/server-stop.json`, `${JSON.stringify({phase,arm,at:new Date().toISOString(),reason},null,2)}\n`,
-        {flag:"wx",mode:0o600});
-      throw new Error(`${reason}; stop the method and do not restart a server`);
-    }
+  try {
+    assertDualBoundServersUnchanged(Object.fromEntries(Object.keys(listenerTargets(env))
+      .map((arm) => [arm, records[arm].identity])));
+  } catch (error) {
+    const reason = `before ${phase}: ${error.message}`;
+    writeFileSync(`${env.PAIRED_RUN}/server-stop.json`, `${JSON.stringify({phase,at:new Date().toISOString(),reason},null,2)}\n`,
+      {flag:"wx",mode:0o600});
+    throw new Error(`${reason}; stop the method and do not restart a server`);
   }
 }
 

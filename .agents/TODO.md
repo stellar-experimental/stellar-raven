@@ -685,9 +685,11 @@ option 1. The baseline server runs the candidate server's installed Wrangler too
 the current lockfile). The reason: 4.120.1 exits on one `ProxyWorker` error, and 4.149.0 fails only
 that request. Before any server starts, the launcher requires one identical toolchain in both
 servers, with the same `workerd` binary SHA-256. The signed plan records it. The local dev runtime
-is no longer part of the measured difference. The launcher and the supervisor also stop the method
-before the next paid call when a server stops answering on its port. Nothing restarts a server.
-See the run sheet's "2026-10-12 amendment".
+is no longer part of the measured difference. A local listener check also runs before every paid
+call: before P6 and collection, before each P6 call, before each answering attempt and retry, and
+before each row release. A lost or replaced listener stops the method. Nothing restarts a server.
+The check reads sockets and does not connect, and a short interval remains between a check and its
+call. See the run sheet's "2026-10-12 amendment" for these limits.
 
 Next step: an independent review of that change, then a fresh assembled and signed plan. A full
 collection needs about 2.5 hours of baseline uptime. Run on a quiet machine, and leave the DocSearch

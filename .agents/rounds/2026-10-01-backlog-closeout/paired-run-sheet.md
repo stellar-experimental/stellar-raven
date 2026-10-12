@@ -413,28 +413,44 @@ Before this change, nothing stopped the method when a server stopped answering:
   The adapter on the public arm port stayed up. Nothing checked the upstream port.
   Answering calls continued until a protocol failure stopped the arm.
 
-Now these checks stop the method before the next paid call:
+Now a local listener check runs before every paid call while the servers must stay available.
+Each check compares the recorded listener processes with the current ones.
+A missing listener or another process on a recorded port stops the method.
+All checks use `assertDualBoundServersUnchanged` in `eval/lib/bound-server-identity.mjs`.
+That function runs only local `lsof` and `git` commands. It makes no model call and no upstream call.
+A lost listener gives the error code `paired-server-lost`.
 
-- Before P6 and before collection, the launcher compares all four listeners with `listeners.json`.
+- **Before P6 and before collection.** The launcher compares all four listeners with `listeners.json`.
   It calls `assertServersUnchanged` from [paired-launch.mjs](paired-launch.mjs).
-  A missing listener or a different listener process stops the method.
-  The launcher writes `server-stop.json` with the phase, arm, time, and reason.
-- During collection, the supervisor checks all four listeners before it releases each row and the postflight.
+  On failure, it writes `server-stop.json` with the phase, time, and reason.
+- **Before each P6 call.** The frozen P6 command now has `--paired-listeners <run>/listeners.json`.
+  The wrapper checks all four recorded listeners before each of its seven paid calls.
+  The plan records the path as `p6.listenersPath`, and the supervisor requires the exact flag.
+- **Before each answering attempt, including a retry.** `run-qa.mjs` checks its own arm's listener pair.
+  It checks when it authorizes the attempt, and again just before the answering call, after the identity probe.
+  The remote identity guard also runs the check before each probe and during each probe retry wait.
+  So a loss during an attempt stops the arm before the after-call probe and before any retry.
+  The arm reports `paired-server-lost` to the supervisor, which cancels both arms.
+- **Before each row release and the postflight release.** The supervisor checks all four listeners.
   It calls `createServerListenerCheck` from `eval/qa/paired-collection-supervisor.mjs`.
-  The first check records the listener processes.
-  A later check fails when a listener is missing or another process owns its port.
-  The supervisor then releases no row and cancels both arms.
+  On failure, it releases no row and cancels both arms.
   Its reason starts with `server listener check failed before row <index> (<case ID>); no server restarts:`.
-  The cancellation marker, both arms' artifacts, and `collection.stderr.log` keep that reason.
-- Both checks use the `dualBoundServerIdentity` contract that `run-qa.mjs` uses at its start and postflight.
-  They read local listeners with `lsof` and local worktrees with `git`. They make no model call and no upstream call.
+- The cancellation marker, both arms' artifacts, and `collection.stderr.log` keep the reason.
+- No step restarts a server.
 
 Limits:
 
-- The supervisor checks between rows. A server that stops inside a row fails the later tool calls of that row.
-  The row completes, and the check before the next row stops the method.
-- A transport-class answering failure can start one retry in the same row before the next check.
-- After a release, the other arm's call for that row is already running. A stop cannot recall it.
+- A check reads listening sockets. It does not open a connection.
+  A listener that exists but does not accept connections passes the check.
+  The soak saw only `ECONNREFUSED`, which means that no listener existed.
+- Each check reads the four listeners in sequence. A server can fail after its own read.
+  A short interval also remains between the last check and the start of the call.
+  A server can fail in that interval, and the call then starts.
+- A server that fails during a call fails the later tool calls of that call. The call completes.
+- After the supervisor releases a row, the other arm's call can already be running. A stop cannot recall it.
+- Wrangler can restart its own runtime between checks. The next check then sees the change.
+- Each local command has a 10 s timeout. A slow or failed `lsof` or `git` command stops the method,
+  even when the server is healthy. This false stop starts no new paid call. Nothing retries the check.
 
 ### Next attempt
 
@@ -654,9 +670,10 @@ The template below remains the signature contract.
 ### 9. Run the frozen P6 command
 
 The script first compares all four listeners with `listeners.json`. A lost or changed listener stops the method.
+The P6 wrapper repeats that check before each of its seven calls (`--paired-listeners`).
 The operator calls `executeFrozen("p6", manager, env)` from [execute-frozen.mjs](execute-frozen.mjs).
 The wrapper makes seven calls at `$0.50` each, with a `$3.50` maximum.
-It uses the frozen identity flags and `--out` path.
+It uses the frozen identity flags, the `--paired-listeners` record, and the `--out` path.
 The phase runner creates `p6.started.json` before starting the wrapper.
 It records the canonical hash and phase, synchronizes the marker, and keeps it permanently.
 It opens `p6.log` and `p6.stderr.log` exclusively before spawn.

@@ -24,10 +24,15 @@ function packageIdentity(root) {
   return { name, version, root };
 }
 
+// esbuild reads ESBUILD_BINARY_PATH and miniflare reads MINIFLARE_WORKERD_PATH, which replace the
+// recorded binaries; other MINIFLARE_ settings change the runtime. The launch allows none of them.
+const TOOLCHAIN_OVERRIDE = /^(?:MINIFLARE|ESBUILD)_/;
+
 // Resolve each package the way the running server does: miniflare and esbuild from Wrangler,
 // then workerd and its binary from miniflare.
 export function serverToolchainIdentity(wranglerEntry, { env = process.env } = {}) {
-  assert.equal(env.MINIFLARE_WORKERD_PATH, undefined, "MINIFLARE_WORKERD_PATH overrides the workerd binary");
+  const overrides = Object.keys(env).filter((name) => TOOLCHAIN_OVERRIDE.test(name)).sort();
+  assert.deepEqual(overrides, [], `toolchain override variables are set: ${overrides.join(", ")}`);
   const wrangler = packageRoot(wranglerEntry, "wrangler");
   const resolveFrom = (root, name) => createRequire(path.join(root, "package.json")).resolve(name);
   const miniflare = packageRoot(resolveFrom(wrangler, "miniflare"), "miniflare");

@@ -86,6 +86,7 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
     '--cases-ref', e.PAIRED_REV, '--allow-empty', '--max-budget-usd', '15'
   ];
   const p6Path = `${e.PAIRED_RUN}/p6-summary.json`;
+  const listenersPath = `${e.PAIRED_RUN}/listeners.json`;
   return {
     schema: 'qa-paired-collection-plan-v2', deadlineMs: 14400000, selected, worktrees,
     immutableClaude,
@@ -102,13 +103,14 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
       collectionCommand:collection(arm), judgeCommand:judgeCommand(arm), inputHashes:{...hashes}
     }])),
     p6: {
-      runnerArm: 'candidate', summaryArtifactPath:p6Path, claudePath:binary.resolvedPath,
+      runnerArm: 'candidate', summaryArtifactPath:p6Path, listenersPath, claudePath:binary.resolvedPath,
       wrapperSha256:fileHash('eval/qa/run-p6-judge-self-test.mjs'), judgeSha256:fileHash('eval/qa/judge.mjs'),
       calls:7, perCallBudgetUsd:0.5, maxAuthorizedCostUsd:3.5,
       command: [process.execPath,'eval/qa/run-p6-judge-self-test.mjs',
         '--runner-revision',e.PAIRED_REV,'--claude-path',binary.resolvedPath,
         '--expect-claude-binary-sha256',hashes.agentBinarySha256,
-        '--expect-claude-environment-sha256',hashes.agentEnvironmentSha256,'--out',p6Path]
+        '--expect-claude-environment-sha256',hashes.agentEnvironmentSha256,
+        '--paired-listeners',listenersPath,'--out',p6Path]
     },
     flipRejudge: {
       implementationSha256:fileHash('eval/qa/re-judge.mjs'),

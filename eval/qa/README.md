@@ -349,6 +349,8 @@ npm run eval:qa:selftest -- \
 The wrapper requires a clean tree and checks runner, executable, and environment identities before and after judging.
 It makes seven calls with a `$0.50` per-call cap and a `$3.50` total cap.
 The output path and its `.tmp` path must not exist.
+An optional `--paired-listeners <absolute listeners.json>` checks those recorded server listeners before each call.
+A lost or replaced listener stops the remaining calls with code `paired-server-lost`.
 This command is paid and does not run in CI.
 
 ## Offline stable-row evidence diagnostic
@@ -574,7 +576,7 @@ After each stored judge, the operator requires complete judging evidence and uns
 Each arm collects under `$80`; stored judging raises the same cumulative ledger to `$120`.
 The two-arm cumulative cap is `$240`.
 
-The P6 block fixes seven `$0.50` calls and a new output path.
+The P6 block fixes seven `$0.50` calls, the launch's `--paired-listeners` record, and a new output path.
 Each directed flip re-judge has a `$15` cap, pinned executable identity, fixed judge tuple, and `--allow-empty`.
 It cannot use selection overrides, dry-run mode, or non-identical and golden-drift overrides.
 The supervisor validates the retained P6 summary before starting a child.
@@ -583,6 +585,8 @@ The supervisor enforces row barriers, alternating release order, shared cancella
 A failed guard, budget, child, or deadline cancels both arms.
 Before it releases each row and the postflight, the supervisor checks all four listeners with local `lsof` and `git` reads.
 A missing listener, or another process on a recorded port, cancels both arms. The supervisor never restarts a server.
+Each paired arm also checks its own listener pair before each answering attempt, including a retry, and again before the call.
+A lost listener stops that arm with code `paired-server-lost`, and the supervisor cancels both arms.
 It emits a receipt only after both complete artifacts pass content, selection, revision, comparability, and location checks.
 Each artifact must reside inside its arm's results directory.
 A failure emits no paired aggregate or success receipt.

@@ -138,3 +138,25 @@ export function assertStableDualBoundServerIdentity(before, after) {
     matches: true
   };
 }
+
+export const SERVER_LOST_CODE = "paired-server-lost";
+
+// Re-read each recorded listener pair and require the same processes. A missing listener, or
+// another process on a recorded port, throws. Only local lsof and git commands run; this never
+// restarts a server.
+export function assertDualBoundServersUnchanged(recordedPairs, { identify = dualBoundServerIdentity } = {}) {
+  for (const [label, recorded] of Object.entries(recordedPairs)) {
+    try {
+      assertStableDualBoundServerIdentity(recorded, identify({
+        adapterPort: recorded.adapter.port,
+        adapterRevision: recorded.adapter.revision,
+        upstreamPort: recorded.upstream.port,
+        upstreamRevision: recorded.upstream.revision
+      }));
+    } catch (error) {
+      const lost = new Error(`${label} server stopped answering on its port or changed: ${error.message}`);
+      lost.code = SERVER_LOST_CODE;
+      throw lost;
+    }
+  }
+}
