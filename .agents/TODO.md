@@ -428,7 +428,7 @@ Branch `w1012/j` (2026-10-12) implements the next repair as pack `p9`, on top of
 It keeps the sibling records of every entity list in a claim sentence. It measures that coverage
 on the final text after every budget cut.
 The [design and offline replay](rounds/2026-10-12-pack-p9/design.md) show 65 of 70 sibling records
-in the 32 measured rows (p8: 11), with a record-scoped measure (reviews RJ and RJ2). The R8-1 row shows 11 of 11
+in the 32 measured rows (p8: 11), with a record-scoped measure (reviews RJ, RJ2, and RJ3). The R8-1 row shows 11 of 11
 (p8: 5). The p8 omission repairs hold. The 4-field and 12-unit limits cause the 5 missing records.
 In the control rows, 5 rows lose 1 to 3 answer probes against p8.
 The [measurement plan](rounds/2026-10-12-pack-p9/measurement-plan-p9.md) predeclares the R6 rule.

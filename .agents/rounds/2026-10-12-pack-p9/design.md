@@ -1,7 +1,7 @@
 # Pack p9: sibling records for entity-list claims
 
 Date: 2026-10-12. Author: Claude Opus 5.5 (lane J). Status: offline only. No model call was made.
-Branch `w1012/j`, rebased on `origin/main` `63396840`. The p9 code is commit `e0dd1953` (first `4b4fb9e2`; review RJ fixes in `d07fffc8`, `4bfcdb4d`, and `89ff6313`; review RJ2 fix in `e0dd1953`).
+Branch `w1012/j`, rebased on `origin/main` `63396840`. The p9 code is commit `05e520fc` (first `4b4fb9e2`; review RJ fixes in `d07fffc8`, `4bfcdb4d`, and `89ff6313`; review RJ2 fix in `e0dd1953`; review RJ3 fix in `05e520fc`).
 The plan for a paid measurement is [measurement-plan-p9.md](measurement-plan-p9.md). It authorizes nothing.
 
 ## Why
@@ -40,7 +40,8 @@ p9 adds one unit type, the entity-list unit (`role=entity-list`). The code is in
 The measure (`entityListCoverage`, exported) runs on rendered source text only (`packSourceEvidenceText`).
 A small parser splits each line into record scopes (reviews RJ-1 and RJ2). Each object in braces is one scope
 that owns only its direct fields. A nested object is its own scope. A quoted value is read whole, so text inside it
-never reads as a field. Offsets are UTF-16 code units throughout. An object that the line clips runs to the line end.
+never reads as a field. A quoted token without its closing quote is unfinished and never counts.
+A complete double-quoted token is decoded by JSON string rules. Offsets are UTF-16 code units throughout. An object that the line clips runs to the line end.
 The text outside every object is one more scope. A source-item line's `fields="..."` value reads as fields of that item.
 A line that starts inside a clipped string is read with that string closed first.
 A record counts as shown when one scope holds its exact identity value and the exact value of each non-null claim field.
@@ -56,7 +57,7 @@ p9 keeps every p8 rule. A pack with no entity-list unit keeps the p8 text byte f
 
 ## Replay
 
-[replay-p9.mjs](replay-p9.mjs) wrote [replay-p9.json](replay-p9.json) at `e0dd1953` with a clean pack module.
+[replay-p9.mjs](replay-p9.mjs) wrote [replay-p9.json](replay-p9.json) at `05e520fc` with a clean pack module.
 It makes no model call. It loads p6 (`d15a4ce5`), p7 (`7e00ede2`), and p8 (`36e77d40`) from git.
 
 The arm worktrees of the p7 and p8 runs no longer exist. Their re-judge artifacts are in
@@ -226,6 +227,16 @@ resolved. It returned CODE: CHANGES and PLAN: BLOCKED on `740c24f6`.
 The parser also unwraps a source-item line's `fields="..."` value (1 fixture), which the p8 shape needs.
 The pack text did not change: all p9 packs and prompts in the replay are the same as at `89ff6313`.
 Only the p6 control count moves (172 to 174 records), because the parser reads two more p6 records correctly.
+
+The second delta review (`/private/tmp/claude-501/w1012/rj3-review.md`) confirmed RJ2-1 and RJ2-2 resolved.
+It returned CODE: CHANGES and PLAN: BLOCKED on `369ab7c4`.
+
+| Finding | Fix | Evidence |
+|---|---|---|
+| RJ3-1: an unfinished quoted token counted as a complete identity or claim value | A token without its closing quote adds no field; the object's other complete fields still count | 3 fixtures: unfinished identity, unfinished claim value, complete fields beside an unfinished token |
+| RJ3-2: JSON escapes were not decoded (`\u0041lpha`) | A complete double-quoted token, key or value, is decoded by JSON string rules | 1 fixture: escaped identity, escaped claim value, and escaped whitespace |
+
+The replay output did not change apart from its revision field. Both reading outputs are byte-identical.
 
 ## Files
 
