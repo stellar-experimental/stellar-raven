@@ -1,10 +1,16 @@
 # Answer-style guidance as result data — design decision
 
-Status: implemented on branch `w1010/a`. The paired QA measurement ran on 2026-10-11. The
-independent result review ([`review-result-astra.md`](review-result-astra.md)) rates it
-INDETERMINATE: the candidate arm shows a repeated Strupey attribution failure, but its baseline
-confirmation re-judge is T4. The merge is blocked. See
-[`measurement-ledger.md`](measurement-ledger.md).
+Status: version 1 is implemented on branch `w1010/a`. The paired QA measurement ran on
+2026-10-11. The independent result review ([`review-result-astra.md`](review-result-astra.md))
+rates it INDETERMINATE: the candidate arm shows a repeated Strupey attribution failure, but its
+baseline confirmation re-judge is T4. See [`measurement-ledger.md`](measurement-ledger.md).
+Version 2 (2026-10-12, branch `w1012/c`) restores one sentence and renames the ok signal. See
+"Version 2 (2026-10-12)" at the end of this note. Its measurement plan is
+[`measurement-plan-v2.md`](measurement-plan-v2.md). The merge stays blocked until that
+measurement passes its review.
+
+The sections before "Version 2" record the version 1 decision. Version 2 replaces the
+`inconclusive` names in them.
 
 Source item: `.agents/TODO.md`, "Move answer-style guidance from server instructions into result
 data".
@@ -175,3 +181,103 @@ not change. On the branch after the review fixes: 1,952 and 7,839 characters.
   footer about 115 tokens. The QA cost estimate includes it.
 - **Clock precision.** The Workers clock advances only across I/O. Each `asOf` with basis
   `"observed"` is the time after the response arrived, which is the correct observation time.
+
+## Version 2 (2026-10-12)
+
+Version 2 answers the two problems of the 2026-10-11 result review. It keeps the version 1
+mechanism: one dispatcher derives the signals, and the envelope and the footer carry them.
+
+### Change 1: restore the attribution fallback
+
+The base instructions again end the attribution rule with "; otherwise say unverified or ask for
+context." Version 1 removed this tail.
+
+Evidence: both candidate runs answered `q-edge-strupey-ambiguous-stellar-history` wrong. Both
+baseline runs rejected an exact match and asked for clarification. The review found that the
+candidate signals reached the agent. The C1 script read the signal, and the Scout row carried
+`matchMode: "corrected"` and its identity warning.
+
+Why the agent did not follow the warnings: each remaining warning says what to verify, but none
+names the action when the check fails. The `--- CANDIDATE EVIDENCE ---` block says "keep any
+non-verification source-scoped". C2 did exactly that: it marked the identity as inferred and
+then gave the substituted history. Only the removed tail names the two safe actions: say
+unverified, or ask for context. The restored tail is a hypothesis. The version 2 measurement
+tests it as part of the bundle.
+
+The other three removals stay removed. The 2026-10-11 evidence does not show a need for them:
+
+| Removed sentence | Evidence |
+|---|---|
+| "date volatile values with their as-of date" | Volatile answers that state a date: 8/8 in C1 and in C2. |
+| 'Say "not found in these sources", not "does not exist".' | All candidate avoid matches in the abstention and absence slices come from the Strupey row and the contracts-domain row. Neither is an unscoped absence claim. |
+| "Broaden vocabulary or abstain after empty entity lookups." | All four `q-edge-open-world-recovery-after-narrow-miss` answers require broader evidence before a wider absence claim. |
+
+### Change 2: rename the ok signal to `caveat`
+
+Version 1 used one word for two ideas. `inconclusive` was the ok-result field, and the base
+instructions also call a `soft-empty` error "inconclusive". The value `"empty"` also shares a
+word with `soft-empty`. One C2 answer wrote "empty/`soft-empty` result" and merged the two.
+`AGENTS.md` requires the distinction among soft-empty, error, and data responses.
+
+Decision: the ok envelope is `{ ok: true, data, asOf, asOfBasis, caveat? }`.
+
+| Version 1 | Version 2 | Rule (unchanged) |
+|---|---|---|
+| `inconclusive: "empty"` | `caveat: "no-rows"` | `hasServiceData(data)` is false. |
+| `inconclusive: "candidates"` | `caveat: "unverified-match"` | The payload has rows, and the catalog lane is `semantic`, `research`, or `av`, or the captured match mode is `"semantic"` or `"corrected"`. |
+
+Reasons:
+
+- **Lexical separation.** The key and the values share no word with `soft-empty` or with
+  "inconclusive". After the rename, the word "inconclusive" appears once in the base
+  instructions, and only for `soft-empty`. A test pins this.
+- **One word for one idea.** The value `"unverified-match"` uses the same word as the restored
+  instruction: an unverified match leads to "say unverified or ask for context".
+- **Host facts, not judgments.** `"no-rows"` states the shape. `"unverified-match"` states that
+  no exact identity check confirmed the rows. Neither value claims that the answer is
+  inconclusive. A closed-world exact empty is still ok data at its source scope.
+- **General.** The derivation rule does not change. No operation, case, or row content selects
+  a value.
+
+The footer marker becomes `[caveat: no-rows]` or `[caveat: unverified-match]`. The totals read
+`ok=3 (2 with caveat)`. The `--- EVIDENCE RECOVERY ---` block for ok calls with no rows says
+"Each carries `caveat: \"no-rows\"`; they do not ground an open-world negative." The host log
+event field and the run summary count are `caveat` and `caveats`.
+
+Rejected options:
+
+- **Keep `inconclusive` and add a sentence that separates it from `soft-empty`.** It adds
+  characters and keeps the shared word. The answer that merged the two had read both words.
+- **Two booleans, such as `noRows` and `unverifiedMatch`.** The two states exclude each other.
+  Two keys cost more and allow an invalid pair.
+- **`match: "none" | "unverified"`.** The key is too close to the upstream `matchMode` and
+  `match_mode` fields in `data`.
+- **`rows: "none" | "unverified"`.** A script can read `r.rows` as a payload collection and
+  fail without an error.
+- **A new evidence block for unverified matches.** The candidate block already exists, and the
+  review found that the agent saw the warnings.
+
+Out of scope: the run-level `evidenceSummary.kind` value `"service-inconclusive"` and the
+Playground step text that uses it existed on `main` before this change. They describe a whole
+run, not a call envelope. Version 2 does not rename them.
+
+### Instruction length
+
+Measured with `npm run mcp:surface` on `w1012/c`: `BASE_SERVER_INSTRUCTIONS` 1,971 characters, full
+`SERVER_INSTRUCTIONS` 7,858 characters. `main` (`63396840`) has 1,977 and 7,864. Version 1 had
+1,952 and 7,839. The restored tail adds 45 characters. The shorter key and the removed
+"(similarity or research rows)" note pay for most of it. The `execute` description defines each
+value in full.
+
+### Surfaces changed in version 2
+
+- `src/adapters/types.ts`: `ResultCaveat` type and the `caveat` envelope field.
+- `src/executor/providers.ts`: `resultCaveat()`, the ledger field, the log field, the envelope
+  guard key, and the `codemode.describe` usage line.
+- `src/executor/run.ts`: the `caveats` summary count and the candidate count.
+- `src/policy/source-basis.ts`: the footer marker, the totals, and the guidance text.
+- `src/mcp/tools.ts`: base instructions, the `execute` description, the `search` next steps, and
+  the `--- EVIDENCE RECOVERY ---` block.
+- `src/demo/tools.ts`, `src/site.ts`, and `scripts/build-super-spec.mjs` (then
+  `npm run spec:build`): envelope wording.
+- `ARCHITECTURE.md`, `docs/stellar-docs.md`, and the `retrieval-system-audit` evidence contract.

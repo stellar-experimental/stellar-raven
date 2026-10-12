@@ -299,6 +299,13 @@ Done when: ok results carry measured inconclusive and as-of signals, the instruc
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
+Status (2026-10-12): version 2 on `w1012/c` (rebased onto `main` `63396840`, draft PR #268)
+restores "otherwise say unverified or ask for context". It renames the ok signal to
+`caveat: "no-rows" | "unverified-match"`, so it shares no word with `soft-empty`. Instructions:
+7,858 characters (`main` 7,864). The [v2 plan delta](rounds/2026-10-10-weekend/answer-style/measurement-plan-v2.md)
+adds a rule for a failed confirmation re-judge and waits for its pre-spend review and a new
+authorization (cap $84). The `metricDefinitions` evidence-pack gap is still open.
+
 Status (2026-10-11): implemented on `w1010/a`. The measurement is INDETERMINATE: both candidate
 runs substitute Stroopy.AI for `q-edge-strupey-ambiguous-stellar-history`, but the baseline
 confirmation re-judge is T4. The merge is blocked. Next: restore "otherwise say unverified or ask
