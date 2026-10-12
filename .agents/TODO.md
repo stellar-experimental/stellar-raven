@@ -328,11 +328,20 @@ The result review is `rounds/2026-10-10-weekend/answer-style/review-result-astra
 - The omitted reasons cover invalid paths, invalid numeric IDs, unknown operations, and one script
   error. Four of the twelve calls are the unknown `searchBuilders` operation on the Strupey row.
 
-Next, check the existing `skill.read` guidance and the `sections` example text before proposing a
-mechanism. A change to model-facing text needs its own measurement.
+The [2026-10-12 call-pattern triage](rounds/2026-10-12-call-pattern-triage.md) read all 205
+`skill.read` scripts in the paired attempts, the answer-style runs, and the ai-upgrade screen. It
+found 13 misreads in 199 MCP scripts and 0 in 6 Playground scripts. The classes are: a map keyed by
+section (4), a section object used as a string (6), and `data.content` on a section read (3). The
+cause is own-repo: no model-facing text says that `sections` is an array of
+`{ section, content, url }`. Branch `w1012/t` has two fixes:
 
-Done when: a reviewed change, or a recorded no-change decision, addresses the `sections` misread,
-and a later authorized QA round recounts the three behaviors.
+- A sandbox guard that warns on `data.content` and throws on the other two misreads. It changes only
+  the error path.
+- The section shape in the `execute` description and the `codemode.describe` usage line. This is
+  model-facing text. The ledger's measurement note names the rows and the counts.
+
+Done when: the guard is reviewed and merged, the text change has a measurement and a merge
+decision, and a later authorized QA round recounts the three behaviors.
 
 ### Triage calls to `stellarDocs.search_anchor_sep_docs` without `query`
 
@@ -346,7 +355,15 @@ Decide whether the operation's schema, description, or `search` card leads the m
 argument. Check stored transcripts first (free). File an `improvements/` finding only for an
 upstream cause; an own-repo cause gets a scoped fix with a test.
 
-Done when: the cause is recorded, and a fix or a no-change decision has its evidence.
+The [2026-10-12 call-pattern triage](rounds/2026-10-12-call-pattern-triage.md) recorded the
+cause. It is own-repo and Playground-only. The Playground clips each `search` signature to 400
+characters, and the cut hides `query: string;`. Six of 28 Playground calls omitted a required
+argument, and 0 of 1,891 MCP calls did. The cut hides a required field for 22 of 61 callable
+entries. The spec is correct, so there is no upstream finding. Branch `w1012/t` makes the clip
+marker name the required input fields. This is Playground model-facing text. The ledger's
+measurement note names the rows and the counts.
+
+Done when: the clip-marker change has a Playground measurement and a merge decision.
 
 ## Dependencies
 
