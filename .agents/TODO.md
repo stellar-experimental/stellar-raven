@@ -328,20 +328,23 @@ The result review is `rounds/2026-10-10-weekend/answer-style/review-result-astra
 - The omitted reasons cover invalid paths, invalid numeric IDs, unknown operations, and one script
   error. Four of the twelve calls are the unknown `searchBuilders` operation on the Strupey row.
 
-The [2026-10-12 call-pattern triage](rounds/2026-10-12-call-pattern-triage.md) read all 205
-`skill.read` scripts in the paired attempts, the answer-style runs, and the ai-upgrade screen. It
-found 13 misreads in 199 MCP scripts and 0 in 6 Playground scripts. The classes are: a map keyed by
-section (4), a section object used as a string (6), and `data.content` on a section read (3). The
-cause is own-repo: no model-facing text says that `sections` is an array of
-`{ section, content, url }`. Branch `w1012/t` has two fixes:
+The [2026-10-12 call-pattern triage](rounds/2026-10-12-call-pattern-triage.md) and its
+independent review read all 205 `skill.read` scripts in the paired attempts, the answer-style runs,
+and the ai-upgrade screen. They found 26 misreads in 199 MCP scripts and 0 in 6 Playground scripts.
+On the current `data` envelope, the rate is 10 in 121. The classes are: a map keyed by section (4),
+a section object used as a string (6), and an absent `content` (16, of which 15 are on the
+historical top-level shape). The inferred cause is own-repo: the `execute` description and the
+`codemode.describe` usage line omit the array shape. Only `codemode.spec()` states it.
+Branch `w1012/t` has two fixes, and each needs its own measurement before merge:
 
-- A sandbox guard that warns on `data.content` and throws on the other two misreads. It changes only
-  the error path.
-- The section shape in the `execute` description and the `codemode.describe` usage line. This is
-  model-facing text. The ledger's measurement note names the rows and the counts.
+- A sandbox guard that throws on a map read and on a string use of a section. It changes
+  model-visible results.
+- The section shape in the `execute` description and the `codemode.describe` usage line.
 
-Done when: the guard is reviewed and merged, the text change has a measurement and a merge
-decision, and a later authorized QA round recounts the three behaviors.
+The ledger names the arms, the frozen rows, and the counts for each measurement.
+
+Done when: each fix has its measurement and a merge decision, and a later authorized QA round
+recounts the three behaviors.
 
 ### Triage calls to `stellarDocs.search_anchor_sep_docs` without `query`
 
@@ -363,7 +366,8 @@ entries. The spec is correct, so there is no upstream finding. Branch `w1012/t` 
 marker name the required input fields. This is Playground model-facing text. The ledger's
 measurement note names the rows and the counts.
 
-Done when: the clip-marker change has a Playground measurement and a merge decision.
+Done when: the clip-marker change has a Playground measurement (with only that change in the
+candidate arm) and a merge decision.
 
 ## Dependencies
 
