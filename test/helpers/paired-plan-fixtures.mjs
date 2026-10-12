@@ -108,3 +108,17 @@ export function passingP6Summary({ wrapperSha256, runnerRevision, claudePath, cl
     callRecords
   };
 }
+
+// A simulated launch `listeners.json` record. Each listener's process ID is its port, so
+// four distinct ports give four distinct processes.
+export function listenerRecord(targets) {
+  const listener = (port, revision) => ({
+    verification: "listener-process-cwd", port, pid: String(port),
+    command: port % 2 ? "workerd" : "node", cwd: `/worktrees/${port}`, revision, dirty: false
+  });
+  return Object.fromEntries(Object.entries(targets).map(([arm, target]) => [arm, { identity: {
+    verification: "dual-listener-process-cwd",
+    adapter: listener(target.adapterPort, target.adapterRevision),
+    upstream: listener(target.upstreamPort, target.upstreamRevision)
+  } }]));
+}

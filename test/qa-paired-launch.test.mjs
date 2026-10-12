@@ -11,7 +11,7 @@ import { agentEnvironmentIdentity } from "../eval/lib/executable-identity.mjs";
 import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, launchEnvironment, PORTS,
   assertServersUnchanged, listenerTargets } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
 import { assertSharedServerToolchain, SERVER_TOOLCHAIN_SCHEMA, sharedWranglerEntry } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-server-toolchain.mjs";
-import { assertDualBoundServersUnchanged } from "../eval/lib/bound-server-identity.mjs";
+import { assertDualBoundServersUnchanged, pairedListenerPairs } from "../eval/lib/bound-server-identity.mjs";
 import { executeFrozen, validateStoredJudgeArtifact } from "../.agents/rounds/2026-10-01-backlog-closeout/execute-frozen.mjs";
 import { pairedCollectionPlanSha256, devVarsIdentity, validateAuthorizedPairedCollectionPlan, validatePairedCollectionPlan } from "../eval/qa/paired-collection-supervisor.mjs";
 import { assertPlanCommandSyntax, buildPairedPlan, selectionSnapshot } from "../.agents/rounds/2026-10-01-backlog-closeout/assemble-paired-plan.mjs";
@@ -23,7 +23,7 @@ import { parseArgs as parseRejudge } from "../eval/qa/re-judge.mjs";
 import { assertP6OutputAvailable, parseP6SelfTestCli } from "../eval/qa/run-p6-judge-self-test.mjs";
 import { JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
-import { acceptedCapacityArtifact, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
+import { acceptedCapacityArtifact, listenerRecord, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
 
 function emptyJournal() {
   return {schema:'qa-paired-launch-processes-v2',identities:[],groups:[],retiredGroups:[],cleanup:{complete:true}};
@@ -636,15 +636,19 @@ describe('paired server toolchain',()=>{
 
 describe('paired server listener stop',()=>{
   const revision='a'.repeat(40);
-  const listener=(port,pid)=>({port,pid,command:port%2 ? 'workerd' : 'node',cwd:`/worktrees/${port}`,revision,dirty:false});
-  const pair=({adapterPort,upstreamPort},upstreamPid)=>({adapter:listener(adapterPort,String(adapterPort)),
-    upstream:listener(upstreamPort,upstreamPid ?? String(upstreamPort))});
-  const check=identify=>({assertDualBoundServersUnchanged:pairs=>assertDualBoundServersUnchanged(pairs,{identify})});
+  const pair=(target,upstreamPid)=>{
+    const {identity}=listenerRecord({arm:target}).arm;
+    if (upstreamPid) identity.upstream.pid=upstreamPid;
+    return identity;
+  };
+  const check=identify=>({pairedListenerPairs,
+    assertDualBoundServersUnchanged:pairs=>assertDualBoundServersUnchanged(pairs,{identify})});
 
-  function listenerFixture() {
+  function listenerFixture(mutate=()=>{}) {
     const root=mkdtempSync(path.join(os.tmpdir(),'paired-listeners-'));
     const env={...launchEnvironment(revision,{}),PAIRED_RUN:root};
     const records=Object.fromEntries(Object.entries(listenerTargets(env)).map(([arm,target])=>[arm,{identity:pair(target)}]));
+    mutate(records);
     writeFileSync(path.join(root,'listeners.json'),JSON.stringify(records));
     return {root,env};
   }
@@ -672,6 +676,23 @@ describe('paired server listener stop',()=>{
       const stop=JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8'));
       expect(stop.phase).toBe('collection');
       expect(stop.reason).toMatch(/^before collection: baseline server .*expected one listener process, found 0$/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it.each([
+    ['a missing arm',records=>{delete records.baseline;},/exactly baseline and candidate; found: candidate/],
+    ['a duplicated pair',records=>{records.baseline=structuredClone(records.candidate);},
+      /baseline listener record does not match the expected targets/],
+    ['a substituted port',records=>{records.candidate.identity.upstream.port=8797;},
+      /candidate listener record does not match the expected targets \(upstreamPort\)/]
+  ])('stops on a listener record with %s before any listener read',(_,mutate,expected)=>{
+    const {root,env}=listenerFixture(mutate);
+    try {
+      const reads=[];
+      expect(()=>assertServersUnchanged(env,'p6',check(target=>{reads.push(target);return pair(target);})))
+        .toThrow(expected);
+      expect(reads).toEqual([]);
+      expect(JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8')).reason).toMatch(expected);
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 
@@ -713,20 +734,22 @@ describe('paired plan assembly',()=>{
     writeFileSync(path.join(env.PAIRED_RUN,'capacity.json'),
       `${JSON.stringify(acceptedCapacityArtifact(new Date().toISOString()),null,2)}\n`);
     writeFileSync(path.join(env.PAIRED_RUN,'stable.sha256'),`${'d'.repeat(64)}\n`);
+    writeFileSync(path.join(env.PAIRED_RUN,'listeners.json'),JSON.stringify(listenerRecord(listenerTargets(env))));
     const salt='9'.repeat(64);
     const selected=selectionSnapshot(env.PAIRED_CR,stratifiedSample);
     expect(selectionSnapshot(env.PAIRED_BR,stratifiedSample)).toEqual(selected);
     const claudePath=path.join(env.PAIRED_RUN,'claude-bin/claude');
     const binary={resolvedPath:claudePath,sha256:'e'.repeat(64)};
     const environment={sha256:'f'.repeat(64)};
-    const plan=buildPairedPlan({env,selected,binary,environment,
+    const rebuild=()=>buildPairedPlan({env,selected,binary,environment,
       immutableClaude:{schema:'qa-paired-claude-pin-v1',claudePath,sha256:binary.sha256},
       register:loadJudgeStabilityRegister(path.join(env.PAIRED_RUN,'paired-stability-register.json'),{verifySources:false}),
       capacityContract:PAIRED_CAPACITY_CONTRACT,surfaces:{baseline:'1'.repeat(64),candidate:'2'.repeat(64)},
       devVars:{salt,...devVarsIdentity(env.PAIRED_BS,salt)},serverToolchain:toolchainRecord(),judge:judgeConstants});
+    const plan=rebuild();
     const inspectWorktree=worktree=>({root:worktree,commonDir:root,
       revision:worktree===env.PAIRED_BS ? env.PAIRED_BASE : revision});
-    return {root,env,plan,inspectWorktree};
+    return {root,env,plan,inspectWorktree,rebuild};
   }
 
   function completeP6(plan) {
@@ -746,7 +769,9 @@ describe('paired plan assembly',()=>{
       expect(path.dirname(plan.p6.summaryArtifactPath)).toBe(env.PAIRED_RUN);
       // Each P6 call checks the listeners that the launch recorded.
       expect(plan.p6.listenersPath).toBe(path.join(env.PAIRED_RUN,'listeners.json'));
-      expect(plan.p6.command.slice(-4)).toEqual(['--paired-listeners',plan.p6.listenersPath,'--out',plan.p6.summaryArtifactPath]);
+      expect(plan.p6.listenersSha256).toBe(createHash('sha256').update(readFileSync(plan.p6.listenersPath)).digest('hex'));
+      expect(plan.p6.command.slice(-6)).toEqual(['--paired-listeners',plan.p6.listenersPath,
+        '--expect-paired-listeners-sha256',plan.p6.listenersSha256,'--out',plan.p6.summaryArtifactPath]);
       expect(()=>assertP6OutputAvailable(plan.p6.summaryArtifactPath)).not.toThrow();
       completeP6(plan);
       expect(validatePairedCollectionPlan(plan,{inspectWorktree})).toBe(plan);
@@ -766,6 +791,18 @@ describe('paired plan assembly',()=>{
       Object.assign(wrong.flipRejudge.judgeTuple,change);
       expect(()=>validatePairedCollectionPlan(wrong,{inspectWorktree})).toThrow(/flipRejudge\.judgeTuple does not match/);
     } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('refuses to freeze a listener record that omits or substitutes a server',()=>{
+    for (const mutate of [records=>{delete records.baseline;},records=>{records.baseline=structuredClone(records.candidate);}]) {
+      const {root,env,rebuild}=assemblyFixture();
+      try {
+        const records=JSON.parse(readFileSync(path.join(env.PAIRED_RUN,'listeners.json'),'utf8'));
+        mutate(records);
+        writeFileSync(path.join(env.PAIRED_RUN,'listeners.json'),JSON.stringify(records));
+        expect(rebuild).toThrow(/exactly baseline and candidate|does not match the expected targets/);
+      } finally {rmSync(root,{recursive:true,force:true});}
+    }
   });
 
   it('freezes the shared server toolchain under the signed plan hash',()=>{

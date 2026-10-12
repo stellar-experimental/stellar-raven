@@ -12,6 +12,7 @@ import {
 } from "../lib/executable-identity.mjs";
 import {
   assertDualBoundServersUnchanged,
+  pairedListenerPairs,
   assertStableGitWorktreeIdentity,
   gitWorktreeIdentity
 } from "../lib/bound-server-identity.mjs";
@@ -258,6 +259,7 @@ export function parseP6SelfTestCli(args) {
   ]);
   let out;
   let pairedListeners;
+  let pairedListenersSha256;
   const values = {};
   for (let index = 0; index < args.length; index += 2) {
     const flag = args[index];
@@ -276,10 +278,20 @@ export function parseP6SelfTestCli(args) {
       pairedListeners = value;
       continue;
     }
+    if (flag === "--expect-paired-listeners-sha256") {
+      if (!SHA256_PATTERN.test(value ?? "") || pairedListenersSha256 !== undefined) {
+        throw new Error("p6 judge self-test requires one --expect-paired-listeners-sha256 digest");
+      }
+      pairedListenersSha256 = value;
+      continue;
+    }
     if (!flags.has(flag) || !value || value.startsWith("--") || Object.hasOwn(values, flag)) {
       throw new Error("p6 judge self-test requires unique spaced identity flags");
     }
     values[flag] = value;
+  }
+  if ((pairedListeners === undefined) !== (pairedListenersSha256 === undefined)) {
+    throw new Error("--paired-listeners and --expect-paired-listeners-sha256 must appear together");
   }
   if (Object.keys(values).length !== flags.size) {
     throw new Error(`p6 judge self-test requires ${[...flags].join(", ")}`);
@@ -298,18 +310,20 @@ export function parseP6SelfTestCli(args) {
       "--expect-claude-environment-sha256"
     ),
     out,
-    ...(pairedListeners === undefined ? {} : { pairedListeners })
+    ...(pairedListeners === undefined ? {} : { pairedListeners, pairedListenersSha256 })
   };
 }
 
-// A paired launch passes its recorded listeners. Each paid call then requires the same server
-// processes, so a lost port stops the remaining calls. Nothing restarts a server.
-export function pairedListenerCheck(listenersPath, { readFile = readFileSync, identify } = {}) {
-  const records = JSON.parse(readFile(listenersPath, "utf8"));
-  const pairs = Object.fromEntries(Object.entries(records).map(([arm, record]) => [arm, record.identity]));
-  if (!Object.keys(pairs).length || Object.values(pairs).some((pair) => !pair?.adapter || !pair?.upstream)) {
-    throw new Error("--paired-listeners must name recorded listener pairs");
+// A paired launch passes its recorded listeners and their signed digest. Each paid call then
+// requires the same four server processes, so a lost port stops the remaining calls. The digest
+// and the two-arm check stop a changed, partial, or substituted record before any call.
+// Nothing restarts a server.
+export function pairedListenerCheck(listenersPath, expectedSha256, { readFile = readFileSync, identify } = {}) {
+  const bytes = readFile(listenersPath);
+  if (sha256(bytes) !== expectedSha256) {
+    throw new Error("--paired-listeners does not match its signed SHA-256");
   }
+  const pairs = pairedListenerPairs(JSON.parse(bytes));
   return () => assertDualBoundServersUnchanged(pairs, identify ? { identify } : undefined);
 }
 
@@ -370,7 +384,9 @@ function main(args) {
     return;
   }
   if (parsed.out) assertP6OutputAvailable(parsed.out);
-  const beforeCall = parsed.pairedListeners ? pairedListenerCheck(parsed.pairedListeners) : undefined;
+  const beforeCall = parsed.pairedListeners
+    ? pairedListenerCheck(parsed.pairedListeners, parsed.pairedListenersSha256)
+    : undefined;
   const summary = runP6JudgeSelfTest({ pins: parsed, beforeCall });
   if (parsed.out) writeP6SummaryExclusive(parsed.out, summary);
 }

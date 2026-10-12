@@ -72,11 +72,11 @@ export function listenerTargets(env) {
 
 // A lost or replaced listener stops the method before the next paid phase. Never restart a server:
 // a new listener process breaks the recorded identities, and the run is no longer comparable.
-export function assertServersUnchanged(env, phase, { assertDualBoundServersUnchanged }) {
-  const records = JSON.parse(readFileSync(`${env.PAIRED_RUN}/listeners.json`, "utf8"));
+export function assertServersUnchanged(env, phase, { assertDualBoundServersUnchanged, pairedListenerPairs }) {
   try {
-    assertDualBoundServersUnchanged(Object.fromEntries(Object.keys(listenerTargets(env))
-      .map((arm) => [arm, records[arm].identity])));
+    const records = JSON.parse(readFileSync(`${env.PAIRED_RUN}/listeners.json`, "utf8"));
+    // The launch's own targets, not the record, decide which ports and revisions to check.
+    assertDualBoundServersUnchanged(pairedListenerPairs(records, listenerTargets(env)));
   } catch (error) {
     const reason = `before ${phase}: ${error.message}`;
     writeFileSync(`${env.PAIRED_RUN}/server-stop.json`, `${JSON.stringify({phase,at:new Date().toISOString(),reason},null,2)}\n`,

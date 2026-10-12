@@ -160,3 +160,51 @@ export function assertDualBoundServersUnchanged(recordedPairs, { identify = dual
     }
   }
 }
+
+const PAIRED_ARMS = ["baseline", "candidate"];
+const TARGET_FIELDS = ["adapterPort", "adapterRevision", "upstreamPort", "upstreamRevision"];
+
+const pairTarget = (pair) => ({
+  adapterPort: pair?.adapter?.port,
+  adapterRevision: pair?.adapter?.revision,
+  upstreamPort: pair?.upstream?.port,
+  upstreamRevision: pair?.upstream?.revision
+});
+
+/**
+ * Validate a paired launch's `listeners.json` record and return its pair for each arm.
+ * The record must name exactly baseline and candidate, with four distinct ports and four
+ * distinct listener processes. With `expectedTargets`, each arm's ports and revisions must equal
+ * those independent values, so a record cannot omit or substitute a server.
+ */
+export function pairedListenerPairs(record, expectedTargets = null) {
+  const arms = Object.keys(record ?? {}).sort();
+  if (JSON.stringify(arms) !== JSON.stringify(PAIRED_ARMS)) {
+    throw new Error(`paired listener record must name exactly baseline and candidate; found: ${arms.join(", ") || "none"}`);
+  }
+  const pairs = {};
+  for (const arm of PAIRED_ARMS) {
+    const pair = record[arm]?.identity;
+    const target = pairTarget(pair);
+    if (!Number.isInteger(target.adapterPort) || !Number.isInteger(target.upstreamPort) ||
+        !/^[a-f0-9]{40}$/.test(String(target.adapterRevision ?? "")) ||
+        !/^[a-f0-9]{40}$/.test(String(target.upstreamRevision ?? "")) ||
+        typeof pair.adapter.pid !== "string" || typeof pair.upstream.pid !== "string") {
+      throw new Error(`${arm} listener record is not a recorded listener pair`);
+    }
+    const expected = expectedTargets?.[arm];
+    if (expectedTargets) {
+      const changed = TARGET_FIELDS.filter((field) => expected?.[field] !== target[field]);
+      if (changed.length) {
+        throw new Error(`${arm} listener record does not match the expected targets (${changed.join(", ")})`);
+      }
+    }
+    pairs[arm] = pair;
+  }
+  const listeners = PAIRED_ARMS.flatMap((arm) => [pairs[arm].adapter, pairs[arm].upstream]);
+  if (new Set(listeners.map((listener) => listener.port)).size !== 4 ||
+      new Set(listeners.map((listener) => listener.pid)).size !== 4) {
+    throw new Error("paired listener record must name four distinct ports and four distinct processes");
+  }
+  return pairs;
+}

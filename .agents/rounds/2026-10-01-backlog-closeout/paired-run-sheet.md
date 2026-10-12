@@ -420,19 +420,29 @@ All checks use `assertDualBoundServersUnchanged` in `eval/lib/bound-server-ident
 That function runs only local `lsof` and `git` commands. It makes no model call and no upstream call.
 A lost listener gives the error code `paired-server-lost`.
 
+- **The listener record is bound to the signed plan.** `pairedListenerPairs` in the same module
+  requires exactly `baseline` and `candidate`, four distinct ports, and four distinct processes.
+  With independent targets, it also requires each arm's ports and revisions to equal them.
+  The assembler checks `listeners.json` against the ports and revisions of its collection commands.
+  It records the file's SHA-256 as `p6.listenersSha256`, so the signed plan hash covers the record.
+  A missing arm, a repeated pair, a substituted port, or changed contents stops the method.
 - **Before P6 and before collection.** The launcher compares all four listeners with `listeners.json`.
   It calls `assertServersUnchanged` from [paired-launch.mjs](paired-launch.mjs).
+  The launch's own targets, not the record, decide which ports and revisions it checks.
   On failure, it writes `server-stop.json` with the phase, time, and reason.
-- **Before each P6 call.** The frozen P6 command now has `--paired-listeners <run>/listeners.json`.
-  The wrapper checks all four recorded listeners before each of its seven paid calls.
-  The plan records the path as `p6.listenersPath`, and the supervisor requires the exact flag.
+- **Before each P6 call.** The frozen P6 command now has `--paired-listeners <run>/listeners.json`
+  and `--expect-paired-listeners-sha256 <p6.listenersSha256>`.
+  Before its first call, the wrapper requires that digest and a valid two-arm record.
+  It then checks all four recorded listeners before each of its seven paid calls.
+  The supervisor requires both flags, the absolute path, the digest, and a record that matches the collection commands.
 - **Before each answering attempt, including a retry.** `run-qa.mjs` checks its own arm's listener pair.
   It checks when it authorizes the attempt, and again just before the answering call, after the identity probe.
   The remote identity guard also runs the check before each probe and during each probe retry wait.
   So a loss during an attempt stops the arm before the after-call probe and before any retry.
   The arm reports `paired-server-lost` to the supervisor, which cancels both arms.
-- **Before each row release and the postflight release.** The supervisor checks all four listeners.
+- **Before each row release and the postflight release.** The supervisor checks all four signed listeners.
   It calls `createServerListenerCheck` from `eval/qa/paired-collection-supervisor.mjs`.
+  Its reference is the signed record, checked again against its digest and the collection commands.
   On failure, it releases no row and cancels both arms.
   Its reason starts with `server listener check failed before row <index> (<case ID>); no server restarts:`.
 - The cancellation marker, both arms' artifacts, and `collection.stderr.log` keep the reason.
@@ -670,10 +680,10 @@ The template below remains the signature contract.
 ### 9. Run the frozen P6 command
 
 The script first compares all four listeners with `listeners.json`. A lost or changed listener stops the method.
-The P6 wrapper repeats that check before each of its seven calls (`--paired-listeners`).
+The P6 wrapper repeats that check before each of its seven calls (`--paired-listeners` and its signed digest).
 The operator calls `executeFrozen("p6", manager, env)` from [execute-frozen.mjs](execute-frozen.mjs).
 The wrapper makes seven calls at `$0.50` each, with a `$3.50` maximum.
-It uses the frozen identity flags, the `--paired-listeners` record, and the `--out` path.
+It uses the frozen identity flags, the `--paired-listeners` record and its digest, and the `--out` path.
 The phase runner creates `p6.started.json` before starting the wrapper.
 It records the canonical hash and phase, synchronizes the marker, and keeps it permanently.
 It opens `p6.log` and `p6.stderr.log` exclusively before spawn.

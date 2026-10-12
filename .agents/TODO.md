@@ -687,7 +687,8 @@ that request. Before any server starts, the launcher requires one identical tool
 servers, with the same `workerd` binary SHA-256. The signed plan records it. The local dev runtime
 is no longer part of the measured difference. A local listener check also runs before every paid
 call: before P6 and collection, before each P6 call, before each answering attempt and retry, and
-before each row release. A lost or replaced listener stops the method. Nothing restarts a server.
+before each row release. The signed plan binds the listener record by its digest. A lost or
+replaced listener stops the method. Nothing restarts a server.
 The check reads sockets and does not connect, and a short interval remains between a check and its
 call. See the run sheet's "2026-10-12 amendment" for these limits.
 

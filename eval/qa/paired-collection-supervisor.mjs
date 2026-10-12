@@ -28,8 +28,8 @@ import {
 import { JUDGE_RUBRIC } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import {
-  assertStableDualBoundServerIdentity,
-  dualBoundServerIdentity
+  assertDualBoundServersUnchanged,
+  pairedListenerPairs
 } from "../lib/bound-server-identity.mjs";
 
 export const PAIRED_COLLECTION_PLAN_SCHEMA = "qa-paired-collection-plan-v2";
@@ -322,6 +322,8 @@ function validateP6Contract(plan, identities) {
   if (typeof p6?.listenersPath !== "string" || !path.isAbsolute(p6.listenersPath)) {
     throw new Error("p6.listenersPath must be an absolute path");
   }
+  validateHash(p6.listenersSha256, "p6.listenersSha256");
+  signedListenerPairs(plan);
   const runner = plan.worktrees[`${p6.runnerArm}Runner`];
   const runnerIdentity = identities[p6.runnerArm === "baseline" ? 0 : 1];
   const hashes = plan.arms[p6.runnerArm].inputHashes;
@@ -338,6 +340,8 @@ function validateP6Contract(plan, identities) {
     hashes.agentEnvironmentSha256,
     "--paired-listeners",
     p6.listenersPath,
+    "--expect-paired-listeners-sha256",
+    p6.listenersSha256,
     "--out",
     p6.summaryArtifactPath
   ];
@@ -765,31 +769,42 @@ export function validatePairedCollectionPlan(plan, {
   return plan;
 }
 
-// Each check reads local listeners and worktrees only: no model call and no upstream call.
-// The first check records the listener processes; a later check fails when a listener is
-// missing or another process owns its port (a server restart). The supervisor never restarts one.
-export function createServerListenerCheck(plan, {
-  identify = dualBoundServerIdentity,
-  assertStable = assertStableDualBoundServerIdentity
-} = {}) {
-  const reference = {};
+// The ports and revisions that each frozen collection command names.
+export function collectionListenerTargets(plan) {
+  return Object.fromEntries(ARMS.map((arm) => {
+    const command = plan.arms[arm].collectionCommand;
+    return [arm, {
+      adapterPort: validatePort(flagValue(command, "--port"), `${arm} public port`),
+      adapterRevision: flagValue(command, "--adapter-revision"),
+      upstreamPort: validatePort(flagValue(command, "--upstream-port"), `${arm} upstream port`),
+      upstreamRevision: flagValue(command, "--server-revision")
+    }];
+  }));
+}
+
+// The launch's listener record, bound by its signed digest and checked against the collection
+// commands, so it cannot omit or substitute a server.
+function signedListenerPairs(plan, readFile = readFileSync) {
+  let bytes;
+  try {
+    bytes = readFile(plan.p6.listenersPath);
+  } catch (error) {
+    throw new Error(`p6.listenersPath cannot be read: ${error.message}`);
+  }
+  if (sha256(bytes) !== plan.p6.listenersSha256) {
+    throw new Error("the listener record does not match p6.listenersSha256");
+  }
+  return pairedListenerPairs(JSON.parse(bytes), collectionListenerTargets(plan));
+}
+
+// Each check compares the four signed listeners with the current ones. It reads local listeners
+// and worktrees only: no model call and no upstream call. A missing listener, or another process
+// on a recorded port (a server restart), fails. The supervisor never restarts a server.
+export function createServerListenerCheck(plan, { readFile = readFileSync, identify } = {}) {
+  let pairs = null;
   return () => {
-    for (const arm of ARMS) {
-      const command = plan.arms[arm].collectionCommand;
-      let current;
-      try {
-        current = identify({
-          adapterPort: validatePort(flagValue(command, "--port"), `${arm} public port`),
-          adapterRevision: flagValue(command, "--adapter-revision"),
-          upstreamPort: validatePort(flagValue(command, "--upstream-port"), `${arm} upstream port`),
-          upstreamRevision: flagValue(command, "--server-revision")
-        });
-        if (reference[arm]) assertStable(reference[arm], current);
-      } catch (error) {
-        throw new Error(`${arm} server stopped answering on its port or changed: ${error.message}`);
-      }
-      reference[arm] ??= current;
-    }
+    pairs ??= signedListenerPairs(plan, readFile);
+    assertDualBoundServersUnchanged(pairs, identify ? { identify } : undefined);
   };
 }
 

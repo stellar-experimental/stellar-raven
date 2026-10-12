@@ -28,7 +28,7 @@ import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "../eval/qa/paired-collection-c
 import { PAIRED_CAPACITY_CONTRACT } from "../eval/qa/check-paired-capacity.mjs";
 import { JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
-import { acceptedCapacityArtifact, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
+import { acceptedCapacityArtifact, listenerRecord, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 // These tests have no real listeners. The server listener check has its own tests below.
@@ -38,6 +38,11 @@ const DEV_VARS_SALT = "9".repeat(64);
 const SERVER_REVISIONS = {
   baseline: "b".repeat(40),
   candidate: "d".repeat(40)
+};
+// The ports and revisions in the fixture collection commands.
+const FIXTURE_LISTENER_TARGETS = {
+  baseline: { adapterPort: 8789, adapterRevision: "a".repeat(40), upstreamPort: 8790, upstreamRevision: SERVER_REVISIONS.baseline },
+  candidate: { adapterPort: 8788, adapterRevision: "a".repeat(40), upstreamPort: 8791, upstreamRevision: SERVER_REVISIONS.candidate }
 };
 const devVarsSha256 = (pairs = devVarsPairs) => sha256(JSON.stringify({
   salt: DEV_VARS_SALT,
@@ -247,6 +252,10 @@ function planFixture(activeCorpusCount = 500) {
   const capacityArtifactBytes = `${JSON.stringify(acceptedCapacityArtifact(new Date().toISOString()), null, 2)}\n`;
   writeFileSync(capacityArtifactPath, capacityArtifactBytes);
   const p6SummaryArtifactPath = path.join(base.root, "p6-summary.json");
+  const listenersPath = path.join(base.root, "listeners.json");
+  const listenersBytes = JSON.stringify(listenerRecord(FIXTURE_LISTENER_TARGETS));
+  writeFileSync(listenersPath, listenersBytes);
+  const listenersSha256 = sha256(listenersBytes);
   const p6Summary = passingP6Summary({
     wrapperSha256: files.p6WrapperSha256,
     runnerRevision: "a".repeat(40),
@@ -306,11 +315,13 @@ function planFixture(activeCorpusCount = 500) {
         "--claude-path", "/usr/bin/claude",
         "--expect-claude-binary-sha256", inputHashes.agentBinarySha256,
         "--expect-claude-environment-sha256", inputHashes.agentEnvironmentSha256,
-        "--paired-listeners", path.join(base.root, "listeners.json"),
+        "--paired-listeners", listenersPath,
+        "--expect-paired-listeners-sha256", listenersSha256,
         "--out", p6SummaryArtifactPath
       ],
       summaryArtifactPath: p6SummaryArtifactPath,
-      listenersPath: path.join(base.root, "listeners.json"),
+      listenersPath,
+      listenersSha256,
       claudePath: "/usr/bin/claude",
       wrapperSha256: files.p6WrapperSha256,
       judgeSha256: files.p6JudgeSha256,
@@ -607,47 +618,57 @@ describe("paired QA collection supervisor", () => {
 
   describe("server listener check", () => {
     const ADAPTER_REVISION = "a".repeat(40);
-    const listenerPlan = () => ({
-      arms: Object.fromEntries([["baseline", "8789", "8791"], ["candidate", "8788", "8790"]]
-        .map(([arm, port, upstreamPort]) => [arm, { collectionCommand: [
-          process.execPath, "eval/qa/run-qa.mjs", "--port", port, "--upstream-port", upstreamPort,
-          "--server-revision", SERVER_REVISIONS[arm], "--adapter-revision", ADAPTER_REVISION
-        ] }]))
-    });
-    const listener = (port, pid, revision) => ({
-      port, pid, command: port % 2 ? "workerd" : "node", cwd: `/worktrees/${port}`, revision, dirty: false
-    });
-    const pair = ({ adapterPort, adapterRevision, upstreamPort, upstreamRevision }, upstreamPid) => ({
-      adapter: listener(adapterPort, `${adapterPort}`, adapterRevision),
-      upstream: listener(upstreamPort, upstreamPid ?? `${upstreamPort}`, upstreamRevision)
-    });
+    const TARGETS = {
+      baseline: { adapterPort: 8789, adapterRevision: ADAPTER_REVISION, upstreamPort: 8791, upstreamRevision: SERVER_REVISIONS.baseline },
+      candidate: { adapterPort: 8788, adapterRevision: ADAPTER_REVISION, upstreamPort: 8790, upstreamRevision: SERVER_REVISIONS.candidate }
+    };
+    // The signed plan: collection commands, plus the launch record path and its digest.
+    const listenerPlan = (record = listenerRecord(TARGETS)) => {
+      const bytes = Buffer.from(JSON.stringify(record));
+      return {
+        bytes,
+        plan: {
+          arms: Object.fromEntries(Object.entries(TARGETS).map(([arm, target]) => [arm, { collectionCommand: [
+            process.execPath, "eval/qa/run-qa.mjs", "--port", String(target.adapterPort),
+            "--upstream-port", String(target.upstreamPort),
+            "--server-revision", target.upstreamRevision, "--adapter-revision", target.adapterRevision
+          ] }])),
+          p6: { listenersPath: "/run/listeners.json", listenersSha256: sha256(bytes) }
+        }
+      };
+    };
+    const current = (target, upstreamPid) => {
+      const { identity } = listenerRecord({ arm: target }).arm;
+      if (upstreamPid) identity.upstream.pid = upstreamPid;
+      return identity;
+    };
 
-    it("reads both frozen listener pairs and passes while their processes stay the same", () => {
+    it("checks the four signed listeners and passes while their processes stay the same", () => {
+      const { plan, bytes } = listenerPlan();
       const targets = [];
-      const check = createServerListenerCheck(listenerPlan(), {
-        identify: (target) => { targets.push(target); return pair(target); }
+      let reads = 0;
+      const check = createServerListenerCheck(plan, {
+        readFile: () => { reads += 1; return bytes; },
+        identify: (target) => { targets.push(target); return current(target); }
       });
       check();
       check();
-      expect(targets.slice(0, 2)).toEqual([
-        { adapterPort: 8789, adapterRevision: ADAPTER_REVISION, upstreamPort: 8791, upstreamRevision: SERVER_REVISIONS.baseline },
-        { adapterPort: 8788, adapterRevision: ADAPTER_REVISION, upstreamPort: 8790, upstreamRevision: SERVER_REVISIONS.candidate }
-      ]);
+      expect(targets.slice(0, 2)).toEqual([TARGETS.baseline, TARGETS.candidate]);
       expect(targets).toHaveLength(4);
+      expect(reads).toBe(1);
     });
 
     it("fails when a Wrangler process exits and leaves no listener", () => {
-      let lost = false;
-      const check = createServerListenerCheck(listenerPlan(), {
+      const { plan, bytes } = listenerPlan();
+      const check = createServerListenerCheck(plan, {
+        readFile: () => bytes,
         identify: (target) => {
-          if (lost && target.upstreamPort === 8791) {
+          if (target.upstreamPort === 8791) {
             throw new Error("bound server identity on port 8791: expected one listener process, found 0");
           }
-          return pair(target);
+          return current(target);
         }
       });
-      check();
-      lost = true;
       expect(check).toThrow(
         "baseline server stopped answering on its port or changed: " +
         "bound server identity on port 8791: expected one listener process, found 0"
@@ -655,13 +676,43 @@ describe("paired QA collection supervisor", () => {
     });
 
     it("fails when a runtime restart gives the public port to another process", () => {
-      let restarted = false;
-      const check = createServerListenerCheck(listenerPlan(), {
-        identify: (target) => pair(target, restarted && target.upstreamPort === 8790 ? "53679" : undefined)
+      const { plan, bytes } = listenerPlan();
+      const check = createServerListenerCheck(plan, {
+        readFile: () => bytes,
+        identify: (target) => current(target, target.upstreamPort === 8790 ? "53679" : undefined)
       });
-      check();
-      restarted = true;
       expect(check).toThrow(/^candidate server stopped answering on its port or changed: bound server identity changed during paid calls \(pid\)/);
+    });
+
+    it.each([
+      ["a missing arm", (record) => { delete record.baseline; }, /exactly baseline and candidate; found: candidate/],
+      ["a duplicated pair", (record) => { record.baseline = structuredClone(record.candidate); },
+        /baseline listener record does not match the expected targets \(adapterPort, upstreamPort, upstreamRevision\)/],
+      ["a substituted port", (record) => { record.baseline.identity.upstream.port = 8797; },
+        /baseline listener record does not match the expected targets \(upstreamPort\)/],
+      ["an extra arm", (record) => { record.extra = structuredClone(record.candidate); }, /exactly baseline and candidate/]
+    ])("refuses a signed record with %s before any listener read", (_label, mutate, expected) => {
+      const record = listenerRecord(TARGETS);
+      mutate(record);
+      const { plan, bytes } = listenerPlan(record);
+      const reads = [];
+      const check = createServerListenerCheck(plan, {
+        readFile: () => bytes,
+        identify: (target) => { reads.push(target); return current(target); }
+      });
+      expect(check).toThrow(expected);
+      expect(reads).toEqual([]);
+    });
+
+    it("refuses record contents that changed after signing", () => {
+      const { plan } = listenerPlan();
+      const changed = listenerRecord(TARGETS);
+      changed.baseline.identity.upstream.pid = "53679";
+      const check = createServerListenerCheck(plan, {
+        readFile: () => Buffer.from(JSON.stringify(changed)),
+        identify: () => { throw new Error("must not read listeners"); }
+      });
+      expect(check).toThrow("the listener record does not match p6.listenersSha256");
     });
   });
 
@@ -1303,6 +1354,38 @@ describe("paired QA collection supervisor", () => {
     try {
       mutate(plan);
       expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["a missing arm", (record) => { delete record.candidate; }, /exactly baseline and candidate/],
+    ["a duplicated pair", (record) => { record.baseline = structuredClone(record.candidate); },
+      /baseline listener record does not match the expected targets/],
+    ["a substituted port", (record) => { record.candidate.identity.adapter.port = 8797; },
+      /candidate listener record does not match the expected targets \(adapterPort\)/]
+  ])("rejects a signed listener record with %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const record = JSON.parse(readFileSync(plan.p6.listenersPath, "utf8"));
+      mutate(record);
+      const bytes = JSON.stringify(record);
+      writeFileSync(plan.p6.listenersPath, bytes);
+      plan.p6.listenersSha256 = sha256(bytes);
+      plan.p6.command[plan.p6.command.indexOf("--expect-paired-listeners-sha256") + 1] = plan.p6.listenersSha256;
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects listener record contents that changed after signing", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      rewriteJsonArtifact(plan.p6.listenersPath, (record) => { record.baseline.identity.adapter.pid = "1"; });
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree }))
+        .toThrow("the listener record does not match p6.listenersSha256");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

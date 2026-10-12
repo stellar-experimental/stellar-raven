@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { assertClaudePin } from './paired-claude-pin.mjs';
 import { SERVER_TOOLCHAIN_SCHEMA, assertSharedServerToolchain } from './paired-server-toolchain.mjs';
+import { pairedListenerPairs } from '../../../eval/lib/bound-server-identity.mjs';
 const sha = value => createHash('sha256').update(value).digest('hex');
 const json = file => JSON.parse(readFileSync(file, 'utf8'));
 const ANSWER_MODEL = 'claude-sonnet-5';
@@ -52,14 +53,19 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
     pairedCollectionControlSha256: fileHash('eval/qa/paired-collection-control.mjs')
   };
   assert.match(hashes.remoteIdentityVectorSha256, /^[a-f0-9]{64}$/);
+  // One target table feeds the collection commands and the listener-record check.
+  const targets = {
+    baseline: {adapterPort: 8789, adapterRevision: e.PAIRED_REV, upstreamPort: 8791, upstreamRevision: e.PAIRED_BASE},
+    candidate: {adapterPort: 8788, adapterRevision: e.PAIRED_REV, upstreamPort: 8790, upstreamRevision: e.PAIRED_REV}
+  };
   const collection = arm => [
     process.execPath, 'eval/qa/run-qa.mjs',
     '--ids', selected.ids.join(','), '--no-judge', '--paired-control-arm', arm,
     '--max-budget-usd', '80', '--variant', 'A', '--surface', 'search-execute',
     '--search-tool', 'search', '--model', ANSWER_MODEL, '--judge-model', judge.model,
-    '--max-panel-cases', '34', '--server-revision', arm === 'baseline' ? e.PAIRED_BASE : e.PAIRED_REV,
+    '--max-panel-cases', '34', '--server-revision', targets[arm].upstreamRevision,
     '--expect-sha256', surfaces[arm], '--adapter-mode', arm === 'baseline' ? 'add-missing' : 'verify-native',
-    '--adapter-revision', e.PAIRED_REV,
+    '--adapter-revision', targets[arm].adapterRevision,
     '--expect-agent-binary-sha256', hashes.agentBinarySha256,
     '--expect-agent-environment-sha256', hashes.agentEnvironmentSha256,
     '--expect-adapter-sha256', hashes.adapterImplementationSha256,
@@ -67,8 +73,8 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
     '--expect-remote-identity-probe-sha256', hashes.remoteIdentityProbeSha256,
     '--expect-remote-identity-sha256', hashes.remoteIdentityVectorSha256,
     '--stability-register', registerPath,
-    '--port', arm === 'baseline' ? '8789' : '8788',
-    '--upstream-port', arm === 'baseline' ? '8791' : '8790'
+    '--port', String(targets[arm].adapterPort),
+    '--upstream-port', String(targets[arm].upstreamPort)
   ];
   const judgeCommand = arm => [
     process.execPath, 'eval/qa/run-qa.mjs', '--judge-stored', `{${arm}Artifact}`,
@@ -87,6 +93,10 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
   ];
   const p6Path = `${e.PAIRED_RUN}/p6-summary.json`;
   const listenersPath = `${e.PAIRED_RUN}/listeners.json`;
+  // The signed digest binds P6 and the supervisor to these exact recorded listeners.
+  const listenersBytes = readFileSync(listenersPath);
+  pairedListenerPairs(JSON.parse(listenersBytes), targets);
+  const listenersSha256 = sha(listenersBytes);
   return {
     schema: 'qa-paired-collection-plan-v2', deadlineMs: 14400000, selected, worktrees,
     immutableClaude,
@@ -103,14 +113,14 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
       collectionCommand:collection(arm), judgeCommand:judgeCommand(arm), inputHashes:{...hashes}
     }])),
     p6: {
-      runnerArm: 'candidate', summaryArtifactPath:p6Path, listenersPath, claudePath:binary.resolvedPath,
+      runnerArm: 'candidate', summaryArtifactPath:p6Path, listenersPath, listenersSha256, claudePath:binary.resolvedPath,
       wrapperSha256:fileHash('eval/qa/run-p6-judge-self-test.mjs'), judgeSha256:fileHash('eval/qa/judge.mjs'),
       calls:7, perCallBudgetUsd:0.5, maxAuthorizedCostUsd:3.5,
       command: [process.execPath,'eval/qa/run-p6-judge-self-test.mjs',
         '--runner-revision',e.PAIRED_REV,'--claude-path',binary.resolvedPath,
         '--expect-claude-binary-sha256',hashes.agentBinarySha256,
         '--expect-claude-environment-sha256',hashes.agentEnvironmentSha256,
-        '--paired-listeners',listenersPath,'--out',p6Path]
+        '--paired-listeners',listenersPath,'--expect-paired-listeners-sha256',listenersSha256,'--out',p6Path]
     },
     flipRejudge: {
       implementationSha256:fileHash('eval/qa/re-judge.mjs'),
