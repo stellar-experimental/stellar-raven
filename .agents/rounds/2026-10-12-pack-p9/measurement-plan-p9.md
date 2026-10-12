@@ -20,7 +20,7 @@ Does it do so without a grade regression on stored-correct rows and without a fa
 
 ## Offline evidence (free, done)
 
-[replay-p9.json](replay-p9.json), from [replay-p9.mjs](replay-p9.mjs) at `89ff6313` (after the review RJ fixes):
+[replay-p9.json](replay-p9.json), from [replay-p9.mjs](replay-p9.mjs) at `e0dd1953` (after the review RJ and RJ2 fixes):
 
 | Check | p6 | p8 | p9 |
 |---|---|---|---|

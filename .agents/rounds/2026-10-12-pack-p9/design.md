@@ -1,7 +1,7 @@
 # Pack p9: sibling records for entity-list claims
 
 Date: 2026-10-12. Author: Claude Opus 5.5 (lane J). Status: offline only. No model call was made.
-Branch `w1012/j`, rebased on `origin/main` `63396840`. The p9 code is commit `89ff6313` (first `4b4fb9e2`; review RJ fixes in `d07fffc8`, `4bfcdb4d`, and `89ff6313`).
+Branch `w1012/j`, rebased on `origin/main` `63396840`. The p9 code is commit `e0dd1953` (first `4b4fb9e2`; review RJ fixes in `d07fffc8`, `4bfcdb4d`, and `89ff6313`; review RJ2 fix in `e0dd1953`).
 The plan for a paid measurement is [measurement-plan-p9.md](measurement-plan-p9.md). It authorizes nothing.
 
 ## Why
@@ -38,8 +38,10 @@ p9 adds one unit type, the entity-list unit (`role=entity-list`). The code is in
    The p8 budget steps are unchanged.
 
 The measure (`entityListCoverage`, exported) runs on rendered source text only (`packSourceEvidenceText`).
-It splits each line into record scopes (review RJ-1). Each object in braces is one scope, without its nested objects.
-An object that the line clips runs to the line end. The text outside every object is one more scope.
+A small parser splits each line into record scopes (reviews RJ-1 and RJ2). Each object in braces is one scope
+that owns only its direct fields. A nested object is its own scope. A quoted value is read whole, so text inside it
+never reads as a field. Offsets are UTF-16 code units throughout. An object that the line clips runs to the line end.
+The text outside every object is one more scope. A source-item line's `fields="..."` value reads as fields of that item.
 A line that starts inside a clipped string is read with that string closed first.
 A record counts as shown when one scope holds its exact identity value and the exact value of each non-null claim field.
 A quoted value ends at its closing quote. Any other value ends at a separator or at the next field.
@@ -54,7 +56,7 @@ p9 keeps every p8 rule. A pack with no entity-list unit keeps the p8 text byte f
 
 ## Replay
 
-[replay-p9.mjs](replay-p9.mjs) wrote [replay-p9.json](replay-p9.json) at `89ff6313` with a clean pack module.
+[replay-p9.mjs](replay-p9.mjs) wrote [replay-p9.json](replay-p9.json) at `e0dd1953` with a clean pack module.
 It makes no model call. It loads p6 (`d15a4ce5`), p7 (`7e00ede2`), and p8 (`36e77d40`) from git.
 
 The arm worktrees of the p7 and p8 runs no longer exist. Their re-judge artifacts are in
@@ -79,7 +81,7 @@ This check does not test other claims of the answer.
 | 32 measured rows: answer probes missing | 80 | 37 | 40 | 40 |
 | 11 omission rows: supported disputed claims held (of 12) | 2 | 11 | 12 | 12 |
 | 11 omission rows: entity-list records shown (of 20, in 3 rows) | 5 | 4 | 3 | 18 |
-| 270 control rows: entity-list records shown (of 463, in 56 rows) | 172 | 108 | 124 | **429** |
+| 270 control rows: entity-list records shown (of 463, in 56 rows) | 174 | 108 | 124 | **429** |
 | 270 control rows: rows with complete entity lists (of 56) | 15 | 13 | 17 | **43** |
 | 270 control rows: answer probes missing | 493 | 283 | 270 | 278 |
 | 270 control rows: rows with 2 or fewer source items | 153 | 158 | 144 | 146 |
@@ -212,6 +214,18 @@ Two more fixes came from the refreshed replay. A clipped JSON fragment no longer
 inside an identified record as a sibling. The scope scanner reads a snippet that starts inside a string.
 The replay now says "detected evidence complete" instead of "every claim's evidence", as the review asked.
 The changed-row set did not change: p9 still changes the prompts of the same 6 measured rows.
+
+The delta review (`/private/tmp/claude-501/w1012/rj2-review.md`) confirmed RJ-2 and RJ-3 resolved and RJ-1 partly
+resolved. It returned CODE: CHANGES and PLAN: BLOCKED on `740c24f6`.
+
+| Finding | Fix | Evidence |
+|---|---|---|
+| RJ2-1: text inside another field's quoted value counted as an identity or a field | A structural parser reads a quoted value whole and reads fields only at their owning object's level | 2 fixtures (both reviewer fragments) |
+| RJ2-2: astral characters shifted the nested-object masks | The parser uses UTF-16 offsets throughout and builds no code-point array | 1 fixture: the nested status stays missing; a direct status still counts |
+
+The parser also unwraps a source-item line's `fields="..."` value (1 fixture), which the p8 shape needs.
+The pack text did not change: all p9 packs and prompts in the replay are the same as at `89ff6313`.
+Only the p6 control count moves (172 to 174 records), because the parser reads two more p6 records correctly.
 
 ## Files
 
