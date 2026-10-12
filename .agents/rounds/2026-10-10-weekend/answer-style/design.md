@@ -257,9 +257,16 @@ Rejected options:
 - **A new evidence block for unverified matches.** The candidate block already exists, and the
   review found that the agent saw the warnings.
 
-Out of scope: the run-level `evidenceSummary.kind` value `"service-inconclusive"` and the
-Playground step text that uses it existed on `main` before this change. They describe a whole
-run, not a call envelope. Version 2 does not rename them.
+Playground: the run-level `evidenceSummary.kind` value `"service-inconclusive"` covers ok calls
+with no rows, soft-empty calls, and errors together. The internal name stays, because only
+telemetry and host code read it. The model-visible `--- host evidence summary ---` line now names
+the outcomes instead: `service-no-rows`, `service-soft-empty`, `service-error`, or a `+`
+combination such as `service-no-rows+error`. The Playground step text for an ok result with no
+rows no longer calls it "inconclusive". It says the result is ok data, not a soft-empty or error
+result, and keeps the closed-world exception. The Playground search next steps say that an ok
+`caveat` grounds no open-world negative and no identity, and that an exact closed-world empty
+still holds at its source scope. After these changes, the Playground uses "inconclusive" only
+for `soft-empty` and for failed or missing evidence.
 
 ### Instruction length
 
@@ -280,4 +287,6 @@ value in full.
   the `--- EVIDENCE RECOVERY ---` block.
 - `src/demo/tools.ts`, `src/site.ts`, and `scripts/build-super-spec.mjs` (then
   `npm run spec:build`): envelope wording.
+- `src/demo/tools.ts` and `src/demo/steps.ts`: the outcome-named host evidence label, its
+  detection in step outputs, and the Playground step and search text.
 - `ARCHITECTURE.md`, `docs/stellar-docs.md`, and the `retrieval-system-audit` evidence contract.

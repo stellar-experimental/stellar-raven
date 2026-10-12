@@ -61,10 +61,17 @@ Two diagnostic hypotheses. They are not gates:
 
 - **H1 (attribution).** Both candidate answers to `q-edge-strupey-ambiguous-stellar-history` say
   that the identity is unverified or ask for context, and do not present the history of a
-  different project as the answer.
+  different project as the answer. Read the identity link, not only the words. In 2026-10-11,
+  both candidate scripts searched the corrected name ("Stroopy") after the identity warning. They
+  then got an exact slug for the replacement project, with `matchMode: "strict"` in C2. That slug
+  confirms the replacement. It does not connect "Strupey" to it. An answer passes H1 only when no
+  returned record links the asked-for name to the project whose history it gives, and the answer
+  says so. A sentence with "unverified" beside a substituted history fails H1.
 - **H2 (envelope distinction).** No answer in either arm puts an ok result with no rows and a
   `soft-empty` error into one claim. Count such answers per arm. Read every abstention and absence
-  answer that mentions either kind.
+  answer that mentions either kind. Version 1 has one real instance: the C2 answer to
+  `q-gap-contracts-domain-empty` writes "empty/`soft-empty`" (2026-10-11 artifact
+  `2026-10-11T09-48-55-variantA.json`). Report the version 2 count beside it.
 
 ## Judge-contract check (new, before a change counts)
 
@@ -77,6 +84,11 @@ cites host behavior or a metric definition. The reviewer compares it with the ar
 contract at its revision and with the stored service metadata. A rationale that contradicts
 either one makes that grade a judge artifact. The row is then monitor-only, and the ledger states
 why. The rule applies to both directions and to every row.
+
+A monitor-only row can still hold a real answer defect. Keep each such defect in the mechanism
+review and in H1 or H2, even when its grade cannot support a consistent-change claim. Example: the
+version 1 judge rejected a real host field on the contracts-domain row, but the C2 answer on that
+row still merged "empty" and `soft-empty` (H2).
 
 If the evidence pack carries `metricDefinitions` before launch, the runner revision changes.
 Then both arms use the new runner, and the activity row is an ordinary row again.
@@ -101,6 +113,9 @@ re-judge of the Strupey row ended T4 (`score: "error"`, `failureClass: "consiste
    - An unconfirmed improvement counts as no change.
    - The live check still applies to every candidate `wrong`. A live check that clears the
      candidate answer removes the regression, whether it is confirmed or unconfirmed.
+   - The ledger and the result review keep "unconfirmed" separate from "confirmed". An
+     unconfirmed regression counts against the merge decision, but it stays unconfirmed evidence.
+     The report must not call it confirmed.
 
 Rule 7 replaces the version 1 disposition, where a failed confirmation gave INDETERMINATE. Rule 5
 (INDETERMINATE) now applies only to an incomplete or non-comparable collection.
@@ -133,10 +148,33 @@ budgeted call without a reported cost invalidates the method.
 
 Use the base plan's commands with these values:
 
+- `--max-budget-usd 18` for each collection. The base plan's collection command passes 19. Do not
+  copy that value. With 19, the caps would total $88, above the $84 authorization.
 - `--server-revision`: `63396840…` (full 40 characters) for B, and the approved `w1012/c` head for
   C.
 - `--cases-ref` for each re-judge: the baseline revision `63396840…`.
 - `--expect-sha256`: the fresh surface value of each arm.
+
+The complete version 2 collection command (B1, C1, C2, B2). `IDS` is the final list in the ledger
+section "Case swap (before spend)":
+
+```sh
+node eval/qa/run-qa.mjs \
+  --ids "$IDS" \
+  --port "<port>" \
+  --max-budget-usd 18 \
+  --stability-register "$STABILITY_REGISTER" \
+  --server-revision "<arm revision>" \
+  --expect-sha256 "<arm surface sha256>" \
+  --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" \
+  --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" \
+  --remote-identity-probe "$REMOTE_IDENTITY_PROBE" \
+  --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256" \
+  --expect-remote-identity-sha256 "$REMOTE_IDENTITY_SHA256"
+```
+
+Before each collection, check that the command passes exactly one `--max-budget-usd`, with the
+value 18.
 
 Rule 7 retry, only after the first re-judge of that artifact ended T4 or T5 on a listed ID:
 
