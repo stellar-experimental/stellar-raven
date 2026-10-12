@@ -4,7 +4,7 @@
     "p6": "d15a4ce5",
     "p7": "7e00ede2",
     "p8": "36e77d40",
-    "p9": "4b4fb9e2",
+    "p9": "89ff6313",
     "p9PackModuleClean": true
   },
   "supportRule": "rendered source text only (packSourceEvidenceText); answer-gated probes",
@@ -68,13 +68,13 @@
         "p8": 12,
         "p9": 12
       },
-      "rowsWithEntityLists": 2,
-      "listRecords": 11,
+      "rowsWithEntityLists": 3,
+      "listRecords": 20,
       "listRecordsShown": {
         "p6": 5,
-        "p7": 5,
-        "p8": 4,
-        "p9": 11
+        "p7": 4,
+        "p8": 3,
+        "p9": 18
       },
       "maxChars": {
         "p6": 11990,
@@ -225,32 +225,74 @@
           "p6": 11910,
           "p7": 11937,
           "p8": 11859,
-          "p9": 11859
+          "p9": 11829
         },
         "p6MatchesStored": null,
-        "entityLists": [],
+        "entityLists": [
+          {
+            "claimIndex": 5,
+            "entry": 1,
+            "path": "visible-json-fragment",
+            "keys": [
+              "assetCode"
+            ],
+            "records": [
+              "Benji",
+              "Ondo",
+              "WisdomTree",
+              "Etherfuse",
+              "RedSwan",
+              "USDY",
+              "Etherfuse"
+            ]
+          }
+        ],
         "listCoverage": {
           "p6": {
-            "records": 0,
+            "records": 7,
             "shown": 0,
-            "complete": true,
-            "missing": []
+            "complete": false,
+            "missing": [
+              "Benji",
+              "Ondo",
+              "WisdomTree",
+              "Etherfuse",
+              "RedSwan",
+              "USDY",
+              "Etherfuse"
+            ]
           },
           "p7": {
-            "records": 0,
+            "records": 7,
             "shown": 0,
-            "complete": true,
-            "missing": []
+            "complete": false,
+            "missing": [
+              "Benji",
+              "Ondo",
+              "WisdomTree",
+              "Etherfuse",
+              "RedSwan",
+              "USDY",
+              "Etherfuse"
+            ]
           },
           "p8": {
-            "records": 0,
+            "records": 7,
             "shown": 0,
-            "complete": true,
-            "missing": []
+            "complete": false,
+            "missing": [
+              "Benji",
+              "Ondo",
+              "WisdomTree",
+              "Etherfuse",
+              "RedSwan",
+              "USDY",
+              "Etherfuse"
+            ]
           },
           "p9": {
-            "records": 0,
-            "shown": 0,
+            "records": 7,
+            "shown": 7,
             "complete": true,
             "missing": []
           }
@@ -402,7 +444,7 @@
           "p6": 11990,
           "p7": 11720,
           "p8": 11854,
-          "p9": 11934
+          "p9": 11894
         },
         "p6MatchesStored": true,
         "entityLists": [
@@ -414,7 +456,11 @@
               "scfAwarded",
               "scfBasis",
               "scfConfidence",
-              "scfAsOf"
+              "scfAsOf",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus",
+              "via"
             ],
             "records": [
               "Etherfuse",
@@ -430,7 +476,6 @@
             ],
             "records": [
               "Etherfuse",
-              "etherfuse/ramp-api-example",
               "ramp-api-example"
             ]
           },
@@ -450,43 +495,46 @@
         ],
         "listCoverage": {
           "p6": {
-            "records": 8,
-            "shown": 4,
+            "records": 7,
+            "shown": 3,
             "complete": false,
             "missing": [
+              "Etherfuse",
               "Bando",
-              "etherfuse/ramp-api-example",
               "ramp-api-example",
               "Bando"
             ]
           },
           "p7": {
-            "records": 8,
-            "shown": 4,
+            "records": 7,
+            "shown": 3,
             "complete": false,
             "missing": [
+              "Etherfuse",
               "Bando",
-              "etherfuse/ramp-api-example",
               "ramp-api-example",
               "Bando"
             ]
           },
           "p8": {
-            "records": 8,
-            "shown": 4,
+            "records": 7,
+            "shown": 3,
             "complete": false,
             "missing": [
+              "Etherfuse",
               "Bando",
-              "etherfuse/ramp-api-example",
               "ramp-api-example",
               "Bando"
             ]
           },
           "p9": {
-            "records": 8,
-            "shown": 8,
-            "complete": true,
-            "missing": []
+            "records": 7,
+            "shown": 5,
+            "complete": false,
+            "missing": [
+              "Etherfuse",
+              "Bando"
+            ]
           }
         },
         "claims": [
@@ -517,7 +565,7 @@
           "p6": 11979,
           "p7": 11994,
           "p8": 11967,
-          "p9": 11782
+          "p9": 11654
         },
         "p6MatchesStored": true,
         "entityLists": [
@@ -533,42 +581,53 @@
             "records": [
               "Blend",
               "Spiko",
+              "Blend",
+              "Templar Protocol",
+              "Blend",
               "Templar Protocol"
             ]
           }
         ],
         "listCoverage": {
           "p6": {
-            "records": 3,
-            "shown": 1,
+            "records": 6,
+            "shown": 2,
             "complete": false,
             "missing": [
+              "Blend",
+              "Templar Protocol",
               "Blend",
               "Templar Protocol"
             ]
           },
           "p7": {
-            "records": 3,
+            "records": 6,
             "shown": 1,
             "complete": false,
             "missing": [
               "Spiko",
+              "Blend",
+              "Templar Protocol",
+              "Blend",
               "Templar Protocol"
             ]
           },
           "p8": {
-            "records": 3,
+            "records": 6,
             "shown": 0,
             "complete": false,
             "missing": [
               "Blend",
               "Spiko",
+              "Blend",
+              "Templar Protocol",
+              "Blend",
               "Templar Protocol"
             ]
           },
           "p9": {
-            "records": 3,
-            "shown": 3,
+            "records": 6,
+            "shown": 6,
             "complete": true,
             "missing": []
           }
@@ -873,12 +932,16 @@
         "p9": null
       },
       "rowsWithEntityLists": 6,
-      "listRecords": 63,
+      "p9ListLimits": {
+        "fields-per-record": 4,
+        "units-per-pack": 3
+      },
+      "listRecords": 70,
       "listRecordsShown": {
         "p6": 19,
-        "p7": 8,
-        "p8": 12,
-        "p9": 62
+        "p7": 7,
+        "p8": 11,
+        "p9": 65
       },
       "disputedClaimsWithTranscriptSupport": 37,
       "disputedClaimsHolding": {
@@ -887,11 +950,11 @@
         "p8": 36,
         "p9": 36
       },
-      "rowsWithEveryClaimEvidence": {
+      "rowsWithDetectedEvidenceComplete": {
         "p6": 21,
         "p7": 26,
         "p8": 26,
-        "p9": 30
+        "p9": 28
       },
       "answerProbeMissing": {
         "p6": 80,
@@ -932,14 +995,14 @@
             "prompt": true
           }
         },
-        "p9PromptSha256": "0db8f4de16ae9fa28a11498811fa1bc3c26cef4c4516919f0632ef3cbae2c2ec",
+        "p9PromptSha256": "901f0389b1c18b891ab83c6185dabb5936e295e93206ef09addb3d55cf1cd9fa",
         "p9PromptEqualsStoredP8": false,
-        "p9PackSha256": "1eee7b64c01b41c5722617604206874d716f2359a8db744e36926706d209dbb6",
+        "p9PackSha256": "cde2fab5fc9309c085d0020b5bfe19dda36ea08c3b6f590fbf716a149dc47c55",
         "chars": {
           "p6": 11990,
           "p7": 11720,
           "p8": 11854,
-          "p9": 11934
+          "p9": 11894
         },
         "panels": {
           "p6": "partial/partial/partial",
@@ -955,7 +1018,11 @@
               "scfAwarded",
               "scfBasis",
               "scfConfidence",
-              "scfAsOf"
+              "scfAsOf",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus",
+              "via"
             ],
             "records": [
               "Etherfuse",
@@ -971,7 +1038,6 @@
             ],
             "records": [
               "Etherfuse",
-              "etherfuse/ramp-api-example",
               "ramp-api-example"
             ]
           },
@@ -991,44 +1057,50 @@
         ],
         "listCoverage": {
           "p6": {
-            "records": 8,
-            "shown": 4,
+            "records": 7,
+            "shown": 3,
             "complete": false,
             "missing": [
+              "Etherfuse",
               "Bando",
-              "etherfuse/ramp-api-example",
               "ramp-api-example",
               "Bando"
             ]
           },
           "p7": {
-            "records": 8,
-            "shown": 4,
+            "records": 7,
+            "shown": 3,
             "complete": false,
             "missing": [
+              "Etherfuse",
               "Bando",
-              "etherfuse/ramp-api-example",
               "ramp-api-example",
               "Bando"
             ]
           },
           "p8": {
-            "records": 8,
-            "shown": 4,
+            "records": 7,
+            "shown": 3,
             "complete": false,
             "missing": [
+              "Etherfuse",
               "Bando",
-              "etherfuse/ramp-api-example",
               "ramp-api-example",
               "Bando"
             ]
           },
           "p9": {
-            "records": 8,
-            "shown": 8,
-            "complete": true,
-            "missing": []
+            "records": 7,
+            "shown": 5,
+            "complete": false,
+            "missing": [
+              "Etherfuse",
+              "Bando"
+            ]
           }
+        },
+        "p9ListLimits": {
+          "fields-per-record": 2
         },
         "disputedClaims": {
           "total": 0,
@@ -1046,11 +1118,11 @@
           "p8": 3,
           "p9": 3
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": false,
           "p8": false,
-          "p9": true
+          "p9": false
         },
         "claims": []
       },
@@ -1071,14 +1143,14 @@
             "prompt": true
           }
         },
-        "p9PromptSha256": "f57b4d47d01c5388f1dc5ebd204b5f7d1807d8505ff1d981e0a34b1c0911e8b8",
+        "p9PromptSha256": "cfe0a6e47d12eb539a60c9496796a57028c8af5faac4ea17a56b6667a4067062",
         "p9PromptEqualsStoredP8": false,
-        "p9PackSha256": "f083470b5dcc684682245c29889bd3bdcde7dc6c1b6999051a7911c9e37d4c44",
+        "p9PackSha256": "b4ddb9ae15ff05748a82742899c7e7ec26d45b23c5ae082312302aef419102b0",
         "chars": {
           "p6": 11979,
           "p7": 11994,
           "p8": 11967,
-          "p9": 11782
+          "p9": 11654
         },
         "panels": {
           "p6": "wrong/partial/wrong",
@@ -1098,46 +1170,58 @@
             "records": [
               "Blend",
               "Spiko",
+              "Blend",
+              "Templar Protocol",
+              "Blend",
               "Templar Protocol"
             ]
           }
         ],
         "listCoverage": {
           "p6": {
-            "records": 3,
-            "shown": 1,
+            "records": 6,
+            "shown": 2,
             "complete": false,
             "missing": [
+              "Blend",
+              "Templar Protocol",
               "Blend",
               "Templar Protocol"
             ]
           },
           "p7": {
-            "records": 3,
+            "records": 6,
             "shown": 1,
             "complete": false,
             "missing": [
               "Spiko",
+              "Blend",
+              "Templar Protocol",
+              "Blend",
               "Templar Protocol"
             ]
           },
           "p8": {
-            "records": 3,
+            "records": 6,
             "shown": 0,
             "complete": false,
             "missing": [
               "Blend",
               "Spiko",
+              "Blend",
+              "Templar Protocol",
+              "Blend",
               "Templar Protocol"
             ]
           },
           "p9": {
-            "records": 3,
-            "shown": 3,
+            "records": 6,
+            "shown": 6,
             "complete": true,
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 1,
           "transcriptSupported": 1
@@ -1154,7 +1238,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": false,
           "p8": false,
@@ -1237,6 +1321,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 8,
           "transcriptSupported": 8
@@ -1253,7 +1338,7 @@
           "p8": 1,
           "p9": 1
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": true,
           "p8": true,
@@ -1435,6 +1520,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 7,
           "transcriptSupported": 7
@@ -1451,7 +1537,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": true,
           "p8": true,
@@ -1622,6 +1708,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 10,
           "transcriptSupported": 3
@@ -1638,7 +1725,7 @@
           "p8": 3,
           "p9": 3
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": true,
           "p8": true,
@@ -1813,6 +1900,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 8,
           "transcriptSupported": 5
@@ -1829,7 +1917,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": true,
           "p8": true,
@@ -2017,6 +2105,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -2033,7 +2122,7 @@
           "p8": 7,
           "p9": 7
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -2058,14 +2147,14 @@
             "prompt": true
           }
         },
-        "p9PromptSha256": "da87a6b837125c3e5b51334f4b3273ca933b154b7461778d500397602f383bb9",
+        "p9PromptSha256": "57efd8ef842138f0e427612c4dc6b07b902d7b5ce530882771f1a8d37df50ecd",
         "p9PromptEqualsStoredP8": false,
-        "p9PackSha256": "323c347dc8036ec8f1d33771f0372a9b6267e1e6502a4d61d30a0ea58aace587",
+        "p9PackSha256": "26b3dd98e1eb6413601e1642943727a2074e93ca2b13eeedb398bc5a85ff727e",
         "chars": {
           "p6": 11981,
           "p7": 11863,
           "p8": 11982,
-          "p9": 11975
+          "p9": 11834
         },
         "panels": {
           "p6": "correct/correct/correct",
@@ -2083,6 +2172,7 @@
             ],
             "records": [
               "USDC",
+              "EURC",
               "EURC",
               "Circle"
             ]
@@ -2183,11 +2273,13 @@
             "entry": 1,
             "path": "visible-json-fragment",
             "keys": [
+              "company",
               "peg",
               "issuer",
               "issuerDomain"
             ],
             "records": [
+              "EURC",
               "EURC",
               "Circle"
             ]
@@ -2225,10 +2317,12 @@
             "path": "visible-json-fragment",
             "keys": [
               "ticker",
+              "company",
               "issuer",
               "issuerDomain"
             ],
             "records": [
+              "EURC",
               "EURC",
               "Circle"
             ]
@@ -2244,6 +2338,7 @@
             "records": [
               "USDC",
               "EURC",
+              "EURC",
               "Circle"
             ]
           },
@@ -2256,18 +2351,20 @@
             ],
             "records": [
               "EURC",
+              "EURC",
               "For Yield"
             ]
           }
         ],
         "listCoverage": {
           "p6": {
-            "records": 37,
+            "records": 42,
             "shown": 6,
             "complete": false,
             "missing": [
               "USDC",
               "EURC",
+              "EURC",
               "Circle",
               "APSUSDM",
               "C1USD",
@@ -2285,6 +2382,7 @@
               "ARS",
               "BRLT",
               "EURC",
+              "EURC",
               "Circle",
               "SBC",
               "MXNe",
@@ -2292,19 +2390,23 @@
               "VEUR",
               "VCHF",
               "EURC",
-              "Circle",
               "EURC",
               "Circle",
+              "EURC",
+              "EURC",
+              "Circle",
+              "EURC",
               "EURC",
               "For Yield"
             ]
           },
           "p7": {
-            "records": 37,
+            "records": 42,
             "shown": 1,
             "complete": false,
             "missing": [
               "USDC",
+              "EURC",
               "EURC",
               "Circle",
               "APSUSDM",
@@ -2328,6 +2430,7 @@
               "ARS",
               "BRLT",
               "EURC",
+              "EURC",
               "Circle",
               "SBC",
               "MXNe",
@@ -2335,19 +2438,23 @@
               "VEUR",
               "VCHF",
               "EURC",
-              "Circle",
               "EURC",
               "Circle",
+              "EURC",
+              "EURC",
+              "Circle",
+              "EURC",
               "EURC",
               "For Yield"
             ]
           },
           "p8": {
-            "records": 37,
+            "records": 42,
             "shown": 1,
             "complete": false,
             "missing": [
               "USDC",
+              "EURC",
               "EURC",
               "Circle",
               "APSUSDM",
@@ -2371,6 +2478,7 @@
               "ARS",
               "BRLT",
               "EURC",
+              "EURC",
               "Circle",
               "SBC",
               "MXNe",
@@ -2378,21 +2486,27 @@
               "VEUR",
               "VCHF",
               "EURC",
-              "Circle",
               "EURC",
               "Circle",
+              "EURC",
+              "EURC",
+              "Circle",
+              "EURC",
               "EURC",
               "For Yield"
             ]
           },
           "p9": {
-            "records": 37,
-            "shown": 36,
+            "records": 42,
+            "shown": 41,
             "complete": false,
             "missing": [
               "For Yield"
             ]
           }
+        },
+        "p9ListLimits": {
+          "units-per-pack": 3
         },
         "disputedClaims": {
           "total": 0,
@@ -2410,7 +2524,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": false,
           "p8": false,
@@ -2476,6 +2590,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -2492,7 +2607,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -2617,6 +2732,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 7,
           "transcriptSupported": 1
@@ -2633,7 +2749,7 @@
           "p8": 1,
           "p9": 1
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": false,
           "p8": false,
@@ -2772,6 +2888,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -2788,7 +2905,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -2854,6 +2971,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -2870,7 +2988,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -2936,6 +3054,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -2952,7 +3071,7 @@
           "p8": 2,
           "p9": 2
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3018,6 +3137,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 1,
           "transcriptSupported": 0
@@ -3034,7 +3154,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3111,6 +3231,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 1,
           "transcriptSupported": 0
@@ -3127,7 +3248,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3204,6 +3325,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3220,7 +3342,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3286,6 +3408,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3302,7 +3425,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3368,6 +3491,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3384,7 +3508,7 @@
           "p8": 2,
           "p9": 2
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3450,6 +3574,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3466,7 +3591,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3514,7 +3639,9 @@
               "owner",
               "hackathonWinner",
               "judgedHackathon",
-              "tier"
+              "tier",
+              "stellarEvidence",
+              "project"
             ],
             "records": [
               "stellar-8004",
@@ -3552,10 +3679,16 @@
           },
           "p9": {
             "records": 2,
-            "shown": 2,
-            "complete": true,
-            "missing": []
+            "shown": 0,
+            "complete": false,
+            "missing": [
+              "stellar-8004",
+              "stellar8004"
+            ]
           }
+        },
+        "p9ListLimits": {
+          "fields-per-record": 2
         },
         "disputedClaims": {
           "total": 0,
@@ -3573,11 +3706,11 @@
           "p8": 4,
           "p9": 4
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": false,
           "p8": false,
-          "p9": true
+          "p9": false
         },
         "claims": []
       },
@@ -3639,6 +3772,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3655,7 +3789,7 @@
           "p8": 5,
           "p9": 5
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3721,6 +3855,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3737,7 +3872,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3803,6 +3938,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 3,
           "transcriptSupported": 3
@@ -3819,7 +3955,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3922,6 +4058,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -3938,7 +4075,7 @@
           "p8": 1,
           "p9": 1
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -3986,7 +4123,9 @@
               "rank",
               "tvlUSD",
               "tvlAsOf",
-              "assetCode"
+              "assetCode",
+              "assetSupply",
+              "assetHolders"
             ],
             "records": [
               "Rumble Fish",
@@ -4020,6 +4159,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 0,
           "transcriptSupported": 0
@@ -4036,7 +4176,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -4102,6 +4242,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 10,
           "transcriptSupported": 5
@@ -4118,7 +4259,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -4295,6 +4436,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 2,
           "transcriptSupported": 2
@@ -4311,7 +4453,7 @@
           "p8": 3,
           "p9": 3
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": true,
           "p8": false,
@@ -4409,6 +4551,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 9,
           "transcriptSupported": 0
@@ -4425,7 +4568,7 @@
           "p8": 2,
           "p9": 2
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -4582,6 +4725,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 1,
           "transcriptSupported": 1
@@ -4598,7 +4742,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": false,
           "p7": false,
           "p8": true,
@@ -4681,6 +4825,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 9,
           "transcriptSupported": 0
@@ -4697,7 +4842,7 @@
           "p8": 5,
           "p9": 5
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -4854,6 +4999,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 1,
           "transcriptSupported": 0
@@ -4870,7 +5016,7 @@
           "p8": 0,
           "p9": 0
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -4947,6 +5093,7 @@
             "missing": []
           }
         },
+        "p9ListLimits": {},
         "disputedClaims": {
           "total": 1,
           "transcriptSupported": 1
@@ -4963,7 +5110,7 @@
           "p8": 1,
           "p9": 1
         },
-        "everyClaimEvidencePresent": {
+        "detectedEvidenceComplete": {
           "p6": true,
           "p7": true,
           "p8": true,
@@ -4992,7 +5139,7 @@
       "p6": 493,
       "p7": 283,
       "p8": 270,
-      "p9": 277
+      "p9": 278
     },
     "itemsAtMost2": {
       "p6": 153,
@@ -5019,7 +5166,7 @@
       {
         "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-scf-cross-reflector-rounds-current",
         "p8": 5,
-        "p9": 7
+        "p9": 8
       },
       {
         "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-scf-pitch-prep-live",
@@ -5027,19 +5174,19 @@
         "p9": 2
       }
     ],
-    "rowsWithEntityLists": 57,
-    "listRecords": 437,
+    "rowsWithEntityLists": 56,
+    "listRecords": 463,
     "listRecordsShown": {
-      "p6": 180,
-      "p7": 115,
-      "p8": 131,
-      "p9": 434
+      "p6": 172,
+      "p7": 108,
+      "p8": 124,
+      "p9": 429
     },
     "listRowsComplete": {
-      "p6": 21,
-      "p7": 14,
-      "p8": 19,
-      "p9": 54
+      "p6": 15,
+      "p7": 13,
+      "p8": 17,
+      "p9": 43
     },
     "listRows": [
       {
@@ -5095,6 +5242,7 @@
           "p9": "7/7"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11939,
           "p7": 11614,
@@ -5130,6 +5278,7 @@
           "p9": "5/5"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11947,
           "p7": 11930,
@@ -5182,6 +5331,7 @@
             ],
             "records": [
               "USDC",
+              "EURC",
               "EURC"
             ]
           },
@@ -5280,17 +5430,18 @@
           }
         ],
         "shown": {
-          "p6": "8/28",
-          "p7": "5/28",
-          "p8": "5/28",
-          "p9": "28/28"
+          "p6": "7/29",
+          "p7": "5/29",
+          "p8": "5/29",
+          "p9": "29/29"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11683,
           "p7": 11897,
           "p8": 11518,
-          "p9": 11914
+          "p9": 11963
         }
       },
       {
@@ -5304,7 +5455,12 @@
               "tvlSource",
               "canonicalSlug",
               "scfAwarded",
-              "scfBasis"
+              "scfBasis",
+              "scfConfidence",
+              "scfAsOf",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Etherfuse",
@@ -5317,9 +5473,15 @@
           "p6": "1/3",
           "p7": "0/3",
           "p8": "1/3",
-          "p9": "3/3"
+          "p9": "1/3"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Bando",
+          "OrbitCDP"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 2
+        },
         "chars": {
           "p6": 11872,
           "p7": 11992,
@@ -5340,6 +5502,9 @@
             "records": [
               "Zenex",
               "Noether",
+              "Stellars Finance",
+              "Zenex",
+              "Noether",
               "Stellars Finance"
             ]
           },
@@ -5352,22 +5517,24 @@
             ],
             "records": [
               "Turbolong",
+              "Sushi",
               "Sushi"
             ]
           }
         ],
         "shown": {
-          "p6": "5/5",
-          "p7": "4/5",
-          "p8": "4/5",
-          "p9": "5/5"
+          "p6": "8/9",
+          "p7": "6/9",
+          "p8": "6/9",
+          "p9": "9/9"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 10081,
           "p7": 11868,
           "p8": 11859,
-          "p9": 11854
+          "p9": 11921
         }
       },
       {
@@ -5381,7 +5548,9 @@
               "owner",
               "hackathonWinner",
               "judgedHackathon",
-              "tier"
+              "tier",
+              "stellarEvidence",
+              "project"
             ],
             "records": [
               "stellar-8004",
@@ -5393,9 +5562,15 @@
           "p6": "0/2",
           "p7": "0/2",
           "p8": "0/2",
-          "p9": "2/2"
+          "p9": "0/2"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "stellar-8004",
+          "stellar8004"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 2
+        },
         "chars": {
           "p6": 11979,
           "p7": 11939,
@@ -5438,6 +5613,7 @@
           "p9": "4/4"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11569,
           "p7": 11875,
@@ -5459,6 +5635,7 @@
             ],
             "records": [
               "USDC",
+              "EURC",
               "EURC"
             ]
           },
@@ -5588,46 +5765,23 @@
           }
         ],
         "shown": {
-          "p6": "4/28",
-          "p7": "2/28",
-          "p8": "2/28",
-          "p9": "28/28"
+          "p6": "4/29",
+          "p7": "2/29",
+          "p8": "2/29",
+          "p9": "29/29"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11766,
           "p7": 11995,
           "p8": 11789,
-          "p9": 11949
+          "p9": 11952
         }
       },
       {
         "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-comp-cross-moneygram-partnership-sep24",
         "lists": [
-          {
-            "claimIndex": 2,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "partnerType"
-            ],
-            "records": [
-              "Moneygram",
-              "anchor-moneygram"
-            ]
-          },
-          {
-            "claimIndex": 4,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "partnerType"
-            ],
-            "records": [
-              "Moneygram",
-              "anchor-moneygram"
-            ]
-          },
           {
             "claimIndex": 7,
             "entry": 1,
@@ -5636,26 +5790,36 @@
               "partnerType",
               "pricingNotes",
               "category",
-              "tvlUSD"
+              "tvlUSD",
+              "scfTotalAwardedUSD",
+              "via",
+              "anchorProfile"
             ],
             "records": [
+              "Moneygram",
               "Moneygram",
               "MGUSD"
             ]
           }
         ],
         "shown": {
-          "p6": "5/6",
-          "p7": "5/6",
-          "p8": "5/6",
-          "p9": "6/6"
+          "p6": "1/3",
+          "p7": "1/3",
+          "p8": "1/3",
+          "p9": "1/3"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Moneygram",
+          "MGUSD"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 2
+        },
         "chars": {
           "p6": 11313,
           "p7": 11703,
           "p8": 11934,
-          "p9": 11543
+          "p9": 11495
         }
       },
       {
@@ -5682,6 +5846,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11935,
           "p7": 11908,
@@ -5700,7 +5865,9 @@
               "status",
               "scfAwarded",
               "scfBasis",
-              "scfAsOf"
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Zenex",
@@ -5713,9 +5880,16 @@
           "p6": "0/3",
           "p7": "0/3",
           "p8": "0/3",
-          "p9": "3/3"
+          "p9": "0/3"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Zenex",
+          "Noether",
+          "Stellars Finance"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 3
+        },
         "chars": {
           "p6": 11979,
           "p7": 11936,
@@ -5739,68 +5913,21 @@
               "LumAgg",
               "WOWMAX"
             ]
-          },
-          {
-            "claimIndex": 13,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "lastActivityAt",
-              "primaryLanguage",
-              "repoScore",
-              "repoScoreLabel"
-            ],
-            "records": [
-              "Phoenix",
-              "Phoenix-Protocol-Group/phoenix-contracts"
-            ]
           }
         ],
         "shown": {
-          "p6": "2/6",
-          "p7": "0/6",
-          "p8": "0/6",
-          "p9": "6/6"
+          "p6": "1/4",
+          "p7": "0/4",
+          "p8": "0/4",
+          "p9": "4/4"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11931,
           "p7": 11817,
           "p8": 11916,
-          "p9": 11982
-        }
-      },
-      {
-        "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-eco-pyusd-stellar-freshness",
-        "lists": [
-          {
-            "claimIndex": 2,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "issuer",
-              "company",
-              "peg",
-              "marketCapUSD"
-            ],
-            "records": [
-              "PYUSD",
-              "Paypal USD"
-            ]
-          }
-        ],
-        "shown": {
-          "p6": "1/2",
-          "p7": "0/2",
-          "p8": "0/2",
-          "p9": "2/2"
-        },
-        "p9Missing": [],
-        "chars": {
-          "p6": 11795,
-          "p7": 11719,
-          "p8": 11800,
-          "p9": 11806
+          "p9": 11933
         }
       },
       {
@@ -5817,6 +5944,7 @@
             "records": [
               "Blend",
               "Spiko",
+              "Blend",
               "Aquarius",
               "Templar Protocol"
             ]
@@ -5831,6 +5959,7 @@
             ],
             "records": [
               "Blend",
+              "Blend",
               "Backyard",
               "Bexo",
               "Blink",
@@ -5840,17 +5969,18 @@
           }
         ],
         "shown": {
-          "p6": "5/10",
-          "p7": "4/10",
-          "p8": "2/10",
-          "p9": "10/10"
+          "p6": "5/12",
+          "p7": "4/12",
+          "p8": "2/12",
+          "p9": "12/12"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11973,
           "p7": 11951,
           "p8": 11758,
-          "p9": 11822
+          "p9": 11964
         }
       },
       {
@@ -5880,6 +6010,7 @@
           "p9": "5/5"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 5913,
           "p7": 5442,
@@ -5910,6 +6041,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11732,
           "p7": 11902,
@@ -5940,6 +6072,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11725,
           "p7": 11802,
@@ -5956,10 +6089,16 @@
             "path": "visible-json-fragment",
             "keys": [
               "round",
-              "award_type"
+              "award_type",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector | Expansion",
+              "Reflector",
               "Reflector"
             ]
           },
@@ -5969,10 +6108,16 @@
             "path": "visible-json-fragment",
             "keys": [
               "round",
-              "award_type"
+              "award_type",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector | CEX price feeds",
+              "Reflector",
               "Reflector"
             ]
           },
@@ -5982,57 +6127,40 @@
             "path": "visible-json-fragment",
             "keys": [
               "round",
-              "award_type"
+              "award_type",
+              "publicGoods",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector DAO",
+              "Reflector",
               "Reflector"
-            ]
-          },
-          {
-            "claimIndex": 16,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "primaryLanguage",
-              "repoScoreLabel",
-              "lastCommitAt"
-            ],
-            "records": [
-              "Reflector",
-              "reflector-network/reflector-contract"
-            ]
-          },
-          {
-            "claimIndex": 18,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "linked_project_slug",
-              "project",
-              "repoScore",
-              "repoScoreLabel"
-            ],
-            "records": [
-              "Reflector",
-              "reflector-network/reflector-contract"
             ]
           }
         ],
         "shown": {
-          "p6": "10/10",
-          "p7": "9/10",
-          "p8": "9/10",
-          "p9": "9/10"
+          "p6": "6/9",
+          "p7": "6/9",
+          "p8": "6/9",
+          "p9": "6/9"
         },
         "p9Missing": [
+          "Reflector",
+          "Reflector",
           "Reflector"
         ],
+        "p9ListLimits": {
+          "fields-per-record": 3
+        },
         "chars": {
           "p6": 11821,
           "p7": 11975,
           "p8": 11998,
-          "p9": 11917
+          "p9": 11843
         }
       },
       {
@@ -6059,6 +6187,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11960,
           "p7": 11751,
@@ -6089,7 +6218,8 @@
               "tvlUSD",
               "tvlAsOf",
               "tvlSource",
-              "tvlMethod"
+              "tvlMethod",
+              "tvlMethodUrl"
             ],
             "records": [
               "Benji",
@@ -6106,7 +6236,8 @@
               "tvlUSD",
               "tvlAsOf",
               "tvlSource",
-              "tvlMethod"
+              "tvlMethod",
+              "tvlMethodUrl"
             ],
             "records": [
               "Benji",
@@ -6122,6 +6253,7 @@
           "p9": "9/9"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11968,
           "p7": 11886,
@@ -6140,10 +6272,13 @@
               "company",
               "peg",
               "marketCapUSD",
-              "priceUSD"
+              "priceUSD",
+              "holders",
+              "volume24hUSD"
             ],
             "records": [
               "USDC",
+              "EURC",
               "EURC"
             ]
           },
@@ -6155,7 +6290,8 @@
               "company",
               "peg",
               "marketCapUSD",
-              "priceUSD"
+              "priceUSD",
+              "volume24hUSD"
             ],
             "records": [
               "APSUSDM",
@@ -6170,7 +6306,8 @@
               "company",
               "peg",
               "marketCapUSD",
-              "priceUSD"
+              "priceUSD",
+              "volume24hUSD"
             ],
             "records": [
               "C1USD",
@@ -6191,7 +6328,8 @@
               "company",
               "peg",
               "marketCapUSD",
-              "priceUSD"
+              "priceUSD",
+              "volume24hUSD"
             ],
             "records": [
               "EURMTL",
@@ -6206,7 +6344,9 @@
               "company",
               "peg",
               "marketCapUSD",
-              "priceUSD"
+              "priceUSD",
+              "holders",
+              "volume24hUSD"
             ],
             "records": [
               "ZARZ",
@@ -6222,7 +6362,8 @@
               "company",
               "peg",
               "marketCapUSD",
-              "priceUSD"
+              "priceUSD",
+              "volume24hUSD"
             ],
             "records": [
               "GYEN",
@@ -6244,17 +6385,31 @@
           }
         ],
         "shown": {
-          "p6": "1/21",
-          "p7": "0/21",
-          "p8": "0/21",
-          "p9": "21/21"
+          "p6": "0/22",
+          "p7": "0/22",
+          "p8": "0/22",
+          "p9": "12/22"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "USDC",
+          "EURC",
+          "EURC",
+          "EURMTL",
+          "USDM",
+          "ZARZ",
+          "USDZ",
+          "GBPZ",
+          "GYEN",
+          "ZUSD"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 10
+        },
         "chars": {
           "p6": 11809,
           "p7": 11943,
           "p8": 11940,
-          "p9": 11971
+          "p9": 11975
         }
       },
       {
@@ -6270,23 +6425,25 @@
             ],
             "records": [
               "Moneygram",
+              "Moneygram",
               "MGUSD",
               "Bridge"
             ]
           }
         ],
         "shown": {
-          "p6": "1/3",
-          "p7": "1/3",
-          "p8": "1/3",
-          "p9": "3/3"
+          "p6": "2/4",
+          "p7": "1/4",
+          "p8": "1/4",
+          "p9": "4/4"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11976,
           "p7": 11967,
           "p8": 11980,
-          "p9": 11822
+          "p9": 11841
         }
       },
       {
@@ -6300,7 +6457,11 @@
               "scfAwarded",
               "scfBasis",
               "scfConfidence",
-              "scfAsOf"
+              "scfAsOf",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus",
+              "onchain"
             ],
             "records": [
               "Etherfuse",
@@ -6312,9 +6473,14 @@
           "p6": "0/2",
           "p7": "0/2",
           "p8": "0/2",
-          "p9": "2/2"
+          "p9": "1/2"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Bando"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 1
+        },
         "chars": {
           "p6": 11618,
           "p7": 11735,
@@ -6346,6 +6512,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11948,
           "p7": 11997,
@@ -6377,6 +6544,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11752,
           "p7": 11833,
@@ -6393,42 +6561,39 @@
             "path": "visible-json-fragment",
             "keys": [
               "round",
-              "award_type"
+              "award_type",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector DAO",
-              "Reflector"
-            ]
-          },
-          {
-            "claimIndex": 12,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "events",
-              "eventsDelta",
-              "storageEntries",
-              "createdAt"
-            ],
-            "records": [
               "Reflector",
-              "price oracle",
-              "reflector-network/reflector-contract"
+              "Reflector",
+              "Reflector",
+              "Reflector"
             ]
           }
         ],
         "shown": {
-          "p6": "5/5",
+          "p6": "4/5",
           "p7": "4/5",
           "p8": "4/5",
-          "p9": "5/5"
+          "p9": "4/5"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Reflector"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 1
+        },
         "chars": {
           "p6": 11924,
           "p7": 11830,
           "p8": 11985,
-          "p9": 11963
+          "p9": 11999
         }
       },
       {
@@ -6444,22 +6609,24 @@
             ],
             "records": [
               "Stellar Hacks: KALE x Reflector",
+              "xbid.ai",
               "xbid.ai"
             ]
           }
         ],
         "shown": {
-          "p6": "2/2",
-          "p7": "2/2",
-          "p8": "2/2",
-          "p9": "2/2"
+          "p6": "2/3",
+          "p7": "2/3",
+          "p8": "2/3",
+          "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11680,
           "p7": 11947,
           "p8": 11974,
-          "p9": 11986
+          "p9": 11976
         }
       },
       {
@@ -6487,6 +6654,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11970,
           "p7": 11861,
@@ -6522,6 +6690,7 @@
           "p9": "7/7"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11661,
           "p7": 11498,
@@ -6560,7 +6729,8 @@
               "Ondo",
               "Spiko",
               "Etherfuse",
-              "Pipeline"
+              "Pipeline",
+              "Spiko"
             ]
           },
           {
@@ -6593,19 +6763,20 @@
           }
         ],
         "shown": {
-          "p6": "3/12",
-          "p7": "1/12",
-          "p8": "1/12",
-          "p9": "11/12"
+          "p6": "4/13",
+          "p7": "1/13",
+          "p8": "1/13",
+          "p9": "12/13"
         },
         "p9Missing": [
           "WisdomTree"
         ],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11931,
           "p7": 11911,
           "p8": 11857,
-          "p9": 11951
+          "p9": 11943
         }
       },
       {
@@ -6621,6 +6792,7 @@
             ],
             "records": [
               "USDC",
+              "EURC",
               "EURC",
               "Circle"
             ]
@@ -6721,11 +6893,13 @@
             "entry": 1,
             "path": "visible-json-fragment",
             "keys": [
+              "company",
               "peg",
               "issuer",
               "issuerDomain"
             ],
             "records": [
+              "EURC",
               "EURC",
               "Circle"
             ]
@@ -6763,10 +6937,12 @@
             "path": "visible-json-fragment",
             "keys": [
               "ticker",
+              "company",
               "issuer",
               "issuerDomain"
             ],
             "records": [
+              "EURC",
               "EURC",
               "Circle"
             ]
@@ -6782,6 +6958,7 @@
             "records": [
               "USDC",
               "EURC",
+              "EURC",
               "Circle"
             ]
           },
@@ -6794,24 +6971,28 @@
             ],
             "records": [
               "EURC",
+              "EURC",
               "For Yield"
             ]
           }
         ],
         "shown": {
-          "p6": "6/37",
-          "p7": "1/37",
-          "p8": "1/37",
-          "p9": "36/37"
+          "p6": "6/42",
+          "p7": "1/42",
+          "p8": "1/42",
+          "p9": "41/42"
         },
         "p9Missing": [
           "For Yield"
         ],
+        "p9ListLimits": {
+          "units-per-pack": 3
+        },
         "chars": {
           "p6": 11981,
           "p7": 11863,
           "p8": 11982,
-          "p9": 11975
+          "p9": 11834
         }
       },
       {
@@ -6857,6 +7038,7 @@
           "p9": "11/11"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11992,
           "p7": 11749,
@@ -6875,11 +7057,16 @@
               "scfAwarded",
               "scfBasis",
               "scfConfidence",
-              "scfAsOf"
+              "scfAsOf",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Etherfuse",
-              "Bando"
+              "Bando",
+              "Bando",
+              "Etherfuse"
             ]
           },
           {
@@ -6890,26 +7077,38 @@
               "publicGoods",
               "scfAwarded",
               "scfBasis",
-              "scfConfidence"
+              "scfConfidence",
+              "scfAsOf",
+              "scfSourceUrl",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Etherfuse",
-              "Bando"
+              "Bando",
+              "Bando",
+              "Etherfuse"
             ]
           }
         ],
         "shown": {
-          "p6": "0/4",
-          "p7": "0/4",
-          "p8": "0/4",
-          "p9": "4/4"
+          "p6": "2/8",
+          "p7": "0/8",
+          "p8": "0/8",
+          "p9": "6/8"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Bando",
+          "Bando"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 2
+        },
         "chars": {
           "p6": 11944,
           "p7": 11800,
           "p8": 11990,
-          "p9": 11998
+          "p9": 11794
         }
       },
       {
@@ -6917,15 +7116,16 @@
         "lists": [
           {
             "claimIndex": 18,
-            "entry": 1,
+            "entry": 2,
             "path": "visible-json-fragment",
             "keys": [
               "status"
             ],
             "records": [
-              "Zenex",
               "Noether",
-              "Stellars Finance"
+              "Stellars Finance",
+              "Zenex",
+              "Noether"
             ]
           },
           {
@@ -6938,22 +7138,24 @@
             "records": [
               "Lusty",
               "Turbolong",
+              "Turbolong",
               "XOXNO"
             ]
           }
         ],
         "shown": {
-          "p6": "6/6",
-          "p7": "4/6",
-          "p8": "4/6",
-          "p9": "6/6"
+          "p6": "7/8",
+          "p7": "4/8",
+          "p8": "4/8",
+          "p9": "8/8"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11831,
           "p7": 11983,
           "p8": 11965,
-          "p9": 11853
+          "p9": 11926
         }
       },
       {
@@ -6980,6 +7182,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11481,
           "p7": 11731,
@@ -6997,10 +7200,16 @@
             "keys": [
               "round",
               "award_type",
-              "architecture_url"
+              "architecture_url",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector | Expansion",
+              "Reflector",
               "Reflector"
             ]
           },
@@ -7010,10 +7219,16 @@
             "path": "visible-json-fragment",
             "keys": [
               "round",
-              "award_type"
+              "award_type",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector | CEX price feeds",
+              "Reflector",
               "Reflector"
             ]
           },
@@ -7023,39 +7238,40 @@
             "path": "visible-json-fragment",
             "keys": [
               "round",
-              "award_type"
+              "award_type",
+              "publicGoods",
+              "scfAwarded",
+              "scfBasis",
+              "scfAsOf",
+              "scfTotalAwardedUSD",
+              "scfAmountStatus"
             ],
             "records": [
               "Reflector DAO",
-              "Reflector"
-            ]
-          },
-          {
-            "claimIndex": 16,
-            "entry": 1,
-            "path": "visible-json-fragment",
-            "keys": [
-              "repoScore",
-              "repoScoreLabel"
-            ],
-            "records": [
               "Reflector",
-              "reflector-network/reflector-contract"
+              "Reflector"
             ]
           }
         ],
         "shown": {
-          "p6": "8/8",
-          "p7": "7/8",
-          "p8": "8/8",
-          "p9": "8/8"
+          "p6": "6/9",
+          "p7": "5/9",
+          "p8": "6/9",
+          "p9": "6/9"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "Reflector",
+          "Reflector",
+          "Reflector"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 3
+        },
         "chars": {
           "p6": 11921,
           "p7": 11841,
           "p8": 11602,
-          "p9": 11934
+          "p9": 11612
         }
       },
       {
@@ -7082,6 +7298,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11987,
           "p7": 11879,
@@ -7100,7 +7317,8 @@
               "owner",
               "successorRepo",
               "repoScore",
-              "repoScoreLabel"
+              "repoScoreLabel",
+              "kind"
             ],
             "records": [
               "C-Address-Onboarding-Bridge--Frontend-",
@@ -7113,9 +7331,16 @@
           "p6": "0/3",
           "p7": "0/3",
           "p8": "0/3",
-          "p9": "3/3"
+          "p9": "0/3"
         },
-        "p9Missing": [],
+        "p9Missing": [
+          "C-Address-Onboarding-Bridge--Frontend-",
+          "C-Address-Onboarding-Bridge--Contract",
+          "C-Address-Onboarding-Bridge-Backend"
+        ],
+        "p9ListLimits": {
+          "fields-per-record": 3
+        },
         "chars": {
           "p6": 11506,
           "p7": 11857,
@@ -7134,7 +7359,8 @@
               "tvlUSD",
               "tvlAsOf",
               "assetCode",
-              "assetSupply"
+              "assetSupply",
+              "assetHolders"
             ],
             "records": [
               "Rumble Fish",
@@ -7150,6 +7376,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 6129,
           "p7": 5327,
@@ -7181,6 +7408,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 6765,
           "p7": 5155,
@@ -7199,7 +7427,8 @@
               "tvlUSD",
               "tvlAsOf",
               "assetCode",
-              "assetSupply"
+              "assetSupply",
+              "assetHolders"
             ],
             "records": [
               "Rumble Fish",
@@ -7215,6 +7444,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 7189,
           "p7": 5345,
@@ -7246,6 +7476,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 4665,
           "p7": 4841,
@@ -7264,7 +7495,9 @@
               "rank",
               "tvlUSD",
               "tvlAsOf",
-              "assetCode"
+              "assetCode",
+              "assetSupply",
+              "assetHolders"
             ],
             "records": [
               "Rumble Fish",
@@ -7279,6 +7512,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 9846,
           "p7": 7515,
@@ -7319,6 +7553,7 @@
           "p9": "11/11"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11998,
           "p7": 11761,
@@ -7350,6 +7585,7 @@
           "p9": "2/2"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 9867,
           "p7": 11969,
@@ -7382,22 +7618,24 @@
             ],
             "records": [
               "USDC",
+              "EURC",
               "EURC"
             ]
           }
         ],
         "shown": {
-          "p6": "0/4",
-          "p7": "0/4",
-          "p8": "0/4",
-          "p9": "4/4"
+          "p6": "0/5",
+          "p7": "0/5",
+          "p8": "0/5",
+          "p9": "5/5"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11922,
           "p7": 11788,
           "p8": 11934,
-          "p9": 11890
+          "p9": 11939
         }
       },
       {
@@ -7427,6 +7665,7 @@
           "p9": "5/5"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 8653,
           "p7": 10420,
@@ -7447,7 +7686,8 @@
             "records": [
               "WisdomTree",
               "Spiko",
-              "Etherfuse"
+              "Etherfuse",
+              "Spiko"
             ]
           },
           {
@@ -7468,17 +7708,18 @@
           }
         ],
         "shown": {
-          "p6": "0/6",
-          "p7": "0/6",
-          "p8": "0/6",
-          "p9": "6/6"
+          "p6": "0/7",
+          "p7": "0/7",
+          "p8": "0/7",
+          "p9": "7/7"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11975,
           "p7": 11923,
           "p8": 11936,
-          "p9": 11987
+          "p9": 11990
         }
       },
       {
@@ -7507,6 +7748,7 @@
           "p9": "4/4"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 8228,
           "p7": 11950,
@@ -7653,6 +7895,7 @@
           "p9": "26/26"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 10257,
           "p7": 11927,
@@ -7686,6 +7929,7 @@
           "p9": "5/5"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11745,
           "p7": 11960,
@@ -7696,6 +7940,26 @@
       {
         "row": "2026-10-11-answer-style/2026-10-11T09-48-55-variantA.json|q-asset-rwa-tokenized-freshness",
         "lists": [
+          {
+            "claimIndex": 19,
+            "entry": 1,
+            "path": "visible-json-fragment",
+            "keys": [
+              "category",
+              "assetCode",
+              "assetSupply",
+              "assetHolders"
+            ],
+            "records": [
+              "Benji",
+              "WisdomTree",
+              "Spiko",
+              "Etherfuse",
+              "Spiko",
+              "Spiko",
+              "Etherfuse"
+            ]
+          },
           {
             "claimIndex": 22,
             "entry": 1,
@@ -7715,17 +7979,18 @@
           }
         ],
         "shown": {
-          "p6": "3/6",
-          "p7": "0/6",
-          "p8": "0/6",
-          "p9": "6/6"
+          "p6": "3/13",
+          "p7": "0/13",
+          "p8": "0/13",
+          "p9": "13/13"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11995,
           "p7": 11756,
           "p8": 11951,
-          "p9": 11802
+          "p9": 11834
         }
       },
       {
@@ -7781,6 +8046,7 @@
           "p9": "12/12"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 10606,
           "p7": 11990,
@@ -7842,6 +8108,7 @@
               "EURC",
               "EURMTL",
               "EURS",
+              "EURC",
               "VEUR"
             ]
           },
@@ -7874,17 +8141,18 @@
           }
         ],
         "shown": {
-          "p6": "10/34",
-          "p7": "0/34",
-          "p8": "1/34",
-          "p9": "34/34"
+          "p6": "9/35",
+          "p7": "0/35",
+          "p8": "1/35",
+          "p9": "35/35"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 10435,
           "p7": 11879,
           "p8": 11868,
-          "p9": 11949
+          "p9": 11982
         }
       },
       {
@@ -7914,6 +8182,7 @@
           "p9": "3/3"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11887,
           "p7": 11719,
@@ -7961,6 +8230,7 @@
           "p9": "7/7"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 9930,
           "p7": 11994,
@@ -8098,6 +8368,7 @@
           "p9": "23/23"
         },
         "p9Missing": [],
+        "p9ListLimits": {},
         "chars": {
           "p6": 11349,
           "p7": 11920,
@@ -8106,7 +8377,11 @@
         }
       }
     ],
-    "maxP9Chars": 12000
+    "maxP9Chars": 12000,
+    "p9ListLimits": {
+      "fields-per-record": 32,
+      "units-per-pack": 3
+    }
   },
   "partD": {
     "rows": 187,

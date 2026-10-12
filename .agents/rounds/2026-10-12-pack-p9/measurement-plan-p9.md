@@ -20,12 +20,12 @@ Does it do so without a grade regression on stored-correct rows and without a fa
 
 ## Offline evidence (free, done)
 
-[replay-p9.json](replay-p9.json), from [replay-p9.mjs](replay-p9.mjs) at `4b4fb9e2`:
+[replay-p9.json](replay-p9.json), from [replay-p9.mjs](replay-p9.mjs) at `89ff6313` (after the review RJ fixes):
 
 | Check | p6 | p8 | p9 |
 |---|---|---|---|
-| Measured rows: entity-list records shown (of 63) | 19 | 12 | 62 |
-| Measured rows: rows with every claim's evidence (of 32) | 21 | 26 | 30 |
+| Measured rows: entity-list records shown (of 70) | 19 | 11 | 65 |
+| Measured rows: rows with detected evidence complete (of 32) | 21 | 26 | 28 |
 | Measured rows: disputed claims held (of 37) | 15 | 36 | 36 |
 | Omission rows: supported disputed claims held (of 12) | 2 | 12 | 12 |
 | R8-1 row: records shown (of 11) | 6 | 5 | 11 |
@@ -55,9 +55,14 @@ The replay shows that p9 changes the full prompt of exactly 6 rows. These are th
 
 No Stage 3 row changes, so Stage 3 reuses its p8 panels and makes no call.
 
-Reuse is valid only when all of these hold. The reading command checks the first one for every row.
+Reuse is valid only when all of these hold. Each arm has its own prompt condition (review RJ-3):
 
-- The rebuilt full p9 prompt equals the recorded prompt of the reused panel (p8 for arm B, p6 for arm A).
+- Arm A (reused p6 panels): the rebuilt p6 pack and full prompt equal the stored arm-A pack and prompt.
+  The baseline verification command is the replay ([replay-p9.mjs](replay-p9.mjs), part B: 32 of 32 reproduce).
+  The reading command checks the same condition again for every row.
+- Arm B, 26 unchanged rows (reused p8 panels): the rebuilt p9 full prompt equals the stored p8 prompt.
+  The reading command checks it for every row; the replay shows 26 of 26.
+- Arm B, 6 changed rows (new p9 panels): the mechanical gate below.
 - The model, rubric, and panel are the same: `claude-sonnet-5`, `v2.11`, panel 3.
 - The executable and environment pins are the same: binary
   `c9b5341637becbd423ddffc5b254afb645682a3868cb708bbc6cc0e7bb419937` (version `2.1.296`) and environment
@@ -117,7 +122,7 @@ Preflight, free, on the run day:
 ```sh
 git worktree add --detach ../raven-p9-arm <reviewed p9 commit>
 # In this worktree:
-node .agents/rounds/2026-10-12-pack-p9/replay-p9.mjs > /tmp/replay-p9-check.json   # equal to replay-p9.json apart from revisions.p9
+node .agents/rounds/2026-10-12-pack-p9/replay-p9.mjs > /tmp/replay-p9-check.json   # baseline verification; equal to replay-p9.json apart from revisions.p9
 node .agents/rounds/2026-10-12-pack-p9/analyze-rejudge-p9.mjs                       # status "not-run"; 26 reused rows, none inconclusive
 node .agents/rounds/2026-10-12-pack-p9/analyze-rejudge-p9.mjs --stand-in p8         # every changed row INCONCLUSIVE
 .agents/rounds/2026-10-12-pack-p9/launcher/run-inv-p9.sh <invocation> dry           # each of the 5; exit 0, goldenTime.violations empty
@@ -176,7 +181,9 @@ The `--stand-in p8` output proves the gate offline: [rejudge-summary-p9-standin.
 Compare the arm-B panel score with the arm-A panel score for each row (order: correct > partial > wrong).
 Read every individual rationale of every new p9 vote. No identical-input noise floor exists for panel 3 under `v2.11`.
 
-- **Stage 1 (support and behavior):** each changed Stage 1 row must show its entity-list records (the replay shows 8 of 8 and 3 of 3).
+- **Stage 1 (support and behavior):** each changed Stage 1 row must show the list records that the replay shows
+  (5 of 7 for `q-defi-etherfuse-stablebonds`, 6 of 6 for `q-edge-fresh-latest-blend-tvl`). The 2 missing records lose
+  claim fields to the 4-field limit; that gap is known and reported with the row.
   No new vote may call a shown record or span fabricated or absent. A held `wrong` grade for another reason is reported as held.
 - **Stage 2 (no regression), the R6 rule, unchanged:**
 

@@ -7,9 +7,13 @@
 //      support (every wrong claim of every stored vote, p8b included), and answer-probe omissions;
 //   C. the stored-p6 control inventory: answer-probe omissions, source-item counts, and entity lists;
 //   D. the stable rows: full judge prompts under p6 and p9.
+// Part B is also the baseline verification command: it checks each rebuilt p6 pack and prompt
+// against the stored arm-A pack and prompt, and the same for p7 and p8.
 // Support counts rendered source text only (packSourceEvidenceText) for every pack version.
-// Entity-list coverage uses entityListCoverage from this tree; its claims come from the answer and
-// the saved execute results, so the measure is the same for every pack version.
+// Entity-list coverage uses entityListCoverage from this tree; its requirements come from the answer
+// and the saved execute results, before any rendering limit, so the measure is the same for every
+// pack version. "detectedEvidenceComplete" means every detected entity-list record is shown and every
+// transcript-supported probe of the stored disputed claims is present. It does not check other claims.
 //
 // Usage (from the repository root):
 //   node .agents/rounds/2026-10-12-pack-p9/replay-p9.mjs [<saved results dir>] > .agents/rounds/2026-10-12-pack-p9/replay-p9.json
@@ -56,6 +60,12 @@ const packs = (input) => ({
   p8: modules.p8.buildTranscriptEvidencePack(input),
   p9: explainTranscriptEvidencePack(input).text
 });
+// Records and fields that a p9 rendering limit removed, counted by limit (audit entityListLimits).
+const limitCounts = (input) => {
+  const counts = {};
+  for (const item of explainTranscriptEvidencePack(input).audit?.entityListLimits ?? []) counts[item.limit] = (counts[item.limit] ?? 0) + 1;
+  return counts;
+};
 const items = (text) => text.split("\n").filter((line) => /^\d+\. title=/.test(line)).length;
 const byVersion = (fn) => Object.fromEntries(VERSIONS.map((version) => [version, fn(version)]));
 
@@ -185,10 +195,11 @@ for (const entryA of armArtifacts.p6) {
       panels: Object.fromEntries(Object.entries(votes).map(([version, list]) => [version, list.map((verdict) => verdict?.score ?? null).join("/")])),
       entityLists: listClaimsSummary(input),
       listCoverage: coverage,
+      p9ListLimits: limitCounts(input),
       disputedClaims: { total: claims.length, transcriptSupported: supportedClaims.length },
       disputedClaimsHolding: byVersion((version) => supportedClaims.filter((claim) => claim.missing[version].length === 0).length),
       answerProbeMissing: probes,
-      everyClaimEvidencePresent: byVersion((version) =>
+      detectedEvidenceComplete: byVersion((version) =>
         coverage[version].complete && supportedClaims.every((claim) => claim.missing[version].length === 0)),
       claims: support
     });
@@ -261,6 +272,7 @@ for (const path of jsonFiles(resultsDir)) {
         lists: listClaimsSummary(input),
         shown: byVersion((version) => `${coverage[version].shown}/${coverage[version].records}`),
         p9Missing: coverage.p9.missing,
+        p9ListLimits: limitCounts(input),
         chars: byVersion((version) => built[version].length)
       });
     }
@@ -269,6 +281,11 @@ for (const path of jsonFiles(resultsDir)) {
 }
 
 const sum = (rows, fn) => rows.reduce((total, row) => total + fn(row), 0);
+const sumCounts = (list) => list.reduce((total, counts) => {
+  for (const [key, value] of Object.entries(counts)) total[key] = (total[key] ?? 0) + value;
+  return total;
+}, {});
+partC.p9ListLimits = sumCounts(partC.listRows.map((row) => row.p9ListLimits));
 console.log(JSON.stringify({
   schema: "p9-replay-v1",
   revisions: {
@@ -298,11 +315,12 @@ console.log(JSON.stringify({
       storedPacksReproduced: byVersion((version) => version === "p9" ? null : partB.filter((row) => row.reproduced[version].pack).length),
       storedPromptsReproduced: byVersion((version) => version === "p9" ? null : partB.filter((row) => row.reproduced[version].prompt).length),
       rowsWithEntityLists: partB.filter((row) => row.listCoverage.p9.records).length,
+      p9ListLimits: sumCounts(partB.map((row) => row.p9ListLimits)),
       listRecords: sum(partB, (row) => row.listCoverage.p9.records),
       listRecordsShown: byVersion((version) => sum(partB, (row) => row.listCoverage[version].shown)),
       disputedClaimsWithTranscriptSupport: sum(partB, (row) => row.disputedClaims.transcriptSupported),
       disputedClaimsHolding: byVersion((version) => sum(partB, (row) => row.disputedClaimsHolding[version])),
-      rowsWithEveryClaimEvidence: byVersion((version) => partB.filter((row) => row.everyClaimEvidencePresent[version]).length),
+      rowsWithDetectedEvidenceComplete: byVersion((version) => partB.filter((row) => row.detectedEvidenceComplete[version]).length),
       answerProbeMissing: byVersion((version) => sum(partB, (row) => row.answerProbeMissing[version])),
       p9PromptsDifferFromP8: partB.filter((row) => !row.p9PromptEqualsStoredP8).map((row) => `${row.invocation}|${row.id}`),
       maxChars: byVersion((version) => Math.max(...partB.map((row) => row.chars[version])))

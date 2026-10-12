@@ -49,12 +49,12 @@
       "id": "q-defi-etherfuse-stablebonds",
       "changed": true,
       "armBSource": "not-run",
-      "p9PackSha256": "1eee7b64c01b41c5722617604206874d716f2359a8db744e36926706d209dbb6",
-      "p9PromptSha256": "0db8f4de16ae9fa28a11498811fa1bc3c26cef4c4516919f0632ef3cbae2c2ec",
+      "p9PackSha256": "cde2fab5fc9309c085d0020b5bfe19dda36ea08c3b6f590fbf716a149dc47c55",
+      "p9PromptSha256": "901f0389b1c18b891ab83c6185dabb5936e295e93206ef09addb3d55cf1cd9fa",
       "p9ListCoverage": {
-        "records": 8,
-        "shown": 8,
-        "complete": true
+        "records": 7,
+        "shown": 5,
+        "complete": false
       },
       "armA": {
         "score": "partial",
@@ -75,11 +75,11 @@
       "id": "q-edge-fresh-latest-blend-tvl",
       "changed": true,
       "armBSource": "not-run",
-      "p9PackSha256": "f083470b5dcc684682245c29889bd3bdcde7dc6c1b6999051a7911c9e37d4c44",
-      "p9PromptSha256": "f57b4d47d01c5388f1dc5ebd204b5f7d1807d8505ff1d981e0a34b1c0911e8b8",
+      "p9PackSha256": "b4ddb9ae15ff05748a82742899c7e7ec26d45b23c5ae082312302aef419102b0",
+      "p9PromptSha256": "cfe0a6e47d12eb539a60c9496796a57028c8af5faac4ea17a56b6667a4067062",
       "p9ListCoverage": {
-        "records": 3,
-        "shown": 3,
+        "records": 6,
+        "shown": 6,
         "complete": true
       },
       "armA": {
@@ -470,11 +470,11 @@
       "id": "q-asset-stablecoin-issuers-discovery",
       "changed": true,
       "armBSource": "not-run",
-      "p9PackSha256": "323c347dc8036ec8f1d33771f0372a9b6267e1e6502a4d61d30a0ea58aace587",
-      "p9PromptSha256": "da87a6b837125c3e5b51334f4b3273ca933b154b7461778d500397602f383bb9",
+      "p9PackSha256": "26b3dd98e1eb6413601e1642943727a2074e93ca2b13eeedb398bc5a85ff727e",
+      "p9PromptSha256": "57efd8ef842138f0e427612c4dc6b07b902d7b5ce530882771f1a8d37df50ecd",
       "p9ListCoverage": {
-        "records": 37,
-        "shown": 36,
+        "records": 42,
+        "shown": 41,
         "complete": false
       },
       "armA": {
@@ -1178,8 +1178,8 @@
       "p9PromptSha256": "1a00fa439e28f2f405046b2a0384849615d68dead01a0a3180c1afdd1166b803",
       "p9ListCoverage": {
         "records": 2,
-        "shown": 2,
-        "complete": true
+        "shown": 0,
+        "complete": false
       },
       "armA": {
         "score": "partial",

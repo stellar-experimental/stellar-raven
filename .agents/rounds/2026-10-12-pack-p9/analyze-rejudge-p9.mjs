@@ -2,7 +2,8 @@
 // Predeclared reading for the p9 re-measurement (measurement-plan-p9.md). It makes no model call
 // and writes JSON to stdout. It never edits a manifest or an artifact.
 //
-// For each of the 32 rows it pairs the reused arm-A p6 panel with an arm-B panel:
+// For each of the 32 rows it pairs the reused arm-A p6 panel with an arm-B panel. The arm-A panel is
+// valid only when the rebuilt p6 pack and prompt equal the stored arm-A pack and prompt.
 //   - a changed row (rejudge-artifacts-p9.json changedRows) reads the new p9 panel, or "not-run";
 //   - any other row reads the p8 panel of the p8 run, but only when the rebuilt p9 prompt equals
 //     the recorded p8 prompt. Otherwise the row is INCONCLUSIVE.
@@ -27,7 +28,7 @@ import {
   PACK_VERSION
 } from "../../../eval/qa/evidence-pack.mjs";
 import { buildJudgePrompt } from "../../../eval/qa/judge.mjs";
-import { rowInput, sha256, storedArtifact } from "./inputs.mjs";
+import { loadPackModule, REVISIONS, rowInput, sha256, storedArtifact } from "./inputs.mjs";
 
 const DIR = ".agents/rounds/2026-10-12-pack-p9";
 const RANK = { wrong: 0, partial: 1, correct: 2 };
@@ -36,6 +37,7 @@ const args = process.argv.slice(2);
 const standIn = args[0] === "--stand-in" ? args[1] : null;
 if (args.length && standIn !== "p8") throw new Error("usage: analyze-rejudge-p9.mjs [--stand-in p8]");
 if (PACK_VERSION !== "p9") throw new Error(`this tree defines ${PACK_VERSION}, not p9`);
+const p6 = await loadPackModule(REVISIONS.p6, "p6");
 
 const manifest = JSON.parse(readFileSync(`${DIR}/rejudge-artifacts-p9.json`, "utf8"));
 const entriesOf = (side) => JSON.parse(readFileSync(side.manifest, "utf8")).artifacts.filter((entry) => entry.arm === side.arm);
@@ -99,12 +101,17 @@ for (const entryA of armA) {
     let b = null;
     let source = "not-run";
     let inconclusive = [];
+    // Arm A: the rebuilt p6 pack and prompt must equal the stored baseline.
+    const p6Pack = p6.buildTranscriptEvidencePack(input);
+    if (a.packSha256 !== sha256(p6Pack) || a.promptSha256 !== sha256(buildJudgePrompt({ ...input, transcriptEvidence: p6Pack }))) {
+      inconclusive.push("rebuilt p6 pack or prompt differs from the stored arm-A baseline; reuse is invalid");
+    }
     if (changed.has(key)) {
       const result = artifactP9 ? panel(artifactP9, id) : null;
       if (result) {
         b = result;
         source = standIn ? "stand-in-p8" : "p9-new";
-        inconclusive = gate(result, pack, prompt);
+        inconclusive.push(...gate(result, pack, prompt));
       }
     } else {
       b = panel(artifactP8, id);
@@ -112,7 +119,7 @@ for (const entryA of armA) {
       if (b.promptSha256 !== prompt) inconclusive.push("rebuilt p9 prompt differs from the recorded p8 prompt; reuse is invalid");
     }
     const listLabels = [...new Set(entityListClaims(input).flatMap((claim) => claim.records.map((record) => record.label)))];
-    const direction = !b ? "not-run" : inconclusive.length ? "inconclusive" : b.score === null || a.score === null
+    const direction = inconclusive.length ? "inconclusive" : !b ? "not-run" : b.score === null || a.score === null
       ? "not-comparable" : RANK[b.score] > RANK[a.score] ? "up" : RANK[b.score] < RANK[a.score] ? "down" : "same";
     const votes = (b?.verdicts ?? []).map((verdict) => {
       const claims = Array.isArray(verdict?.wrongClaims) ? verdict.wrongClaims : [];
