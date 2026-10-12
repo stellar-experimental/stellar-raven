@@ -274,17 +274,19 @@ const ARTIFACT_PRELUDE = [
 
 /**
  * Section-read guard, applied by __guardEnvelope to a successful
- * codemode.skill.read with `data.sections`. Stored transcripts show three
- * misreads of that array, each of which silently loses the skill text:
- *   - `r.data.content` on a section read: warn once, return undefined, so a
- *     harmless `content || sections` fallback keeps working;
+ * codemode.skill.read with `data.sections`. Two stored misreads of that
+ * array silently lose the skill text, and both now throw:
  *   - `r.data.sections["<key>"]`, as if keyed by section: throw a pointer to
- *     `.find((s) => s.section === key)`. Keys that are array indices or
- *     already resolve on the array (`find`, `length`) are never trapped;
+ *     `.find((s) => s.section === key)`. Keys that are array indices, that
+ *     already resolve on the array (`find`, `length`), or that JSON and
+ *     promise resolution probe (`toJSON`, `then`) are never trapped;
  *   - a section object used as a string (`String(s)`, `join`, template
  *     literal): throw instead of yielding "[object Object]".
- * Every trap is non-enumerable, so Object.keys, JSON, and structured clone
- * see the plain `{ section, content, url }` array.
+ * A third misread, `r.data.content` on a section read, stays untrapped: an
+ * own accessor would make `"content" in r.data` true, and the documented
+ * section result has no `content`. Every trap is non-enumerable, so
+ * Object.keys, JSON, and structured clone see the plain
+ * `{ section, content, url }` array.
  */
 const SECTIONS_GUARD = [
   '    const __sectionsShape = "r.data.sections is an array of { section, content, url } in request order";',
@@ -292,21 +294,11 @@ const SECTIONS_GUARD = [
   "      try { Object.defineProperty(o, key, { ...desc, enumerable: false, configurable: true }); } catch {}",
   "    };",
   "    const __guardSections = (d) => {",
-  '      if (!("content" in d)) __hide(d, "content", {',
-  "        get() {",
-  '          if (!__warned.has("codemode.skill.read|content")) {',
-  '            __warned.add("codemode.skill.read|content");',
-  '            console.log("[envelope] codemode.skill.read: a section read has no r.data.content — " + __sectionsShape + "; use r.data.sections[i].content.");',
-  "          }",
-  "          return undefined;",
-  "        },",
-  '        set(value) { Object.defineProperty(this, "content", { value, writable: true, enumerable: true, configurable: true }); }',
-  "      });",
   "      for (const s of d.sections) {",
   '        if (s === null || typeof s !== "object") continue;',
   '        __hide(s, "toString", { writable: true, value() { throw new Error("codemode.skill.read: a section is an object, not a string — " + __sectionsShape + "; use .content."); } });',
   "        const key = s.section;",
-  '        if (typeof key !== "string" || /^\\d+$/.test(key) || key in d.sections) continue;',
+  '        if (typeof key !== "string" || /^\\d+$/.test(key) || key in d.sections || key === "toJSON" || key === "then") continue;',
   "        __hide(d.sections, key, {",
   '          get() { throw new Error("codemode.skill.read: r.data.sections is not keyed by section — " + __sectionsShape + "; use r.data.sections.find((s) => s.section === " + JSON.stringify(key) + ").content."); },',
   "          set(value) { Object.defineProperty(this, key, { value, writable: true, enumerable: true, configurable: true }); }",
