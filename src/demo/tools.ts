@@ -176,7 +176,7 @@ function clipSignature(text: string, max: number, required: readonly string[]): 
   const callableLine = text.slice(lastNewline + 1);
   const marker = `\n… [middle clipped for the demo]${required.length > 0 ? ` required input: ${required.join(", ")}` : ""}\n`;
   const headChars = max - callableLine.length - marker.length;
-  if (headChars <= 0) return callableLine;
+  if (headChars <= 0) return `${marker.trimStart()}${callableLine}`;
   return `${text.slice(0, headChars)}${marker}${callableLine}`;
 }
 
