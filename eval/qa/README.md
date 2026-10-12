@@ -301,7 +301,9 @@ The requirements are every named record and every claim field, before any render
 Rendering limits (3 groups for each claim, 24 records for each unit, 4 fields, 12 units) apply after that.
 The audit's `entityListLimits` names each record or field that a limit removed.
 The pack measures entity-list coverage on the serialized text after every budget cut, and after a clip.
-Each object in braces is one record scope, without its nested objects; the text outside braces is one more scope.
+A small parser reads each line. Each object in braces is one record scope that owns only its direct fields.
+A nested object is its own scope, and a quoted value is read whole, so text inside it never reads as a field.
+The text outside braces is one more scope. A source-item line's `fields="..."` value reads as fields of that item.
 A record counts as shown when one scope holds its exact identity value and the exact value of each non-null claim field.
 A scope outside braces that names two records never counts. Two records with one name need two scopes.
 A coverage gap adds the general `claimSupportNotice` line. `entityListCoverage` applies the same measure to any pack version.

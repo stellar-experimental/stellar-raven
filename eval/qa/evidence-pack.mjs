@@ -2408,75 +2408,110 @@ function listSupportUnits({ lists, anchors, segments, occurrences }) {
   return { units, limited };
 }
 
-// Record scopes of rendered source text. Each object in braces is one scope, with its nested
-// objects removed, so a field belongs only to its own object. An object the line clips runs to the
-// line end. Text outside every object is one more scope.
+// Record scopes of rendered source text, read by a small structural parser. Each object in braces
+// is one scope that owns only its direct fields: a nested object is its own scope, and a quoted value
+// is read whole, so text inside a quoted value never reads as a field. An object that the line clips
+// runs to the line end; a close brace with no open brace ends a clipped object that started before
+// the line. The text outside every object is one more scope. Offsets are UTF-16 code units throughout.
+const SCOPE_KEY_RE = /(?:"((?:[^"\\]|\\.){1,80})"|([A-Za-z_][\w.$-]{0,79}))\s*[:=]\s*/y;
+const SCOPE_NEXT_FIELD_RE = /\s+(?:"(?:[^"\\]|\\.){1,80}"|[A-Za-z_][\w.$-]{0,79})\s*[:=]/y;
+
+// A source-item line renders its fields inside one quoted value (fields="status="Live", ...).
+// Unwrap it, so those fields read as fields of the item.
+function unwrapSourceItemFields(line) {
+  return /^\d+\. title="/.test(line) ? line.replace(/ fields="(.*)"$/, " $1") : line;
+}
+
+// A quoted value from `at` (the opening quote). Returns the value and the index after the close.
+function readQuoted(line, at) {
+  const quote = line[at];
+  let value = "";
+  let index = at + 1;
+  while (index < line.length) {
+    const ch = line[index];
+    if (ch === "\\" && quote === '"') {
+      value += line[index + 1] ?? "";
+      index += 2;
+    } else if (ch === quote) {
+      return { value, end: index + 1 };
+    } else {
+      value += ch;
+      index += 1;
+    }
+  }
+  return { value, end: line.length, clipped: true };
+}
+
 function sourceRecordScopes(text) {
   const scopes = [];
-  for (const line of text.split("\n")) {
-    const objects = [];
-    const open = [];
+  const frame = () => ({ fields: new Map() });
+  const add = (target, key, value) => {
+    const list = target.fields.get(key) ?? [];
+    list.push(cleanText(value).toLowerCase());
+    target.fields.set(key, list);
+  };
+  for (const raw of text.split("\n")) {
+    const line = unwrapSourceItemFields(raw);
+    let root = frame();
+    const stack = [];
+    const current = () => stack.at(-1) ?? root;
+    let at = 0;
     // A clipped line can start inside a string. Its first quote then closes that string: the text
-    // before it does not end with a character that opens a value.
+    // before it ends with a character that does not open a value.
     const first = line.indexOf('"');
-    let quoted = first > 0 && /[^\s{[,:=(|;]\s*$/.test(line.slice(0, first)) && !/^\s*$/.test(line.slice(0, first));
-    for (let at = 0; at < line.length; at += 1) {
+    if (first > 0 && /[^\s{[,:=(|;]\s*$/.test(line.slice(0, first))) at = first + 1;
+    while (at < line.length) {
       const ch = line[at];
-      if (quoted) {
-        if (ch === "\\") at += 1;
-        else if (ch === '"') quoted = false;
+      if (ch === "{") {
+        stack.push(frame());
+        at += 1;
         continue;
       }
-      if (ch === '"') quoted = true;
-      else if (ch === "{") open.push(at);
-      else if (ch === "}" && open.length) objects.push({ from: open.pop(), to: at + 1 });
-    }
-    while (open.length) objects.push({ from: open.pop(), to: line.length });
-    // The text of [from, to) with every object nested inside it blanked out.
-    const own = (from, to, outside = false) => {
-      const chars = [...line.slice(from, to)];
-      for (const child of objects) {
-        if ((outside || child.from > from) && child.to <= to) chars.fill(" ", child.from - from, child.to - from);
+      if (ch === "}") {
+        if (stack.length) scopes.push({ fields: stack.pop().fields, braced: true });
+        else {
+          scopes.push({ fields: root.fields, braced: true });
+          root = frame();
+        }
+        at += 1;
+        continue;
       }
-      return chars.join("");
-    };
-    for (const object of objects) scopes.push({ text: own(object.from, object.to), braced: true });
-    scopes.push({ text: own(0, line.length, true), braced: false });
+      const startsWord = !/[\p{L}\p{N}_]/u.test(line[at - 1] ?? "");
+      SCOPE_KEY_RE.lastIndex = at;
+      const key = startsWord || ch === '"' ? SCOPE_KEY_RE.exec(line) : null;
+      if (key) {
+        const name = key[1] ?? key[2];
+        let index = SCOPE_KEY_RE.lastIndex;
+        const next = line[index];
+        if (next === '"' || next === "'") {
+          const quoted = readQuoted(line, index);
+          add(current(), name, quoted.value);
+          at = quoted.end;
+        } else if (next === "{" || next === "[" || next === undefined) {
+          at = index;
+        } else {
+          let end = index;
+          while (end < line.length && !/[|;,}\]]/.test(line[end])) {
+            SCOPE_NEXT_FIELD_RE.lastIndex = end;
+            if (/\s/.test(line[end]) && SCOPE_NEXT_FIELD_RE.test(line)) break;
+            end += 1;
+          }
+          add(current(), name, line.slice(index, end).trim());
+          at = end;
+        }
+        continue;
+      }
+      // A quoted string outside a value position is skipped whole.
+      at = ch === '"' ? readQuoted(line, at).end : at + 1;
+    }
+    while (stack.length) scopes.push({ fields: stack.pop().fields, braced: true });
+    scopes.push({ fields: root.fields, braced: false });
   }
   return scopes;
 }
 
-// Every complete scalar value of a field in one scope. A quoted value ends at its closing quote;
-// any other value ends at a separator or at the next field.
-function scopeFieldValues(scope, key) {
-  const values = [];
-  const re = new RegExp(`(?<![\\p{L}\\p{N}_])["']?${escapeRegExp(key)}["']?\\s*[:=]\\s*`, "giu");
-  for (const match of scope.matchAll(re)) {
-    const rest = scope.slice(match.index + match[0].length);
-    const quote = rest[0] === '"' || rest[0] === "'" ? rest[0] : "";
-    if (quote) {
-      let value = "";
-      for (let at = 1; at < rest.length; at += 1) {
-        if (rest[at] === "\\" && quote === '"') {
-          value += rest[at + 1] ?? "";
-          at += 1;
-        } else if (rest[at] === quote) {
-          values.push(value);
-          break;
-        } else {
-          value += rest[at];
-        }
-      }
-      continue;
-    }
-    const value = rest.match(/^(.*?)(?=\s*[|;,}]|\s+["']?[\w.]+["']?\s*[:=]|$)/)?.[1] ?? "";
-    if (value.trim()) values.push(value.trim());
-  }
-  return values.map((value) => cleanText(value).toLowerCase());
-}
-
 function scopeIdentities(scope) {
-  return new Set(LIST_IDENTITY_KEYS.flatMap((key) => scopeFieldValues(scope, key)));
+  return new Set(LIST_IDENTITY_KEYS.flatMap((key) => scope.fields.get(key) ?? []));
 }
 
 // A record counts as shown in one scope that holds its exact identity value and the exact value of
@@ -2492,7 +2527,7 @@ function measureListClaim(list, scopes) {
       if (used.has(index) || !scope.identities.has(label)) continue;
       if (!scope.braced && scope.identities.size > 1) continue;
       const missingKeys = required
-        .filter(([key, value]) => !scopeFieldValues(scope.text, key).includes(cleanText(String(value)).toLowerCase()))
+        .filter(([key, value]) => !(scope.fields.get(key) ?? []).includes(cleanText(String(value)).toLowerCase()))
         .map(([key]) => key);
       if (!missingKeys.length) {
         used.add(index);
@@ -2514,7 +2549,7 @@ function measureListClaim(list, scopes) {
 
 function measureEntityLists(lists, pack) {
   const scopes = sourceRecordScopes(packSourceEvidenceText(pack))
-    .map((scope) => ({ ...scope, identities: scopeIdentities(scope.text) }))
+    .map((scope) => ({ ...scope, identities: scopeIdentities(scope) }))
     .filter((scope) => scope.identities.size);
   const claims = lists.map((list) => measureListClaim(list, scopes));
   const records = claims.reduce((sum, claim) => sum + claim.records, 0);

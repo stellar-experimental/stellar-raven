@@ -717,6 +717,23 @@ describe("claim support: p9 entity lists", () => {
       expect(claim.records.map((record) => record.label)).toEqual(["Alpha", "Bravo"]);
     });
 
+    it("never reads a field inside another field's quoted value (review RJ2-1)", () => {
+      expect(missingLabels('   span: {"name":"Alpha","note":"status: Live; this is only an example"},{"name":"Bravo","status":"Live"}')).toEqual(["Alpha"]);
+      expect(missingLabels('   span: {"note":"name: Alpha; status: Live; this is only an example"},{"name":"Bravo","status":"Live"}')).toEqual(["Alpha"]);
+    });
+
+    it("keeps a nested field out of its parent after astral characters (review RJ2-2)", () => {
+      const bravo = ',{"name":"Bravo","status":"Live"}';
+      const nested = JSON.stringify({ name: "Alpha", note: "🚀".repeat(20), child: { status: "Live" } });
+      expect(missingLabels(`   span: ${nested}${bravo}`)).toEqual(["Alpha"]);
+      const direct = JSON.stringify({ name: "Alpha", note: "🚀".repeat(20), status: "Live" });
+      expect(measure(`   span: ${direct}${bravo}`).complete).toBe(true);
+    });
+
+    it("reads the fields of a source-item line as fields of that item", () => {
+      expect(missingLabels('1. title="Alpha" url="https://example.test/a" fields="status="Live", rank="2""')).toEqual(["Bravo"]);
+    });
+
     it("never counts a line outside braces that names two records", () => {
       expect(measure('   span: name="Alpha" name="Bravo" status="Live"').shown).toBe(0);
     });
