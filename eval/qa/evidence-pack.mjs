@@ -2412,7 +2412,10 @@ function sourceRecordScopes(text) {
   for (const line of text.split("\n")) {
     const objects = [];
     const open = [];
-    let quoted = false;
+    // A clipped line can start inside a string. Its first quote then closes that string: the text
+    // before it does not end with a character that opens a value.
+    const first = line.indexOf('"');
+    let quoted = first > 0 && /[^\s{[,:=(|;]\s*$/.test(line.slice(0, first)) && !/^\s*$/.test(line.slice(0, first));
     for (let at = 0; at < line.length; at += 1) {
       const ch = line[at];
       if (quoted) {

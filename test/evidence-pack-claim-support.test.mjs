@@ -707,6 +707,10 @@ describe("claim support: p9 entity lists", () => {
       expect(missingLabels('   span: {"name":"Alpha","child":{"status":"Live"}},{"name":"Bravo","status":"Live"}')).toEqual(["Alpha"]);
     });
 
+    it("reads a snippet that starts inside a string", () => {
+      expect(measure('   snippet: ...9def8ebfd","name":"Alpha","status":"Live"},{"name":"Bravo","status":"Live"},{"id":"6a2d').complete).toBe(true);
+    });
+
     it("never counts a line outside braces that names two records", () => {
       expect(measure('   span: name="Alpha" name="Bravo" status="Live"').shown).toBe(0);
     });
