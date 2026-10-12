@@ -581,6 +581,8 @@ The supervisor validates the retained P6 summary before starting a child.
 
 The supervisor enforces row barriers, alternating release order, shared cancellation, bounded child shutdown, and a four-hour deadline.
 A failed guard, budget, child, or deadline cancels both arms.
+Before it releases each row and the postflight, the supervisor checks all four listeners with local `lsof` and `git` reads.
+A missing listener, or another process on a recorded port, cancels both arms. The supervisor never restarts a server.
 It emits a receipt only after both complete artifacts pass content, selection, revision, comparability, and location checks.
 Each artifact must reside inside its arm's results directory.
 A failure emits no paired aggregate or success receipt.

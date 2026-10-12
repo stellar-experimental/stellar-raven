@@ -27,6 +27,10 @@ import {
 } from "./run-p6-judge-self-test.mjs";
 import { JUDGE_RUBRIC } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
+import {
+  assertStableDualBoundServerIdentity,
+  dualBoundServerIdentity
+} from "../lib/bound-server-identity.mjs";
 
 export const PAIRED_COLLECTION_PLAN_SCHEMA = "qa-paired-collection-plan-v2";
 export const PAIRED_COLLECTION_RECEIPT_SCHEMA = "qa-paired-collection-receipt-v1";
@@ -756,6 +760,34 @@ export function validatePairedCollectionPlan(plan, {
   return plan;
 }
 
+// Each check reads local listeners and worktrees only: no model call and no upstream call.
+// The first check records the listener processes; a later check fails when a listener is
+// missing or another process owns its port (a server restart). The supervisor never restarts one.
+export function createServerListenerCheck(plan, {
+  identify = dualBoundServerIdentity,
+  assertStable = assertStableDualBoundServerIdentity
+} = {}) {
+  const reference = {};
+  return () => {
+    for (const arm of ARMS) {
+      const command = plan.arms[arm].collectionCommand;
+      let current;
+      try {
+        current = identify({
+          adapterPort: validatePort(flagValue(command, "--port"), `${arm} public port`),
+          adapterRevision: flagValue(command, "--adapter-revision"),
+          upstreamPort: validatePort(flagValue(command, "--upstream-port"), `${arm} upstream port`),
+          upstreamRevision: flagValue(command, "--server-revision")
+        });
+        if (reference[arm]) assertStable(reference[arm], current);
+      } catch (error) {
+        throw new Error(`${arm} server stopped answering on its port or changed: ${error.message}`);
+      }
+      reference[arm] ??= current;
+    }
+  };
+}
+
 function cancellationReason(message, arm) {
   const code = message?.code ? ` (${message.code})` : "";
   return `${arm} collection failed${code}: ${message?.message ?? "unknown failure"}`;
@@ -823,6 +855,7 @@ export function supervisePairedChildren({
   writeCancellation = (reason) => writeFileSync(cancellationFile, `${reason}\n`, { flag: "wx" }),
   terminate = (child, signal) => child.kill(signal),
   validateArtifactPath = (arm, reportedPath) => artifactPathFromArm(plan, arm, reportedPath),
+  checkServers = createServerListenerCheck(plan),
   now = () => new Date().toISOString()
 }) {
   return new Promise((resolve, reject) => {
@@ -946,6 +979,15 @@ export function supervisePairedChildren({
     };
     const releaseAfterBarrier = (completedIndex) => {
       const nextIndex = completedIndex + 1;
+      try {
+        checkServers();
+      } catch (error) {
+        const next = nextIndex < receiptTimeline.length
+          ? `row ${nextIndex} (${plan.selected.ids[nextIndex]})`
+          : "postflight";
+        cancel(`server listener check failed before ${next}; no server restarts: ${error.message}`);
+        return;
+      }
       const orderedArms = nextIndex % 2 === 0 ? ARMS : [...ARMS].reverse();
       for (const name of ARMS) {
         if (children[name].connected === false) {

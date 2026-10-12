@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { assertClaudePin } from './paired-claude-pin.mjs';
+import { SERVER_TOOLCHAIN_SCHEMA, assertSharedServerToolchain } from './paired-server-toolchain.mjs';
 const sha = value => createHash('sha256').update(value).digest('hex');
 const json = file => JSON.parse(readFileSync(file, 'utf8'));
 const ANSWER_MODEL = 'claude-sonnet-5';
@@ -29,7 +30,8 @@ export function selectionSnapshot(root, stratifiedSample) {
 // `judge` carries the runner's exported JUDGE_MODEL, JUDGE_RUBRIC, and PACK_VERSION.
 // The supervisor derives the same flip tuple from those exports, so no literal can drift.
 export function buildPairedPlan({ env: e, selected, immutableClaude, binary, environment, register,
-  capacityContract, surfaces, devVars, judge }) {
+  capacityContract, surfaces, devVars, serverToolchain, judge }) {
+  assert.equal(serverToolchain?.schema, SERVER_TOOLCHAIN_SCHEMA, 'the shared server toolchain record is missing');
   const fileHash = name => sha(readFileSync(`${e.PAIRED_CR}/${name}`));
   const worktrees = {
     baselineRunner: e.PAIRED_BR, candidateRunner: e.PAIRED_CR,
@@ -89,6 +91,7 @@ export function buildPairedPlan({ env: e, selected, immutableClaude, binary, env
     immutableClaude,
     launchProcessGuard:{path:e.PAIRED_PROCESS_GUARD,sha256:sha(readFileSync(e.PAIRED_PROCESS_GUARD))},
     devVars,
+    serverToolchain,
     caps: {baseline:{collectionUsd:80,cumulativeUsd:120},candidate:{collectionUsd:80,cumulativeUsd:120},twoArmCumulativeUsd:240},
     capacity: {
       command: [process.execPath, 'eval/qa/check-paired-capacity.mjs', '--out', capacityPath],
@@ -160,12 +163,14 @@ async function main(e) {
   const surface = arm => json(`${e.PAIRED_RUN}/${arm}-surface.json`).surfaceSha256;
   const surfaces = {baseline: surface('baseline'), candidate: surface('candidate')};
   assert.notEqual(surfaces.baseline, surfaces.candidate);
+  const serverToolchain = json(`${e.PAIRED_RUN}/server-toolchain.json`);
+  assert.deepEqual(assertSharedServerToolchain(e), serverToolchain, 'the server toolchain changed after launch recorded it');
   const p6Path = `${e.PAIRED_RUN}/p6-summary.json`;
   assert.equal(existsSync(p6Path), false);
   assert.equal(existsSync(`${p6Path}.tmp`), false);
   const plan = buildPairedPlan({ env: e, selected, immutableClaude, binary, environment, register,
     capacityContract: PAIRED_CAPACITY_CONTRACT, surfaces,
-    devVars: json(`${e.PAIRED_RUN}/dev-vars-identity.json`),
+    devVars: json(`${e.PAIRED_RUN}/dev-vars-identity.json`), serverToolchain,
     judge: {model: JUDGE_MODEL, rubric: JUDGE_RUBRIC, packVersion: PACK_VERSION} });
   assertPlanCommandSyntax(plan, { assertRunQaCliSyntax, parseRejudge, parseP6SelfTestCli });
   writeFileSync(`${e.PAIRED_RUN}/plan.json`, `${JSON.stringify(plan,null,2)}\n`, {flag:'wx',mode:0o600});
