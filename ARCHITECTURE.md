@@ -132,8 +132,8 @@ The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
 A clean ok-only run has no truncation, no failed call, and no captured source metadata.
 Its compact footer keeps only the marker, `calls:`, `observedAt:`, and `guidance:` lines.
-Each ok call with an `inconclusive` signal carries an `[inconclusive: empty]` or `[inconclusive: candidates]` marker.
-The call totals keep the inconclusive count after the budget drops per-call entries.
+Each ok call with a `caveat` carries a `[caveat: no-rows]` or `[caveat: unverified-match]` marker.
+The call totals keep the caveat count after the budget drops per-call entries.
 An `observedAt:` line gives the latest host observation time across ok calls.
 Each failed call includes a reason of at most 64 characters.
 Reasons use fixed labels and declared parameter names, with no upstream text or argument values.
@@ -186,7 +186,7 @@ Neither form proves an open-world absence.
 The operation dispatcher in [src/executor/providers.ts](src/executor/providers.ts) adds evidence signals to each ok service-operation result:
 
 ```text
-{ ok: true, data, asOf, asOfBasis, inconclusive? }
+{ ok: true, data, asOf, asOfBasis, caveat? }
 ```
 
 `asOf` is the upstream data date when an allowlisted data-date path holds a parseable date string.
@@ -194,12 +194,14 @@ The precedence is `dataAsOf`, then `asOf`, each at the payload root before `meta
 `generatedAt` stamps response generation, so it never becomes `asOf`.
 `asOfBasis` names that path.
 Otherwise `asOf` is the host clock when the response arrived, and `asOfBasis` is `"observed"`.
-`inconclusive` is `"empty"` when `hasServiceData` finds no rows and no scalar detail.
-It is `"candidates"` when the payload has rows and the catalog retrieval lane is `semantic`, `research`, or `av`.
-It is also `"candidates"` when the captured `matchMode` or `match_mode` is `"semantic"` or `"corrected"`.
+`caveat` is `"no-rows"` when `hasServiceData` finds no rows and no scalar detail.
+It is `"unverified-match"` when the payload has rows and the catalog retrieval lane is `semantic`, `research`, or `av`.
+It is also `"unverified-match"` when the captured `matchMode` or `match_mode` is `"semantic"` or `"corrected"`.
+The caveat values share no word with the `soft-empty` error kind.
+A `"no-rows"` result is successful data, so a closed-world exact empty still applies at its source scope.
 The signal never judges row relevance, so adjacent or off-target rows stay unmarked.
 Failed envelopes, skill reads, skill runs, and artifact reads carry none of these fields.
-The run-level `candidateEvidence` count, which triggers the candidate-evidence block, counts `"candidates"` calls.
+The run-level `candidateEvidence` count, which triggers the candidate-evidence block, counts `"unverified-match"` calls.
 [The design note](.agents/rounds/2026-10-10-weekend/answer-style/design.md) records which instruction sentences these signals replace.
 
 Scout can return HTTP 200 for a page that lost a backend read.

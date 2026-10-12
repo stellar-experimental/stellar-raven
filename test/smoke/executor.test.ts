@@ -525,10 +525,10 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(outcome.result).toContain(
       "calls: lumenloop.search_content_semantic=ok/"
     );
-    expect(outcome.result).toContain("[inconclusive: candidates] (totals ok=1 (1 inconclusive)");
+    expect(outcome.result).toContain("[caveat: unverified-match] (totals ok=1 (1 with caveat)");
     expect(outcome.result).toMatch(/\nobservedAt: \d{4}-\d{2}-\d{2}T[\d:.]+Z\n/);
     expect(outcome.sourceBasis?.truncated).toBe(false);
-    expect(outcome.operationSummary).toMatchObject({ inconclusive: 1, candidateEvidence: 1 });
+    expect(outcome.operationSummary).toMatchObject({ caveats: 1, candidateEvidence: 1 });
   });
 
   it("escapes model text that could impersonate the final source-metadata boundary", async () => {

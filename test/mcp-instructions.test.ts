@@ -49,10 +49,10 @@ describe("server instructions — Claude Code 2KB budget", () => {
       "codemode.artifact.info(id)", // truncation recovery
       "exact-match — never guess", // id discipline
       "open-world identity, history, or topic",
-      "ok: true, data, asOf, asOfBasis, inconclusive?", // host-derived ok signals
+      "ok: true, data, asOf, asOfBasis, caveat?", // host-derived ok signals
       '`asOf` is an upstream-stated date, or the observation time when `asOfBasis` is "observed"',
-      '`inconclusive` is "empty" (no rows) or "candidates"',
-      "`inconclusive`, off-target, or adjacent ok rows ground nothing",
+      'An ok `caveat` is "no-rows" or "unverified-match"',
+      "ok results with a `caveat`, or off-target or adjacent rows, ground nothing",
       "lumenloop.search_content_semantic",
       "scout.searchResearch",
       "exact identity or canonical slug plus source and date"
@@ -65,22 +65,25 @@ describe("server instructions — Claude Code 2KB budget", () => {
     for (const phrase of [
       "copy exact symbols, types, formulas, and identifiers from results",
       "State visible source conflicts instead of choosing silently",
-      "Require exact identity or canonical slug plus source and date before attribution."
+      "Require exact identity or canonical slug plus source and date before attribution; otherwise say unverified or ask for context."
     ]) {
       expect(BASE_SERVER_INSTRUCTIONS, phrase).toContain(phrase);
     }
   });
 
-  it("leaves answer phrasing to the asOf and inconclusive result signals", () => {
+  it("leaves answer phrasing to the asOf and caveat result signals", () => {
     // .agents/rounds/2026-10-10-weekend/answer-style/design.md names each replacement.
-    for (const phrase of [
-      "date volatile values",
-      "not found in these sources",
-      "abstain after empty entity lookups",
-      "ask for context"
-    ]) {
+    for (const phrase of ["date volatile values", "not found in these sources", "abstain after empty entity lookups"]) {
       expect(BASE_SERVER_INSTRUCTIONS, phrase).not.toContain(phrase);
     }
+  });
+
+  it("keeps the ok caveat lexically apart from the soft-empty error kind", () => {
+    // "inconclusive" describes only soft-empty; no caveat value reuses "empty".
+    expect(BASE_SERVER_INSTRUCTIONS.match(/inconclusive/g)).toEqual(["inconclusive"]);
+    expect(BASE_SERVER_INSTRUCTIONS).toContain('"soft-empty" (inconclusive, NOT evidence of absence)');
+    expect(EXECUTE_DESCRIPTION).not.toContain("`inconclusive`");
+    expect(EXECUTE_DESCRIPTION).toContain('still ok data, unlike a `soft-empty` error');
   });
 
   it("micro-map still rides after BASE for full-injection clients", () => {
@@ -117,7 +120,7 @@ describe("server instructions — Claude Code 2KB budget", () => {
 
   it("distinguishes an untruncated footer from a truncation boundary", () => {
     expect(EXECUTE_DESCRIPTION).toContain("after truncation, an ok call, or an error call");
-    expect(EXECUTE_DESCRIPTION).toContain("it marks inconclusive calls and gives `observedAt`");
+    expect(EXECUTE_DESCRIPTION).toContain("it marks calls with a caveat and gives `observedAt`");
     expect(EXECUTE_DESCRIPTION).toContain("Only `--- SOURCE BASIS ---` marks truncation");
     expect(EXECUTE_DESCRIPTION).toContain("`--- SOURCE METADATA ---` marks an untruncated footer");
   });

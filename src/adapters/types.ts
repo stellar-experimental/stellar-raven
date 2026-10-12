@@ -52,9 +52,11 @@ export type AdapterError = {
  * Host-derived evidence signals on an ok service-call result. Adapters never
  * set them; the operation dispatcher (src/executor/providers.ts) derives them
  * from the result shape, the catalog retrieval profile, and allowlisted
- * upstream metadata. Failed envelopes carry none of them.
+ * upstream metadata. Failed envelopes carry none of them. The caveat values
+ * share no word with the `soft-empty` error kind, so an ok result with no
+ * rows cannot read as a failed call.
  */
-export type InconclusiveSignal = "empty" | "candidates";
+export type ResultCaveat = "no-rows" | "unverified-match";
 
 export type AdapterResult =
   | {
@@ -64,8 +66,8 @@ export type AdapterResult =
       asOf?: string;
       /** The allowlisted payload path that supplied `asOf`, or "observed". */
       asOfBasis?: string;
-      /** Present only when the rows are structurally empty or only candidates. */
-      inconclusive?: InconclusiveSignal;
+      /** Present only when the payload has no rows, or its rows are unverified matches. */
+      caveat?: ResultCaveat;
     }
   | { ok: false; error: AdapterError };
 

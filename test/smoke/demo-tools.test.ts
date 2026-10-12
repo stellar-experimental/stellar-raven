@@ -407,10 +407,10 @@ describe("demo tools at the worker boundary", () => {
     const recovery = (await search.execute({ query: "search directory" })) as { hits: unknown[]; nextSteps: string };
     expect(recovery.nextSteps).toContain("1 remain");
     expect(recovery.nextSteps).toContain("Navigation only");
-    expect(recovery.nextSteps).toContain("{ ok: true, data, asOf, asOfBasis, inconclusive? }");
+    expect(recovery.nextSteps).toContain("{ ok: true, data, asOf, asOfBasis, caveat? }");
     expect(recovery.nextSteps).toContain("not factual evidence");
     expect(recovery.nextSteps).toContain("`codemode.search`");
-    expect(recovery.nextSteps).toContain('`soft-empty` and an ok `inconclusive` ("empty" or "candidates") are inconclusive');
+    expect(recovery.nextSteps).toContain('`soft-empty` is inconclusive; an ok `caveat` ("no-rows" or "unverified-match") grounds no negative and no identity');
     expect(recovery.nextSteps).toContain("Scores share one scale");
     expect(recovery.nextSteps).toContain(">=1.6x");
     expect(recovery.nextSteps).toContain("hit order is authoritative");

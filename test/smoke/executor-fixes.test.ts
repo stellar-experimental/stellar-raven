@@ -49,7 +49,7 @@ it.each(cases)("executes the documented comma form: $name", async ({ args, reaso
   expect(outcome.sourceBasis?.calls[0]?.reason).toBe(reason);
   expect(outcome.result.split("\n").find((line) => line.startsWith("calls:"))).toBe(
     ok
-      ? "calls: scout.searchResearch=ok/0ms [inconclusive: candidates] (totals ok=1 (1 inconclusive) error=0 soft-empty=0)"
+      ? "calls: scout.searchResearch=ok/0ms [caveat: unverified-match] (totals ok=1 (1 with caveat) error=0 soft-empty=0)"
       : `calls: scout.searchResearch=error/0ms [${reason}] (totals ok=0 error=1 soft-empty=0)`
   );
 });

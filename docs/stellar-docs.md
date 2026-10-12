@@ -109,7 +109,7 @@ An incomplete section set must not be described as the whole page.
 Successful searches return `{ ok: true, data }`.
 The sandbox dispatcher adds `asOf` and `asOfBasis` to each successful result.
 Docs search payloads state no data date, so `asOfBasis` is `"observed"`.
-Docs operations use the `corpus`, `detail`, or `exact` retrieval lane, so a successful result with hits carries no `inconclusive` signal.
+Docs operations use the `corpus`, `detail`, or `exact` retrieval lane, so a successful result with hits carries no `caveat`.
 Adapter failures return `{ ok: false, error }`.
 `error.kind` distinguishes `error` from `soft-empty`.
 No usable search or page-section matches produce `soft-empty`.

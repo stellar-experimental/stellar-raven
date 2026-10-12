@@ -51,9 +51,9 @@ export type ExecuteOperationSummary = {
   evidenceData?: number;
   error: number;
   softEmpty: number;
-  /** Successful calls carrying any host-derived `inconclusive` signal. */
-  inconclusive?: number;
-  /** Successful calls marked `inconclusive: "candidates"` (candidate lane or semantic match mode). */
+  /** Successful calls carrying any host-derived `caveat`. */
+  caveats?: number;
+  /** Successful calls marked `caveat: "unverified-match"` (candidate lane or semantic/corrected match mode). */
   candidateEvidence?: number;
   /** Successful Scout project/repository calls whose contracts can return prior-art candidates. */
   priorArtCandidates?: number;
@@ -149,7 +149,7 @@ const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"]);
 function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
   const summary: ExecuteOperationSummary = { total: calls.length, ok: 0, error: 0, softEmpty: 0 };
   let evidenceData = 0;
-  let inconclusive = 0;
+  let caveats = 0;
   let candidateEvidence = 0;
   let priorArtCandidates = 0;
   for (const call of calls) {
@@ -158,12 +158,12 @@ function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperat
     else summary.softEmpty += 1;
     const hasEvidenceData = call.outcome === "ok" && call.hasServiceData !== false;
     if (hasEvidenceData) evidenceData += 1;
-    if (call.outcome === "ok" && call.inconclusive) inconclusive += 1;
-    if (hasEvidenceData && call.inconclusive === "candidates") candidateEvidence += 1;
+    if (call.outcome === "ok" && call.caveat) caveats += 1;
+    if (hasEvidenceData && call.caveat === "unverified-match") candidateEvidence += 1;
     if (hasEvidenceData && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
   }
   if (evidenceData > 0) summary.evidenceData = evidenceData;
-  if (inconclusive > 0) summary.inconclusive = inconclusive;
+  if (caveats > 0) summary.caveats = caveats;
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
   return summary;

@@ -1403,10 +1403,10 @@ until official docs confirm them.</p>
 <h2>Troubleshooting</h2>
 <ul>
   <li><b>Read the envelope first.</b> Every service call resolves to
-    <code>{ ok: true, data, asOf, asOfBasis, inconclusive? }</code> or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
+    <code>{ ok: true, data, asOf, asOfBasis, caveat? }</code> or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
     <code>r.data.projects</code>, never <code>r.projects</code>. <code>codemode.skill.run</code>,
     <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use the same
-    envelope without the <code>asOf</code> and <code>inconclusive</code> signals. The discovery helpers answer at the top level instead: <code>codemode.search</code>
+    envelope without the <code>asOf</code> and <code>caveat</code> signals. The discovery helpers answer at the top level instead: <code>codemode.search</code>
     gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
     <code>r.signature</code> and <code>r.inputSchema</code>. <code>codemode.skill.read(id)</code>
     gives <code>r.data.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
@@ -1414,8 +1414,10 @@ until official docs confirm them.</p>
   <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
     <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
     service answered with nothing — that is inconclusive, not proof something does not exist.
-    An ok result can also carry <code>inconclusive</code>: <code>"empty"</code> when it has no
-    rows, or <code>"candidates"</code> when its rows are only similarity or research matches.
+    An ok result can also carry a <code>caveat</code>: <code>"no-rows"</code> when it has no
+    rows, or <code>"unverified-match"</code> when its rows are only similarity, research, or
+    spelling-corrected matches. A <code>"no-rows"</code> result is still ok data, not a
+    <code>"soft-empty"</code> error.
     Widen the search across families before concluding a negative. Each ok result also carries
     <code>asOf</code>: the upstream data date when the service states one, else the time Raven
     observed the response.</li>
