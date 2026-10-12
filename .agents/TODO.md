@@ -671,11 +671,13 @@ their rows support no claim. Each record is archived, moved unchanged, under
   stopped at 07:02:39Z, after 1 h 56 min, with an empty `[ERROR]`. The supervisor stopped both
   arms at about row 143. The Wrangler debug log is in the attempt 3 archive.
 
-The 2026-10-12 soak found the cause ([record](rounds/2026-10-12-baseline-soak/README.md)). A
-request that reuses the local proxy-to-runtime keep-alive connection at its 5 s idle limit can
-fail with `Network connection lost.` Wrangler 4.120.1 then exits with an empty `[ERROR]`. Uptime,
-the cf token, and the remote AI binding are not the cause. Wrangler 4.149.0 survives that failure,
-but the same race can crash the runtime, and both versions then lose the public port.
+The 2026-10-12 soak reproduced the stop path ([record](rounds/2026-10-12-baseline-soak/README.md)).
+A request about 5 s after the previous response can fail with `Network connection lost.` Wrangler
+4.120.1 then exits with an empty `[ERROR]`. The leading explanation is a race with the local
+proxy-to-runtime keep-alive idle limit. Uptime, the cf token, and the remote AI binding are not
+necessary for the stop. Wrangler 4.149.0 logs that failure and continues. Near the same timing, a
+runtime crash of unknown cause can also occur, and both versions then refused later requests on
+the public port.
 
 Next step (owner decision): choose a launch change from the record's recommendation. The record
 recommends the candidate's Wrangler 4.149.0 for the baseline server, with a stop-on-lost-port

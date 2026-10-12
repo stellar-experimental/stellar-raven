@@ -7,7 +7,8 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 const run = process.argv[2];
-const every = Number(process.argv[process.argv.indexOf("--every") + 1] || 10);
+const everyAt = process.argv.indexOf("--every");
+const every = everyAt === -1 ? 10 : Number(process.argv[everyAt + 1]);
 const lines = (name) => existsSync(path.join(run, name))
   ? readFileSync(path.join(run, name), "utf8").trim().split("\n").filter(Boolean).map((line) => JSON.parse(line)) : [];
 const samples = lines("samples.jsonl");

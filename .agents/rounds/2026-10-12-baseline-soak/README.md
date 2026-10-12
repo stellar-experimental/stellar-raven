@@ -6,19 +6,25 @@ The replay called the real upstream services with the server's own keys.
 
 ## Result
 
-- **Cause found and reproduced.** A request that reaches the local Wrangler dev server about 5 s
-  after the previous response can fail with `Network connection lost.` Wrangler 4.120.1 treats
-  that failure as fatal. It prints an empty `✘ [ERROR]` and exits with code 1. This is the
-  attempt 3 stop. A targeted check reproduced it with the same stack, the same empty error, and
-  the same bug notice.
-- **Uptime, the cf token, and the remote AI binding are not the cause.** The baseline server ran
-  3 h 15 min under replayed attempt 3 and attempt 1 traffic: 2,268 requests, 0 network errors,
-  0 stops. The token expired at 1 h 00 min. The remote preview refreshes at 50 min and 100 min
-  passed. The same stop then came 4 min into the targeted check.
-- **Wrangler 4.149.0 does not remove the risk.** It survives the `Network connection lost.`
-  failure (one request fails, the server continues). But the same timing can also crash the
-  Workers runtime. After that crash, both 4.120.1 and 4.149.0 restart the runtime on a random
-  port, and the public port refuses every connection.
+- **The stop path is reproduced; the trigger is strongly supported.** A request that reaches the
+  local Wrangler dev server about 5 s after the previous response can fail with
+  `Network connection lost.` Wrangler 4.120.1 treats that failure as fatal. It prints an empty
+  `✘ [ERROR]` and exits with code 1. A targeted check reproduced this with the same stack, the
+  same empty error, and the same bug notice. The attempt 3 stop shows the same external
+  signature. Its debug log has no final `ProxyController` entry, so the record cannot show the
+  idle gap of that original request. The idle-limit race is the leading explanation, not a
+  proven mechanism.
+- **Uptime, the cf token, and the remote AI binding are not necessary for the stop.** The
+  baseline server ran 3 h 15 min (server uptime; the main replay window was 3 h 12 min) under
+  replayed attempt 3 and attempt 1 traffic: 2,268 requests, 0 network errors, 0 stops. The token
+  expired at 1 h 00 min. The server stayed available past the remote preview refresh points at
+  50 min and 100 min. (This does not show that each refresh succeeded.) The same stop then came
+  4 min into the targeted check.
+- **Wrangler 4.149.0 does not remove the risk.** Its source logs a `ProxyWorker` error and
+  continues (one request fails). Runs 2 and 3 did not exercise that branch. They showed a
+  different outcome near the same timing: a runtime `workerd` crashed, Wrangler started new
+  runtime processes, and every later sweep request got `ECONNREFUSED` on the public port. Control
+  4b showed the same outcome on 4.120.1. The cause of the runtime crash is unknown.
 
 ## Mechanism
 
@@ -29,7 +35,9 @@ server side closes after `pipelineTimeout = 5 * kj::SECONDS`
 ([`kj/compat/http.h`](https://github.com/capnproto/capnproto/blob/v2/c%2B%2B/src/kj/compat/http.h)).
 A request that reuses the connection at the 5 s boundary races the close.
 
-The race has two observed outcomes:
+This mechanism is inferred from the KJ defaults and the timing controls. No packet trace or exit
+signal shows which side closed the connection first. The two observed outcomes near the 5 s gap
+are:
 
 1. **`ProxyWorker` fetch failure.** The proxy instance answers HTTP 500 with
    `Error: Network connection lost. at async Object.fetch (…/miniflare/…/entry.worker.js:4719:22)`.
@@ -42,11 +50,12 @@ The race has two observed outcomes:
    `Error inside ProxyWorker (the affected request failed; the dev server continues)`.
 2. **Runtime crash.** A runtime `workerd` exits about 1 s to 2 s after the race, with no runtime
    output and no macOS crash report. Wrangler prints `The Workers runtime crashed unexpectedly and
-   is being restarted (crash #1)`. The new runtime processes bind random entry ports. Nothing
-   listens on the public port after the restart, so every later request gets `ECONNREFUSED`.
-   The debug log stops at `RUNTIME WEBSOCKET CLOSED 1006` and does not record the crash.
+   is being restarted (crash #1)`. Every later sweep request got `ECONNREFUSED` on the public
+   port (run 2: 1 request; run 3: 5 requests in about 20 s; control 4b: all later requests). No
+   socket capture shows which ports the new runtime processes bound. The debug log stops at
+   `RUNTIME WEBSOCKET CLOSED 1006` and does not record the crash. Its cause is unknown.
 
-Attempt 3 matches outcome 1. Its case `q-sep-41-token-interface` received HTTP 200 for turn 4 at
+Attempt 3 matches the external signature of outcome 1. Its case `q-sep-41-token-interface` received HTTP 200 for turn 4 at
 `07:02:39.559Z`. Turn 5 got the miniflare `Network connection lost.` text above. Turns 6 to 11
 got `connect ECONNREFUSED 127.0.0.1:8791`. The turn 5 request alone does not stop a server: it
 fails argument validation in 6 ms (`evidence/run1/trigger.jsonl`).
@@ -60,7 +69,7 @@ All runs used a detached worktree of `90d0ba75`, `npm ci`, the main checkout's `
 |---|---|---|---|
 | 1 soak | 4.120.1 / 1.20260804.1 | replay, 12:39:57Z–15:51:52Z | 2,268 requests, 0 network errors, no stop in 3 h 15 min |
 | 1 check | same server | sweep 4,900–5,100 ms gaps, 2 ms step | gap 48 (4,994 ms) got HTTP 500 `Network connection lost.`; empty `[ERROR]`; exit code 1 at 15:56:04Z, uptime 3 h 19 min 38 s |
-| 2 | 4.149.0 / 1.20261006.1 | same sweep | runtime crash at 16:00:52Z; gap 4,990 ms got `ECONNREFUSED`; port 8797 stayed closed until stopped |
+| 2 | 4.149.0 / 1.20261006.1 | same sweep | runtime crash at 16:00:52Z; the next request (gap 4,990 ms) got `ECONNREFUSED`; the sweep then ended |
 | 3 | 4.149.0 / 1.20261006.1 | same sweep, repeat | runtime crash at 16:07:01Z; five later requests got `ECONNREFUSED` |
 | 4a control | 4.120.1 / 1.20260804.1 | 120 requests, fixed 3,000 ms gap | 0 failures |
 | 4b control | same server | sweep from 4,980 ms, 1 ms step | runtime crash after the 4,981 ms request; `ECONNREFUSED` from 4,982 ms on |
@@ -74,11 +83,19 @@ ones.
 
 ## Rate in natural traffic
 
-The local Wrangler debug logs hold 28,261 MCP requests on Wrangler 4.133.0 to 4.149.0. They
-record outcome 1 eight times, on 4.133.0 and 4.145.0, and the server continued each time. That
-is about one event per 3,500 requests. A baseline arm sends about 1,090 requests, so one arm on
-4.120.1 has about a 27% chance to stop. No log shows outcome 2 in natural traffic, but the debug
-log cannot record it. The soak replay did not hit either outcome in 2,268 requests, which is
+The local Wrangler debug logs hold 28,261 MCP requests on Wrangler 4.133.0 to 4.149.0
+(4.133.0: 21,668; 4.145.0: 3,513; 4.149.0: 3,080, without the two targeted sweeps of 48 requests
+each). Five logs, dated 2026-09-18, 2026-09-19, and 2026-10-08, record outcome 1 eight times, on
+4.133.0 and 4.145.0. The counting rule is one error report for each failed request. The server
+continued each time. That is about one event per 3,500 requests.
+
+The following is an illustrative estimate, not a measured stop probability. Assume independent
+requests and the same event rate across Wrangler versions, clients, request types, and idle gaps.
+Then a baseline arm of about 1,090 requests on 4.120.1 has about a 27% chance to stop
+(`1 - (1 - 8/28261)^1090`). The estimate rests on eight events, comes from other Wrangler
+versions, and leaves out runtime crashes. The true stop probability of the next run is unknown.
+No log shows outcome 2 in natural traffic, but the debug log cannot record it. Under the same
+assumptions, zero events in 2,268 requests has a probability of about 53%, so the soak result is
 consistent with this rate.
 
 ## Resource trend (run 1)
@@ -132,17 +149,31 @@ assembled and signed again. No measurement contract file changed in this lane.
 3. **Restart the server after a stop.** Not recommended. A restart changes the listener process,
    so the existing listener and adapter identity checks fail and the run becomes non-comparable.
    The case in flight also loses its remaining calls.
-4. **Launch again with no change.** Not recommended. At about one event per 3,500 requests, the
-   baseline arm stops in about one launch of four, at about $73 for each attempt.
+4. **Launch again with no change.** Not recommended. Under the illustrative estimate above, the
+   baseline arm stops in about one launch of four, at about $73 for each attempt. The true rate is
+   unknown.
+
+Two options that do not change model-visible tools are not tested here:
+
+- A launcher or proxy connection policy that avoids reuse near the idle limit. A client-only
+  keep-alive change can act on the wrong connection: the suspected connection lies between the
+  proxy and the user runtime.
+- One bounded transport retry for eligible read-only calls while the server stays available. A
+  retry cannot recover the 4.120.1 fatal exit or a lost public port. A failed response does not
+  prove that an `execute` request did not run, so a retry needs duplicate-execution controls,
+  the same settings in both arms, and a record of the extra calls and latency.
+
+Each needs a controlled validation before a paid run uses it.
 
 With any option, keep this supervisor rule: stop the method when a server stops answering on its
-port. Do not restart it. Both Wrangler versions can lose the public port after a runtime crash.
+port. Do not restart it. After a runtime crash, both Wrangler versions refused later requests on
+the public port.
 
 ## Upstream follow-up (not done here)
 
 Two Wrangler defects are worth a report to `cloudflare/workers-sdk` when the owner allows an
 upstream post: the 5 s keep-alive race between the proxy and runtime `workerd` instances, and
-the runtime restart that does not bind the configured port again. This lane made no upstream
+the public port that refuses requests after a runtime restart. This lane made no upstream
 post.
 
 ## Launch differences from `paired-launch.mjs`
