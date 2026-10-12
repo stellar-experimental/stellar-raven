@@ -17,6 +17,7 @@ import {
   PAIRED_COLLECTION_DEADLINE_MS,
   PAIRED_COLLECTION_PLAN_SCHEMA,
   PAIRED_COLLECTION_RECEIPT_SCHEMA,
+  createServerListenerCheck,
   devVarsIdentity,
   pairedCollectionPlanSha256,
   supervisePairedChildren,
@@ -27,14 +28,21 @@ import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "../eval/qa/paired-collection-c
 import { PAIRED_CAPACITY_CONTRACT } from "../eval/qa/check-paired-capacity.mjs";
 import { JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
-import { acceptedCapacityArtifact, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
+import { acceptedCapacityArtifact, listenerRecord, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
+// These tests have no real listeners. The server listener check has its own tests below.
+const supervise = (options) => supervisePairedChildren({ checkServers: () => {}, ...options });
 const devVarsPairs = [["ALPHA", "one"], ["ZETA", "two"]];
 const DEV_VARS_SALT = "9".repeat(64);
 const SERVER_REVISIONS = {
   baseline: "b".repeat(40),
   candidate: "d".repeat(40)
+};
+// The ports and revisions in the fixture collection commands.
+const FIXTURE_LISTENER_TARGETS = {
+  baseline: { adapterPort: 8789, adapterRevision: "a".repeat(40), upstreamPort: 8790, upstreamRevision: SERVER_REVISIONS.baseline },
+  candidate: { adapterPort: 8788, adapterRevision: "a".repeat(40), upstreamPort: 8791, upstreamRevision: SERVER_REVISIONS.candidate }
 };
 const devVarsSha256 = (pairs = devVarsPairs) => sha256(JSON.stringify({
   salt: DEV_VARS_SALT,
@@ -244,6 +252,10 @@ function planFixture(activeCorpusCount = 500) {
   const capacityArtifactBytes = `${JSON.stringify(acceptedCapacityArtifact(new Date().toISOString()), null, 2)}\n`;
   writeFileSync(capacityArtifactPath, capacityArtifactBytes);
   const p6SummaryArtifactPath = path.join(base.root, "p6-summary.json");
+  const listenersPath = path.join(base.root, "listeners.json");
+  const listenersBytes = JSON.stringify(listenerRecord(FIXTURE_LISTENER_TARGETS));
+  writeFileSync(listenersPath, listenersBytes);
+  const listenersSha256 = sha256(listenersBytes);
   const p6Summary = passingP6Summary({
     wrapperSha256: files.p6WrapperSha256,
     runnerRevision: "a".repeat(40),
@@ -303,9 +315,13 @@ function planFixture(activeCorpusCount = 500) {
         "--claude-path", "/usr/bin/claude",
         "--expect-claude-binary-sha256", inputHashes.agentBinarySha256,
         "--expect-claude-environment-sha256", inputHashes.agentEnvironmentSha256,
+        "--paired-listeners", listenersPath,
+        "--expect-paired-listeners-sha256", listenersSha256,
         "--out", p6SummaryArtifactPath
       ],
       summaryArtifactPath: p6SummaryArtifactPath,
+      listenersPath,
+      listenersSha256,
       claudePath: "/usr/bin/claude",
       wrapperSha256: files.p6WrapperSha256,
       judgeSha256: files.p6JudgeSha256,
@@ -417,7 +433,7 @@ describe("paired QA collection supervisor", () => {
         artifactPaths[arm] = path.join(resultsDir, `${arm}.json`);
         writeFileSync(artifactPaths[arm], JSON.stringify(artifactForPlan(plan, arm)));
       }
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled")
@@ -492,7 +508,7 @@ describe("paired QA collection supervisor", () => {
     const { root, plan, children } = fixture();
     try {
       const cancellations = [];
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -517,7 +533,7 @@ describe("paired QA collection supervisor", () => {
   it("cancels and terminates both arms after a child exit", async () => {
     const { root, plan, children } = fixture();
     try {
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled")
@@ -534,12 +550,178 @@ describe("paired QA collection supervisor", () => {
     }
   });
 
+  it("stops both arms before the next row when a server stops answering", async () => {
+    const { root, plan, children } = fixture();
+    try {
+      const cancellations = [];
+      let checks = 0;
+      const run = supervisePairedChildren({
+        children,
+        plan,
+        cancellationFile: path.join(root, "cancelled"),
+        writeCancellation: (reason) => cancellations.push(reason),
+        checkServers: () => {
+          checks += 1;
+          if (checks > 1) throw new Error("baseline server stopped answering on its port or changed: no listener");
+        }
+      });
+      for (const arm of ["baseline", "candidate"]) sendReadiness(plan, children, arm);
+      expect(checks).toBe(1);
+      expect(children.baseline.sent.at(-1).type).toBe("start");
+      for (const arm of ["baseline", "candidate"]) {
+        children[arm].emit("message", message(arm, "row-complete", { index: 0, id: "case-a" }));
+      }
+      expect(checks).toBe(2);
+      for (const arm of ["baseline", "candidate"]) {
+        expect(children[arm].sent.map((sent) => sent.type)).toEqual(["start", "cancel"]);
+        expect(children[arm].sent.at(-1).reason).toBe(cancellations[0]);
+      }
+      expect(cancellations).toEqual([
+        "server listener check failed before row 1 (case-b); no server restarts: " +
+        "baseline server stopped answering on its port or changed: no listener"
+      ]);
+      children.baseline.emit("exit", 1, null);
+      children.candidate.emit("exit", 1, null);
+      await expect(run).rejects.toThrow(/before row 1 \(case-b\); no server restarts/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("checks the servers before the postflight release", async () => {
+    const { root, plan, children } = fixture();
+    try {
+      const cancellations = [];
+      let checks = 0;
+      const run = supervisePairedChildren({
+        children,
+        plan,
+        cancellationFile: path.join(root, "cancelled"),
+        writeCancellation: (reason) => cancellations.push(reason),
+        checkServers: () => {
+          checks += 1;
+          if (checks === plan.selected.ids.length + 1) throw new Error("candidate listener lost");
+        }
+      });
+      reachFinalBarrier(plan, children);
+      expect(cancellations).toEqual([
+        "server listener check failed before postflight; no server restarts: candidate listener lost"
+      ]);
+      expect(children.candidate.sent.some((sent) => sent.type === "finalize")).toBe(false);
+      children.baseline.emit("exit", 1, null);
+      children.candidate.emit("exit", 1, null);
+      await expect(run).rejects.toThrow(/before postflight/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  describe("server listener check", () => {
+    const ADAPTER_REVISION = "a".repeat(40);
+    const TARGETS = {
+      baseline: { adapterPort: 8789, adapterRevision: ADAPTER_REVISION, upstreamPort: 8791, upstreamRevision: SERVER_REVISIONS.baseline },
+      candidate: { adapterPort: 8788, adapterRevision: ADAPTER_REVISION, upstreamPort: 8790, upstreamRevision: SERVER_REVISIONS.candidate }
+    };
+    // The signed plan: collection commands, plus the launch record path and its digest.
+    const listenerPlan = (record = listenerRecord(TARGETS)) => {
+      const bytes = Buffer.from(JSON.stringify(record));
+      return {
+        bytes,
+        plan: {
+          arms: Object.fromEntries(Object.entries(TARGETS).map(([arm, target]) => [arm, { collectionCommand: [
+            process.execPath, "eval/qa/run-qa.mjs", "--port", String(target.adapterPort),
+            "--upstream-port", String(target.upstreamPort),
+            "--server-revision", target.upstreamRevision, "--adapter-revision", target.adapterRevision
+          ] }])),
+          p6: { listenersPath: "/run/listeners.json", listenersSha256: sha256(bytes) }
+        }
+      };
+    };
+    const current = (target, upstreamPid) => {
+      const { identity } = listenerRecord({ arm: target }).arm;
+      if (upstreamPid) identity.upstream.pid = upstreamPid;
+      return identity;
+    };
+
+    it("checks the four signed listeners and passes while their processes stay the same", () => {
+      const { plan, bytes } = listenerPlan();
+      const targets = [];
+      let reads = 0;
+      const check = createServerListenerCheck(plan, {
+        readFile: () => { reads += 1; return bytes; },
+        identify: (target) => { targets.push(target); return current(target); }
+      });
+      check();
+      check();
+      expect(targets.slice(0, 2)).toEqual([TARGETS.baseline, TARGETS.candidate]);
+      expect(targets).toHaveLength(4);
+      expect(reads).toBe(1);
+    });
+
+    it("fails when a Wrangler process exits and leaves no listener", () => {
+      const { plan, bytes } = listenerPlan();
+      const check = createServerListenerCheck(plan, {
+        readFile: () => bytes,
+        identify: (target) => {
+          if (target.upstreamPort === 8791) {
+            throw new Error("bound server identity on port 8791: expected one listener process, found 0");
+          }
+          return current(target);
+        }
+      });
+      expect(check).toThrow(
+        "baseline server stopped answering on its port or changed: " +
+        "bound server identity on port 8791: expected one listener process, found 0"
+      );
+    });
+
+    it("fails when a runtime restart gives the public port to another process", () => {
+      const { plan, bytes } = listenerPlan();
+      const check = createServerListenerCheck(plan, {
+        readFile: () => bytes,
+        identify: (target) => current(target, target.upstreamPort === 8790 ? 53679 : undefined)
+      });
+      expect(check).toThrow(/^candidate server stopped answering on its port or changed: bound server identity changed during paid calls \(pid\)/);
+    });
+
+    it.each([
+      ["a missing arm", (record) => { delete record.baseline; }, /exactly baseline and candidate; found: candidate/],
+      ["a duplicated pair", (record) => { record.baseline = structuredClone(record.candidate); },
+        /baseline listener record does not match the expected targets \(adapterPort, upstreamPort, upstreamRevision\)/],
+      ["a substituted port", (record) => { record.baseline.identity.upstream.port = 8797; },
+        /baseline listener record does not match the expected targets \(upstreamPort\)/],
+      ["an extra arm", (record) => { record.extra = structuredClone(record.candidate); }, /exactly baseline and candidate/]
+    ])("refuses a signed record with %s before any listener read", (_label, mutate, expected) => {
+      const record = listenerRecord(TARGETS);
+      mutate(record);
+      const { plan, bytes } = listenerPlan(record);
+      const reads = [];
+      const check = createServerListenerCheck(plan, {
+        readFile: () => bytes,
+        identify: (target) => { reads.push(target); return current(target); }
+      });
+      expect(check).toThrow(expected);
+      expect(reads).toEqual([]);
+    });
+
+    it("refuses record contents that changed after signing", () => {
+      const { plan } = listenerPlan();
+      const changed = listenerRecord(TARGETS);
+      changed.baseline.identity.upstream.pid = 53679;
+      const check = createServerListenerCheck(plan, {
+        readFile: () => Buffer.from(JSON.stringify(changed)),
+        identify: () => { throw new Error("must not read listeners"); }
+      });
+      expect(check).toThrow("the listener record does not match p6.listenersSha256");
+    });
+  });
+
   it("cancels and terminates both arms at the four-hour deadline", async () => {
     const { root, plan, children } = fixture();
     try {
       let deadline;
       let delay;
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -567,7 +749,7 @@ describe("paired QA collection supervisor", () => {
     const { root, plan, children } = fixture();
     try {
       const timers = [];
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -600,7 +782,7 @@ describe("paired QA collection supervisor", () => {
       const timers = [];
       children.candidate.connected = false;
       children.baseline.send = () => { throw new Error("closed"); };
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -623,7 +805,7 @@ describe("paired QA collection supervisor", () => {
     const { root, plan, children } = fixture();
     const cancellationFile = path.join(root, "cancelled");
     try {
-      const run = supervisePairedChildren({ children, plan, cancellationFile });
+      const run = supervise({ children, plan, cancellationFile });
       children.baseline.emit("message", message("baseline", "failed", {
         code: "budget-exhausted",
         message: "stopped"
@@ -652,7 +834,7 @@ describe("paired QA collection supervisor", () => {
   ])("hard-cancels on %s", async (_label, makeMessage) => {
     const { root, plan, children } = fixture();
     try {
-      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      const run = supervise({ children, plan, cancellationFile: path.join(root, "cancelled") });
       children.baseline.emit("message", makeMessage());
       children.baseline.emit("exit", 1, null);
       children.candidate.emit("exit", 1, null);
@@ -686,7 +868,7 @@ describe("paired QA collection supervisor", () => {
   ])("rejects %s", async (_label, trigger) => {
     const { root, plan, children } = fixture();
     try {
-      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      const run = supervise({ children, plan, cancellationFile: path.join(root, "cancelled") });
       trigger(plan, children);
       children.baseline.emit("exit", 1, null);
       children.candidate.emit("exit", 1, null);
@@ -699,7 +881,7 @@ describe("paired QA collection supervisor", () => {
   it("accepts completion IPC buffered after exit and before disconnect", async () => {
     const { root, plan, children } = fixture();
     try {
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -721,7 +903,7 @@ describe("paired QA collection supervisor", () => {
   it("accepts the production complete-disconnect-exit event order", async () => {
     const { root, plan, children } = fixture();
     try {
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -743,7 +925,7 @@ describe("paired QA collection supervisor", () => {
     const { root, plan, children } = fixture();
     try {
       const timers = [];
-      const run = supervisePairedChildren({
+      const run = supervise({
         children,
         plan,
         cancellationFile: path.join(root, "cancelled"),
@@ -767,7 +949,7 @@ describe("paired QA collection supervisor", () => {
     const { root, plan, children } = fixture();
     try {
       children.candidate.connected = false;
-      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      const run = supervise({ children, plan, cancellationFile: path.join(root, "cancelled") });
       sendReadiness(plan, children, "baseline");
       sendReadiness(plan, children, "candidate");
       expect(children.baseline.sent.some((item) => item.type === "start")).toBe(false);
@@ -787,7 +969,7 @@ describe("paired QA collection supervisor", () => {
       }
       const reportedPath = path.join(root, `${kind}.json`);
       if (kind === "outside") writeFileSync(reportedPath, "{}");
-      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      const run = supervise({ children, plan, cancellationFile: path.join(root, "cancelled") });
       reachFinalBarrier(plan, children);
       children.baseline.emit("message", message("baseline", "complete", {
         resultsPath: reportedPath
@@ -819,7 +1001,7 @@ describe("paired QA collection supervisor", () => {
         if (arm === "baseline") mutate(artifact);
         writeFileSync(artifactPaths[arm], JSON.stringify(artifact));
       }
-      const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+      const run = supervise({ children, plan, cancellationFile: path.join(root, "cancelled") });
       reachFinalBarrier(plan, children);
       children.baseline.emit("message", message("baseline", "complete", {
         resultsPath: artifactPaths.baseline
@@ -846,7 +1028,7 @@ describe("paired QA collection supervisor", () => {
           if (arm === driftedArm) artifact.meta.sourceIdentity.serverRevision = "e".repeat(40);
           writeFileSync(artifactPaths[arm], JSON.stringify(artifact));
         }
-        const run = supervisePairedChildren({ children, plan, cancellationFile: path.join(root, "cancelled") });
+        const run = supervise({ children, plan, cancellationFile: path.join(root, "cancelled") });
         reachFinalBarrier(plan, children);
         for (const arm of ["baseline", "candidate"]) {
           children[arm].emit("message", message(arm, "complete", { resultsPath: artifactPaths[arm] }));
@@ -1152,6 +1334,58 @@ describe("paired QA collection supervisor", () => {
       expect(message).toContain("differs at index 14");
       expect(message).toContain("(truncated)");
       expect(message).not.toContain("hidden-tail");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["a P6 command without the paired listener check", (plan) => {
+      const index = plan.p6.command.indexOf("--paired-listeners");
+      plan.p6.command.splice(index, 2);
+    }, /p6.command must freeze the exact wrapper command/],
+    ["another listener record path", (plan) => {
+      plan.p6.command[plan.p6.command.indexOf("--paired-listeners") + 1] = "/tmp/other.json";
+    }, /p6.command must freeze the exact wrapper command/],
+    ["a relative listener record path", (plan) => { plan.p6.listenersPath = "listeners.json"; },
+      /p6.listenersPath must be an absolute path/]
+  ])("rejects %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      mutate(plan);
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["a missing arm", (record) => { delete record.candidate; }, /exactly baseline and candidate/],
+    ["a duplicated pair", (record) => { record.baseline = structuredClone(record.candidate); },
+      /baseline listener record does not match the expected targets/],
+    ["a substituted port", (record) => { record.candidate.identity.adapter.port = 8797; },
+      /candidate listener record does not match the expected targets \(adapterPort\)/]
+  ])("rejects a signed listener record with %s", (_label, mutate, expected) => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      const record = JSON.parse(readFileSync(plan.p6.listenersPath, "utf8"));
+      mutate(record);
+      const bytes = JSON.stringify(record);
+      writeFileSync(plan.p6.listenersPath, bytes);
+      plan.p6.listenersSha256 = sha256(bytes);
+      plan.p6.command[plan.p6.command.indexOf("--expect-paired-listeners-sha256") + 1] = plan.p6.listenersSha256;
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree })).toThrow(expected);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects listener record contents that changed after signing", () => {
+    const { root, plan, inspectWorktree } = planFixture();
+    try {
+      rewriteJsonArtifact(plan.p6.listenersPath, (record) => { record.baseline.identity.adapter.pid = 1; });
+      expect(() => validatePairedCollectionPlan(plan, { inspectWorktree }))
+        .toThrow("the listener record does not match p6.listenersSha256");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

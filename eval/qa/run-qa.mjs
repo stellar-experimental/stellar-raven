@@ -165,6 +165,7 @@ import {
   executableIdentity
 } from "../lib/executable-identity.mjs";
 import {
+  assertDualBoundServersUnchanged,
   assertStableDualBoundServerIdentity,
   assertStableBoundServerIdentity,
   boundServerIdentity,
@@ -1056,6 +1057,39 @@ export function isRetryableAgentFailure(failure) {
   return failure?.class === "transport" && failure.retryable === true;
 }
 
+/**
+ * A paired arm checks cancellation and its own recorded listener pair before each paid attempt
+ * and just before each answering call. A lost or replaced listener throws `paired-server-lost`.
+ * Nothing restarts a server.
+ */
+export function createPairedRunCheck({ pairedControl, arm, listenerPair, identify }) {
+  return () => {
+    pairedControl?.assertActive();
+    const recorded = listenerPair();
+    if (pairedControl && recorded) {
+      assertDualBoundServersUnchanged({ [arm]: recorded }, identify ? { identify } : undefined);
+    }
+  };
+}
+
+/**
+ * Run the first answering attempt and, after a retryable transport failure, one retry.
+ * Returns the error that stopped the row, or null. Each attempt does its own checks first.
+ */
+export function runAnswerAttempts(attempt) {
+  for (let attemptNumber = 1; attemptNumber <= 2; attemptNumber++) {
+    let run;
+    try {
+      run = attempt(attemptNumber);
+    } catch (error) {
+      return error;
+    }
+    if (attemptNumber === 1 && isRetryableAgentFailure(run.failure)) continue;
+    break;
+  }
+  return null;
+}
+
 /** Build the production five-track report from the immutable selected cases. */
 export function buildRunnerTracks({ selectedCases, rows, unjudgedSelectedIds = null, lifecyclePartition = null }) {
   const partition = lifecyclePartition ?? partitionLifecycleCases(selectedCases);
@@ -1713,6 +1747,12 @@ async function main() {
         cancellationFile: process.env.QA_PAIRED_CANCELLATION_FILE
       })
     : null;
+  let listenerPair = null;
+  const assertPairedRunActive = createPairedRunCheck({
+    pairedControl,
+    arm: pairedControlArm,
+    listenerPair: () => listenerPair
+  });
   const spendLedger = createSpendLedger(maxBudgetUsd);
   const serverRevisionArgument = parseRequiredFlagValue(args, "--server-revision");
   const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
@@ -1731,7 +1771,8 @@ async function main() {
       );
     },
     // The supervisor writes the cancellation file before IPC, so a blocked wait still sees it.
-    checkCancelled: () => pairedControl?.assertActive()
+    // The guard calls this last before the answering call, so a lost listener stops it too.
+    checkCancelled: () => assertPairedRunActive()
   });
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
@@ -1773,7 +1814,6 @@ async function main() {
     }), "before"));
   }
 
-  let listenerPair = null;
   let adapterAttestation = null;
   let serverProcess;
   let upstreamServerProcess = null;
@@ -1861,54 +1901,43 @@ async function main() {
       process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} … `);
       const answerAttempts = [];
       const rowJudgeAttempts = [];
-      let stopError = null;
-      for (let attemptNumber = 1; attemptNumber <= 2; attemptNumber++) {
-        let run;
+      let stopError = runAnswerAttempts((attemptNumber) => {
         const attemptStartedAt = Date.now();
-        try {
-          run = runRemoteIdentityGuardedCall({
-            guard: remoteIdentityGuard,
-            context: { id: c.id, attempt: attemptNumber },
-            authorize: () => {
-              pairedControl?.assertActive();
-              return authorizeSpend(spendLedger, {
-                method: "agent",
-                id: c.id,
-                attempt: attemptNumber
-              });
-            },
-            call: (authorization) => runAgent(c.question, {
-              surface,
-              searchTool,
-              allowedTools,
-              mcpConfigPath,
-              model,
-              agentCwd,
-              agentCommand: agentBinary.resolvedPath,
-              maxBudgetUsd: authorization.maxBudgetUsd
-            }),
-            onCompleted: (completedRun) => {
-              const attempt = agentAttemptRecord(
-                completedRun,
-                attemptNumber,
-                attemptStartedAt,
-                Date.now()
-              );
-              answerAttempts.push(attempt);
-            },
-            recordSpend: (authorization, completedRun) => {
-              recordSpend(spendLedger, authorization, completedRun.costUsd);
-            }
-          });
-        } catch (error) {
-          stopError = error;
-          break;
-        }
-        if (attemptNumber === 1 && isRetryableAgentFailure(run.failure)) {
-          continue;
-        }
-        break;
-      }
+        return runRemoteIdentityGuardedCall({
+          guard: remoteIdentityGuard,
+          context: { id: c.id, attempt: attemptNumber },
+          authorize: () => {
+            assertPairedRunActive();
+            return authorizeSpend(spendLedger, {
+              method: "agent",
+              id: c.id,
+              attempt: attemptNumber
+            });
+          },
+          call: (authorization) => runAgent(c.question, {
+            surface,
+            searchTool,
+            allowedTools,
+            mcpConfigPath,
+            model,
+            agentCwd,
+            agentCommand: agentBinary.resolvedPath,
+            maxBudgetUsd: authorization.maxBudgetUsd
+          }),
+          onCompleted: (completedRun) => {
+            const attempt = agentAttemptRecord(
+              completedRun,
+              attemptNumber,
+              attemptStartedAt,
+              Date.now()
+            );
+            answerAttempts.push(attempt);
+          },
+          recordSpend: (authorization, completedRun) => {
+            recordSpend(spendLedger, authorization, completedRun.costUsd);
+          }
+        });
+      });
       if (answerAttempts.length === 0) throw stopError;
       const firstAttempt = answerAttempts[0];
       const successfulAnswer = hasSuccessfulAnswer(firstAttempt.answer, firstAttempt.agent?.failure);

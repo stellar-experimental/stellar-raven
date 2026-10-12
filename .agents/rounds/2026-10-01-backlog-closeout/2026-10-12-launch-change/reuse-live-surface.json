@@ -1,0 +1,54 @@
+{
+  "label": "baseline-reuse",
+  "capturedAt": "2026-10-12T17:14:14.573Z",
+  "url": "http://localhost:8797/mcp",
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "stellar-raven-codemode",
+    "version": "0.1.0"
+  },
+  "toolNames": [
+    "search",
+    "execute"
+  ],
+  "surfacePin": {
+    "expected": "6cf5d1cdd3cd16c6b8bdb09a45917755cffaf0781f321734d7c9f7649a71d238",
+    "actual": "6cf5d1cdd3cd16c6b8bdb09a45917755cffaf0781f321734d7c9f7649a71d238",
+    "checked": true,
+    "matches": true
+  },
+  "sourceRevisionPin": {
+    "expected": null,
+    "actual": null,
+    "checked": false,
+    "matches": null
+  },
+  "schema": "mcp-surface-v1",
+  "toolCount": 2,
+  "descriptionsChars": 13554,
+  "inputSchemaChars": 1646,
+  "outputSchemaChars": 5624,
+  "serializedToolsChars": 21050,
+  "instructionsChars": 7873,
+  "instructionsSha256": "c28d1e021ed951aaa695fad618c4b86edc180e099943732edfcddeb2acc72ac2",
+  "advertisedWireChars": 28923,
+  "estimatedAdvertisedWireTokens": 7231,
+  "perTool": [
+    {
+      "name": "search",
+      "descriptionChars": 4719,
+      "inputSchemaChars": 1383,
+      "outputSchemaChars": 5624,
+      "definitionChars": 11830
+    },
+    {
+      "name": "execute",
+      "descriptionChars": 8835,
+      "inputSchemaChars": 263,
+      "outputSchemaChars": 0,
+      "definitionChars": 9207
+    }
+  ],
+  "metricMeaning": "serialized MCP tool definitions plus server instructions; not consumed model context",
+  "surfaceSha256": "6cf5d1cdd3cd16c6b8bdb09a45917755cffaf0781f321734d7c9f7649a71d238"
+}

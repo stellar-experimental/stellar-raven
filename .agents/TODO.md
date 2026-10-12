@@ -680,11 +680,24 @@ binding or the token. Wrangler 4.149.0 logs that failure and continues. Near the
 runtime crash of unknown cause can also occur, and both versions then refused later requests on
 the public port.
 
-Next step (owner decision): choose a launch change from the record's recommendation. The record
-recommends the candidate's Wrangler 4.149.0 for the baseline server, with a stop-on-lost-port
-rule. Then assemble and sign the plan again. A full collection needs about 2.5 hours of baseline
-uptime. Run on a quiet machine, and leave the DocSearch key idle for at least one hour before the
-capacity check.
+Launch change (2026-10-12, chosen by the orchestrator under the owner's delegation): the record's
+option 1. The baseline server runs the candidate server's installed Wrangler toolchain (4.149.0 at
+the current lockfile). The reason: 4.120.1 exits on one `ProxyWorker` error, and 4.149.0 fails only
+that request. Before any server starts, the launcher requires one identical toolchain in both
+servers, with the same `workerd` binary SHA-256. The signed plan records it. The local dev runtime
+is no longer part of the measured difference. A local listener check also runs before every paid
+call: before P6 and collection, before each P6 call, before each answering attempt and retry, and
+before each row release. The signed plan binds the listener record by its digest. A lost or
+replaced listener stops the method. Nothing restarts a server.
+The check reads sockets and does not connect, and a short interval remains between a check and its
+call. See the run sheet's "2026-10-12 amendment" for these limits.
+
+Codex `gpt-6-astra` at high reviewed the change (RA to RA4, final APPROVE). A free live check ran
+the baseline source under the candidate's Wrangler and matched the surface pin.
+
+Next step (paid; needs a weekend spend authorization): a fresh assembled and signed plan. A full
+collection needs about 2.5 hours of baseline uptime. Run on a quiet machine, and leave the DocSearch
+key idle for at least one hour before the capacity check.
 
 The launch tooling stays in the round folder until the next attempt ends or the owner retires the
 method. Then either promote it into `eval/qa/` with its test, or delete the round's launch scripts,
