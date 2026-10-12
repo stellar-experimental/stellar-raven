@@ -164,6 +164,9 @@ export function assertDualBoundServersUnchanged(recordedPairs, { identify = dual
 const PAIRED_ARMS = ["baseline", "candidate"];
 const TARGET_FIELDS = ["adapterPort", "adapterRevision", "upstreamPort", "upstreamRevision"];
 
+// `boundServerIdentity` records each listener process ID as a number.
+const isProcessId = (pid) => Number.isSafeInteger(pid) && pid > 0;
+
 const pairTarget = (pair) => ({
   adapterPort: pair?.adapter?.port,
   adapterRevision: pair?.adapter?.revision,
@@ -189,7 +192,7 @@ export function pairedListenerPairs(record, expectedTargets = null) {
     if (!Number.isInteger(target.adapterPort) || !Number.isInteger(target.upstreamPort) ||
         !/^[a-f0-9]{40}$/.test(String(target.adapterRevision ?? "")) ||
         !/^[a-f0-9]{40}$/.test(String(target.upstreamRevision ?? "")) ||
-        typeof pair.adapter.pid !== "string" || typeof pair.upstream.pid !== "string") {
+        !isProcessId(pair.adapter.pid) || !isProcessId(pair.upstream.pid)) {
       throw new Error(`${arm} listener record is not a recorded listener pair`);
     }
     const expected = expectedTargets?.[arm];

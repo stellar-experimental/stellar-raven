@@ -679,7 +679,7 @@ describe("paired QA collection supervisor", () => {
       const { plan, bytes } = listenerPlan();
       const check = createServerListenerCheck(plan, {
         readFile: () => bytes,
-        identify: (target) => current(target, target.upstreamPort === 8790 ? "53679" : undefined)
+        identify: (target) => current(target, target.upstreamPort === 8790 ? 53679 : undefined)
       });
       expect(check).toThrow(/^candidate server stopped answering on its port or changed: bound server identity changed during paid calls \(pid\)/);
     });
@@ -707,7 +707,7 @@ describe("paired QA collection supervisor", () => {
     it("refuses record contents that changed after signing", () => {
       const { plan } = listenerPlan();
       const changed = listenerRecord(TARGETS);
-      changed.baseline.identity.upstream.pid = "53679";
+      changed.baseline.identity.upstream.pid = 53679;
       const check = createServerListenerCheck(plan, {
         readFile: () => Buffer.from(JSON.stringify(changed)),
         identify: () => { throw new Error("must not read listeners"); }
@@ -1383,7 +1383,7 @@ describe("paired QA collection supervisor", () => {
   it("rejects listener record contents that changed after signing", () => {
     const { root, plan, inspectWorktree } = planFixture();
     try {
-      rewriteJsonArtifact(plan.p6.listenersPath, (record) => { record.baseline.identity.adapter.pid = "1"; });
+      rewriteJsonArtifact(plan.p6.listenersPath, (record) => { record.baseline.identity.adapter.pid = 1; });
       expect(() => validatePairedCollectionPlan(plan, { inspectWorktree }))
         .toThrow("the listener record does not match p6.listenersSha256");
     } finally {

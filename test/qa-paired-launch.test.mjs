@@ -11,7 +11,7 @@ import { agentEnvironmentIdentity } from "../eval/lib/executable-identity.mjs";
 import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, launchEnvironment, PORTS,
   assertServersUnchanged, listenerTargets } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
 import { assertSharedServerToolchain, SERVER_TOOLCHAIN_SCHEMA, sharedWranglerEntry } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-server-toolchain.mjs";
-import { assertDualBoundServersUnchanged, pairedListenerPairs } from "../eval/lib/bound-server-identity.mjs";
+import { assertDualBoundServersUnchanged, dualBoundServerIdentity, pairedListenerPairs } from "../eval/lib/bound-server-identity.mjs";
 import { executeFrozen, validateStoredJudgeArtifact } from "../.agents/rounds/2026-10-01-backlog-closeout/execute-frozen.mjs";
 import { pairedCollectionPlanSha256, devVarsIdentity, validateAuthorizedPairedCollectionPlan, validatePairedCollectionPlan } from "../eval/qa/paired-collection-supervisor.mjs";
 import { assertPlanCommandSyntax, buildPairedPlan, selectionSnapshot } from "../.agents/rounds/2026-10-01-backlog-closeout/assemble-paired-plan.mjs";
@@ -23,7 +23,7 @@ import { parseArgs as parseRejudge } from "../eval/qa/re-judge.mjs";
 import { assertP6OutputAvailable, parseP6SelfTestCli } from "../eval/qa/run-p6-judge-self-test.mjs";
 import { JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
-import { acceptedCapacityArtifact, listenerRecord, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
+import { acceptedCapacityArtifact, listenerCommandOutput, listenerRecord, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
 
 function emptyJournal() {
   return {schema:'qa-paired-launch-processes-v2',identities:[],groups:[],retiredGroups:[],cleanup:{complete:true}};
@@ -567,6 +567,21 @@ function writeToolchain(serverRoot, {wranglerVersion='4.149.0', binary='workerd-
   return modules;
 }
 
+// The production listener reader over fixed lsof and git output, and the record that the
+// launch serializes from it (the same JSON form as paired-launch.mjs writes).
+function productionListeners(env) {
+  const targets=listenerTargets(env);
+  const listeners={};
+  for (const [index,[arm,target]] of Object.entries(targets).entries()) {
+    listeners[target.adapterPort]={pid:4101+2*index,command:'node',cwd:`/w/${arm}-runner`,revision:target.adapterRevision};
+    listeners[target.upstreamPort]={pid:4102+2*index,command:'workerd',cwd:`/w/${arm}-server`,revision:target.upstreamRevision};
+  }
+  const spawnSyncImpl=listenerCommandOutput(listeners);
+  const identify=target=>dualBoundServerIdentity(target,{spawnSyncImpl});
+  const records=Object.fromEntries(Object.entries(targets).map(([arm,target])=>[arm,{identity:identify(target),attestation:{}}]));
+  return {listeners,identify,text:`${JSON.stringify(records,null,2)}\n`};
+}
+
 function toolchainRecord() {
   return {schema:SERVER_TOOLCHAIN_SCHEMA,packages:{},workerdBinary:{sha256:'c'.repeat(64)}};
 }
@@ -598,6 +613,15 @@ describe('paired server toolchain',()=>{
           sha256:createHash('sha256').update('workerd-bytes').digest('hex')}
       });
     } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('reads the real installed toolchain and survives the JSON round trip that assembly compares',()=>{
+    // This repository's own install stands in for the candidate server worktree.
+    const env={PAIRED_CS:process.cwd()};
+    const identity=assertSharedServerToolchain(env);
+    expect(Object.values(identity.packages).every(({version,root})=>typeof version==='string' && typeof root==='string')).toBe(true);
+    expect(identity.workerdBinary.sha256).toMatch(/^[a-f0-9]{64}$/);
+    expect(JSON.parse(`${JSON.stringify(identity,null,2)}\n`)).toStrictEqual(assertSharedServerToolchain(env));
   });
 
   it('fails closed when the candidate launch resolves another Wrangler',()=>{
@@ -653,6 +677,19 @@ describe('paired server listener stop',()=>{
     return {root,env};
   }
 
+  it('accepts the serialized production record and stops after a production-reader loss',()=>{
+    const root=mkdtempSync(path.join(os.tmpdir(),'paired-listeners-'));
+    try {
+      const env={...launchEnvironment(revision,{}),PAIRED_RUN:root};
+      const {listeners,identify,text}=productionListeners(env);
+      writeFileSync(path.join(root,'listeners.json'),text);
+      expect(()=>assertServersUnchanged(env,'p6',check(identify))).not.toThrow();
+      delete listeners[8790];
+      expect(()=>assertServersUnchanged(env,'collection',check(identify)))
+        .toThrow(/^before collection: candidate server stopped answering on its port or changed: bound server identity on port 8790/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
   it('passes while all four recorded listeners remain',()=>{
     const {root,env}=listenerFixture();
     try {
@@ -699,7 +736,7 @@ describe('paired server listener stop',()=>{
   it('stops when a runtime restart gives a public port to another process',()=>{
     const {root,env}=listenerFixture();
     try {
-      const identify=target=>pair(target,target.upstreamPort===8790 ? '53679' : undefined);
+      const identify=target=>pair(target,target.upstreamPort===8790 ? 53679 : undefined);
       expect(()=>assertServersUnchanged(env,'p6',check(identify)))
         .toThrow(/^before p6: candidate server stopped answering on its port or changed: bound server identity changed during paid calls \(pid\)/);
       expect(JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8')).reason).toMatch(/candidate server/);
@@ -790,6 +827,16 @@ describe('paired plan assembly',()=>{
       const wrong=structuredClone(plan);
       Object.assign(wrong.flipRejudge.judgeTuple,change);
       expect(()=>validatePairedCollectionPlan(wrong,{inspectWorktree})).toThrow(/flipRejudge\.judgeTuple does not match/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('freezes the serialized production listener record',()=>{
+    const {root,env,rebuild}=assemblyFixture();
+    try {
+      const {text}=productionListeners(env);
+      writeFileSync(path.join(env.PAIRED_RUN,'listeners.json'),text);
+      const plan=rebuild();
+      expect(plan.p6.listenersSha256).toBe(createHash('sha256').update(text).digest('hex'));
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 
