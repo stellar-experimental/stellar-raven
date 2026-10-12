@@ -730,6 +730,31 @@ describe("claim support: p9 entity lists", () => {
       expect(measure(`   span: ${direct}${bravo}`).complete).toBe(true);
     });
 
+    it("never counts an unfinished quoted identity (review RJ3-1)", () => {
+      expect(missingLabels('   span: {"name":"Bravo","status":"Live"},{"status":"Live","name":"Alpha')).toEqual(["Alpha"]);
+    });
+
+    it("never counts an unfinished quoted claim value (review RJ3-1)", () => {
+      expect(missingLabels('   span: {"name":"Bravo","status":"Live"},{"name":"Alpha","status":"Live')).toEqual(["Alpha"]);
+    });
+
+    it("keeps the complete fields of an object whose last token is unfinished", () => {
+      expect(measure('   span: {"name":"Bravo","status":"Live"},{"status":"Live","name":"Alpha","note":"cut here').complete).toBe(true);
+    });
+
+    it("decodes JSON escapes in identities and claim values (review RJ3-2)", () => {
+      const bravo = '   span: {"name":"Bravo","status":"Live"},';
+      expect(measure(`${bravo}{"name":"\\u0041lpha","status":"Live"}`).complete).toBe(true);
+      expect(measure(`${bravo}{"name":"Alpha","status":"Li\\u0076e"}`).complete).toBe(true);
+      const spaced = [execute({ items: [{ name: "Alpha One", status: "Live" }, { name: "Bravo", status: "Live" }] })];
+      const coverage = entityListCoverage({
+        transcript: spaced,
+        candidateAnswer: "Alpha One and Bravo are Live.",
+        transcriptEvidence: '   span: {"name":"Alpha\\nOne","status":"Live"},{"name":"Bravo","status":"Live"}'
+      });
+      expect(coverage.complete).toBe(true);
+    });
+
     it("reads the fields of a source-item line as fields of that item", () => {
       expect(missingLabels('1. title="Alpha" url="https://example.test/a" fields="status="Live", rank="2""')).toEqual(["Bravo"]);
     });

@@ -2423,23 +2423,34 @@ function unwrapSourceItemFields(line) {
 }
 
 // A quoted value from `at` (the opening quote). Returns the value and the index after the close.
+// A token with no closing quote is clipped: its text may continue, so it is never a complete value.
+// A complete double-quoted token is decoded by JSON string rules (\u0041 reads as A).
 function readQuoted(line, at) {
   const quote = line[at];
-  let value = "";
   let index = at + 1;
   while (index < line.length) {
     const ch = line[index];
     if (ch === "\\" && quote === '"') {
-      value += line[index + 1] ?? "";
       index += 2;
     } else if (ch === quote) {
-      return { value, end: index + 1 };
+      const raw = line.slice(at, index + 1);
+      return { value: quote === '"' ? decodeJsonString(raw) : raw.slice(1, -1), end: index + 1 };
     } else {
-      value += ch;
       index += 1;
     }
   }
-  return { value, end: line.length, clipped: true };
+  return { value: "", end: line.length, clipped: true };
+}
+
+// JSON string decoding. A token that is not valid JSON keeps its text with each backslash removed.
+function decodeJsonString(raw) {
+  try {
+    const value = JSON.parse(raw);
+    if (typeof value === "string") return value;
+  } catch {
+    // Fall through to the plain reading.
+  }
+  return raw.slice(1, -1).replace(/\\(.)/g, "$1");
 }
 
 function sourceRecordScopes(text) {
@@ -2480,12 +2491,13 @@ function sourceRecordScopes(text) {
       SCOPE_KEY_RE.lastIndex = at;
       const key = startsWord || ch === '"' ? SCOPE_KEY_RE.exec(line) : null;
       if (key) {
-        const name = key[1] ?? key[2];
+        const name = key[1] !== undefined ? decodeJsonString(`"${key[1]}"`) : key[2];
         let index = SCOPE_KEY_RE.lastIndex;
         const next = line[index];
         if (next === '"' || next === "'") {
           const quoted = readQuoted(line, index);
-          add(current(), name, quoted.value);
+          // An unfinished token proves no complete value; the object's other complete fields still count.
+          if (!quoted.clipped) add(current(), name, quoted.value);
           at = quoted.end;
         } else if (next === "{" || next === "[" || next === undefined) {
           at = index;
