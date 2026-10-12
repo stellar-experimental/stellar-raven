@@ -528,6 +528,25 @@ describe("demo tools at the worker boundary", () => {
     expect(signature.split("\n").at(-1)).toContain('codemode.skill.run("skills.lumenloop.stellar-ecosystem-digest"');
   });
 
+  it("names required input fields that a clipped signature hides", async () => {
+    const { search } = makeTools();
+    const result = (await search.execute({
+      query: "anchor SEP-24 deposit docs",
+      kind: "operation",
+      service: "stellarDocs",
+      limit: 5
+    })) as { hits: Array<{ id: string; signature?: string }> };
+    const anchor = result.hits.find((hit) => hit.id === "stellarDocs.search_anchor_sep_docs");
+    expect(anchor?.signature).toBeTruthy();
+    const signature = anchor!.signature!;
+    // The 400-char head cut ends before `query: string;`, so only the marker
+    // tells the model that `query` is required.
+    expect(signature).not.toContain("query: string;");
+    expect(signature).toContain("… [middle clipped for the demo] required input: query\n");
+    expect(signature.length).toBeLessThanOrEqual(400);
+    expect(signature.split("\n").at(-1)).toMatch(/^stellarDocs\.search_anchor_sep_docs\(input: /);
+  });
+
   it("keeps canonical operation payload keys visible when demo signatures are clipped", async () => {
     const { search } = makeTools();
     const result = (await search.execute({
