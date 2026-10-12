@@ -50,7 +50,7 @@ are:
    `cause.message` (empty) and the bug notice, and the process exits with code 1.
    In 4.149.0, `castErrorCause` keeps the message, and `handleErrorEvent` logs
    `Error inside ProxyWorker (the affected request failed; the dev server continues)`.
-2. **Runtime crash.** A runtime `workerd` exits about 1 s to 2 s after a request near the 5 s gap, with no runtime
+2. **Runtime crash.** A runtime `workerd` exits within a few seconds after a request near the 5 s gap, with no runtime
    output and no macOS crash report. Wrangler prints `The Workers runtime crashed unexpectedly and
    is being restarted (crash #1)`. Every later sweep request got `ECONNREFUSED` on the public
    port (run 2: 1 request; run 3: 5 requests in about 20 s; control 4b: all later requests). No
@@ -210,3 +210,10 @@ post.
 - `evidence/`: sweep and watcher records, log tails, the run 1 `ProxyController` debug entry,
   and the run 2 surface report. Raw logs stayed in `/private/tmp/claude-501/w1012/k-soak/`
   (temporary).
+
+## Review
+
+Codex `gpt-6-astra` at high reviewed this record three times:
+[RK](review-rk-astra.md) (CHANGES), [RK2](review-rk2-astra.md) (CHANGES), and
+[RK3](review-rk3-astra.md) (APPROVE). Codex differs from the author and the orchestrator (both
+Claude Opus 5.5). The orchestrator reconciled every finding.
