@@ -1,0 +1,2298 @@
+{
+  "schema": "p9-paired-rejudge-reading-v1",
+  "standIn": "p8",
+  "status": "INCONCLUSIVE",
+  "totals": {
+    "rows": 32,
+    "changedRows": 6,
+    "changedRowsRun": 6,
+    "reusedP8Rows": 26,
+    "newCalls": 18,
+    "newCostUsd": 1.7754
+  },
+  "stages": {
+    "1": {
+      "rows": 6,
+      "up": 0,
+      "same": 3,
+      "down": 1,
+      "inconclusive": 2,
+      "notRun": 0,
+      "flaggedForReading": [
+        "S1a|q-defi-etherfuse-stablebonds",
+        "S1b|q-edge-fresh-latest-blend-tvl"
+      ]
+    },
+    "2": {
+      "rows": 20,
+      "up": 1,
+      "same": 13,
+      "down": 2,
+      "inconclusive": 4,
+      "notRun": 0,
+      "flaggedForReading": [
+        "S2a|q-asset-stablecoin-issuers-discovery",
+        "S2a|q-defi-arbitrage-pathpayment-bots",
+        "S2a|q-scf-funding-by-category",
+        "S2b|q-agent-identity-erc8004-stellar",
+        "S2c|q-hist-quantum-preparedness-plan",
+        "S2d|q-gap-leaderboard-project-not-builder"
+      ]
+    },
+    "3": {
+      "rows": 6,
+      "up": 0,
+      "same": 6,
+      "down": 0,
+      "inconclusive": 0,
+      "notRun": 0,
+      "flaggedForReading": []
+    }
+  },
+  "rows": [
+    {
+      "stage": 1,
+      "invocation": "S1a",
+      "id": "q-defi-etherfuse-stablebonds",
+      "changed": true,
+      "armBSource": "stand-in-p8",
+      "p9PackSha256": "1eee7b64c01b41c5722617604206874d716f2359a8db744e36926706d209dbb6",
+      "p9PromptSha256": "0db8f4de16ae9fa28a11498811fa1bc3c26cef4c4516919f0632ef3cbae2c2ec",
+      "p9ListCoverage": {
+        "records": 8,
+        "shown": 8,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ],
+        "costUsd": 0.2757692
+      },
+      "inconclusive": [
+        "pack p8",
+        "pack SHA-256 differs from the rebuilt p9 pack",
+        "prompt SHA-256 differs from the rebuilt p9 prompt",
+        "a call input hash differs from the rebuilt p9 prompt"
+      ],
+      "direction": "inconclusive",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "Etherfuse"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies USTRY and CETES as distinct Etherfuse Stablebond products, dates nearly every changeable claim (asset flags, holder counts, TVL, product lineup from stellar.toml), and covers redemption/custody (reserve-backed, audits, no clawback), maturity (~90 days), and currency/oracle risk (FX pairs needed for non-USD bonds) plus liquidity signals (holders/trustlines/trades) and operational controls (auth flags). However, it never mentions the legal/availability restriction (e.g., US unavailability) and omits the YieldBlox incident entirely, so it cannot attribute that incident to the consumer/pool boundary as the golden requires. No fabrications contradict the golden or transcript evidence, and no must-avoid item is triggered since the candidate never mischaracterizes the incident or freezes rosters without dating them.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "Etherfuse"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate dates essentially every changeable claim, correctly distinguishes USTRY and CETES as separate Etherfuse products, discusses custody/redemption/maturity (~90 days) and currency/FX risk, and separately covers liquidity (holder/trustline/TVL data), oracle risk (FX+yield oracle needs), and operational controls (auth/clawback flags) for DeFi integration. However it omits the legal/eligibility restriction (Etherfuse services unavailable in the US) and never mentions the YieldBlox incident or its consumer/pool-boundary attribution at all, leaving key fact 5 entirely unaddressed. No fabricated figures were found (holder/trustline counts and issuer address match the transcript evidence) and no must-avoid traps are triggered — the candidate never claims the incident compromised Etherfuse's issuer contract and never treats a ticker alone as proof of identity.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly dates nearly every changeable claim, clearly distinguishes USTRY and CETES as separate Stablebond products, and covers redemption/custody (reserve-backed, no on-chain clawback/auth), maturity (~90 days), and currency/FX risk for non-USD bonds, plus some liquidity (TVL caution, trustline/trade counts) and oracle risk (notes FX+yield oracle need). However it never mentions the US-unavailability/legal/eligibility restriction, never discusses exposure caps, and critically omits any mention of the YieldBlox incident or its consumer/pool-boundary attribution, which the golden and grader notes treat as an expected element. No fabricated incident details or issuer-exploit claims appear (since the incident isn't discussed at all), and no must-avoid items are triggered — the product list and SAC/classic-asset treatment are dated and sourced, not frozen or ticker-only.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 1,
+      "invocation": "S1b",
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "changed": true,
+      "armBSource": "stand-in-p8",
+      "p9PackSha256": "f083470b5dcc684682245c29889bd3bdcde7dc6c1b6999051a7911c9e37d4c44",
+      "p9PromptSha256": "f57b4d47d01c5388f1dc5ebd204b5f7d1807d8505ff1d981e0a34b1c0911e8b8",
+      "p9ListCoverage": {
+        "records": 3,
+        "shown": 3,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "partial",
+          "wrong"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "partial",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.3621648
+      },
+      "inconclusive": [
+        "pack p8",
+        "pack SHA-256 differs from the rebuilt p9 pack",
+        "prompt SHA-256 differs from the rebuilt p9 prompt",
+        "a call input hash differs from the rebuilt p9 prompt"
+      ],
+      "direction": "inconclusive",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "Blend",
+            "Spiko"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate reports a current Blend TVL ($166.1M, DefiLlama, Stellar-chain slice of pools+backstops, tvlAsOf 2026-10-05) matching the transcript evidence's tvlAsOf/tvlMethod/tvlMethodUrl fields exactly, satisfies visible as-of dating throughout, and gives a declared-window trend (end-Q1 $100.6M → now $166.1M) with dated sources matching the pack's Cypher Integrates Stellar and Stellar blog entries. It keeps metric classes separate (TVL vs total DeFi TVL vs RWA/Spiko) and hedges on the unsourced Q2/Q3 boundary. However, it computes a cross-quarter growth trend by splicing a DefiLlama-sourced current point with editorial/LumenLoop-sourced historical points without flagging that these use different provider methodologies, which the grader notes identify as the actual gate for this question type — a gap the candidate's own hedge only partially covers.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "Blend",
+            "Spiko"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate gives a dated current Blend TVL ($166.1M as of 2026-10-05, DefiLlama, pools+backstops/Stellar-chain slice, refreshed weekly) matching the transcript's tvlAsOf/tvlMethod/tvlMethodUrl fields exactly, and builds a dated trend ($80M per Stellar blog dated 2026-04-07; $100.6M end-Q1 2026 per LumenLoop dated 2026-05-29, both exact matches to the source-basis pack) while explicitly flagging that the Q2/Q3 boundary split is inferred rather than directly sourced. All three key facts (dated observations, visible as-of dates, current provider-stamped Blend TVL) are satisfied, no claim contradicts the golden or the transcript evidence, and metric classes (Blend TVL vs total DeFi TVL vs Spiko) are kept clearly separate and labeled.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "Blend",
+            "Spiko"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate gives a dated current Blend TVL ($166.1M as of 2026-10-05) with provider (DefiLlama), scope (Stellar-chain slice, pools+backstops), and refresh cadence, matching the tvlAsOf/tvlSource/tvlMethodUrl fields in the transcript evidence — satisfying key fact 3. It dates every trend observation (April 2026 $80M Stellar blog, end-Q1 2026 $100.6M LumenLoop, current $166.1M DefiLlama) and makes as-of dates visible throughout, satisfying key facts 1 and 2. It explicitly flags that it lacks a precise Q2/Q3 boundary figure and marks the quarter split as inferred rather than sourced, avoiding fabrication of a false precise trend, and the additional context (total Stellar DeFi TVL, Spiko, Templar) is clearly scoped and dated, not contradicting the golden or must-avoid items.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 1,
+      "invocation": "S1b",
+      "id": "q-sor-deploy-invoke-from-js-sdk",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "36ee8a6b206af0e599f72638fbf1087999a87394016eb8fd2a7d622bc4cc473b",
+      "p9PromptSha256": "a15d9ddf8ffe77eb47b7dc4e0b5224b84c5ecfdffb00911552f7853f0329ca44",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ]
+      },
+      "armB": {
+        "score": "wrong",
+        "votes": [
+          "partial",
+          "wrong",
+          "wrong"
+        ],
+        "costUsd": 0.3657152
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate covers upload/createCustomContract/salt plus a nuanced (and reasonably accurate) discussion of constructor args, and covers simulate→assemble→sign→submit→poll with sourced doc snippets. prepareTransaction is correctly shown returning a built Transaction (`.toXDR()` called directly). However, for assembleTransaction the candidate presents conflicting evidence: one snippet (OpenZeppelin) correctly shows `.build()` being called on the result, but the other snippet quoted verbatim from the official 'Restore archived contract data' guide calls `assembleTransaction(tx, sim)` and then `prepTx.sign(signer)` with no `.build()` step, without flagging the discrepancy or noting version sensitivity for this specific case — so the clean, generalized key fact that assembleTransaction returns a builder needing `.build()` before signing is muddled rather than clearly stated. scValToNative is only applied to confirmed/simulated success values, satisfying that fact and avoiding the must-avoid traps.",
+          "wrongClaims": []
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly covers upload/createCustomContract/deployment (fact 1 partially, but incorrectly claims the JS createCustomContract operation itself has no constructorArgs field, contradicting the grader notes that SDK 16.0.1's createCustomContract/contract.Client.deploy wraps wasmHash/salt/constructorArgs), and covers simulation/signing/submission/polling (fact 2) and prepareTransaction returning a built transaction (fact 4, shown via direct .toXDR() call) correctly. Fact 3 (assembleTransaction returns a builder needing .build()) is stated once with a .build() example, but the candidate then reproduces a second quoted doc snippet where assembleTransaction's result is signed directly without .build(), an internal contradiction that effectively instructs signing an unbuilt builder without flagging the version mismatch the golden explicitly warns about. Fact 5 (decode only successful ScVal) is only implicitly covered via a happy-path pollTransaction example, without the golden's caveat about Bad union switch / mismatched XDR.",
+          "wrongClaims": [
+            "Claims the JS SDK's createCustomContract operation itself doesn't take a constructorArgs field, contradicting grader notes that SDK 16.0.1's createCustomContract (via contract.Client.deploy) uses wasmHash/salt/constructorArgs"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate covers upload/deployment, simulation→sign→submit→poll, and scValToNative decoding, but it explicitly claims createCustomContract 'doesn't take a separate constructorArgs field,' contradicting the grader-note-verified fact that SDK 16.0.1's createCustomContract (as used in contract.Client.deploy) does carry wasmHash/salt/constructorArgs. It also never clearly states the key distinguishing rule that assembleTransaction returns a builder requiring .build(), and instead reproduces a doc snippet that calls prepTx.sign(signer) directly on an assembleTransaction result without .build() — exactly the unsafe 'sign an unbuilt builder' pattern the must-avoid list warns against, presented without any corrective caveat. The prepareTransaction-returns-built-transaction fact (4) and the scValToNative-success-only point (5) are handled adequately.",
+          "wrongClaims": [
+            "Claim that the JS createCustomContract operation doesn't take a separate constructorArgs field, contradicting the verified SDK 16.0.1 behavior where createCustomContract (via contract.Client.deploy) includes constructorArgs"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 1,
+      "invocation": "S1b",
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "3b1a49b9eed2ade81fbeba91b8de0f7bd918228b9bb85d78306c1a3f2c89c697",
+      "p9PromptSha256": "6f5f7ee8628614d794b584f12b7faf4a5502a7d4dd0dffb0cd46096ce33b1031",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "wrong",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ],
+        "costUsd": 0.3484324
+      },
+      "inconclusive": [],
+      "direction": "down",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly describes the opaque cursor mechanism, retention/fall-behind detection via getHealth().oldestLedger, and gives a working TS loop that (correctly) never combines startLedger with cursor. However, it explicitly presents a worked example labeled 'confirmed in the docs' that combines startLedger=1000000 with pagination.cursor='1234-1' for getTransactions — this directly contradicts the golden's mutual-exclusivity rule and the actual source example (which only showed cursor, no startLedger), firing must-avoid #2. It also omits the specific per-method limit numbers (getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, Horizon 10/200), the mention that RPC returns failed transactions, that diagnostic events may be absent, explicit idempotent-cursor-persistence-after-write guidance, and the full Xdr-to-type mapping (envelopeXdr/TransactionEnvelope, resultXdr/TransactionResult, diagnosticEventsXdr/DiagnosticEvent, transactionEventsXdr/TransactionEvent).",
+          "wrongClaims": [
+            "Example request combining startLedger with pagination.cursor for getTransactions, falsely labeled as 'confirmed in the docs' when the actual doc example had no startLedger alongside cursor"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly describes cursor-based continuation, retention/-32600 behavior, and XDR decoding of resultMetaXdr, but fabricates an 'Example request shape confirmed in the docs' that combines startLedger and cursor in a single getTransactions call — the transcript evidence (item 43) shows the real docs example uses a generic 'exampleMethod' with only cursor/limit, never startLedger, so this directly contradicts the mutual-exclusivity rule (key fact 1) and matches must-avoid #2 even though the later code loop correctly separates them. The candidate also admits it could not find the getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, or Horizon 10/200 numbers (key fact 2 missing), and omits that RPC returns failed transactions, that diagnostic events may be absent, and idempotent-persist-after-write guidance (key fact 4 partially missing). It also only maps resultMetaXdr/TransactionMeta and *Json naming, without covering envelopeXdr/TransactionEnvelope, resultXdr/TransactionResult, diagnosticEventsXdr/DiagnosticEvent, or transactionEventsXdr/TransactionEvent (key fact 5 partially missing).",
+          "wrongClaims": [
+            "The 'Example request shape confirmed in the docs' combining startLedger and cursor in one getTransactions call, which contradicts both the mutual-exclusivity rule and the actual docs example (generic exampleMethod with cursor/limit only, per transcript evidence)"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Mechanism (cursor vs startLedger), retention/fall-behind detection, and resultMetaXdr→xdr.TransactionMeta decoding are covered correctly, but the candidate explicitly declines to give the getTransactions/getEvents/getLedgers/Horizon default/max numbers (key fact 2 missing), omits failed-tx inclusion, possible-absent diagnostics, and idempotent cursor-persist-after-writes (key fact 4 mostly missing), and only maps resultMetaXdr/*Json, leaving envelopeXdr, resultXdr, diagnosticEventsXdr, and transactionEventsXdr type mappings absent (key fact 5 partial). The quoted 'hardcoded' line is an attributed quote and per grader notes caps at partial rather than counting as wrong. However, the 'Example request shape confirmed in the docs' JSON block shows startLedger and cursor supplied together in the same params object as if that combination is valid/documented, which is not supported by the transcript evidence (which only shows cursor+limit for a generic placeholder method, and startLedger+limit without cursor for getLedgers) and directly contradicts the mutual-exclusivity rule, firing must-avoid #2.",
+          "wrongClaims": [
+            "\"Example request shape confirmed in the docs\" presents startLedger and cursor together in the same getTransactions params object as a valid/documented shape, which is not supported by the transcript evidence and contradicts the startLedger/cursor mutual-exclusivity rule"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 1,
+      "invocation": "S1c",
+      "id": "q-hist-quantum-preparedness-plan",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "66b930d8afc32191d7a3c591df627107c53ce90887cbdc542e9f9f30610bba53",
+      "p9PromptSha256": "62980fe9b013d701955d10e026712485db69e4a0257cc8d99505a562164f8483",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ],
+        "costUsd": 0.2786756
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly covers key facts 1 (June 9, 2026 publication), 2 (ML-DSA host functions targeted for 2026, though not specifying -44/-65 variants explicitly), 3 (Soroban contract accounts), and 4 (frames it as a three-stage roadmap with an explicit 'still roadmap / not yet shipped' section for Stages 2-3). However, for Stage 1 it states 'This stage is already shipping as protocol' while in the same sentence citing CAP-0087's status as 'Draft' — a self-contradictory overclaim that host functions/verification primitives were already shipped at publication, directly conflicting with the golden's point that verification primitives were missing at publication and capabilities were plans, not shipped guarantees. This fires must-avoid item 1.",
+          "wrongClaims": [
+            "Claims Stage 1 ML-DSA host functions are 'already shipping as protocol' despite citing the governing CAP-0087 as still in 'Draft' status, overstating shipped capability at the time of the plan's publication"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly gives the June 9, 2026 publication date, Stage 1's 2026 Soroban host-function target, Soroban contract-account scope, and the Stage 2/2027 and Stage 3 roadmap framing with an explicit 'not yet shipped' caveat section. However, it does not specify the ML-DSA-44/65 variants (only generic 'ML-DSA'), and more seriously it states 'This stage is already shipping as protocol' for Stage 1 before noting CAP-0087's status is 'Draft' — this directly contradicts the golden's point that verification primitives were missing at publication and capabilities were plans, not shipped guarantees, even though the candidate immediately hedges with the Draft status.",
+          "wrongClaims": [
+            "States Stage 1 'is already shipping as protocol' for CAP-0087, contradicting the golden's point that verification primitives were missing/not yet shipped at publication (even though the candidate itself notes the CAP status as 'Draft')"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly gives the June 9, 2026 publication date, the three-stage structure, Stage 1 ML-DSA host functions for Soroban contract accounts in 2026, Stage 2's 2027 account-level quantum-safe signers, and Stage 3's open-ended Ed25519 deprecation — matching all four key facts in substance (though it doesn't specify the ML-DSA-44/65 variant names explicitly). However, it states Stage 1 'is already shipping as protocol' before noting CAP-0087's status is 'Draft,' directly contradicting the golden's core framing that these are plan/roadmap items, not shipped guarantees — this is the exact must-avoid trap of claiming the ML-DSA host functions had already shipped.",
+          "wrongClaims": [
+            "Claims Stage 1 'is already shipping as protocol' for CAP-0087, contradicting its own immediately-following note that the CAP's status is 'Draft' (i.e., not yet shipped/finalized)"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 1,
+      "invocation": "S1c",
+      "id": "q-soroban-oz-upgradeable-macro",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "25176ca3aa4de794ae33a7269ae3e31884eea55fb7e865641bb1eb84d52cf078",
+      "p9PromptSha256": "469ea8e543c7639c18acfc2b05eee0923bf065d127ed222f56935924eeda12fd",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ]
+      },
+      "armB": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ],
+        "costUsd": 0.2513268
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Fact 1 (native in-place Wasm replacement, no proxy/delegatecall) is present and well explained. Fact 3 (explicit migration via the auxiliary Upgrader flow calling upgrade then migrate atomically) is present in detail. However, fact 2 is violated in spirit: the candidate builds its entire explanation around `#[derive(Upgradeable)]`, `#[derive(UpgradeableMigratable)]`, `UpgradeableInternal`, and `UpgradeableMigratableInternal` as the current, recommended API — exactly the retired derive/Internal surface the golden answer explicitly warns against relying on, rather than the current trait/client/helper surface. This matches must-avoid item 2 (treating retired UpgradeableMigratable/Internal derives as current), even though the claims trace to a tool-fetched skill doc, because the must-avoid item specifically names these retired constructs as traps.",
+          "wrongClaims": [
+            "Presents #[derive(Upgradeable)] and #[derive(UpgradeableMigratable)] with UpgradeableInternal/UpgradeableMigratableInternal as the current recommended OpenZeppelin API, when the golden answer identifies these as retired"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly explains the native in-place WASM replacement mechanism (no proxy/delegatecall) and describes the auxiliary Upgrader contract for atomic upgrade+migrate, satisfying key facts 1 and 3. However, it presents `#[derive(Upgradeable)]`, `#[derive(UpgradeableMigratable)]`, `UpgradeableInternal`, and `UpgradeableMigratableInternal` as the current, recommended OpenZeppelin API rather than naming the current `Upgradeable` trait/client/helper surface the golden specifies — these are exactly the retired derive/Internal APIs the golden and must-avoid list warn against treating as current, and the candidate gives no caveat that they may be outdated.",
+          "wrongClaims": [
+            "Presents `#[derive(Upgradeable)]`/`#[derive(UpgradeableMigratable)]` and `UpgradeableInternal`/`UpgradeableMigratableInternal` as OpenZeppelin's current recommended API for Stellar upgrades, without noting these are retired per the golden/grader notes"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly conveys native in-place Wasm replacement (key fact 1) and the auxiliary Upgrader atomic upgrade+migrate flow (key fact 3), and correctly notes access control and storage-layout compatibility are not automatic. However, it presents `#[derive(Upgradeable)]`, `#[derive(UpgradeableMigratable)]`, `UpgradeableInternal`/`UpgradeableMigratableInternal`, `_require_auth`, and `_migrate` as OpenZeppelin's current recommended API for Soroban upgrades, with no caveat that this derive-macro surface is retired. The golden explicitly states the current API is the direct `Upgradeable` trait/client/helper surface and warns against relying on these retired derive/Internal APIs — key fact 2 is therefore missing/contradicted, and must-avoid item 2 fires since the candidate uses the retired API as if it were current, unqualified by any freshness caveat.",
+          "wrongClaims": [
+            "Presents `#[derive(Upgradeable)]` and `#[derive(UpgradeableMigratable)]` with `UpgradeableInternal`/`UpgradeableMigratableInternal` as OpenZeppelin's current upgradeable module API, when the golden states these derive/Internal APIs are retired and current OZ uses a direct trait/client/helper surface instead"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-aas-list-token-on-exchanges-aggregators",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "4bd790347952dcf2a98c846ca1f1c71dedb15701e6691a712f2c14e92c7dcd9a",
+      "p9PromptSha256": "71e61dd7290e558a943ad95c229b6150a3e23b9629e8f0fe9a5dc3f6f086e731",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2996132
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate covers all four key facts: issuance+trustlines (ChangeTrust/trustline, issuer/distribution accounts), home_domain + SEP-1 metadata including logo/issuer details, tradability via SDEX offers/AMM pools plus wallet/exchange/explorer listings, and explicitly states venues each independently crawl/evaluate the toml and decide listing with no centralized registry. It avoids both traps: it never guarantees listing/price/market-cap from mere issuance (explicitly says toml completion doesn't guarantee listing and liquidity is separately required) and explicitly denies any universal whitelist/registry. Quoted doc snippets align closely with the transcript source-basis evidence (e.g. logo blank, listing cannot happen without CURRENCIES code/issuer, issuer-lock/AUTH_REVOCABLE check before listing), and additional specifics (CORS header, oracle providers) are unverified-but-plausible extras rather than contradictions.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All four key facts are present: trustlines/issuance (ChangeTrust mentioned under step 2), home_domain + SEP-1 metadata with logo/issuer/physical address (step 1 is thorough and well-sourced), tradability via SDEX offers and AMM pools (step 2), and venue-specific listing/verification policies (step 5 explicitly states each wallet/exchange crawls and decides independently). The candidate never guarantees listing/verification/price display and never claims a universal whitelist, satisfying both must-avoid items. It omits SEP-42/Stellar Asset Lists, which the golden discusses at length, but that nuance isn't one of the four required key facts, so it doesn't block a correct score.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate covers all four key facts: trustlines plus issuance mechanics; home_domain, SEP-1 toml with logo/issuer/currencies metadata; SDEX offers and AMM pools plus wallet/exchange/aggregator listings as the tradability mechanism; and explicitly states each venue applies its own listing/verification/liquidity policy with no centralized registry. It avoids both traps: it never guarantees listing/verification/price display from mere issuance, and explicitly denies any universal whitelist ('no single automated registry... you contact each venue directly'). Claims about toml fields, hosting, and DEX mechanics are well-supported by the transcript evidence; oracle-provider and skill-reference details are additional but don't contradict the golden.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-asset-stablecoin-issuers-discovery",
+      "changed": true,
+      "armBSource": "stand-in-p8",
+      "p9PackSha256": "323c347dc8036ec8f1d33771f0372a9b6267e1e6502a4d61d30a0ea58aace587",
+      "p9PromptSha256": "da87a6b837125c3e5b51334f4b3273ca933b154b7461778d500397602f383bb9",
+      "p9ListCoverage": {
+        "records": 37,
+        "shown": 36,
+        "complete": false
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.3363792
+      },
+      "inconclusive": [
+        "pack p8",
+        "pack SHA-256 differs from the rebuilt p9 pack",
+        "prompt SHA-256 differs from the rebuilt p9 prompt",
+        "a call input hash differs from the rebuilt p9 prompt"
+      ],
+      "direction": "inconclusive",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "USDC",
+            "EURC",
+            "Circle",
+            "APSUSDM",
+            "C1USD",
+            "GYEN",
+            "ARST"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate dates its roster explicitly (data as of 2026-10-07/2026-10-08), frames it as a live query result rather than memory, and states it is 'representative, not exhaustive' rather than claiming completeness. It names Circle as issuer of USDC and EURC, calls it the flagship/base settlement currency, and correctly distinguishes Circle's EURC from MyKobo's separate EURC issuer account. It uses marketCapUSD (not raw supply) for cross-peg comparisons and labels untracked/curated-static values rather than treating nulls as zero. Company-ticker attributions checked against the transcript source basis (Ondo/USDY, APS Money/APSUSDM, Currency One/C1USD, MoneyGram/MGUSD, Figure Certificate Company/YLDS, Novatti/AUDD, Mesh Trade/mZAR, PayPal-Paxos/PYUSD, Tether/USDT0, LINK.IO/NGNC, Settle Network/ARST, GMO Trust/GYEN) all match, with no contradictions found.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "USDC",
+            "EURC",
+            "Circle"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate grounds its answer in a live, dated registry (data as of 2026-10-07, generated 2026-10-07) rather than memory, satisfying facts 1 and 2. It names Circle as issuer of both USDC and EURC, calling them the 'flagship MiCA-compliant' stablecoins and Stellar's 'base settlement currency,' which substantively conveys Circle's anchor/dominant role even though the raw market-cap table ranks Ondo's USDY slightly higher in this particular snapshot — a freshness-sensitive, sourced detail rather than a fabrication. The answer correctly uses marketCapUSD instead of raw supply, explicitly flags Circle vs MyKobo as distinct EURC issuers, and frames both the registry (41) and directory (60, 'representative, not exhaustive') as dated and non-complete, avoiding all five must-avoid traps. No concrete fabricated issuer/ticker contradicts the provided source-basis evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "USDC",
+            "EURC",
+            "Circle"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate grounds everything in dated, sourced live data (scout.getStablecoins as of 2026-10-07, scout.searchProjects) rather than memory, satisfying facts 1 and 2. It names Circle as issuer of USDC and EURC and describes it via the source text as the 'flagship' MiCA-compliant stablecoin and 'base settlement currency across Stellar anchors,' satisfying fact 3 in substance, even though the raw market-cap table ranks Ondo Finance's USDY above Circle without flagging the yield-bearing product-class distinction. The candidate explicitly separates Circle's EURC from MyKobo's EURC (avoiding must-avoid #2), uses marketCapUSD rather than raw supply as the comparable metric, labels untracked/curated-static values instead of treating them as zero (avoiding #5), and explicitly frames its list as representative/non-exhaustive with an offer to provide the full roster (avoiding #3/#4 freeze clauses). No fabricated tickers contradict the transcript evidence; several additional companies beyond the shown evidence pack are unverified but not contradicted.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-comp-cross-moneygram-partnership-sep24",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "472618748c3da41df528219a0bb9c414bfab855c1f261255e94f276d0367146e",
+      "p9PromptSha256": "04acf9ffa2ef868b78644e4e397afa5f96b297f2a37356d70722062f3c3d70f3",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2091572
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate identifies the 2026-04-22 MoneyGram/Stellar extension and ties it to expanded stablecoin-backed services in El Salvador and Colombia (facts 1-2). It correctly uses Scout to show MoneyGram Access/Ramps as a live Stellar anchor with USDC on/off-ramp types (fact 3), and cites official SEP-24 docs ('Hosted Deposit and Withdrawal') plus the developer docs snippet describing wallet-facing cash-in/cash-out deposit-withdrawal flow (facts 4-5). It avoids calling SEP-31 the flow and explicitly separates the April announcement from the later Scout snapshot (as of 2026-09-02), satisfying both must-avoid conditions. All claims are traceable to the provided transcript evidence with no contradictions.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All five key facts are present: the candidate identifies the 2026-04-22 MoneyGram/Stellar partnership extension, connects it to expanding stablecoin-backed services across Latin America (El Salvador/Colombia), uses Scout (as of 2026-09-02) to identify MoneyGram Access/Ramps as a live Stellar anchor with USDC on/off-ramp types, and cites official SEP-24 docs defining the hosted deposit/withdrawal flow supporting wallet-to-anchor cash-in/cash-out. It correctly avoids calling SEP-31 the relevant SEP and keeps the April announcement and Scout's current profile as distinct, separately-dated sources rather than conflating them.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies the 2026-04-22 MoneyGram/Stellar extension and ties it to expanded stablecoin-backed services in El Salvador and Colombia. It separately and correctly cites Scout's dated snapshot (statusAsOf 2026-09-02) listing MoneyGram as a live Anchor with on/off-ramp types for USDC, and names SEP-24 (Hosted Deposit and Withdrawal) as the official flow, correctly describing it as wallet/exchange cash-in (deposit) and cash-out (withdrawal). It avoids calling SEP-31 the flow and does not conflate the April announcement with proof of the current Scout profile, treating them as distinct sourced claims. Minor unverified embellishments (e.g., 'v3.8.0', 'Status: Active') are not contradicted by the evidence pack and fall under unverified-but-not-wrong.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "changed": true,
+      "armBSource": "stand-in-p8",
+      "p9PackSha256": "8f8ee18a283759d7799da8434cee08bb176c67e0b9457527f02a8bc4148ec767",
+      "p9PromptSha256": "cdcce52fe29b8edfa166f69ff2bfee5713863e6df16da33a1bbc7065e5e19836",
+      "p9ListCoverage": {
+        "records": 11,
+        "shown": 11,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "wrong",
+          "partial",
+          "partial"
+        ],
+        "costUsd": 0.3563512
+      },
+      "inconclusive": [
+        "pack p8",
+        "pack SHA-256 differs from the rebuilt p9 pack",
+        "prompt SHA-256 differs from the rebuilt p9 prompt",
+        "a call input hash differs from the rebuilt p9 prompt"
+      ],
+      "direction": "inconclusive",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            4
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [
+            "Soroswap",
+            "Aquarius",
+            "StellarTerm"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All five key facts are present: the candidate dates its liquidity/roster claims (2026-10-07/08, scout generatedAt), explains strict-send/strict-receive mechanics correctly with destMin/sendMax and UNDER_DESTMIN/OVER_SENDMAX/TOO_FEW_OFFERS, and repeatedly frames profitability as dependent on spreads, slippage, competition, latency, reserves, and capital without ever promising profit. However, the candidate states StellarTerm is 'marked Inactive' in its venue list, while the compact transcript source-basis evidence explicitly shows StellarTerm with status='Live' (as does Aquarius and Soroswap) — a direct, checkable contradiction of the cited source data rather than an unverifiable addition. This misrepresents a dated source observation as current when it actually isn't supported by the retrieved data.",
+          "wrongClaims": [
+            "Candidate states StellarTerm is 'marked Inactive' in the scout directory data, but the transcript source-basis evidence shows StellarTerm status='Live' (generated 2026-10-08), directly contradicting the cited source."
+          ]
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [
+            "StellarTerm"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate covers all five key facts: it dates its liquidity/TVL observations (2026-10-07/08), explains path payments via strict-send/strict-receive with destMin/sendMax, ties profitability to liquidity, spreads, fees, slippage and latency, discusses reserves/competition/failed-tx risk for small accounts, and describes the destMin/sendMax quote-and-protect mechanics accurately. It never promises profit and explicitly hedges that profitability can't be guaranteed. However, it states that StellarTerm is 'marked Inactive' in the scout directory listing, while the compact transcript source-basis evidence explicitly shows StellarTerm with status='Live' — a direct contradiction of the shown evidence, not merely an unverifiable claim.",
+          "wrongClaims": [
+            "Candidate states StellarTerm is 'marked Inactive' in the scout TVL/status listing, but the transcript source-basis evidence shows StellarTerm status=\"Live\""
+          ]
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [
+            "StellarTerm"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All five key facts are present: the candidate dates its venue/TVL claims (2026-10-07/08), explains strict-send/strict-receive mechanics with destMin/sendMax correctly, and ties profitability to liquidity, spreads, fees, competition, and small-account reserve overhead, while explicitly refusing to promise profit. However, it claims StellarTerm is among venues 'marked Inactive,' while the transcript source-basis evidence shows StellarTerm's status as 'Live' — a concrete contradiction of the candidate's own cited source, though it's a minor supplementary detail not central to the core answer. No must-avoid item fires: the profitability caveats are appropriately hedged and dated, so this is a wrongClaim rather than an avoid match.",
+          "wrongClaims": [
+            "Candidate lists StellarTerm among venues 'marked Inactive,' but the transcript source-basis evidence shows StellarTerm's status as 'Live'"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-eco-pyusd-stellar-freshness",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "1bc210786b6b764783735597cf01d8f376fa5d53b922982daf7c5f85bf91e497",
+      "p9PromptSha256": "420cf015534f7fc6524b5c3b9d1b8640ce46e6bf39d895b84e493d899131e4e9",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "partial"
+        ],
+        "costUsd": 0.2022792
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate directly confirms PYUSD is live on Stellar, gives the Sept 18, 2025 launch date citing the SDF press release, attributes the product to PayPal and issuance to Paxos Trust Company, and dates every changeable figure (status as-of 2026-08-27, metrics as-of 2026-10-07T23:11 UTC). It avoids hard-coding a single Paxos legal-entity suffix (just says 'Paxos Trust Company' without LLC/N.A.) and sources the mainnet issuer address matching the golden's. Supply/holder figures are presented with explicit timestamps, satisfying the dating requirement for volatile data.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate directly confirms PYUSD is live on Stellar, dates the launch to September 18, 2025, attributes the product to PayPal and issuance to Paxos Trust Company (matching the source-basis text verbatim), and dates all volatile metrics (market cap, holders, payments) with explicit as-of timestamps matching the transcript evidence (holders=10217, paymentsCount24h=971). It cites concrete sources (stellar.org press, stellar.expert, scout.getStablecoins) for each claim rather than relying on unsupported memory. No must-avoid items fire: the issuer name is sourced and dated rather than hard-coded, no absence/stale-supply claim is made, and all changeable facts carry as-of dates.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly states PYUSD is live on Stellar, launched Sep 18, 2025 per stellar.org press release, attributes brand to PayPal and issuance to Paxos Trust Company, and dates all volatile figures (holders, supply, 24h volume, statuses) with explicit as-of timestamps matching the transcript evidence. It does not hard-code a single Paxos legal entity dispute point (LLC vs N.A.) but this is a minor omission since it still correctly names Paxos as issuer with a source. No fabrications or must-avoid triggers are present; supply figures are dated.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-edge-fresh-latest-scf-round",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "353925d4b2d821479134f51dfaaa34bb3f964bb2feae870a8264085a4f70008a",
+      "p9PromptSha256": "b233560da8b0c22224e4b7495df2a6ecff74eb688193f351516a4d711dfd4d30",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.1538892
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies SCF #46 as open for Submission with a 2026-11-08 deadline, places #45 in Notification & Award Distribution, and #44 as last concluded, all tagged with an explicit as-of date (2026-10-08). The extra #45 deadline (2026-08-16) is supported by the transcript source-basis evidence and does not contradict the golden. No must-avoid traps are triggered.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate reports SCF #46 in Submission with deadline 2026-11-08, SCF #45 in Notification & Award Distribution, and SCF #44 as the last concluded round, matching all key facts. It visibly dates its snapshot (2026-10-08) and does not claim #45 or #44 as current. The extra #45 deadline (2026-08-16) is not in the golden but is directly supported by the transcript source-basis evidence, so it is not a fabrication.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate reports SCF #46 in Submission with deadline 2026-11-08, shows an as-of date (2026-10-08), and correctly places #45 in Notification & Award Distribution and #44 as last concluded round, matching all key facts. The #45 'deadline 2026-08-16' detail is supported by the transcript source-basis evidence (roundsInProgress[1].submissionDeadline), so it is not a fabrication. No must-avoid items are triggered: #45 is not called current, #44 is not called current, and no invented timezone/count appears.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-mpp-discovery-and-modes",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "2c9c1cd5d66c7d120407dfcfabd5de44625cb1809d513cef3bed88d778ca21ac",
+      "p9PromptSha256": "c17eecdc9174cedea9911c6593f2fae799b5deb06c2e9b7ab7308aa2aefb2e20",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "partial",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "partial",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2440152
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly defines MPP as an HTTP 402 protocol with Charge (per-request SAC transfer) and Session (one deposit + cumulative off-chain commitments, one close), accurately describes publishing OpenAPI 3.1 at /openapi.json with x-payment-info.offers, states that the 402 Challenge is authoritative over the advisory discovery document, and names MPPScan, mpp.dev/services, and the read-only https://mpp.dev/mcp/services. It also correctly avoids both traps, explicitly noting Session does not require per-call on-chain transfers and that a registry listing does not verify payments. However, it treats MPP/x402 as merely a separate related protocol without conveying the golden's specific guidance to expose separate adapters and never relabel payloads between the two.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly defines MPP as an HTTP-402 protocol with per-request SAC Charge and cumulative off-chain Session modes, describes publishing an OpenAPI 3.1 document at /openapi.json with x-payment-info.offers, explicitly states the discovery document is advisory while the runtime 402 Challenge is authoritative for price/token/network/expiry/terms, and names MPPScan, the mpp.dev services directory, and https://mpp.dev/mcp/services as optional discovery mechanisms. It also treats x402 as a separate protocol from MPP, though it doesn't explicitly spell out 'expose separate adapters and never relabel payloads' as crisply as the golden. Both must-avoid traps are explicitly rebutted: Session is described as one deposit + one close (not per-call on-chain), and a registry listing is explicitly said not to verify payments.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly defines MPP as a payment-method-agnostic HTTP 402 protocol with per-request SAC Charge and cumulative off-chain Session modes, matching key fact 1. It details publishing OpenAPI 3.1 at /openapi.json with x-payment-info.offers (fact 2), explicitly states the discovery doc is advisory while the runtime 402 Challenge is authoritative for price/token/network/expiry/terms (fact 3), and names MPPScan, mpp.dev/services, and https://mpp.dev/mcp/services as optional discovery (fact 4). It also notes x402 is a separate protocol from MPP (fact 5), and explicitly avoids both traps by describing Session as deposit+off-chain commits+single close (not per-call on-chain txs) and stating a registry listing only advertises rather than verifies payments. The aside calling Session 'formerly Channel mode' is an unsupported specific claim not found in the transcript evidence, but it's a minor parenthetical that doesn't contradict any golden fact.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-raph-remove-scam-token",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "30df17f6b7e01ab70bd052b25026ddd1c2abec588358e62ceab4a5aed42854fe",
+      "p9PromptSha256": "fe208508f02688a631701b66375743cdba5fcc987a57ba937ce0eae0260f450a",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "wrong",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2417092
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly uses asset code + issuer as the identity check, explicitly says ticker alone is insufficient, and conditions trustline removal on zero balance, no open offers, and no liquidity-pool usage, while also distinguishing claimable balances from trustlines and offering CLI/SDK/wallet-UI methods matching the golden's 'trusted wallet or tool' qualifier. It does not conflate hiding with deleting, and while it states sending remainder to the issuer 'burns them' without the golden's full caveat about authorization/account-state blocking, it never asserts the return-to-issuer path always succeeds, so no must-avoid item clearly fires.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly uses code+issuer as asset identity, never ticker alone, and gives correct removal preconditions (zero balance, no liabilities/offers, no pool use) via wallet/CLI ChangeTrust with limit 0, matching the golden's required behaviors. It also correctly distinguishes claimable balances from trustlines and notes hiding is a wallet action (implied) without equating it to deletion, and does not claim return-to-issuer always succeeds, instead correctly noting it burns the balance as a precondition step, not a guaranteed-success claim.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly grounds asset identity in the (code, issuer) pair rather than ticker alone, and qualifies trustline removal with all the correct preconditions (zero balance, no open offers/liabilities, no liquidity-pool usage), matching the golden's two required behaviors. It also correctly distinguishes hiding/claimable-balances from actual trustline deletion, consistent with the golden. The burn-to-issuer statement is phrased as a direct fact without golden's added authorization/account-state caveat, but this is a minor omission of nuance rather than a false 'always succeeds' claim, and it is supported by the transcript source-basis evidence.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-scf-funding-by-category",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "827d7e0ed2e3efc52dc3ac579ba7401e4494d8f1f9540aeba7f1a4338b44600c",
+      "p9PromptSha256": "8f07801cd657f5ce21d9ec6662665e09492685b35f5a267d5a329ecf57548b39",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "correct"
+        ],
+        "costUsd": 0.3625232
+      },
+      "inconclusive": [],
+      "direction": "down",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly dates its observation (generatedAt 2026-10-08) and labels its basis (active-directory projects, category+dollar table), matching verified transcript figures exactly for User-Facing App ($25,772,194/258/367) and Infrastructure ($8,626,545/92/181), and includes the required caveat that dollar totals are in-house reconstructions rather than official SCF accounting, avoiding must-avoid #1. It frames the result as an aggregate category distribution rather than per-project history (avoiding #2) and scopes the roster to the active-directory snapshot without claiming permanence (avoiding #3). However, per the grader note, the candidate omits explicit methodologyVersion/countBasis metadata labeling, which caps the grade at partial, and it also never surfaces the golden's distinct point that a different category leads by funded-rate versus dollar/count leadership — a stable distinction the golden wants preserved. The Protocol/Contract $12.5M figure and the secondary 'funding snapshot as-of 2026-10-03' date are unverified by the compact transcript pack but not contradicted, so they are not treated as wrong claims.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate sources a dated snapshot (generatedAt 2026-10-08), reports category funding with explicit category/dollar/count basis, and includes the correct caveat that dollar totals are in-house reconstructions rather than official SCF figures — satisfying the three key facts and avoiding the permanence/official-totals traps. Its core numbers (UFA 258/367/$25.77M, Infrastructure 92/181/$8.63M, Tooling 121/160, Protocol/Contract 103/146, Anchor $1,378,083, Asset $109,000) closely match the transcript's scout.analyzeEcosystem fields, and UFA correctly leads by both count and dollars as in the golden. However, the candidate asserts a specific 'funding snapshot as-of 2026-10-03' that appears nowhere in the transcript evidence (only 2026-10-08 generatedAt is shown), which looks like a fabricated precision detail rather than a sourced observation. It also omits the golden's distinction that a different category (not necessarily Protocol/Contract in this snapshot) leads the funded-rate metric, instead only ranking by dollar share.",
+          "wrongClaims": [
+            "The specific 'funding snapshot as-of 2026-10-03' date is not supported by any visible transcript evidence (only a 2026-10-08 generatedAt timestamp appears)"
+          ]
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate dates its observation (generated 2026-10-08, funding snapshot 2026-10-03), keeps the as-of date visible throughout, and reports category funding with an explicit category/amount/count basis in a table. Its numbers for User-Facing App (367/258/$25.77M) and Infrastructure (181/92/$8.63M) exactly match the transcript's live categories distribution, and totals (904 active projects, 582 awarded) match transcript fields, so the newer, higher dollar figures are consistent with a later live pull rather than a fabrication given the freshness-sensitive nature of this question. It explicitly caveats that dollar totals are in-house reconstructions that may differ from SDF's published figures, avoiding the 'official totals' trap, and never claims the roster is permanent or complete. The UFA > Protocol/Contract > Tooling > Infrastructure dollar ordering matches the grader notes' refreshed ranking, and no must-avoid condition is triggered.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-sep-43-web-wallet-api",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "0c1a556ebd22ad5f1134946a9b12e5fd5e2f66172332f7b5d5eb79a9200e7771",
+      "p9PromptSha256": "4c5f4116e385f759e9c4bb25a95fbd238ea803e9b83d3588845992ee019985c7",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.1979752
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies SEP-43 as the 'Standard Web Wallet API Interface' (Draft, created 2024-04-11), lists all five methods (getAddress, signTransaction, signAuthEntry, signMessage, getNetwork), confirms the error shape, and cites the ecosystem/sep-0043.md source directly matching transcript evidence. It dates the observation ('As of 2026-10-07... sources dated 2024-04-11') satisfying the freshness/dating requirement, and avoids all must-avoid traps (does not claim nonexistence, does not misattribute scope).",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate accurately identifies SEP-43 as the 'Standard Web Wallet API Interface' with Draft status, created 2024-04-11, correctly lists all five interface methods (getAddress, signTransaction, signAuthEntry, signMessage, getNetwork), confirms the sep-0043.md file exists with a direct source link, and explicitly dates its observations (sources dated 2024-04-11, observed as of 2026-10-07). It also notes the error shape and purpose (interoperability layer avoiding per-wallet code), matching grader notes' 'also good' criteria. No must-avoid traps are triggered and no claims contradict the golden or transcript evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly names SEP-43 as the Standard Web Wallet API Interface, status Draft, created 2024-04-11, and lists all five methods (getAddress, signTransaction, signAuthEntry, signMessage, getNetwork) with error shape details, matching the source. It confirms the sep-0043.md source via direct link and cites it as current/dated (as-of 2026-10-07, source dated 2024-04-11), satisfying the dating requirement. It does not explicitly state the file exists in stellar-protocol repo in prose but the URL itself confirms this. No fabrications or must-avoid traps triggered; version 1.2.1 and authors are additional verified details from transcript evidence.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-sor-cross-warmancer-zk-stack",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "f44d125862c9929f65bc59ed16f1d45492ab04cf59ded8e1fbaaca8f92e54636",
+      "p9PromptSha256": "5e45054caf3e365a93f1827206c87ff3127773576eb650aa8c5bf5c9163ce628",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2234012
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly quotes the SCF #33 proposal's hidden-information framing and 'pending technology availability' caveat, uses Scout to describe Warmancer as a Live, SCF Round 33-funded on-chain strategy game, and accurately reproduces the skill's table showing Groth16 natively verifiable on BLS12-381 (CAP-0059/P22) or BN254 (CAP-0074/P25), plus CAP-0080's added BN254 MSM/Fr ops from Protocol 26. It avoids claiming Warmancer deployed a specific stack, doesn't repeat the outdated BN254-unavailable claim, and correctly keeps CAP-0080 scoped to UltraHonk rather than all BN254 Groth16 verifiers.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies SCF #33 Warmancer: Black Friday as the hidden-information strategy game, preserves the 'pending technology availability' qualifier verbatim, and explicitly frames the project status as sourced from Scout (Live, SCF-funded Round 33, $136.5K Build award, on-chain strategy game). The ZK skill table correctly gives both curve-matched Groth16 routes (BLS12-381/CAP-0059/P22+ and BN254/CAP-0074/P25+) and separately notes CAP-0080 BN254 MSM/Fr arithmetic available from Protocol 26+, without implying CAP-0080 is required for every BN254 Groth16 verifier (RISC Zero and Circom BN254 rows both show CAP-0074 only). No must-avoid items fire and no fabrications are present.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly identifies SCF #33 Warmancer: Black Friday as a hidden-information strategy game while preserving the 'pending technology availability' qualifier, cites Scout's listing of Warmancer as a Live, SCF Round 33-funded on-chain strategy game, and gives the curve-matched Groth16 answer (BLS12-381/CAP-0059/P22 or BN254/CAP-0074/P25) plus CAP-0080's BN254 MSM/Fr extension from Protocol 26. It avoids all three traps: it frames its final Groth16 suggestion as 'per this skill' rather than asserting Warmancer's actual deployed stack, keeps BN254 as available via CAP-0074, and does not claim CAP-0080 is required for base BN254 Groth16 verification.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-soroban-contract-build-verification",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "3461a8460960ca4b52da787e96201249a33b274841489f0327ea47910ba6c5e7",
+      "p9PromptSha256": "8ea963a32a13398f5a4e5df0f85c8881b37af5d2933b44080a1d2974f59b1846",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "partial",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "partial"
+        ],
+        "costUsd": 0.2832652
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate covers all five key facts: SEP-55 as GitHub Attestation-based CI verification, SEP-58 as reproducible rebuild/hash comparison, contractmetav0 metadata linking WASM to source, Build Info/CLI commands showing build metadata (via 'stellar contract info build' and Contract Explorer's Build Info, functionally equivalent to the golden's 'info meta'), and both SEPs correctly labeled Draft (with SEP-58's v0.6.0/2026-07-15 matching grader notes exactly). It avoids both traps: never mislabels build verification as SEP-49, and explicitly denies any network-level on-chain source guarantee. It even reproduces the golden's key nuance quote about 'Build Verified' not certifying source safety.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate covers all five key facts: SEP-55 as the GitHub Attestation-based toolkit for build verification, SEP-58 as the reproducible-rebuild/source_sha256 standard for byte-level comparison, contractmetav0 (via SEP-46) as the on-chain metadata section carrying source_repo links, CLI/UI tooling (Contract Explorer 'Build Info' and 'stellar contract info build', which the transcript confirms fetches the attestation) surfacing build info, and both SEPs correctly labeled Draft. It also includes the valuable nuance that 'Build Verified' only attests build provenance, not source safety, quoting the docs directly, and never claims source code is stored on-chain or mislabels SEP-49. Version numbers given (SEP-58 v0.6.0, 2026-07-15) match grader notes exactly, and other cited SEP numbers/titles align with the transcript evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly covers SEP-55 (GitHub Attestation-based CI verification) and SEP-58 (reproducible rebuild/byte comparison via source_sha256), explains contractmetav0's source_repo linkage, cites the 'Build Verified only attests build provenance, not source safety' caveat verbatim, and correctly marks both SEPs as Draft without ever invoking SEP-49 or claiming on-chain source storage. However, it substitutes 'stellar contract info build' and 'stellar contract info env-meta' for the golden's specific 'stellar contract info meta' command that displays contractmetav0 metadata, so that exact key fact is not fully covered even though Build Info/attestation checking is otherwise well covered.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2a",
+      "id": "q-ti-vocab-content-tags-live",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "7fccccd4d304e49756e70e6eaafc70071880bad38978c89f74807ab39ac9c679",
+      "p9PromptSha256": "fec8c7cad4aaed92809194b76159b99bf824af6792a68f171e1e59d2aba563ee",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.1735252
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly identifies get_tags_vocabulary as the content-tag source and explicitly separates it from get_project_tags_vocabulary (directory projects only), matching both key facts. It avoids both traps: it doesn't treat project tags as content tags, and doesn't invent tags beyond the vocabulary—instead instructing to use exact name/slug values. The listed tags, counts, and IDs align with the transcript source-basis evidence (DeFi 26/3, Developer Tools 43/5, Payments 30/8, etc. all match), and the list is explicitly dated ('As of 2026-10-07') and scoped to the query result, satisfying the freeze-clause exemption rather than claiming permanence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly identifies get_tags_vocabulary as the content-tag vocabulary for articles/AV, and explicitly separates it from get_project_tags_vocabulary which is 'only for directory projects' — both key facts present. It avoids both traps: it doesn't treat project tags as content tags, and instructs using exact name/slug values rather than inventing tags. The dated figures (as of 2026-10-07, 33 tags, counts for DeFi/Developer Tools/Partnerships/Payments/etc.) match the transcript source-basis evidence exactly, so no fabrication.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly identifies get_tags_vocabulary as the content-tag source and explicitly separates it from get_project_tags_vocabulary (directory projects only), matching both key facts. It also advises using exact name/slug values rather than inventing tag strings, satisfying the must-avoid guidance. The listed tags/counts are dated (2026-10-07) and sourced from an execute call, consistent with the compact transcript evidence (DeFi 26/3, Developer Tools 43/5, Payments 30/8, etc. all match); this is a scoped, non-exhaustive snapshot, not a frozen permanent list, and the zero-usage tags (CBDC, DAO, Gaming, Horizon, Investment, NFTs, Vaults) match the transcript's article_count/av_count of 0. No fabrications or contradictions found.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2b",
+      "id": "q-agent-identity-erc8004-stellar",
+      "changed": true,
+      "armBSource": "stand-in-p8",
+      "p9PackSha256": "7bc0777f808b0e0fa2ccf05c6977ad68408d240585a46a8e44091416be189d80",
+      "p9PromptSha256": "1a00fa439e28f2f405046b2a0384849615d68dead01a0a3180c1afdd1166b803",
+      "p9ListCoverage": {
+        "records": 2,
+        "shown": 2,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "partial",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2660668
+      },
+      "inconclusive": [
+        "pack p8",
+        "pack SHA-256 differs from the rebuilt p9 pack",
+        "prompt SHA-256 differs from the rebuilt p9 prompt",
+        "a call input hash differs from the rebuilt p9 prompt"
+      ],
+      "direction": "inconclusive",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "stellar8004"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly covers facts 1, 2 (via feedback/scoring/attestation descriptions), 4 (strongly emphasizes stellar8004 is a community/hackathon project, not an SDF standard), and 5 (dated, sourced claims with explicit caveats about audit status, repo score, and fragmentation). However, it never explicitly states that registry entries/feedback are not proof that a payment was made (the x402/MPP payment-proof half of key fact 3) — it only addresses the trustworthiness half via the 'unaudited self-report, no sybil resistance' caveat. It avoids both must-avoid traps: it explicitly denies ERC-8004/stellar8004 is an official SDF standard, and it never claims an identity record proves an x402/MPP payment settled (it only says agents can 'advertise' payment support in metadata). Core conclusion is correct and well-supported by the transcript evidence (contract IDs, repo score, dates all match the source-basis pack).",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "stellar8004"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly explains ERC-8004's three registries (identity, reputation, validation) and frames reputation-registry feedback as self-reported/unaudited rather than a trustworthiness guarantee, satisfying key facts 1-3 (the payment-proof point is implicit via treating x402/MPP as a separate payment layer agents merely 'advertise' support for). It explicitly labels Stellar8004/trionlabs as a community/hackathon project, not an SDF standard (key fact 4), and attaches dated, sourced caveats about repo score, lack of audit, and competing registries, matching the requirement to verify deployment/audit claims from current project evidence (key fact 5). No must-avoid items fire: the candidate explicitly denies ERC-8004/Stellar8004 being an official guaranteed-trustworthy standard and never claims an identity record proves a payment settled. Specific contract addresses, npm version, repo score, and dates all match the compact transcript source-basis evidence, so they are grounded rather than fabricated.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "stellar8004"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [
+            "), consistent with transcript source-basis entries 10-17"
+          ],
+          "rationale": "The candidate covers all five key facts: it describes ERC-8004's three registries (identity, reputation, validation), frames feedback/registry entries as signals (e.g. 'feedback/scoring', 'self-reported, on-chain-attested feedback... not independently audited'), explicitly notes reputation is unaudited self-report with no sybil resistance (satisfying 'not a trustworthiness guarantee'), clearly labels stellar8004/trionlabs as a community/hackathon project not an SDF standard, and repeatedly ties deployment/audit claims to dated evidence (repo scan as of 2026-09-02, repoScore 55, HTTP 200 check date, etc.), consistent with transcript source-basis entries 10-17. It does not claim x402/MPP payment settlement is proven by the identity record, nor does it claim ERC-8004 guarantees trustworthiness as an official Stellar feature — both must-avoid traps are avoided. Contract addresses, SDK version, and repo stats match the transcript pack closely enough to be considered sourced rather than fabricated. No substantive key fact is missing and no wrong claims are present.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2b",
+      "id": "q-protocol-27-cap-0071",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "bb7673f9d3c457a043e3fcaaca307a60424d077f65a8966abd1311179ab2c80f",
+      "p9PromptSha256": "fb3f2395d33212a669f63008f1dfe6be0a40554913af373b32cc295ab60eca68",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.3112492
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly states Protocol 27 (Zipper) is live with mainnet activation on July 8, 2026 (matching the golden's closed-ledger date), sourced from the official software-versions page rather than inferred from CAP status alone. It explains CAP-71-01 delegation (delegate_auth/get_delegated_signers, delegate trees) and CAP-71-02's address-bound SOROBAN_CREDENTIALS_ADDRESS_V2, correctly framing this as a Soroban authorization change, not consensus/ZK/parallelism. It separates the Final CAP status, the protocol activation dates, and the shipped software versions using distinct sources, and closes with an explicit 'As of 2026-10-07' freshness date covering the whole answer. Minor gaps: it doesn't explicitly flag that CAP-registry 'Final' status is conceptually distinct from (and doesn't by itself prove) network activation, instead presenting them together, though it does back activation with a separate dated source rather than inferring from status alone.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly treats Protocol 27 as already activated (testnet June 18 2026, mainnet July 8 2026, matching golden's 2026-07-08 closure), correctly describes CAP-0071 as a Soroban auth/credential change (not consensus/ZK/parallel execution), explains delegate_auth/get_delegated_signers delegation chains and SOROBAN_CREDENTIALS_ADDRESS_V2 address-binding in detail matching the golden's substance, and separates CAP 'Final' document status from concrete per-network activation dates sourced from the software-versions page rather than inferring activation from the status label alone. It carries a visible as-of date (2026-10-07) and dated sources throughout. Minor omissions are the specific mainnet ledger number (63386819) and an explicit general caveat that CAP-registry status is conceptually distinct from implementation/activation (shown implicitly via separate sourcing rather than stated as a principle), both trivial relative to the full substance delivered.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly explains CAP-0071's two sub-parts: delegation (delegate_auth/__check_auth handoff) and SOROBAN_CREDENTIALS_ADDRESS_V2 address-bound credentials, matching the golden's description and the transcript evidence closely. It dates its sources (testnet June 18 2026, mainnet July 8 2026, 'As of 2026-10-07') and separates the CAP's Final document status from software shipping (stellar-core/rs-soroban-sdk v27.0.0) and network activation dates, satisfying the status-vs-activation distinction. No must-avoid traps are triggered: Protocol 27 is presented via past dates (not as pending), the change is correctly scoped to Soroban auth rather than consensus/ZK, and activation claims are sourced to the dated software-versions page rather than inferred from the CAP label alone.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2b",
+      "id": "q-soroban-token-transfer-pattern",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "1a64d7204c25a163ccb9277fc633be1fb162c331fa81421c54634d34ba532fc5",
+      "p9PromptSha256": "3f10ff88b7d85dcf355492eaef47a8eefb877c783aa0ae5c522483d95b721ad3",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "partial",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.289048
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All five key facts are substantively present: MuxedAddress destination typing for transfer, from-authorization requirement for direct transfer, the contract-as-caller auto-authorization rule for immediate invocations, transfer_from's spender-auth-plus-allowance model, and authorize_as_current_contract being reserved for deeper calls. The candidate avoids all must-avoid traps (no ERC-20-style allowance mandate for every transfer, no external-signature requirement for the contract's own balance, correct MuxedAddress typing). It also adds accurate bonus material (i128 validation, SAC classic-asset semantics, event shapes) consistent with grader notes.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All five key facts are covered: MuxedAddress destination, from-auth for direct transfer, the invoker-auto-authorization rule (stated generically via the A-calls-B direct-invocation rule, which subsumes the contract-sends-own-balance case), spender auth plus bounded allowance for transfer_from, and authorize_as_current_contract for deeper calls. No must-avoid traps appear — the candidate explicitly notes direct transfer needs no allowance dance and no external signature beyond the direct call, and types the destination as MuxedAddress. Content aligns with the transcript source-basis evidence (SKILL.md spans on auth rules, MuxedAddress, authorize_as_current_contract, allowance races) with no contradictions or fabrications.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "All five key facts are present: MuxedAddress destination for transfer is stated explicitly; transfer/approve/burn require from's auth; the contract-invoker auto-authorization rule is given generically (A directly calling B means B's require_auth(A) succeeds because the direct call is the authorization), which covers the contract-sends-its-own-balance case; transfer_from requires spender auth backed by a prior allowance; and authorize_as_current_contract is correctly scoped to deeper calls. No must-avoid traps are triggered — no ERC-20-style mandatory allowance dance, no external-signature requirement for the contract's own balance, and the destination is correctly typed as MuxedAddress rather than plain Address. Additional claims (issuer mint/burn, trustline caps, event shapes) are consistent with golden-adjacent facts and not contradictory.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2c",
+      "id": "q-hist-quantum-preparedness-plan",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "570e38e20a10a795d3ce29b485aaa832f2db0b20d2bf9e2ba7fc7c269312cbbc",
+      "p9PromptSha256": "d126494c932b8e77a208bde69223e3483faf4c0956b555666ea9ebd857272945",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "correct"
+        ],
+        "costUsd": 0.2866512
+      },
+      "inconclusive": [],
+      "direction": "down",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly gives the June 9, 2026 publication date, describes the three-stage roadmap, correctly ties Stage 1 host functions to Soroban contract accounts targeted for 2026, and frames Stage 2/3 as future roadmap items (2027 target, timing-TBD Ed25519 deprecation) without claiming Stellar accounts were already quantum-safe by default. It avoids claiming the quantum-safe signer type had shipped, and even notes CAP-0087 was still in Draft/FCP (not enacted) by late 2026, consistent with the golden's plans-vs-shipped distinction. However, it never specifies the ML-DSA-44/65 variants from key fact 2, only the generic 'ML-DSA signature standard,' and its 'Stage 1 (2026, committed/shipping)' label slightly overstates certainty relative to the golden's framing, though this is softened by the accurate CAP status detail that follows.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly gives the June 9, 2026 publication date, frames the QPP as a three-stage roadmap (not an already-quantum-safe claim), correctly identifies Stage 1 as native Soroban host functions for ML-DSA signature verification targeting contract accounts in 2026, and correctly treats Stage 2 (2027, classic account signers) and Stage 3 (Ed25519 deprecation) as un-shipped roadmap items with no guaranteed dates. However, it only cites 'ML-DSA' generically rather than specifying the ML-DSA-44 and ML-DSA-65 variants named in the golden answer. No must-avoid traps are triggered: the candidate does not claim host functions or a native quantum-safe signer had already shipped (it ties 'committed/shipping' language to CAP-0087 being in Draft/Final Comment Period, not live), does not guarantee completion dates, and does not claim accounts were already quantum-safe by default.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly gives the June 9, 2026 publication date, describes Stage 1's Soroban host functions for ML-DSA signature verification targeting Soroban contract accounts during 2026, covers Stage 2's 2027 classic-account quantum-safe signer target and Stage 3's open-ended Ed25519 deprecation, and explicitly treats the whole thing as a multi-stage roadmap with hedged, sourced caveats (CAP-0087 status, 'not yet live', 'contingent on'). It avoids claiming the signer type or primitives had already shipped at publication, and frames 2026/2027 as targets rather than guarantees, consistent with the transcript source-basis evidence (spans on CAP progression, 'expected to be able to', 'immediately' language is directly sourced from the stellar.org long_summary).",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2c",
+      "id": "q-raph-withdraw-exchange-self-custody",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "0e4955a486f432723560ba54002a785d6618604c286b188fa693a6ebc5d1f30c",
+      "p9PromptSha256": "ef5f7a5135cbbad3556b878c22f31bca678004c94b32d47a9badd595183f7b39",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "correct"
+        ],
+        "costUsd": 0.2079432
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate instructs generating a public address, keeps the secret key private throughout (step 1), copies the address exactly, and discusses network correctness (step 4) and memo handling (step 3) — correctly noting that a personal non-custodial address typically doesn't need a memo unless the wallet shows one, matching the golden's default guidance and avoiding the memo trap. It never tells the user to share a secret key with the exchange. Additional details (base reserve, fees) align with the transcript source-basis evidence (0.5 XLM base reserve, 100 stroops fee) and are not contradicted by anything in golden or evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate tells user to generate a non-custodial wallet public address and withdraw to it, explicitly warns never to share the secret key anywhere except the wallet's own signing prompt (key fact 2), and discusses the memo field correctly — noting a personal wallet normally needs no memo by default, matching golden guidance and avoiding the memo trap. It also covers network correctness (mainnet vs testnet), minimum balance (base reserve), fees, and recommends a small test transfer, addressing key fact 1's network/address concern in substance even though framed as mainnet-vs-testnet rather than the exchange's withdrawal-network selector. No fabricated contradictions to golden or transcript evidence were found; base reserve and fee figures align with the transcript source-basis pack.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate instructs generating a public address in a self-custody wallet and using it for withdrawal, matching key fact 1, and explicitly warns never to share the secret key except in the wallet's own signing prompt, satisfying key fact 2. It correctly states a personal wallet normally needs no memo and only to include one if the wallet's receive screen shows it, avoiding the deposit-memo trap, and never tells the user to give the exchange a secret key, avoiding the other trap. Numeric claims (0.5 XLM base reserve, 2 base reserves minimum, 100 stroops fee) are supported by the transcript source-basis evidence.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2d",
+      "id": "q-gap-leaderboard-project-not-builder",
+      "changed": true,
+      "armBSource": "stand-in-p8",
+      "p9PackSha256": "a816050444d0aa77e84ccd2bb79ffcbd045636085bbde9c7158e3fa4af54ab18",
+      "p9PromptSha256": "ef6e4fcbe09c4b226037933080a9d733d5a15ed1e5e5f99201609bcf2a82b4c4",
+      "p9ListCoverage": {
+        "records": 2,
+        "shown": 2,
+        "complete": true
+      },
+      "armA": {
+        "score": "correct",
+        "votes": [
+          "correct",
+          "correct",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "correct"
+        ],
+        "costUsd": 0.1787092
+      },
+      "inconclusive": [
+        "pack p8",
+        "pack SHA-256 differs from the rebuilt p9 pack",
+        "prompt SHA-256 differs from the rebuilt p9 prompt",
+        "a call input hash differs from the rebuilt p9 prompt"
+      ],
+      "direction": "inconclusive",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [
+            "Rumble Fish"
+          ],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly states the core conclusion: the leaderboard ranks projects (with named examples matching transcript evidence like Rumble Fish #1, SDF #2, AI-Net #3) and explicitly directs person-queries to getBuilders, quoting the tool's own disambiguation — satisfying key fact 2 and the must-avoid item. However, it omits that the leaderboard response itself also supplies an aggregate ecosystem-wide developer metrics block (the 'ecosystem developer macro' per the golden/grader notes); the candidate frames developer data as living entirely in a separate getBuilders surface, missing this nuance of key fact 1. No fabricated or contradicting claims are present — the specific numbers/names cited align with the transcript evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly states the leaderboard ranks projects, not individual developers, and explicitly directs people-questions to getBuilders, matching key fact 2 and the must-avoid condition (which is correctly avoided). However, it describes leaderboard metrics only as project-level (activity, stars, issues, tvl, supply) and never mentions that getLeaderboard also returns an aggregate/ecosystem-wide developer metrics block alongside the project rows, which is part of key fact 1 and central to the golden's framing. No fabricated or contradicting claims were found against the transcript evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "correct",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly states the leaderboard ranks projects, not people, citing the tool's own description and example rows, matching key fact 1. It explicitly directs people-directory questions to getBuilders, matching key fact 2. It correctly notes builders is a directory without rank field, consistent with the transcript's buildersMeta showing matchMode/counts rather than ranks. No must-avoid content appears (no claim that leaderboard rows are individuals). Core answer matches golden; differences in specific project names/dates reflect a later snapshot and are properly dated/sourced, not fabrications.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "invocation": "S2e",
+      "id": "q-pc-quantum-preparedness-dormant",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "356904d31224a5c92e6a471739d547b5431f1e42e4a68e84a25497dcf3383b24",
+      "p9PromptSha256": "b4c974c3e8d5a6f6548976ebcea7e6257155c697af0fa8239f4b547edb773c62",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ],
+        "costUsd": 0.2993512
+      },
+      "inconclusive": [],
+      "direction": "up",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly states Stellar is 'not yet' quantum-resistant, cites the QPP as a primary stellar.org source with dates, accurately describes the three-stage roadmap and the identity/signing-key separation advantage, and gives a qualitative, dated, source-relative account of dormant accounts, explicitly noting SDF has not published a mechanical eligibility rule (matching key fact 5 and avoiding must-avoid #2's threshold-invention trap). However, it inserts a specific but unsupported and internally contradictory claim that Stage 3 'readiness' is 'targeted for 2027' immediately before correctly saying 'timing isn't fixed yet' — this fabricates a concrete date for the explicitly open-ended Stage 3 activation timing described in the golden/source evidence. All five key facts are substantively present and no must-avoid item clearly fires (the suggested 'recent signer activity' heuristic is clearly flagged as the candidate's own inference, not an official threshold).",
+          "wrongClaims": [
+            "Stage 3 'readiness targeted for 2027' contradicts the source framing that activation timing is undetermined and tied only to quantum-threat progress and ecosystem readiness, not a fixed year"
+          ]
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly caveats that Stellar is 'not yet' quantum-resistant, cites the primary QPP blog post with a visible as-of date (2026-10-08), accurately summarizes the three-stage roadmap and the key/identity-separation advantage, and handles dormant accounts well by quoting the QPP's qualitative description and explicitly stating no formal eligibility definition or threshold exists, deferring to future community/CAP work (satisfying key facts 1-5 and avoiding the dormant-threshold and quantum-resistance traps). However, it introduces an unsupported 'readiness targeted for 2027' label for Stage 3 that contradicts both the golden answer's and its own later statement that Stage 3 timing is undetermined and tied to community discussion — a minor internal inconsistency/fabrication not backed by the transcript evidence. This is a minor slip rather than an inversion of the core answer, and no must-avoid item is concretely triggered (the dormant-account 'recent signer activity' heuristic is framed as the candidate's own practical suggestion, not an invented official rule).",
+          "wrongClaims": [
+            "States Stage 3 deprecation has 'readiness targeted for 2027,' a specific year not supported by the QPP source (which ties Stage 3 timing only to quantum threat progress and ecosystem readiness) and contradicted by the candidate's own later statement that 'timing isn't fixed yet'"
+          ]
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly avoids claiming Stellar is quantum-resistant today, cites the QPP as a primary dated source (2026-06-09) with a visible as-of date (2026-10-08), correctly summarizes the three-stage plan, and explicitly states no formal dormant-account definition exists while keeping that finding dated and source-relative. However, it fabricates a 'readiness targeted for 2027' date for Stage 3 deprecation when the source evidence explicitly says Stage 3 timing is 'determined by the threat' with no target date, and adds an unsupported specific claim about NIST guidance shifting from '2030+' to '2029+' that appears nowhere in the provided source-basis evidence. These are specific but non-core errors that don't invert the overall correct conclusions.",
+          "wrongClaims": [
+            "States Stage 3 'readiness targeted for 2027,' contradicting the source's explicit statement that Stage 3 timing is 'determined by the threat' and not fixed",
+            "Claims NIST danger-zone guidance moved from '2030+' to '2029+', a specific detail not supported by the cited/transcript evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "invocation": "S3a",
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "ee32a62e058e00757f96ed436482e7b0d3f5c66e5ae7400e4f63cc7f85be261f",
+      "p9PromptSha256": "13b9408bd450a280e2f2cb6cbd5a75c412f680094b83734bd08e19c19352b20b",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "wrong",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "wrong",
+          "partial",
+          "partial"
+        ],
+        "costUsd": 0.3254072
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            4
+          ],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly explains CCTP's burn/mint mechanism, the CctpForwarder encoding trap, and Axelar's validator-consensus trust model with a dated audit citation, which aligns with transcript evidence. However, it frames CCTP as definitively 'the safest path' and concludes 'CCTP is safest' without any date-stamped verification of actual routes or the golden's central caveat that 'there is no provider-independent safest bridge' and that no observation is a safety guarantee — this presents a provider-sensitive, freshness-dependent recommendation as a timeless truth. It also omits the intents/RFQ trust model entirely and collapses Allbridge Core vs. Allbridge Next into one generic 'liquidity-pool/multisig' bucket rather than distinguishing their trust assumptions as the golden does.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly dates its audit-based claims (OtterSec Axelar report 2025-04-08, registry snapshot 2026-10-07, etc.), compares CCTP's burn/mint mechanism against Axelar's validator-consensus model, and lumps other bridges (Allbridge/Estrela, Hot Bridge, Tricorn, Spectra) into a liquidity-pool/multisig trust category — matching the golden's core distinctions reasonably well. However it never discusses the intent/RFQ trust model (e.g., Squid's RFQ provider) that the golden explicitly calls out as a third distinct messenger type, and it asserts a 'Bottom line: CCTP is safest' without echoing the golden's explicit stance that there is no provider-independent 'safest bridge' and that routes must be re-verified/re-quoted at execution time rather than treated as a standing recommendation. No must-avoid item is concretely triggered — the candidate correctly notes Axelar is not a dedicated USDC rail and doesn't claim MetaMask delivers native Stellar USDC.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies CCTP as the native-asset route, explains the mintRecipient/forwarder trap, gives mainnet contract addresses matching the transcript source basis, and contrasts Axelar's validator/GMP trust model (with a dated OtterSec audit citation) against Allbridge/other lock-and-mint bridges, all with visible as-of dates for the registry claims. However it never mentions an intents/RFQ provider trust model (Squid/RFQ), which the golden explicitly requires as one of the four compared models, and it never frames its CCTP recommendation as requiring re-quoting/route verification at execution time or states that none of this is a safety guarantee — instead it flatly concludes 'CCTP is safest.' No must-avoid item is concretely triggered (it does not claim Axelar yields Circle-native USDC, does not claim MetaMask's native bridge is safe, and dates its registry-based claims).",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "invocation": "S3b",
+      "id": "q-ti-freighter-localhost-not-detected",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "9d26555dc7150140395eaf033f1039f97b930488f6e5d7220b8c2bd296b8e276",
+      "p9PromptSha256": "787132b1fc834931683b94effe0b7d1bfcb19b3a31e10a4e2f0d06b6edda88fb",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ]
+      },
+      "armB": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ],
+        "costUsd": 0.2549892
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly directs the user to @stellar/freighter-api, destructures isConnected's structured result properly, and correctly identifies that this isn't a CORS issue, matching several key facts. However, it inverts key fact 4 by claiming the fix is to serve local dev over HTTPS (mkcert) because 'all web traffic' must use TLS and HTTPS avoids 'wallet/CSP checks that assume a secure context' — whereas the golden states official guidance already treats http://localhost and http://127.0.0.1 as secure contexts, making HTTPS an optional production-matching step rather than the detection fix. This matches must-avoid item 2 (claiming HTTPS fixes/is needed for secure-context detection). It also omits isAllowed as a distinct permission-check function and doesn't mention reloading after install/update.",
+          "wrongClaims": [
+            "Recommends switching local dev to HTTPS (via mkcert) as the fix for window.freighterApi being undefined, framing it as necessary to satisfy a secure-context check, when official guidance already treats http://localhost as a secure context"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies that the supported integration is @stellar/freighter-api rather than window.freighterApi, correctly says this usually isn't CORS, and checks browser profile/extension/iframe conditions before blaming chain CORS — matching facts 1 and 3. However, it fails key fact 2 (doesn't distinguish isAllowed from requestAccess/isConnected as separate authorization states) and fact 5 (no mention of keeping secrets out of local code). Critically, on fact 4 it inverts the golden guidance: instead of noting that http://localhost is treated as a secure context, it recommends switching local dev to HTTPS via mkcert specifically to 'avoid wallet/CSP checks that assume a secure context,' framing HTTPS as the fix for the detection problem — this directly matches must-avoid item 2 (claiming HTTPS fixes detection).",
+          "wrongClaims": [
+            "Recommending HTTPS/mkcert for local dev to avoid 'wallet/CSP checks that assume a secure context', implying HTTP localhost fails a secure-context check that HTTPS fixes, contradicting the golden's point that http://localhost is treated as a secure context"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            2
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly scopes the API to @stellar/freighter-api, correctly treats isConnected's return as a structured object rather than a boolean, downplays CORS, and lists profile/extension/unlock/iframe checks before blaming chain-layer CORS — satisfying facts 1 and 3 well. However, for fact 4 it inverts the golden guidance: it claims plain http://localhost is inadequate and that developers should switch to HTTPS via mkcert to fix the Freighter-undefined issue, directly contradicting the golden's statement that http://localhost/127.0.0.1 are treated as secure contexts and that HTTPS is not a universal detection fix — this matches must-avoid item 2 (claiming HTTPS always fixes detection / HTTP doesn't work). Fact 2 (installation vs authorization vs unlock as distinct states) is only partially covered (no isAllowed mention), and fact 5 (never export secrets, keep signing in-wallet) is absent entirely.",
+          "wrongClaims": [
+            "Recommends switching local dev from HTTP to HTTPS (via mkcert) as the fix for window.freighterApi being undefined, implying HTTPS is needed/fixes detection and plain localhost HTTP is insufficient, contradicting the golden's point that localhost HTTP is treated as a secure context and HTTPS is not a universal detection fix"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "invocation": "S3c",
+      "id": "q-sor-force-fast-archival-localnet",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "d5b45f8b8a89ce2709805033856220c8c64b8cb2fb12a668e9eab2549e72e7ab",
+      "p9PromptSha256": "b5c36f2cc5ef95903af26db1819bcbd8a310a56c6cd16f77794bfe205f72b080",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "error",
+          "partial"
+        ],
+        "costUsd": 0.4304572
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate proposes lowering min/max TTL via a validator ConfigUpgradeSet plus manual-close, which is a legitimate but different mechanism than golden's Core TESTING_* eviction knobs (TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME, OVERRIDE_EVICTION_PARAMS_FOR_TESTING, eviction scan params) — it never addresses eviction-scan speed, only the TTL threshold, so key fact 1 is missing. For detection/restore, it centers on Api.isSimulationRestore/restorePreamble as 'the exact pattern' and the authoritative signal, never mentioning archivedSorobanEntries or the same-transaction P23 auto-restore path (key fact 2 missing); per grader notes this restorePreamble framing is capped at partial rather than flagged wrong since it cites the official archival guide's own example, which may reflect a pre-2026-07-27 doc snapshot. It correctly treats temporary data as unrestorable (key fact 3) and does not conflate archival with RPC event retention, and does not invent a fabricated universal flag — its config-upgrade mechanism is sourced from real docs.",
+          "wrongClaims": []
+        },
+        {
+          "score": "error",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate omits the golden's central recommended mechanism entirely: version-pinned Core eviction/testing flags (TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME, OVERRIDE_EVICTION_PARAMS_FOR_TESTING, TESTING_EVICTION_SCAN_SIZE, TESTING_MAX_ENTRIES_TO_ARCHIVE, TESTING_STARTING_EVICTION_SCAN_LEVEL, ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING), substituting instead a heavyweight network-wide ConfigUpgradeSet procedure to lower min/max TTL values, which does not control when Core's eviction scan actually sweeps an entry into archival. For detection, it frames restorePreamble/Api.isSimulationRestore as 'the authoritative signal' rather than archivedSorobanEntries, though this appears to be an accurate quote of currently-accessible docs per the transcript evidence, so per grader notes this caps at partial rather than counting as a wrong claim or avoid-match. It does correctly state that temporary data, once past liveUntilLedgerSeq, is deleted and not restorable (key fact 3). Because the core recommended configuration path for quickly forcing archival is missing/substituted with an unverified alternate approach, the core conclusion is incorrect.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate omits the golden's canonical mechanism entirely — no mention of TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME, OVERRIDE_EVICTION_PARAMS_FOR_TESTING, eviction scan size/level, or any Core version pin (key fact 1 missing); it substitutes a real but different governance-upgrade procedure for lowering network TTL settings, grounded in actual admin-guide docs per the transcript evidence, so this is not a fabrication. For detection, it correctly uses getLedgerEntries/liveUntilLedgerSeq but frames the older restorePreamble/isSimulationRestore retry flow as 'the authoritative signal' rather than naming archivedSorobanEntries for same-transaction P23 auto-restore (key fact 2 largely missing), though per grader notes this restorePreamble quoting is capped at partial rather than counted as a wrong claim since it mentions the P23 auto-restore alternative too. Key fact 3 (temporary data unrestorable) is correctly stated. No must-avoid item clearly fires: the candidate explicitly denies this is a universal Quickstart flag, and doesn't conflate archival with RPC event retention.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "invocation": "S3d",
+      "id": "q-scf-verified-members",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "a284a598960d298ea51eadf90a0ce9c3cf593464c3316aafccd3728ce99662e2",
+      "p9PromptSha256": "a9b88cb778d1544a26e32655137328d0ca49c7ad0bfb537ec5e1c3f9c646a271",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ]
+      },
+      "armB": {
+        "score": "wrong",
+        "votes": [
+          "wrong",
+          "wrong",
+          "wrong"
+        ],
+        "costUsd": 0.2515792
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate dates its claims well and even flags freshness uncertainty on tier names, satisfying facts 1-2. However, it opens by framing basic 'Verified Member' status itself as the gate that lets an account submit proposals, join panels, and 'cast delegate votes on which projects get funded,' directly contradicting the golden's core distinction that the basic Verified tier does not by itself grant an active project vote — this is must-avoid #1 (implying basic verification confers voting/delegation). It also never separates Build Open voting, other program governance, and payout KYC/KYB (key fact 4 entirely absent), and its tier-by-tier permissions (Pathfinder/Navigator/Pilot) are described generically rather than matching the golden's specific vote/delegate/authority gradations (key fact 3 only partially present).",
+          "wrongClaims": [
+            "Opening claim that 'Verified Member status' is the identity gate required 'before a community account can take part in governance — submitting proposals, joining selection panels, and casting delegate votes' implies basic verification itself grants active voting/delegation rights, contradicting the golden's statement that the basic Verified tier does not by itself grant an active project vote"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate dates its claims well and adds an explicit as-of caveat about tiers possibly being superseded, satisfying key facts 1 and 2. However, it opens by stating that 'Verified Member status' itself is the gate that allows 'casting delegate votes on which projects get funded,' and later says 'verification ties voting rights to a confirmed real identity' — this treats basic Verified status as granting active voting, contradicting the golden's distinction that the basic Verified tier does not by itself grant an active project vote (only Navigator/Pilot vote actively, Pathfinder only via delegation). This matches must-avoid #1. The candidate also never separates Open-only Build voting, Public Goods governance, and payout KYC/KYB (key fact 4 missing), and its description of tier permissions is vague/generic rather than matching the golden's Verified/Pathfinder/Navigator/Pilot breakdown (key fact 3 only partially present).",
+          "wrongClaims": [
+            "States Verified Member status itself enables 'casting delegate votes on which projects get funded' and 'ties voting rights to a confirmed real identity,' implying basic verification grants active voting rather than only the higher tiers"
+          ]
+        },
+        {
+          "score": "wrong",
+          "avoidMatches": [
+            1
+          ],
+          "spanSupport": "no-pack-omission",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate dates its claims and flags that tier specifics may be dated/superseded (facts 1-2 met), but it never accurately lays out the Verified/Pathfinder/Navigator/Pilot permission ladder (fact 3) and never addresses the Open-only Build voting vs Public Goods vs payout KYC/KYB separation (fact 4) — these are missing. More seriously, the opening framing states that 'Verified Member status is...required before a community account can take part in governance — submitting proposals, joining selection panels, and casting delegate votes,' implying basic verification itself grants active voting/delegate rights, which directly contradicts the golden's point that basic Verified status alone does not grant an active vote.",
+          "wrongClaims": [
+            "Implies that Verified Member status itself (the identity/anti-sybil gate) is what grants submitting proposals, joining panels, and casting delegate votes, rather than being the base tier that does not confer active voting"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "invocation": "S3d",
+      "id": "q-soroban-sdk-cve",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "5ba08715cefd663a74aca8d8c5b158224ddfa1a045c8ca41ef6e1ad87ac54d6f",
+      "p9PromptSha256": "b040ea45fc3cd8f2ad8d38a7a8752ad95354b53b84b946856f99eeb885cd6705",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ],
+        "costUsd": 0.2454352
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies two of the three advisories (GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m) with accurate patched-version mappings matching the transcript evidence, and appropriately flags that its vector-search-based list may not be complete, directing the user to check GitHub Security Advisories directly for a guaranteed-complete list — satisfying key fact 2. However, it entirely omits the third advisory (GHSA-96xm-fv9w-pf3f / CVE-2026-24889, the Bytes::slice/Vec::slice/gen_range overflow fixed in 25.0.2/23.5.1/22.0.9), and explicitly states 'I found no other GHSA-tagged advisories... beyond these two,' which under-delivers on key fact 1 (naming all three mappings). Because the candidate hedges with an explicit non-exhaustiveness caveat about its retrieval method, this does not trigger the 'claim there is only one advisory / freeze permanently' must-avoid, and no conditional-impact-as-universal claim is made either.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "Candidate correctly identifies two of the three advisories (GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m) with accurate patch versions and dates, matching transcript evidence, and properly caveats that the list is from indexed release notes only, recommending live cross-check against the GitHub advisories page — satisfying key fact 2 and avoiding a permanent-freeze claim. However it misses the first advisory, GHSA-96xm-fv9w-pf3f / CVE-2026-24889 (fixed in 25.0.2/23.5.1/22.0.9), so key fact 1 (all three dated mappings) is only partially satisfied, and it omits CVE numbers entirely in favor of GHSA IDs only. No fabrications or universal-impact claims are made, and the 'only two found' statement is explicitly scoped to the indexed corpus with a live-recheck recommendation, so it does not trigger the freeze must-avoid.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly identifies two of the golden's three advisories (GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m) with matching patched versions, but omits the third (CVE-2026-24889 / GHSA-96xm-fv9w-pf3f, soroban-sdk overflow fix), so key fact 1 is only partially satisfied. Key fact 2 (live re-checking) is satisfied: the candidate explicitly flags that its list is based on vector-search retrieval rather than a direct API query and tells the user to cross-check the GitHub security advisories page directly for completeness. The claim of 'no other advisories found' is appropriately scoped ('in the indexed release notes... if you need a guaranteed-complete list, cross-check...directly'), so it does not trigger the freeze-clause must-avoid item. No conditional-impact-as-universal claim is made either.",
+          "wrongClaims": []
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "invocation": "S3d",
+      "id": "q-tool-sdk-repos-discovery",
+      "changed": false,
+      "armBSource": "p8-reused",
+      "p9PackSha256": "8e88e990b3dafb86306f020a3348de20151f0a530182b5258c1ea205519fb540",
+      "p9PromptSha256": "0858255fd4d24a6e1dc6c1b9f2b8838985be5e21ce643cef4a42373e11f50b04",
+      "p9ListCoverage": {
+        "records": 0,
+        "shown": 0,
+        "complete": true
+      },
+      "armA": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "wrong",
+          "partial"
+        ]
+      },
+      "armB": {
+        "score": "partial",
+        "votes": [
+          "partial",
+          "partial",
+          "partial"
+        ],
+        "costUsd": 0.2890932
+      },
+      "inconclusive": [],
+      "direction": "same",
+      "votes": [
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate correctly pulls a dated (generatedAt 2026-10-08), Scout-sourced table with exact URLs, languages, and most stars/repoScore/dates matching the transcript evidence exactly (e.g., go-stellar-sdk 1384/100, stellar-mpp-sdk 12/77, stellar-php-sdk 42/76), and it correctly flags js-soroban-client as archived/superseded and stellar-lib as deprecated with explanations rather than silently omitting them, satisfying the retired-name must-avoid. It also adds an explicit caveat that repoScore/stars are not quality/security/readiness signals, which exempts it from the freeze-clause trap since the list is dated and source-scoped. However it falls short of full key-fact coverage: maintainer tier (SDF vs community) is only discussed for 3 of 13 rows rather than systematically; role (client-library vs contract SDK) is only incidentally mentioned for a few rows via description text, not consistently labeled; archive state and last-commit dates are given for roughly half the rows with the rest just marked 'active'; and there is no cross-corroboration against official docs or package registries (npm/crates/pypi/etc.) as the golden requires. No fabricated repositories or numbers were found against the transcript evidence.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate returns a dated (2026-10-08), source-scoped table of Scout-observed repos with exact URLs, language, repoScore/star tier, and notes on archive/deprecated status (js-soroban-client, stellar-lib) — all rows and fields match the transcript source-basis evidence exactly, with no fabricated entries and an explicit caution that repoScore/stars are not security/production signals. However, it never corroborates repo identity/ownership against official docs or package registries (npm/crates.io/PyPI), relying solely on the Scout index, and 'role' (client vs. contract) is only loosely implied via descriptions rather than a stated dimension. Because the list is explicitly dated and caveated as discovery metadata rather than a frozen quality ranking, the freeze-clause avoid item does not fire.",
+          "wrongClaims": []
+        },
+        {
+          "score": "partial",
+          "avoidMatches": [],
+          "spanSupport": "none",
+          "listRecordsNamed": [],
+          "citesNotice": false,
+          "entryNumberMentions": [],
+          "rationale": "The candidate sources from an as-of-dated Scout query (generatedAt 2026-10-08) matching the transcript's rows/stars/scores/dates closely, with no fabricated repos, correctly flags js-soroban-client as archived/superseded and stellar-deprecated/stellar-lib as deprecated, and caveats that repoScore/stars aren't quality/security signals — satisfying the freeze exemption and must-avoid items. However it omits a systematic per-row maintainer-tier and client-vs-contract role tagging (only given in prose for a few rows), and never explicitly corroborates identity/ownership against official docs or package registries beyond the Scout data itself, which the golden requires for every row.",
+          "wrongClaims": []
+        }
+      ]
+    }
+  ]
+}

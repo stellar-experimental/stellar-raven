@@ -1,0 +1,31 @@
+{
+  "schema": "p9-rejudge-artifacts-v1",
+  "note": "Predeclared before any grade is known. Arm A reuses the p6 verdicts of the p7 run. Arm B reuses the p8 verdicts of every row whose full p9 prompt equals its recorded p8 prompt, and reruns the changed rows under p9. The operator adds one artifacts entry per P9 invocation after it finishes; nobody edits the other fields.",
+  "armA": {
+    "pack": "p6",
+    "reused": true,
+    "manifest": ".agents/rounds/2026-10-10-weekend/pack-p7/rejudge-artifacts.json",
+    "arm": "A"
+  },
+  "armBReused": {
+    "pack": "p8",
+    "reused": true,
+    "manifest": ".agents/rounds/2026-10-10-weekend/pack-p8/rejudge-artifacts.json",
+    "arm": "B",
+    "rule": "valid only for a row whose rebuilt p9 prompt SHA-256 equals the recorded p8 prompt SHA-256"
+  },
+  "armBNew": {
+    "pack": "p9",
+    "commit": null,
+    "worktree": "/Users/kalepail/Desktop/raven-p9-arm"
+  },
+  "changedRows": [
+    { "invocation": "S1a", "id": "q-defi-etherfuse-stablebonds" },
+    { "invocation": "S1b", "id": "q-edge-fresh-latest-blend-tvl" },
+    { "invocation": "S2a", "id": "q-asset-stablecoin-issuers-discovery" },
+    { "invocation": "S2a", "id": "q-defi-arbitrage-pathpayment-bots" },
+    { "invocation": "S2b", "id": "q-agent-identity-erc8004-stellar" },
+    { "invocation": "S2d", "id": "q-gap-leaderboard-project-not-builder" }
+  ],
+  "artifacts": []
+}

@@ -424,10 +424,15 @@ The re-judge artifacts are in the ignored `eval/qa/results/2026-10-10-pack-rejud
     (Comet, Zenex, and others) that p6 showed. The candidate sentence scope stays unresolved.
   - R8-2 belongs to the rubric item below.
 
-Next repair: start from the p8 span units on PR #264. Keep the sibling records of every entity
-list in a claim sentence, and measure that coverage on the final text. Replay the p6, p7, and p8
-rows offline first. A new pack version needs an independent review and its own authorized
-measurement, with the R6 Stage 2 evidence-correction rule predeclared.
+Branch `w1012/j` (2026-10-12) implements the next repair as pack `p9`, on top of the PR #264 commits.
+It keeps the sibling records of every entity list in a claim sentence. It measures that coverage
+on the final text after every budget cut.
+The [design and offline replay](rounds/2026-10-12-pack-p9/design.md) show 62 of 63 sibling records
+in the 32 measured rows (p8: 12). The R8-1 row shows 11 of 11 (p8: 5). The p8 omission repairs hold.
+In the control rows, 5 rows lose 1 or 2 answer probes against p8.
+The [measurement plan](rounds/2026-10-12-pack-p9/measurement-plan-p9.md) predeclares the R6 rule.
+It reruns only the 6 changed rows (expected about $2.06 to $2.15 with the self-test; cap $8.55).
+The independent pre-spend review, the owner's approval, and the measurement remain open.
 
 Done when: a reviewed new pack version passes the replayable coverage, and an authorized
 measurement shows no grade regression.
