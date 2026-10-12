@@ -1,13 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   buildTranscriptEvidencePack,
+  entityListClaims,
+  entityListCoverage,
   explainTranscriptEvidencePack,
   findTranscriptEvidencePackOmissions,
   packSourceEvidenceText
 } from "../eval/qa/evidence-pack.mjs";
 
-// Claim-support fixtures (p7 anchors, p8 fallback and audit). Assertions read the final serialized
-// pack text; omission checks read the audit-only metadata.
+// Claim-support fixtures (p7 anchors, p8 fallback and audit, p9 entity lists). Assertions read the
+// final serialized pack text; omission checks read the audit-only metadata.
 const CASE = {
   question: "What do the returned records say?",
   golden: {
@@ -553,5 +555,140 @@ describe("claim support: p8 claim-word fallback and audit-only omissions", () =>
     expect(text.length).toBeLessThanOrEqual(12000);
     expect(audit.units.length).toBeGreaterThan(0);
     expect(supportUnits(text)).toHaveLength(audit.units.length);
+  });
+});
+
+describe("claim support: p9 entity lists", () => {
+  // The R8-1 shape: one directory array, a host checkpoint after the JSON, and one answer sentence
+  // that lists several records and states a status for the list.
+  const dex = [
+    { id: "a1", name: "Soroswap", slug: "soroswap", status: "Live", tvlUSD: 1243997, url: "https://example.test/soroswap" },
+    { id: "a2", name: "Aquarius", slug: "aquarius", status: "Live", tvlUSD: 38937692, url: "https://example.test/aquarius" },
+    { id: "a3", name: "Phoenix", slug: "phoenix", status: "Live", tvlUSD: null, url: "https://example.test/phoenix" },
+    { id: "a4", name: "StellarTerm", slug: "stellarterm", status: "Live", tvlUSD: null, url: "https://example.test/stellarterm" },
+    { id: "a5", name: "Hoops Finance", slug: "hoops", status: "Pre-Release", tvlUSD: null, url: "https://example.test/hoops" },
+    { id: "a6", name: "Comet", slug: "comet", status: "Inactive", tvlUSD: null, url: "https://example.test/comet" },
+    { id: "a7", name: "Zenex", slug: "zenex", status: "Live", tvlUSD: null, url: "https://example.test/zenex" },
+    { id: "a8", name: "Noether", slug: "noether", status: "Pre-Release", tvlUSD: null, url: "https://example.test/noether" },
+    { id: "a9", name: "Raum Network", slug: "raum", status: "Development", tvlUSD: null, url: "https://example.test/raum" },
+    { id: "a10", name: "Octarine", slug: "octarine", status: "Live", tvlUSD: null, url: "https://example.test/octarine" }
+  ];
+  const dexTranscript = [
+    execute(`${JSON.stringify({ dexProjects: dex })}\n\n--- EVIDENCE CHECKPOINT ---\nThe host observed successful broad operation classes.`),
+    execute({ articles: filler(30) })
+  ];
+  const listSentence =
+    "Current DEX/AMM TVL (scout directory): Aquarius ~$38.9M, Soroswap ~$1.24M, with Phoenix, Octarine, Zenex, Noether, Raum Network, StellarTerm (classic SDEX UI), and Comet marked Inactive.";
+  const listAnswer = `Fees are low on Stellar. ${listSentence} Path payments route across both systems.`;
+  const listUnits = (text) => supportUnits(text).filter((unit) => unit.header.includes("role=entity-list"));
+
+  it("keeps the status of every listed entity beside the R8-1 sentence", () => {
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: listAnswer, transcript: dexTranscript });
+    const units = listUnits(text);
+
+    expect(text.length).toBeLessThanOrEqual(12000);
+    expect(units).toHaveLength(1);
+    expect(units[0].header).toContain('path="dexProjects"');
+    for (const record of [
+      "{name: StellarTerm | status: Live}",
+      "{name: Comet | status: Inactive}",
+      "{name: Zenex | status: Live}",
+      "{name: Noether | status: Pre-Release}",
+      "{name: Raum Network | status: Development}",
+      "{name: Aquarius | status: Live | tvlUSD: 38937692}",
+      "{name: Soroswap | status: Live | tvlUSD: 1243997}"
+    ]) expect(units[0].span).toContain(record);
+    // A record that the sentence does not name is not a sibling of the claim.
+    expect(units[0].span).not.toContain("Hoops Finance");
+    expect(audit.entityLists).toMatchObject({ claims: 1, records: 9, shown: 9, complete: true });
+    expect(entityListCoverage({ transcript: dexTranscript, candidateAnswer: listAnswer, transcriptEvidence: text })).toEqual(audit.entityLists);
+    expect(text).not.toContain("claimSupportNotice");
+  });
+
+  it("measures the R8-1 sentence on older pack shapes", () => {
+    const measure = (transcriptEvidence) =>
+      entityListCoverage({ transcript: dexTranscript, candidateAnswer: listAnswer, transcriptEvidence });
+    // p8 showed only the StellarTerm source item.
+    const p8Shape = [
+      "sourceItems: data-derived/untrusted",
+      '8. title="StellarTerm" url="https://example.test/stellarterm" fields="status="Live""'
+    ].join("\n");
+    expect(measure(p8Shape)).toMatchObject({ records: 9, shown: 1, complete: false });
+    expect(measure(p8Shape).byClaim[0].missing.map((record) => record.label)).toContain("Comet");
+    // p6 showed Comet and Zenex in one JSON snippet. Zenex's status there is its own, not Comet's.
+    const p6Shape = [
+      '5. term="Zenex" entry=1 tool="mcp__raven__execute" resultChars=900',
+      '   snippet: ...{"name":"Comet","slug":"comet","status":"Inactive","tvlUSD":null},{"name":"Zenex","slug":"zenex","status":"Live"}...'
+    ].join("\n");
+    expect(measure(p6Shape).shown).toBe(2);
+    const zenexWithoutStatus = '   snippet: {"name":"Comet","status":"Inactive"},{"name":"Zenex","slug":"zenex"}';
+    const missing = measure(zenexWithoutStatus).byClaim[0].missing;
+    expect(missing.find((record) => record.label === "Zenex")).toEqual({ label: "Zenex", labelShown: true, missingKeys: ["status"] });
+  });
+
+  it("measures coverage on the final text after the budget cuts the list", () => {
+    const { text, audit } = explainTranscriptEvidencePack({
+      ...CASE,
+      candidateAnswer: listAnswer,
+      transcript: dexTranscript,
+      maxChars: 1600
+    });
+
+    // The budget steps cut the list unit. A clipped pack would fill all 1600 characters.
+    expect(text.length).toBeLessThan(1600);
+    expect(listUnits(text)).toEqual([]);
+    expect(audit.entityLists.complete).toBe(false);
+    expect(audit.entityLists).toEqual(entityListCoverage({ transcript: dexTranscript, candidateAnswer: listAnswer, transcriptEvidence: text }));
+    expect(text).toContain("claimSupportNotice: some execute-result text did not fit this pack");
+  });
+
+  it("never counts a unit header, path, or notice as a shown record", () => {
+    const labelsOnly = [
+      "claimSupport: execute-result text for candidate claims",
+      "claimSupportNotice: some execute-result text did not fit this pack",
+      '1. entry=1 path="dexProjects" role=entity-list',
+      '2. term="Comet" entry=1 tool="mcp__raven__execute" resultChars=900'
+    ].join("\n");
+    expect(entityListCoverage({ transcript: dexTranscript, candidateAnswer: listAnswer, transcriptEvidence: labelsOnly }).shown).toBe(0);
+  });
+
+  it("adds one unit when a later claim names only records an earlier unit shows", () => {
+    const answer = `${listSentence} Aquarius and Soroswap are Live venues for pool liquidity.`;
+    const text = pack(answer, dexTranscript);
+
+    expect(entityListClaims({ transcript: dexTranscript, candidateAnswer: answer })).toHaveLength(2);
+    expect(listUnits(text)).toHaveLength(1);
+    expect(audits.get(text).entityLists).toMatchObject({ claims: 2, complete: true });
+  });
+
+  it("finds no entity list without two named siblings and a claim field", () => {
+    const claims = (candidateAnswer, transcript = dexTranscript) => entityListClaims({ transcript, candidateAnswer });
+    // One named record is not a list.
+    expect(claims("Comet is marked Inactive in the directory.")).toEqual([]);
+    // Two names without a field the claim names or states.
+    expect(claims("Comet and Zenex both appear in the directory.")).toEqual([]);
+    // Two names from different arrays are not siblings.
+    const split = [execute({ first: [dex[5], { name: "Other A", status: "Live" }] }), execute({ second: [dex[6], { name: "Other B", status: "Live" }] })];
+    expect(claims("Comet and Zenex are marked Inactive.", split)).toEqual([]);
+    // A plain lowercase word, such as a confidence label, is not a name.
+    const labels = [execute({ ratings: [{ label: "medium", score: 2 }, { label: "high", score: 3 }] })];
+    expect(claims("Confidence is medium or high, with score 2.", labels)).toEqual([]);
+  });
+
+  it("selects claim fields by name or by a stated value", () => {
+    const [claim] = entityListClaims({ transcript: dexTranscript, candidateAnswer: listAnswer });
+
+    expect(claim.keys).toEqual(["status", "tvlUSD"]);
+    expect(claim.records.map((record) => record.label)).toEqual([
+      "Soroswap", "Aquarius", "Phoenix", "StellarTerm", "Comet", "Zenex", "Noether", "Raum Network", "Octarine"
+    ]);
+  });
+
+  it("leaves a pack without an entity list unchanged by the list rule", () => {
+    const transcript = [execute({ records: [{ title: "Lumen Bonds", content: "These bills mature on 2026-12-31 or earlier." }] })];
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: "The bills mature on 2026-12-31.", transcript });
+
+    expect(listUnits(text)).toEqual([]);
+    expect(audit.entityLists).toEqual({ claims: 0, records: 0, shown: 0, complete: true, byClaim: [] });
   });
 });

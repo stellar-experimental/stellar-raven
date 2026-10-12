@@ -144,7 +144,7 @@ describe("QA transcript evidence pack", () => {
   });
 
   it("uses a new pack version for changed evidence selection", () => {
-    expect(PACK_VERSION).toBe("p8");
+    expect(PACK_VERSION).toBe("p9");
   });
 
   it("admits direct manifest-operation results but still ignores top-level search metadata", () => {

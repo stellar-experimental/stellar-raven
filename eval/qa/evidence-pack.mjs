@@ -1,8 +1,8 @@
 const EVIDENCE_PACK_MAX_CHARS = 12000;
-// p8 adds a discriminative claim-word fallback to the p7 claim-support spans, moves omitted
-// anchors to audit-only metadata, and counts only rendered source text as support. It keeps the
-// p6 A/V created_at exclusions and the p5 evidence boundaries.
-export const PACK_VERSION = "p8";
+// p9 shows the claim fields of every record that one answer claim lists from a source array, and
+// measures that coverage on the final text. It keeps the p8 claim-word fallback, the p7 claim-support
+// spans, the audit-only omissions, the p6 A/V created_at exclusions, and the p5 evidence boundaries.
+export const PACK_VERSION = "p9";
 const MAX_CANONICAL_URLS = 8;
 const MAX_CITED_SOURCE_TITLES = 24;
 const MAX_CITED_SOURCE_FIELDS = 24;
@@ -2036,7 +2036,7 @@ function selectRelatedStatement({ claim, sentences, weight, segments, units, add
   };
 }
 
-function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanChars, fallback }) {
+function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanChars, fallback, lists }) {
   const covered = new Set();
   const usedEntries = new Set();
   const unrenderable = new Set();
@@ -2085,6 +2085,7 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     if (!placed) unrenderable.add(anchor.id);
   }
   const fallbackUnits = selectFallbackUnits({ ...fallback, segments, bySegment, anchors, units, spans, spanChars });
+  const listUnits = listSupportUnits({ lists, anchors, segments, occurrences });
   let alternates = 0;
   for (const anchor of anchors) {
     if (alternates >= MAX_ALTERNATE_SUPPORT_UNITS) break;
@@ -2099,10 +2100,10 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     alternates += 1;
   }
   // Budget order: specific anchors, multi-word names, single words, bare numbers, then
-  // other-source units. Cuts drop units from the end of this order. A fallback unit holds claim
-  // words that no related unit shows, so it sits right after its claim's first specific-anchor
-  // unit, or after all specific-anchor units when its claim has none.
-  const rank = (unit) => unit.alternate ? 4 : unit.related ? 2 : unit.fallback || unit.promoted ? 0 : anchors[unit.primary].tier;
+  // other-source units. Cuts drop units from the end of this order. A fallback or entity-list unit
+  // holds claim evidence that no related unit shows, so it sits right after its claim's first
+  // specific-anchor unit, or after all specific-anchor units when its claim has none.
+  const rank = (unit) => unit.alternate ? 4 : unit.related ? 2 : unit.fallback || unit.promoted || unit.list ? 0 : anchors[unit.primary].tier;
   const order = new Map(units.map((unit, at) => [unit, at]));
   const specific = units
     .map((unit, at) => ({ unit, at }))
@@ -2115,13 +2116,17 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     const later = specific.find(({ unit }) => anchors[unit.primary].claimIndex > claimIndex);
     return later ? later.at - 0.5 : specific.length + 0.5;
   };
-  [...fallbackUnits.filter((unit) => !unit.related), ...units.filter((unit) => unit.promoted)].forEach((unit, at) =>
+  [...listUnits, ...fallbackUnits.filter((unit) => !unit.related), ...units.filter((unit) => unit.promoted)].forEach((unit, at) =>
     order.set(unit, slot(unit.claimIndex) + at / 1000));
   // A related statement ranks with single words, in claim order.
   fallbackUnits.filter((unit) => unit.related).forEach((unit, at) => order.set(unit, units.length + unit.claimIndex + at / 1000));
-  units.push(...fallbackUnits);
+  units.push(...listUnits, ...fallbackUnits);
   units.sort((a, b) => rank(a) - rank(b) || order.get(a) - order.get(b));
   for (const unit of units) {
+    if (unit.list) {
+      unit.alsoIn = [];
+      continue;
+    }
     const core = cleanText(unit.segment.text.slice(unit.window.from, unit.window.to)).toLowerCase();
     unit.alsoIn = core.length < 24 ? [] : unique(
       segments
@@ -2130,6 +2135,297 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     ).filter((entryIndex) => !units.some((other) => other !== unit && other.segment.entryIndex === entryIndex && other.span.toLowerCase() === unit.span.toLowerCase()));
   }
   return { units, unrenderable };
+}
+
+// Entity lists (p9). When one answer claim names two or more records of the same source array,
+// the pack shows the claim-related fields of every named record together. A judge then reads the
+// status of each listed entity, not only of the one entity that another rule selected.
+const LIST_IDENTITY_KEYS = ["title", "name", "fullName", "label", "slug"];
+const LIST_IDENTITY_KEY_RE = /(?<![\p{L}\p{N}_])["']?(?:title|name|fullName|label|slug)["']?\s*[:=]/giu;
+const LIST_SKIP_KEYS = new Set([
+  ...LIST_IDENTITY_KEYS,
+  "id",
+  "url",
+  "sourceUrl",
+  "source",
+  "href",
+  "externalUrl",
+  "githubUrl",
+  "demoUrl",
+  "videoUrl",
+  "summary",
+  "description",
+  "excerpt",
+  "snippet",
+  "contentSummary",
+  "text",
+  "content"
+]);
+const MAX_LIST_RECORDS = 24;
+const MAX_LIST_KEYS = 4;
+const MAX_LIST_GROUPS_PER_CLAIM = 3;
+const MAX_LIST_UNITS = 12;
+const LIST_VALUE_MAX_CHARS = 80;
+
+function listRecord(value, entryIndex, group, path, entryAv) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const identityKey = LIST_IDENTITY_KEYS.find((key) => typeof value[key] === "string" && cleanText(value[key]));
+  if (!identityKey) return null;
+  const label = cleanText(value[identityKey]);
+  // A plain lowercase word, such as a "medium" confidence label, reads as prose, not as a name.
+  if (label.length < 3 || label.length > LIST_VALUE_MAX_CHARS || !/\p{L}/u.test(label) || /^\p{Ll}+$/u.test(label)) return null;
+  const avSource = isAvSource(value, path, entryAv);
+  const fields = new Map(
+    Object.entries(value).filter(([key, raw]) =>
+      !LIST_SKIP_KEYS.has(key) &&
+      !omitsAvDateField(value, key, avSource) &&
+      (raw === null || ["string", "number", "boolean"].includes(typeof raw)) &&
+      String(raw).length <= LIST_VALUE_MAX_CHARS &&
+      !/^https?:\/\//i.test(String(raw))
+    )
+  );
+  if (!fields.size) return null;
+  return { entryIndex, group, path: group.slice(group.indexOf("|") + 1) || "(root)", identityKey, label, fields };
+}
+
+// Records are the identified objects of one array. The array is their group, so two records are
+// siblings only when the same source result lists them together.
+function walkListRecords(value, path, entryIndex, out, entryAv) {
+  if (!value || typeof value !== "object") return;
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => {
+      const record = value.length >= 2 ? listRecord(item, entryIndex, `${entryIndex}|${path}`, `${path}[${index}]`, entryAv) : null;
+      if (record) out.push(record);
+      walkListRecords(item, `${path}[${index}]`, entryIndex, out, entryAv);
+    });
+    return;
+  }
+  for (const [key, child] of Object.entries(value)) {
+    if (child && typeof child === "object") walkListRecords(child, path ? `${path}.${key}` : key, entryIndex, out, entryAv);
+  }
+}
+
+function collectListRecords(entries) {
+  const records = [];
+  entries.forEach((entry, entryIndex) => {
+    if (isErrorEntry(entry)) return;
+    const entryAv = entryIsAv(entry);
+    const body = splitExecuteResult(entry.result).body;
+    const leading = body.match(/^\s*/)[0].length;
+    const parsed = tryParseJsonPrefix(entry.result);
+    const prefix = parsed === null && body[leading] === "{" ? scanBalancedObjectAt(body, leading) : "";
+    const value = parsed !== null ? parsed : prefix ? parseJsonText(prefix) : null;
+    if (value !== null && typeof value === "object") {
+      walkListRecords(value, "", entryIndex, records, entryAv);
+      return;
+    }
+    if (!/^\s*[\[{]/.test(body)) return;
+    // A clipped body has no parseable parent array. Its complete identified objects form one group.
+    const seen = new Set();
+    for (const match of body.matchAll(/"(?:title|name|fullName|label|slug)"\s*:/g)) {
+      const start = body.lastIndexOf("{", match.index);
+      if (start < 0 || seen.has(start)) continue;
+      seen.add(start);
+      const object = parseJsonText(scanBalancedObjectAt(body, start) || "null");
+      const record = listRecord(object, entryIndex, `${entryIndex}|visible-json-fragment`, "visible-json-fragment", entryAv);
+      if (record) records.push(record);
+    }
+  });
+  return records;
+}
+
+function wholePhraseRegExp(value, flags = "iu") {
+  return new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegExp(value)}(?![\\p{L}\\p{N}])`, flags);
+}
+
+function fieldKeyWords(key) {
+  return key
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word.length >= 3);
+}
+
+// A field relates to the claim when the claim names the field (TVL for tvlUSD) or states one of
+// the listed records' text values for it (Inactive for status).
+function listClaimKeys(records, claimText) {
+  const labels = new Set(records.map((record) => record.label.toLowerCase()));
+  const keys = [];
+  for (const record of records) {
+    for (const [key, raw] of record.fields) {
+      if (keys.includes(key)) continue;
+      const named = fieldKeyWords(key).some((word) => wholePhraseRegExp(word).test(claimText));
+      const stated = records.some((other) => {
+        const value = other.fields.get(key);
+        return typeof value === "string" &&
+          value.length >= 3 &&
+          value.length <= 40 &&
+          /\p{L}/u.test(value) &&
+          !labels.has(value.toLowerCase()) &&
+          wholePhraseRegExp(cleanText(value)).test(claimText);
+      });
+      if (named || stated) keys.push(key);
+    }
+  }
+  return keys.slice(0, MAX_LIST_KEYS);
+}
+
+function listClaimsFor(entries, answer) {
+  if (!answer.trim()) return [];
+  const records = collectListRecords(entries);
+  const groups = new Map();
+  for (const record of records) {
+    const byLabel = groups.get(record.group) ?? new Map();
+    if (!byLabel.has(record.label.toLowerCase())) byLabel.set(record.label.toLowerCase(), record);
+    groups.set(record.group, byLabel);
+  }
+  const claims = [];
+  answerClaimRanges(answer).forEach((range, claimIndex) => {
+    const claimText = answer.slice(range.start, range.end);
+    const candidates = [...groups.values()]
+      .map((byLabel) => [...byLabel.values()].filter((record) => wholePhraseRegExp(record.label).test(claimText)))
+      .filter((hits) => hits.length >= 2)
+      .sort((a, b) => b.length - a.length || a[0].entryIndex - b[0].entryIndex);
+    const assigned = new Set();
+    let groupsForClaim = 0;
+    for (const hits of candidates) {
+      if (groupsForClaim >= MAX_LIST_GROUPS_PER_CLAIM) break;
+      const fresh = hits.filter((record) => !assigned.has(record.label.toLowerCase())).slice(0, MAX_LIST_RECORDS);
+      if (!fresh.length) continue;
+      const keys = listClaimKeys(hits, claimText);
+      if (!keys.length) continue;
+      fresh.forEach((record) => assigned.add(record.label.toLowerCase()));
+      groupsForClaim += 1;
+      claims.push({
+        claimIndex,
+        claim: cleanText(claimText),
+        entryIndex: fresh[0].entryIndex,
+        path: fresh[0].path,
+        keys,
+        records: fresh.map((record) => ({
+          label: record.label,
+          identityKey: record.identityKey,
+          values: keys.filter((key) => record.fields.has(key)).map((key) => [key, record.fields.get(key)])
+        }))
+      });
+    }
+  });
+  return claims;
+}
+
+/** Entity-list claims of a candidate answer over its saved execute results. Exported for the replay. */
+export function entityListClaims({ transcript = [], candidateAnswer = "" } = {}) {
+  return listClaimsFor(executeEntries(transcript), String(candidateAnswer ?? ""));
+}
+
+function listValueText(value) {
+  const text = cleanText(sanitizeUrlsInText(String(value)));
+  return /[|;{}]/.test(text) ? JSON.stringify(text) : text;
+}
+
+// A null field states no value, so it is not rendered; the measure never requires it.
+function listRecordText(record) {
+  const values = record.values.filter(([, value]) => value !== null);
+  const parts = [[record.identityKey, record.label], ...values].map(([key, value]) => `${key}: ${listValueText(value)}`);
+  return `{${parts.join(" | ")}}`;
+}
+
+function listSupportUnits({ lists, anchors, segments, occurrences }) {
+  // A later claim that lists only records an earlier unit already shows, with the same fields,
+  // adds no unit.
+  const shownFields = new Map();
+  const isShown = (list, record) => {
+    const fields = shownFields.get(`${list.entryIndex}|${list.path}|${record.label.toLowerCase()}`);
+    return Boolean(fields) && record.values.every(([key]) => fields.has(key));
+  };
+  return lists.filter((list) => {
+    if (list.records.every((record) => isShown(list, record))) return false;
+    for (const record of list.records) {
+      const key = `${list.entryIndex}|${list.path}|${record.label.toLowerCase()}`;
+      shownFields.set(key, new Set([...(shownFields.get(key) ?? []), ...record.values.map(([field]) => field)]));
+    }
+    return true;
+  }).slice(0, MAX_LIST_UNITS).map((list) => {
+    const span = list.records.map(listRecordText).join("; ");
+    const entrySegment = segments.find((segment) => segment.entryIndex === list.entryIndex);
+    const inEntry = anchors
+      .filter((anchor) => occurrences[anchor.id].some((item) => segments[item.segmentIndex].entryIndex === list.entryIndex))
+      .map((anchor) => anchor.id);
+    return {
+      span,
+      segment: {
+        entryIndex: list.entryIndex,
+        tool: entrySegment?.tool ?? "execute",
+        outcome: entrySegment?.outcome ?? "ok",
+        truncated: entrySegment?.truncated ?? false,
+        path: list.path,
+        source: ""
+      },
+      window: null,
+      covered: anchorsInRenderedSpan(span, inEntry, anchors),
+      claimWords: [],
+      claimIndex: list.claimIndex,
+      list,
+      primary: null,
+      alternate: false
+    };
+  });
+}
+
+// A record counts as shown when its identity field and each of its non-null claim fields appear in
+// rendered source text on one line, after the identity and before the next record's identity.
+function listRecordShown(lines, record) {
+  const identity = new RegExp(
+    `(?<![\\p{L}\\p{N}_])["']?(?:${LIST_IDENTITY_KEYS.join("|")})["']?\\s*[:=]\\s*["']?${escapeRegExp(record.label)}(?=["'\\s|,;}]|$)`,
+    "giu"
+  );
+  const required = record.values.filter(([, value]) => value !== null);
+  let best = null;
+  for (const line of lines) {
+    for (const match of line.matchAll(identity)) {
+      const from = match.index + match[0].length;
+      LIST_IDENTITY_KEY_RE.lastIndex = from;
+      const next = LIST_IDENTITY_KEY_RE.exec(line);
+      const window = line.slice(from, next ? next.index : line.length);
+      const missing = required.filter(([key, value]) => !new RegExp(
+        `(?<![\\p{L}\\p{N}_])["']?${escapeRegExp(key)}["']?\\s*[:=]\\s*["']?${escapeRegExp(cleanText(String(value)))}(?![\\p{L}\\p{N}])`,
+        "iu"
+      ).test(window)).map(([key]) => key);
+      if (!best || missing.length < best.missing.length) best = { missing };
+      if (!missing.length) return { shown: true, labelShown: true, missingKeys: [] };
+    }
+  }
+  return best
+    ? { shown: false, labelShown: true, missingKeys: best.missing }
+    : { shown: false, labelShown: false, missingKeys: required.map(([key]) => key) };
+}
+
+function measureEntityLists(lists, pack) {
+  const lines = packSourceEvidenceText(pack).split("\n");
+  const claims = lists.map((list) => {
+    const records = list.records.map((record) => ({ label: record.label, ...listRecordShown(lines, record) }));
+    return {
+      claimIndex: list.claimIndex,
+      path: list.path,
+      keys: list.keys,
+      records: records.length,
+      shown: records.filter((record) => record.shown).length,
+      missing: records.filter((record) => !record.shown).map(({ label, labelShown, missingKeys }) => ({ label, labelShown, missingKeys }))
+    };
+  });
+  const records = claims.reduce((sum, claim) => sum + claim.records, 0);
+  const shown = claims.reduce((sum, claim) => sum + claim.shown, 0);
+  return { claims: claims.length, records, shown, complete: shown === records, byClaim: claims };
+}
+
+/**
+ * Entity-list coverage of any serialized pack, measured on its rendered source text only. The
+ * claims come from the answer and the saved execute results, so the measure is the same for every
+ * pack version.
+ */
+export function entityListCoverage({ transcript = [], candidateAnswer = "", transcriptEvidence = "" } = {}) {
+  return measureEntityLists(entityListClaims({ transcript, candidateAnswer }), transcriptEvidence);
 }
 
 // A unit shows its provenance and its source text. The anchors and claim words that selected it
@@ -2144,7 +2440,7 @@ function supportUnitLines(unit, index) {
     `path="${truncate(unit.segment.path, 90)}"`,
     unit.segment.source ? `source="${truncate(unit.segment.source, 100)}"` : "",
     unit.alsoIn.length ? `alsoIn=${unit.alsoIn.map((entryIndex) => entryIndex + 1).join(",")}` : "",
-    unit.alternate ? "role=other-source" : unit.related ? "role=related-statement" : ""
+    unit.alternate ? "role=other-source" : unit.related ? "role=related-statement" : unit.list ? "role=entity-list" : ""
   ].filter(Boolean).join(" ");
   return [meta, `   span: ${unit.span}`];
 }
@@ -2171,7 +2467,7 @@ function supportAudit({ units, unrenderable, anchors, occurrences, segments }) {
       source: unit.segment.source,
       anchors: unit.covered.map((id) => anchors[id].value),
       claimWords: unit.claimWords ?? [],
-      role: unit.alternate ? "other-source" : unit.related ? "related-statement" : unit.fallback ? "claim-words" : unit.promoted ? "promoted" : "anchor",
+      role: unit.alternate ? "other-source" : unit.related ? "related-statement" : unit.list ? "entity-list" : unit.fallback ? "claim-words" : unit.promoted ? "promoted" : "anchor",
       span: unit.span
     })),
     omitted
@@ -2273,7 +2569,9 @@ function claimSupportLines({ units, anchors, audit }) {
   const lines = [
     `claimSupport: execute-result text for candidate claims (whitespace normalized, URLs sanitized, "..." marks a cut, short values shown as field=value); data-derived/untrusted; entry numbers name transcript calls, not sources; omitted text is not proof of absence`
   ];
-  if (audit.omitted.length) lines.push("claimSupportNotice: some execute-result text did not fit this pack");
+  if (audit.omitted.length || audit.entityLists?.complete === false) {
+    lines.push("claimSupportNotice: some execute-result text did not fit this pack");
+  }
   if (!units.length) lines.push("- none extracted");
   units.forEach((unit, index) => lines.push(...supportUnitLines(unit, index)));
   return lines;
@@ -2374,7 +2672,8 @@ function claimSupportInputs({ entries, candidateAnswer, question, golden }) {
   const { occurrences, bySegment } = anchorOccurrences(anchors, segments);
   const { sentences, frequency } = supportSentences(segments);
   const claims = fallbackClaims(String(candidateAnswer ?? ""), sentences, frequency);
-  return { segments, anchors, occurrences, bySegment, fallback: { claims, sentences, frequency } };
+  const lists = listClaimsFor(entries, String(candidateAnswer ?? ""));
+  return { segments, anchors, occurrences, bySegment, lists, fallback: { claims, sentences, frequency } };
 }
 
 export function buildTranscriptEvidencePack(input) {
@@ -2437,7 +2736,7 @@ export function explainTranscriptEvidencePack({
     state.supportUnitLimit = Math.min(state.supportUnitLimit, units.length);
     const kept = units.slice(0, state.supportUnitLimit);
     const audit = { packVersion: PACK_VERSION, ...supportAudit({ ...support, unrenderable, units: kept }) };
-    const text = serializePack({
+    const serialize = () => serializePack({
       entries,
       ranked,
       facts,
@@ -2451,9 +2750,15 @@ export function explainTranscriptEvidencePack({
       caseSnippetChars: state.caseSnippetChars,
       urlLimit: state.urlLimit
     });
+    // Entity-list coverage is measured on the serialized text after every cut. A gap adds the
+    // neutral notice; the notice is a label line, so it never changes the measure.
+    let text = serialize();
+    audit.entityLists = measureEntityLists(support.lists, text);
+    if (!audit.entityLists.complete && !audit.omitted.length) text = serialize();
     if (text.length <= maxChars) return { text, audit };
     if (BUDGET_STEPS.some((step) => step(state))) continue;
-    return { text: `${text.slice(0, Math.max(0, maxChars - 3))}...`, audit };
+    const clipped = `${text.slice(0, Math.max(0, maxChars - 3))}...`;
+    return { text: clipped, audit: { ...audit, entityLists: measureEntityLists(support.lists, clipped) } };
   }
 }
 
