@@ -273,6 +273,49 @@ const ARTIFACT_PRELUDE = [
 ].join("\n");
 
 /**
+ * Section-read guard, applied by __guardEnvelope to a successful
+ * codemode.skill.read with `data.sections`. Stored transcripts show three
+ * misreads of that array, each of which silently loses the skill text:
+ *   - `r.data.content` on a section read: warn once, return undefined, so a
+ *     harmless `content || sections` fallback keeps working;
+ *   - `r.data.sections["<key>"]`, as if keyed by section: throw a pointer to
+ *     `.find((s) => s.section === key)`. Keys that are array indices or
+ *     already resolve on the array (`find`, `length`) are never trapped;
+ *   - a section object used as a string (`String(s)`, `join`, template
+ *     literal): throw instead of yielding "[object Object]".
+ * Every trap is non-enumerable, so Object.keys, JSON, and structured clone
+ * see the plain `{ section, content, url }` array.
+ */
+const SECTIONS_GUARD = [
+  '    const __sectionsShape = "r.data.sections is an array of { section, content, url } in request order";',
+  "    const __hide = (o, key, desc) => {",
+  "      try { Object.defineProperty(o, key, { ...desc, enumerable: false, configurable: true }); } catch {}",
+  "    };",
+  "    const __guardSections = (d) => {",
+  '      if (!("content" in d)) __hide(d, "content", {',
+  "        get() {",
+  '          if (!__warned.has("codemode.skill.read|content")) {',
+  '            __warned.add("codemode.skill.read|content");',
+  '            console.log("[envelope] codemode.skill.read: a section read has no r.data.content — " + __sectionsShape + "; use r.data.sections[i].content.");',
+  "          }",
+  "          return undefined;",
+  "        },",
+  '        set(value) { Object.defineProperty(this, "content", { value, writable: true, enumerable: true, configurable: true }); }',
+  "      });",
+  "      for (const s of d.sections) {",
+  '        if (s === null || typeof s !== "object") continue;',
+  '        __hide(s, "toString", { writable: true, value() { throw new Error("codemode.skill.read: a section is an object, not a string — " + __sectionsShape + "; use .content."); } });',
+  "        const key = s.section;",
+  '        if (typeof key !== "string" || /^\\d+$/.test(key) || key in d.sections) continue;',
+  "        __hide(d.sections, key, {",
+  '          get() { throw new Error("codemode.skill.read: r.data.sections is not keyed by section — " + __sectionsShape + "; use r.data.sections.find((s) => s.section === " + JSON.stringify(key) + ").content."); },',
+  "          set(value) { Object.defineProperty(this, key, { value, writable: true, enumerable: true, configurable: true }); }",
+  "        });",
+  "      }",
+  "    };"
+];
+
+/**
  * Sandbox-side envelope guard: fail-loud on wrong-level payload reads,
  * warn-once + undefined on failed-envelope data access, writes are
  * write-through. The single observed LLM failure mode with the result
@@ -305,6 +348,7 @@ const ARTIFACT_PRELUDE = [
  * The write-through SET is NOT try/caught: on a frozen envelope it must
  * throw loudly at the write, not silently no-op and then throw on read.
  * Service operations, skill helpers, and artifact helpers use this guard.
+ * A successful section read also gets the SECTIONS_GUARD traps above.
  * Discovery helpers retain their own shapes (hits/total at the top level).
  */
 function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
@@ -317,6 +361,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   );
   return [
     "    const __warned = new Set();",
+    ...SECTIONS_GUARD,
     "    const __guardEnvelope = (r, call) => {",
     '      if (r === null || typeof r !== "object" || typeof r.ok !== "boolean") return r;',
     "      const __trap = (key, desc) => {",
@@ -331,6 +376,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
     "            set(value) { Object.defineProperty(this, key, { value, writable: true, enumerable: true, configurable: true }); }",
     "          });",
     "        }",
+    '        if (call === "codemode.skill.read" && Array.isArray(r.data.sections)) __guardSections(r.data);',
     "      } else if (!r.ok) {",
     "        const e = r.error || {};",
     "        const __warnOnce = () => {",

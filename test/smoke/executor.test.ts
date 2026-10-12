@@ -1145,6 +1145,33 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }
   });
 
+  it("guards misreads of a section read and still returns it whole", async () => {
+    const outcome = await run(`async () => {
+      const id = "skills.lumenloop.stellar-project-dossier";
+      const whole = await codemode.skill.read(id);
+      if (!whole.ok) throw new Error(whole.error.message);
+      const key = whole.data.availableSections[0];
+      const r = await codemode.skill.read(id, { sections: [key] });
+      const caught = (f) => { try { f(); return ""; } catch (e) { return String(e && e.message); } };
+      return {
+        section: r,
+        content: r.data.content === undefined,
+        keyed: caught(() => r.data.sections[key]),
+        joined: caught(() => r.data.sections.join("\\n")),
+        found: r.data.sections.find((s) => s.section === key).content.length > 0
+      };
+    }`);
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) throw new Error(outcome.error);
+    const result = JSON.parse(outcome.result);
+    expect(Object.keys(result.section.data.sections[0])).toEqual(["section", "content", "url"]);
+    expect(result.content).toBe(true);
+    expect(result.keyed).toContain("r.data.sections is not keyed by section");
+    expect(result.joined).toContain("a section is an object, not a string");
+    expect(result.found).toBe(true);
+    expect(outcome.logs.join("\n")).toContain("a section read has no r.data.content");
+  });
+
   it("appends the sandbox globals hint to an 'is not defined' error", async () => {
     const outcome = await run(`async () => { return nope.doThing(); }`);
     expect(outcome.ok).toBe(false);
