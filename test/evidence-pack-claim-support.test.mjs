@@ -711,6 +711,12 @@ describe("claim support: p9 entity lists", () => {
       expect(measure('   snippet: ...9def8ebfd","name":"Alpha","status":"Live"},{"name":"Bravo","status":"Live"},{"id":"6a2d').complete).toBe(true);
     });
 
+    it("treats an object nested in a clipped record as part of that record", () => {
+      const clipped = `[{"name":"Alpha","status":"Live","award":{"name":"Alpha","round":"7"}},{"name":"Bravo","status":"Live"},{"name":"Cut`;
+      const [claim] = entityListClaims({ transcript: [execute(clipped)], candidateAnswer: "Alpha and Bravo are Live." });
+      expect(claim.records.map((record) => record.label)).toEqual(["Alpha", "Bravo"]);
+    });
+
     it("never counts a line outside braces that names two records", () => {
       expect(measure('   span: name="Alpha" name="Bravo" status="Live"').shown).toBe(0);
     });

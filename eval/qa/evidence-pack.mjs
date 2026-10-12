@@ -2220,14 +2220,18 @@ function collectListRecords(entries) {
     }
     if (!/^\s*[\[{]/.test(body)) return;
     // A clipped body has no parseable parent array. Its complete identified objects form one group.
-    const seen = new Set();
+    // An object nested inside another identified object is part of that record, not a sibling.
+    const found = new Map();
     for (const match of body.matchAll(/"(?:title|name|fullName|label|slug)"\s*:/g)) {
       const start = body.lastIndexOf("{", match.index);
-      if (start < 0 || seen.has(start)) continue;
-      seen.add(start);
-      const object = parseJsonText(scanBalancedObjectAt(body, start) || "null");
-      const record = listRecord(object, entryIndex, `${entryIndex}|visible-json-fragment`, "visible-json-fragment", entryAv);
-      if (record) records.push(record);
+      if (start < 0 || found.has(start)) continue;
+      const text = scanBalancedObjectAt(body, start);
+      const record = listRecord(parseJsonText(text || "null"), entryIndex, `${entryIndex}|visible-json-fragment`, "visible-json-fragment", entryAv);
+      if (record) found.set(start, { end: start + text.length, record });
+    }
+    const spans = [...found.entries()];
+    for (const [start, { end, record }] of spans.sort((a, b) => a[0] - b[0])) {
+      if (!spans.some(([other, item]) => other < start && end <= item.end)) records.push(record);
     }
   });
   return records;
