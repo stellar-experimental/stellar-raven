@@ -84,9 +84,31 @@ describe("prepareDemoStep", () => {
     budget.executeCalls = 1;
     budget.latestOperations = { total: 1, ok: 1, error: 0, softEmpty: 0 };
     budget.latestExecuteEvidence = "service-inconclusive";
-    expect(prepareDemoStep({ steps: [], stepNumber: 2, budget })?.system).toContain(
-      "contained no result rows"
-    );
+    const system = prepareDemoStep({ steps: [], stepNumber: 2, budget })?.system;
+    expect(system).toContain("contained no result rows");
+    expect(system).toContain("It is ok data, not a soft-empty or error result");
+    expect(system).toContain("an exact closed-world empty holds only at that source's scope");
+    expect(system).not.toContain("inconclusive host evidence");
+  });
+
+  it.each(["service-no-rows", "service-soft-empty", "service-error", "service-no-rows+error"])(
+    "treats a visible %s host evidence label as needing recovery",
+    (label) => {
+      const prepared = prepareDemoStep({
+        steps: [step("execute", `{"rows":[]}\n\n--- host evidence summary ---\nevidence: ${label}`)],
+        stepNumber: 2
+      });
+      expect(prepared?.system).toContain("obtain or recover compact factual evidence");
+    }
+  );
+
+  it("does not treat a visible service-data label as needing recovery", () => {
+    expect(
+      prepareDemoStep({
+        steps: [step("execute", '{"rows":[1]}\n\n--- host evidence summary ---\nevidence: service-data')],
+        stepNumber: 2
+      })
+    ).toBeUndefined();
   });
 
   it("conditionally surfaces exact recovery candidates after narrow-only success", () => {

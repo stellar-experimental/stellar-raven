@@ -47,8 +47,8 @@ export function demoOperationSummary(budget: DemoToolBudget): DemoOperationSumma
 const EXECUTION_FAILED_PREFIX = "Execution failed:";
 const DEMO_TRUNCATION_ADVISORY = "--- demo advisory ---\nThis execute result was truncated";
 const NO_HOST_EVIDENCE = "--- host evidence summary ---\nevidence: none";
-const INCONCLUSIVE_HOST_EVIDENCE =
-  "--- host evidence summary ---\nevidence: service-inconclusive";
+/** Service-evidence labels without data rows: no-rows, soft-empty, error, or a "+" combination. */
+const POOR_SERVICE_EVIDENCE = /--- host evidence summary ---\nevidence: service-(?:no-rows|soft-empty|error)\b/;
 
 function isSearchOutput(value: unknown): value is { hits: unknown[] } {
   return value !== null && typeof value === "object" && Array.isArray((value as { hits?: unknown }).hits);
@@ -66,7 +66,7 @@ function isExplicitlyTruncated(value: unknown): boolean {
 function isHostEvidencePoor(value: unknown): boolean {
   return (
     typeof value === "string" &&
-    (value.includes(NO_HOST_EVIDENCE) || value.includes(INCONCLUSIVE_HOST_EVIDENCE))
+    (value.includes(NO_HOST_EVIDENCE) || POOR_SERVICE_EVIDENCE.test(value))
   );
 }
 
@@ -131,7 +131,7 @@ export function prepareDemoStep({
     operations.ok === 0 &&
     (operations.error > 0 || operations.softEmpty > 0);
   const noHostEvidence = budget?.latestExecuteEvidence === "none";
-  const inconclusiveServiceEvidence =
+  const noRowsServiceEvidence =
     budget?.latestExecuteEvidence === "service-inconclusive" && (operations?.ok ?? 0) > 0;
   const recoveryHint = budget?.latestRecoveryHint ?? null;
 
@@ -145,7 +145,7 @@ export function prepareDemoStep({
   if (
     !operationRecovery &&
     !noHostEvidence &&
-    !inconclusiveServiceEvidence &&
+    !noRowsServiceEvidence &&
     recoveryHint === null &&
     signals.evidenceState !== "navigation-only" &&
     signals.evidenceState !== "needs-recovery"
@@ -161,8 +161,8 @@ export function prepareDemoStep({
   const reason =
     noHostEvidence
       ? "The latest execute returned no host-observed service, skill-content, or artifact evidence; catalog/spec/search results and model-authored constants are navigation or unsupported data, not factual grounding."
-      : inconclusiveServiceEvidence
-        ? "The latest successful service response contained no result rows. Its envelope remains ok, but it is inconclusive host evidence."
+      : noRowsServiceEvidence
+        ? "The latest successful service response contained no result rows. It is ok data, not a soft-empty or error result: an exact closed-world empty holds only at that source's scope, and it grounds no open-world negative."
       : recoveryHint
         ? recoveryHint.mode === "conditional-alternatives"
           ? `The latest execute used successful broad operation class(es) (${recoveryHint.sourceOperations.join(", ")}); the host did not inspect or judge their rows. If exact evidence answers the request or the question names a closed-world source, stop at that scope. If the open-world question remains unanswered, use at most one bounded uncalled alternative (${recoveryHint.candidates.map((candidate) => candidate.id).join(", ")}).`

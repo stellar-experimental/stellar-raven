@@ -1,6 +1,6 @@
 import { env } from "cloudflare:test";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { buildDemoTools, evidenceOutcome } from "../../src/demo/tools";
+import { buildDemoTools, evidenceLabel, evidenceOutcome } from "../../src/demo/tools";
 import { createDemoToolBudget, type DemoToolBudget } from "../../src/demo/budget";
 import { prepareDemoStep } from "../../src/demo/steps";
 import type { DemoFrame } from "../../src/demo/frames";
@@ -52,6 +52,17 @@ describe("demo tools at the worker boundary", () => {
         }
       })
     ).toBe("empty-success");
+  });
+
+  it.each([
+    [{ total: 1, ok: 1, error: 0, softEmpty: 0 }, "service-no-rows"],
+    [{ total: 1, ok: 0, error: 0, softEmpty: 1 }, "service-soft-empty"],
+    [{ total: 2, ok: 0, error: 2, softEmpty: 0 }, "service-error"],
+    [{ total: 3, ok: 1, error: 1, softEmpty: 1 }, "service-no-rows+soft-empty+error"]
+  ] as const)("labels service evidence without rows by outcome: %j", (operations, label) => {
+    const evidence = { kind: "service-inconclusive", skillRead: false, skillRuns: 0, artifactReads: 0 } as const;
+    expect(evidenceLabel({ ...operations }, evidence)).toBe(label);
+    expect(evidenceLabel({ ...operations }, { ...evidence, kind: "service-data" })).toBe("service-data");
   });
 
   it("displays short-name directory advice without adding it to ranked hits", async () => {
@@ -410,7 +421,8 @@ describe("demo tools at the worker boundary", () => {
     expect(recovery.nextSteps).toContain("{ ok: true, data, asOf, asOfBasis, caveat? }");
     expect(recovery.nextSteps).toContain("not factual evidence");
     expect(recovery.nextSteps).toContain("`codemode.search`");
-    expect(recovery.nextSteps).toContain('`soft-empty` is inconclusive; an ok `caveat` ("no-rows" or "unverified-match") grounds no negative and no identity');
+    expect(recovery.nextSteps).toContain('`soft-empty` is inconclusive. An ok `caveat` ("no-rows" or "unverified-match") grounds no open-world negative and no identity');
+    expect(recovery.nextSteps).toContain("an exact closed-world empty still holds at that source's scope");
     expect(recovery.nextSteps).toContain("Scores share one scale");
     expect(recovery.nextSteps).toContain(">=1.6x");
     expect(recovery.nextSteps).toContain("hit order is authoritative");
@@ -697,7 +709,7 @@ describe("demo tools at the worker boundary", () => {
         return { documentsOk: documents.ok };
       }`
     })) as string;
-    expect(failed).toContain("evidence: service-inconclusive");
+    expect(failed).toContain("evidence: service-error");
     expect(budget.latestRecoveryHint).toBeNull();
     const recoveryStep = prepareDemoStep({ steps: [], stepNumber: 2, budget });
     expect(recoveryStep?.system).toContain("returned only errors");
@@ -737,7 +749,7 @@ describe("demo tools at the worker boundary", () => {
     expect(result).not.toContain("--- TRUNCATED ---");
     expect(result).toContain("--- demo advisory ---");
     expect(result).toContain("--- host evidence summary ---");
-    expect(result).toContain("evidence: service-inconclusive");
+    expect(result).toContain("evidence: service-error");
     expect(result).toContain("service operations: total=10 ok=0 error=10 soft-empty=0");
     expect(result).toContain("Answer only from the visible returned fields");
     expect(budgetReport()).toMatchObject({

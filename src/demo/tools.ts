@@ -125,6 +125,21 @@ export function evidenceOutcome(
   return summary.error > 0 ? "error" : "soft-empty";
 }
 
+/**
+ * Model-visible evidence label. The executor's "service-inconclusive" kind
+ * covers ok calls with no rows, soft-empty calls, and errors together, so the
+ * label names the outcomes that occurred instead of one shared word.
+ */
+export function evidenceLabel(operations: ExecuteOperationSummary, evidence: ExecuteEvidenceSummary): string {
+  if (evidence.kind !== "service-inconclusive") return evidence.kind;
+  const outcomes = [
+    operations.ok > 0 ? "no-rows" : undefined,
+    operations.softEmpty > 0 ? "soft-empty" : undefined,
+    operations.error > 0 ? "error" : undefined
+  ].filter((outcome) => outcome !== undefined);
+  return `service-${outcomes.join("+")}`;
+}
+
 function hostEvidenceSummary(
   operations: ExecuteOperationSummary,
   evidence: ExecuteEvidenceSummary,
@@ -132,7 +147,7 @@ function hostEvidenceSummary(
 ): string {
   return [
     "--- host evidence summary ---",
-    `evidence: ${evidence.kind}`,
+    `evidence: ${evidenceLabel(operations, evidence)}`,
     `service operations: total=${operations.total} ok=${operations.ok} error=${operations.error} soft-empty=${operations.softEmpty}`,
     `skill content read: ${evidence.skillRead ? "yes" : "no"}; artifact reads: ${evidence.artifactReads}`,
     `model boundary: ${truncated ? "truncated; inspect the source-basis manifest above" : "complete"}`
@@ -389,7 +404,7 @@ export function buildDemoTools(opts: {
           : " No search calls remain; do not conclude capability absence from mismatched hits alone, and use the best available exact ids.";
       const baseNextSteps =
         hits.length > 0
-          ? `Navigation only: these hits identify composable operations and skills, but they are not factual evidence for the user's answer. Write ONE \`execute\` script that calls several relevant operations (Promise.all across services for independent calls), then follow up with deeper calls parameterized by returned rows. Every call resolves to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { kind, message, hint? } } — payload fields live under \`.data\` (\`r.data.projects\`, never \`r.projects\`); check \`r.ok\` first. Errors are failed evidence and \`soft-empty\` is inconclusive; an ok \`caveat\` ("no-rows" or "unverified-match") grounds no negative and no identity: recover with remaining budget or qualify/abstain. Skill hits are operational playbooks — read needed sections via \`codemode.skill.read(id, { sections })\`; runnable hits show the exact \`codemode.skill.run("<exact id>", input)\` call. Scores share one scale; gated hits lead except a backfill hit may be promoted when it decisively dominates (>=1.6x), so hit order is authoritative. The same production discovery helpers are enabled in-script: \`codemode.search\`, \`codemode.describe\`, \`codemode.catalog\`, and \`codemode.spec\`. Avoid lossy projection false negatives: inspect row keys or filter raw rows before selecting fields.${truncated ? " More entries matched than shown (truncated)." : ""}${searchAgain}`
+          ? `Navigation only: these hits identify composable operations and skills, but they are not factual evidence for the user's answer. Write ONE \`execute\` script that calls several relevant operations (Promise.all across services for independent calls), then follow up with deeper calls parameterized by returned rows. Every call resolves to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { kind, message, hint? } } — payload fields live under \`.data\` (\`r.data.projects\`, never \`r.projects\`); check \`r.ok\` first. Errors are failed evidence and \`soft-empty\` is inconclusive. An ok \`caveat\` ("no-rows" or "unverified-match") grounds no open-world negative and no identity; an exact closed-world empty still holds at that source's scope. Otherwise recover with remaining budget or qualify/abstain. Skill hits are operational playbooks — read needed sections via \`codemode.skill.read(id, { sections })\`; runnable hits show the exact \`codemode.skill.run("<exact id>", input)\` call. Scores share one scale; gated hits lead except a backfill hit may be promoted when it decisively dominates (>=1.6x), so hit order is authoritative. The same production discovery helpers are enabled in-script: \`codemode.search\`, \`codemode.describe\`, \`codemode.catalog\`, and \`codemode.spec\`. Avoid lossy projection false negatives: inspect row keys or filter raw rows before selecting fields.${truncated ? " More entries matched than shown (truncated)." : ""}${searchAgain}`
           : remainingSearches > 0
             ? `No navigation hits. Use another candidate family or varied vocabulary (${remainingSearches} searches remain), or use codemode.search inside execute; do not conclude the capability or fact is absent from one empty catalog search.`
             : "No navigation hits and no top-level search calls remain. You may use codemode.search inside execute; do not conclude the capability or fact is absent from an empty catalog search, and qualify if factual evidence cannot be recovered.";
