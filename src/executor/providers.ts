@@ -605,7 +605,7 @@ function describeCatalogEntry(catalog: Catalog, id?: unknown) {
       ...(availableSections.length > 0 ? { availableSections } : {}),
       usage:
         availableSections.length > 0
-          ? `read sections via codemode.skill.read(${JSON.stringify(entry.id)}, { sections: [...] }) — section keys in availableSections; the result arrives under r.data.sections`
+          ? `read sections via codemode.skill.read(${JSON.stringify(entry.id)}, { sections: [...] }) — section keys in availableSections; r.data.sections is an array of { section, content, url } in request order`
           : `read the whole skill via codemode.skill.read(${JSON.stringify(entry.id)}) — the result arrives under r.data.content`
     };
   }
