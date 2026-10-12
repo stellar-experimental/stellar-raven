@@ -692,7 +692,10 @@ replaced listener stops the method. Nothing restarts a server.
 The check reads sockets and does not connect, and a short interval remains between a check and its
 call. See the run sheet's "2026-10-12 amendment" for these limits.
 
-Next step: an independent review of that change, then a fresh assembled and signed plan. A full
+Codex `gpt-6-astra` at high reviewed the change (RA to RA4, final APPROVE). A free live check ran
+the baseline source under the candidate's Wrangler and matched the surface pin.
+
+Next step (paid; needs a weekend spend authorization): a fresh assembled and signed plan. A full
 collection needs about 2.5 hours of baseline uptime. Run on a quiet machine, and leave the DocSearch
 key idle for at least one hour before the capacity check.
 

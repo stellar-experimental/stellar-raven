@@ -399,7 +399,12 @@ Now both arms run one local dev runtime.
 The local dev runtime is no longer part of the measured difference. Production does not run it.
 The measured difference is the source revision, its installed source dependencies, its `wrangler.jsonc`, and the adapter mode.
 Soak run 2 ran Wrangler `4.149.0` on the baseline source, and the bound surface pin matched.
-That run installed Wrangler in the baseline worktree. No run has reused the candidate's files yet.
+That run installed Wrangler in the baseline worktree.
+On 2026-10-12 the orchestrator ran the reuse method once, with no paid call.
+The baseline source `90d0ba75` ran under the candidate worktree's `wrangler.js` (4.149.0) on port 8797.
+The bound surface matched the pin `6cf5d1cdd3cd16c6b8bdb09a45917755cffaf0781f321734d7c9f7649a71d238`
+([report](2026-10-12-launch-change/reuse-live-surface.json)).
+One `search` call and one sandbox `execute` call (no upstream request) returned ok results.
 The step 4 surface probes check the bound surface at launch, before any paid call.
 
 ### Stop on a lost port
@@ -466,7 +471,8 @@ Limits:
 
 - The next attempt needs a launch revision with this change, a fresh assembled plan, and a fresh signed authorization.
   The dated hashes in this run sheet are history.
-- An independent review of this change must complete before the signature.
+- Codex `gpt-6-astra` at high reviewed this change four times: RA, RA2, and RA3 (CHANGES), then RA4 (APPROVE).
+  The reviews are in [2026-10-12-launch-change/](2026-10-12-launch-change/). Every finding is reconciled.
 - A full collection needs about 2.5 hours of server uptime. Run on a quiet machine.
 - Leave the public DocSearch key idle for at least one hour before the capacity check.
 
