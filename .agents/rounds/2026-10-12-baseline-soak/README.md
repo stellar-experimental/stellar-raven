@@ -14,12 +14,14 @@ The replay called the real upstream services with the server's own keys.
   signature. Its debug log has no final `ProxyController` entry, so the record cannot show the
   idle gap of that original request. The idle-limit race is the leading explanation, not a
   proven mechanism.
-- **Uptime, the cf token, and the remote AI binding are not necessary for the stop.** The
+- **A fixed-time expiry explanation is weaker.** The
   baseline server ran 3 h 15 min (server uptime; the main replay window was 3 h 12 min) under
   replayed attempt 3 and attempt 1 traffic: 2,268 requests, 0 network errors, 0 stops. The token
   expired at 1 h 00 min. The server stayed available past the remote preview refresh points at
   50 min and 100 min. (This does not show that each refresh succeeded.) The same stop then came
-  4 min into the targeted check.
+  4 min into the targeted check, on the same server after the token expiry. These observations
+  weaken a fixed-time expiry explanation. The lane did not isolate the remote binding or the
+  token as experimental variables: every run kept both.
 - **Wrangler 4.149.0 does not remove the risk.** Its source logs a `ProxyWorker` error and
   continues (one request fails). Runs 2 and 3 did not exercise that branch. They showed a
   different outcome near the same timing: a runtime `workerd` crashed, Wrangler started new
@@ -48,7 +50,7 @@ are:
    `cause.message` (empty) and the bug notice, and the process exits with code 1.
    In 4.149.0, `castErrorCause` keeps the message, and `handleErrorEvent` logs
    `Error inside ProxyWorker (the affected request failed; the dev server continues)`.
-2. **Runtime crash.** A runtime `workerd` exits about 1 s to 2 s after the race, with no runtime
+2. **Runtime crash.** A runtime `workerd` exits about 1 s to 2 s after a request near the 5 s gap, with no runtime
    output and no macOS crash report. Wrangler prints `The Workers runtime crashed unexpectedly and
    is being restarted (crash #1)`. Every later sweep request got `ECONNREFUSED` on the public
    port (run 2: 1 request; run 3: 5 requests in about 20 s; control 4b: all later requests). No
@@ -171,8 +173,9 @@ the public port.
 
 ## Upstream follow-up (not done here)
 
-Two Wrangler defects are worth a report to `cloudflare/workers-sdk` when the owner allows an
-upstream post: the 5 s keep-alive race between the proxy and runtime `workerd` instances, and
+Two Wrangler issues are worth a report to `cloudflare/workers-sdk` when the owner allows an
+upstream post: the suspected 5 s keep-alive race between the proxy and runtime `workerd`
+instances (with the observed fatal empty error in 4.120.1), and
 the public port that refuses requests after a runtime restart. This lane made no upstream
 post.
 

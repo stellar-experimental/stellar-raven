@@ -674,8 +674,9 @@ their rows support no claim. Each record is archived, moved unchanged, under
 The 2026-10-12 soak reproduced the stop path ([record](rounds/2026-10-12-baseline-soak/README.md)).
 A request about 5 s after the previous response can fail with `Network connection lost.` Wrangler
 4.120.1 then exits with an empty `[ERROR]`. The leading explanation is a race with the local
-proxy-to-runtime keep-alive idle limit. Uptime, the cf token, and the remote AI binding are not
-necessary for the stop. Wrangler 4.149.0 logs that failure and continues. Near the same timing, a
+proxy-to-runtime keep-alive idle limit. The server survived the token expiry and the scheduled
+refresh times, which weakens a fixed-time expiry explanation; the lane did not isolate the remote
+binding or the token. Wrangler 4.149.0 logs that failure and continues. Near the same timing, a
 runtime crash of unknown cause can also occur, and both versions then refused later requests on
 the public port.
 
