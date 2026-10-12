@@ -684,6 +684,83 @@ describe("claim support: p9 entity lists", () => {
     ]);
   });
 
+  describe("record scopes (review RJ-1)", () => {
+    const pair = [execute({ items: [{ name: "Alpha", status: "Live" }, { name: "Bravo", status: "Live" }] })];
+    const measure = (transcriptEvidence) =>
+      entityListCoverage({ transcript: pair, candidateAnswer: "Alpha and Bravo are Live.", transcriptEvidence });
+    const missingLabels = (text) => measure(text).byClaim[0].missing.map((record) => record.label);
+
+    it("never lends a field of a later object to an earlier record", () => {
+      expect(missingLabels('   span: {"name":"Alpha"},{"status":"Live","name":"Bravo"}')).toEqual(["Alpha"]);
+    });
+
+    it("accepts a record's own field before or after its identity", () => {
+      expect(measure('   span: {"status":"Live","name":"Alpha"},{"name":"Bravo","status":"Live"}').complete).toBe(true);
+    });
+
+    it("requires the exact name and the exact value", () => {
+      expect(missingLabels("   span: {name: Alpha Other | status: Live}; {name: Bravo | status: Live}")).toEqual(["Alpha"]);
+      expect(missingLabels("   span: {name: Alpha | status: Live-preview}; {name: Bravo | status: Live}")).toEqual(["Alpha"]);
+    });
+
+    it("never counts a field of a nested object", () => {
+      expect(missingLabels('   span: {"name":"Alpha","child":{"status":"Live"}},{"name":"Bravo","status":"Live"}')).toEqual(["Alpha"]);
+    });
+
+    it("never counts a line outside braces that names two records", () => {
+      expect(measure('   span: name="Alpha" name="Bravo" status="Live"').shown).toBe(0);
+    });
+
+    it("needs one scope for each record when two records share a name", () => {
+      const twins = [execute({ items: [{ name: "Alpha", status: "Live" }, { name: "Alpha", status: "Live" }, { name: "Bravo", status: "Live" }] })];
+      const coverage = (text) => entityListCoverage({ transcript: twins, candidateAnswer: "Alpha and Bravo are Live.", transcriptEvidence: text });
+      expect(coverage("   span: {name: Alpha | status: Live}; {name: Bravo | status: Live}")).toMatchObject({ records: 3, shown: 2 });
+      expect(coverage("   span: {name: Alpha | status: Live}; {name: Alpha | status: Live}; {name: Bravo | status: Live}").complete).toBe(true);
+    });
+
+    it("quotes a value with a comma, so the measure reads it whole", () => {
+      const firms = [execute({ items: [{ name: "Alpha", company: "Acme, Inc" }, { name: "Bravo", company: "Zeta Labs" }] })];
+      const answer = "Alpha and Bravo name their company in the directory.";
+      const text = pack(answer, firms);
+      expect(text).toContain('{name: Alpha | company: "Acme, Inc"}');
+      expect(entityListCoverage({ transcript: firms, candidateAnswer: answer, transcriptEvidence: text }).complete).toBe(true);
+    });
+  });
+
+  describe("requirements before rendering limits (review RJ-2)", () => {
+    const records = Array.from({ length: 25 }, (_, index) => ({ name: `Project ${String(index).padStart(2, "0")} Hub`, status: "Live" }));
+    const transcript = [execute({ items: records })];
+    const answer = `${records.map((record) => record.name).join(", ")} are Live.`;
+
+    it("keeps a record that the unit limit drops in the denominator", () => {
+      const [claim] = entityListClaims({ transcript, candidateAnswer: answer });
+      expect(claim.records).toHaveLength(25);
+      const first24 = `   span: ${records.slice(0, 24).map((record) => `{name: ${record.name} | status: Live}`).join("; ")}`;
+      const coverage = entityListCoverage({ transcript, candidateAnswer: answer, transcriptEvidence: first24 });
+      expect(coverage).toMatchObject({ records: 25, shown: 24, complete: false });
+      expect(coverage.byClaim[0].missing.map((record) => record.label)).toEqual(["Project 24 Hub"]);
+    });
+
+    it("names the limit that removed each record", () => {
+      const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: answer, transcript });
+      expect(audit.entityListLimits).toEqual([{ claimIndex: 0, path: "items", label: "Project 24 Hub", limit: "records-per-unit" }]);
+      // The limit only stops the list unit from showing the record. The measure reads the final
+      // text, where another support unit still shows it.
+      expect(audit.entityLists).toEqual(entityListCoverage({ transcript, candidateAnswer: answer, transcriptEvidence: text }));
+      expect(audit.entityLists.records).toBe(25);
+      expect(listUnits(text)[0].span).not.toContain("Project 24 Hub");
+    });
+  });
+
+  it("measures the clipped text when every budget step is spent", () => {
+    const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: listAnswer, transcript: dexTranscript, maxChars: 600 });
+
+    expect(text).toHaveLength(600);
+    expect(text.endsWith("...")).toBe(true);
+    expect(audit.entityLists).toEqual(entityListCoverage({ transcript: dexTranscript, candidateAnswer: listAnswer, transcriptEvidence: text }));
+    expect(audit.entityLists.complete).toBe(false);
+  });
+
   it("leaves a pack without an entity list unchanged by the list rule", () => {
     const transcript = [execute({ records: [{ title: "Lumen Bonds", content: "These bills mature on 2026-12-31 or earlier." }] })];
     const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer: "The bills mature on 2026-12-31.", transcript });

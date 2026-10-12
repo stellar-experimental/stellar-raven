@@ -2085,7 +2085,7 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
     if (!placed) unrenderable.add(anchor.id);
   }
   const fallbackUnits = selectFallbackUnits({ ...fallback, segments, bySegment, anchors, units, spans, spanChars });
-  const listUnits = listSupportUnits({ lists, anchors, segments, occurrences });
+  const { units: listUnits, limited: listLimited } = listSupportUnits({ lists, anchors, segments, occurrences });
   let alternates = 0;
   for (const anchor of anchors) {
     if (alternates >= MAX_ALTERNATE_SUPPORT_UNITS) break;
@@ -2134,14 +2134,13 @@ function selectSupportUnits({ anchors, segments, occurrences, bySegment, spanCha
         .map((segment) => segment.entryIndex)
     ).filter((entryIndex) => !units.some((other) => other !== unit && other.segment.entryIndex === entryIndex && other.span.toLowerCase() === unit.span.toLowerCase()));
   }
-  return { units, unrenderable };
+  return { units, unrenderable, listLimited };
 }
 
 // Entity lists (p9). When one answer claim names two or more records of the same source array,
 // the pack shows the claim-related fields of every named record together. A judge then reads the
 // status of each listed entity, not only of the one entity that another rule selected.
 const LIST_IDENTITY_KEYS = ["title", "name", "fullName", "label", "slug"];
-const LIST_IDENTITY_KEY_RE = /(?<![\p{L}\p{N}_])["']?(?:title|name|fullName|label|slug)["']?\s*[:=]/giu;
 const LIST_SKIP_KEYS = new Set([
   ...LIST_IDENTITY_KEYS,
   "id",
@@ -2248,12 +2247,13 @@ function fieldKeyWords(key) {
 }
 
 // A field relates to the claim when the claim names the field (TVL for tvlUSD) or states one of
-// the listed records' text values for it (Inactive for status).
+// the listed records' text values for it (Inactive for status). Every such field is a requirement;
+// the rendering limit applies later.
 function listClaimKeys(records, claimText) {
   const labels = new Set(records.map((record) => record.label.toLowerCase()));
   const keys = [];
   for (const record of records) {
-    for (const [key, raw] of record.fields) {
+    for (const [key] of record.fields) {
       if (keys.includes(key)) continue;
       const named = fieldKeyWords(key).some((word) => wholePhraseRegExp(word).test(claimText));
       const stated = records.some((other) => {
@@ -2268,40 +2268,40 @@ function listClaimKeys(records, claimText) {
       if (named || stated) keys.push(key);
     }
   }
-  return keys.slice(0, MAX_LIST_KEYS);
+  return keys;
 }
 
+// The complete requirements of each entity-list claim: every qualifying group, every named record,
+// and every claim field. Rendering limits never shrink this list; listSupportUnits applies them.
 function listClaimsFor(entries, answer) {
   if (!answer.trim()) return [];
-  const records = collectListRecords(entries);
   const groups = new Map();
-  for (const record of records) {
-    const byLabel = groups.get(record.group) ?? new Map();
-    if (!byLabel.has(record.label.toLowerCase())) byLabel.set(record.label.toLowerCase(), record);
-    groups.set(record.group, byLabel);
+  for (const record of collectListRecords(entries)) {
+    const list = groups.get(record.group) ?? [];
+    list.push(record);
+    groups.set(record.group, list);
   }
   const claims = [];
   answerClaimRanges(answer).forEach((range, claimIndex) => {
     const claimText = answer.slice(range.start, range.end);
     const candidates = [...groups.values()]
-      .map((byLabel) => [...byLabel.values()].filter((record) => wholePhraseRegExp(record.label).test(claimText)))
-      .filter((hits) => hits.length >= 2)
+      .map((records) => records.filter((record) => wholePhraseRegExp(record.label).test(claimText)))
+      .filter((hits) => new Set(hits.map((record) => record.label.toLowerCase())).size >= 2)
       .sort((a, b) => b.length - a.length || a[0].entryIndex - b[0].entryIndex);
     const assigned = new Set();
-    let groupsForClaim = 0;
+    let groupRank = 0;
     for (const hits of candidates) {
-      if (groupsForClaim >= MAX_LIST_GROUPS_PER_CLAIM) break;
-      const fresh = hits.filter((record) => !assigned.has(record.label.toLowerCase())).slice(0, MAX_LIST_RECORDS);
+      const fresh = hits.filter((record) => !assigned.has(record.label.toLowerCase()));
       if (!fresh.length) continue;
       const keys = listClaimKeys(hits, claimText);
       if (!keys.length) continue;
       fresh.forEach((record) => assigned.add(record.label.toLowerCase()));
-      groupsForClaim += 1;
       claims.push({
         claimIndex,
         claim: cleanText(claimText),
         entryIndex: fresh[0].entryIndex,
         path: fresh[0].path,
+        groupRank,
         keys,
         records: fresh.map((record) => ({
           label: record.label,
@@ -2309,6 +2309,7 @@ function listClaimsFor(entries, answer) {
           values: keys.filter((key) => record.fields.has(key)).map((key) => [key, record.fields.get(key)])
         }))
       });
+      groupRank += 1;
     }
   });
   return claims;
@@ -2319,9 +2320,10 @@ export function entityListClaims({ transcript = [], candidateAnswer = "" } = {})
   return listClaimsFor(executeEntries(transcript), String(candidateAnswer ?? ""));
 }
 
+// A value with a separator is quoted, so the measure reads it back whole.
 function listValueText(value) {
   const text = cleanText(sanitizeUrlsInText(String(value)));
-  return /[|;{}]/.test(text) ? JSON.stringify(text) : text;
+  return /[|;,{}"]/.test(text) ? JSON.stringify(text) : text;
 }
 
 // A null field states no value, so it is not rendered; the measure never requires it.
@@ -2331,22 +2333,50 @@ function listRecordText(record) {
   return `{${parts.join(" | ")}}`;
 }
 
-function listSupportUnits({ lists, anchors, segments, occurrences }) {
-  // A later claim that lists only records an earlier unit already shows, with the same fields,
-  // adds no unit.
+// The rendering limits: groups for each claim, records for each unit, fields for each record, and
+// units for each pack. Each record or field a limit removes is listed with that limit.
+function selectListUnits(lists) {
+  const limited = [];
+  const note = (list, record, limit, keys = []) =>
+    limited.push({ claimIndex: list.claimIndex, path: list.path, label: record.label, limit, ...(keys.length ? { keys } : {}) });
   const shownFields = new Map();
-  const isShown = (list, record) => {
-    const fields = shownFields.get(`${list.entryIndex}|${list.path}|${record.label.toLowerCase()}`);
-    return Boolean(fields) && record.values.every(([key]) => fields.has(key));
-  };
-  return lists.filter((list) => {
-    if (list.records.every((record) => isShown(list, record))) return false;
-    for (const record of list.records) {
-      const key = `${list.entryIndex}|${list.path}|${record.label.toLowerCase()}`;
+  const shownKey = (list, record) => `${list.entryIndex}|${list.path}|${record.label.toLowerCase()}`;
+  const rendered = [];
+  for (const list of lists) {
+    if (list.groupRank >= MAX_LIST_GROUPS_PER_CLAIM) {
+      list.records.forEach((record) => note(list, record, "groups-per-claim"));
+      continue;
+    }
+    const keys = list.keys.slice(0, MAX_LIST_KEYS);
+    const records = list.records.slice(0, MAX_LIST_RECORDS).map((record) => {
+      const cut = record.values.filter(([key, value]) => !keys.includes(key) && value !== null).map(([key]) => key);
+      if (cut.length) note(list, record, "fields-per-record", cut);
+      return { ...record, values: record.values.filter(([key]) => keys.includes(key)) };
+    });
+    list.records.slice(MAX_LIST_RECORDS).forEach((record) => note(list, record, "records-per-unit"));
+    // A later claim that lists only records an earlier unit already shows, with the same fields,
+    // adds no unit.
+    const repeats = records.every((record) => {
+      const fields = shownFields.get(shownKey(list, record));
+      return Boolean(fields) && record.values.every(([key]) => fields.has(key));
+    });
+    if (repeats) continue;
+    if (rendered.length >= MAX_LIST_UNITS) {
+      records.forEach((record) => note(list, record, "units-per-pack"));
+      continue;
+    }
+    for (const record of records) {
+      const key = shownKey(list, record);
       shownFields.set(key, new Set([...(shownFields.get(key) ?? []), ...record.values.map(([field]) => field)]));
     }
-    return true;
-  }).slice(0, MAX_LIST_UNITS).map((list) => {
+    rendered.push({ ...list, records });
+  }
+  return { rendered, limited };
+}
+
+function listSupportUnits({ lists, anchors, segments, occurrences }) {
+  const { rendered, limited } = selectListUnits(lists);
+  const units = rendered.map((list) => {
     const span = list.records.map(listRecordText).join("; ");
     const entrySegment = segments.find((segment) => segment.entryIndex === list.entryIndex);
     const inEntry = anchors
@@ -2371,49 +2401,115 @@ function listSupportUnits({ lists, anchors, segments, occurrences }) {
       alternate: false
     };
   });
+  return { units, limited };
 }
 
-// A record counts as shown when its identity field and each of its non-null claim fields appear in
-// rendered source text on one line, after the identity and before the next record's identity.
-function listRecordShown(lines, record) {
-  const identity = new RegExp(
-    `(?<![\\p{L}\\p{N}_])["']?(?:${LIST_IDENTITY_KEYS.join("|")})["']?\\s*[:=]\\s*["']?${escapeRegExp(record.label)}(?=["'\\s|,;}]|$)`,
-    "giu"
-  );
-  const required = record.values.filter(([, value]) => value !== null);
-  let best = null;
-  for (const line of lines) {
-    for (const match of line.matchAll(identity)) {
-      const from = match.index + match[0].length;
-      LIST_IDENTITY_KEY_RE.lastIndex = from;
-      const next = LIST_IDENTITY_KEY_RE.exec(line);
-      const window = line.slice(from, next ? next.index : line.length);
-      const missing = required.filter(([key, value]) => !new RegExp(
-        `(?<![\\p{L}\\p{N}_])["']?${escapeRegExp(key)}["']?\\s*[:=]\\s*["']?${escapeRegExp(cleanText(String(value)))}(?![\\p{L}\\p{N}])`,
-        "iu"
-      ).test(window)).map(([key]) => key);
-      if (!best || missing.length < best.missing.length) best = { missing };
-      if (!missing.length) return { shown: true, labelShown: true, missingKeys: [] };
+// Record scopes of rendered source text. Each object in braces is one scope, with its nested
+// objects removed, so a field belongs only to its own object. An object the line clips runs to the
+// line end. Text outside every object is one more scope.
+function sourceRecordScopes(text) {
+  const scopes = [];
+  for (const line of text.split("\n")) {
+    const objects = [];
+    const open = [];
+    let quoted = false;
+    for (let at = 0; at < line.length; at += 1) {
+      const ch = line[at];
+      if (quoted) {
+        if (ch === "\\") at += 1;
+        else if (ch === '"') quoted = false;
+        continue;
+      }
+      if (ch === '"') quoted = true;
+      else if (ch === "{") open.push(at);
+      else if (ch === "}" && open.length) objects.push({ from: open.pop(), to: at + 1 });
     }
+    while (open.length) objects.push({ from: open.pop(), to: line.length });
+    // The text of [from, to) with every object nested inside it blanked out.
+    const own = (from, to, outside = false) => {
+      const chars = [...line.slice(from, to)];
+      for (const child of objects) {
+        if ((outside || child.from > from) && child.to <= to) chars.fill(" ", child.from - from, child.to - from);
+      }
+      return chars.join("");
+    };
+    for (const object of objects) scopes.push({ text: own(object.from, object.to), braced: true });
+    scopes.push({ text: own(0, line.length, true), braced: false });
   }
-  return best
-    ? { shown: false, labelShown: true, missingKeys: best.missing }
-    : { shown: false, labelShown: false, missingKeys: required.map(([key]) => key) };
+  return scopes;
+}
+
+// Every complete scalar value of a field in one scope. A quoted value ends at its closing quote;
+// any other value ends at a separator or at the next field.
+function scopeFieldValues(scope, key) {
+  const values = [];
+  const re = new RegExp(`(?<![\\p{L}\\p{N}_])["']?${escapeRegExp(key)}["']?\\s*[:=]\\s*`, "giu");
+  for (const match of scope.matchAll(re)) {
+    const rest = scope.slice(match.index + match[0].length);
+    const quote = rest[0] === '"' || rest[0] === "'" ? rest[0] : "";
+    if (quote) {
+      let value = "";
+      for (let at = 1; at < rest.length; at += 1) {
+        if (rest[at] === "\\" && quote === '"') {
+          value += rest[at + 1] ?? "";
+          at += 1;
+        } else if (rest[at] === quote) {
+          values.push(value);
+          break;
+        } else {
+          value += rest[at];
+        }
+      }
+      continue;
+    }
+    const value = rest.match(/^(.*?)(?=\s*[|;,}]|\s+["']?[\w.]+["']?\s*[:=]|$)/)?.[1] ?? "";
+    if (value.trim()) values.push(value.trim());
+  }
+  return values.map((value) => cleanText(value).toLowerCase());
+}
+
+function scopeIdentities(scope) {
+  return new Set(LIST_IDENTITY_KEYS.flatMap((key) => scopeFieldValues(scope, key)));
+}
+
+// A record counts as shown in one scope that holds its exact identity value and the exact value of
+// each of its non-null claim fields. A scope outside braces that names two records is ambiguous and
+// never counts. One scope serves one record of a claim, so two same-named records need two scopes.
+function measureListClaim(list, scopes) {
+  const used = new Set();
+  const records = list.records.map((record) => {
+    const label = cleanText(record.label).toLowerCase();
+    const required = record.values.filter(([, value]) => value !== null);
+    let best = null;
+    for (const [index, scope] of scopes.entries()) {
+      if (used.has(index) || !scope.identities.has(label)) continue;
+      if (!scope.braced && scope.identities.size > 1) continue;
+      const missingKeys = required
+        .filter(([key, value]) => !scopeFieldValues(scope.text, key).includes(cleanText(String(value)).toLowerCase()))
+        .map(([key]) => key);
+      if (!missingKeys.length) {
+        used.add(index);
+        return { label: record.label, shown: true, labelShown: true, missingKeys: [] };
+      }
+      if (!best || missingKeys.length < best.length) best = missingKeys;
+    }
+    return { label: record.label, shown: false, labelShown: Boolean(best), missingKeys: best ?? required.map(([key]) => key) };
+  });
+  return {
+    claimIndex: list.claimIndex,
+    path: list.path,
+    keys: list.keys,
+    records: records.length,
+    shown: records.filter((record) => record.shown).length,
+    missing: records.filter((record) => !record.shown).map(({ label, labelShown, missingKeys }) => ({ label, labelShown, missingKeys }))
+  };
 }
 
 function measureEntityLists(lists, pack) {
-  const lines = packSourceEvidenceText(pack).split("\n");
-  const claims = lists.map((list) => {
-    const records = list.records.map((record) => ({ label: record.label, ...listRecordShown(lines, record) }));
-    return {
-      claimIndex: list.claimIndex,
-      path: list.path,
-      keys: list.keys,
-      records: records.length,
-      shown: records.filter((record) => record.shown).length,
-      missing: records.filter((record) => !record.shown).map(({ label, labelShown, missingKeys }) => ({ label, labelShown, missingKeys }))
-    };
-  });
+  const scopes = sourceRecordScopes(packSourceEvidenceText(pack))
+    .map((scope) => ({ ...scope, identities: scopeIdentities(scope.text) }))
+    .filter((scope) => scope.identities.size);
+  const claims = lists.map((list) => measureListClaim(list, scopes));
   const records = claims.reduce((sum, claim) => sum + claim.records, 0);
   const shown = claims.reduce((sum, claim) => sum + claim.shown, 0);
   return { claims: claims.length, records, shown, complete: shown === records, byClaim: claims };
@@ -2421,8 +2517,8 @@ function measureEntityLists(lists, pack) {
 
 /**
  * Entity-list coverage of any serialized pack, measured on its rendered source text only. The
- * claims come from the answer and the saved execute results, so the measure is the same for every
- * pack version.
+ * requirements come from the answer and the saved execute results, before any rendering limit, so
+ * the measure is the same for every pack version.
  */
 export function entityListCoverage({ transcript = [], candidateAnswer = "", transcriptEvidence = "" } = {}) {
   return measureEntityLists(entityListClaims({ transcript, candidateAnswer }), transcriptEvidence);
@@ -2732,10 +2828,15 @@ export function explainTranscriptEvidencePack({
     urlLimit: MAX_CANONICAL_URLS
   };
   for (;;) {
-    const { units, unrenderable } = supportUnitsAt(state.supportSpanChars);
+    const { units, unrenderable, listLimited } = supportUnitsAt(state.supportSpanChars);
     state.supportUnitLimit = Math.min(state.supportUnitLimit, units.length);
     const kept = units.slice(0, state.supportUnitLimit);
-    const audit = { packVersion: PACK_VERSION, ...supportAudit({ ...support, unrenderable, units: kept }) };
+    // entityListLimits names each list record or field that a rendering limit removed.
+    const audit = {
+      packVersion: PACK_VERSION,
+      ...supportAudit({ ...support, unrenderable, units: kept }),
+      entityListLimits: listLimited
+    };
     const serialize = () => serializePack({
       entries,
       ranked,

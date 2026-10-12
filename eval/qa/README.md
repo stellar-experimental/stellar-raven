@@ -297,8 +297,13 @@ A record is an identified object (title, name, fullName, label, or slug) in an a
 The unit shows the claim fields of every named record, such as `{name: Comet | status: Inactive}`.
 A field is a claim field when the claim names it (TVL for `tvlUSD`) or states a listed record's text value for it.
 Null fields are not shown. A later claim that names only records an earlier unit shows adds no unit.
-The pack measures entity-list coverage on the serialized text after every budget cut.
-A record counts as shown when its identity field and each non-null claim field are on one line, before the next record's identity.
+The requirements are every named record and every claim field, before any rendering limit.
+Rendering limits (3 groups for each claim, 24 records for each unit, 4 fields, 12 units) apply after that.
+The audit's `entityListLimits` names each record or field that a limit removed.
+The pack measures entity-list coverage on the serialized text after every budget cut, and after a clip.
+Each object in braces is one record scope, without its nested objects; the text outside braces is one more scope.
+A record counts as shown when one scope holds its exact identity value and the exact value of each non-null claim field.
+A scope outside braces that names two records never counts. Two records with one name need two scopes.
 A coverage gap adds the general `claimSupportNotice` line. `entityListCoverage` applies the same measure to any pack version.
 Each unit names its execute entry, truncation state, JSON path, and source record.
 Entry numbers name transcript calls, not sources; two calls can return the same source.
