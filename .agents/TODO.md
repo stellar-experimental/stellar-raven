@@ -671,11 +671,20 @@ their rows support no claim. Each record is archived, moved unchanged, under
   stopped at 07:02:39Z, after 1 h 56 min, with an empty `[ERROR]`. The supervisor stopped both
   arms at about row 143. The Wrangler debug log is in the attempt 3 archive.
 
-Next step (free): soak-test the baseline server at `90d0ba75` for at least 3 hours under replayed
-MCP load from the attempt 3 transcripts, with the same remote AI binding and cf-token procedure.
-Find the crash cause before the next paid attempt. A full collection needs about 2.5 hours of
-baseline uptime. Run on a quiet machine, and leave the DocSearch key idle for at least one hour
-before the capacity check.
+The 2026-10-12 soak reproduced the stop path ([record](rounds/2026-10-12-baseline-soak/README.md)).
+A request about 5 s after the previous response can fail with `Network connection lost.` Wrangler
+4.120.1 then exits with an empty `[ERROR]`. The leading explanation is a race with the local
+proxy-to-runtime keep-alive idle limit. The server survived the token expiry and the scheduled
+refresh times, which weakens a fixed-time expiry explanation; the lane did not isolate the remote
+binding or the token. Wrangler 4.149.0 logs that failure and continues. Near the same timing, a
+runtime crash of unknown cause can also occur, and both versions then refused later requests on
+the public port.
+
+Next step (owner decision): choose a launch change from the record's recommendation. The record
+recommends the candidate's Wrangler 4.149.0 for the baseline server, with a stop-on-lost-port
+rule. Then assemble and sign the plan again. A full collection needs about 2.5 hours of baseline
+uptime. Run on a quiet machine, and leave the DocSearch key idle for at least one hour before the
+capacity check.
 
 The launch tooling stays in the round folder until the next attempt ends or the owner retires the
 method. Then either promote it into `eval/qa/` with its test, or delete the round's launch scripts,
