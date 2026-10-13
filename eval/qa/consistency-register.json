@@ -661,11 +661,11 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
+        "lastChecked": "2026-10-13",
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "Soroswap scope reconciliation (2026-10-01), after the independent review fix: q-eco-dex-saturation and q-defi-soroswap-vs-stellarx grader notes separate the Soroswap on-chain aggregator, which routes across Soroban AMM adapters only, from API quotes that can include the classic SDEX. The notes name no dated adapter roster. StellarX stays an Ultra Stellar trading UI. No member pins a venue count. Wallet and SDK members are unchanged. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md. Re-stamped after the ledger moved into the round folder; no member content changed beyond that provenance path.",
-          "verdict": "consistent"
+          "date": "2026-10-13",
+          "verdict": "consistent",
+          "reason": "Post-retirement update (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, again only in its judge-blind truth.verified block. Two strings now record that sd-034 is retired to improvements/resolved.json with source commit 087cc6b5. Question, answer, keyFacts, avoid, and notes are unchanged. No member claim changes. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md."
         },
         "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
@@ -674,7 +674,7 @@
           "q-eco-lobstr-wallet": "fe79ce3898b0b63ee88db1e729b63e9e9c29b5ec6bc92d41885e62477336197b",
           "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
           "q-tool-passkeykit-smart-wallet": "7ae74c0c752ab19fe534326e7c51b303887aa1400c12425891409ea620356375",
-          "q-tool-smart-wallet-repos-discovery": "97a2e5fd78f311fcf4c289774c4587ef09781b83a97c95ba080a2d1f4fe486f9"
+          "q-tool-smart-wallet-repos-discovery": "429db158360e35fbb27d69598a298fd6814590bdc53dc4e61ae5f7ce36aff645"
         }
       },
       {
@@ -2513,16 +2513,16 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-13",
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Rechecked the direct source boundary for smart-wallet repository examples; no contradiction.",
-          "verdict": "consistent"
+          "date": "2026-10-13",
+          "verdict": "consistent",
+          "reason": "Post-retirement update (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, again only in its judge-blind truth.verified block. Two strings now record that sd-034 is retired to improvements/resolved.json with source commit 087cc6b5. Question, answer, keyFacts, avoid, and notes are unchanged. No member claim changes. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md."
         },
         "note": "Official docs/soroban-examples/SDKs/OZ remain current; Wallets Kit is optional multi-wallet abstraction, not mandatory for Freighter-only flows. Re-swept 2026-07-28: after Scout began returning the two direct repository rows, wallet-library and source-bound discovery claims remain consistent.",
         "memberContentSha256": {
           "q-ti-connect-wallet-button-code": "8da15ba5c9328f2ac9aeab5a016976bcad3825b871fbc7f4ec45573a0bb69e06",
-          "q-tool-smart-wallet-repos-discovery": "97a2e5fd78f311fcf4c289774c4587ef09781b83a97c95ba080a2d1f4fe486f9"
+          "q-tool-smart-wallet-repos-discovery": "429db158360e35fbb27d69598a298fd6814590bdc53dc4e61ae5f7ce36aff645"
         }
       },
       {
@@ -3115,20 +3115,20 @@
           "q-tool-zk-repo-live"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-03",
+        "lastChecked": "2026-10-13",
         "note": "All six members are mutually compatible on one boundary, and each grades the subset its own golden states: repository rows come from the live index at answer time (no static roster), and repoScore never establishes properties outside its freshness/traction/authority formula — correctness, security, audit scope, maintenance, production readiness (no member grades every property; e.g. the indexer and sdk discovery cases do not grade the audit-scope non-inference and the smart-wallet case does not grade the correctness one, but no member permits any inference the others forbid). The three DISCOVERY-TABLE members (q-tool-indexer-repos-discovery, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery) additionally grade the richer per-row contract — response generatedAt/as-of, exact owner/name URL, role, maintainer tier, archive state, dated activity, external-supplement labelling, exact-zero source scoping, and extending the non-inference rule to ownership and to stars/semantic rank — which the three REPO-LIVE members (q-tool-passkey-repo-live, q-tool-oracle-repo-live, q-tool-zk-repo-live) do not grade; the repo-live members instead grade explicit repoScore comparison/sort with superlatives scoped to the checked rows, plus their own signal separations (codeVerified is scan evidence not a security audit; hackathonWinner stays index-relative absent exact event evidence). Verified 2026-07-28 (todo 1253 Lane B for the discovery trio; todo 1256 F5 for the repo-live trio, each read in full). 2026-07-28 adversarial review (ADV-2, two passes) corrected this note: earlier revisions attributed the full discovery-table contract, the ownership clause, and the stars/semantic-rank scope to all six members; membership asserts only the all-six rule above. Re-swept 2026-07-28 (ADV-1 reconciliation): hash churn from scoping the repo-live members blanket quality-verdict wording to the specific non-inferences and adding upstream-schema evidence plus durable rootCause pointers; the edits move the members further toward this cluster rule. Re-swept 2026-07-28 (G-GT-1): hash churn from aligning two corroboration claims (oracle/passkey) to ranking/scan wording; claim meaning unchanged.",
         "memberContentSha256": {
           "q-tool-indexer-repos-discovery": "48bc39e1f44238be88f46c5d50b4ad47f06e021473c0cbea3558d8805bfcbaa5",
           "q-tool-oracle-repo-live": "2393efbb77e3d8452a7178908eb12f0392ce5a64715fff8808368f4afdecd2ff",
           "q-tool-passkey-repo-live": "6c7f9d984e54ecca30fcc55c429bfc1631260dece169edd34275bdc96d299480",
           "q-tool-sdk-repos-discovery": "dfcf414964ffef063106d7341287e5d6e27e4ca4c78b6ec2ffcf6f1da18c3f6f",
-          "q-tool-smart-wallet-repos-discovery": "97a2e5fd78f311fcf4c289774c4587ef09781b83a97c95ba080a2d1f4fe486f9",
+          "q-tool-smart-wallet-repos-discovery": "429db158360e35fbb27d69598a298fd6814590bdc53dc4e61ae5f7ce36aff645",
           "q-tool-zk-repo-live": "bb59b4eff9105036cb56d606ba7e3e6105d5ae9c4009de8c8286822fe22cd14a"
         },
         "reSwept": {
-          "date": "2026-09-03",
-          "reason": "Rechecked answer-time Scout repository discovery and role boundaries; no contradiction.",
-          "verdict": "consistent"
+          "date": "2026-10-13",
+          "verdict": "consistent",
+          "reason": "Post-retirement update (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, again only in its judge-blind truth.verified block. Two strings now record that sd-034 is retired to improvements/resolved.json with source commit 087cc6b5. Question, answer, keyFacts, avoid, and notes are unchanged. No member claim changes. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md."
         }
       },
       {

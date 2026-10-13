@@ -429,6 +429,27 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/773857262d462506947a324b7437b8499f886287/improvements/stellar-docs/sd-026-cli-optimize-command-drift.md"
     },
     {
+      "id": "sd-027",
+      "title": "Current Stellar developer documentation gives incompatible greenfield guidance for the passkey smart-wallet stack. The OpenZeppelin…",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-10-13",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/276",
+        "https://github.com/stellar/stellar-docs/issues/2700",
+        "https://github.com/stellar/stellar-docs/pull/2367",
+        "https://github.com/stellar/stellar-docs/pull/2837"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2837"
+      ],
+      "liveRecheck": "2026-10-13T16:13:13Z GET https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites returned HTTP 200 (last-modified Tue, 13 Oct 2026 15:26:14 GMT; SHA-256 c3ff53d1f9bf0acad20a321cfe53facfdf4fa1386572fc4d52cd2296fbcf7281) with 0 LaunchTube matches (30 on 2026-10-06), 0 kalepail/passkey-kit links, 3 Smart Account Kit matches, and 4 channels.openzeppelin.com/testnet/gen links; the only JWT mention is the sentence no JWT to fetch; the page requires one OpenZeppelin Relayer Testnet API key and its note states that the relayer handles submission and fee sponsorship while the indexer (Mercury hosted smart-account-indexer) handles the credential-to-address lookup. https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (SHA-256 72dc8d81c99522f1d7e900e6d1fe0223d8d724758a7b38908e40d0d6eebbc0c9) lists Launchtube under Retired tooling as archived and retired with OpenZeppelin Relayer as the replacement. Deployed by stellar/stellar-docs PR 2837 (merge commit 2dd75fef3ea318d19cf8af8a261a2a37c4701982, merged 2026-10-12T20:37:44Z; Build and push stellar-docs run 38305457471 succeeded 2026-10-12T20:42:52Z)",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6-astra (high) on 2026-10-13: review RS re-derived the upstream state, the deployed live fix by content and SHA-256, residuals, and reference cleanup (CHANGES-NEEDED, reconciled); delta review RS2 confirmed the fixes (two P3 text corrections applied). Records: .agents/rounds/2026-10-13-improvements-followup/review-rs-astra.md and review-rs2-astra.md. Resolution comments: https://github.com/stellar/stellar-docs/issues/2700#issuecomment-6150505131, https://github.com/stellar/stellar-docs/pull/2837#issuecomment-6150505777, https://github.com/stellar/stellar-docs/pull/2367#issuecomment-6150506343.",
+      "sourceCommit": "087cc6b5a863811d8311ad0ed15a5f4746d0f773",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/087cc6b5a863811d8311ad0ed15a5f4746d0f773/improvements/stellar-docs/sd-027-launchtube-passkey-migration-drift.md"
+    },
+    {
       "id": "sd-028",
       "title": "Official Horizon administration pages disagree on the executable default for HISTORYRETENTIONCOUNT. The configuring/source-backed behavior…",
       "service": "stellar-docs",
@@ -528,6 +549,27 @@
       "reviewEvidence": "Independent Solo reviewer process 3770 re-ran rendered-page and agent-visible search triggers, inspected issue 2600, merged approved PR 2616, Raven handoff 25, adjacent content, and repo references on 2026-07-15.",
       "sourceCommit": "bb8731b3e09ac56fe0a2429e56beb583b84158b3",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/bb8731b3e09ac56fe0a2429e56beb583b84158b3/improvements/stellar-docs/sd-033-python-sdk-rpc-capability-omitted.md"
+    },
+    {
+      "id": "sd-034",
+      "title": "The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-10-13",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/275",
+        "https://github.com/stellar/stellar-docs/issues/2700",
+        "https://github.com/stellar/stellar-docs/pull/2367",
+        "https://github.com/stellar/stellar-docs/pull/2837"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2837"
+      ],
+      "liveRecheck": "2026-10-13T16:13:13Z GET https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets returned HTTP 200 (last-modified Tue, 13 Oct 2026 15:26:16 GMT; SHA-256 72dc8d81c99522f1d7e900e6d1fe0223d8d724758a7b38908e40d0d6eebbc0c9) with 0 kalepail/passkey-kit links (2 on 2026-10-06), 2 github.com/stellar/passkey-kit links, 2 github.com/stellar/smart-account-kit links, and 0 predecessor, successor, or legacy matches; the Client SDKs section presents Smart Account Kit and Passkey Kit as siblings that are not drop-in compatible (Smart Account Kit drives OpenZeppelin Smart Account contracts through context rules, signers, and policies; Passkey Kit authorizes with a flat map of signatures) and the Passkey Kit entry quotes its repository statement that the wallet contract and SDKs have not been independently audited; the page makes no other audit claim. Deployed by stellar/stellar-docs PR 2837 (merge commit 2dd75fef3ea318d19cf8af8a261a2a37c4701982, merged 2026-10-12T20:37:44Z; Build and push stellar-docs run 38305457471 succeeded 2026-10-12T20:42:52Z)",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6-astra (high) on 2026-10-13: review RS re-derived the upstream state, the deployed live fix by content and SHA-256, residuals, and reference cleanup (CHANGES-NEEDED, reconciled); delta review RS2 confirmed the fixes (two P3 text corrections applied). Records: .agents/rounds/2026-10-13-improvements-followup/review-rs-astra.md and review-rs2-astra.md. Resolution comments: https://github.com/stellar/stellar-docs/issues/2700#issuecomment-6150505131, https://github.com/stellar/stellar-docs/pull/2837#issuecomment-6150505777, https://github.com/stellar/stellar-docs/pull/2367#issuecomment-6150506343.",
+      "sourceCommit": "087cc6b5a863811d8311ad0ed15a5f4746d0f773",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/087cc6b5a863811d8311ad0ed15a5f4746d0f773/improvements/stellar-docs/sd-034-smart-wallet-passkey-kit-legacy-routing.md"
     },
     {
       "id": "sd-036",
