@@ -39,6 +39,14 @@ status comment while the maintainers are working on the decision. History:
 Done when: each finding records the resulting live state, and any fixed finding completes the
 resolver gates.
 
+2026-10-13 result: PR #2837 merged at 2026-10-12T20:37:44Z (merge commit `2dd75fef`), and issue
+#2700 closed as completed. The `Build and push stellar-docs` run 38305457471 succeeded at
+2026-10-12T20:42:52Z. Both original live page checks ran at
+2026-10-13T16:13:13Z and no longer reproduce. Both findings moved to `fixed-upstream`. Inbound
+handoff issues #275 and #276 (author: the PR author) match the live state. Still open: the distinct
+reviewer re-derivation, the #2700 resolution comment, the #275 and #276 acknowledgments, the resolver
+runs, and the deletion of this item. Ledger: `rounds/2026-10-13-improvements-followup.md`.
+
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
 
 The rejected `repository-tooling-recovery-v2` implementation does not ship
