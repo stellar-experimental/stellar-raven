@@ -226,3 +226,74 @@ Result JSON, plan regrades, re-judge artifacts, surface reports, and the frozen 
 under `eval/qa/results/2026-10-11-answer-style/` in the `w1010/a` worktree (gitignored). The
 runner worktree `raven-w1010-a-qa-runner` holds the originals. The two server worktrees were
 removed after the run.
+
+---
+
+# Version 2
+
+Plan: [`measurement-plan-v2.md`](measurement-plan-v2.md) on top of
+[`measurement-plan.md`](measurement-plan.md). Lane C (Claude Opus 5.5, high) ran it from Herdr pane
+`w3W:p4V`. The orchestrator is Claude Opus 5.5 in pane `w3W:p1P`.
+
+## Authorization (version 2)
+
+The owner approved spend on 2026-10-13 in chat: "approved for your next collection of work, don't do
+stuff you don't need to, but do what's truely valuable and needful". This authorizes the version 2
+plan once, at its caps: total $84 (four collections at `--max-budget-usd 18`, two directed re-judges
+at $4, two rule 7 retries at $2 only if needed). No continuation, no re-run, no raised cap.
+
+## Candidate commit
+
+The reviewed head is `5c86fd0a77693786486dd0ec3221f957b7716cc0` (review verdict "CODE: APPROVE",
+"PLAN: LAUNCH-OK"). The branch head `c8aeab06` adds only the review record:
+`git diff --stat 5c86fd0a c8aeab06` prints one file,
+`.agents/rounds/2026-10-10-weekend/answer-style/review-v2-astra.md`, 275 insertions. The candidate
+server runs `5c86fd0a`.
+
+## Free pre-launch checks (2026-10-13, before the first paid call)
+
+- **Case bytes.** The final ID list of the section "Case swap (before spend)" selects 34 rows at
+  `63396840`. `casesSha256` is `2cc286f6df1cd731c2999f265bac7d10d2800f98d96f5399309e965a8fd78c74`,
+  the same as version 1. `caseIdsSha256` is `ca3940d67dfd356ef1ff4324b47cd3ff65ee489d0fd89feb987a9388e9ea9de4`.
+- **Lifecycle.** All 34 selected IDs are `active` in `eval/qa/lifecycle-registry.json` at `63396840`.
+  No ID is quarantined.
+- **Quantum-row golden.** The golden of `q-pc-quantum-preparedness-dormant` is still valid. No
+  date-contingent trap names this row in `eval/qa/consistency-register.json`. On 2026-10-13 the QPP
+  page (stellar.org) still describes dormant holders only in qualitative terms and defers the
+  question to community discussion. The `stellar/stellar-protocol` core tree ends at `cap-0088`.
+  CAP-0087 (ML-DSA host functions) and CAP-0088 (millisecond close times) have zero occurrences of
+  "dormant" or "inactiv". No CAP defines a dormant-account eligibility rule. One non-judge-facing
+  drift: the golden's corroboration notes call CAP-0087 "Draft", and it is now "Accepted"
+  (2026-10-07). The keyFacts do not depend on that status. No swap.
+- **Local surface** (`npm run mcp:surface`): baseline instructions 7,864 characters, candidate
+  7,858 characters, as the plan expects. The `execute` description goes from 9,841 to 10,367
+  characters. The `search` description length does not change (4,887); the `search` change is in
+  the result `nextSteps` text, not in the description.
+- **Evidence pack.** The runner at `63396840` has no `metricDefinitions` in the evidence pack, so the
+  runner revision does not change. The judge-contract check applies to the activity row.
+
+## Pins (version 2, recorded before the first paid call)
+
+| Pin | Value |
+|---|---|
+| Baseline revision (B) | `6339684073571cb752909ebbfee713a05cf72016` |
+| Candidate revision (C) | `5c86fd0a77693786486dd0ec3221f957b7716cc0` |
+| Runner | Clean detached worktree `/Users/kalepail/Desktop/raven-c-runner` at the baseline revision |
+| Server worktrees | `/Users/kalepail/Desktop/raven-c-srvB` (B) and `/Users/kalepail/Desktop/raven-c-srvC` (C), both clean; `npm ci` in each; Wrangler 4.149.0 |
+| Port | 8799 for every start |
+| Answering and judge models | Runner defaults (`claude-sonnet-5`); no `--model`, no `--judge-model` |
+| Rubric and pack | `v2.11` and `p6` in the runner source (confirm on the first judged row of each run) |
+| Claude executable | `~/.local/share/claude/versions/2.1.296` (`2.1.296 (Claude Code)`), linked from a private `bin` directory in the lane scratchpad |
+| `AGENT_BINARY_SHA256` | `c9b5341637becbd423ddffc5b254afb645682a3868cb708bbc6cc0e7bb419937` |
+| Collection environment | `env -i` with `HOME`, `USER`, `LOGNAME`, `LANG`, `SHELL=/bin/zsh`, `TERM=dumb`, `TMPDIR`, `DISABLE_AUTOUPDATER=1`, and a fixed `PATH` (private `bin`, `/usr/local/bin`, system directories), run through `zsh -f`. No `CLAUDE_*` or `ANTHROPIC_*` variable. |
+| `AGENT_ENVIRONMENT_SHA256` | `6936aa4bd19480f7b8124744b05b644ff53ac02da0ab62cfe63e7fd283878632` (variables `HOME`, `PATH`, `SHELL`, `TMPDIR`) |
+| Remote identity probe | `eval/qa/probe-remote-identities.mjs`, SHA-256 `eb06cd89bc6232d6747b7d44973f2deec272b48ba343b9d19a9800b74a18c226` |
+| `REMOTE_IDENTITY_SHA256` | `414667aa38583bc99d775e02c7efe3e5a8a731f33e756668141052e05fe1205e` (`--stable-sha256`, three captures five minutes apart, exit 0, 2026-10-13 21:02Z to 21:12Z) |
+| Judge-stability register | Generated once from the stored results in the main checkout (538 cases, 199 artifacts: 163 collection, 36 re-judge), frozen read-only outside the runner. SHA-256 `9291a8de3bd7a6859951fd0fef6144adf141d7d12be363cab07329a68aab290f` |
+| Server `.dev.vars` identity | One fresh salt (`8dd0ec76e61f05551413854396f8e17bd8fac234f47b541e0cb38316847f6f11`) for both worktrees. Both gave the same 10 names and hash `d5124e96134f7931bd68ac10545b6d93a3d2accb1208682b678579bbb0654dc8`. |
+| Baseline surface (live, first start) | `656feeef8966cbac326db00479f69b3171c401e94c5c4239364d04a28e754c4a` (instructions 7,864 characters; the same value as version 1, recorded fresh) |
+| Candidate surface (live) | Recorded at the C start below |
+
+The collection script asserts the runner revision, a clean runner tree, the binary, environment,
+probe, and register pins, and exactly one `--max-budget-usd` with the value 18 before it starts
+`run-qa.mjs`.
