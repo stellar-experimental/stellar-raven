@@ -18,6 +18,7 @@ import {
   assertNoNonExposedRefs,
   assertBuildAuthorityIdsResolve,
   assertScoutExclusionsResolve,
+  assertSideEffectingOpsExcluded,
   buildScout,
   guardedExtractKeywords
 } from "../scripts/build-catalog.mjs";
@@ -51,10 +52,66 @@ describe("Scout exposure data matches the source contract", () => {
     expect(() => assertScoutExclusionsResolve(changed)).toThrow("operation names changed");
   });
 
-  it("requires an exposure decision when the reviewed submission operation enters this older inventory", () => {
+  function withReviewOperation() {
     const changed = structuredClone(inventory.openapi);
-    changed.paths["/api/hackathons/review"] = { get: { operationId: "reviewSubmission" } };
-    expect(() => assertScoutExclusionsResolve(changed)).toThrow("Previously unlisted Scout paths");
+    changed.paths["/api/hackathons/review"] = {
+      get: {
+        operationId: "reviewSubmission",
+        summary: "Review a hackathon project from its GitHub or DoraHacks link",
+        parameters: [{ name: "link", in: "query", required: true, schema: { type: "string" } }],
+        "x-routing": { purpose: "Review my hackathon submission before I apply to SCF." }
+      }
+    };
+    return changed;
+  }
+
+  it("accepts the reviewed submission operation when listed but never emits it", () => {
+    const changed = withReviewOperation();
+    expect(() => assertScoutExclusionsResolve(changed)).not.toThrow();
+    const original = buildScout(inventory);
+    const built = buildScout({ ...inventory, openapi: changed });
+    expect(built.entries).toEqual(original.entries);
+    expect([...built.routingPhraseExtras]).toEqual([...original.routingPhraseExtras]);
+    expect([...built.routingExtras]).toEqual([...original.routingExtras]);
+    expect(scoutRefRewrites(changed).some(([from]) => from.includes("/api/hackathons/review")))
+      .toBe(false);
+  });
+
+  it("rejects a renamed review operation", () => {
+    const changed = withReviewOperation();
+    changed.paths["/api/hackathons/review"].get.operationId = "renamedReviewSubmission";
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("operation names changed");
+  });
+
+  it("rejects a review operation without an operationId", () => {
+    const changed = withReviewOperation();
+    delete changed.paths["/api/hackathons/review"].get.operationId;
+    expect(() => assertScoutExclusionsResolve(changed)).toThrow("operation names changed");
+  });
+
+  it("keeps review excluded even if upstream marks it side-effecting", () => {
+    const changed = withReviewOperation();
+    changed.paths["/api/hackathons/review"].get["x-side-effecting"] = true;
+    expect(() => assertSideEffectingOpsExcluded(changed)).not.toThrow();
+    expect(buildScout({ ...inventory, openapi: changed }).entries).toEqual(buildScout(inventory).entries);
+  });
+
+  it.each(["post", "put", "delete", "patch", "head", "options", "trace"])(
+    "rejects an unreviewed %s method at the review path, with or without GET",
+    (method) => {
+      for (const keepGet of [true, false]) {
+        const changed = withReviewOperation();
+        if (!keepGet) delete changed.paths["/api/hackathons/review"].get;
+        changed.paths["/api/hackathons/review"][method] = { operationId: "reviewSubmission" };
+        expect(() => assertScoutExclusionsResolve(changed)).toThrow("Unreviewed Scout operation");
+      }
+    }
+  );
+
+  it("accepts path metadata without treating it as a newly listed operation", () => {
+    const changed = structuredClone(inventory.openapi);
+    changed.paths["/api/hackathons/review"] = { parameters: [], summary: "Review" };
+    expect(() => assertScoutExclusionsResolve(changed)).not.toThrow();
   });
 });
 
