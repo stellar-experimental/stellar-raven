@@ -221,8 +221,10 @@ R6 record for the leaderboard row:
   supplies an aggregate developer metrics block (key fact 1, second half).
 - Source text: the saved execute call (entry 1) returned only `leaderboardSample` (from
   `lb.data.projects`), `leaderboardMeta` (from `lb.data.meta`), `buildersSample`, and `buildersMeta`.
-  The candidate's code never requested the developer block. The word "developer" occurs in the
-  transcript only in two search queries.
+  The execute return omitted the developer block; the saved model-visible result does not contain
+  it. The saved transcript holds that projection, not the complete upstream response, so it does
+  not show whether the upstream response held the block (review RJ-post-2). The word "developer"
+  occurs in the transcript only in two search queries.
 - Pack locations: neither the p6 pack nor the p9 pack shows a developer aggregate block. No pack
   could show it, because the transcript does not hold it. The p9 pack shows the leaderboard rows
   (`leaderboardSample`, entity-list span, Rumble Fish rank 1, Stellar Development Foundation rank 2),

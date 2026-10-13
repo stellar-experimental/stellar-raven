@@ -394,33 +394,31 @@ Calls with one message ID share an ordinal across assistant events. Entries with
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
 
-### Repair claim-support selection in the p6 judge pack
+### Close the remaining claim-support gaps of judge pack p9
 
-The judge still uses p6. Two repairs were measured on 2026-10-10 and neither cleared the gate.
-Draft PR #264 holds the code, the plans, the results, and every review. Do not merge it.
-The re-judge artifacts are in the ignored `eval/qa/results/2026-10-10-pack-rejudge/` folder.
+The judge uses pack `p9` from PR #272 (2026-10-13). Before that merge, `main` used `p6`. p9 keeps
+the p8 omission repairs and shows the sibling records of every entity list in a claim sentence.
+History: p7 ($18.19) and p8 ($9.0843) were blocked, and the p8b continuation ($0.3774) was not
+accepted (review R8). Draft PR #264 holds those records.
 
-- p7 ($18.19) lost the supporting snippet of a stable quantum row (Stage 2).
-- p8 ($9.0843) recovered the omission rows, with no false fabrication call in Stage 1.
-  One Stage 2 row moved down (StellarTerm), so the predeclared rule blocks p8.
-- The reviewed p8b continuation ($0.3774, one row, three calls) was not accepted (review R8):
-  - R8-1: p8 drops the status records of the other entities in the same claim sentence
-    (Comet, Zenex, and others) that p6 showed. The candidate sentence scope stays unresolved.
-  - R8-2 belongs to the rubric item below.
+The p9 measurement ran on 2026-10-13 under the owner's approval: $2.0591 of the $8.55 cap,
+6 changed rows, 25 calls, self-test 7 of 7. The verdict is ACCEPT under the predeclared R6 rule.
+Stage 1 passes. Three Stage 2 rows have lower panels with no identified pack cause (two reused p8
+panels and the leaderboard row). The R8-1 row is `correct` (C C C). Codex `gpt-6-astra` at high
+confirmed the verdict in the post-run review. Result:
+[result-p9.md](rounds/2026-10-12-pack-p9/result-p9.md).
 
-Branch `w1012/j` (2026-10-12) implements the next repair as pack `p9`, on top of the PR #264 commits.
-It keeps the sibling records of every entity list in a claim sentence. It measures that coverage
-on the final text after every budget cut.
-The [design and offline replay](rounds/2026-10-12-pack-p9/design.md) show 65 of 70 sibling records
-in the 32 measured rows (p8: 11), with a record-scoped measure (reviews RJ, RJ2, and RJ3). The R8-1 row shows 11 of 11
-(p8: 5). The p8 omission repairs hold. The 4-field and 12-unit limits cause the 5 missing records.
-In the control rows, 5 rows lose 1 to 3 answer probes against p8.
-The [measurement plan](rounds/2026-10-12-pack-p9/measurement-plan-p9.md) predeclares the R6 rule.
-It reruns only the 6 changed rows (expected about $2.06 to $2.15 with the self-test; cap $8.55).
-The independent pre-spend review, the owner's approval, and the measurement remain open.
+Known limits that remain:
 
-Done when: a reviewed new pack version passes the replayable coverage, and an authorized
-measurement shows no grade regression.
+- Field and unit limits: Etherfuse shows 5 of 7 records, stablecoin issuers 41 of 42, and
+  ERC-8004 0 of 2.
+- In the control rows, 5 rows lose 1 to 3 answer probes against p8.
+- The R8-1 sentence scope is unresolved. The `correct` panel does not show that the judges read the
+  narrow scope.
+- R8-2 belongs to the rubric item below.
+
+Done when: a reviewed later pack closes these gaps with an authorized measurement, or the owner
+accepts them as the standing limits of p9.
 
 ### Decide whether a sourced summary error matches must-avoid "unsupported memory"
 
