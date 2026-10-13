@@ -664,8 +664,8 @@
         "lastChecked": "2026-10-13",
         "reSwept": {
           "date": "2026-10-13",
-          "reason": "Improvements follow-up (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, and only in its judge-blind truth.verified block. It records the 2026-10-13 live re-check of the smart-wallets guide (now links stellar/smart-account-kit and stellar/passkey-kit, no kalepail/passkey-kit link) after stellar-docs PR #2837 fixed sd-034. Question, answer, keyFacts, avoid, and notes are unchanged. Sweep of the other five members: q-tool-passkeykit-smart-wallet keeps the maintained non-drop-in sibling framing and the component-specific audit boundary; the wallet and DEX members do not mention the kits. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Review RS reconciliation (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, again only in its judge-blind truth.verified block. The 2026-09-03 archived-pointer observation is now dated and marked superseded by the 2026-10-13 live re-check, and the review state names the completed RS review (Codex gpt-6-astra, high). Question, answer, keyFacts, avoid, and notes are unchanged. The other five members do not mention the guide, the archived pointer, or legacy framing; q-tool-passkeykit-smart-wallet keeps the sibling framing and audit boundary. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md."
         },
         "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
@@ -674,7 +674,7 @@
           "q-eco-lobstr-wallet": "fe79ce3898b0b63ee88db1e729b63e9e9c29b5ec6bc92d41885e62477336197b",
           "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
           "q-tool-passkeykit-smart-wallet": "7ae74c0c752ab19fe534326e7c51b303887aa1400c12425891409ea620356375",
-          "q-tool-smart-wallet-repos-discovery": "3019b7568bacdae61236ff1e7b60acdd981743c6a58b32c3ad9c4ac08e414dca"
+          "q-tool-smart-wallet-repos-discovery": "561aaf3a2bec29e68607fbd20dbc16a40fc6c52f2b35ada033e5ac6b733115be"
         }
       },
       {
@@ -2516,13 +2516,13 @@
         "lastChecked": "2026-10-13",
         "reSwept": {
           "date": "2026-10-13",
-          "reason": "Improvements follow-up (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, and only in its judge-blind truth.verified block (2026-10-13 live re-check of the smart-wallets guide after stellar-docs PR #2837 fixed sd-034). Judge-facing content is unchanged. q-ti-connect-wallet-button-code does not mention the kits or the guide. The direct-source boundary for smart-wallet repository examples still holds. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Review RS reconciliation (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, again only in its judge-blind truth.verified block (dated and superseded the 2026-09-03 archived-pointer observation; named the completed RS review). Judge-facing content unchanged. q-ti-connect-wallet-button-code does not mention the kits or the guide. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md."
         },
         "note": "Official docs/soroban-examples/SDKs/OZ remain current; Wallets Kit is optional multi-wallet abstraction, not mandatory for Freighter-only flows. Re-swept 2026-07-28: after Scout began returning the two direct repository rows, wallet-library and source-bound discovery claims remain consistent.",
         "memberContentSha256": {
           "q-ti-connect-wallet-button-code": "8da15ba5c9328f2ac9aeab5a016976bcad3825b871fbc7f4ec45573a0bb69e06",
-          "q-tool-smart-wallet-repos-discovery": "3019b7568bacdae61236ff1e7b60acdd981743c6a58b32c3ad9c4ac08e414dca"
+          "q-tool-smart-wallet-repos-discovery": "561aaf3a2bec29e68607fbd20dbc16a40fc6c52f2b35ada033e5ac6b733115be"
         }
       },
       {
@@ -3122,13 +3122,13 @@
           "q-tool-oracle-repo-live": "2393efbb77e3d8452a7178908eb12f0392ce5a64715fff8808368f4afdecd2ff",
           "q-tool-passkey-repo-live": "6c7f9d984e54ecca30fcc55c429bfc1631260dece169edd34275bdc96d299480",
           "q-tool-sdk-repos-discovery": "dfcf414964ffef063106d7341287e5d6e27e4ca4c78b6ec2ffcf6f1da18c3f6f",
-          "q-tool-smart-wallet-repos-discovery": "3019b7568bacdae61236ff1e7b60acdd981743c6a58b32c3ad9c4ac08e414dca",
+          "q-tool-smart-wallet-repos-discovery": "561aaf3a2bec29e68607fbd20dbc16a40fc6c52f2b35ada033e5ac6b733115be",
           "q-tool-zk-repo-live": "bb59b4eff9105036cb56d606ba7e3e6105d5ae9c4009de8c8286822fe22cd14a"
         },
         "reSwept": {
           "date": "2026-10-13",
-          "reason": "Improvements follow-up (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, and only in its judge-blind truth.verified block (2026-10-13 live re-check of the smart-wallets guide after stellar-docs PR #2837 fixed sd-034). Judge-facing content is unchanged. The answer-time Scout discovery rule and the repoScore non-inference rule are untouched; none of the other five members mentions the Docs guide or the archived kalepail pointer. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "Review RS reconciliation (2026-10-13): only q-tool-smart-wallet-repos-discovery changed, again only in its judge-blind truth.verified block (dated and superseded the 2026-09-03 archived-pointer observation; named the completed RS review). Judge-facing content unchanged. The answer-time Scout discovery rule and the repoScore non-inference rule are untouched; no other member mentions the Docs guide or the archived pointer. No contradiction. Ledger: .agents/rounds/2026-10-13-improvements-followup.md."
         }
       },
       {

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "d6daac986e6ffdd061d289bd7cf2ad762d8bc495cf52c188e8368df3af16abaf",
+  "corpusContentSha256": "96c5b7cefd33b3a988141316c2a65db81fc863465533c811bbfa48209d219e00",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -57043,16 +57043,16 @@
         ],
         "verified": {
           "date": "2026-10-13",
-          "by": "improvements follow-up 2026-10-13 (.agents/rounds/2026-10-13-improvements-followup.md; author lane Claude Fable 5.1 high, distinct review pending)",
+          "by": "improvements follow-up 2026-10-13 (.agents/rounds/2026-10-13-improvements-followup.md; author lane Claude Fable 5.1 high; distinct review RS by Codex gpt-6-astra high completed 2026-10-13)",
           "evidence": [
             "Live re-check 2026-10-13T16:13:13Z: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (last-modified Tue, 13 Oct 2026 15:26:16 GMT; SHA-256 72dc8d81c99522f1d7e900e6d1fe0223d8d724758a7b38908e40d0d6eebbc0c9) now links https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit, has no kalepail/passkey-kit link, and presents the two kits as non-drop-in siblings with distinct authorization models. The official-doc residual recorded on 2026-09-03 is closed by stellar/stellar-docs PR #2837 (merged 2026-10-12T20:37:44Z, deployed 2026-10-12T20:42:52Z).",
-            "Improvement finding read 2026-10-13: improvements/stellar-docs/sd-034-smart-wallet-passkey-kit-legacy-routing.md is fixed-upstream pending the distinct drain review. The golden answer, key facts, avoid clauses, and notes are unchanged; direct canonical repositories remain stellar/smart-account-kit and stellar/passkey-kit.",
+            "Improvement finding read 2026-10-13: improvements/stellar-docs/sd-034-smart-wallet-passkey-kit-legacy-routing.md is fixed-upstream; review RS (Codex gpt-6-astra, high, 2026-10-13) re-derived the live fix; retirement to improvements/resolved.json is pending the resolver run. The golden answer, key facts, avoid clauses, and notes are unchanged; direct canonical repositories remain stellar/smart-account-kit and stellar/passkey-kit.",
             "Sibling sweep 2026-10-13: grep smart-account-kit|passkey-kit|sd-034 under eval/qa/corpus/battery → q-tool-passkeykit-smart-wallet, q-tool-passkey-wallet-recovery, q-passkey-platform-constraints, q-passkey-wallet-recovery, q-soroban-add-signer-smart-wallet-howto, q-builder-content-by-person; q-tool-passkeykit-smart-wallet keeps the maintained non-drop-in sibling framing and the per-component audit boundary; no contradiction",
             "C returned current passkey and smart-account rows. B confirmed active official repositories.",
             "Sibling sweep 2026-09-03: q-tool-passkeykit-smart-wallet keeps the authorization boundary; no contradiction found.",
             "C: Scout exact searches on 2026-08-05 returned the active stellar/smart-account-kit and stellar/passkey-kit rows alongside archived kalepail move pointers; results remain dated source-scoped retrieval evidence, not proof of quality or completeness.",
             "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework. Direct repository metadata confirmed the stellar repositories active and the kalepail pointers archived.",
-            "A: the current developers.stellar.org smart-wallet guide still links the archived kalepail/passkey-kit pointer; that residual is already owned by active finding sd-034 rather than a new finding.",
+            "A (observed 2026-09-03; superseded 2026-10-13): on 2026-09-03 the developers.stellar.org smart-wallet guide still linked the archived kalepail/passkey-kit pointer, and that residual was owned by finding sd-034. The 2026-10-13 live re-check above records the fix.",
             "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery.",
             "Structural re-form (negative-predicate): compressed the source-scoped search rule, split the repository-purpose taxonomy, and moved the open-world trap to avoid; the truth is unchanged.",
             "Live re-check 2026-08-27: https://github.com/stellar/smart-account-kit — confirmed the current Smart Account Kit repository and account SDK role.",
@@ -57061,7 +57061,7 @@
             "Sibling sweep 2026-08-27: grep smart-account-kit|passkey-kit|recovery → q-tool-passkeykit-smart-wallet, q-tool-passkey-wallet-recovery; no contradiction"
           ],
           "rootCause": [
-            "sd-034 (stellar-docs) fixed upstream on 2026-10-13 by stellar/stellar-docs PR #2837; the official-doc residual routed to that finding on 2026-09-03 is closed, its receipt lands in improvements/resolved.json after the distinct review, and the golden truth is unchanged",
+            "sd-034 (stellar-docs) fixed upstream on 2026-10-13 by stellar/stellar-docs PR #2837; the official-doc residual routed to that finding on 2026-09-03 is closed, its receipt lands in improvements/resolved.json when the resolver runs, and the golden truth is unchanged",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },

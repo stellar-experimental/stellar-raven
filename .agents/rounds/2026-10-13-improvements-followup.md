@@ -13,7 +13,7 @@ paid model calls, and every other active finding.
 | lane | agent (model, effort) | pane | write set | status |
 |---|---|---|---|---|
 | Author (brief S) | Claude Fable 5.1, high; worktree `raven-w1013-s`, branch `w1013/sd-resolve` | orchestrator-owned | `improvements/stellar-docs/sd-027*`, `sd-034*`, `improvements/INDEX.md`, `eval/qa/corpus/battery/tooling-infra/q-tool-smart-wallet-repos-discovery.json`, `eval/qa/consistency-register.json`, generated `eval/qa/{cases,sample,lifecycle-registry}.json`, `.agents/TODO.md`, this ledger | done, review pending |
-| Distinct reviewer | to be chosen by the orchestrator (not the author; Codex frontier or Grok at high per AGENTS.md) | — | review report only | pending |
+| Distinct reviewer (review RS) | Codex gpt-6-astra, high. Codex frontier is the matched tier for dense analysis; the author is Claude Fable | orchestrator-owned | `/private/tmp/claude-501/w1013/keep/rs-review.md` only | done: CHANGES-NEEDED (3 findings), reconciled below |
 
 ## Ledger
 
@@ -67,8 +67,8 @@ paid model calls, and every other active finding.
   `improvements/INDEX.md` (regenerated), `eval/qa/cases.json` (regenerated from the golden case), the golden case
   (refreshed), `research/qa-deep-dive-2026-08-25/{terra-max,sol-max}.md` (dated research, left unchanged), and the two
   findings. No Algolia rule cites either id.
-- Prepared, not posted: `/private/tmp/claude-501/w1013/s-comments.md` (comments for #2700, #2837, #275, #276; #2367
-  marked not applicable).
+- Prepared, not posted: `/private/tmp/claude-501/w1013/s-comments.md` (comments for #2700, #2837, #2367, #275, #276, and
+  two closing notes).
 
 ## State table
 
@@ -96,18 +96,49 @@ paid model calls, and every other active finding.
   - `sd-034`: upstreamRefs = Raven #275, stellar-docs #2700, PR #2367, PR #2837; resolvingRefs = PR #2837;
     sourceCommit `087cc6b5`; sourceUrl
     `https://github.com/stellar-experimental/stellar-raven/blob/087cc6b5a863811d8311ad0ed15a5f4746d0f773/improvements/stellar-docs/sd-034-smart-wallet-passkey-kit-legacy-routing.md`.
-  - The real run needs `--review-evidence` replaced by the distinct reviewer's evidence and `--upstream-commented`
-    to be true: comments on #2700, #2837, #275, and #276 posted; #2367 recorded as not applicable (closed unmerged,
-    superseded). The snapshot URLs resolve only after the branch is on the public repository.
+  - The real run needs `--review-evidence` replaced by the RS review evidence and `--upstream-commented` to be
+    true: comments on #2700, #2837, #2367, #275, and #276 posted and read back. The snapshot URLs at `087cc6b5` already
+    resolve publicly.
+
+## Review RS reconciliation (2026-10-13)
+
+Review RS (Codex gpt-6-astra, high) returned CHANGES-NEEDED with three findings. Its own live fetch at
+2026-10-13T16:30:14Z matched every recorded hash, and it reproduced every marker, both dry runs, and all gates.
+
+- RS-1 (P2, PR #2367 needs a resolution comment): accepted. The skill requires a comment on every upstream ref;
+  the never-filed exception does not apply. Comment E drafted for #2367 with the dated live result, PR #2837, and
+  both snapshot links. The not-applicable rationale is removed from the comments file and this ledger.
+- RS-2 (P2, stale golden evidence): accepted. In `q-tool-smart-wallet-repos-discovery.json` `truth.verified`, the
+  2026-09-03 archived-pointer observation is now dated and marked superseded by the 2026-10-13 re-check; `by` and
+  the finding-read line name the completed RS review; rootCause says the receipt lands when the resolver runs.
+  Answer, keyFacts, avoid, and notes unchanged. `npm run eval:qa:compile` regenerated the compiled corpus;
+  `npm run eval:qa:register` reopened clusters 022, 105, 131; members re-swept (unchanged since the first sweep);
+  closed with `--review`; `--check` up to date.
+- RS-3 (P3, writing style): accepted. Every prepared comment rewritten in ASD-STE100 with short sentences, marker
+  tables, active retirement wording, no placeholders, the named RS review, and a snapshot link in each notification.
+
+Post-retirement string changes (orchestrator's final step, after the resolver runs for real), all in
+`eval/qa/corpus/battery/tooling-infra/q-tool-smart-wallet-repos-discovery.json` `truth.verified`:
+
+1. In `evidence[1]`, replace "is fixed-upstream; review RS (Codex gpt-6-astra, high, 2026-10-13) re-derived the live
+   fix; retirement to improvements/resolved.json is pending the resolver run" with "was retired to
+   improvements/resolved.json on <resolved date>; review RS (Codex gpt-6-astra, high, 2026-10-13) re-derived the live
+   fix; receipt source commit 087cc6b5a863811d8311ad0ed15a5f4746d0f773".
+2. In `rootCause[0]`, replace "its receipt lands in improvements/resolved.json when the resolver runs" with "its
+   receipt is in improvements/resolved.json (resolved <resolved date>)".
+3. Then run `npm run eval:qa:compile`, `npm run eval:qa:register`, re-sweep and close clusters 022, 105, 131 with
+   `--review`, and `npm run eval:qa:register -- --check`.
 
 ## Outcome
 
 Author lane: both findings `fixed-upstream` with dated live evidence; no successor filed; two editorial residual
 notes recorded in the findings (Relayer page back-link for `sd-027`; archived credit link at
-`check-auth-tutorials.mdx:617` for `sd-034`). Golden case refreshed (judge-blind only) and three clusters re-swept
-consistent. Gates pass. Upstream text prepared and unposted. Resolver dry runs pass.
+`check-auth-tutorials.mdx:617` for `sd-034`). Review RS re-derived every claim and returned three findings; all
+three are reconciled above. Golden case refreshed (judge-blind only) and three clusters re-swept consistent twice.
+Gates pass. Upstream text prepared and unposted. Resolver dry runs pass.
 
-Remaining before retirement: the distinct reviewer re-derives both triggers and the residual scan; the #2700
-resolution comment and the #275/#276 acknowledgments are posted; the resolver runs for real with the reviewer's
-evidence; #275 and #276 close; the `.agents/TODO.md` item is deleted. Retained evidence: this ledger, the two
-finding files at `087cc6b5`, and `/private/tmp/claude-501/w1013/s-comments.md` until its text is posted.
+Remaining before retirement (orchestrator): post comments A, B, E, C, D and read each back; run the resolver for real
+for each finding with `--review-evidence "Codex gpt-6-astra high review RS 2026-10-13 (CHANGES-NEEDED, reconciled):
+/private/tmp/claude-501/w1013/keep/rs-review.md"` or the ledger path; apply the post-retirement string changes above;
+post notes F and G and close #276 and #275; delete the `.agents/TODO.md` item. Retained evidence: this ledger, the two
+finding files at `087cc6b5`, the RS review file, and `/private/tmp/claude-501/w1013/s-comments.md` until posted.
