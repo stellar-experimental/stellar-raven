@@ -513,8 +513,24 @@ node eval/qa/re-judge.mjs "<source result>" \
 ```
 
 A rule 8 retry and an initial-judge retry use the original collection artifact as the source,
-not an earlier re-judge artifact. Never pass an `agent-limit` ID. Check the `--dry-run` selection
-for a `skipped` entry before each paid command; a skipped ID means a wrong ID list.
+not an earlier re-judge artifact. Never pass an `agent-limit` ID. The `--dry-run` reports the
+selection and the identity checks only; it does not report rows it would skip. Before each paid
+command, run this check from the runner checkout. It must print `[]`; any listed ID means a wrong
+ID list (review RP3):
+
+```sh
+node --input-type=module -e '
+import { readFileSync } from "node:fs";
+import { isUngradeableSavedRow } from "./eval/qa/re-judge.mjs";
+const [path, ids] = process.argv.slice(1);
+const want = new Set(ids.split(","));
+const rows = JSON.parse(readFileSync(path, "utf8")).rows.filter((r) => want.has(r.id));
+const bad = rows.filter(isUngradeableSavedRow).map((r) => r.id);
+const missing = [...want].filter((id) => !rows.some((r) => r.id === id));
+console.log(JSON.stringify([...bad, ...missing.map((id) => `missing:${id}`)]));
+process.exitCode = bad.length || missing.length ? 1 : 0;
+' "<source result>" "<listed IDs>"
+```
 
 ## Records
 

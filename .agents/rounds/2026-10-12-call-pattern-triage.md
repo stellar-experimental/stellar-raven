@@ -274,3 +274,17 @@ Re-run on the stored results, the counter gives the same counts: 1,887 parsed MC
 4 in one unparsed script (1,891), 0 omissions, 199 section-read scripts, 0 unknown skill reads,
 and 6 of 28 Playground omissions. Caps: $22 (Playground), $136 (section screen), $74 (one section
 change alone).
+
+## Review RP3 and the launch gate
+
+Review RP3 (Codex `gpt-6-astra`, high) returned LAUNCH-OK on `619f5ffb`. It confirmed the four
+RP2 fixes, the nine-step confirmation sequence for both text outcomes, the $136 cap, and the
+stored counts. It found one P3: the `re-judge.mjs --dry-run` output does not report skipped rows.
+The orchestrator replaced that instruction in `plan-section-guard.md` with a pre-command check
+that calls `isUngradeableSavedRow`. On a stored artifact the check printed `[]` for two gradeable
+IDs, and exited 1 for an unknown ID and for a synthetic `agent-limit` row.
+
+The three reviews are in this folder: `review-rp-astra.md`, `review-rp2-astra.md`, and
+`review-rp3-astra.md`. The pre-spend review gate is closed. LAUNCH-OK does not authorize spend:
+the paid runs still need a spend authorization ($22 Playground, $136 section screen) and a free
+paired-collection window.
