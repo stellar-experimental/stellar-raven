@@ -1,0 +1,18 @@
+--- 2026-10-12T15:56:04.206Z debug
+Error in ProxyController: Error inside ProxyWorker
+ Error
+    at castErrorCause (/Users/kalepail/Desktop/raven-w1012-k-srv/node_modules/wrangler/wrangler-dist/cli.js:179257:20)
+    at ProxyController2.emitErrorEvent (/Users/kalepail/Desktop/raven-w1012-k-srv/node_modules/wrangler/wrangler-dist/cli.js:279830:20)
+    at ProxyController2.onProxyWorkerMessage (/Users/kalepail/Desktop/raven-w1012-k-srv/node_modules/wrangler/wrangler-dist/cli.js:279707:18)
+    at PROXY_CONTROLLER (/Users/kalepail/Desktop/raven-w1012-k-srv/node_modules/wrangler/wrangler-dist/cli.js:279434:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async #handleLoopbackCustomFetchService (/Users/kalepail/Desktop/raven-w1012-k-srv/node_modules/miniflare/dist/src/index.js:111089:22)
+    at async #handleLoopback (/Users/kalepail/Desktop/raven-w1012-k-srv/node_modules/miniflare/dist/src/index.js:111320:20) {
+  cause: {
+    name: 'Error',
+    message: 'Network connection lost.',
+    stack: 'Error: Network connection lost.'
+  }
+}
+---
+

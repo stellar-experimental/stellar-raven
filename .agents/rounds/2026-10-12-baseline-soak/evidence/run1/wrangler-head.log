@@ -1,0 +1,20 @@
+
+ ⛅️ wrangler 4.120.1 (update available 4.149.0)
+───────────────────────────────────────────────
+Using secrets defined in .dev.vars
+Your Worker has access to the following bindings:
+Binding                                                                       Resource                  Mode
+env.OAUTH_KV (6a5d8d2c8f8a409882a15f8f32bc3a96)                               KV Namespace              local
+env.ARTIFACTS (stellar-raven-artifacts-dev)                                   R2 Bucket                 local
+env.AI                                                                        AI                        remote
+env.DEMO_AI_GATEWAY_ID ("stellar-raven-demo")                                 Environment Variable      local
+env.EXECUTE_MODEL_BOUNDARY_MAX_TOKENS ("6000")                                Environment Variable      local
+env.LUMENLOOP_API_KEY ("(hidden)")                                            Environment Variable      local
+env.WORKOS_CLIENT_ID ("(hidden)")                                             Environment Variable      local
+env.WORKOS_API_KEY ("(hidden)")                                               Environment Variable      local
+env.MCP_ADMIN_TOKEN ("(hidden)")                                              Environment Variable      local
+env.MCP_SERVER_SECRET ("(hidden)")                                            Environment Variable      local
+env.DEV_ALLOW_UNAUTHENTICATED ("(hidden)")                                    Environment Variable      local
+env.ALGOLIA_APPLICATION_ID_DOCS ("(hidden)")                                  Environment Variable      local
+env.ALGOLIA_API_KEY_DOCS ("(hidden)")                                         Environment Variable      local
+env.ALGOLIA_APPLICATION_ID_SITE ("(hidden)")                                  Environment Variable      local

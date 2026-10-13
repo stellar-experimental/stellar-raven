@@ -27,6 +27,10 @@ import {
 } from "./run-p6-judge-self-test.mjs";
 import { JUDGE_RUBRIC } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
+import {
+  assertDualBoundServersUnchanged,
+  pairedListenerPairs
+} from "../lib/bound-server-identity.mjs";
 
 export const PAIRED_COLLECTION_PLAN_SCHEMA = "qa-paired-collection-plan-v2";
 export const PAIRED_COLLECTION_RECEIPT_SCHEMA = "qa-paired-collection-receipt-v1";
@@ -315,6 +319,11 @@ function validateP6Contract(plan, identities) {
   if (typeof p6?.summaryArtifactPath !== "string" || !path.isAbsolute(p6.summaryArtifactPath)) {
     throw new Error("p6.summaryArtifactPath must be an absolute path");
   }
+  if (typeof p6?.listenersPath !== "string" || !path.isAbsolute(p6.listenersPath)) {
+    throw new Error("p6.listenersPath must be an absolute path");
+  }
+  validateHash(p6.listenersSha256, "p6.listenersSha256");
+  signedListenerPairs(plan);
   const runner = plan.worktrees[`${p6.runnerArm}Runner`];
   const runnerIdentity = identities[p6.runnerArm === "baseline" ? 0 : 1];
   const hashes = plan.arms[p6.runnerArm].inputHashes;
@@ -329,6 +338,10 @@ function validateP6Contract(plan, identities) {
     hashes.agentBinarySha256,
     "--expect-claude-environment-sha256",
     hashes.agentEnvironmentSha256,
+    "--paired-listeners",
+    p6.listenersPath,
+    "--expect-paired-listeners-sha256",
+    p6.listenersSha256,
     "--out",
     p6.summaryArtifactPath
   ];
@@ -756,6 +769,45 @@ export function validatePairedCollectionPlan(plan, {
   return plan;
 }
 
+// The ports and revisions that each frozen collection command names.
+export function collectionListenerTargets(plan) {
+  return Object.fromEntries(ARMS.map((arm) => {
+    const command = plan.arms[arm].collectionCommand;
+    return [arm, {
+      adapterPort: validatePort(flagValue(command, "--port"), `${arm} public port`),
+      adapterRevision: flagValue(command, "--adapter-revision"),
+      upstreamPort: validatePort(flagValue(command, "--upstream-port"), `${arm} upstream port`),
+      upstreamRevision: flagValue(command, "--server-revision")
+    }];
+  }));
+}
+
+// The launch's listener record, bound by its signed digest and checked against the collection
+// commands, so it cannot omit or substitute a server.
+function signedListenerPairs(plan, readFile = readFileSync) {
+  let bytes;
+  try {
+    bytes = readFile(plan.p6.listenersPath);
+  } catch (error) {
+    throw new Error(`p6.listenersPath cannot be read: ${error.message}`);
+  }
+  if (sha256(bytes) !== plan.p6.listenersSha256) {
+    throw new Error("the listener record does not match p6.listenersSha256");
+  }
+  return pairedListenerPairs(JSON.parse(bytes), collectionListenerTargets(plan));
+}
+
+// Each check compares the four signed listeners with the current ones. It reads local listeners
+// and worktrees only: no model call and no upstream call. A missing listener, or another process
+// on a recorded port (a server restart), fails. The supervisor never restarts a server.
+export function createServerListenerCheck(plan, { readFile = readFileSync, identify } = {}) {
+  let pairs = null;
+  return () => {
+    pairs ??= signedListenerPairs(plan, readFile);
+    assertDualBoundServersUnchanged(pairs, identify ? { identify } : undefined);
+  };
+}
+
 function cancellationReason(message, arm) {
   const code = message?.code ? ` (${message.code})` : "";
   return `${arm} collection failed${code}: ${message?.message ?? "unknown failure"}`;
@@ -823,6 +875,7 @@ export function supervisePairedChildren({
   writeCancellation = (reason) => writeFileSync(cancellationFile, `${reason}\n`, { flag: "wx" }),
   terminate = (child, signal) => child.kill(signal),
   validateArtifactPath = (arm, reportedPath) => artifactPathFromArm(plan, arm, reportedPath),
+  checkServers = createServerListenerCheck(plan),
   now = () => new Date().toISOString()
 }) {
   return new Promise((resolve, reject) => {
@@ -946,6 +999,15 @@ export function supervisePairedChildren({
     };
     const releaseAfterBarrier = (completedIndex) => {
       const nextIndex = completedIndex + 1;
+      try {
+        checkServers();
+      } catch (error) {
+        const next = nextIndex < receiptTimeline.length
+          ? `row ${nextIndex} (${plan.selected.ids[nextIndex]})`
+          : "postflight";
+        cancel(`server listener check failed before ${next}; no server restarts: ${error.message}`);
+        return;
+      }
       const orderedArms = nextIndex % 2 === 0 ? ARMS : [...ARMS].reverse();
       for (const name of ARMS) {
         if (children[name].connected === false) {
