@@ -341,11 +341,14 @@ Branch `w1012/t` has two fixes, and each needs its own measurement before merge:
   model-visible results.
 - The section shape in the `execute` description and the `codemode.describe` usage line.
 
-Two pre-spend plans, one per fix, share one baseline arm (`main`) in six MCP QA collections:
+Two pre-spend plans, one per fix, share one four-arm MCP QA screen (`main`, text, guard, and
+text plus guard; eight collections):
 [plan-section-guard.md](rounds/2026-10-12-call-pattern-triage/plan-section-guard.md) and
 [plan-section-text.md](rounds/2026-10-12-call-pattern-triage/plan-section-text.md). The cap is
-$86 for both. Each plan needs an independent pre-spend review and a spend authorization. If both
-pass, merge the text first, then the guard.
+$132 for both. The text verdict compares `main` with text. The guard verdict compares text with
+text plus guard when the text passes, and `main` with guard otherwise. Merge the text first.
+Review RP (2026-10-12) is reconciled; the revised plans need a re-review and a spend
+authorization.
 
 Done when: each fix has its measurement and a merge decision, and a later authorized QA round
 recounts the three behaviors.
@@ -369,8 +372,8 @@ argument, and 0 of 1,891 MCP calls did. The cut hides a required field for 22 of
 entries. The spec is correct, so there is no upstream finding. Branch `w1012/t` makes the clip
 marker name the required input fields. This is Playground model-facing text. The pre-spend plan
 is [plan-clip-marker.md](rounds/2026-10-12-call-pattern-triage/plan-clip-marker.md): the six-case
-Playground screen in ABBA order, capped at $20. It needs an independent pre-spend review and a
-spend authorization.
+Playground screen in ABBA order, capped at $22. Review RP is reconciled; the plan needs a
+re-review and a spend authorization.
 
 Done when: the clip-marker change has a Playground measurement (with only that change in the
 candidate arm) and a merge decision.

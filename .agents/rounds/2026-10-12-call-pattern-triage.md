@@ -237,3 +237,23 @@ authorization. No paid call ran.
   findings are reconciled in this ledger and on the branch.
 - Retained evidence: this ledger and the plans and counter in
   `2026-10-12-call-pattern-triage/`. Their consumers are the two `.agents/TODO.md` items.
+
+## Review RP reconciliation
+
+Review RP (Codex `gpt-6-astra`, high) returned CHANGES-NEEDED on `704d84ae`, with 8 findings.
+Lane P (Claude Opus 5.5) reconciled all 8 in the three plans and the counter. No paid call ran.
+These figures replace the "Measurement notes" figures above.
+
+| Finding | Change |
+| --- | --- |
+| 1 Combined change unmeasured | The section screen now has four arms (A, T, G, TG; TG tree `8d32d670…`) in eight collections. The guard verdict compares T with TG when the text passes, and A with G otherwise. The claimed bound is gone. |
+| 2 Missing grades | A grade-coverage rule: every row needs a grade in every compared collection, or the verdict is INDETERMINATE. `agent-limit` counts as `wrong`. Initial-judge retries have their own bounded reserve. No repair collection. |
+| 3 Text exposure | All 16 rows stay in the text regression check. Section-read counts serve the mechanism only. |
+| 4 Zero denominator | No section reads in T (or fewer than half of A) makes the rate claim INDETERMINATE. Read avoidance is a separate count. |
+| 5 Counter | The counter parses scripts with acorn, marks unresolved calls `unknown`, and self-checks 14 fixtures (the 3 RP fixtures included). On the stored runs: 1,887 parsed MCP docs calls plus 4 in one unparsed script (1,891, as recorded), 0 omissions, 199 section-read scripts, and 6 of 28 Playground omissions. The 7 unresolved references are existence checks, not calls. |
+| 6 Cost contracts | Sources listed by group. Primary estimate (rubric `v2.11` judge costs): $6.00 per collection, $9.88 upper reference. The `v2.10` runs are supplementary. Collection cap raised from $10 to $12. Re-judge median: $0.3443. |
+| 7 Playground environment | An environment-hash assertion runs before every paid Playground command. |
+| 8 Counter path | Both plans run a pinned copy of the counter outside every worktree, with its SHA-256 recorded before collection. |
+
+New caps: $22 for the Playground screen, $132 for the shared section screen, and $74 for one
+section change alone.
