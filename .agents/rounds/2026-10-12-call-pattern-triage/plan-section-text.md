@@ -3,6 +3,7 @@
 Status: **draft, not authorized.** No paid call ran. The plan needs an independent pre-spend
 review and a spend authorization. The paid run waits for the next weekend authorization.
 Revision 2 reconciles review RP (Codex `gpt-6-astra`, high, CHANGES-NEEDED on `704d84ae`).
+Revision 3 reconciles review RP2 (the same reviewer, CHANGES-NEEDED on `4a5d17a1`).
 
 Change under test: Fix 2 of Pattern 2 in the
 [triage ledger](../2026-10-12-call-pattern-triage.md). The `execute` description and the
@@ -32,8 +33,9 @@ T differs from A by the text commit only. The commit applies cleanly to `main` w
 The text verdict compares A1 and A2 with T1 and T2 of the shared order
 (A1, T1, G1, TG1, TG2, G2, T2, A2).
 
-The text verdict decides which guard comparison applies (see the guard plan). So read and confirm
-the text verdict first.
+The text verdict decides which guard comparison applies (see the guard plan). So the guard plan's
+"Confirmation sequence" confirms the text verdict first (steps 1 to 4), before any guard list
+exists.
 
 Model-visible exposure in T:
 
@@ -118,10 +120,12 @@ When S differs between the arms, or V is 1 or more, a reader reviews the routing
 7. **INDETERMINATE** in every other case. Examples: an incomplete collection, a missing grade,
    M in A below 4, an undefined rate claim (rule 4), or r in T between half of r in A and r in A.
    Do not repeat a collection under the same authorization.
-8. **Confirmation re-judge.** Write the text consistent-change list in the ledger. Re-judge it once
-   in A1 and once in T1 (in the same command as the guard list when that artifact holds both
-   lists). Live-check every T `wrong`. "Confirmed" means it survived both.
-9. **Failed confirmation re-judge.** The guard plan's rule 8 applies, with A1 and T1. An
+8. **Confirmation re-judge.** Follow steps 1 to 4 of the guard plan's "Confirmation sequence":
+   K1 in A1 and K2 in T1, on the gradeable text-list IDs only. Apply its "Agent-limit cells"
+   rules: an `agent-limit` cell keeps 0, is never re-judged, and is never judge variance. Live-check
+   every graded T `wrong`. "Confirmed" means it survived both, or it is a system-failure
+   regression.
+9. **Failed confirmation re-judge.** The guard plan's rule 8 applies, with K1r and K2r. An
    unconfirmed regression on any of the 16 rows gives FAIL. An unconfirmed improvement counts as
    no change.
 10. **Noise floor.** Report the A1-against-A2 and T1-against-T2 disagreement counts beside the
@@ -131,8 +135,9 @@ When S differs between the arms, or V is 1 or more, a reader reviews the routing
 
 ## Budget
 
-The text verdict shares the shared screen's $132 authorization. Its own share: collections T1 and
-T2 ($12 cap each; about $12 expected), part of the A1 and T1 re-judges, and their retries. It
+The text verdict shares the shared screen's $136 authorization. Its own share: collections T1 and
+T2 ($12 cap each; about $12 expected), the K1 and K2 re-judges ($3 each), and their retries K1r
+and K2r ($2 each). It
 shares A1, A2, the initial-judge retry reserve, and the replacement reserve with the guard
 verdict. The cost basis is in the guard plan.
 

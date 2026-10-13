@@ -257,3 +257,20 @@ These figures replace the "Measurement notes" figures above.
 
 New caps: $22 for the Playground screen, $132 for the shared section screen, and $74 for one
 section change alone.
+
+## Review RP2 reconciliation
+
+Review RP2 (Codex `gpt-6-astra`, high) returned CHANGES-NEEDED on `4a5d17a1`, with four P2
+findings. Lane P (Claude Opus 5.5) reconciled all four. No paid call ran.
+
+| Finding | Change |
+| --- | --- |
+| 1 Prefix parse | The counter parses the whole script: first as a program, then as one expression that must consume the input (only semicolons and comments may follow). Anonymous function expressions still parse. A two-call fixture with an omission in the second call passes. |
+| 2 Aliased reads | The counter follows each `codemode` reference through the syntax tree, including bracket steps. A reference that is not a direct `codemode.skill.read` call is an unknown skill read, even when the script also has a resolved read. The `alias-bracket` and `mixed-alias` fixtures pass. The self-check has 23 fixtures. |
+| 3 Confirmation order | A fixed confirmation sequence: text first (K1 in A1, K2 in T1), then the guard comparison that the text verdict selects (K3 in B1, K4 in C1). A guard ID already re-judged in the same artifact reuses that grade. Four commands at $3 and four retries at $2. The section cap rises from $132 to $136. |
+| 4 Agent-limit | An `agent-limit` cell keeps 0 through confirmation and is never re-judged. Only the gradeable side is confirmed. Two candidate `agent-limit` cells against two baseline grades above 0 are a confirmed system-failure regression. A skipped unsuccessful answer is never judge variance. No answering retry is authorized. |
+
+Re-run on the stored results, the counter gives the same counts: 1,887 parsed MCP docs calls plus
+4 in one unparsed script (1,891), 0 omissions, 199 section-read scripts, 0 unknown skill reads,
+and 6 of 28 Playground omissions. Caps: $22 (Playground), $136 (section screen), $74 (one section
+change alone).

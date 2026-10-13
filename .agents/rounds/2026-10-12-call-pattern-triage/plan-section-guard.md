@@ -3,6 +3,7 @@
 Status: **draft, not authorized.** No paid call ran. The plan needs an independent pre-spend
 review and a spend authorization. The paid run waits for the next weekend authorization.
 Revision 2 reconciles review RP (Codex `gpt-6-astra`, high, CHANGES-NEEDED on `704d84ae`).
+Revision 3 reconciles review RP2 (the same reviewer, CHANGES-NEEDED on `4a5d17a1`).
 
 Change under test: Fix 1 of Pattern 2 in the
 [triage ledger](../2026-10-12-call-pattern-triage.md). `SECTIONS_GUARD` in
@@ -168,11 +169,14 @@ expectations from 6 stored runs, not a power claim.
 
 ## Counts and how to read them
 
-Run the pinned counter (see "Commands") on each result. It parses every execute script with
-acorn. It marks a call or an option object that it cannot resolve as `unknown`, and it lists
-each unparsed script. Readers inspect every unknown and unparsed script before they assign
-exposure or compute a rate. Its `--self-check` holds the three review RP fixtures and 11 edge
-cases; it runs before every count and stops on a mismatch.
+Run the pinned counter (see "Commands") on each result. It parses each whole execute script
+with acorn: a program, or one expression that consumes the input. It follows every `codemode`
+reference through the syntax tree, including bracket steps. It marks as `unknown` a call or an
+option object that it cannot resolve, and every skill-read reference that is not a direct call
+(an alias, a destructure, a computed step), even when the same script also has a resolved read.
+It lists each unparsed script. Readers inspect every unknown and unparsed script before they
+assign exposure or compute a rate. Its `--self-check` holds 23 fixtures, with the review RP and
+RP2 fixtures; it runs before every count and stops on a mismatch.
 
 On the eight stored MCP runs, the counter finds 199 section-read scripts and no unknown
 skill-read script. That matches the triage ledger.
@@ -214,6 +218,49 @@ first-pass class from `eval/qa/five-track.mjs` (`rowOutcomeClass`):
 - A comparison with any missing grade, after its retries, is **INDETERMINATE**. This applies even
   when the other rows show no change. A candidate-only loss cannot hide a regression.
 
+## Confirmation sequence (shared, fixed before spend)
+
+The text verdict selects the guard comparison. So the text is confirmed first, and the guard list
+exists only after that. Run these steps in this order, after all eight collections and their
+initial-judge retries. Each command runs at most once. Write each list and each selection in the
+ledger before the spend that uses it.
+
+| Step | Action | Command and cap |
+| --- | --- | --- |
+| 1 | Write the text consistent-change list (A against T, all 16 rows). | Free |
+| 2 | Re-judge the gradeable text-list IDs in A1 and in T1. | K1 (A1) and K2 (T1), `--max-budget-usd 3` each |
+| 3 | A rule 8 retry for K1 or K2, only if needed. | K1r and K2r, `--max-budget-usd 2` each |
+| 4 | Live-check the T `wrong` answers on the text list. Read the text verdict. | Free |
+| 5 | Select the guard comparison: T against TG after a text PASS, A against G otherwise. | Free |
+| 6 | Write the guard consistent-change list for that comparison. | Free |
+| 7 | Re-judge the gradeable guard-list IDs in B1 and in C1. | K3 (B1) and K4 (C1), `--max-budget-usd 3` each |
+| 8 | A rule 8 retry for K3 or K4, only if needed. | K3r and K4r, `--max-budget-usd 2` each |
+| 9 | Live-check the C `wrong` answers on the guard list. Read the guard verdict. | Free |
+
+- **Shared results.** B1 is A1 or T1, which step 2 already re-judged. A guard-list ID that K1, K2,
+  K1r, or K2r graded validly in that same artifact reuses that grade. K3 then holds only the other
+  IDs. Skip a command whose ID set is empty.
+- **Gradeable IDs.** A command holds only the IDs whose cell in that artifact has a grade. An
+  `agent-limit` cell is never sent (see "Agent-limit cells").
+- The sequence has at most four confirmation commands and four retries. A list that needs more
+  than its cap stops the sequence; request a new authorization.
+
+### Agent-limit cells
+
+- An `agent-limit` cell keeps its grade of 0 through confirmation. It is a system failure of the
+  answering agent, not a judge output.
+- Never send an `agent-limit` cell to `re-judge.mjs`. The tool skips it
+  (`skipped.reason: "unsuccessful-answer"`). Such a skip is never judge variance and never
+  clears a change.
+- Confirm only the gradeable side. The confirmation test uses the re-judged grade for each graded
+  B1 or C1 cell and 0 for each `agent-limit` cell. The change is reproduced when B1 and C1 still
+  differ in its direction.
+- **System-failure regression:** both candidate cells are `agent-limit`, and both baseline cells
+  are graded above 0. It is a confirmed regression without a re-judge. No live check applies,
+  because there is no answer. In the same way, both baseline cells `agent-limit` against two
+  graded candidate cells above 0 is a confirmed improvement.
+- No answering retry and no repair collection are authorized.
+
 ## Reading rules for the guard verdict (fixed before spend)
 
 Let B be the guard baseline arm and C the guard candidate arm: T and TG when the text verdict is
@@ -243,14 +290,15 @@ PASS; A and G otherwise. B1, B2, C1, and C2 are their collections.
 6. **INDETERMINATE** in every other case. Examples: an incomplete or non-comparable collection,
    a missing grade, E = 0 across C1 and C2, or L higher in C with no other FAIL condition. Do not
    repeat a collection under the same authorization.
-7. **Confirmation re-judge.** After all eight collections, write the guard consistent-change list
-   in the ledger before any re-judge spend. Re-judge those IDs once in B1 and once in C1. A change
-   that the re-judge does not reproduce is judge variance. Live-check every C `wrong` against the
-   service before it counts (`run-evals` Step 4). "Confirmed" means it survived both.
+7. **Confirmation re-judge.** Follow steps 6 to 9 of the "Confirmation sequence", and apply
+   "Agent-limit cells". A graded change that the re-judge does not reproduce is judge variance.
+   Live-check every graded C `wrong` against the service before it counts (`run-evals` Step 4).
+   "Confirmed" means it survived both, or it is a system-failure regression.
 8. **Failed confirmation re-judge.** A confirmation re-judge that ends T4 or T5 on a listed ID
-   gets one retry of the failed IDs. Run it on the same source artifact, with the same model,
-   rubric, and pack, under `--max-budget-usd 2`. At most one retry per re-judged artifact. Record
-   the source artifact, the first re-judge artifact, and the retry artifact. Then:
+   gets one retry of the failed IDs (K3r or K4r, or K1r or K2r for the text). Run it on the same
+   source artifact, with the same model, rubric, and pack, under `--max-budget-usd 2`. At most one
+   retry per confirmation command. Record the source artifact, the first re-judge artifact, and
+   the retry artifact. Then:
    - when the retry gives a valid grade, use it as the confirmation grade;
    - when the retry also ends T4 or T5, the row is an **unconfirmed change**; record both stamps
      and never use the diagnostic `judgeScore` as a grade;
@@ -335,25 +383,26 @@ per-row mean times 16 is $5.48 to $5.69.
 | Item | Cap (`--max-budget-usd`) |
 | --- | ---: |
 | Each of the eight collections | 12 |
-| Confirmation re-judge in the artifact that holds two lists (A1 or T1) | 4 |
-| Confirmation re-judge in each of the other two artifacts | 3 each, 6 in all |
-| Rule 8 retry, if needed (reserve, at most one per re-judged artifact) | 2 each, 6 in all |
+| Confirmation re-judges K1, K2, K3, K4 (see "Confirmation sequence") | 3 each, 12 in all |
+| Rule 8 retries K1r to K4r, if needed (reserve, at most one per confirmation command) | 2 each, 8 in all |
 | Initial-judge retry, if needed (reserve, at most four commands) | 2 each, 8 in all |
 | One replacement collection (reserve) | 12 |
-| **Total authorization** | **132** |
+| **Total authorization** | **136** |
 
 - The collection cap is 21 percent above the primary sum of row maxima and twice the primary
   estimate. It also covers judge-panel escalation (the default cap is 10 boundary panels for 16
   rows).
-- The three confirmation re-judges: A1 (text list), T1 (text list, plus the guard list when T is
-  the guard baseline), and the guard candidate's first collection (TG1 or G1). When A is the guard
-  baseline, A1 holds both lists instead. One artifact holds two lists, so it gets the $4 cap.
+- The confirmation sequence runs the text commands (K1, K2) before the guard commands (K3, K4).
+  Revision 2 combined two lists in one command; that needed the guard selection before the text
+  was confirmed. The split adds one command and one retry: $4 more than revision 2.
+- The 2026-10-11 directed re-judges of 4 IDs cost $0.33 and $0.36 (median $0.3443). The P1 judge
+  maximum is $0.4132 per call, so a $3 command covers 7 IDs at that maximum.
 - A budget stop ends that command. Do not resume it under the same authorization.
 - If a consistent-change list needs more than its re-judge cap, stop and request a new
   authorization.
 - A budgeted call without a reported cost invalidates the method.
-- Fallback for one section change only (four collections): 4 × 12, confirmation re-judges at 3
-  each (6), two rule 8 retries at 2 each (4), two initial-judge retries at 2 each (4), and one
+- Fallback for one section change only (four collections): 4 × 12, two confirmation re-judges at
+  3 each (6), two rule 8 retries at 2 each (4), two initial-judge retries at 2 each (4), and one
   replacement at 12. Total **$74**.
 - Recheck these caps if the launch amendment changes the judge pack, the rubric, or the tier
   policy.
@@ -457,14 +506,15 @@ node eval/qa/re-judge.mjs "<source result>" --ids "<listed IDs>" --cases-ref "$M
 node eval/qa/re-judge.mjs "<source result>" \
   --ids "<listed IDs>" \
   --cases-ref "$MAIN" \
-  --max-budget-usd "<4 or 3 for a confirmation; 2 for a rule 8 retry or an initial-judge retry>" \
+  --max-budget-usd "<3 for K1 to K4; 2 for a rule 8 retry or an initial-judge retry>" \
   --claude-path "$(command -v claude)" \
   --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" \
   --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
 ```
 
 A rule 8 retry and an initial-judge retry use the original collection artifact as the source,
-not an earlier re-judge artifact.
+not an earlier re-judge artifact. Never pass an `agent-limit` ID. Check the `--dry-run` selection
+for a `skipped` entry before each paid command; a skipped ID means a wrong ID list.
 
 ## Records
 

@@ -90,9 +90,10 @@ browser, or `--preflight` turn to an eval server during collection.
 
 ## Counts and how to read them
 
-Run the pinned counter (`$COUNT`, see "Commands") on each result. It parses every execute
+Run the pinned counter (`$COUNT`, see "Commands") on each result. It parses each whole execute
 script with acorn, and it marks each call that it cannot resolve as `unknown`. Its
-`--self-check` holds the three review RP fixtures and runs before every count. On the four
+`--self-check` holds 23 fixtures, with the review RP and RP2 fixtures (for example two top-level
+calls with an omission in the second). It runs before every count. On the four
 stored ai-upgrade runs it prints 28 docs calls, 6 omissions, 0 unknown calls, and 6
 `invalid-args` entries. That matches the triage ledger.
 

@@ -7,7 +7,8 @@
 // default manifest resolve from there, so a pinned copy of this file can live
 // outside that checkout. Reads files only; makes no model or service call.
 //
-// Each execute script is parsed with acorn. Per file, it reports:
+// Each execute script is parsed whole with acorn (a program, or one expression
+// that consumes the input). Per file, it reports:
 //   - stellarDocs.* calls and how many omit a required top-level input (from the
 //     manifest). A call whose argument the parser cannot resolve (a spread, a
 //     computed key, a non-literal argument, an unknown operation) is `unknown`;
@@ -15,7 +16,10 @@
 //   - `[invalid-args: …]` entries in execute results (the host's own record);
 //   - search results whose clipped card carries the required-input marker;
 //   - execute calls and errors, skill.read scripts, section-read scripts, and
-//     scripts whose skill.read options the parser cannot resolve;
+//     scripts with an unknown skill read: options the parser cannot resolve, or
+//     a `codemode`, `codemode.skill`, or `codemode.skill.read` reference that is
+//     not a direct call (an alias, a destructure, a computed step). A resolved
+//     read in the same script does not clear an unknown one;
 //   - scripts that do not parse (every count in them is unknown);
 //   - section-guard messages in execute results.
 // Readers inspect every unknown and unparsed script before they assign exposure
@@ -32,27 +36,42 @@ const GUARD_MESSAGES = [
 ];
 const CLIP_MARKER = /\[middle clipped for the demo\] required input: ([^\n]+)/g;
 const INVALID_ARGS = /\[invalid-args: ([^\]]+)\]/g;
-const SKILL_READ_TEXT = /\bskill\s*\.\s*read\b|\bread\s*[,}][^;]*=\s*codemode\s*\.\s*skill\b/;
+const SKILL_READ_TEXT = /\bskill\b[\s\S]*\bread\b/;
+const PARSE_OPTIONS = {
+  ecmaVersion: "latest", sourceType: "module", allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true
+};
 
-function parseScript(code) {
-  const options = { ecmaVersion: "latest", allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true };
+// True when `rest` holds only semicolons, comments, and white space.
+function onlyTrailer(rest) {
   try {
-    return parseExpressionAt(code.trimStart(), 0, options);
+    return parse(rest, PARSE_OPTIONS).body.every((node) => node.type === "EmptyStatement");
+  } catch {
+    return false;
+  }
+}
+
+// Parses the whole script: first as a program, then as one expression (an
+// anonymous function is not a valid statement). The expression must consume
+// the input; only semicolons and comments may follow it.
+function parseScript(code) {
+  try {
+    return parse(code, PARSE_OPTIONS);
   } catch {
     try {
-      return parse(code, { ...options, sourceType: "module" });
+      const node = parseExpressionAt(code, 0, PARSE_OPTIONS);
+      return onlyTrailer(code.slice(node.end)) ? node : null;
     } catch {
       return null;
     }
   }
 }
 
-function walk(node, visit) {
+function walk(node, visit, parent = null) {
   if (!node || typeof node.type !== "string") return;
-  visit(node);
+  visit(node, parent);
   for (const value of Object.values(node)) {
-    if (Array.isArray(value)) for (const item of value) walk(item, visit);
-    else if (value && typeof value === "object" && typeof value.type === "string") walk(value, visit);
+    if (Array.isArray(value)) for (const item of value) walk(item, visit, node);
+    else if (value && typeof value === "object" && typeof value.type === "string") walk(value, visit, node);
   }
 }
 
@@ -63,17 +82,25 @@ function memberPath(node) {
   if (node.type !== "MemberExpression") return null;
   const head = memberPath(node.object);
   if (!head) return null;
-  if (!node.computed && node.property.type === "Identifier") return [...head, node.property.name];
-  if (node.computed && node.property.type === "Literal" && typeof node.property.value === "string") {
-    return [...head, node.property.value];
+  const name = literalProperty(node);
+  return name === null ? null : [...head, name];
+}
+
+function literalProperty(member) {
+  if (!member.computed && member.property.type === "Identifier") return member.property.name;
+  if (member.computed && member.property.type === "Literal" && typeof member.property.value === "string") {
+    return member.property.value;
   }
   return null;
 }
 
-function rootIdentifier(node) {
-  if (node.type === "ChainExpression") return rootIdentifier(node.expression);
-  if (node.type === "MemberExpression") return rootIdentifier(node.object);
-  return node.type === "Identifier" ? node : null;
+// An identifier that names a variable, not a property name or an object key.
+function isReference(node, parent) {
+  if (!parent) return true;
+  if (parent.type === "MemberExpression" && parent.property === node && !parent.computed) return false;
+  if ((parent.type === "Property" || parent.type === "PropertyDefinition" || parent.type === "MethodDefinition") &&
+    parent.key === node && !parent.computed && !parent.shorthand) return false;
+  return !["LabeledStatement", "BreakStatement", "ContinueStatement"].includes(parent.type);
 }
 
 // Top-level literal keys of an object expression, and whether any key is unresolved.
@@ -113,30 +140,81 @@ function skillReadState(options) {
   return unresolved ? "unknown" : "whole";
 }
 
+// Follows each `codemode` reference through literal member steps (dot or
+// bracket). A step chain that reaches `codemode.skill.read` as a call callee
+// is a resolved read. A chain that stops at `codemode` or `codemode.skill`,
+// or reaches `codemode.skill.read` other than as a callee (an alias, a
+// destructure, a computed step), is an unknown skill-read reference.
+function skillReferences(ast, parents) {
+  const reads = [];
+  let unknown = 0;
+  walk(ast, (node, parent) => {
+    if (node.type !== "Identifier" || node.name !== "codemode" || !isReference(node, parent)) return;
+    const segments = ["codemode"];
+    let cur = node;
+    for (;;) {
+      let up = parents.get(cur);
+      if (up?.type === "ChainExpression") {
+        cur = up;
+        up = parents.get(cur);
+      }
+      if (up?.type !== "MemberExpression" || up.object !== cur || literalProperty(up) === null) break;
+      segments.push(literalProperty(up));
+      cur = up;
+      if (segments.length === 3) break;
+    }
+    if (segments[1] !== undefined && segments[1] !== "skill") return;
+    if (segments[2] !== undefined && segments[2] !== "read") return;
+    if (segments.length === 3) {
+      let callee = cur;
+      let up = parents.get(callee);
+      if (up?.type === "ChainExpression") {
+        callee = up;
+        up = parents.get(callee);
+      }
+      if (up?.type === "CallExpression" && up.callee === callee) {
+        reads.push(skillReadState(up.arguments[1]));
+        return;
+      }
+    }
+    unknown++;
+  });
+  return { reads, unknown };
+}
+
 export function analyzeScript(code, required) {
-  const out = { parsed: true, docs: [], skillReads: [], unresolvedDocsRefs: 0 };
+  const out = { parsed: true, docs: [], skillReads: [], unknownSkillRefs: 0, unresolvedDocsRefs: 0 };
   const ast = parseScript(code);
   if (!ast) {
     out.parsed = false;
+    if (SKILL_READ_TEXT.test(code)) out.unknownSkillRefs = 1;
     return out;
   }
+  const parents = new Map();
+  walk(ast, (node, parent) => parents.set(node, parent));
   const resolvedDocsRoots = new Set();
   walk(ast, (node) => {
     if (node.type !== "CallExpression") return;
     const callee = memberPath(node.callee);
-    if (!callee) return;
-    if (callee.length === 2 && callee[0] === "stellarDocs") {
+    if (callee?.length === 2 && callee[0] === "stellarDocs") {
       resolvedDocsRoots.add(rootIdentifier(node.callee));
       out.docs.push({ op: callee[1], text: code.slice(node.start, node.end).slice(0, 160), ...docsState(callee[1], node.arguments[0], required) });
-    } else if (callee.join(".") === "codemode.skill.read") {
-      out.skillReads.push(skillReadState(node.arguments[1]));
     }
   });
-  walk(ast, (node) => {
-    if (node.type === "Identifier" && node.name === "stellarDocs" && !resolvedDocsRoots.has(node)) out.unresolvedDocsRefs++;
+  walk(ast, (node, parent) => {
+    if (node.type === "Identifier" && node.name === "stellarDocs" && isReference(node, parent) &&
+      !resolvedDocsRoots.has(node)) out.unresolvedDocsRefs++;
   });
-  if (out.skillReads.length === 0 && SKILL_READ_TEXT.test(code)) out.skillReads.push("unknown");
+  const skill = skillReferences(ast, parents);
+  out.skillReads = skill.reads;
+  out.unknownSkillRefs = skill.unknown;
   return out;
+}
+
+function rootIdentifier(node) {
+  if (node.type === "ChainExpression") return rootIdentifier(node.expression);
+  if (node.type === "MemberExpression") return rootIdentifier(node.object);
+  return node.type === "Identifier" ? node : null;
 }
 
 function codeOf(entry) {
@@ -197,11 +275,13 @@ function countFile(file, required) {
         total.invalidArgs++;
         out.invalidArgs.push({ index, fields: m[1] });
       }
-      if (script.skillReads.length > 0) total.skillReadScripts++;
+      if (script.skillReads.length > 0 || script.unknownSkillRefs > 0) total.skillReadScripts++;
       if (script.skillReads.includes("sections")) {
         total.sectionReadScripts++;
         out.sectionReadScripts.push(index);
-      } else if (script.skillReads.includes("unknown")) {
+      }
+      // Counted on its own: a resolved read in the same script does not clear an unknown one.
+      if (script.skillReads.includes("unknown") || script.unknownSkillRefs > 0) {
         total.unknownSkillReadScripts++;
         out.unknownSkillReadScripts.push(index);
       }
@@ -217,10 +297,16 @@ function countFile(file, required) {
 }
 
 const FIXTURES = [
-  // The three review RP fixtures, then edge cases the counts depend on.
+  // Review RP fixtures.
   { code: 'async () => stellarDocs.search_docs({"query":"trustline"})', docs: ["present"], skill: [] },
   { code: 'async () => stellarDocs.search_docs({filter:{query:"trustline"}})', docs: ["missing"], skill: [] },
   { code: 'async () => codemode.skill.read("skills.stellar-dev.assets", {"sections":["trustlines"]})', docs: [], skill: ["sections"] },
+  // Review RP2 fixtures: the whole script parses; aliases and bracket steps stay visible.
+  { code: 'await stellarDocs.search_docs({query:"x"}); await stellarDocs.search_docs({});', docs: ["present", "missing"], skill: [] },
+  { code: 'await stellarDocs.search_docs({query:"x"}); await stellarDocs.search_docs({}); await codemode.skill.read("skills.x", {sections:["a"]});', docs: ["present", "missing"], skill: ["sections"] },
+  { code: 'async () => { const read = codemode.skill["read"]; return read("skills.x", {sections:["a"]}); }', docs: [], skill: [], unknown: 1 },
+  { code: 'async () => { await codemode.skill.read("skills.x"); const read = codemode.skill.read; return read("skills.x", {sections:["a"]}); }', docs: [], skill: ["whole"], unknown: 1 },
+  // Edge cases the counts depend on.
   { code: "async () => { const query = 'x'; return stellarDocs.search_docs({ query }); }", docs: ["present"], skill: [] },
   { code: 'async () => stellarDocs.search_docs({ query: "a ... b", hitsPerPage: 3 })', docs: ["present"], skill: [] },
   { code: "async () => stellarDocs.search_docs({ hitsPerPage: 3 })", docs: ["missing"], skill: [] },
@@ -228,9 +314,14 @@ const FIXTURES = [
   { code: "async () => stellarDocs.search_docs(args)", docs: ["unknown"], skill: [] },
   { code: 'async () => stellarDocs["search_docs"]({ query: "x" })', docs: ["present"], skill: [] },
   { code: 'async () => { const s = "stellarDocs.search_docs({})"; return s; }', docs: [], skill: [] },
+  { code: 'async function () { return stellarDocs.search_docs({ query: "x" }); }', docs: ["present"], skill: [] },
+  { code: 'async () => stellarDocs.search_docs({ query: "x" }); // done\n;', docs: ["present"], skill: [] },
+  { code: "async () => 1\nstellarDocs.search_docs({})", docs: ["missing"], skill: [] },
   { code: 'async () => codemode.skill.read("skills.x")', docs: [], skill: ["whole"] },
+  { code: 'async () => codemode.skill.read?.("skills.x", { sections: ["a"] })', docs: [], skill: ["sections"] },
   { code: 'async () => codemode.skill.read("skills.x", opts)', docs: [], skill: ["unknown"] },
-  { code: 'async () => { const { read } = codemode.skill; return read("skills.x", { sections: ["a"] }); }', docs: [], skill: ["unknown"] },
+  { code: 'async () => { const { read } = codemode.skill; return read("skills.x", { sections: ["a"] }); }', docs: [], skill: [], unknown: 1 },
+  { code: 'async () => codemode.skill.run("skills.x", {})', docs: [], skill: [] },
   { code: "async () => { stellarDocs.search_docs({ query: 'x' ", parsed: false, docs: [], skill: [] }
 ];
 
@@ -241,10 +332,11 @@ function selfCheck() {
     const got = analyzeScript(fixture.code, required);
     const ok = got.parsed === (fixture.parsed ?? true) &&
       JSON.stringify(got.docs.map((d) => d.state)) === JSON.stringify(fixture.docs) &&
-      JSON.stringify(got.skillReads) === JSON.stringify(fixture.skill);
+      JSON.stringify(got.skillReads) === JSON.stringify(fixture.skill) &&
+      got.unknownSkillRefs === (fixture.unknown ?? 0);
     if (!ok) {
       failures++;
-      console.error(`self-check FAILED: ${fixture.code}\n  got parsed=${got.parsed} docs=${JSON.stringify(got.docs.map((d) => d.state))} skill=${JSON.stringify(got.skillReads)}`);
+      console.error(`self-check FAILED: ${fixture.code}\n  got parsed=${got.parsed} docs=${JSON.stringify(got.docs.map((d) => d.state))} skill=${JSON.stringify(got.skillReads)} unknown=${got.unknownSkillRefs}`);
     }
   }
   console.error(`self-check: ${FIXTURES.length - failures} of ${FIXTURES.length} fixtures pass`);
