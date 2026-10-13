@@ -11,7 +11,8 @@ that directory as Workers static assets (`assets` in `wrangler.jsonc`), with hea
   wordmark as outlined IBM Plex glyphs, because an `<img>` SVG cannot load web fonts.
 - `/listing/`: the Claude connector directory header logo, carousel images, and pattern.
   [`research/listing-carousel-evidence-2026-10-07.md`](../research/listing-carousel-evidence-2026-10-07.md)
-  records the Raven calls behind each carousel frame.
+  records the Raven calls behind each carousel frame. [`listing.md`](listing.md) records the
+  design decisions, and `tools/` holds the scripts that rebuild the outlined logos and the pattern.
 
 `test/auth.test.ts` requires each served SVG to carry the site's mark path.
 
