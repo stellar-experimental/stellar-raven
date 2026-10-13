@@ -199,65 +199,41 @@ a PR #247 revision omitted `.data`.
 
 ## Measurement notes
 
-Before each collection, pin the answer model, the judge, both revisions, and the acceptance rules.
-Measure each change alone. Keep every other change identical between the arms.
+Lane P wrote one pre-spend plan per change on 2026-10-12, after the rebase onto `main`
+`6891dca2`. The plans are drafts. Each needs an independent pre-spend review and a spend
+authorization. No paid call ran.
 
-### Playground clip marker (Pattern 1)
+| Change | Plan | Instrument | Collections | Cap (USD) |
+| --- | --- | --- | --- | ---: |
+| Playground clip marker (Pattern 1) | [plan-clip-marker.md](2026-10-12-call-pattern-triage/plan-clip-marker.md) | Six-case Playground screen, `openai/gpt-5.6-terra` | B1, C1, C2, B2 | 20 |
+| Section guard (Pattern 2, Fix 1) | [plan-section-guard.md](2026-10-12-call-pattern-triage/plan-section-guard.md) | MCP QA, `claude-sonnet-5`, 16 rows | Shared screen: A1, G1, T1, T2, G2, A2 | 86 (shared) |
+| Section-shape text (Pattern 2, Fix 2) | [plan-section-text.md](2026-10-12-call-pattern-triage/plan-section-text.md) | The same shared screen | The same | Included above |
 
-- Instrument: the ai-upgrade six-case Playground screen with `openai/gpt-5.6-terra`, no fallback.
-- Arms: BASE `main`. CANDIDATE `main` plus only the clip-marker commits (`34859dbd` and the
-  review fallback commit). The guard and the section text stay out of both arms.
-- Repetitions: two per arm.
-- Rows that matter: `q-anchor-list-builders-discovery`, `q-asset-stablecoin-issuers-discovery`.
-  The other four rows are controls.
-- Counts: `stellarDocs.*` calls without a required argument, by operation; `[invalid-args: …]`
-  entries in the `calls:` lines; `search` response characters; answer turns; grades.
-- Expected: BASE about 6 of 28 calls without `query`. CANDIDATE fewer, with no routing or grade
-  regression under the ai-upgrade plan's rules.
-
-### Section guard (Pattern 2, Fix 1)
-
-- Instrument: an MCP QA A/B with `claude-sonnet-5` and a pinned judge.
-- Arms: A = `main`. B = `main` plus only the repaired guard. The section text is identical in both
-  arms.
-- Rows: the frozen list below. Use at least two repetitions per arm.
-- Counts per run, from a direct read of each script: misreads by class; scripts that lost result
-  data from other calls after a guard exception; recoveries after a guard exception; extra
-  `execute` calls; guard messages on a correct read; answer grades.
-- Expected: fewer silent text losses in arm B, more recoveries than lost results, and no grade
-  regression.
-
-### Section-shape text (Pattern 2, Fix 2)
-
-- Instrument: the same as the guard A/B.
-- Arms: A = `main`. B = `main` plus only `dfd96ded`. The guard state is identical in both arms:
-  absent in both, or present in both if it merges first.
-- Rows: the frozen list below. Use at least two repetitions per arm.
-- Counts per run: `skill.read` scripts; misreads by class, from a direct read of each script;
-  extra `execute` turns; grades.
-- Base rate: 26 misreads in 199 MCP `skill.read` scripts (13.1%) on 8 runs. On the current
-  `data` envelope: 10 in 121 (8.3%).
-- Expected: fewer misreads in arm B, no new script error class, and no grade regression.
-
-### Frozen row list for both Pattern 2 measurements
-
-Misread rows (13):
-`q-aas-burn-clawback-redemption-mechanics`, `q-aas-list-token-on-exchanges-aggregators`,
-`q-agent-identity-erc8004-stellar`, `q-defi-build-staking-for-own-token`,
-`q-defi-etherfuse-stablebonds`, `q-edge-noinfo-sep-9999`, `q-jutsu-check-account-history`,
-`q-passkey-smart-account-architecture`, `q-pc-address-types-strkey`,
-`q-pc-surge-griefing-threat-model`, `q-scf-pitch-prep-live`, `q-soroban-cross-contract-call`,
-`q-stellar-recurring-payments`.
-
-Controls that read sections correctly, including a `content || sections` fallback (3):
-`q-soroban-fuzz-testing`, `q-edge-ambig-stellar-token-meaning`, `q-soroban-storage-types`.
+- **Shared baseline.** The two section changes share arm A (`main`). Six collections replace the
+  eight of two separate ABBA screens. Each candidate arm differs from A by one change only.
+- **Order.** Run the Playground screen first, then the shared section screen. Merge order after
+  the verdicts: the clip marker, then the text, then the guard. The guard plan gives the reasons.
+- **Arms.** Each arm is `main` plus cherry-picks of its own commits. The plans pin each arm by
+  its tree hash.
+- **Frozen row change.** The section plans use `q-asset-trustline-basics` in place of the control
+  `q-soroban-storage-types`. That row has no MCP row in any stored run since 2026-10-07. Its
+  section read was a Playground observation.
+- **Correction.** The B1 `typeof` misread is on `q-soroban-cross-contract-call`. The B1
+  `q-edge-noinfo-sep-9999` misread calls `.toString()` on the sections array, so the guard traps
+  it. The guard-coverage totals above do not change.
+- **Counter.** [count-patterns.mjs](2026-10-12-call-pattern-triage/count-patterns.mjs) reads saved
+  results without a model or service call. On the stored runs it reproduces the counts of this
+  ledger: 1,891 MCP docs calls with 0 omissions, 199 MCP skill-read scripts, and 6 of 28
+  Playground omissions. Misread classes still need a direct read.
 
 ## Outcome
 
 - Pattern 1: cause recorded (own-repo, Playground clip). Fix on `w1012/t`. Measure first.
   No `improvements/` draft.
 - Pattern 2: cause recorded (own-repo guidance gap, inferred). Fix 1 (guard, repaired after
-  review) and Fix 2 (text) on `w1012/t`. Measure each first, in separate A/Bs.
+  review) and Fix 2 (text) on `w1012/t`. Measure each first: one verdict each, with a shared
+  baseline arm (see "Measurement notes").
 - Independent review: `/private/tmp/claude-501/w1012/rt-review.md` (outside the repository). All
   findings are reconciled in this ledger and on the branch.
-- Retained evidence: this ledger. Its consumers are the two `.agents/TODO.md` items.
+- Retained evidence: this ledger and the plans and counter in
+  `2026-10-12-call-pattern-triage/`. Their consumers are the two `.agents/TODO.md` items.

@@ -341,7 +341,11 @@ Branch `w1012/t` has two fixes, and each needs its own measurement before merge:
   model-visible results.
 - The section shape in the `execute` description and the `codemode.describe` usage line.
 
-The ledger names the arms, the frozen rows, and the counts for each measurement.
+Two pre-spend plans, one per fix, share one baseline arm (`main`) in six MCP QA collections:
+[plan-section-guard.md](rounds/2026-10-12-call-pattern-triage/plan-section-guard.md) and
+[plan-section-text.md](rounds/2026-10-12-call-pattern-triage/plan-section-text.md). The cap is
+$86 for both. Each plan needs an independent pre-spend review and a spend authorization. If both
+pass, merge the text first, then the guard.
 
 Done when: each fix has its measurement and a merge decision, and a later authorized QA round
 recounts the three behaviors.
@@ -363,8 +367,10 @@ cause. It is own-repo and Playground-only. The Playground clips each `search` si
 characters, and the cut hides `query: string;`. Six of 28 Playground calls omitted a required
 argument, and 0 of 1,891 MCP calls did. The cut hides a required field for 22 of 61 callable
 entries. The spec is correct, so there is no upstream finding. Branch `w1012/t` makes the clip
-marker name the required input fields. This is Playground model-facing text. The ledger's
-measurement note names the rows and the counts.
+marker name the required input fields. This is Playground model-facing text. The pre-spend plan
+is [plan-clip-marker.md](rounds/2026-10-12-call-pattern-triage/plan-clip-marker.md): the six-case
+Playground screen in ABBA order, capped at $20. It needs an independent pre-spend review and a
+spend authorization.
 
 Done when: the clip-marker change has a Playground measurement (with only that change in the
 candidate arm) and a merge decision.
