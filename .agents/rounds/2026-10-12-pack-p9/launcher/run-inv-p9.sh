@@ -10,7 +10,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 NODE=$HERE/../../2026-10-10-weekend/pack-p8/launcher/run-node.sh
 RES=/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results
 WT=/Users/kalepail/Desktop/raven-p9-arm
-REVIEWED=
+REVIEWED=7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070
 [ -n "$REVIEWED" ] || { echo "no reviewed p9 commit is recorded" >&2; exit 2; }
 [ "$(git -C "$WT" rev-parse HEAD)" = "$REVIEWED" ] || { echo "raven-p9-arm is not at $REVIEWED" >&2; exit 2; }
 LINE=$(awk -F'\t' -v id="$INV" '$1==id' "$HERE/invocations.tsv")
