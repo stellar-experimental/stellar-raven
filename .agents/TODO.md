@@ -340,7 +340,7 @@ Done when: the cause is recorded, and a fix or a no-change decision has its evid
 Found by the `dependency-audit` issue on 2026-10-01. PR #248 (2026-10-09) moved the toolchain to
 `wrangler` 4.149.0, `miniflare` 5.20261006.1-alpha, and `@cloudflare/workers-types` 5.20261009.1.
 
-`package.json` `overrides` has three entries:
+`package.json` `overrides` has two entries:
 
 - The pool entry points `@cloudflare/vitest-pool-workers` 0.22.0 at `wrangler` 4.149.0. Pool 0.23.0
   still pins `wrangler` 4.124.0 and `miniflare` 5.20260815.0-alpha exactly.
@@ -348,17 +348,16 @@ Found by the `dependency-audit` issue on 2026-10-01. PR #248 (2026-10-09) moved 
   Without it, the pool restores `sharp` 0.35.2 (GHSA-wq5f-xc86-pv6w) and a second `workerd`, with 4
   high audit findings. Miniflare 5.20261006.1-alpha pins `sharp` 0.35.5 directly, so the separate
   `sharp` override is gone.
-- The `agents` entry overrides the two MCP peers to the direct versions (GHSA-6qxp-vccf-f47h, issue
-  #233). `agents` 0.20.1 is installed; 0.21.0 through 0.28.0 keep the exact pins on
-  `@modelcontextprotocol/sdk` 1.30.0 and `@modelcontextprotocol/client` 2.0.0. The tree carries two
-  `@modelcontextprotocol/core` versions: 2.0.0 for the server and 2.2.0 under the client.
+
+On 2026-10-13, `agents` 0.28.1 replaced the `agents` override. It pins `@modelcontextprotocol/sdk`
+1.32.1, `@modelcontextprotocol/client` 2.3.1, and `@modelcontextprotocol/server` 2.3.1, and the tree
+carries one copy of each and of `@modelcontextprotocol/core` 2.3.1.
 
 `npm audit` reports 0 findings. `wrangler` nests `esbuild` 0.28.2; the root keeps 0.28.1.
 
 Done when: a pool release accepts patched `wrangler` and `miniflare` versions, both the pool and the
 global `miniflare` overrides are removed, and `npm audit`, `npm run test:smoke`, and the
-single-`workerd` check still pass. Remove the `agents` override when an `agents` release accepts SDK
-1.31.0 and client 2.2.0 or later.
+single-`workerd` check still pass.
 
 ### Verify that xAI accepts the explicit tool `strict` field
 
@@ -454,6 +453,9 @@ reproduce with the same scores. Raven stays on 0.5.1. A later upgrade must also 
 `src/executor/spec-sandbox.ts`: it mirrors the 0.5.1 `truncateResponse`, `sandboxResponseText`, and
 in-sandbox `__truncateResponse`, which 0.5.3 removes in favor of host-side structural truncation
 (`truncateResult`, 24,000 characters). `test/spec-sandbox.test.ts` pins the 0.5.1 behavior.
+
+On 2026-10-13, `@cloudflare/codemode` 0.5.4 shipped a `dist/index.js` byte-identical to 0.5.3, so
+the prefix rule is unchanged and the four triggers reproduce with the same scores (27, 55, 45, 27).
 
 Done when: an upstream or general local repair passes the original triggers, positive controls, and
 Raven routing gates. Keep the RWA exclusion until its three technical controls also pass.
