@@ -15,37 +15,14 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Follow the upstream Docs pull request for `sd-027` and `sd-034`.
+2. Run the reviewed paid measurements when a spend authorization arrives: owner decision A, then
+   the draft PRs #270, #271, and #272. Each has a reviewed plan and a cap.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
 
 ## Improvements follow-up
-
-### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
-
-The maintainer named https://github.com/stellar/stellar-docs/pull/2837 as the replacement for the
-closed PR #2367. On 2026-10-09 the head was `0c20e720138eb126c37dab3336501b16751d1d2f`. Its last
-commit (2026-10-06) describes passkey-kit as a sibling of smart-account-kit. The review decision is
-`APPROVED` (second approval 2026-10-07), and the merge state is `CLEAN`. The PR is not merged.
-
-Re-check the PR at the next improvements round, or earlier if its head changes or it closes. If it
-merges and deploys, run both original live page checks before changing either finding. Do not post a
-status comment while the maintainers are working on the decision. History:
-`.agents/rounds/2026-09-16-maintenance-execution.md` and
-`.agents/rounds/2026-09-21-improvements-followup.md`.
-
-Done when: each finding records the resulting live state, and any fixed finding completes the
-resolver gates.
-
-2026-10-13 result: PR #2837 merged at 2026-10-12T20:37:44Z (merge commit `2dd75fef`), and issue
-#2700 closed as completed. The `Build and push stellar-docs` run 38305457471 succeeded at
-2026-10-12T20:42:52Z. Both original live page checks ran at
-2026-10-13T16:13:13Z and no longer reproduce. Both findings moved to `fixed-upstream`. Inbound
-handoff issues #275 and #276 (author: the PR author) match the live state. Still open: the distinct
-reviewer re-derivation, the #2700 resolution comment, the #275 and #276 acknowledgments, the resolver
-runs, and the deletion of this item. Ledger: `rounds/2026-10-13-improvements-followup.md`.
 
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
 

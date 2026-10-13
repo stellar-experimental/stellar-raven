@@ -142,3 +142,26 @@ for each finding with `--review-evidence "Codex gpt-6-astra high review RS 2026-
 /private/tmp/claude-501/w1013/keep/rs-review.md"` or the ledger path; apply the post-retirement string changes above;
 post notes F and G and close #276 and #275; delete the `.agents/TODO.md` item. Retained evidence: this ledger, the two
 finding files at `087cc6b5`, the RS review file, and `/private/tmp/claude-501/w1013/s-comments.md` until posted.
+
+## Retirement (orchestrator, 2026-10-13)
+
+Delta review RS2 (Codex `gpt-6-astra`, high) found two P3 text issues. The orchestrator fixed both.
+The comments lost an idiom and two internal terms. The cluster-022 reason now limits its absence
+claim to the four wallet and DEX members (`b247cb52`). Reviews RS and RS2 are in
+`2026-10-13-improvements-followup/`.
+
+Posted and read back by `gh api ... --jq .body` (content identical to the prepared text):
+
+| Ref | Comment |
+| --- | --- |
+| stellar/stellar-docs#2700 | https://github.com/stellar/stellar-docs/issues/2700#issuecomment-6150505131 |
+| stellar/stellar-docs#2837 | https://github.com/stellar/stellar-docs/pull/2837#issuecomment-6150505777 |
+| stellar/stellar-docs#2367 | https://github.com/stellar/stellar-docs/pull/2367#issuecomment-6150506343 |
+| Raven #276 | https://github.com/stellar-experimental/stellar-raven/issues/276#issuecomment-6150506779 |
+| Raven #275 | https://github.com/stellar-experimental/stellar-raven/issues/275#issuecomment-6150507315 |
+
+The resolver ran for real for both findings (exit 0). It appended both receipts to
+`improvements/resolved.json`, removed both intake overrides, deleted both files, and regenerated
+`INDEX.md`. The golden case got the two post-retirement strings. Clusters 022, 105, and 131 were
+re-swept consistent. The TODO item is deleted. Notes F and G and the close of #276 and #275 follow
+the merge to `main`.
