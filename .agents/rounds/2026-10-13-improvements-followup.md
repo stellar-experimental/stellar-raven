@@ -79,8 +79,35 @@ paid model calls, and every other active finding.
 | Raven #276 | inbound handoff for `sd-027` | stellar-experimental/stellar-raven#276 | open | n/a | markers reproduced | acknowledgment drafted | close after the review records status and ref |
 | Raven #275 | inbound handoff for `sd-034` | stellar-experimental/stellar-raven#275 | open | n/a | markers reproduced | acknowledgment drafted | close after the review records status and ref |
 
+- Gates after edits (all exit 0): `npm run improvements:index` (73 findings); `npm run improvements:lint`
+  (`improvements lint ok (73 findings)`); `npm run improvements:lint -- --live` (`live intake checked`);
+  `npm run eval:qa:lint -- --stale --enforce-floors` (0 errors, 62 warnings, equal to main; a first rootCause wording
+  added one `symmetric-caution` warning and was reworded to point at `improvements/resolved.json`);
+  `node eval/qa/lint-corpus.mjs --since <merge-base>` (0 errors); `npm run eval:qa:register -- --check` (up to date);
+  `npm run secrets:scan -- --tree` (clean).
+- Commit `087cc6b5a863811d8311ad0ed15a5f4746d0f773` on `w1013/sd-resolve` holds every edit above. Not pushed.
+- Resolver dry runs against that commit (exit 0, no file written, tree clean afterwards):
+  `npm run improvements:resolve -- --file <finding> --resolved 2026-10-13 --live-recheck "<measured text>"
+  --review-evidence "PENDING distinct reviewer" --resolving-ref https://github.com/stellar/stellar-docs/pull/2837
+  --references-reviewed --upstream-commented --dry-run`.
+  - `sd-027`: upstreamRefs = Raven #276, stellar-docs #2700, PR #2367, PR #2837; resolvingRefs = PR #2837;
+    sourceCommit `087cc6b5`; sourceUrl
+    `https://github.com/stellar-experimental/stellar-raven/blob/087cc6b5a863811d8311ad0ed15a5f4746d0f773/improvements/stellar-docs/sd-027-launchtube-passkey-migration-drift.md`.
+  - `sd-034`: upstreamRefs = Raven #275, stellar-docs #2700, PR #2367, PR #2837; resolvingRefs = PR #2837;
+    sourceCommit `087cc6b5`; sourceUrl
+    `https://github.com/stellar-experimental/stellar-raven/blob/087cc6b5a863811d8311ad0ed15a5f4746d0f773/improvements/stellar-docs/sd-034-smart-wallet-passkey-kit-legacy-routing.md`.
+  - The real run needs `--review-evidence` replaced by the distinct reviewer's evidence and `--upstream-commented`
+    to be true: comments on #2700, #2837, #275, and #276 posted; #2367 recorded as not applicable (closed unmerged,
+    superseded). The snapshot URLs resolve only after the branch is on the public repository.
+
 ## Outcome
 
-Pending the distinct reviewer. Author verdict: both findings `fixed-upstream`; no successor filed; two
-editorial residual notes recorded in the findings. Gate results and resolver dry-run outputs are
-appended below once they run.
+Author lane: both findings `fixed-upstream` with dated live evidence; no successor filed; two editorial residual
+notes recorded in the findings (Relayer page back-link for `sd-027`; archived credit link at
+`check-auth-tutorials.mdx:617` for `sd-034`). Golden case refreshed (judge-blind only) and three clusters re-swept
+consistent. Gates pass. Upstream text prepared and unposted. Resolver dry runs pass.
+
+Remaining before retirement: the distinct reviewer re-derives both triggers and the residual scan; the #2700
+resolution comment and the #275/#276 acknowledgments are posted; the resolver runs for real with the reviewer's
+evidence; #275 and #276 close; the `.agents/TODO.md` item is deleted. Retained evidence: this ledger, the two
+finding files at `087cc6b5`, and `/private/tmp/claude-501/w1013/s-comments.md` until its text is posted.
