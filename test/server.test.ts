@@ -585,7 +585,7 @@ describe("docs page truthfulness", () => {
       // skill.run and both artifact reads keep the service-call envelope
       [
         "skill.run + artifact.info + artifact.read → r.data envelope",
-        /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+that\s+same\s+envelope/
+        /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+the\s+same\s+envelope\s+without\s+the\s+<code>asOf<\/code>\s+and\s+<code>caveat<\/code>\s+signals/
       ]
     ];
     for (const [label, pattern] of mappings) {
@@ -817,6 +817,9 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.hits[0]?.signature).toContain("SearchDirectoryInput");
     expect(structured.nextSteps).toMatch(/execute/i);
     expect(structured.nextSteps).toContain("filter raw row JSON");
+    expect(structured.nextSteps).toContain(
+      "Every call resolves to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error:"
+    );
     expect(structured.nextSteps).toContain("at most two `scout.searchRepos`/`scout.searchProjects`");
     expect(structured.nextSteps).toContain("three returned candidates");
     expect(structured.nextSteps).toMatch(/single-step how-to or debugging/i);
@@ -1295,7 +1298,7 @@ describe("execute behavior", () => {
     const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
     expect(text).toContain("--- EVIDENCE RECOVERY ---");
     expect(text).toContain("structurally empty collections");
-    expect(text).toContain("{ ok: true, data } envelopes remain unchanged");
+    expect(text).toContain('Each carries `caveat: "no-rows"`; they do not ground an open-world negative');
     expect(text).toContain("--- EVIDENCE CHECKPOINT ---");
     expect(text).toContain("scout.searchResearch (broader-research");
   });

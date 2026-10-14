@@ -79,7 +79,7 @@ import {
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { callService } from "../adapters/index.ts";
-import type { AdapterEnv, AdapterResult, FetchLike } from "../adapters/types.ts";
+import type { AdapterEnv, AdapterResult, FetchLike, ResultCaveat } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
 import { applyArgumentAliases } from "../policy/argument-aliases.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
@@ -111,6 +111,10 @@ export type OpLedgerCall = {
   hasServiceData?: boolean;
   /** Exact allowlisted response metadata captured before sandbox projection. */
   sourceMetadata?: SourceMetadataField[];
+  /** The same host-derived caveat the ok envelope carries. */
+  caveat?: ResultCaveat;
+  /** Host clock when an ok response arrived (ISO-8601). */
+  observedAt?: string;
   /** Bounded host label; never an upstream message, body, URL, or argument value. */
   reason?: string;
   ms: number;
@@ -234,6 +238,72 @@ export function hasServiceData(value: unknown): boolean {
   return hasData;
 }
 
+/** Catalog retrieval lanes whose rows are similarity or research matches by contract. */
+const CANDIDATE_LANES = new Set(["semantic", "research", "av"]);
+/**
+ * Upstream match modes that mark rows as unverified matches: Lumenloop
+ * `match_mode: "semantic"` (directory fell back to vector neighbours) and
+ * Scout `meta.matchMode` "semantic" (no keyword tier matched) or "corrected"
+ * (rows matched only through a spelling correction). See inventory/.
+ */
+const CANDIDATE_MATCH_MODES = new Set(["semantic", "corrected"]);
+const MATCH_MODE_PATHS = new Set<SourceMetadataPath>([
+  "data.matchMode",
+  "data.match_mode",
+  "data.meta.matchMode",
+  "data.meta.match_mode"
+]);
+/**
+ * Upstream data-date paths, most specific first. `generatedAt` is excluded:
+ * it stamps response generation, not the data, and adds nothing over the
+ * host observation time.
+ */
+const AS_OF_PATHS: readonly SourceMetadataPath[] = [
+  "data.dataAsOf",
+  "data.meta.dataAsOf",
+  "data.asOf",
+  "data.meta.asOf"
+];
+
+/**
+ * Host-derived caveat for an ok result. It reads only the result shape, the
+ * catalog retrieval lane, and allowlisted match-mode metadata; it never judges
+ * row relevance, so adjacent or off-target rows stay unmarked.
+ */
+export function resultCaveat(
+  entry: CatalogEntry,
+  data: unknown,
+  sourceMetadata: readonly SourceMetadataField[] | undefined
+): ResultCaveat | undefined {
+  if (!hasServiceData(data)) return "no-rows";
+  const lane = entry.retrievalProfile?.lane;
+  if (lane !== undefined && CANDIDATE_LANES.has(lane)) return "unverified-match";
+  const candidateMode = sourceMetadata?.some(
+    (field) =>
+      MATCH_MODE_PATHS.has(field.path) &&
+      typeof field.value === "string" &&
+      CANDIDATE_MATCH_MODES.has(field.value)
+  );
+  return candidateMode ? "unverified-match" : undefined;
+}
+
+/**
+ * The upstream-stated data date when an allowlisted data-date path holds a
+ * parseable date string (copied exactly), else the host observation time.
+ */
+export function asOfSignal(
+  sourceMetadata: readonly SourceMetadataField[] | undefined,
+  observedAt: string
+): { asOf: string; asOfBasis: SourceMetadataPath | "observed" } {
+  for (const path of AS_OF_PATHS) {
+    const value = sourceMetadata?.find((field) => field.path === path)?.value;
+    if (typeof value === "string" && Number.isFinite(Date.parse(value))) {
+      return { asOf: value, asOfBasis: path };
+    }
+  }
+  return { asOf: observedAt, asOfBasis: "observed" };
+}
+
 export type ArtifactReadStats = {
   count: number;
   bytes: number;
@@ -317,6 +387,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   );
   return [
     "    const __warned = new Set();",
+    '    const __envelopeKeys = new Set(["ok", "data", "error", "asOf", "asOfBasis", "caveat", "then", "toJSON"]);',
     "    const __guardEnvelope = (r, call) => {",
     '      if (r === null || typeof r !== "object" || typeof r.ok !== "boolean") return r;',
     "      const __trap = (key, desc) => {",
@@ -324,8 +395,8 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
     "      };",
     '      if (r.ok && r.data && typeof r.data === "object" && !Array.isArray(r.data)) {',
     "        for (const key of Object.keys(r.data)) {",
-    '          if (key === "ok" || key === "data" || key === "error" || key === "then" || key === "toJSON") continue;',
-    '          const msg = call + \' result: ".\' + key + \'" is on the data payload, not the envelope — use r.data.\' + key + " (every call resolves to { ok: true, data } | { ok: false, error })";',
+    '          if (__envelopeKeys.has(key)) continue;',
+    '          const msg = call + \' result: ".\' + key + \'" is on the data payload, not the envelope — use r.data.\' + key + " (an ok result keeps its payload under r.data; a failure is { ok: false, error })";',
     "          __trap(key, {",
     "            get() { throw new Error(msg); },",
     "            set(value) { Object.defineProperty(this, key, { value, writable: true, enumerable: true, configurable: true }); }",
@@ -425,23 +496,40 @@ export function buildOpsFns(
       );
       const ms = Date.now() - t0;
       const redactedResult = redactSecrets(result, secrets);
-      const sourceMetadata = redactedResult.ok
-        ? captureSourceMetadata(redactedResult.data)
-        : undefined;
+      if (!redactedResult.ok) {
+        logEvent("op", { id: entry.id, outcome: redactedResult.error.kind, ms });
+        deps?.onOpCall?.({
+          op: entry.id,
+          outcome: redactedResult.error.kind,
+          reason: failedCallReason(entry, result),
+          ms
+        });
+        return redactedResult;
+      }
+      const sourceMetadata = captureSourceMetadata(redactedResult.data);
+      const observedAt = new Date().toISOString();
+      const caveat = resultCaveat(entry, redactedResult.data, sourceMetadata);
       logEvent("op", {
         id: entry.id,
-        outcome: result.ok ? "ok" : result.error.kind,
-        ms
+        outcome: "ok",
+        ms,
+        ...(caveat ? { caveat } : {})
       });
       deps?.onOpCall?.({
         op: entry.id,
-        outcome: result.ok ? "ok" : result.error.kind,
-        hasServiceData: result.ok ? hasServiceData(result.data) : undefined,
+        outcome: "ok",
+        hasServiceData: hasServiceData(redactedResult.data),
         sourceMetadata,
-        reason: failedCallReason(entry, result),
+        ...(caveat ? { caveat } : {}),
+        observedAt,
         ms
       });
-      return redactedResult;
+      return {
+        ok: true,
+        data: redactedResult.data,
+        ...asOfSignal(sourceMetadata, observedAt),
+        ...(caveat ? { caveat } : {})
+      };
     };
   }
   return byService;
@@ -580,7 +668,7 @@ function describeCatalogEntry(catalog: Catalog, id?: unknown) {
     ...(signature ? { signature } : {}),
     inputSchema: entry.inputSchema,
     outputSchema: entry.outputSchema,
-    usage: "call it exactly as the signature's callable line shows — the payload arrives under r.data ({ ok: true, data } | { ok: false, error }), never at the top level"
+    usage: "call it exactly as the signature's callable line shows — the payload arrives under r.data ({ ok: true, data, asOf, asOfBasis, caveat? } | { ok: false, error }), never at the top level"
   };
 }
 

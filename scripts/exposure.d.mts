@@ -7,7 +7,7 @@ export function lumenloopOpExcluded(tool: { name: string; metered?: boolean }): 
 export const EXCLUDED_SCOUT_OPS: Set<string>;
 export const EXCLUDED_SCOUT_OPERATIONS: Map<string, string>;
 export const NON_EXPOSED_SCOUT_OP_NAMES: Set<string>;
-export const SCOUT_OPERATIONS_ABSENT_FROM_SPEC: Map<string, string>;
+export const OPTIONAL_EXCLUDED_SCOUT_OPERATIONS: Map<string, string>;
 export const RETIRED_ONBOARDING_SKILLS: Set<string>;
 export const RETIRED_PARTNER_ONBOARDING_SKILLS: Set<string>;
 export const SKILL_EXPOSURE_CLASSIFICATION_VALUES: Set<string>;

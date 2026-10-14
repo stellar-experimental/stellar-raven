@@ -1,0 +1,677 @@
+{
+  "schema": "p7-omission-replay-v1",
+  "p6Revision": "d15a4ce5",
+  "currentPackVersion": "p7",
+  "rowsFile": ".agents/rounds/2026-10-09-continuation/pack-omission/stored-pack-omissions.json",
+  "sources": {
+    "2026-08-27T00-02-11-variantA.json": "e0c46a1926adab92f85b084f2d46b4b0b78f8d4b19b7e0bfab23d00dead2e0e6",
+    "2026-08-28T19-27-08-variantA.json": "3fa1bf01fe831e999c5282b332ec1309b7dcb9804e6cc4ec41135ab0681531dd",
+    "2026-08-30T03-43-11-variantA.json": "211577ce0dcb7c994dcc1bbec0be7cc0fca534c6638be261420d21a761502387",
+    "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json": "8ff401115216e37cee27d78948b3bad408c30fe6915a54dd3d938a44ae7ecf02",
+    "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json": "4c4f141e9ded358f54a26de93a8345ae8f28ab49555a28cbc42868db83f2c209",
+    "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json": "e3517cf81b724016ac33f84be1deb9c4e17207507a2c8f2b841e08876465e5f4"
+  },
+  "summary": {
+    "rows": 11,
+    "missingArtifacts": 0,
+    "claims": 15,
+    "claimsWithTranscriptSupport": 12,
+    "p6ClaimsHoldingSupport": 2,
+    "p7ClaimsHoldingSupport": 12,
+    "p6OmittedProbes": 16,
+    "p7OmittedProbes": 0,
+    "p6PacksMatchingStoredP6Hash": 6,
+    "storedP6Rows": 6,
+    "maxP7Chars": 11994
+  },
+  "rows": [
+    {
+      "file": "2026-08-27T00-02-11-variantA.json",
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "freshness": "live",
+      "caseSource": "current-corpus",
+      "stored": {
+        "packVersion": "p5",
+        "packSha256": "f2cc816ad2262020a7b0f42a837944ae229eb109ae78fe4b01b91a4ef287db92",
+        "rubric": "v2.8",
+        "score": "partial",
+        "judgeCostUsd": 0.15471
+      },
+      "p6": {
+        "chars": 9618,
+        "sha256": "70ea632d293e5925d1ac141fc9fab072b68610b69c03a87b3c93703610b98c71",
+        "matchesStoredPack": null
+      },
+      "p7": {
+        "chars": 11924,
+        "sha256": "642329ec3fe9cb0dff1e1a88670114beeb9088be40852ed73b2b53e4896800f7"
+      },
+      "claims": [
+        {
+          "claim": "100 stroops equals 0.0000001 XLM (off by 100x; 100 stroops = 0.00001 XLM given 1 XLM = 10,000,000 stroops)",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "1 XLM",
+              "100"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "1 XLM"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-08-27T00-02-11-variantA.json",
+      "id": "q-ti-freighter-localhost-not-detected",
+      "freshness": "scheduled",
+      "caseSource": "current-corpus",
+      "stored": {
+        "packVersion": "p5",
+        "packSha256": "5a9a84377e1d3500823630461c376c6e9b24328199505c48bfd7fcc84b8d4d16",
+        "rubric": "v2.8",
+        "score": "wrong",
+        "judgeCostUsd": 0.144544
+      },
+      "p6": {
+        "chars": 11921,
+        "sha256": "4ef437860ce4b91ad2365ee5fed8524ce3a1d8aa02dc263aa4f2acf6b7b75964",
+        "matchesStoredPack": null
+      },
+      "p7": {
+        "chars": 11886,
+        "sha256": "eece789e5c5707eb7f4c832f3de55fe2a8e5c16ce325dbc4f57edaed5b3b065a"
+      },
+      "claims": [
+        {
+          "claim": "States HTTPS/secure-context is definitively required for Freighter to inject window.freighterApi, presented as a categorical rule rather than the disputed official-vs-current-source claim",
+          "status": "no-answer-support-in-transcript",
+          "transcriptSupport": {
+            "terms": [],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [
+              "freighterApi"
+            ],
+            "prose": []
+          }
+        },
+        {
+          "claim": "'Serving your dev server over HTTPS is the fix' asserted as the universal, complete fix without qualification",
+          "status": "no-answer-support-in-transcript",
+          "transcriptSupport": {
+            "terms": [],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        },
+        {
+          "claim": "Sample code `const connected = await isConnected(); if (connected)` treats the structured isConnected() result as a plain boolean",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "isConnected"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [
+              "const connected = await isConnected(); if (connected)"
+            ],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-08-28T19-27-08-variantA.json",
+      "id": "q-asset-rwa-tokenized-freshness",
+      "freshness": "live",
+      "caseSource": "current-corpus",
+      "stored": {
+        "packVersion": "p5",
+        "packSha256": "b57029d436fb5b372a87d70a8f25c26de090891587d85f150aaef33b6e91eeb9",
+        "rubric": "v2.8",
+        "score": "wrong",
+        "judgeCostUsd": 0.330929
+      },
+      "p6": {
+        "chars": 11910,
+        "sha256": "b57029d436fb5b372a87d70a8f25c26de090891587d85f150aaef33b6e91eeb9",
+        "matchesStoredPack": null
+      },
+      "p7": {
+        "chars": 11937,
+        "sha256": "3d64d556181df99327c9407a22c8e7e5ebb12a84478ce8a08e795e8d5e83c1a1"
+      },
+      "claims": [
+        {
+          "claim": "Claims the stellar.org 2026-08-20 article shows the sovereign/government-debt subset grew from ~$500M to $3B by June 2026, when the source (per transcript evidence) actually states $490M in sovereign instruments, not $3B",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "2026-08-20",
+              "$500M",
+              "$3B",
+              "500M",
+              "3B"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "$500M",
+              "500M"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [
+              "$490M",
+              "490M"
+            ],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-08-28T19-27-08-variantA.json",
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "freshness": "live",
+      "caseSource": "current-corpus",
+      "stored": {
+        "packVersion": "p5",
+        "packSha256": "e9a8e02b64fb95ed39a7012a9409f5451823e137d89f4fbbc9556e6cd956a29c",
+        "rubric": "v2.8",
+        "score": "partial",
+        "judgeCostUsd": 0.217423
+      },
+      "p6": {
+        "chars": 11738,
+        "sha256": "e9a8e02b64fb95ed39a7012a9409f5451823e137d89f4fbbc9556e6cd956a29c",
+        "matchesStoredPack": null
+      },
+      "p7": {
+        "chars": 11768,
+        "sha256": "6a417e37475c94e985eab653f5bdc8ea5a0b1fb3451bd2e455afca5b725d7407"
+      },
+      "claims": [
+        {
+          "claim": "States the docs' minimum-balance example (1 trustline + 2 offers + 1 claimable-balance claimant) totals 3.5 XLM, when the transcript source-basis evidence shows the computation totals 3 XLM (1 XLM + 1.5 XLM + 0.5 XLM)",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "3.5 XLM",
+              "1 XLM",
+              "0.5 XLM"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "3.5 XLM",
+              "0.5 XLM"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [
+              "1.5 XLM"
+            ],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-08-30T03-43-11-variantA.json",
+      "id": "q-sor-p23-auto-restore-extendto",
+      "freshness": "scheduled",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p5",
+        "packSha256": "a55007f28f4defbf7acfd6d2fc120f3c2cc85da635ea3262db60429f0f30390f",
+        "rubric": "v2.9",
+        "score": "partial",
+        "judgeCostUsd": 0.3775128
+      },
+      "p6": {
+        "chars": 11928,
+        "sha256": "a55007f28f4defbf7acfd6d2fc120f3c2cc85da635ea3262db60429f0f30390f",
+        "matchesStoredPack": null
+      },
+      "p7": {
+        "chars": 11836,
+        "sha256": "70a4e4f6263f71f26f4f4bf80c3be18341c05261a112f18340d5a3dbf9ead90c"
+      },
+      "claims": [
+        {
+          "claim": "extendTo ≤ max_entry_ttl (omits the golden's required minus-one adjustment: extendTo <= maxEntryTTL - 1)",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "extendTo",
+              "max_entry_ttl"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "max_entry_ttl"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json",
+      "id": "q-defi-etherfuse-stablebonds",
+      "freshness": "live",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p6",
+        "packSha256": "5ba37a8ab940aba50632c9faa8d1131b307e7ea4ebdb037778acf4f8dc4eb271",
+        "rubric": "v2.10",
+        "score": "wrong",
+        "judgeCostUsd": 0.1051134
+      },
+      "p6": {
+        "chars": 11990,
+        "sha256": "5ba37a8ab940aba50632c9faa8d1131b307e7ea4ebdb037778acf4f8dc4eb271",
+        "matchesStoredPack": true
+      },
+      "p7": {
+        "chars": 11720,
+        "sha256": "6503dba18cf833f594683dbc1e4a01d22387fb763418f8a1a8160e43d25ff5a7"
+      },
+      "claims": [
+        {
+          "claim": "States Stablebonds 'usually matur[e] in ~90 days' as a general fact with no source or date, which is an unverified/invented maturity detail",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "90"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "90"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "freshness": "live",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p6",
+        "packSha256": "1dedf51305054d662df4c838e1ee97c595dc9f530ddcb88389728c68aefb60bc",
+        "rubric": "v2.10",
+        "score": "wrong",
+        "judgeCostUsd": 0.2659666
+      },
+      "p6": {
+        "chars": 11979,
+        "sha256": "1dedf51305054d662df4c838e1ee97c595dc9f530ddcb88389728c68aefb60bc",
+        "matchesStoredPack": true
+      },
+      "p7": {
+        "chars": 11994,
+        "sha256": "c532238a334e4fa2b5b9fe53afb7d328926bb0c2525c034d8d9235e3f4b1ea6c"
+      },
+      "claims": [
+        {
+          "claim": "Specific Q1-end figures ($100.6M Blend TVL, 25.9% QoQ growth, $174.4M total Stellar DeFi TVL) attributed to the LumenLoop 'Cypher Integrates Stellar' source are not supported by the shown evidence, which instead references '$44.9 million at end-2024' in that context",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "$100.6M",
+              "$174.4M",
+              "100.6M",
+              "174.4M"
+            ],
+            "prose": [
+              "Cypher Integrates Stellar"
+            ]
+          },
+          "p6Omitted": {
+            "terms": [
+              "$100.6M",
+              "$174.4M",
+              "100.6M",
+              "174.4M"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": [
+              "$44.9 million at end-2024"
+            ]
+          }
+        },
+        {
+          "claim": "Presents a cross-provider (stellar.org editorial, LumenLoop research, DefiLlama) narrative as a coherent +65% quarter trend, conflating different sources/methodologies into one trend line",
+          "status": "no-answer-support-in-transcript",
+          "transcriptSupport": {
+            "terms": [],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+      "id": "q-sor-deploy-invoke-from-js-sdk",
+      "freshness": "scheduled",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p6",
+        "packSha256": "ed38f9fa13966550ce6f826a72534ee7cea50d4b8991c397dd4b5953c1a9fce0",
+        "rubric": "v2.10",
+        "score": "wrong",
+        "judgeCostUsd": 0.0976862
+      },
+      "p6": {
+        "chars": 10888,
+        "sha256": "ed38f9fa13966550ce6f826a72534ee7cea50d4b8991c397dd4b5953c1a9fce0",
+        "matchesStoredPack": true
+      },
+      "p7": {
+        "chars": 11895,
+        "sha256": "e399cac7179ebdd0bc15995eb6299b3426f5cc7328fbfbccabb16cc12c11a575"
+      },
+      "claims": [
+        {
+          "claim": "Claims createCustomContract doesn't take a constructorArgs field, contradicting grader notes that SDK 16.0.1's createCustomContract usage includes wasmHash/salt/constructorArgs",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "createCustomContract",
+              "wasmHash"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "createCustomContract"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        },
+        {
+          "claim": "Shows assembleTransaction's result being signed directly (prepTx.sign(signer)) without calling .build() first, implying it returns a transaction rather than a builder",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "assembleTransaction",
+              "prepTx"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "freshness": "scheduled",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p6",
+        "packSha256": "7926739da93e31f8f323c9af8d3108335c0787c7a45499acf098ebd8b178cb25",
+        "rubric": "v2.10",
+        "score": "wrong",
+        "judgeCostUsd": 0.3012246
+      },
+      "p6": {
+        "chars": 10724,
+        "sha256": "7926739da93e31f8f323c9af8d3108335c0787c7a45499acf098ebd8b178cb25",
+        "matchesStoredPack": true
+      },
+      "p7": {
+        "chars": 11994,
+        "sha256": "2f9fb8f145de47e17a00418e9dd98c99ce584ad0dece88ef44422b1b27fd71e9"
+      },
+      "claims": [
+        {
+          "claim": "Example request shape shown as 'confirmed in the docs' combines startLedger and a cursor in the same getTransactions call, which misrepresents the source (the actual quoted example used a generic exampleMethod/some field, not startLedger) and contradicts startLedger/cursor mutual exclusivity",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "startLedger",
+              "getTransactions"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "startLedger"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [
+              "exampleMethod"
+            ],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+      "id": "q-hist-quantum-preparedness-plan",
+      "freshness": "scheduled",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p6",
+        "packSha256": "c2a605e968d48e741e6975c009a74fe397bc9a1cf5d1b7b2e223457409637859",
+        "rubric": "v2.10",
+        "score": "wrong",
+        "judgeCostUsd": 0.2299066
+      },
+      "p6": {
+        "chars": 11632,
+        "sha256": "c2a605e968d48e741e6975c009a74fe397bc9a1cf5d1b7b2e223457409637859",
+        "matchesStoredPack": true
+      },
+      "p7": {
+        "chars": 11902,
+        "sha256": "e4079c24db9727d58450c3a73f4bc972b15bf4c837dc0a84cbdfc20136cf6f4f"
+      },
+      "claims": [
+        {
+          "claim": "Claims Stage 1's ML-DSA host functions are 'already shipping as protocol' / 'already becoming protocol' despite the cited CAP-0087 status being 'Draft', contradicting the golden's point that verification primitives were not yet shipped at publication",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [],
+            "prose": [
+              "already becoming protocol"
+            ]
+          },
+          "p6Omitted": {
+            "terms": [],
+            "prose": [
+              "already becoming protocol"
+            ]
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    },
+    {
+      "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+      "id": "q-soroban-oz-upgradeable-macro",
+      "freshness": "scheduled",
+      "caseSource": "saved-caseInput",
+      "stored": {
+        "packVersion": "p6",
+        "packSha256": "09b8dee0d1c772a1d17373cbe0b3b5d87d8b5b32c4d652e6847c067983659849",
+        "rubric": "v2.10",
+        "score": "wrong",
+        "judgeCostUsd": 0.2201126
+      },
+      "p6": {
+        "chars": 8419,
+        "sha256": "09b8dee0d1c772a1d17373cbe0b3b5d87d8b5b32c4d652e6847c067983659849",
+        "matchesStoredPack": true
+      },
+      "p7": {
+        "chars": 10655,
+        "sha256": "c039268c49193a40fe90184bb8d13446d7cb651744adef55cb1878b373149d58"
+      },
+      "claims": [
+        {
+          "claim": "Presents `#[derive(Upgradeable)]`/`#[derive(UpgradeableMigratable)]` and `UpgradeableInternal`/`UpgradeableMigratableInternal` with `_require_auth`/`_migrate` as the current module API without noting these are retired/superseded",
+          "status": "p7-holds-support",
+          "transcriptSupport": {
+            "terms": [
+              "#[derive(Upgradeable)]",
+              "#[derive(UpgradeableMigratable)]",
+              "UpgradeableInternal",
+              "UpgradeableMigratableInternal",
+              "_require_auth",
+              "_migrate"
+            ],
+            "prose": []
+          },
+          "p6Omitted": {
+            "terms": [
+              "#[derive(Upgradeable)]",
+              "#[derive(UpgradeableMigratable)]"
+            ],
+            "prose": []
+          },
+          "p7Omitted": {
+            "terms": [],
+            "prose": []
+          },
+          "judgeTextOnly": {
+            "terms": [],
+            "prose": []
+          }
+        }
+      ]
+    }
+  ]
+}

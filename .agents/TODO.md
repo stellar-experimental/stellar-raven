@@ -15,29 +15,14 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Follow the upstream Docs pull request for `sd-027` and `sd-034`.
+2. Run the reviewed paid measurements when a spend authorization arrives: owner decision A, then
+   the draft PRs #270, #271, and #272. Each has a reviewed plan and a cap.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
 `run-evals` skill for the measurement sequence.
 
 ## Improvements follow-up
-
-### Re-check `sd-027` and `sd-034` after PR #2837 receives a maintainer decision
-
-The maintainer named https://github.com/stellar/stellar-docs/pull/2837 as the replacement for the
-closed PR #2367. On 2026-10-09 the head was `0c20e720138eb126c37dab3336501b16751d1d2f`. Its last
-commit (2026-10-06) describes passkey-kit as a sibling of smart-account-kit. The review decision is
-`APPROVED` (second approval 2026-10-07), and the merge state is `CLEAN`. The PR is not merged.
-
-Re-check the PR at the next improvements round, or earlier if its head changes or it closes. If it
-merges and deploys, run both original live page checks before changing either finding. Do not post a
-status comment while the maintainers are working on the decision. History:
-`.agents/rounds/2026-09-16-maintenance-execution.md` and
-`.agents/rounds/2026-09-21-improvements-followup.md`.
-
-Done when: each finding records the resulting live state, and any fixed finding completes the
-resolver gates.
 
 ### Monitor the Horizon protocol-ceiling note behind the rejected recovery experiment
 
@@ -267,37 +252,23 @@ Acceptance checks:
 Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
-### Move answer-style guidance from server instructions into result data
+### Stop identity substitution on spelling-corrected matches
 
-The Claude directory review (2026-10-07) found answer-style guidance in `BASE_SERVER_INSTRUCTIONS`:
-how to phrase an absence, when to abstain, and when to ask for context. The reviewer suggested
-result fields such as `inconclusive: true` or `as_of`, so the client can explain findings without
-being told how to talk. The review capture also cut off the 7,864-character `SERVER_INSTRUCTIONS`
-(the base plus the micro-map).
+The answer-style v2 measurement (merged in PR #271, 2026-10-13, PASS under rule 3) left one
+known defect. On `q-edge-strupey-ambiguous-stellar-history`, both candidate runs answered `wrong`.
+C1 called Stroopy.AI "almost certainly" the asked entity and gave its history, although the
+result carried `caveat: "unverified-match"` and no record linked the two names (H1 fails). C2 ended
+with an unscoped absence claim. The row left the consistent-change set only because the B1 judge
+ended T4, so the measurement neither confirms nor clears a regression. See
+[`result-v2.md`](rounds/2026-10-10-weekend/answer-style/result-v2.md) and the
+[independent review](rounds/2026-10-10-weekend/answer-style/review-result-v2-astra.md).
 
-Today the envelope carries `error.kind: "soft-empty"` and adapter hints. It has no general
-inconclusive flag or as-of field on ok results.
+Next: find a general mechanism (result data or adapter behavior, not a per-question rule) that
+keeps a corrected-name match from being presented as the asked entity, and measure it on the
+abstention slice under its own authorization.
 
-Draft PR #268 (branch `w1010/a`, do not merge) adds `inconclusive` and `asOf` signals, an `observedAt`
-footer, and removes four instruction rules (7,864 to 7,839 characters). Its 2026-10-11 ABBA
-measurement (34 rows, four collections, $47.92 of $84) is INDETERMINATE after the independent
-result review (`rounds/2026-10-10-weekend/answer-style/review-result-astra.md` on that PR):
-
-- Both candidate runs answered `q-edge-strupey-ambiguous-stellar-history` wrong: the answer promoted
-  a spelling-corrected Scout match despite `inconclusive: "candidates"`. Both baseline runs were
-  correct. The baseline re-judge was a T4 consistency error, so the confirmation is incomplete,
-  but the regression diagnosis stands.
-- The "activity" improvement is a judge artifact. The quantum-row improvement reproduced.
-- The word `inconclusive` names both an ok-but-empty field and the soft-empty kind. One candidate
-  answer merged them. That risks the soft-empty versus data distinction in `AGENTS.md`.
-
-Next: restore the removed tail "…otherwise say unverified or ask for context", settle the
-`inconclusive` wording against soft-empty, review the change, and measure again under a new
-authorization.
-
-Done when: ok results carry measured inconclusive and as-of signals, the instructions drop the
-phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
-measurement shows no regression in abstention or absence answers.
+Done when: a reviewed measurement shows that both candidate runs of the Strupey row say the
+identity is unverified or ask for context, with no regression in the abstention or absence slices.
 
 ## Executor and policy
 
@@ -385,7 +356,7 @@ candidate arm) and a merge decision.
 Found by the `dependency-audit` issue on 2026-10-01. PR #248 (2026-10-09) moved the toolchain to
 `wrangler` 4.149.0, `miniflare` 5.20261006.1-alpha, and `@cloudflare/workers-types` 5.20261009.1.
 
-`package.json` `overrides` has three entries:
+`package.json` `overrides` has two entries:
 
 - The pool entry points `@cloudflare/vitest-pool-workers` 0.22.0 at `wrangler` 4.149.0. Pool 0.23.0
   still pins `wrangler` 4.124.0 and `miniflare` 5.20260815.0-alpha exactly.
@@ -393,17 +364,16 @@ Found by the `dependency-audit` issue on 2026-10-01. PR #248 (2026-10-09) moved 
   Without it, the pool restores `sharp` 0.35.2 (GHSA-wq5f-xc86-pv6w) and a second `workerd`, with 4
   high audit findings. Miniflare 5.20261006.1-alpha pins `sharp` 0.35.5 directly, so the separate
   `sharp` override is gone.
-- The `agents` entry overrides the two MCP peers to the direct versions (GHSA-6qxp-vccf-f47h, issue
-  #233). `agents` 0.20.1 is installed; 0.21.0 through 0.28.0 keep the exact pins on
-  `@modelcontextprotocol/sdk` 1.30.0 and `@modelcontextprotocol/client` 2.0.0. The tree carries two
-  `@modelcontextprotocol/core` versions: 2.0.0 for the server and 2.2.0 under the client.
+
+On 2026-10-13, `agents` 0.28.1 replaced the `agents` override. It pins `@modelcontextprotocol/sdk`
+1.32.1, `@modelcontextprotocol/client` 2.3.1, and `@modelcontextprotocol/server` 2.3.1, and the tree
+carries one copy of each and of `@modelcontextprotocol/core` 2.3.1.
 
 `npm audit` reports 0 findings. `wrangler` nests `esbuild` 0.28.2; the root keeps 0.28.1.
 
 Done when: a pool release accepts patched `wrangler` and `miniflare` versions, both the pool and the
 global `miniflare` overrides are removed, and `npm audit`, `npm run test:smoke`, and the
-single-`workerd` check still pass. Remove the `agents` override when an `agents` release accepts SDK
-1.31.0 and client 2.2.0 or later.
+single-`workerd` check still pass.
 
 ### Verify that xAI accepts the explicit tool `strict` field
 
@@ -440,27 +410,44 @@ Calls with one message ID share an ordinal across assistant events. Entries with
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
 
-### Repair claim-support selection in the p6 judge pack
+### Refresh the activity-row golden note against the live `metricDefinitions`
 
-The judge still uses p6. Two repairs were measured on 2026-10-10 and neither cleared the gate.
-Draft PR #264 holds the code, the plans, the results, and every review. Do not merge it.
-The re-judge artifacts are in the ignored `eval/qa/results/2026-10-10-pack-rejudge/` folder.
+The golden notes of `q-eco-most-active-defi-projects` say that the served `meta.metricDefinitions`
+define `sort=activity` as latest-commit recency. On 2026-10-13 the Scout leaderboard defines it as
+`github.commits90d`, with `github.lastActivityAt` as the tie-break. Judges that follow the note
+grade a correct commit-volume answer `wrong` (answer-style v1 baseline rows; v2 B2, stamp
+`2026-10-13T23-59-41`). The B2 evidence pack also lacked the definition (the C2 pack had it), so the
+evidence cannot isolate one cause; the stale note is a supported contributor. Fix the note through
+the `golden-truth` workflow, with live evidence.
 
-- p7 ($18.19) lost the supporting snippet of a stable quantum row (Stage 2).
-- p8 ($9.0843) recovered the omission rows, with no false fabrication call in Stage 1.
-  One Stage 2 row moved down (StellarTerm), so the predeclared rule blocks p8.
-- The reviewed p8b continuation ($0.3774, one row, three calls) was not accepted (review R8):
-  - R8-1: p8 drops the status records of the other entities in the same claim sentence
-    (Comet, Zenex, and others) that p6 showed. The candidate sentence scope stays unresolved.
-  - R8-2 belongs to the rubric item below.
+Done when: the golden notes match the live `metricDefinitions`, and `npm run eval:qa:lint -- --stale`
+passes.
 
-Next repair: start from the p8 span units on PR #264. Keep the sibling records of every entity
-list in a claim sentence, and measure that coverage on the final text. Replay the p6, p7, and p8
-rows offline first. A new pack version needs an independent review and its own authorized
-measurement, with the R6 Stage 2 evidence-correction rule predeclared.
+### Close the remaining claim-support gaps of judge pack p9
 
-Done when: a reviewed new pack version passes the replayable coverage, and an authorized
-measurement shows no grade regression.
+The judge uses pack `p9` from PR #272 (2026-10-13). Before that merge, `main` used `p6`. p9 keeps
+the p8 omission repairs and shows the sibling records of every entity list in a claim sentence.
+History: p7 ($18.19) and p8 ($9.0843) were blocked, and the p8b continuation ($0.3774) was not
+accepted (review R8). Draft PR #264 holds those records.
+
+The p9 measurement ran on 2026-10-13 under the owner's approval: $2.0591 of the $8.55 cap,
+6 changed rows, 25 calls, self-test 7 of 7. The verdict is ACCEPT under the predeclared R6 rule.
+Stage 1 passes. Three Stage 2 rows have lower panels with no identified pack cause (two reused p8
+panels and the leaderboard row). The R8-1 row is `correct` (C C C). Codex `gpt-6-astra` at high
+confirmed the verdict in the post-run review. Result:
+[result-p9.md](rounds/2026-10-12-pack-p9/result-p9.md).
+
+Known limits that remain:
+
+- Field and unit limits: Etherfuse shows 5 of 7 records, stablecoin issuers 41 of 42, and
+  ERC-8004 0 of 2.
+- In the control rows, 5 rows lose 1 to 3 answer probes against p8.
+- The R8-1 sentence scope is unresolved. The `correct` panel does not show that the judges read the
+  narrow scope.
+- R8-2 belongs to the rubric item below.
+
+Done when: a reviewed later pack closes these gaps with an authorized measurement, or the owner
+accepts them as the standing limits of p9.
 
 ### Decide whether a sourced summary error matches must-avoid "unsupported memory"
 
@@ -499,6 +486,9 @@ reproduce with the same scores. Raven stays on 0.5.1. A later upgrade must also 
 `src/executor/spec-sandbox.ts`: it mirrors the 0.5.1 `truncateResponse`, `sandboxResponseText`, and
 in-sandbox `__truncateResponse`, which 0.5.3 removes in favor of host-side structural truncation
 (`truncateResult`, 24,000 characters). `test/spec-sandbox.test.ts` pins the 0.5.1 behavior.
+
+On 2026-10-13, `@cloudflare/codemode` 0.5.4 shipped a `dist/index.js` byte-identical to 0.5.3, so
+the prefix rule is unchanged and the four triggers reproduce with the same scores (27, 55, 45, 27).
 
 Done when: an upstream or general local repair passes the original triggers, positive controls, and
 Raven routing gates. Keep the RWA exclusion until its three technical controls also pass.

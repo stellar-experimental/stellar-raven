@@ -798,8 +798,11 @@ async function main() {
         "with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as " +
         "`await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema " +
         "(POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. " +
-        "Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, " +
-        "message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure " +
+        "Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or " +
+        "{ ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. " +
+        "`asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host " +
+        "observation time, and `asOfBasis` names which; " +
+        "`caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure " +
         "is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never " +
         "sees keys.",
       "x-generatedAt": catalogManifest.generatedAt

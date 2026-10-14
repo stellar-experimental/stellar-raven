@@ -1,0 +1,1153 @@
+{
+  "schema": "p8-replay-v1",
+  "revisions": {
+    "p6": "d15a4ce5",
+    "p7": "7e00ede2",
+    "p8": "e7ca3fb0",
+    "p8PackModuleClean": true
+  },
+  "supportRule": "rendered source text only (packSourceEvidenceText); answer-gated probes",
+  "sources": {
+    "2026-08-27T00-02-11-variantA.json": "e0c46a1926adab92f85b084f2d46b4b0b78f8d4b19b7e0bfab23d00dead2e0e6",
+    "2026-08-28T19-27-08-variantA.json": "3fa1bf01fe831e999c5282b332ec1309b7dcb9804e6cc4ec41135ab0681531dd",
+    "2026-08-30T03-43-11-variantA.json": "211577ce0dcb7c994dcc1bbec0be7cc0fca534c6638be261420d21a761502387",
+    "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json": "8ff401115216e37cee27d78948b3bad408c30fe6915a54dd3d938a44ae7ecf02",
+    "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json": "4c4f141e9ded358f54a26de93a8345ae8f28ab49555a28cbc42868db83f2c209",
+    "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json": "e3517cf81b724016ac33f84be1deb9c4e17207507a2c8f2b841e08876465e5f4"
+  },
+  "partA": {
+    "summary": {
+      "rows": 11,
+      "claims": 15,
+      "claimsWithTranscriptSupport": 12,
+      "claimsHolding": {
+        "p6": 2,
+        "p7": 11,
+        "p8": 12
+      },
+      "maxP8Chars": 11985
+    },
+    "rows": [
+      {
+        "file": "2026-08-27T00-02-11-variantA.json",
+        "id": "q-defi-arbitrage-pathpayment-bots",
+        "caseSource": "current-corpus",
+        "chars": {
+          "p6": 9618,
+          "p7": 11924,
+          "p8": 11697
+        },
+        "p6MatchesStored": null,
+        "claims": [
+          {
+            "claim": "100 stroops equals 0.0000001 XLM (off by 100x; 100 stroops = 0.00001 XLM given 1 XLM = 10,000,000 stroops)",
+            "transcriptSupport": [
+              "1 XLM",
+              "100"
+            ],
+            "missing": {
+              "p6": [
+                "1 XLM"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "partial"
+          }
+        ]
+      },
+      {
+        "file": "2026-08-27T00-02-11-variantA.json",
+        "id": "q-ti-freighter-localhost-not-detected",
+        "caseSource": "current-corpus",
+        "chars": {
+          "p6": 11921,
+          "p7": 11886,
+          "p8": 11745
+        },
+        "p6MatchesStored": null,
+        "claims": [
+          {
+            "claim": "States HTTPS/secure-context is definitively required for Freighter to inject window.freighterApi, presented as a categorical rule rather than the disputed official-vs-current-source claim",
+            "transcriptSupport": [],
+            "missing": {
+              "p6": [],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          },
+          {
+            "claim": "'Serving your dev server over HTTPS is the fix' asserted as the universal, complete fix without qualification",
+            "transcriptSupport": [],
+            "missing": {
+              "p6": [],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          },
+          {
+            "claim": "Sample code `const connected = await isConnected(); if (connected)` treats the structured isConnected() result as a plain boolean",
+            "transcriptSupport": [
+              "isConnected"
+            ],
+            "missing": {
+              "p6": [],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-08-28T19-27-08-variantA.json",
+        "id": "q-asset-rwa-tokenized-freshness",
+        "caseSource": "current-corpus",
+        "chars": {
+          "p6": 11910,
+          "p7": 11937,
+          "p8": 11859
+        },
+        "p6MatchesStored": null,
+        "claims": [
+          {
+            "claim": "Claims the stellar.org 2026-08-20 article shows the sovereign/government-debt subset grew from ~$500M to $3B by June 2026, when the source (per transcript evidence) actually states $490M in sovereign instruments, not $3B",
+            "transcriptSupport": [
+              "2026-08-20",
+              "$500M",
+              "$3B",
+              "500M",
+              "3B"
+            ],
+            "missing": {
+              "p6": [
+                "$500M",
+                "500M"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-08-28T19-27-08-variantA.json",
+        "id": "q-defi-arbitrage-pathpayment-bots",
+        "caseSource": "current-corpus",
+        "chars": {
+          "p6": 11738,
+          "p7": 11768,
+          "p8": 11930
+        },
+        "p6MatchesStored": null,
+        "claims": [
+          {
+            "claim": "States the docs' minimum-balance example (1 trustline + 2 offers + 1 claimable-balance claimant) totals 3.5 XLM, when the transcript source-basis evidence shows the computation totals 3 XLM (1 XLM + 1.5 XLM + 0.5 XLM)",
+            "transcriptSupport": [
+              "3.5 XLM",
+              "1 XLM",
+              "0.5 XLM"
+            ],
+            "missing": {
+              "p6": [
+                "3.5 XLM",
+                "0.5 XLM"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "partial"
+          }
+        ]
+      },
+      {
+        "file": "2026-08-30T03-43-11-variantA.json",
+        "id": "q-sor-p23-auto-restore-extendto",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 11928,
+          "p7": 11836,
+          "p8": 11804
+        },
+        "p6MatchesStored": null,
+        "claims": [
+          {
+            "claim": "extendTo ≤ max_entry_ttl (omits the golden's required minus-one adjustment: extendTo <= maxEntryTTL - 1)",
+            "transcriptSupport": [
+              "extendTo",
+              "max_entry_ttl"
+            ],
+            "missing": {
+              "p6": [
+                "max_entry_ttl"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "partial"
+          }
+        ]
+      },
+      {
+        "file": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json",
+        "id": "q-defi-etherfuse-stablebonds",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 11990,
+          "p7": 11720,
+          "p8": 11854
+        },
+        "p6MatchesStored": true,
+        "claims": [
+          {
+            "claim": "States Stablebonds 'usually matur[e] in ~90 days' as a general fact with no source or date, which is an unverified/invented maturity detail",
+            "transcriptSupport": [
+              "90"
+            ],
+            "missing": {
+              "p6": [
+                "90"
+              ],
+              "p7": [
+                "90"
+              ],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+        "id": "q-edge-fresh-latest-blend-tvl",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 11979,
+          "p7": 11994,
+          "p8": 11967
+        },
+        "p6MatchesStored": true,
+        "claims": [
+          {
+            "claim": "Specific Q1-end figures ($100.6M Blend TVL, 25.9% QoQ growth, $174.4M total Stellar DeFi TVL) attributed to the LumenLoop 'Cypher Integrates Stellar' source are not supported by the shown evidence, which instead references '$44.9 million at end-2024' in that context",
+            "transcriptSupport": [
+              "$100.6M",
+              "$174.4M",
+              "100.6M",
+              "174.4M",
+              "Cypher Integrates Stellar"
+            ],
+            "missing": {
+              "p6": [
+                "$100.6M",
+                "$174.4M",
+                "100.6M",
+                "174.4M"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          },
+          {
+            "claim": "Presents a cross-provider (stellar.org editorial, LumenLoop research, DefiLlama) narrative as a coherent +65% quarter trend, conflating different sources/methodologies into one trend line",
+            "transcriptSupport": [],
+            "missing": {
+              "p6": [],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+        "id": "q-sor-deploy-invoke-from-js-sdk",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 10888,
+          "p7": 11895,
+          "p8": 11985
+        },
+        "p6MatchesStored": true,
+        "claims": [
+          {
+            "claim": "Claims createCustomContract doesn't take a constructorArgs field, contradicting grader notes that SDK 16.0.1's createCustomContract usage includes wasmHash/salt/constructorArgs",
+            "transcriptSupport": [
+              "createCustomContract",
+              "wasmHash"
+            ],
+            "missing": {
+              "p6": [
+                "createCustomContract"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          },
+          {
+            "claim": "Shows assembleTransaction's result being signed directly (prepTx.sign(signer)) without calling .build() first, implying it returns a transaction rather than a builder",
+            "transcriptSupport": [
+              "assembleTransaction",
+              "prepTx"
+            ],
+            "missing": {
+              "p6": [],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json",
+        "id": "q-ti-rpc-gettransactions-pagination-xdr",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 10724,
+          "p7": 11994,
+          "p8": 11945
+        },
+        "p6MatchesStored": true,
+        "claims": [
+          {
+            "claim": "Example request shape shown as 'confirmed in the docs' combines startLedger and a cursor in the same getTransactions call, which misrepresents the source (the actual quoted example used a generic exampleMethod/some field, not startLedger) and contradicts startLedger/cursor mutual exclusivity",
+            "transcriptSupport": [
+              "startLedger",
+              "getTransactions"
+            ],
+            "missing": {
+              "p6": [
+                "startLedger"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+        "id": "q-hist-quantum-preparedness-plan",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 11632,
+          "p7": 11902,
+          "p8": 11960
+        },
+        "p6MatchesStored": true,
+        "claims": [
+          {
+            "claim": "Claims Stage 1's ML-DSA host functions are 'already shipping as protocol' / 'already becoming protocol' despite the cited CAP-0087 status being 'Draft', contradicting the golden's point that verification primitives were not yet shipped at publication",
+            "transcriptSupport": [
+              "already becoming protocol"
+            ],
+            "missing": {
+              "p6": [
+                "already becoming protocol"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      },
+      {
+        "file": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json",
+        "id": "q-soroban-oz-upgradeable-macro",
+        "caseSource": "saved-caseInput",
+        "chars": {
+          "p6": 8419,
+          "p7": 10655,
+          "p8": 10644
+        },
+        "p6MatchesStored": true,
+        "claims": [
+          {
+            "claim": "Presents `#[derive(Upgradeable)]`/`#[derive(UpgradeableMigratable)]` and `UpgradeableInternal`/`UpgradeableMigratableInternal` with `_require_auth`/`_migrate` as the current module API without noting these are retired/superseded",
+            "transcriptSupport": [
+              "#[derive(Upgradeable)]",
+              "#[derive(UpgradeableMigratable)]",
+              "UpgradeableInternal",
+              "UpgradeableMigratableInternal",
+              "_require_auth",
+              "_migrate"
+            ],
+            "missing": {
+              "p6": [
+                "#[derive(Upgradeable)]",
+                "#[derive(UpgradeableMigratable)]"
+              ],
+              "p7": [],
+              "p8": []
+            },
+            "storedScore": "wrong"
+          }
+        ]
+      }
+    ]
+  },
+  "partB": [
+    {
+      "invocation": "S1a",
+      "id": "q-defi-etherfuse-stablebonds",
+      "target": "mature in 90 days or less",
+      "inP6": false,
+      "inP7": false,
+      "p8": {
+        "header": "2. entry=2 sourceTruncated=yes path=\"visible-json.content\" source=\"Etherfuse Aims to Bring 100 Sovereign Currencies Onchain\"",
+        "span": "span: ...These treasuries often mature in 90 days or less...."
+      }
+    },
+    {
+      "invocation": "S2e",
+      "id": "q-pc-quantum-preparedness-dormant",
+      "target": "1,193 logical qubits",
+      "inP6": false,
+      "inP7": false,
+      "p8": {
+        "header": "4. entry=4 path=\"full[0].content\" source=\"Introducing the Quantum Preparedness Plan\"",
+        "span": "span: ...ly Stellar&#x27;s Ed25519 belongs to) requires only 1,193 logical qubits—a 44% reduction from prior estimates and fewer ..."
+      }
+    },
+    {
+      "invocation": "S2c",
+      "id": "q-hist-quantum-preparedness-plan",
+      "target": "immediately",
+      "inP6": true,
+      "inP7": false,
+      "p8": {
+        "header": "8. entry=2 sourceTruncated=yes path=\"visible-json.long_summary\" source=\"Introducing the Quantum Preparedness Plan\"",
+        "span": "span: ... Enterprise wallets can shift to quantum-safe contract accounts immediately...."
+      }
+    },
+    {
+      "invocation": "S2c",
+      "id": "q-hist-quantum-preparedness-plan",
+      "target": "expected to be able to move to quantum-safe signing",
+      "inP6": false,
+      "inP7": true,
+      "p8": {
+        "header": "7. entry=1 sourceTruncated=yes path=\"visible-json.content\" source=\"Introducing the Quantum Preparedness Plan\"",
+        "span": "span: ...Enterprise wallets are expected to be able to move to quantum-safe signing in 2026 through Soroban contract accounts."
+      }
+    }
+  ],
+  "partC": {
+    "rows": 207,
+    "answerProbeMissing": {
+      "p6": 426,
+      "p7": 239,
+      "p8": 227
+    },
+    "rowsWorseThanP6": [
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T16-51-53-variantA.json|q-aas-list-token-on-exchanges-aggregators",
+        "p6": 2,
+        "p8": 4
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-agent-identity-erc8004-stellar",
+        "p6": 2,
+        "p8": 4
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-mpp-discovery-and-modes",
+        "p6": 1,
+        "p8": 2
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-scf-sdf-bug-bounty",
+        "p6": 2,
+        "p8": 5
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-sep-43-web-wallet-api",
+        "p6": 1,
+        "p8": 5
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T19-43-18-variantA.json|q-soroban-add-signer-smart-wallet-howto",
+        "p6": 6,
+        "p8": 8
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-aas-list-token-on-exchanges-aggregators",
+        "p6": 6,
+        "p8": 8
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-asset-rwa-tokenized-freshness",
+        "p6": 1,
+        "p8": 2
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-defi-arbitrage-pathpayment-bots",
+        "p6": 1,
+        "p8": 2
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-defi-etherfuse-stablebonds",
+        "p6": 0,
+        "p8": 2
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-raph-withdraw-exchange-self-custody",
+        "p6": 0,
+        "p8": 1
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-scf-sdf-bug-bounty",
+        "p6": 2,
+        "p8": 6
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-07T23-25-14-variantA.json|q-soroban-contract-build-verification",
+        "p6": 1,
+        "p8": 4
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-aas-list-token-on-exchanges-aggregators",
+        "p6": 5,
+        "p8": 7
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-agent-identity-erc8004-stellar",
+        "p6": 1,
+        "p8": 6
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-defi-etherfuse-stablebonds",
+        "p6": 0,
+        "p8": 2
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-scf-cross-reflector-rounds-current",
+        "p6": 3,
+        "p8": 5
+      },
+      {
+        "row": "2026-10-07-tool-surface-qa/2026-10-08T02-40-37-variantA.json|q-scf-sdf-bug-bounty",
+        "p6": 2,
+        "p8": 4
+      },
+      {
+        "row": "2026-10-08-flagged-rows/2026-10-08T18-12-52-variantA.json|q-pc-quantum-preparedness-dormant",
+        "p6": 1,
+        "p8": 2
+      },
+      {
+        "row": "2026-10-08-flagged-rows/2026-10-08T18-34-39-variantA.json|q-pc-quantum-preparedness-dormant",
+        "p6": 0,
+        "p8": 1
+      }
+    ],
+    "itemsAtMost2": {
+      "p6": 131,
+      "p7": 136,
+      "p8": 122
+    },
+    "maxP8Chars": 11999
+  },
+  "partD": {
+    "rows": 131,
+    "identicalP6P8": 131,
+    "identicalP7P8": 131,
+    "differing": []
+  },
+  "partE": {
+    "summary": {
+      "rows": 32,
+      "armAPromptsReproduced": 32,
+      "armBPromptsReproduced": 32,
+      "p8PromptsChanged": 32,
+      "onlyEvidenceBlockDiffers": 32
+    },
+    "rows": [
+      {
+        "invocation": "S1a",
+        "id": "q-defi-etherfuse-stablebonds",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "0acf3d26dc75961d29fb9936fafd75390b45d98a1d1ff20c58c3237237c2fb7c",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11720,
+          "p8": 11854
+        },
+        "packLines": {
+          "p7": 70,
+          "p8": 78,
+          "p8LinesNotInP7": 48
+        }
+      },
+      {
+        "invocation": "S1b",
+        "id": "q-edge-fresh-latest-blend-tvl",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "9b6474cbea405f434f4caf33b1b429c3c896fdd4a5aa5e69563ea8388d761792",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11994,
+          "p8": 11967
+        },
+        "packLines": {
+          "p7": 68,
+          "p8": 74,
+          "p8LinesNotInP7": 32
+        }
+      },
+      {
+        "invocation": "S1b",
+        "id": "q-sor-deploy-invoke-from-js-sdk",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "a15d9ddf8ffe77eb47b7dc4e0b5224b84c5ecfdffb00911552f7853f0329ca44",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11895,
+          "p8": 11985
+        },
+        "packLines": {
+          "p7": 69,
+          "p8": 103,
+          "p8LinesNotInP7": 67
+        }
+      },
+      {
+        "invocation": "S1b",
+        "id": "q-ti-rpc-gettransactions-pagination-xdr",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "6f5f7ee8628614d794b584f12b7faf4a5502a7d4dd0dffb0cd46096ce33b1031",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11994,
+          "p8": 11945
+        },
+        "packLines": {
+          "p7": 69,
+          "p8": 111,
+          "p8LinesNotInP7": 70
+        }
+      },
+      {
+        "invocation": "S1c",
+        "id": "q-hist-quantum-preparedness-plan",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "62980fe9b013d701955d10e026712485db69e4a0257cc8d99505a562164f8483",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11902,
+          "p8": 11960
+        },
+        "packLines": {
+          "p7": 62,
+          "p8": 74,
+          "p8LinesNotInP7": 43
+        }
+      },
+      {
+        "invocation": "S1c",
+        "id": "q-soroban-oz-upgradeable-macro",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "469ea8e543c7639c18acfc2b05eee0923bf065d127ed222f56935924eeda12fd",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 10655,
+          "p8": 10644
+        },
+        "packLines": {
+          "p7": 68,
+          "p8": 93,
+          "p8LinesNotInP7": 51
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-aas-list-token-on-exchanges-aggregators",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "71e61dd7290e558a943ad95c229b6150a3e23b9629e8f0fe9a5dc3f6f086e731",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11878,
+          "p8": 11982
+        },
+        "packLines": {
+          "p7": 66,
+          "p8": 92,
+          "p8LinesNotInP7": 57
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-asset-stablecoin-issuers-discovery",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "a6a328f19d9df4af24375710ff16f79c1a33efbffd8511ba784d7d772308d49b",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11863,
+          "p8": 11982
+        },
+        "packLines": {
+          "p7": 84,
+          "p8": 110,
+          "p8LinesNotInP7": 57
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-comp-cross-moneygram-partnership-sep24",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "04acf9ffa2ef868b78644e4e397afa5f96b297f2a37356d70722062f3c3d70f3",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11939,
+          "p8": 11380
+        },
+        "packLines": {
+          "p7": 70,
+          "p8": 77,
+          "p8LinesNotInP7": 39
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-defi-arbitrage-pathpayment-bots",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "3cc7187326b5487ae31fb433efcbe87f5eea060e992852eca54c68d4c3b1887e",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11749,
+          "p8": 11882
+        },
+        "packLines": {
+          "p7": 70,
+          "p8": 95,
+          "p8LinesNotInP7": 54
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-eco-pyusd-stellar-freshness",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "420cf015534f7fc6524b5c3b9d1b8640ce46e6bf39d895b84e493d899131e4e9",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 10325,
+          "p8": 10060
+        },
+        "packLines": {
+          "p7": 47,
+          "p8": 54,
+          "p8LinesNotInP7": 18
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-edge-fresh-latest-scf-round",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "b233560da8b0c22224e4b7495df2a6ecff74eb688193f351516a4d711dfd4d30",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 4798,
+          "p8": 4784
+        },
+        "packLines": {
+          "p7": 37,
+          "p8": 40,
+          "p8LinesNotInP7": 10
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-mpp-discovery-and-modes",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "c17eecdc9174cedea9911c6593f2fae799b5deb06c2e9b7ab7308aa2aefb2e20",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11955,
+          "p8": 11573
+        },
+        "packLines": {
+          "p7": 73,
+          "p8": 109,
+          "p8LinesNotInP7": 67
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-raph-remove-scam-token",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "fe208508f02688a631701b66375743cdba5fcc987a57ba937ce0eae0260f450a",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11977,
+          "p8": 11939
+        },
+        "packLines": {
+          "p7": 85,
+          "p8": 116,
+          "p8LinesNotInP7": 67
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-scf-funding-by-category",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "8f07801cd657f5ce21d9ec6662665e09492685b35f5a267d5a329ecf57548b39",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 9819,
+          "p8": 9393
+        },
+        "packLines": {
+          "p7": 94,
+          "p8": 101,
+          "p8LinesNotInP7": 38
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-sep-43-web-wallet-api",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "4c5f4116e385f759e9c4bb25a95fbd238ea803e9b83d3588845992ee019985c7",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11810,
+          "p8": 11702
+        },
+        "packLines": {
+          "p7": 72,
+          "p8": 80,
+          "p8LinesNotInP7": 34
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-sor-cross-warmancer-zk-stack",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "5e45054caf3e365a93f1827206c87ff3127773576eb650aa8c5bf5c9163ce628",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11940,
+          "p8": 11999
+        },
+        "packLines": {
+          "p7": 66,
+          "p8": 75,
+          "p8LinesNotInP7": 33
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-soroban-contract-build-verification",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "8ea963a32a13398f5a4e5df0f85c8881b37af5d2933b44080a1d2974f59b1846",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11955,
+          "p8": 11833
+        },
+        "packLines": {
+          "p7": 72,
+          "p8": 82,
+          "p8LinesNotInP7": 41
+        }
+      },
+      {
+        "invocation": "S2a",
+        "id": "q-ti-vocab-content-tags-live",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "fec8c7cad4aaed92809194b76159b99bf824af6792a68f171e1e59d2aba563ee",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 9953,
+          "p8": 8827
+        },
+        "packLines": {
+          "p7": 72,
+          "p8": 73,
+          "p8LinesNotInP7": 24
+        }
+      },
+      {
+        "invocation": "S2b",
+        "id": "q-agent-identity-erc8004-stellar",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "1fd5132c29900c312da1d41078915f019d776afce2361251f98e3506bb7d54d4",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11939,
+          "p8": 11806
+        },
+        "packLines": {
+          "p7": 63,
+          "p8": 77,
+          "p8LinesNotInP7": 46
+        }
+      },
+      {
+        "invocation": "S2b",
+        "id": "q-protocol-27-cap-0071",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "fb3f2395d33212a669f63008f1dfe6be0a40554913af373b32cc295ab60eca68",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11890,
+          "p8": 11999
+        },
+        "packLines": {
+          "p7": 66,
+          "p8": 78,
+          "p8LinesNotInP7": 45
+        }
+      },
+      {
+        "invocation": "S2b",
+        "id": "q-soroban-token-transfer-pattern",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "3f10ff88b7d85dcf355492eaef47a8eefb877c783aa0ae5c522483d95b721ad3",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 10449,
+          "p8": 10440
+        },
+        "packLines": {
+          "p7": 71,
+          "p8": 92,
+          "p8LinesNotInP7": 50
+        }
+      },
+      {
+        "invocation": "S2c",
+        "id": "q-hist-quantum-preparedness-plan",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "d126494c932b8e77a208bde69223e3483faf4c0956b555666ea9ebd857272945",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11933,
+          "p8": 11958
+        },
+        "packLines": {
+          "p7": 64,
+          "p8": 74,
+          "p8LinesNotInP7": 38
+        }
+      },
+      {
+        "invocation": "S2c",
+        "id": "q-raph-withdraw-exchange-self-custody",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "ef5f7a5135cbbad3556b878c22f31bca678004c94b32d47a9badd595183f7b39",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 7831,
+          "p8": 8756
+        },
+        "packLines": {
+          "p7": 38,
+          "p8": 58,
+          "p8LinesNotInP7": 32
+        }
+      },
+      {
+        "invocation": "S2d",
+        "id": "q-gap-leaderboard-project-not-builder",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "f919c03db3e8c0fe1ddec099afe0aa47fa907089631f48d1e59f9606d3964022",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 7515,
+          "p8": 7195
+        },
+        "packLines": {
+          "p7": 47,
+          "p8": 48,
+          "p8LinesNotInP7": 15
+        }
+      },
+      {
+        "invocation": "S2e",
+        "id": "q-pc-quantum-preparedness-dormant",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "b4c974c3e8d5a6f6548976ebcea7e6257155c697af0fa8239f4b547edb773c62",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11885,
+          "p8": 11984
+        },
+        "packLines": {
+          "p7": 55,
+          "p8": 73,
+          "p8LinesNotInP7": 39
+        }
+      },
+      {
+        "invocation": "S3a",
+        "id": "q-defi-bridge-evm-to-stellar-axelar",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "13b9408bd450a280e2f2cb6cbd5a75c412f680094b83734bd08e19c19352b20b",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11862,
+          "p8": 11913
+        },
+        "packLines": {
+          "p7": 65,
+          "p8": 79,
+          "p8LinesNotInP7": 46
+        }
+      },
+      {
+        "invocation": "S3b",
+        "id": "q-ti-freighter-localhost-not-detected",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "787132b1fc834931683b94effe0b7d1bfcb19b3a31e10a4e2f0d06b6edda88fb",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11929,
+          "p8": 11982
+        },
+        "packLines": {
+          "p7": 59,
+          "p8": 73,
+          "p8LinesNotInP7": 36
+        }
+      },
+      {
+        "invocation": "S3c",
+        "id": "q-sor-force-fast-archival-localnet",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "b5c36f2cc5ef95903af26db1819bcbd8a310a56c6cd16f77794bfe205f72b080",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11958,
+          "p8": 11942
+        },
+        "packLines": {
+          "p7": 69,
+          "p8": 97,
+          "p8LinesNotInP7": 57
+        }
+      },
+      {
+        "invocation": "S3d",
+        "id": "q-scf-verified-members",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "a9b88cb778d1544a26e32655137328d0ca49c7ad0bfb537ec5e1c3f9c646a271",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11853,
+          "p8": 11966
+        },
+        "packLines": {
+          "p7": 56,
+          "p8": 72,
+          "p8LinesNotInP7": 35
+        }
+      },
+      {
+        "invocation": "S3d",
+        "id": "q-soroban-sdk-cve",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "b040ea45fc3cd8f2ad8d38a7a8752ad95354b53b84b946856f99eeb885cd6705",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11984,
+          "p8": 11686
+        },
+        "packLines": {
+          "p7": 67,
+          "p8": 80,
+          "p8LinesNotInP7": 40
+        }
+      },
+      {
+        "invocation": "S3d",
+        "id": "q-tool-sdk-repos-discovery",
+        "armAPromptReproduced": true,
+        "armBPromptReproduced": true,
+        "p8PromptSha256": "0858255fd4d24a6e1dc6c1b9f2b8838985be5e21ce643cef4a42373e11f50b04",
+        "p8PromptChanged": true,
+        "onlyEvidenceBlockDiffers": true,
+        "packChars": {
+          "p7": 11886,
+          "p8": 11985
+        },
+        "packLines": {
+          "p7": 74,
+          "p8": 94,
+          "p8LinesNotInP7": 46
+        }
+      }
+    ]
+  }
+}

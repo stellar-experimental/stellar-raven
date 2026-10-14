@@ -1,0 +1,37 @@
+{
+  "compared": 48,
+  "changes": [
+    {
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "arm": "B",
+      "index": 0,
+      "before": {
+        "status": "no-pack-omission",
+        "requiresReview": false,
+        "checkedClaims": 1,
+        "checkedTerms": 1,
+        "transcriptSupportedTerms": 1,
+        "omittedTerms": [],
+        "checkedProse": 1,
+        "transcriptSupportedProse": 0,
+        "omittedProse": []
+      },
+      "after": {
+        "status": "pack-omission",
+        "requiresReview": true,
+        "checkedClaims": 1,
+        "checkedTerms": 1,
+        "transcriptSupportedTerms": 1,
+        "omittedTerms": [
+          "2026-10-08"
+        ],
+        "checkedProse": 1,
+        "transcriptSupportedProse": 0,
+        "omittedProse": []
+      }
+    }
+  ],
+  "packChanged": [],
+  "keptProvenance": 13,
+  "keptMore": 17
+}

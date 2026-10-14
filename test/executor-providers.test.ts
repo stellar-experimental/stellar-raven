@@ -8,7 +8,14 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, type Catalog } from "../src/catalog/search.ts";
-import { buildSandbox, buildCodemodeProvider, hasServiceData, type OpLedgerCall } from "../src/executor/providers.ts";
+import {
+  asOfSignal,
+  buildSandbox,
+  buildCodemodeProvider,
+  hasServiceData,
+  resultCaveat,
+  type OpLedgerCall
+} from "../src/executor/providers.ts";
 import type { FetchLike } from "../src/adapters/types.ts";
 import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
@@ -114,10 +121,12 @@ describe("host structural service evidence", () => {
     });
     await fnsOf(providers, "lumenloop").search_directory!({ query: "error" });
     await fnsOf(providers, "lumenloop").search_directory!({ query: "soft-empty" });
-    expect(calls).toMatchObject([
-      { outcome: "error", hasServiceData: undefined },
-      { outcome: "soft-empty", hasServiceData: undefined }
-    ]);
+    expect(calls.map((call) => call.outcome)).toEqual(["error", "soft-empty"]);
+    for (const call of calls) {
+      expect(call.hasServiceData).toBeUndefined();
+      expect(call.caveat).toBeUndefined();
+      expect(call.observedAt).toBeUndefined();
+    }
   });
 
   it("captures only the named source-metadata locations", async () => {
@@ -158,6 +167,101 @@ describe("host structural service evidence", () => {
       }
     ]);
     expect(JSON.stringify(calls[0]?.sourceMetadata)).not.toContain("excluded");
+  });
+
+  it("adds host-derived asOf and caveat signals to ok envelopes and the ledger", async () => {
+    const calls: OpLedgerCall[] = [];
+    const fetchImpl: FetchLike = async (url) =>
+      String(url).includes("/rfps")
+        ? Response.json({
+            rfps: [],
+            meta: { generatedAt: "2026-08-26T12:00:00Z", dataAsOf: "2026-08-25", counts: { total: 0 } }
+          })
+        : Response.json({ success: true, data: { count: 1, projects: [{ slug: "soroswap" }] }, error: null });
+    const providers = buildSandbox(catalog, skillSource, env, { fetchImpl, onOpCall: (call) => calls.push(call) });
+
+    const empty = await fnsOf(providers, "scout").getRfps!({});
+    const exact = await fnsOf(providers, "lumenloop").search_directory!({ query: "soroswap" });
+
+    expect(empty).toMatchObject({
+      ok: true,
+      caveat: "no-rows",
+      asOf: "2026-08-25",
+      asOfBasis: "data.meta.dataAsOf"
+    });
+    expect(exact).toMatchObject({ ok: true, asOfBasis: "observed" });
+    expect(exact).not.toHaveProperty("caveat");
+    const observed = (exact as { asOf: string }).asOf;
+    expect(new Date(observed).toISOString()).toBe(observed);
+    expect(calls.map((call) => call.caveat)).toEqual(["no-rows", undefined]);
+    expect(calls.every((call) => typeof call.observedAt === "string")).toBe(true);
+  });
+
+  it.each([
+    ["empty rows on any lane", "scout.getPeople", { people: [] }, undefined, "no-rows"],
+    ["semantic lane rows", "lumenloop.search_content_semantic", { results: [{ id: 1 }] }, undefined, "unverified-match"],
+    ["research lane rows", "scout.searchResearch", { items: [{ id: 1 }] }, undefined, "unverified-match"],
+    ["A/V lane rows", "lumenloop.find_av_passages", { passages: [{ id: 1 }] }, undefined, "unverified-match"],
+    ["substring directory rows", "lumenloop.search_directory", { projects: [{ slug: "x" }] }, undefined, undefined],
+    [
+      "semantic directory fallback",
+      "lumenloop.search_directory",
+      { projects: [{ slug: "x" }], match_mode: "semantic" },
+      [{ path: "data.match_mode", value: "semantic" }],
+      "unverified-match"
+    ],
+    [
+      "strict keyword project match",
+      "scout.searchProjects",
+      { projects: [{ slug: "x" }] },
+      [{ path: "data.meta.matchMode", value: "strict" }],
+      undefined
+    ],
+    [
+      "spelling-corrected project match",
+      "scout.searchProjects",
+      { projects: [{ slug: "x" }] },
+      [{ path: "data.meta.matchMode", value: "corrected" }],
+      "unverified-match"
+    ],
+    ["corpus docs rows", "stellarDocs.search_docs", { hits: [{ url: "https://x" }] }, undefined, undefined]
+  ] as const)("derives the caveat for %s", (_label, id, data, metadata, expected) => {
+    const entry = catalog.entries.find((candidate) => candidate.id === id);
+    expect(entry, id).toBeDefined();
+    expect(resultCaveat(entry!, data, metadata ? [...metadata] : undefined)).toBe(expected);
+  });
+
+  it("prefers the most specific parseable upstream date, else the observation time", () => {
+    const observedAt = "2026-10-10T12:00:00.000Z";
+    expect(asOfSignal(undefined, observedAt)).toEqual({ asOf: observedAt, asOfBasis: "observed" });
+    expect(
+      asOfSignal(
+        [
+          { path: "data.meta.generatedAt", value: "2026-10-09T08:00:00Z" },
+          { path: "data.meta.dataAsOf", value: "2026-10-08" }
+        ],
+        observedAt
+      )
+    ).toEqual({ asOf: "2026-10-08", asOfBasis: "data.meta.dataAsOf" });
+    // generatedAt stamps response generation, not the data: it never becomes asOf.
+    expect(
+      asOfSignal(
+        [
+          { path: "data.generatedAt", value: "2026-10-09T08:00:00Z" },
+          { path: "data.meta.generatedAt", value: "2026-10-09T08:00:00Z" }
+        ],
+        observedAt
+      )
+    ).toEqual({ asOf: observedAt, asOfBasis: "observed" });
+    expect(
+      asOfSignal(
+        [
+          { path: "data.dataAsOf", value: "not a date" },
+          { path: "data.meta.scfRound.asOf", value: "2026-08-26" }
+        ],
+        observedAt
+      )
+    ).toEqual({ asOf: observedAt, asOfBasis: "observed" });
   });
 });
 
@@ -512,6 +616,27 @@ async function guardSyntheticPayload<T>(payload: T): Promise<{ ok: true; data: T
 }
 
 describe("envelope guard prelude (fail-loud wrong-level access)", () => {
+  it("lets the envelope signal own r.asOf when the payload has its own asOf key", async () => {
+    const ns = guardedNamespaces(undefined, (namespaces) => {
+      namespaces.lumenloop!.search_directory = async () => ({
+        ok: true,
+        data: { asOf: null, projects: [] },
+        asOf: "2026-10-10T12:00:00.000Z",
+        asOfBasis: "observed",
+        caveat: "no-rows"
+      });
+    });
+    const r = (await ns.lumenloop!.search_directory!({ query: "synthetic" })) as Record<string, unknown> & {
+      data: { asOf: unknown };
+    };
+    // Accepted behavior: the envelope keys are not trapped, so r.asOf is the
+    // host signal and the payload value stays at r.data.asOf.
+    expect(r.asOf).toBe("2026-10-10T12:00:00.000Z");
+    expect(r.asOfBasis).toBe("observed");
+    expect(r.caveat).toBe("no-rows");
+    expect(r.data.asOf).toBeNull();
+    expect(() => r.projects).toThrow(/use r\.data\.projects/);
+  });
 
   const directoryFetch: FetchLike = async () =>
     new Response(
@@ -626,7 +751,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     const r = (await ns.lumenloop!.search_directory!({ query: "soroswap" })) as {
       data: object;
     };
-    expect(Object.keys(r).sort()).toEqual(["data", "ok"]);
+    expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "data", "ok"]);
     expect(r.data).toBeInstanceOf(Object);
     expect(JSON.stringify(r)).toContain('"count":1'); // stringify never hits a trap
     // A script returning the raw envelope must still serialize across RPC.
@@ -717,7 +842,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
       expect(() => r.count).toThrow(/use r\.data\.count/); // read-before-write still throws
       r.count = 99; // does not throw
       expect(r.count).toBe(99); // reads back
-      expect(Object.keys(r).sort()).toEqual(["count", "data", "ok"]); // enumerable now
+      expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "count", "data", "ok"]); // enumerable now
       expect(JSON.parse(JSON.stringify(r)).count).toBe(99);
       expect((structuredClone(r) as unknown as { count: number }).count).toBe(99);
       expect(r.data.count).toBe(1); // the payload is NOT written through to

@@ -68,7 +68,7 @@ export function assertSkillDescriptionOverrideIdsResolve(skillIds, consumer) {
 // build-super-spec.mjs (in-sandbox spec) so the two surfaces cannot drift.
 // ---------------------------------------------------------------------------
 
-import { EXCLUDED_SCOUT_OPS, NON_EXPOSED_SCOUT_OP_NAMES, SCOUT_OPERATIONS_ABSENT_FROM_SPEC } from "./exposure.mjs";
+import { EXCLUDED_SCOUT_OPS, NON_EXPOSED_SCOUT_OP_NAMES } from "./exposure.mjs";
 
 const SCOUT_HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
 
@@ -192,7 +192,7 @@ const NON_EXPOSED_SCHEMA_NAMES = new Set(
   [...NON_EXPOSED_SCOUT_OP_NAMES].flatMap((name) => [name.toLowerCase(), snakeCase(name)])
 );
 const SCOUT_SCHEMA_REF_REWRITES = [
-  ...[...EXCLUDED_SCOUT_OPS, ...SCOUT_OPERATIONS_ABSENT_FROM_SPEC.keys()].flatMap((signature) => {
+  ...[...EXCLUDED_SCOUT_OPS].flatMap((signature) => {
     const path = signature.slice(signature.indexOf(" ") + 1);
     const label = `upstream ${path.split("/").filter(Boolean).at(-1).replaceAll("-", " ")}`;
     return [[signature, label], [path, label]];

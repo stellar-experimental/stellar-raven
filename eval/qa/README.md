@@ -257,7 +257,7 @@ A projected answer without that envelope can remain `indeterminate`.
 
 ## Judging rubric and score comparability
 
-The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p6`.
+The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p9`.
 [judge.mjs](judge.mjs) owns the prompt and rubric. [evidence-pack.mjs](evidence-pack.mjs) owns evidence selection and serialization.
 
 For ordinary cases, `correct` requires all substantive key facts and no wrong claim or fired avoid.
@@ -281,6 +281,61 @@ For non-stable cases, the bounded evidence pack supports sourced changes from th
 Pack absence does not prove source absence.
 The pack omits detected A/V `created_at` values and preserves source-basis boundaries.
 
+### Claim support in pack `p9`
+
+The `claimSupport` section shows execute-result text for the candidate's claims.
+Anchors come only from the answer and the saved results; judge verdicts never select judge input.
+Anchors are quoted clauses, complete version strings, exact terms, candidate terms, and phrases shared by the answer and the results.
+Claims take turns inside each anchor tier, and an anchor with no transcript match takes no turn.
+A claim-word fallback then covers words that no anchor unit shows, including lowercase words.
+It adds the source sentence with the most new, rare claim words; a light stem lets "maturing" meet "mature".
+That sentence must be about the claim: it shares at least three claim words and 30% of its own content words.
+A claim word counts as shown only in a span related to that claim.
+The fallback also keeps one differing related statement for a claim (`role=related-statement`) and does not decide which statement is true.
+An entity-list unit (`role=entity-list`) serves a claim that names two or more records of one source array.
+A record is an identified object (title, name, fullName, label, or slug) in an array; a plain lowercase word is not a name.
+The unit shows the claim fields of every named record, such as `{name: Comet | status: Inactive}`.
+A field is a claim field when the claim names it (TVL for `tvlUSD`) or states a listed record's text value for it.
+Null fields are not shown. A later claim that names only records an earlier unit shows adds no unit.
+The requirements are every named record and every claim field, before any rendering limit.
+Rendering limits (3 groups for each claim, 24 records for each unit, 4 fields, 12 units) apply after that.
+The audit's `entityListLimits` names each record or field that a limit removed.
+The pack measures entity-list coverage on the serialized text after every budget cut, and after a clip.
+A small parser reads each line. Each object in braces is one record scope that owns only its direct fields.
+A nested object is its own scope, and a quoted value is read whole, so text inside it never reads as a field.
+A quoted token without its closing quote is unfinished and never counts. A complete double-quoted token is decoded by JSON string rules.
+The text outside braces is one more scope. A source-item line's `fields="..."` value reads as fields of that item.
+A record counts as shown when one scope holds its exact identity value and the exact value of each non-null claim field.
+A scope outside braces that names two records never counts. Two records with one name need two scopes.
+A coverage gap adds the general `claimSupportNotice` line. `entityListCoverage` applies the same measure to any pack version.
+Each unit names its execute entry, truncation state, JSON path, and source record.
+Entry numbers name transcript calls, not sources; two calls can return the same source.
+It names the tool only for a direct operation result, and the outcome only for an error.
+A span keeps whitespace normalized and URLs sanitized; `...` marks a cut, and a cut never splits an anchor.
+Short field values carry their field name, and a small record keeps its fields together in one span.
+Span labels never include a generated array index, and the day of a written date is not an anchor.
+The anchors and claim words that selected a unit stay out of the pack.
+When matched text does not fit, the pack shows only the general `claimSupportNotice` line.
+It says only that some execute-result text did not fit; it names no anchor, entry, or count.
+`explainTranscriptEvidencePack` returns the pack and audit-only metadata: each unit's anchors and claim words, each omitted anchor with its entries, and the entity-list coverage of the final text.
+That metadata never enters the judge prompt.
+`findTranscriptEvidencePackOmissions` counts only source text in a pack.
+That is spans, snippets, summaries, source record names, and source field names with their values.
+It also counts the values in a `provenance:` line's `sourceMetadata`, such as a `generatedAt` date or `counts.total`.
+Those values come from the service response.
+Headings, anchor and term labels, match lists, and notices never count as support.
+Counters never count either: entry and `alsoIn` numbers, paths and array indexes, and the `truncation:` footer.
+`(+N more)` suffixes and the provenance line's operation names, shape, character, token, timing, and call counts never count.
+This filter is diagnostic only; it never changes the judge pack or the judge prompt.
+`caseSnippets` holds question and golden terms that the answer does not use.
+The budget stays 12,000 characters.
+Entity-list units rank with specific-anchor units, right after their claim's first specific-anchor unit.
+Summaries shrink first, then source items go to 8 and fields to 16, then spans shrink.
+Support units then drop to 28 before source items drop below 8, so roster answers keep their records.
+After that, items, fields, URLs, and case-snippet text shrink.
+Then units drop to 12, case snippets go, and the last units go.
+Stable rows still receive no pack.
+
 [verdict-consistency.mjs](verdict-consistency.mjs) validates issue arrays, avoid indexes, and score consistency.
 A consistency error preserves `judgeScore`, sets `coreAnswer: null`, and records violations.
 It does not parse answer prose to decide which avoid fired.
@@ -290,6 +345,8 @@ A model or contract mismatch requires an explicitly labeled comparison under a c
 Changes to grading semantics require a rubric-version change.
 Changes to evidence selection or serialization require a pack-version change.
 Use prompt-hash fixtures to demonstrate that a comment or formatting change preserves prompt bytes.
+The code keeps only the current pack. To rebuild an earlier pack, import `eval/qa/evidence-pack.mjs` from the revision that defined it.
+For `p6`, use revision `d15a4ce5`; for `p7`, use `7e00ede2`; for `p8`, use `36e77d40`. [The p9 replay](../../.agents/rounds/2026-10-12-pack-p9/replay-p9.mjs) loads all three.
 
 The sampler allocates by service, sorts IDs, and selects evenly spaced cases.
 Corpus growth can change membership even when the requested sample size stays fixed.
@@ -429,7 +486,7 @@ For an approved paid run, replace `--dry-run` with these flags:
 | `--dry-run` | Inspect selection and guards without paid calls |
 | `--help` / `-h` | Print the parser's full usage contract |
 
-`--cases-ref` does not establish pack identity. A `p3` source still differs from a `p6` re-judge.
+`--cases-ref` does not establish pack identity. A `p6` source still differs from a `p9` re-judge.
 Non-identical comparisons cannot establish identical-input judge variance.
 `--allow-non-identical` does not waive baseline guards for `--flips-vs`.
 `--allow-golden-drift` does not waive case, tuple, or baseline identity checks.

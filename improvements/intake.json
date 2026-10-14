@@ -134,17 +134,9 @@
       "repo": "stellar/stellar-docs",
       "reason": "Ledger, transaction-set, result, archive, and SCP documentation lacks one explicit transaction-inclusion verification recipe and trust-boundary explanation."
     },
-    "sd-027": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The current Relayer page says LaunchTube is discontinued while the published Guestbook passkey prerequisites still require a LaunchTube JWT without a legacy/migration warning."
-    },
     "sd-032": {
       "repo": "stellar/stellar-docs",
       "reason": "Current Flutter wallet tutorial dependency ranges are stale and can conflict with the current wallet SDK dependency graph."
-    },
-    "sd-034": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The current smart-wallet guide presents only Passkey Kit and omits the separate, non-drop-in Smart Account Kit authorization model; the former legacy/successor premise expired."
     },
     "sd-035": {
       "repo": "stellar/stellar-docs",
