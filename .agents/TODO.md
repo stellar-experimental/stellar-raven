@@ -15,8 +15,9 @@ Open owner decisions are at the end of this file. Each one is listed once.
 1. Resolve the general routing and source-authority work from the
    [routing audit](rounds/2026-09-17-routing-audit.md) (Routing and Eval instruments below). Keep
    the current scorer until a general repair passes.
-2. Run the reviewed paid measurements when a spend authorization arrives: owner decision A, then
-   the draft PRs #270, #271, and #272. Each has a reviewed plan and a cap.
+2. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
+   authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
+   #281, and #270 are merged and deployed; the section guard does not ship.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
