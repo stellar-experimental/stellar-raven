@@ -73,7 +73,8 @@ async () => {
 A successful read returns `{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`.
 A whole read returns `data.content`.
 Failures return `{ ok: false, error: { kind, message, hint? } }`.
-A section read returns `data.sections` with each section's content and exact pinned URL.
+A section read returns `data.sections`, an array of `{ section, content, url }` in request order.
+It has no `data.content`. Each `url` is the exact pinned URL of that section.
 Accepted section selectors include slugs, exact heading text, and `file:` keys.
 Unknown sections fail the whole request and list the available sections.
 A heading in the body but absent from the catalog fails closed.

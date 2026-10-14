@@ -1410,7 +1410,8 @@ until official docs confirm them.</p>
     gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
     <code>r.signature</code> and <code>r.inputSchema</code>. <code>codemode.skill.read(id)</code>
     gives <code>r.data.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
-    <code>r.data.sections</code>.</li>
+    <code>r.data.sections</code>, an array of <code>{ section, content, url }</code> in request
+    order.</li>
   <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
     <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
     service answered with nothing — that is inconclusive, not proof something does not exist.

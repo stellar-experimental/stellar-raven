@@ -272,52 +272,23 @@ identity is unverified or ask for context, with no regression in the abstention 
 
 ## Executor and policy
 
-### Reduce `data.sections` misreads after a sectioned skill read
+### Recount `data.sections` misreads in the next authorized QA round
 
-PR #247 (2026-10-09) returns a successful `codemode.skill.read` as
-`{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`. In the
-[tool-surface round](rounds/2026-10-07-tool-surface-qa.md), scripts read a skill result without
-`.data` in 9 of 13 tool-level errors. PR #249 also accepts documented comma-joined array arguments
-and names failed-call reasons in the source-basis `calls:` line.
+The section-shape text merged in PR #270 (2026-10-14). The `execute` description and the
+`codemode.describe` usage line now say that a section read has no `content`, and that `sections` is
+an array of `{ section, content, url }` in request order. Its re-measure on `main` `0a60d98a` gave
+PASS: section misreads fell from 5 in 38 scripts (A) to 0 in 35 (T), with no consistent regression
+([result](rounds/2026-10-12-call-pattern-triage/result-text-v2.md),
+[review](rounds/2026-10-12-call-pattern-triage/review-post-run-text-v2-astra.md)). The sample is
+16 rows and two collections per arm, so it is a direction, not a rate. No script called
+`codemode.describe` on a sectioned skill, so the usage-line change has no direct evidence.
 
-The 2026-10-11 answer-style measurement (136 rows: B1, C1, C2, B2) counted the three behaviors.
-The result review is `rounds/2026-10-10-weekend/answer-style/review-result-astra.md` on draft PR
-#268.
+The sandbox guard (commits `ba6a1dfa` and `416d2aa2`, reachable through PR #270) is INDETERMINATE:
+with the text present, no misread occurred for it to act on. It does not ship. A guard needs a new
+design or an owner decision before any new measurement.
 
-| Run | Skill-shape errors (scripts / rows) | Rejected comma-joined arguments | Failed calls with an omitted reason (calls / rows) |
-|---|---:|---:|---:|
-| B1 | 2 / 2 | 0 | 2 / 2 |
-| C1 | 1 / 1 | 0 | 2 / 1 |
-| C2 | 2 / 1 | 0 | 7 / 4 |
-| B2 | 0 / 0 | 0 | 1 / 1 |
-
-- No script read a skill result without `.data`. The PR #247 shape problem did not recur.
-- All five shape errors misread the `data.sections` array: they treat a section object as a string,
-  read `data.content` on a sectioned read, or index sections by a `file:` name. Rows:
-  `q-edge-noinfo-sep-9999`, `q-soroban-cross-contract-call` (twice), `q-stellar-recurring-payments`.
-- No host rejected a comma-joined array argument.
-- The omitted reasons cover invalid paths, invalid numeric IDs, unknown operations, and one script
-  error. Four of the twelve calls are the unknown `searchBuilders` operation on the Strupey row.
-
-Next, check the existing `skill.read` guidance and the `sections` example text before proposing a
-mechanism. A change to model-facing text needs its own measurement.
-
-Done when: a reviewed change, or a recorded no-change decision, addresses the `sections` misread,
-and a later authorized QA round recounts the three behaviors.
-
-### Triage calls to `stellarDocs.search_anchor_sep_docs` without `query`
-
-The `ai` upgrade result review (`rounds/2026-10-10-weekend/ai-upgrade/review-result-fable.md`)
-found that every anchor row in both arms called `stellarDocs.search_anchor_sep_docs` without the
-required `query`. One stablecoin row in each arm did the same with `search_asset_token_docs`. The
-host returned "invalid arguments … no call was made" and reported the call as failed evidence, so
-the envelope behaved as designed. Both arms show the pattern, so the SDK did not cause it.
-
-Decide whether the operation's schema, description, or `search` card leads the model to omit the
-argument. Check stored transcripts first (free). File an `improvements/` finding only for an
-upstream cause; an own-repo cause gets a scoped fix with a test.
-
-Done when: the cause is recorded, and a fix or a no-change decision has its evidence.
+Done when: a later authorized QA round recounts section misreads, `.data` omissions, and failed
+calls with an omitted reason on the current `main`, and records them here.
 
 ## Dependencies
 

@@ -118,6 +118,12 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(EXECUTE_DESCRIPTION).toMatch(/never API, security, maintenance, or production authority/i);
   });
 
+  it("states the section-read result shape that skills/store.ts returns", () => {
+    expect(EXECUTE_DESCRIPTION).toContain(
+      "A section read has no `content`; `sections` is an ARRAY of { section, content, url } in request order, not a map keyed by section: read `r.data.sections[0].content`."
+    );
+  });
+
   it("distinguishes an untruncated footer from a truncation boundary", () => {
     expect(EXECUTE_DESCRIPTION).toContain("after truncation, an ok call, or an error call");
     expect(EXECUTE_DESCRIPTION).toContain("it marks calls with a caveat and gives `observedAt`");

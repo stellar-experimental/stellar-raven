@@ -1395,6 +1395,7 @@ describe("codemode fns", () => {
     expect(r.availableSections.length).toBe(sectionIds.length);
     expect([...r.availableSections].sort()).toEqual([...sectionIds].sort());
     expect(r.usage).toContain(`codemode.skill.read("${skillId}", { sections: [...] })`);
+    expect(r.usage).toContain("r.data.sections is an array of { section, content, url } in request order");
     // Prose skills stay read-only: no callable signature, no run usage.
     expect(r.signature).toBeUndefined();
     expect(r.usage).not.toContain("codemode.skill.run");
