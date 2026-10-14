@@ -658,3 +658,9 @@ Diff check (no new review needed):
    stop and report.
 4. One Raven server at a time, in a pane split from `w3W:p4V`. No pipes on gate or paid commands.
    Paid drivers run under `zsh -f`.
+
+### Clip v2: rule 6 confirmation list (written before any re-judge spend)
+
+After B1, C1, C2, and B2 (04:27Z to 04:40Z), no row has both CANDIDATE grades worse than both
+BASE grades. The list is **empty**. No rule 6 re-judge, no rule 7 retry, and no initial-judge
+retry runs (24 of 24 grades are valid).
