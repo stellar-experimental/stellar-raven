@@ -1,0 +1,85 @@
+{
+  "schema": "p9-rejudge-artifacts-v1",
+  "note": "Predeclared before any grade is known. Arm A reuses the p6 verdicts of the p7 run. Arm B reuses the p8 verdicts of every row whose full p9 prompt equals its recorded p8 prompt, and reruns the changed rows under p9. The operator adds one artifacts entry per P9 invocation after it finishes; nobody edits the other fields.",
+  "armA": {
+    "pack": "p6",
+    "reused": true,
+    "manifest": ".agents/rounds/2026-10-10-weekend/pack-p7/rejudge-artifacts.json",
+    "arm": "A"
+  },
+  "armBReused": {
+    "pack": "p8",
+    "reused": true,
+    "manifest": ".agents/rounds/2026-10-10-weekend/pack-p8/rejudge-artifacts.json",
+    "arm": "B",
+    "rule": "valid only for a row whose rebuilt p9 prompt SHA-256 equals the recorded p8 prompt SHA-256"
+  },
+  "armBNew": {
+    "pack": "p9",
+    "commit": "7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070",
+    "worktree": "/Users/kalepail/Desktop/raven-p9-arm"
+  },
+  "changedRows": [
+    {
+      "invocation": "S1a",
+      "id": "q-defi-etherfuse-stablebonds"
+    },
+    {
+      "invocation": "S1b",
+      "id": "q-edge-fresh-latest-blend-tvl"
+    },
+    {
+      "invocation": "S2a",
+      "id": "q-asset-stablecoin-issuers-discovery"
+    },
+    {
+      "invocation": "S2a",
+      "id": "q-defi-arbitrage-pathpayment-bots"
+    },
+    {
+      "invocation": "S2b",
+      "id": "q-agent-identity-erc8004-stellar"
+    },
+    {
+      "invocation": "S2d",
+      "id": "q-gap-leaderboard-project-not-builder"
+    }
+  ],
+  "artifacts": [
+    {
+      "invocation": "P9-S1a",
+      "arm": "B",
+      "commit": "7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070",
+      "path": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-13-pack-p9/raven-p9-arm/2026-10-13T21-11-00-rejudge.json",
+      "sha256": "df0bf2d2583f9bebeaa5ea69e77bedaa991a3af88dbb652149e971c1c44f30df"
+    },
+    {
+      "invocation": "P9-S1b",
+      "arm": "B",
+      "commit": "7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070",
+      "path": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-13-pack-p9/raven-p9-arm/2026-10-13T21-12-39-rejudge.json",
+      "sha256": "c8139396f32d49eebf3d2a344b9ac07233e9c0ac9b56fb7bcfc7d5bd553f86dc"
+    },
+    {
+      "invocation": "P9-S2a",
+      "arm": "B",
+      "commit": "7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070",
+      "path": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-13-pack-p9/raven-p9-arm/2026-10-13T21-15-36-rejudge.json",
+      "sha256": "cb096c96961ac81065f4800f6ff1caf5665d6b9b7419e2a095521aca8812b42c"
+    },
+    {
+      "invocation": "P9-S2b",
+      "arm": "B",
+      "commit": "7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070",
+      "path": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-13-pack-p9/raven-p9-arm/2026-10-13T21-19-52-rejudge.json",
+      "sha256": "6c78748138dc621d1e5f12fe7166fceb79ae579370fd1564bdf221fa593fb79a"
+    },
+    {
+      "invocation": "P9-S2d",
+      "arm": "B",
+      "commit": "7d00d61fb0dda51a2b49e45bc12fb8faaf3dd070",
+      "path": "/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-10-13-pack-p9/raven-p9-arm/2026-10-13T21-21-30-rejudge.json",
+      "sha256": "b4e5502b351383cb9831ec5e2c772aa12eecd1b90372c4440b04fc8134bdf731"
+    }
+  ]
+}

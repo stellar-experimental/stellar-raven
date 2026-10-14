@@ -343,6 +343,139 @@ The total for the three attempts is $146.2439358. The orchestrator stopped the m
 instead of starting a fourth paid attempt with an unexplained crash. A free soak test of the baseline server
 comes first (`.agents/TODO.md`, owner decision A).
 
+## 2026-10-12 amendment: shared server toolchain and stop on a lost port
+
+### Choice and reason
+
+The owner delegated the signature and launch decisions on 2026-10-10.
+Under that delegation, the orchestrator chose option 1 of the [baseline soak record](../2026-10-12-baseline-soak/README.md) on 2026-10-12.
+The baseline server now runs on the candidate server's Wrangler toolchain.
+The soak reproduced the attempt 3 stop path.
+Wrangler 4.120.1 exits on one `ProxyWorker` error near a 5 s idle gap.
+Wrangler 4.149.0 logs the same error, and only that request fails.
+A runtime crash can still close the public port on both versions.
+Thus the method also stops when a server stops answering on its port.
+No step restarts a server. Option 3 of the soak record stays rejected.
+
+### Shared toolchain
+
+The baseline Wrangler process now runs these arguments after the absolute Node executable:
+
+```text
+<candidate server>/node_modules/wrangler/bin/wrangler.js dev --host localhost --port 8791
+```
+
+Its working directory stays the baseline server worktree.
+The baseline revision, its `npm ci` install, and its `wrangler.jsonc` do not change.
+The candidate command does not change. `npx --no-install wrangler` runs the candidate's `node_modules/.bin/wrangler`.
+
+The launch reuses the candidate's installed packages. It does not install Wrangler again in the baseline worktree.
+A new install resolves the transitive packages again from the registry.
+It can get versions other than the candidate's, and it can move baseline packages.
+Reuse runs the same files, so it is the most exact method.
+
+A new launch step runs after the `.dev.vars` step and before any server starts.
+It calls `assertSharedServerToolchain` from [paired-server-toolchain.mjs](paired-server-toolchain.mjs).
+That function resolves the toolchain from each launch entry, the way the running server resolves it:
+
+- `wrangler` from the launch entry.
+- `miniflare` and `esbuild` from Wrangler.
+- `workerd` from miniflare, and the `workerd` binary through the `workerd` package.
+
+It records each version and package root, and the binary path and SHA-256.
+The two records must be identical, or the launch stops.
+A set `MINIFLARE_WORKERD_PATH` also stops the launch, because it replaces the binary.
+The launch writes the record to `server-toolchain.json` in the run directory.
+The assembler resolves the toolchain again and requires the same record.
+It writes the record to `plan.serverToolchain`, so the signed plan hash covers it.
+
+At the current `main` lockfile, the toolchain is Wrangler `4.149.0`, miniflare `5.20261006.1-alpha`, workerd `1.20261006.1`, and esbuild `0.28.2`.
+The launch revision's candidate lockfile decides the real values. Read them from the plan.
+
+### Change in the treatment
+
+Before this change, the baseline arm ran Wrangler `4.120.1`, workerd `1.20260804.1`, miniflare `5.20260804.0-alpha`, and esbuild `0.28.1`.
+Now both arms run one local dev runtime.
+The local dev runtime is no longer part of the measured difference. Production does not run it.
+The measured difference is the source revision, its installed source dependencies, its `wrangler.jsonc`, and the adapter mode.
+Soak run 2 ran Wrangler `4.149.0` on the baseline source, and the bound surface pin matched.
+That run installed Wrangler in the baseline worktree.
+On 2026-10-12 the orchestrator ran the reuse method once, with no paid call.
+The baseline source `90d0ba75` ran under the candidate worktree's `wrangler.js` (4.149.0) on port 8797.
+The bound surface matched the pin `6cf5d1cdd3cd16c6b8bdb09a45917755cffaf0781f321734d7c9f7649a71d238`
+([report](2026-10-12-launch-change/reuse-live-surface.json)).
+One `search` call and one sandbox `execute` call (no upstream request) returned ok results.
+The step 4 surface probes check the bound surface at launch, before any paid call.
+
+### Stop on a lost port
+
+Before this change, nothing stopped the method when a server stopped answering:
+
+- **A Wrangler process exits.** The launcher marked its process group as exited and took no action.
+  The supervisor checked no listener. In attempt 3, the next baseline answering call still started.
+  It failed with "required MCP server raven was failed in system init".
+- **The Wrangler process lives, but its public port refuses connections.** This is soak outcome 2, after a runtime restart.
+  The adapter on the public arm port stayed up. Nothing checked the upstream port.
+  Answering calls continued until a protocol failure stopped the arm.
+
+Now a local listener check runs before every paid call while the servers must stay available.
+Each check compares the recorded listener processes with the current ones.
+A missing listener or another process on a recorded port stops the method.
+All checks use `assertDualBoundServersUnchanged` in `eval/lib/bound-server-identity.mjs`.
+That function runs only local `lsof` and `git` commands. It makes no model call and no upstream call.
+A lost listener gives the error code `paired-server-lost`.
+
+- **The listener record is bound to the signed plan.** `pairedListenerPairs` in the same module
+  requires exactly `baseline` and `candidate`, four distinct ports, and four distinct processes.
+  With independent targets, it also requires each arm's ports and revisions to equal them.
+  The assembler checks `listeners.json` against the ports and revisions of its collection commands.
+  It records the file's SHA-256 as `p6.listenersSha256`, so the signed plan hash covers the record.
+  A missing arm, a repeated pair, a substituted port, or changed contents stops the method.
+- **Before P6 and before collection.** The launcher compares all four listeners with `listeners.json`.
+  It calls `assertServersUnchanged` from [paired-launch.mjs](paired-launch.mjs).
+  The launch's own targets, not the record, decide which ports and revisions it checks.
+  On failure, it writes `server-stop.json` with the phase, time, and reason.
+- **Before each P6 call.** The frozen P6 command now has `--paired-listeners <run>/listeners.json`
+  and `--expect-paired-listeners-sha256 <p6.listenersSha256>`.
+  Before its first call, the wrapper requires that digest and a valid two-arm record.
+  It then checks all four recorded listeners before each of its seven paid calls.
+  The supervisor requires both flags, the absolute path, the digest, and a record that matches the collection commands.
+- **Before each answering attempt, including a retry.** `run-qa.mjs` checks its own arm's listener pair.
+  It checks when it authorizes the attempt, and again just before the answering call, after the identity probe.
+  The remote identity guard also runs the check before each probe and during each probe retry wait.
+  So a loss during an attempt stops the arm before the after-call probe and before any retry.
+  The arm reports `paired-server-lost` to the supervisor, which cancels both arms.
+- **Before each row release and the postflight release.** The supervisor checks all four signed listeners.
+  It calls `createServerListenerCheck` from `eval/qa/paired-collection-supervisor.mjs`.
+  Its reference is the signed record, checked again against its digest and the collection commands.
+  On failure, it releases no row and cancels both arms.
+  Its reason starts with `server listener check failed before row <index> (<case ID>); no server restarts:`.
+- The cancellation marker, both arms' artifacts, and `collection.stderr.log` keep the reason.
+- No step restarts a server.
+
+Limits:
+
+- A check reads listening sockets. It does not open a connection.
+  A listener that exists but does not accept connections passes the check.
+  The soak saw only `ECONNREFUSED`, which means that no listener existed.
+- Each check reads the four listeners in sequence. A server can fail after its own read.
+  A short interval also remains between the last check and the start of the call.
+  A server can fail in that interval, and the call then starts.
+- A server that fails during a call fails the later tool calls of that call. The call completes.
+- After the supervisor releases a row, the other arm's call can already be running. A stop cannot recall it.
+- Wrangler can restart its own runtime between checks. The next check then sees the change.
+- Each local command has a 10 s timeout. A slow or failed `lsof` or `git` command stops the method,
+  even when the server is healthy. This false stop starts no new paid call. Nothing retries the check.
+
+### Next attempt
+
+- The next attempt needs a launch revision with this change, a fresh assembled plan, and a fresh signed authorization.
+  The dated hashes in this run sheet are history.
+- Codex `gpt-6-astra` at high reviewed this change four times: RA, RA2, and RA3 (CHANGES), then RA4 (APPROVE).
+  The reviews are in [2026-10-12-launch-change/](2026-10-12-launch-change/). Every finding is reconciled.
+- A full collection needs about 2.5 hours of server uptime. Run on a quiet machine.
+- Leave the public DocSearch key idle for at least one hour before the capacity check.
+
 ## Launch window and values
 
 Start on Saturday `2026-10-10T00:00:00Z` or Sunday `2026-10-11T00:00:00Z`, or on a later weekend UTC day.
@@ -364,6 +497,7 @@ Recompute these values at launch:
 - The Claude path, version, binary hash, and environment hash.
 - The fresh `.dev.vars` salt, variable names, and salted identity.
 - The listener identities, adapter attestations, and both bound surface hashes.
+- The shared server toolchain record.
 - The capacity artifact hash, completion time, and fixed contract.
 - The shared `--stable-sha256` result and the canonical plan hash.
 
@@ -475,12 +609,13 @@ Each relative instrument path resolves from the absolute worktree in the last co
 
 | Process | Arguments | Working directory |
 | --- | --- | --- |
-| Baseline Wrangler | `<baseline server>/node_modules/wrangler/bin/wrangler.js dev --host localhost --port 8791` | Baseline server |
+| Baseline Wrangler | `<candidate server>/node_modules/wrangler/bin/wrangler.js dev --host localhost --port 8791` | Baseline server |
 | Baseline adapter | `eval/qa/exact-old-runtime-adapter.mjs --port 8789 --upstream-port 8791 --source-revision <baseline revision> --adapter-revision <launch revision> --mode add-missing` | Baseline runner |
 | Candidate Wrangler | `scripts/run-eval-server.mjs --port 8790` | Candidate server |
 | Candidate adapter | `eval/qa/exact-old-runtime-adapter.mjs --port 8788 --upstream-port 8790 --source-revision <launch revision> --adapter-revision <launch revision> --mode verify-native` | Candidate runner |
 
-The baseline lacks `dev:eval`; its installed Wrangler supplies the baseline process.
+The baseline lacks `dev:eval`; the candidate server's installed Wrangler supplies the baseline process.
+Before this step, the script requires one shared toolchain and writes `server-toolchain.json` (see the 2026-10-12 amendment).
 The candidate launcher supplies the native source-revision definition.
 The script uses `dualBoundServerIdentity` and `fetchAdapterAttestation` for both pairs.
 It records their results in `listeners.json`.
@@ -522,6 +657,7 @@ That script uses `stratifiedSample` from `eval/qa/lib.mjs`.
 It freezes 200 explicit IDs and recomputes all four hashes independently in both runners.
 It verifies every paid command's flags through its actual parser.
 It checks the private Claude pin and records its path, version, and SHA-256 without printing environment values.
+It resolves the shared server toolchain again and records it as `serverToolchain`.
 P6 and both flip commands use this link through `--claude-path`.
 Both collection commands and both stored-judge commands resolve `claude` through the private directory first on `PATH`.
 `run-qa.mjs` then uses that resolved private link for its answer and judge calls.
@@ -549,9 +685,11 @@ The template below remains the signature contract.
 
 ### 9. Run the frozen P6 command
 
+The script first compares all four listeners with `listeners.json`. A lost or changed listener stops the method.
+The P6 wrapper repeats that check before each of its seven calls (`--paired-listeners` and its signed digest).
 The operator calls `executeFrozen("p6", manager, env)` from [execute-frozen.mjs](execute-frozen.mjs).
 The wrapper makes seven calls at `$0.50` each, with a `$3.50` maximum.
-It uses the frozen identity flags and `--out` path.
+It uses the frozen identity flags, the `--paired-listeners` record and its digest, and the `--out` path.
 The phase runner creates `p6.started.json` before starting the wrapper.
 It records the canonical hash and phase, synchronizes the marker, and keeps it permanently.
 It opens `p6.log` and `p6.stderr.log` exclusively before spawn.
@@ -559,6 +697,7 @@ These rules apply to every paid phase below.
 
 ### 10. Launch the supervisor
 
+The script first compares all four listeners with `listeners.json`, as before P6.
 The operator calls `executeFrozen("collection", manager, env)`.
 It starts the same supervisor that `npm run eval:qa:paired:collect` names.
 It supplies these exact arguments from the candidate runner directory:

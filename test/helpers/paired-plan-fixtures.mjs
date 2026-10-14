@@ -108,3 +108,39 @@ export function passingP6Summary({ wrapperSha256, runnerRevision, claudePath, cl
     callRecords
   };
 }
+
+// A simulated launch `listeners.json` record. Each listener's process ID is its port, so
+// four distinct ports give four distinct processes.
+export function listenerRecord(targets) {
+  const listener = (port, revision) => ({
+    verification: "listener-process-cwd", port, pid: port,
+    command: port % 2 ? "workerd" : "node", cwd: `/worktrees/${port}`, revision, dirty: false
+  });
+  return Object.fromEntries(Object.entries(targets).map(([arm, target]) => [arm, { identity: {
+    verification: "dual-listener-process-cwd",
+    adapter: listener(target.adapterPort, target.adapterRevision),
+    upstream: listener(target.upstreamPort, target.upstreamRevision)
+  } }]));
+}
+
+// Fixed `lsof` and `git` output for `spawnSyncImpl` injection, so tests run the production
+// `dualBoundServerIdentity` parser. `listeners` maps a port to { pid, command, cwd, revision }.
+// Edit the map to simulate a lost port (delete it) or a restart (change its pid).
+export function listenerCommandOutput(listeners) {
+  const ok = (stdout) => ({ status: 0, stdout, stderr: "" });
+  const byField = (field, value) => Object.values(listeners).find((item) => item[field] === value);
+  return (command, args) => {
+    if (command === "lsof" && args.includes("-sTCP:LISTEN")) {
+      const port = Number(args.find((arg) => arg.startsWith("-iTCP:")).slice("-iTCP:".length));
+      const listener = listeners[port];
+      return listener ? ok(`p${listener.pid}\nc${listener.command}\n`) : { status: 1, stdout: "", stderr: "" };
+    }
+    if (command === "lsof" && args.includes("cwd")) {
+      const pid = args[args.indexOf("-p") + 1];
+      return ok(`p${pid}\nfcwd\nn${byField("pid", Number(pid)).cwd}\n`);
+    }
+    if (command === "git" && args.includes("rev-parse")) return ok(`${byField("cwd", args[1]).revision}\n`);
+    if (command === "git" && args.includes("status")) return ok("");
+    throw new Error(`unexpected command: ${command} ${args.join(" ")}`);
+  };
+}

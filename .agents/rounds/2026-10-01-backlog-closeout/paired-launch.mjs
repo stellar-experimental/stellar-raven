@@ -10,6 +10,7 @@ import { randomBytes } from "node:crypto";
 import { createClaudePin } from "./paired-claude-pin.mjs";
 import { executeFrozen } from "./execute-frozen.mjs";
 import { assertListenersStopped, processTable, withLaunchCleanup } from "./paired-launch-runtime.mjs";
+import { assertSharedServerToolchain, sharedWranglerEntry } from "./paired-server-toolchain.mjs";
 
 const ROUND = ".agents/rounds/2026-10-01-backlog-closeout";
 export const PORTS = [8788, 8789, 8790, 8791];
@@ -62,6 +63,28 @@ async function startServer(manager, env, name, cwd, args, port) {
   throw new Error(`${name} did not bind within its startup deadline`);
 }
 
+export function listenerTargets(env) {
+  return {
+    baseline: { adapterPort: 8789, upstreamPort: 8791, adapterRevision: env.PAIRED_REV, upstreamRevision: env.PAIRED_BASE },
+    candidate: { adapterPort: 8788, upstreamPort: 8790, adapterRevision: env.PAIRED_REV, upstreamRevision: env.PAIRED_REV }
+  };
+}
+
+// A lost or replaced listener stops the method before the next paid phase. Never restart a server:
+// a new listener process breaks the recorded identities, and the run is no longer comparable.
+export function assertServersUnchanged(env, phase, { assertDualBoundServersUnchanged, pairedListenerPairs }) {
+  try {
+    const records = JSON.parse(readFileSync(`${env.PAIRED_RUN}/listeners.json`, "utf8"));
+    // The launch's own targets, not the record, decide which ports and revisions to check.
+    assertDualBoundServersUnchanged(pairedListenerPairs(records, listenerTargets(env)));
+  } catch (error) {
+    const reason = `before ${phase}: ${error.message}`;
+    writeFileSync(`${env.PAIRED_RUN}/server-stop.json`, `${JSON.stringify({phase,at:new Date().toISOString(),reason},null,2)}\n`,
+      {flag:"wx",mode:0o600});
+    throw new Error(`${reason}; stop the method and do not restart a server`);
+  }
+}
+
 export async function runLaunchSteps(manager, steps) {
   for (const step of steps) {
     if (manager.stopping) throw new Error("launch cleanup has started");
@@ -105,9 +128,13 @@ export async function launchPaired(env) {
         { flag: "wx", mode: 0o600 });
     },
     async () => {
+      const toolchain = assertSharedServerToolchain(env);
+      writeFileSync(`${env.PAIRED_RUN}/server-toolchain.json`, `${JSON.stringify(toolchain,null,2)}\n`, {flag:"wx",mode:0o600});
+    },
+    async () => {
       assertListenersStopped(PORTS);
       await startServer(manager, env, "baseline-wrangler", env.PAIRED_BS,
-        [`${env.PAIRED_BS}/node_modules/wrangler/bin/wrangler.js`, "dev", "--host", "localhost", "--port", "8791"], 8791);
+        [sharedWranglerEntry(env), "dev", "--host", "localhost", "--port", "8791"], 8791);
       await startServer(manager, env, "baseline-adapter", env.PAIRED_BR,
         ["eval/qa/exact-old-runtime-adapter.mjs", "--port", "8789", "--upstream-port", "8791",
           "--source-revision", env.PAIRED_BASE, "--adapter-revision", env.PAIRED_REV, "--mode", "add-missing"], 8789);
@@ -119,13 +146,10 @@ export async function launchPaired(env) {
       const { dualBoundServerIdentity } = await load("eval/lib/bound-server-identity.mjs");
       const { fetchAdapterAttestation, adapterImplementationSha256 } = await load("eval/qa/exact-old-runtime-adapter.mjs");
       const records = {};
-      for (const arm of ["baseline", "candidate"]) {
-        const baseline = arm === "baseline";
-        const sourceRevision = baseline ? env.PAIRED_BASE : env.PAIRED_REV;
-        const identity = dualBoundServerIdentity({ adapterPort: baseline ? 8789 : 8788,
-          upstreamPort: baseline ? 8791 : 8790, adapterRevision: env.PAIRED_REV, upstreamRevision: sourceRevision });
+      for (const [arm, target] of Object.entries(listenerTargets(env))) {
+        const identity = dualBoundServerIdentity(target);
         const attestation = await fetchAdapterAttestation(identity.adapter.port, {
-          mode: baseline ? "add-missing" : "verify-native", sourceRevision,
+          mode: arm === "baseline" ? "add-missing" : "verify-native", sourceRevision: target.upstreamRevision,
           implementationSha256: adapterImplementationSha256(), upstreamPort: identity.upstream.port,
           upstreamIdentity: identity.upstream
         });
@@ -184,7 +208,9 @@ export async function launchPaired(env) {
       const age = Date.now() - Date.parse(capacity.completedAt);
       assert.ok(age >= 0 && age <= PAIRED_CAPACITY_CONTRACT.freshnessMs, "capacity expired before P6");
     },
+    async () => assertServersUnchanged(env, "p6", await load("eval/lib/bound-server-identity.mjs")),
     async () => executeFrozen("p6", manager, env),
+    async () => assertServersUnchanged(env, "collection", await load("eval/lib/bound-server-identity.mjs")),
     async () => executeFrozen("collection", manager, env),
     async () => manager.stopServers(),
     async () => {

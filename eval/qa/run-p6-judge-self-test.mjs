@@ -11,6 +11,8 @@ import {
   executableIdentity
 } from "../lib/executable-identity.mjs";
 import {
+  assertDualBoundServersUnchanged,
+  pairedListenerPairs,
   assertStableGitWorktreeIdentity,
   gitWorktreeIdentity
 } from "../lib/bound-server-identity.mjs";
@@ -191,6 +193,7 @@ export function runP6JudgeSelfTest({
   spawnSyncImpl = spawnSync,
   judgePath = JUDGE_PATH,
   attestIdentity = (expected) => attestP6SelfTestIdentity(expected),
+  beforeCall = () => {},
   log = console.log
 } = {}) {
   if (JUDGE_SELF_TEST_CANDIDATE_COUNT !== P6_SELF_TEST_CALLS) {
@@ -205,6 +208,7 @@ export function runP6JudgeSelfTest({
   const callRecords = [];
   for (let index = 0; index < P6_SELF_TEST_CALLS; index++) {
     assertStableP6SelfTestIdentity(before, attestIdentity(pins));
+    beforeCall(index);
     const child = spawnSyncImpl(process.execPath, candidateArgs(judgePath, index, before), {
       encoding: "utf8",
       maxBuffer: 4 * 1024 * 1024
@@ -254,6 +258,8 @@ export function parseP6SelfTestCli(args) {
     "--expect-claude-environment-sha256"
   ]);
   let out;
+  let pairedListeners;
+  let pairedListenersSha256;
   const values = {};
   for (let index = 0; index < args.length; index += 2) {
     const flag = args[index];
@@ -265,10 +271,27 @@ export function parseP6SelfTestCli(args) {
       out = value;
       continue;
     }
+    if (flag === "--paired-listeners") {
+      if (!value || !path.isAbsolute(value) || pairedListeners !== undefined) {
+        throw new Error("p6 judge self-test requires one absolute --paired-listeners path");
+      }
+      pairedListeners = value;
+      continue;
+    }
+    if (flag === "--expect-paired-listeners-sha256") {
+      if (!SHA256_PATTERN.test(value ?? "") || pairedListenersSha256 !== undefined) {
+        throw new Error("p6 judge self-test requires one --expect-paired-listeners-sha256 digest");
+      }
+      pairedListenersSha256 = value;
+      continue;
+    }
     if (!flags.has(flag) || !value || value.startsWith("--") || Object.hasOwn(values, flag)) {
       throw new Error("p6 judge self-test requires unique spaced identity flags");
     }
     values[flag] = value;
+  }
+  if ((pairedListeners === undefined) !== (pairedListenersSha256 === undefined)) {
+    throw new Error("--paired-listeners and --expect-paired-listeners-sha256 must appear together");
   }
   if (Object.keys(values).length !== flags.size) {
     throw new Error(`p6 judge self-test requires ${[...flags].join(", ")}`);
@@ -286,8 +309,22 @@ export function parseP6SelfTestCli(args) {
       SHA256_PATTERN,
       "--expect-claude-environment-sha256"
     ),
-    out
+    out,
+    ...(pairedListeners === undefined ? {} : { pairedListeners, pairedListenersSha256 })
   };
+}
+
+// A paired launch passes its recorded listeners and their signed digest. Each paid call then
+// requires the same four server processes, so a lost port stops the remaining calls. The digest
+// and the two-arm check stop a changed, partial, or substituted record before any call.
+// Nothing restarts a server.
+export function pairedListenerCheck(listenersPath, expectedSha256, { readFile = readFileSync, identify } = {}) {
+  const bytes = readFile(listenersPath);
+  if (sha256(bytes) !== expectedSha256) {
+    throw new Error("--paired-listeners does not match its signed SHA-256");
+  }
+  const pairs = pairedListenerPairs(JSON.parse(bytes));
+  return () => assertDualBoundServersUnchanged(pairs, identify ? { identify } : undefined);
 }
 
 export function assertP6OutputAvailable(
@@ -347,7 +384,10 @@ function main(args) {
     return;
   }
   if (parsed.out) assertP6OutputAvailable(parsed.out);
-  const summary = runP6JudgeSelfTest({ pins: parsed });
+  const beforeCall = parsed.pairedListeners
+    ? pairedListenerCheck(parsed.pairedListeners, parsed.pairedListenersSha256)
+    : undefined;
+  const summary = runP6JudgeSelfTest({ pins: parsed, beforeCall });
   if (parsed.out) writeP6SummaryExclusive(parsed.out, summary);
 }
 

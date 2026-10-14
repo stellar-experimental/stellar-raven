@@ -12,11 +12,13 @@ import {
   assertP6OutputAvailable,
   assertStableP6SelfTestIdentity,
   attestP6SelfTestIdentity,
+  pairedListenerCheck,
   parseP6SelfTestCli,
   p6SelfTestWrapperSha256,
   runP6JudgeSelfTest,
   writeP6SummaryExclusive
 } from "../eval/qa/run-p6-judge-self-test.mjs";
+import { listenerRecord } from "./helpers/paired-plan-fixtures.mjs";
 import {
   runJudgeSelfTestCandidate,
   runJudgeSelfTestStatic,
@@ -32,6 +34,11 @@ const identity = {
     version: "1.2.3"
   },
   environment: { sha256: "c".repeat(64) }
+};
+const sha256Hex = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const P6_LISTENER_TARGETS = {
+  baseline: { adapterPort: 8789, adapterRevision: "a".repeat(40), upstreamPort: 8791, upstreamRevision: "b".repeat(40) },
+  candidate: { adapterPort: 8788, adapterRevision: "a".repeat(40), upstreamPort: 8790, upstreamRevision: "a".repeat(40) }
 };
 const pins = {
   runnerRevision: identity.runner.revision,
@@ -87,6 +94,78 @@ describe("reviewed p6 judge self-test wrapper", () => {
       "--expect-claude-environment-sha256", pins.claudeEnvironmentSha256,
       "--out", "/tmp/p6-summary.json"
     ])).toEqual({ ...pins, out: "/tmp/p6-summary.json" });
+  });
+
+  it("accepts one absolute paired listener record with its digest and refuses other forms", () => {
+    const base = [
+      "--runner-revision", pins.runnerRevision,
+      "--claude-path", pins.claudePath,
+      "--expect-claude-binary-sha256", pins.claudeBinarySha256,
+      "--expect-claude-environment-sha256", pins.claudeEnvironmentSha256
+    ];
+    const digest = ["--expect-paired-listeners-sha256", "d".repeat(64)];
+    expect(parseP6SelfTestCli([...base, "--paired-listeners", "/tmp/listeners.json", ...digest, "--out", "/tmp/p6.json"]))
+      .toEqual({ ...pins, out: "/tmp/p6.json", pairedListeners: "/tmp/listeners.json", pairedListenersSha256: "d".repeat(64) });
+    expect(() => parseP6SelfTestCli([...base, "--paired-listeners", "listeners.json", ...digest]))
+      .toThrow(/one absolute --paired-listeners path/);
+    expect(() => parseP6SelfTestCli([...base, "--paired-listeners", "/a.json", "--paired-listeners", "/b.json", ...digest]))
+      .toThrow(/one absolute --paired-listeners path/);
+    expect(() => parseP6SelfTestCli([...base, "--paired-listeners", "/a.json"]))
+      .toThrow(/must appear together/);
+    expect(() => parseP6SelfTestCli([...base, ...digest]))
+      .toThrow(/must appear together/);
+    expect(() => parseP6SelfTestCli([...base, "--paired-listeners", "/a.json", "--expect-paired-listeners-sha256", "abc"]))
+      .toThrow(/one --expect-paired-listeners-sha256 digest/);
+  });
+
+  it("stops before the next paid call when a paired server listener is lost", () => {
+    const bytes = Buffer.from(JSON.stringify(listenerRecord(P6_LISTENER_TARGETS)));
+    const spawns = [];
+    let lost = false;
+    const beforeCall = pairedListenerCheck("/run/listeners.json", sha256Hex(bytes), {
+      readFile: () => bytes,
+      identify: (target) => {
+        if (lost && target.upstreamPort === 8791) throw new Error("expected one listener process, found 0");
+        return listenerRecord({ arm: target }).arm.identity;
+      }
+    });
+    const spawnSyncImpl = successfulSpawner(spawns);
+    let error;
+    try {
+      runP6JudgeSelfTest({
+        pins,
+        spawnSyncImpl: (...args) => {
+          const result = spawnSyncImpl(...args);
+          if (args[1].includes("--self-test-candidate")) lost = true;
+          return result;
+        },
+        attestIdentity: () => structuredClone(identity),
+        beforeCall,
+        log() {}
+      });
+    } catch (caught) { error = caught; }
+    expect(error.code).toBe("paired-server-lost");
+    expect(error.message).toMatch(/^baseline server stopped answering on its port or changed: .*found 0$/);
+    expect(spawns.map(({ args }) => args[1])).toEqual(["--self-test-static", "--self-test-candidate"]);
+  });
+
+  it.each([
+    ["a missing arm", (record) => { delete record.baseline; }, /exactly baseline and candidate/],
+    ["a duplicated pair", (record) => { record.baseline = structuredClone(record.candidate); },
+      /four distinct ports and four distinct processes/],
+    ["a malformed pair", (record) => { record.baseline = {}; }, /baseline listener record is not a recorded listener pair/]
+  ])("refuses a paired listener record with %s before any call", (_label, mutate, expected) => {
+    const record = listenerRecord(P6_LISTENER_TARGETS);
+    mutate(record);
+    const bytes = Buffer.from(JSON.stringify(record));
+    expect(() => pairedListenerCheck("/run/listeners.json", sha256Hex(bytes), { readFile: () => bytes }))
+      .toThrow(expected);
+  });
+
+  it("refuses a paired listener record that changed after signing", () => {
+    const bytes = Buffer.from(JSON.stringify(listenerRecord(P6_LISTENER_TARGETS)));
+    expect(() => pairedListenerCheck("/run/listeners.json", "0".repeat(64), { readFile: () => bytes }))
+      .toThrow("--paired-listeners does not match its signed SHA-256");
   });
 
   it("refuses an existing output or temporary output", () => {

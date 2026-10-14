@@ -138,3 +138,76 @@ export function assertStableDualBoundServerIdentity(before, after) {
     matches: true
   };
 }
+
+export const SERVER_LOST_CODE = "paired-server-lost";
+
+// Re-read each recorded listener pair and require the same processes. A missing listener, or
+// another process on a recorded port, throws. Only local lsof and git commands run; this never
+// restarts a server.
+export function assertDualBoundServersUnchanged(recordedPairs, { identify = dualBoundServerIdentity } = {}) {
+  for (const [label, recorded] of Object.entries(recordedPairs)) {
+    try {
+      assertStableDualBoundServerIdentity(recorded, identify({
+        adapterPort: recorded.adapter.port,
+        adapterRevision: recorded.adapter.revision,
+        upstreamPort: recorded.upstream.port,
+        upstreamRevision: recorded.upstream.revision
+      }));
+    } catch (error) {
+      const lost = new Error(`${label} server stopped answering on its port or changed: ${error.message}`);
+      lost.code = SERVER_LOST_CODE;
+      throw lost;
+    }
+  }
+}
+
+const PAIRED_ARMS = ["baseline", "candidate"];
+const TARGET_FIELDS = ["adapterPort", "adapterRevision", "upstreamPort", "upstreamRevision"];
+
+// `boundServerIdentity` records each listener process ID as a number.
+const isProcessId = (pid) => Number.isSafeInteger(pid) && pid > 0;
+
+const pairTarget = (pair) => ({
+  adapterPort: pair?.adapter?.port,
+  adapterRevision: pair?.adapter?.revision,
+  upstreamPort: pair?.upstream?.port,
+  upstreamRevision: pair?.upstream?.revision
+});
+
+/**
+ * Validate a paired launch's `listeners.json` record and return its pair for each arm.
+ * The record must name exactly baseline and candidate, with four distinct ports and four
+ * distinct listener processes. With `expectedTargets`, each arm's ports and revisions must equal
+ * those independent values, so a record cannot omit or substitute a server.
+ */
+export function pairedListenerPairs(record, expectedTargets = null) {
+  const arms = Object.keys(record ?? {}).sort();
+  if (JSON.stringify(arms) !== JSON.stringify(PAIRED_ARMS)) {
+    throw new Error(`paired listener record must name exactly baseline and candidate; found: ${arms.join(", ") || "none"}`);
+  }
+  const pairs = {};
+  for (const arm of PAIRED_ARMS) {
+    const pair = record[arm]?.identity;
+    const target = pairTarget(pair);
+    if (!Number.isInteger(target.adapterPort) || !Number.isInteger(target.upstreamPort) ||
+        !/^[a-f0-9]{40}$/.test(String(target.adapterRevision ?? "")) ||
+        !/^[a-f0-9]{40}$/.test(String(target.upstreamRevision ?? "")) ||
+        !isProcessId(pair.adapter.pid) || !isProcessId(pair.upstream.pid)) {
+      throw new Error(`${arm} listener record is not a recorded listener pair`);
+    }
+    const expected = expectedTargets?.[arm];
+    if (expectedTargets) {
+      const changed = TARGET_FIELDS.filter((field) => expected?.[field] !== target[field]);
+      if (changed.length) {
+        throw new Error(`${arm} listener record does not match the expected targets (${changed.join(", ")})`);
+      }
+    }
+    pairs[arm] = pair;
+  }
+  const listeners = PAIRED_ARMS.flatMap((arm) => [pairs[arm].adapter, pairs[arm].upstream]);
+  if (new Set(listeners.map((listener) => listener.port)).size !== 4 ||
+      new Set(listeners.map((listener) => listener.pid)).size !== 4) {
+    throw new Error("paired listener record must name four distinct ports and four distinct processes");
+  }
+  return pairs;
+}

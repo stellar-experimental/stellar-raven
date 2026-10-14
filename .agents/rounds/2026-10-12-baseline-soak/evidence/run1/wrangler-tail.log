@@ -1,0 +1,12 @@
+[wrangler:info] POST /mcp 200 OK (3ms)
+{"evt":"mcp_request","accessMode":"dev-bypass","subjectHash":null,"clientHash":null,"rayId":null,"requestId":"2daf8b09-32e0-4614-b07f-48b5f554b6d6","method":"POST","status":200}
+[wrangler:info] POST /mcp 200 OK (3ms)
+{"evt":"mcp_request","accessMode":"dev-bypass","subjectHash":null,"clientHash":null,"rayId":null,"requestId":"ba4c0f21-e9f6-406b-8277-194699184590","method":"POST","status":200}
+[wrangler:info] POST /mcp 200 OK (4ms)
+
+✘ [ERROR] 
+
+
+If you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose
+Note that there is a newer version of Wrangler available (4.149.0). Consider checking whether upgrading resolves this error.
+🪵  Logs were written to "/Users/kalepail/.wrangler/logs/wrangler-2026-10-12_12-36-26_527.log"

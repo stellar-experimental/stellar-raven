@@ -1,0 +1,158 @@
+{
+  "exactRule": true,
+  "artifacts": 24,
+  "packs": 64,
+  "prompts": 64,
+  "calls": 192,
+  "pairedRows": 32,
+  "reusedRows": 31,
+  "target": [
+    {
+      "arm": "A",
+      "pack": "76eec18f8cecd31e1fa7cdd3c68a6f3d85dfe1c42e0cce76a2a09903a3f6ebe8",
+      "prompt": "ee8a879f38f60476aa96d7be0e0dc946a45cd448c43185c127c78a9d85955d9e",
+      "votes": [
+        {
+          "score": "correct",
+          "coreAnswer": "correct",
+          "missingFacts": [],
+          "wrongClaims": [],
+          "avoidMatches": [],
+          "rationale": "The candidate dates its roster/TVL claims (2026-10-07/08, scout generatedAt 2026-10-08) matching transcript evidence exactly (Aquarius ~$38.9M, Soroswap ~$1.24M), explains PathPaymentStrictSend/StrictReceive with destMin/sendMax correctly, ties profitability to liquidity/spreads/fees/slippage/latency/competition, discusses reserve costs and failed-tx result codes (UNDER_DESTMIN, OVER_SENDMAX, TOO_FEW_OFFERS), and explicitly refuses to promise profitability, instead calling small-capital arb/market-making 'hard' and dependent on live conditions not available to the tools. No must-avoid item fires: it never promises profit, frames all variable facts as dated/sourced, and does not assert unsupported memory as current. The 5-hop path-length claim and some minor phrasing (the Comet/Zenex inactive-list sentence is a bit ambiguous but most plausibly refers only to Comet, consistent with the transcript) are unverified-but-plausible rather than contradicting the golden or evidence.",
+          "costUsd": 0.10306639999999999,
+          "rubric": "v2.11",
+          "packVersion": "p6",
+          "promptSha256": "ee8a879f38f60476aa96d7be0e0dc946a45cd448c43185c127c78a9d85955d9e"
+        },
+        {
+          "score": "correct",
+          "coreAnswer": "correct",
+          "missingFacts": [],
+          "wrongClaims": [],
+          "avoidMatches": [],
+          "rationale": "The candidate covers all five key facts: it dates its roster/TVL claims explicitly (as of 2026-10-07/08, scout directory generated 2026-10-08), explains PathPaymentStrictSend/StrictReceive mechanics, ties profitability to liquidity, spreads, fees, slippage, competition, and latency, discusses failed transactions via result codes and small-account reserve overhead, and correctly describes destMin/sendMax as slippage protections tied to the quote-then-submit flow. It explicitly refuses to promise profit ('not something the available sources can promise') and frames all freshness-sensitive claims (fees, TVL figures, project statuses) with dates/sources, matching the transcript evidence (e.g., Aquarius/Soroswap TVL figures, Comet Inactive, surge-pricing threshold, reserve amounts). No fabricated or contradicting claims were found against the golden answer or the transcript evidence, and no must-avoid item fires.",
+          "costUsd": 0.1078726,
+          "rubric": "v2.11",
+          "packVersion": "p6",
+          "promptSha256": "ee8a879f38f60476aa96d7be0e0dc946a45cd448c43185c127c78a9d85955d9e"
+        },
+        {
+          "score": "partial",
+          "coreAnswer": "correct",
+          "missingFacts": [],
+          "wrongClaims": [
+            "Candidate lists Zenex among projects 'marked Inactive' in the scout TVL directory, but the transcript source-basis evidence shows Zenex status as 'Live'"
+          ],
+          "avoidMatches": [],
+          "rationale": "The candidate covers all five key facts: it dates its ecosystem/liquidity observations (as of 2026-10-07/08, scout directory generated 2026-10-08), explains strict-send/strict-receive mechanics with destMin/sendMax protections, repeatedly stresses that profitability hinges on liquidity, spreads, fees, slippage, latency and competition, discusses capital lock-up via reserves/trustlines and competition from faster bots, and explains the path-quoting flow with destMin/sendMax limits and corresponding result codes (UNDER_DESTMIN/OVER_SENDMAX/TOO_FEW_OFFERS), matching the golden's 'no usable path / too-few-offers' wording. It also explicitly refuses to promise profit, avoiding the main must-avoid traps. However, it states Zenex is 'marked Inactive' in the scout directory listing, while the compact transcript source-basis evidence shows Zenex status as 'Live' — a concrete contradiction of the provided source evidence, though it is a tangential illustrative detail rather than a core-answer fact.",
+          "evidenceSupportCheck": {
+            "status": "no-pack-omission",
+            "requiresReview": false,
+            "checkedClaims": 1,
+            "checkedTerms": 0,
+            "transcriptSupportedTerms": 0,
+            "omittedTerms": [],
+            "checkedProse": 1,
+            "transcriptSupportedProse": 0,
+            "omittedProse": []
+          },
+          "costUsd": 0.10338639999999999,
+          "rubric": "v2.11",
+          "packVersion": "p6",
+          "promptSha256": "ee8a879f38f60476aa96d7be0e0dc946a45cd448c43185c127c78a9d85955d9e"
+        }
+      ],
+      "stellartermLines": [
+        "canonicalUrls: data-derived/untrusted; https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations; https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering; https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools; https://developers.stellar.org/docs/learn/fundamentals/lumens; https://stellarlight.xyz/project/soroswap; https://stellarlight.xyz/project/aquarius; https://stellarlight.xyz/project/stellarterm; https://stellarlight.xyz/project/octarine (+14 more)"
+      ]
+    },
+    {
+      "arm": "B",
+      "pack": "ac9c47b6be31afb685b94112c6c205fd7387580ea5ae935a72b5681e02caa1d0",
+      "prompt": "3cc7187326b5487ae31fb433efcbe87f5eea060e992852eca54c68d4c3b1887e",
+      "votes": [
+        {
+          "score": "wrong",
+          "coreAnswer": "correct",
+          "missingFacts": [],
+          "wrongClaims": [
+            "Candidate states StellarTerm is 'marked Inactive' in the scout directory data, but the transcript source-basis evidence shows StellarTerm status='Live' (generated 2026-10-08), directly contradicting the cited source."
+          ],
+          "avoidMatches": [
+            4
+          ],
+          "rationale": "All five key facts are present: the candidate dates its liquidity/roster claims (2026-10-07/08, scout generatedAt), explains strict-send/strict-receive mechanics correctly with destMin/sendMax and UNDER_DESTMIN/OVER_SENDMAX/TOO_FEW_OFFERS, and repeatedly frames profitability as dependent on spreads, slippage, competition, latency, reserves, and capital without ever promising profit. However, the candidate states StellarTerm is 'marked Inactive' in its venue list, while the compact transcript source-basis evidence explicitly shows StellarTerm with status='Live' (as does Aquarius and Soroswap) — a direct, checkable contradiction of the cited source data rather than an unverifiable addition. This misrepresents a dated source observation as current when it actually isn't supported by the retrieved data.",
+          "evidenceSupportCheck": {
+            "status": "no-pack-omission",
+            "requiresReview": false,
+            "checkedClaims": 1,
+            "checkedTerms": 1,
+            "transcriptSupportedTerms": 1,
+            "omittedTerms": [],
+            "checkedProse": 1,
+            "transcriptSupportedProse": 0,
+            "omittedProse": []
+          },
+          "costUsd": 0.1306654,
+          "rubric": "v2.11",
+          "packVersion": "p8",
+          "promptSha256": "3cc7187326b5487ae31fb433efcbe87f5eea060e992852eca54c68d4c3b1887e"
+        },
+        {
+          "score": "partial",
+          "coreAnswer": "correct",
+          "missingFacts": [],
+          "wrongClaims": [
+            "Candidate states StellarTerm is 'marked Inactive' in the scout TVL/status listing, but the transcript source-basis evidence shows StellarTerm status=\"Live\""
+          ],
+          "avoidMatches": [],
+          "rationale": "The candidate covers all five key facts: it dates its liquidity/TVL observations (2026-10-07/08), explains path payments via strict-send/strict-receive with destMin/sendMax, ties profitability to liquidity, spreads, fees, slippage and latency, discusses reserves/competition/failed-tx risk for small accounts, and describes the destMin/sendMax quote-and-protect mechanics accurately. It never promises profit and explicitly hedges that profitability can't be guaranteed. However, it states that StellarTerm is 'marked Inactive' in the scout directory listing, while the compact transcript source-basis evidence explicitly shows StellarTerm with status='Live' — a direct contradiction of the shown evidence, not merely an unverifiable claim.",
+          "evidenceSupportCheck": {
+            "status": "no-pack-omission",
+            "requiresReview": false,
+            "checkedClaims": 1,
+            "checkedTerms": 1,
+            "transcriptSupportedTerms": 0,
+            "omittedTerms": [],
+            "checkedProse": 1,
+            "transcriptSupportedProse": 0,
+            "omittedProse": []
+          },
+          "costUsd": 0.1037364,
+          "rubric": "v2.11",
+          "packVersion": "p8",
+          "promptSha256": "3cc7187326b5487ae31fb433efcbe87f5eea060e992852eca54c68d4c3b1887e"
+        },
+        {
+          "score": "partial",
+          "coreAnswer": "correct",
+          "missingFacts": [],
+          "wrongClaims": [
+            "Candidate lists StellarTerm among venues 'marked Inactive,' but the transcript source-basis evidence shows StellarTerm's status as 'Live'"
+          ],
+          "avoidMatches": [],
+          "rationale": "All five key facts are present: the candidate dates its venue/TVL claims (2026-10-07/08), explains strict-send/strict-receive mechanics with destMin/sendMax correctly, and ties profitability to liquidity, spreads, fees, competition, and small-account reserve overhead, while explicitly refusing to promise profit. However, it claims StellarTerm is among venues 'marked Inactive,' while the transcript source-basis evidence shows StellarTerm's status as 'Live' — a concrete contradiction of the candidate's own cited source, though it's a minor supplementary detail not central to the core answer. No must-avoid item fires: the profitability caveats are appropriately hedged and dated, so this is a wrongClaim rather than an avoid match.",
+          "evidenceSupportCheck": {
+            "status": "no-pack-omission",
+            "requiresReview": false,
+            "checkedClaims": 1,
+            "checkedTerms": 0,
+            "transcriptSupportedTerms": 0,
+            "omittedTerms": [],
+            "checkedProse": 1,
+            "transcriptSupportedProse": 0,
+            "omittedProse": []
+          },
+          "costUsd": 0.12194940000000001,
+          "rubric": "v2.11",
+          "packVersion": "p8",
+          "promptSha256": "3cc7187326b5487ae31fb433efcbe87f5eea060e992852eca54c68d4c3b1887e"
+        }
+      ],
+      "stellartermLines": [
+        "canonicalUrls: data-derived/untrusted; https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations; https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering; https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools; https://developers.stellar.org/docs/learn/fundamentals/lumens; https://stellarlight.xyz/project/soroswap; https://stellarlight.xyz/project/aquarius; https://stellarlight.xyz/project/stellarterm; https://stellarlight.xyz/project/octarine (+14 more)",
+        "8. title=\"StellarTerm\" url=\"https://stellarlight.xyz/project/stellarterm\" fields=\"status=\"Live\", id=\"6943360730bcaa9def8eee87\"\" matched=\"StellarTerm\""
+      ]
+    }
+  ]
+}

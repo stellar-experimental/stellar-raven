@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { spawn } from "node:child_process";
 import { copyFileSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, realpathSync, symlinkSync, unlinkSync } from "node:fs";
 import os from "node:os";
@@ -7,7 +8,10 @@ import { describe, expect, it } from "vitest";
 import { reserveInvocation, processTable, withLaunchCleanup, OwnedProcesses, PROCESS_GUARD, processGuardSha256, managedEnvironment } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch-runtime.mjs";
 import { createClaudePin } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-claude-pin.mjs";
 import { agentEnvironmentIdentity } from "../eval/lib/executable-identity.mjs";
-import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, launchEnvironment, PORTS } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
+import { freeCommand, runLaunchSteps, removeLaunchWorktrees, inspectWorktreeIdentity, launchEnvironment, PORTS,
+  assertServersUnchanged, listenerTargets } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-launch.mjs";
+import { assertSharedServerToolchain, SERVER_TOOLCHAIN_SCHEMA, sharedWranglerEntry } from "../.agents/rounds/2026-10-01-backlog-closeout/paired-server-toolchain.mjs";
+import { assertDualBoundServersUnchanged, dualBoundServerIdentity, pairedListenerPairs } from "../eval/lib/bound-server-identity.mjs";
 import { executeFrozen, validateStoredJudgeArtifact } from "../.agents/rounds/2026-10-01-backlog-closeout/execute-frozen.mjs";
 import { pairedCollectionPlanSha256, devVarsIdentity, validateAuthorizedPairedCollectionPlan, validatePairedCollectionPlan } from "../eval/qa/paired-collection-supervisor.mjs";
 import { assertPlanCommandSyntax, buildPairedPlan, selectionSnapshot } from "../.agents/rounds/2026-10-01-backlog-closeout/assemble-paired-plan.mjs";
@@ -19,7 +23,7 @@ import { parseArgs as parseRejudge } from "../eval/qa/re-judge.mjs";
 import { assertP6OutputAvailable, parseP6SelfTestCli } from "../eval/qa/run-p6-judge-self-test.mjs";
 import { JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
-import { acceptedCapacityArtifact, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
+import { acceptedCapacityArtifact, listenerCommandOutput, listenerRecord, passingP6Summary } from "./helpers/paired-plan-fixtures.mjs";
 
 function emptyJournal() {
   return {schema:'qa-paired-launch-processes-v2',identities:[],groups:[],retiredGroups:[],cleanup:{complete:true}};
@@ -539,6 +543,207 @@ import {writeFileSync} from 'node:fs';writeFileSync(process.argv[2],agentEnviron
   } finally {rmSync(root,{recursive:true,force:true});}
 },10_000);
 
+// A fake installed toolchain: package manifests, resolvable entries, and a small workerd "binary".
+function writeToolchain(serverRoot, {wranglerVersion='4.149.0', binary='workerd-bytes'}={}) {
+  const modules=path.join(serverRoot,'node_modules');
+  const pkg=(dir,manifest,files={})=>{
+    mkdirSync(dir,{recursive:true});
+    writeFileSync(path.join(dir,'package.json'),JSON.stringify(manifest));
+    for (const [name,text] of Object.entries(files)) {
+      mkdirSync(path.dirname(path.join(dir,name)),{recursive:true});
+      writeFileSync(path.join(dir,name),text);
+    }
+  };
+  pkg(path.join(modules,'wrangler'),{name:'wrangler',version:wranglerVersion},{'bin/wrangler.js':''});
+  pkg(path.join(modules,'wrangler/node_modules/esbuild'),{name:'esbuild',version:'0.28.2',main:'lib/main.js'},{'lib/main.js':''});
+  pkg(path.join(modules,'esbuild'),{name:'esbuild',version:'0.28.1',main:'lib/main.js'},{'lib/main.js':''});
+  pkg(path.join(modules,'miniflare'),{name:'miniflare',version:'5.20261006.1-alpha',main:'dist/index.js'},{'dist/index.js':''});
+  pkg(path.join(modules,'workerd'),{name:'workerd',version:'1.20261006.1',main:'lib/main.js'},{
+    'lib/main.js':'exports.default = require("node:path").join(__dirname, "..", "bin", "workerd");\n',
+    'bin/workerd':binary
+  });
+  mkdirSync(path.join(modules,'.bin'),{recursive:true});
+  symlinkSync('../wrangler/bin/wrangler.js',path.join(modules,'.bin/wrangler'));
+  return modules;
+}
+
+// The production listener reader over fixed lsof and git output, and the record that the
+// launch serializes from it (the same JSON form as paired-launch.mjs writes).
+function productionListeners(env) {
+  const targets=listenerTargets(env);
+  const listeners={};
+  for (const [index,[arm,target]] of Object.entries(targets).entries()) {
+    listeners[target.adapterPort]={pid:4101+2*index,command:'node',cwd:`/w/${arm}-runner`,revision:target.adapterRevision};
+    listeners[target.upstreamPort]={pid:4102+2*index,command:'workerd',cwd:`/w/${arm}-server`,revision:target.upstreamRevision};
+  }
+  const spawnSyncImpl=listenerCommandOutput(listeners);
+  const identify=target=>dualBoundServerIdentity(target,{spawnSyncImpl});
+  const records=Object.fromEntries(Object.entries(targets).map(([arm,target])=>[arm,{identity:identify(target),attestation:{}}]));
+  return {listeners,identify,text:`${JSON.stringify(records,null,2)}\n`};
+}
+
+function toolchainRecord() {
+  return {schema:SERVER_TOOLCHAIN_SCHEMA,packages:{},workerdBinary:{sha256:'c'.repeat(64)}};
+}
+
+describe('paired server toolchain',()=>{
+  function toolchainFixture() {
+    const root=realpathSync(mkdtempSync(path.join(os.tmpdir(),'paired-toolchain-')));
+    const env={PAIRED_BS:path.join(root,'baseline-server'),PAIRED_CS:path.join(root,'candidate-server')};
+    writeToolchain(env.PAIRED_BS,{wranglerVersion:'4.120.1',binary:'old-workerd-bytes'});
+    const modules=writeToolchain(env.PAIRED_CS);
+    return {root,env,modules};
+  }
+
+  it('records the candidate toolchain that both server launch entries resolve',()=>{
+    const {root,env,modules}=toolchainFixture();
+    try {
+      const identity=assertSharedServerToolchain(env);
+      expect(sharedWranglerEntry(env).startsWith(env.PAIRED_CS)).toBe(true);
+      expect(identity).toEqual({
+        schema:SERVER_TOOLCHAIN_SCHEMA,
+        wranglerEntry:path.join(modules,'wrangler/bin/wrangler.js'),
+        packages:{
+          wrangler:{version:'4.149.0',root:path.join(modules,'wrangler')},
+          miniflare:{version:'5.20261006.1-alpha',root:path.join(modules,'miniflare')},
+          workerd:{version:'1.20261006.1',root:path.join(modules,'workerd')},
+          esbuild:{version:'0.28.2',root:path.join(modules,'wrangler/node_modules/esbuild')}
+        },
+        workerdBinary:{path:path.join(modules,'workerd/bin/workerd'),
+          sha256:createHash('sha256').update('workerd-bytes').digest('hex')}
+      });
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('reads the real installed toolchain and survives the JSON round trip that assembly compares',()=>{
+    // This repository's own install stands in for the candidate server worktree.
+    const env={PAIRED_CS:process.cwd()};
+    const identity=assertSharedServerToolchain(env);
+    expect(Object.values(identity.packages).every(({version,root})=>typeof version==='string' && typeof root==='string')).toBe(true);
+    expect(identity.workerdBinary.sha256).toMatch(/^[a-f0-9]{64}$/);
+    expect(JSON.parse(`${JSON.stringify(identity,null,2)}\n`)).toStrictEqual(assertSharedServerToolchain(env));
+  });
+
+  it('fails closed when the candidate launch resolves another Wrangler',()=>{
+    const {root,env,modules}=toolchainFixture();
+    try {
+      mkdirSync(path.join(modules,'wrangler-old/bin'),{recursive:true});
+      writeFileSync(path.join(modules,'wrangler-old/package.json'),JSON.stringify({name:'wrangler',version:'4.120.1'}));
+      writeFileSync(path.join(modules,'wrangler-old/bin/wrangler.js'),'');
+      unlinkSync(path.join(modules,'.bin/wrangler'));
+      symlinkSync('../wrangler-old/bin/wrangler.js',path.join(modules,'.bin/wrangler'));
+      expect(()=>assertSharedServerToolchain(env)).toThrow(/would run different toolchains/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('fails closed when the workerd binary hashes differ',()=>{
+    const {root,env}=toolchainFixture();
+    try {
+      let calls=0;
+      const identify=()=>({schema:SERVER_TOOLCHAIN_SCHEMA,workerdBinary:{sha256:String(++calls).repeat(64)}});
+      expect(()=>assertSharedServerToolchain(env,{identify})).toThrow(/would run different toolchains/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it.each([
+    ['the workerd binary','MINIFLARE_WORKERD_PATH','/tmp/workerd'],
+    ['the esbuild binary','ESBUILD_BINARY_PATH','./custom-esbuild'],
+    ['a miniflare runtime setting','MINIFLARE_WORKERD_AUTOGATES','x']
+  ])('refuses an override of %s',(_,name,value)=>{
+    const {root,env}=toolchainFixture();
+    try {
+      expect(()=>assertSharedServerToolchain({...env,[name]:value}))
+        .toThrow(`toolchain override variables are set: ${name}`);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+});
+
+describe('paired server listener stop',()=>{
+  const revision='a'.repeat(40);
+  const pair=(target,upstreamPid)=>{
+    const {identity}=listenerRecord({arm:target}).arm;
+    if (upstreamPid) identity.upstream.pid=upstreamPid;
+    return identity;
+  };
+  const check=identify=>({pairedListenerPairs,
+    assertDualBoundServersUnchanged:pairs=>assertDualBoundServersUnchanged(pairs,{identify})});
+
+  function listenerFixture(mutate=()=>{}) {
+    const root=mkdtempSync(path.join(os.tmpdir(),'paired-listeners-'));
+    const env={...launchEnvironment(revision,{}),PAIRED_RUN:root};
+    const records=Object.fromEntries(Object.entries(listenerTargets(env)).map(([arm,target])=>[arm,{identity:pair(target)}]));
+    mutate(records);
+    writeFileSync(path.join(root,'listeners.json'),JSON.stringify(records));
+    return {root,env};
+  }
+
+  it('accepts the serialized production record and stops after a production-reader loss',()=>{
+    const root=mkdtempSync(path.join(os.tmpdir(),'paired-listeners-'));
+    try {
+      const env={...launchEnvironment(revision,{}),PAIRED_RUN:root};
+      const {listeners,identify,text}=productionListeners(env);
+      writeFileSync(path.join(root,'listeners.json'),text);
+      expect(()=>assertServersUnchanged(env,'p6',check(identify))).not.toThrow();
+      delete listeners[8790];
+      expect(()=>assertServersUnchanged(env,'collection',check(identify)))
+        .toThrow(/^before collection: candidate server stopped answering on its port or changed: bound server identity on port 8790/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('passes while all four recorded listeners remain',()=>{
+    const {root,env}=listenerFixture();
+    try {
+      const targets=[];
+      assertServersUnchanged(env,'p6',check(target=>{targets.push(target);return pair(target);}));
+      expect(targets.map(({adapterPort,upstreamPort})=>[adapterPort,upstreamPort])).toEqual([[8789,8791],[8788,8790]]);
+      expect(targets[0].adapterRevision).toBe(revision);
+      expect(existsSync(path.join(root,'server-stop.json'))).toBe(false);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('stops and records the reason when a Wrangler process exits',()=>{
+    const {root,env}=listenerFixture();
+    try {
+      const identify=target=>{
+        if (target.upstreamPort===8791) throw new Error('bound server identity on port 8791: expected one listener process, found 0');
+        return pair(target);
+      };
+      expect(()=>assertServersUnchanged(env,'collection',check(identify)))
+        .toThrow(/^before collection: baseline server stopped answering on its port or changed: .*found 0; stop the method and do not restart a server$/);
+      const stop=JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8'));
+      expect(stop.phase).toBe('collection');
+      expect(stop.reason).toMatch(/^before collection: baseline server .*expected one listener process, found 0$/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it.each([
+    ['a missing arm',records=>{delete records.baseline;},/exactly baseline and candidate; found: candidate/],
+    ['a duplicated pair',records=>{records.baseline=structuredClone(records.candidate);},
+      /baseline listener record does not match the expected targets/],
+    ['a substituted port',records=>{records.candidate.identity.upstream.port=8797;},
+      /candidate listener record does not match the expected targets \(upstreamPort\)/]
+  ])('stops on a listener record with %s before any listener read',(_,mutate,expected)=>{
+    const {root,env}=listenerFixture(mutate);
+    try {
+      const reads=[];
+      expect(()=>assertServersUnchanged(env,'p6',check(target=>{reads.push(target);return pair(target);})))
+        .toThrow(expected);
+      expect(reads).toEqual([]);
+      expect(JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8')).reason).toMatch(expected);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('stops when a runtime restart gives a public port to another process',()=>{
+    const {root,env}=listenerFixture();
+    try {
+      const identify=target=>pair(target,target.upstreamPort===8790 ? 53679 : undefined);
+      expect(()=>assertServersUnchanged(env,'p6',check(identify)))
+        .toThrow(/^before p6: candidate server stopped answering on its port or changed: bound server identity changed during paid calls \(pid\)/);
+      expect(JSON.parse(readFileSync(path.join(root,'server-stop.json'),'utf8')).reason).toMatch(/candidate server/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+});
+
 describe('paired plan assembly',()=>{
   const INSTRUMENTS=['run-qa.mjs','paired-verdict.mjs','paired-collection-supervisor.mjs','paired-collection-control.mjs',
     'exact-old-runtime-adapter.mjs','probe-remote-identities.mjs','check-paired-capacity.mjs',
@@ -566,20 +771,22 @@ describe('paired plan assembly',()=>{
     writeFileSync(path.join(env.PAIRED_RUN,'capacity.json'),
       `${JSON.stringify(acceptedCapacityArtifact(new Date().toISOString()),null,2)}\n`);
     writeFileSync(path.join(env.PAIRED_RUN,'stable.sha256'),`${'d'.repeat(64)}\n`);
+    writeFileSync(path.join(env.PAIRED_RUN,'listeners.json'),JSON.stringify(listenerRecord(listenerTargets(env))));
     const salt='9'.repeat(64);
     const selected=selectionSnapshot(env.PAIRED_CR,stratifiedSample);
     expect(selectionSnapshot(env.PAIRED_BR,stratifiedSample)).toEqual(selected);
     const claudePath=path.join(env.PAIRED_RUN,'claude-bin/claude');
     const binary={resolvedPath:claudePath,sha256:'e'.repeat(64)};
     const environment={sha256:'f'.repeat(64)};
-    const plan=buildPairedPlan({env,selected,binary,environment,
+    const rebuild=()=>buildPairedPlan({env,selected,binary,environment,
       immutableClaude:{schema:'qa-paired-claude-pin-v1',claudePath,sha256:binary.sha256},
       register:loadJudgeStabilityRegister(path.join(env.PAIRED_RUN,'paired-stability-register.json'),{verifySources:false}),
       capacityContract:PAIRED_CAPACITY_CONTRACT,surfaces:{baseline:'1'.repeat(64),candidate:'2'.repeat(64)},
-      devVars:{salt,...devVarsIdentity(env.PAIRED_BS,salt)},judge:judgeConstants});
+      devVars:{salt,...devVarsIdentity(env.PAIRED_BS,salt)},serverToolchain:toolchainRecord(),judge:judgeConstants});
+    const plan=rebuild();
     const inspectWorktree=worktree=>({root:worktree,commonDir:root,
       revision:worktree===env.PAIRED_BS ? env.PAIRED_BASE : revision});
-    return {root,env,plan,inspectWorktree};
+    return {root,env,plan,inspectWorktree,rebuild};
   }
 
   function completeP6(plan) {
@@ -597,6 +804,11 @@ describe('paired plan assembly',()=>{
       assertPlanCommandSyntax(plan,{assertRunQaCliSyntax,parseRejudge,parseP6SelfTestCli});
       // P6 runs after assembly; its summary folder is the launch-record folder that launchPaired creates.
       expect(path.dirname(plan.p6.summaryArtifactPath)).toBe(env.PAIRED_RUN);
+      // Each P6 call checks the listeners that the launch recorded.
+      expect(plan.p6.listenersPath).toBe(path.join(env.PAIRED_RUN,'listeners.json'));
+      expect(plan.p6.listenersSha256).toBe(createHash('sha256').update(readFileSync(plan.p6.listenersPath)).digest('hex'));
+      expect(plan.p6.command.slice(-6)).toEqual(['--paired-listeners',plan.p6.listenersPath,
+        '--expect-paired-listeners-sha256',plan.p6.listenersSha256,'--out',plan.p6.summaryArtifactPath]);
       expect(()=>assertP6OutputAvailable(plan.p6.summaryArtifactPath)).not.toThrow();
       completeP6(plan);
       expect(validatePairedCollectionPlan(plan,{inspectWorktree})).toBe(plan);
@@ -615,6 +827,39 @@ describe('paired plan assembly',()=>{
       const wrong=structuredClone(plan);
       Object.assign(wrong.flipRejudge.judgeTuple,change);
       expect(()=>validatePairedCollectionPlan(wrong,{inspectWorktree})).toThrow(/flipRejudge\.judgeTuple does not match/);
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('freezes the serialized production listener record',()=>{
+    const {root,env,rebuild}=assemblyFixture();
+    try {
+      const {text}=productionListeners(env);
+      writeFileSync(path.join(env.PAIRED_RUN,'listeners.json'),text);
+      const plan=rebuild();
+      expect(plan.p6.listenersSha256).toBe(createHash('sha256').update(text).digest('hex'));
+    } finally {rmSync(root,{recursive:true,force:true});}
+  });
+
+  it('refuses to freeze a listener record that omits or substitutes a server',()=>{
+    for (const mutate of [records=>{delete records.baseline;},records=>{records.baseline=structuredClone(records.candidate);}]) {
+      const {root,env,rebuild}=assemblyFixture();
+      try {
+        const records=JSON.parse(readFileSync(path.join(env.PAIRED_RUN,'listeners.json'),'utf8'));
+        mutate(records);
+        writeFileSync(path.join(env.PAIRED_RUN,'listeners.json'),JSON.stringify(records));
+        expect(rebuild).toThrow(/exactly baseline and candidate|does not match the expected targets/);
+      } finally {rmSync(root,{recursive:true,force:true});}
+    }
+  });
+
+  it('freezes the shared server toolchain under the signed plan hash',()=>{
+    const {root,plan}=assemblyFixture();
+    try {
+      expect(plan.serverToolchain).toEqual(toolchainRecord());
+      const changed=structuredClone(plan);
+      changed.serverToolchain.workerdBinary.sha256='d'.repeat(64);
+      expect(pairedCollectionPlanSha256(changed)).not.toBe(pairedCollectionPlanSha256(plan));
+      expect(()=>buildPairedPlan({serverToolchain:undefined})).toThrow(/shared server toolchain record is missing/);
     } finally {rmSync(root,{recursive:true,force:true});}
   });
 
