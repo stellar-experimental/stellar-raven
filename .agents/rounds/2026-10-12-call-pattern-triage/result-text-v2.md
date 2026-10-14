@@ -11,13 +11,21 @@ The first text result ([result-screen.md](result-screen.md)) is PASS on `f7b1b77
 re-measure required because #271 changed the model input. This run measures the text alone on
 `main` `0a60d98a` (#271 included). No guard arm.
 
-## Proposed verdict: PASS
+## Verdict: PASS (final)
+
+The post-run independent review (Codex `gpt-6-astra`, high) returned TEXT: PASS-CONFIRMED-MERGE-OK:
+[`review-post-run-text-v2-astra.md`](review-post-run-text-v2-astra.md). It reclassified A1
+`q-edge-noinfo-sep-9999` [3] (`Object.keys` on the array, a deliberate shape inspection under the
+reader definition) as `correct`, with no silent loss. The counts below include that correction:
+A has 5 misreads (A1 1, A2 4). It also qualified the per-row skill sentence. The verdict does not
+change. The text merges alone onto `main` `d6d6ca67` (#281 included); the combined tree is
+`bfeb04e9`.
 
 | Condition (text rule 5) | Result |
 | --- | --- |
-| M in A (A1 plus A2) ≥ 4 | Met: 6 (A1 2, A2 4) |
+| M in A (A1 plus A2) ≥ 4 | Met: 5 (A1 1, A2 4) |
 | Rate claim defined (rule 4) | Met: S in T is 35 (≥ 1, and ≥ half of 38) |
-| r in T ≤ half of r in A | Met: r(A) = 6/38 = 15.8%; r(T) = 0/35 = 0% |
+| r in T ≤ half of r in A | Met: r(A) = 5/38 = 13.2%; r(T) = 0/35 = 0% |
 | No script-error class in both T collections and in neither A collection | Met: T2 has no `execute` error; the one T1 class also occurs in A1 |
 | Zero confirmed consistent regressions on the 16 rows | Met: no consistent regression |
 
@@ -25,12 +33,11 @@ re-measure required because #271 changed the model input. This run measures the 
 - One consistent **improvement** (`q-defi-build-staking-for-own-token`, A 1, 1 against T 2, 2)
   went to the K1 and K2 re-judges. The re-judge did not reproduce it (A1 `partial` → `partial`;
   T1 `correct` → `partial`). It is judge variance and counts as no change (rule 9).
-- Robustness (not a rule input): two A misreads are borderline shape probes (A1
-  `q-edge-noinfo-sep-9999` `Object.keys(…sections)`; A2 `q-stellar-recurring-payments`
-  `Object.entries(…sections)` lengths). Both readers count them. Without both, M in A is 4 (still
-  the floor), and every rule 5 condition still holds.
+- Robustness (not a rule input): the review accepts A2 `q-stellar-recurring-payments`
+  (`(v || "").length` on each section object from `Object.entries`) as a string-use misread.
+  Without it, M in A is 4 (still the floor), and every rule 5 condition still holds.
 - The result agrees with the `f7b1b775` screen (A 4 in 40, T 0 in 31). Read it as a small-sample
-  direction: 6 misreads in A.
+  direction: 5 misreads in A.
 
 ## Arms, pins, and environment
 
@@ -101,7 +108,7 @@ re-measure required because #271 changed the model input. This run measures the 
 - Consistent regressions (both T grades below both A grades): none.
 - `q-jutsu-check-account-history` (A 2, 1; T 1, 1) is not consistent: T equals A2.
 - Noise floor (rule 10): A1 against A2, 3 grade disagreements; T1 against T2, 3. A1 and A2 misread
-  counts: 2 and 4.
+  counts: 1 and 4 (after the review correction).
 
 ## Script counts and classification
 
@@ -111,23 +118,22 @@ and R2 (a Claude Sonnet subagent), from the same reader inputs (`read/<label>.md
 scripts in every field. One class differed: A1 `q-edge-noinfo-sep-9999` [3], R1 `map-key`, R2
 `other`. Both call it a silent misread. The code returns `Object.keys(skill.data.sections || {})`,
 which treats the array as keyed by section name; the result is `["0","1","2"]`. The collector
-reconciled it to `map-key`. The counter found no unknown or unparsed skill-read script.
+reconciled it to `map-key`. The post-run review reclassified it as `correct` (a deliberate shape
+inspection that returns the actual keys and claims nothing about them); the table uses that. The counter found no unknown or unparsed skill-read script.
 
 | Collection | S | M map-key | M string-use | M absent `content` | M other | M total | L | E | X execute calls | X errors | K |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| A1 | 18 | 2 | 0 | 0 | 0 | 2 | 2 | 0 | 39 | 1 | 0 |
+| A1 | 18 | 1 | 0 | 0 | 0 | 1 | 1 | 0 | 39 | 1 | 0 |
 | T1 | 21 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 37 | 1 | 0 |
 | T2 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 35 | 0 | 0 |
 | A2 | 20 | 0 | 4 | 0 | 0 | 4 | 3 | 0 | 39 | 2 | 0 |
-| **A** | **38** | **2** | **4** | **0** | **0** | **6** | **5** | **0** | 78 | 3 | 0 |
+| **A** | **38** | **1** | **4** | **0** | **0** | **5** | **4** | **0** | 78 | 3 | 0 |
 | **T** | **35** | **0** | **0** | **0** | **0** | **0** | **0** | **0** | 72 | 1 | 0 |
 
-The 6 misreads (all in A):
+The 5 misreads (all in A), after the review correction:
 
 - A1 `q-defi-build-staking-for-own-token` [4]: `dev.sections["file:development.md"] || ""`, silent
   (`"devSnippet":""`); [5] and [6] read the section correctly.
-- A1 `q-edge-noinfo-sep-9999` [3]: `Object.keys(skill.data.sections || {})`, silent (index keys,
-  no names or text); no later read in the row.
 - A2 `q-defi-build-staking-for-own-token` [4]: `(…sections || …).toString().slice(0, 3000)`, silent
   (`[object Object],…`).
 - A2 `q-passkey-smart-account-architecture` [4]: `(v || "").slice` on a section object; native
@@ -164,8 +170,9 @@ Read avoidance and routing (S differs: A 38, T 35):
 - Per-row section reads, A against T (both collections): fewer in T on trustline (2, 1), staking
   (5, 4), edge-ambig (3, 2), jutsu (3, 2), passkey (3, 2), surge-griefing (4, 2), and
   recurring-payments (5, 3); more in T on agent-identity (0, 2), etherfuse (0, 1), strkey (0, 1),
-  scf-pitch (4, 5), and fuzz-testing (2, 3); equal on the other four rows. The skills per row are
-  otherwise the same in both arms.
+  scf-pitch (4, 5), and fuzz-testing (2, 3); equal on the other four rows. Skill selection
+  differs on some rows (for example, staking reads `setup-stellar-contracts` in A2 and
+  `develop-secure-contracts` in T1); no such difference gives a repeated adverse grade change.
 - Every T section read used a correct form. The A misread forms (`join`, `toString`, `.slice` on a
   section, map access, `Object.keys` or `Object.entries` on the array) did not occur in T.
 
@@ -182,7 +189,7 @@ Read avoidance and routing (S differs: A 38, T 35):
 | 8 Confirmation re-judge | List written in the ledger before spend (commit `bd81e30f`). K1 (A1): `partial` → `partial`. K2 (T1): `correct` → `partial`. Not reproduced: judge variance. |
 | 8 Live check of every graded T `wrong` | One cell, checked at 2026-10-14T06:19Z (below). No factual error. |
 | 9 Failed confirmation re-judge | Not needed: K1 and K2 returned valid grades. K1r and K2r did not run. |
-| 10 Noise floor | A1 vs A2: 3 grade disagreements, 2 and 4 misreads. T1 vs T2: 3. |
+| 10 Noise floor | A1 vs A2: 3 grade disagreements, 1 and 4 misreads. T1 vs T2: 3. |
 
 Live check: T1 `q-pc-surge-griefing-threat-model` `wrong`. The judge cites must-avoid 1 (the abuse
 section gives operational attack steps, against the golden's "Do not give a step-by-step spam

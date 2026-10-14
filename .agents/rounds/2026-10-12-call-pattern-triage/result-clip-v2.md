@@ -9,7 +9,17 @@ The first measurement ([result-clip.md](result-clip.md)) is final PASS on `f7b1b
 repeats the plan once on `main` `0a60d98a` (#271), because #271 changed `src/demo/` evidence
 labels.
 
-## Proposed verdict: PASS
+## Verdict: PASS (final; merged as #281, `d6d6ca67`)
+
+The post-run independent review (Codex `gpt-6-astra`, high) returned CLIP: PASS-CONFIRMED-MERGE-OK:
+[`review-post-run-clip-v2-astra.md`](review-post-run-clip-v2-astra.md). Its nonblocking corrections
+are applied below: the two candidate `wrong` cells have correct cap and reserve values, but answer
+omissions and scope errors remain; B1 retrieved and mentioned sponsorship in general but not the
+sponsorship formula. It also keeps two monitoring notes: both candidate SEP-45 answers omit the
+SEP-10 distinction (the candidate scripts did not request `includeContent`; equal `partial`
+grades), and the C1 SCF valuation sentence rests on Growth-Hack rules, not a Build-specific rule.
+Reader 2's notes (outside the repository) contain count errors that the review lists; the review's
+counts govern.
 
 - The marker works on its target. M1 on the two target rows: BASE 3 (B1 1, B2 2), CANDIDATE 0.
   Every CANDIDATE target row-run showed the target card with `required input: query`.
@@ -154,20 +164,21 @@ queries. M5 shows no consistent card-cost increase in CANDIDATE.
 | 4 FAIL conditions | None holds. M2 non-docs is 0 in all runs. |
 | 6 Confirmation re-judge | List empty (ledger, commit `00c07eac`, before any re-judge). No re-judge ran. |
 | 7 Failed confirmation re-judge | Not applicable. |
-| 8 Live check of CANDIDATE `wrong` | Two cells, both checked at 2026-10-14T04:41Z (below). Neither is a factual error, and neither forms a regression. |
+| 8 Live check of CANDIDATE `wrong` | Two cells, both checked at 2026-10-14T04:41Z (below). The cap and reserve values match the sources, but answer omissions and scope errors remain. Neither forms a regression. |
 
 Live checks (rule 8):
 
 - C1 `q-scf-build-award-cap` `wrong`: the answer says "up to US$150,000 … paid in XLM". The live SCF
   awards page (`communityfund.stellar.org/awards`) lists "$150K in XLM" as the maximum Build award,
-  paid in tranches. The facts are correct. The `wrong` comes from must-avoid 3 (an undated
+  paid in tranches. The cap and currency are correct. The `wrong` comes from must-avoid 3 (an undated
   changeable figure) and the missing tranche fact. B1, B2, and C2 have the same facts and got
   `partial`.
 - C2 `q-protocol-base-reserve-min-balance` `wrong`: the answer says the base reserve is "currently
   0.5 XLM" and gives `(2 + subentries) × base reserve`. The live docs page
   (`developers.stellar.org/docs/learn/fundamentals/lumens`) says "One base reserve is currently
-  0.5 XLM". The `wrong` comes from must-avoid 1 (no sponsorship terms), the known `sd-046` area. B1
-  is also `wrong` for the same reason.
+  0.5 XLM". The value is correct, but the unscoped formula is a scope error. The `wrong` comes
+  from must-avoid 1 (no sponsorship terms), the known `sd-046` area. B1 is also `wrong` for the same
+  reason; B1 retrieved and mentioned sponsorship in general, but not the sponsorship formula.
 
 ## Per-row grades and routing
 
@@ -188,7 +199,8 @@ Live checks (rule 8):
     `partial` (answer content; the BASE arm itself splits);
   - stablecoin: the four answers are nearly the same; the B2 judge read a dominance statement that
     the B2 text does not hold (judge variance);
-  - reserve: C2 and B1 retrieved text without sponsorship terms and both got `wrong`; B2 and C1
+  - reserve: C2 and B1 retrieved text without the sponsorship formula terms (B1 still mentions
+    sponsorship in general) and both got `wrong`; B2 and C1
     retrieved `numSponsoring` and got `partial` (retrieval and answer variance inside each arm);
   - SCF: C1 names no source and adds a valuation sentence; its judge went to `wrong` where the
     same facts got `partial` elsewhere (answer content plus judge strictness).

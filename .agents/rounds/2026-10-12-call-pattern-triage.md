@@ -702,9 +702,10 @@ replacement).
   reproduced: judge variance, no change. K1r and K2r not needed.
 - Live check of the one graded T `wrong` (T1 `q-pc-surge-griefing-threat-model`): no factual
   error (a must-avoid grade); not a consistent change.
-- Misreads: A 6 in 38 section-read scripts (A1 2, A2 4), T 0 in 35. No new script-error class. No
-  consistent regression. Two readers agree on 72 of 73 scripts; one class difference reconciled.
-- **Proposed verdict on `0a60d98a`: PASS.**
+- Misreads: A 5 in 38 section-read scripts (A1 1, A2 4, after the post-run review reclassified
+  A1 `q-edge-noinfo-sep-9999` [3] as a correct shape inspection), T 0 in 35. No new script-error
+  class. No consistent regression. Two readers agree on 72 of 73 scripts.
+- **Verdict on `0a60d98a`: PASS (final).**
 
 ### Re-measurement totals
 
@@ -716,3 +717,21 @@ in clipped Playground signatures", 2026-10-14T06:15Z). Its tree is `d4cc6e801d68
 the measured clip CANDIDATE tree. #281 changes only `src/demo/tools.ts` and
 `test/smoke/demo-tools.test.ts`; no MCP-visible file. So the text arms (A `0a60d98a`, T `badbda8a`)
 still differ from a text candidate on `d6d6ca67` only in Playground files.
+
+## Post-run reviews of the re-measurement and merge decisions (2026-10-14)
+
+Reviewer for both: Codex `gpt-6-astra` at high. The matched Claude Fable tier is skipped because
+Claude is the author and the orchestrator.
+
+- Clip v2: CLIP: PASS-CONFIRMED-MERGE-OK
+  ([review](2026-10-12-call-pattern-triage/review-post-run-clip-v2-astra.md)). Merged alone as
+  #281 (`d6d6ca67`; tree `d4cc6e80`, the measured CANDIDATE tree) and deployed (Version ID
+  `16607dd3-11fc-4f25-a2de-3e0578506708`).
+- Text v2: TEXT: PASS-CONFIRMED-MERGE-OK
+  ([review](2026-10-12-call-pattern-triage/review-post-run-text-v2-astra.md)). The review checked
+  that `7cf3a833` on `d6d6ca67` gives the combined tree `bfeb04e9`, with the same changed lines as the
+  measured T arm. It also scanned the `--no-verify` commit `f527d1f7` and found no secret-shaped
+  content. Its one count correction is applied in [result-text-v2.md](2026-10-12-call-pattern-triage/result-text-v2.md).
+- Guard: INDETERMINATE (final). The guard commits `ba6a1dfa` and `416d2aa2` are reverted on this
+  branch before the merge, so PR #270 ships the text change and the round records only. The
+  original commits stay reachable through PR #270.

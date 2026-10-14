@@ -272,82 +272,23 @@ identity is unverified or ask for context, with no regression in the abstention 
 
 ## Executor and policy
 
-### Reduce `data.sections` misreads after a sectioned skill read
+### Recount `data.sections` misreads in the next authorized QA round
 
-PR #247 (2026-10-09) returns a successful `codemode.skill.read` as
-`{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`. In the
-[tool-surface round](rounds/2026-10-07-tool-surface-qa.md), scripts read a skill result without
-`.data` in 9 of 13 tool-level errors. PR #249 also accepts documented comma-joined array arguments
-and names failed-call reasons in the source-basis `calls:` line.
+The section-shape text merged in PR #270 (2026-10-14). The `execute` description and the
+`codemode.describe` usage line now say that a section read has no `content`, and that `sections` is
+an array of `{ section, content, url }` in request order. Its re-measure on `main` `0a60d98a` gave
+PASS: section misreads fell from 5 in 38 scripts (A) to 0 in 35 (T), with no consistent regression
+([result](rounds/2026-10-12-call-pattern-triage/result-text-v2.md),
+[review](rounds/2026-10-12-call-pattern-triage/review-post-run-text-v2-astra.md)). The sample is
+16 rows and two collections per arm, so it is a direction, not a rate. No script called
+`codemode.describe` on a sectioned skill, so the usage-line change has no direct evidence.
 
-The 2026-10-11 answer-style measurement (136 rows: B1, C1, C2, B2) counted the three behaviors.
-The result review is `rounds/2026-10-10-weekend/answer-style/review-result-astra.md` on draft PR
-#268.
+The sandbox guard (commits `ba6a1dfa` and `416d2aa2`, reachable through PR #270) is INDETERMINATE:
+with the text present, no misread occurred for it to act on. It does not ship. A guard needs a new
+design or an owner decision before any new measurement.
 
-| Run | Skill-shape errors (scripts / rows) | Rejected comma-joined arguments | Failed calls with an omitted reason (calls / rows) |
-|---|---:|---:|---:|
-| B1 | 2 / 2 | 0 | 2 / 2 |
-| C1 | 1 / 1 | 0 | 2 / 1 |
-| C2 | 2 / 1 | 0 | 7 / 4 |
-| B2 | 0 / 0 | 0 | 1 / 1 |
-
-- No script read a skill result without `.data`. The PR #247 shape problem did not recur.
-- All five shape errors misread the `data.sections` array: they treat a section object as a string,
-  read `data.content` on a sectioned read, or index sections by a `file:` name. Rows:
-  `q-edge-noinfo-sep-9999`, `q-soroban-cross-contract-call` (twice), `q-stellar-recurring-payments`.
-- No host rejected a comma-joined array argument.
-- The omitted reasons cover invalid paths, invalid numeric IDs, unknown operations, and one script
-  error. Four of the twelve calls are the unknown `searchBuilders` operation on the Strupey row.
-
-The [2026-10-12 call-pattern triage](rounds/2026-10-12-call-pattern-triage.md) and its
-independent review read all 205 `skill.read` scripts in the paired attempts, the answer-style runs,
-and the ai-upgrade screen. They found 26 misreads in 199 MCP scripts and 0 in 6 Playground scripts.
-On the current `data` envelope, the rate is 10 in 121. The classes are: a map keyed by section (4),
-a section object used as a string (6), and an absent `content` (16, of which 15 are on the
-historical top-level shape). The inferred cause is own-repo: the `execute` description and the
-`codemode.describe` usage line omit the array shape. Only `codemode.spec()` states it.
-Branch `w1012/t` has two fixes, and each needs its own measurement before merge:
-
-- A sandbox guard that throws on a map read and on a string use of a section. It changes
-  model-visible results.
-- The section shape in the `execute` description and the `codemode.describe` usage line.
-
-Two pre-spend plans, one per fix, share one four-arm MCP QA screen (`main`, text, guard, and
-text plus guard; eight collections):
-[plan-section-guard.md](rounds/2026-10-12-call-pattern-triage/plan-section-guard.md) and
-[plan-section-text.md](rounds/2026-10-12-call-pattern-triage/plan-section-text.md). The cap is
-$136 for both. The text verdict compares `main` with text. The guard verdict compares text with
-text plus guard when the text passes, and `main` with guard otherwise. Merge the text first.
-Reviews RP, RP2, and RP3 (2026-10-12) are reconciled, and RP3 returned LAUNCH-OK. The plans
-need only a spend authorization.
-
-Done when: each fix has its measurement and a merge decision, and a later authorized QA round
-recounts the three behaviors.
-
-### Triage calls to `stellarDocs.search_anchor_sep_docs` without `query`
-
-The `ai` upgrade result review (`rounds/2026-10-10-weekend/ai-upgrade/review-result-fable.md`)
-found that every anchor row in both arms called `stellarDocs.search_anchor_sep_docs` without the
-required `query`. One stablecoin row in each arm did the same with `search_asset_token_docs`. The
-host returned "invalid arguments … no call was made" and reported the call as failed evidence, so
-the envelope behaved as designed. Both arms show the pattern, so the SDK did not cause it.
-
-Decide whether the operation's schema, description, or `search` card leads the model to omit the
-argument. Check stored transcripts first (free). File an `improvements/` finding only for an
-upstream cause; an own-repo cause gets a scoped fix with a test.
-
-The [2026-10-12 call-pattern triage](rounds/2026-10-12-call-pattern-triage.md) recorded the
-cause. It is own-repo and Playground-only. The Playground clips each `search` signature to 400
-characters, and the cut hides `query: string;`. Six of 28 Playground calls omitted a required
-argument, and 0 of 1,891 MCP calls did. The cut hides a required field for 22 of 61 callable
-entries. The spec is correct, so there is no upstream finding. Branch `w1012/t` makes the clip
-marker name the required input fields. This is Playground model-facing text. The pre-spend plan
-is [plan-clip-marker.md](rounds/2026-10-12-call-pattern-triage/plan-clip-marker.md): the six-case
-Playground screen in ABBA order, capped at $22. Reviews RP to RP3 are reconciled, and RP3
-returned LAUNCH-OK. The plan needs only a spend authorization.
-
-Done when: the clip-marker change has a Playground measurement (with only that change in the
-candidate arm) and a merge decision.
+Done when: a later authorized QA round recounts section misreads, `.data` omissions, and failed
+calls with an omitted reason on the current `main`, and records them here.
 
 ## Dependencies
 
