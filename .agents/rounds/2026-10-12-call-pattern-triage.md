@@ -384,3 +384,18 @@ the clip plan and the screen plan:
 After B1, C1, C2, and B2, one row has both CANDIDATE grades worse than both BASE grades:
 `q-scf-build-award-cap` (BASE `correct`, `correct`; CANDIDATE `partial`, `partial`). It is a control
 row. The list is that one ID. Re-judge it once in B1 and once in C1, at `--max-budget-usd 1` each.
+
+### Clip marker: result
+
+Full record: [result-clip.md](2026-10-12-call-pattern-triage/result-clip.md). Spend $3.3301962 of
+the $22 cap (probe, B1, C1, C2, B2, two re-judges). All four runs are complete, with 24 of 24
+grades, judge pack `p9`.
+
+- Target M1 (omitted required input on the two target rows): BASE 3, CANDIDATE 0. Controls: 0
+  and 0. M2 matches M1. Two readers agree.
+- Arm integrity, routing, protocol controls, and tool-loop checks pass.
+- Rule 6 list: `q-scf-build-award-cap`. The re-judge reproduced the difference (B1 `correct`, C1
+  `partial`).
+- **Proposed verdict: FAIL** under the fixed rules (a confirmed verified answer regression on a
+  control). The result file gives the trace for the non-author reviewer: C1 omits the installments
+  (answer content); C2 has the same wording that B1 and B2 got `correct` for (judge variance).
