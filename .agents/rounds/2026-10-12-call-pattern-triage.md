@@ -467,3 +467,23 @@ Contention check result (01:58Z): A1 0, T1 0, G1 0 rows. The limit is 1, so **G1
 keeps its slot**. The only `execute` errors in the three collections are model errors: a `.slice`
 on a section object (A1), an undefined `hits` read (A1), a syntax error (G1), and an unknown tool
 name (G1).
+
+### Section screen: collection complete, confirmation sequence
+
+All eight collections ran in the plan order (A1, T1, G1, TG1, TG2, G2, T2, A2), seven server
+starts, port 8799. Each collection: 16 rows, `comparable: true`, no missing cost, contention
+count 0, pack `p9`. The last server stopped at 03:47:09Z.
+
+Confirmation sequence (written before any re-judge spend):
+
+1. Text consistent-change list (A against T, all 16 rows): **empty**. No row has both T grades
+   on the same side of both A grades.
+2. and 3. K1, K2, K1r, K2r: skipped (empty ID set).
+4. Live check of T `wrong` answers on the text list: none (T1 and T2 have no `wrong` grade).
+   Text verdict read: see `result-screen.md`.
+5. Guard comparison selected: **T against TG** (text verdict proposed PASS).
+6. Guard consistent-change list (T against TG): **empty**.
+7. and 8. K3, K4, K3r, K4r: skipped (empty ID set).
+9. No C `wrong` on the guard list. Guard verdict read: see `result-screen.md`.
+
+No initial-judge retry was needed (no `judge-*` row). No replacement ran.
