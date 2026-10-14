@@ -364,7 +364,9 @@ check cleared a candidate answer. None of these rows is a consistent change. Det
 
 ## Result (version 2): proposed PASS
 
-Full result: [`result-v2.md`](result-v2.md). The post-run independent review is outstanding.
+Full result: [`result-v2.md`](result-v2.md). The post-run independent review (Codex `gpt-6-astra`,
+high; the matched Claude Fable tier is skipped because Claude is the author and the orchestrator)
+returned PASS-CONFIRMED: [`review-result-v2-astra.md`](review-result-v2-astra.md).
 
 - Rule 1: all four collections are complete and comparable.
 - Rule 2: wrong counts B1 3 (plus 1 T4), C1 5, C2 3, B2 4. Correct counts B1 20, C1 19, C2 22,

@@ -1,7 +1,9 @@
 # Answer-style signals, version 2 — measurement result
 
 Status: **proposed verdict PASS** under the predeclared reading rules, with one named residual risk
-(the Strupey row, below). The post-run independent review is outstanding. The orchestrator runs it.
+(the Strupey row, below). The post-run independent review (Codex `gpt-6-astra`, high) returned
+PASS-CONFIRMED: [`review-result-v2-astra.md`](review-result-v2-astra.md). Its two wording
+corrections are applied below.
 
 Author: lane C (Claude Opus 5.5, high), 2026-10-13. Plan:
 [`measurement-plan-v2.md`](measurement-plan-v2.md) on top of
@@ -41,7 +43,6 @@ Wrong counts first (rule 2).
 | Control | 10 | 0 / 2 / 1 / 1 | 6 / 4 / 7 / 5 | 0 | 0 | 1 (SCP history), confirmed |
 
 Noise floor on the common eligible denominator of 33: B1/B2 disagree on 10 rows, C1/C2 on 7 rows.
-The two consistent changes are well inside what this variance can produce by chance on 33 rows.
 The noise floor is a bound, not a significance test.
 
 ## Consistent changes and their confirmation
@@ -148,7 +149,8 @@ contract or the stored service metadata makes that grade a judge artifact (monit
 
 Version 1 blamed the activity artifact on the missing `metricDefinitions` in the evidence pack. In
 version 2 the C2 judge saw them and used them. The B2 judge followed the stale golden note
-instead. The stale note is the remaining cause.
+instead. The B2 evidence pack also lacked the definition, so this evidence cannot isolate one
+cause. The stale note is a supported contributor.
 
 ## Live checks of every candidate `wrong`
 

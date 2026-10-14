@@ -267,64 +267,23 @@ Acceptance checks:
 Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
 
-### Move answer-style guidance from server instructions into result data
+### Stop identity substitution on spelling-corrected matches
 
-The Claude directory review (2026-10-07) found answer-style guidance in `BASE_SERVER_INSTRUCTIONS`:
-how to phrase an absence, when to abstain, and when to ask for context. The reviewer suggested
-result fields such as `inconclusive: true` or `as_of`, so the client can explain findings without
-being told how to talk. The review capture also cut off the 7,864-character `SERVER_INSTRUCTIONS`
-(the base plus the micro-map).
+The answer-style v2 measurement (merged in PR #271, 2026-10-13, PASS under rule 3) left one
+known defect. On `q-edge-strupey-ambiguous-stellar-history`, both candidate runs answered `wrong`.
+C1 called Stroopy.AI "almost certainly" the asked entity and gave its history, although the
+result carried `caveat: "unverified-match"` and no record linked the two names (H1 fails). C2 ended
+with an unscoped absence claim. The row left the consistent-change set only because the B1 judge
+ended T4, so the measurement neither confirms nor clears a regression. See
+[`result-v2.md`](rounds/2026-10-10-weekend/answer-style/result-v2.md) and the
+[independent review](rounds/2026-10-10-weekend/answer-style/review-result-v2-astra.md).
 
-Today the envelope carries `error.kind: "soft-empty"` and adapter hints. It has no general
-inconclusive flag or as-of field on ok results.
+Next: find a general mechanism (result data or adapter behavior, not a per-question rule) that
+keeps a corrected-name match from being presented as the asked entity, and measure it on the
+abstention slice under its own authorization.
 
-Draft PR #268 (branch `w1010/a`, do not merge) adds `inconclusive` and `asOf` signals, an `observedAt`
-footer, and removes four instruction rules (7,864 to 7,839 characters). Its 2026-10-11 ABBA
-measurement (34 rows, four collections, $47.92 of $84) is INDETERMINATE after the independent
-result review (`rounds/2026-10-10-weekend/answer-style/review-result-astra.md` on that PR):
-
-- Both candidate runs answered `q-edge-strupey-ambiguous-stellar-history` wrong: the answer promoted
-  a spelling-corrected Scout match despite `inconclusive: "candidates"`. Both baseline runs were
-  correct. The baseline re-judge was a T4 consistency error, so the confirmation is incomplete,
-  but the regression diagnosis stands.
-- The "activity" improvement is a judge artifact. The quantum-row improvement reproduced.
-- The word `inconclusive` names both an ok-but-empty field and the soft-empty kind. One candidate
-  answer merged them. That risks the soft-empty versus data distinction in `AGENTS.md`.
-
-Next: restore the removed tail "…otherwise say unverified or ask for context", settle the
-`inconclusive` wording against soft-empty, review the change, and measure again under a new
-authorization.
-
-Done when: ok results carry measured inconclusive and as-of signals, the instructions drop the
-phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
-measurement shows no regression in abstention or absence answers.
-
-Status (2026-10-13): the version 2 ABBA measurement ran ($46.19 of $84; lane C). Proposed
-verdict PASS by rule 3: no consistent regression in any slice; two confirmed improvements (quantum
-row, SCP-history row). Residual risk: `q-edge-strupey-ambiguous-stellar-history` is excluded only by
-a baseline T4 judge failure; C1 still substitutes Stroopy.AI (H1 fails). H2 is one merged envelope
-claim per arm. The post-run independent review is outstanding. See
-[`result-v2.md`](rounds/2026-10-10-weekend/answer-style/result-v2.md).
-
-Status (2026-10-12): version 2 on `w1012/c` (rebased onto `main` `63396840`, draft PR #268)
-restores "otherwise say unverified or ask for context". It renames the ok signal to
-`caveat: "no-rows" | "unverified-match"`, so it shares no word with `soft-empty`. Instructions:
-7,858 characters (`main` 7,864). The [v2 plan delta](rounds/2026-10-10-weekend/answer-style/measurement-plan-v2.md)
-adds a rule for a failed confirmation re-judge and waits for its pre-spend review and a new
-authorization (cap $84). The `metricDefinitions` evidence-pack gap is still open.
-
-Status (2026-10-11): implemented on `w1010/a`. The measurement is INDETERMINATE: both candidate
-runs substitute Stroopy.AI for `q-edge-strupey-ambiguous-stellar-history`, but the baseline
-confirmation re-judge is T4. The merge is blocked. Next: restore "otherwise say unverified or ask
-for context" as a hypothesis, settle the `inconclusive` versus `soft-empty` wording, carry
-`metricDefinitions` in the judge evidence pack, and re-measure under a new authorization. The
-review also counts five bad skill-section reads (`data.sections`) across B1, C1, and C2. See
-`.agents/rounds/2026-10-10-weekend/answer-style/measurement-ledger.md`.
-
-Status (2026-10-10): branch `w1010/a` implements the signals and drops four phrasing rules
-(7,864 to 7,839 characters). The [design note](rounds/2026-10-10-weekend/answer-style/design.md)
-names each change. The [measurement brief](rounds/2026-10-10-weekend/answer-style/measurement-plan.md)
-passed its independent pre-spend review and waits for the owner's budget authorization.
+Done when: a reviewed measurement shows that both candidate runs of the Strupey row say the
+identity is unverified or ask for context, with no regression in the abstention or absence slices.
 
 ## Executor and policy
 
@@ -443,7 +402,9 @@ The golden notes of `q-eco-most-active-defi-projects` say that the served `meta.
 define `sort=activity` as latest-commit recency. On 2026-10-13 the Scout leaderboard defines it as
 `github.commits90d`, with `github.lastActivityAt` as the tie-break. Judges that follow the note
 grade a correct commit-volume answer `wrong` (answer-style v1 baseline rows; v2 B2, stamp
-`2026-10-13T23-59-41`). Fix the note through the `golden-truth` workflow, with live evidence.
+`2026-10-13T23-59-41`). The B2 evidence pack also lacked the definition (the C2 pack had it), so the
+evidence cannot isolate one cause; the stale note is a supported contributor. Fix the note through
+the `golden-truth` workflow, with live evidence.
 
 Done when: the golden notes match the live `metricDefinitions`, and `npm run eval:qa:lint -- --stale`
 passes.
