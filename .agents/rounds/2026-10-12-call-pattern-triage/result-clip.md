@@ -3,9 +3,16 @@
 Plan: [`plan-clip-marker.md`](plan-clip-marker.md), with launch amendment 1 and deviation 1 in the
 [triage ledger](../2026-10-12-call-pattern-triage.md) ("Measurement results").
 Collector: lane T (Claude Opus 5.5, high). Collection date: 2026-10-14 UTC (2026-10-13 local).
-A non-author post-run review is still open. The orchestrator runs it.
+Post-run review: [`review-post-run-astra.md`](review-post-run-astra.md) (Codex `gpt-6-astra`,
+high, on `26ee296a`). Lane T2 reconciled it in this file and in the ledger.
 
-## Proposed verdict: FAIL under the fixed rules (one confirmed control regression)
+## Final verdict on `f7b1b775`: PASS (post-run review)
+
+The collector proposed FAIL. The non-author post-run review does not confirm that FAIL. The
+orchestrator accepts the review verdict. **The clip marker passes this historical screen on
+`main` `f7b1b775`.** It does not cover the later `main` `0a60d98a` (#271), which changes
+`src/demo/` evidence labels. So the clip gets one more measurement on the new `main` before merge
+([result-clip-v2.md](result-clip-v2.md)).
 
 - The marker works on its target. M1 on the two target rows fell from 3 (BASE) to 0 (CANDIDATE).
   Both target rows saw the marker `required input: query` on the target card in all four
@@ -13,17 +20,24 @@ A non-author post-run review is still open. The orchestrator runs it.
 - Routing does not regress. The protocol controls pass in both CANDIDATE runs. No tool-loop
   defect occurs.
 - One control row, `q-scf-build-award-cap`, has CANDIDATE grades `partial`, `partial` against
-  BASE grades `correct`, `correct`. The rule 6 re-judge reproduced the difference (B1 `correct`,
-  C1 `partial`). Under rule 4, a confirmed verified answer regression gives FAIL.
-- Trace for the reviewer (not a rule input): the C1 answer omits the four installments. That is
-  answer content. The C2 answer says "four installments", the same text that the judge graded
-  `correct` in B1 and B2. So the C2 grade looks like judge variance. The plan has no rule that
-  clears a row on such a trace, and rule 9 forbids per-case tuning. The non-author reviewer
-  decides whether the trace changes the verdict (ai-upgrade "verified answer regression":
-  "A reviewer other than the author traces each difference to answer content, source drift, or
-  judge variance").
-- If the reviewer traces the SCF difference to variance that the marker did not cause, every
-  PASS condition of rule 3 holds.
+  BASE grades `correct`, `correct`. The rule 6 re-judge reproduced the B1 and C1 pair (B1
+  `correct`, C1 `partial`).
+- The reviewer's independent trace (the written non-author trace rule; rule 3 imports the
+  ai-upgrade answer rules, which say "A judge verdict alone does not establish a regression"):
+
+  | Cell | Answer content | Judge reason | Independent trace |
+  | --- | --- | --- | --- |
+  | B1 | $150,000, XLM, four installments, date, source | Accepts four installments as the tranche fact | Baseline standard |
+  | B2 | $150,000, XLM, four installments, date, source | Accepts four installments as the tranche fact | Same baseline standard |
+  | C1 | $150,000, XLM, date, source; no installments | Missing the tranche fact | Real answer omission |
+  | C2 | $150,000, XLM, four installments, date, source | Requires an explicit link to milestones | Inconsistent standard against B1 and B2 |
+
+- So C1's omission is real, but it does not repeat in C2. The C2 grade difference is judge
+  variance. No content regression occurs in both CANDIDATE repetitions, so rule 4 ("a confirmed
+  verified answer regression") does not hold. Rule 6 confirms the B1 and C1 pair only; it does
+  not cancel the content trace. The review keeps every stored grade and adds no threshold, no
+  exception, and no paid re-judge.
+- Every PASS condition of rule 3 holds.
 
 ## Arms and identities
 
@@ -66,7 +80,8 @@ A non-author post-run review is still open. The orchestrator runs it.
 | 00:33:46 | `base-b` stopped |
 | 00:34:47 | Rule 6 re-judges (B1, then C1) |
 
-26 answer turns in 15 minutes. Nobody sent a manual, browser, or `--preflight` turn.
+25 answer turns in 15 minutes (the receipt probe plus 24 method turns; step files 7 + 12 + 6;
+corrected by the post-run review). Nobody sent a manual, browser, or `--preflight` turn.
 
 ## Receipt probe and completeness
 
@@ -112,8 +127,11 @@ Each has one matching `[invalid-args: query]` entry.
 
 Target-card exposure: the target-operation card appeared in all eight target row-runs. In BASE it
 was clipped with no marker. In each CANDIDATE target row-run it was clipped and its marker named
-`query`. Every CANDIDATE row-run showed at least 3 markers (M3 per row: 11, 11, 6, 4, 10, 6 in C1;
-12, 9, 6, 3, 6, 6 in C2). All six rows are exposed in CANDIDATE.
+`query`. Every CANDIDATE row-run showed at least 3 markers on hit cards. Markers per row, hit
+cards only: 11, 11, 6, 4, 10, 6 in C1; 12, 9, 6, 3, 6, 6 in C2. The advisory `widerCandidates`
+cards hold more markers: C1 SCF 1 and SEP-45 1, C2 SCF 1. With them, C1 SCF has 5 and SEP-45 11,
+and C2 SCF has 4 (post-run review correction; the label was missing). All six rows are exposed
+in CANDIDATE. The scope does not change target exposure or the M1 counts.
 
 M5, `search` result characters per row (B1, B2 / C1, C2): anchor 23,470, 23,470 / 22,162, 22,202;
 stablecoin 22,327, 23,348 / 19,742, 18,638; reserve 15,049, 15,081 / 10,446, 10,446; SCF 15,886,
@@ -132,10 +150,10 @@ in CANDIDATE.
 | 3 CANDIDATE M1 on target rows ≤ 1 | Met (0). |
 | 3 Controls M1 not higher in CANDIDATE | Met (0 and 0). |
 | 3 No routing regression | Met (table below). |
-| 3 No verified answer regression | **Not met**: `q-scf-build-award-cap`, confirmed by the rule 6 re-judge. |
+| 3 No verified answer regression | Met after the post-run review trace. The collector first read **not met** (`q-scf-build-award-cap`, B1 and C1 pair reproduced by the rule 6 re-judge). The non-author trace finds C1's omission real but not repeated; the C2 difference is judge variance. |
 | 3 Protocol controls pass routing in both CANDIDATE runs | Met (E in all six cells). |
 | 3 No tool-loop defect in a CANDIDATE row | Met. |
-| 4 FAIL conditions | One holds: a confirmed verified answer regression (SCF control). |
+| 4 FAIL conditions | None holds after the non-author trace (the collector first read one: the SCF control). |
 | 6 Confirmation re-judge | List written in the ledger before spend (commit `eb038312`). B1: `correct` → `correct`. C1: `partial` → `partial`. Reproduced. |
 | 7 Failed confirmation re-judge | Not needed. Both re-judges returned a valid grade. |
 | 8 Live check of CANDIDATE `wrong` | One cell: C2 `q-protocol-base-reserve-min-balance`. Live read of the official accounts page at 2026-10-14T00:35:56Z confirms "One base reserve is currently 0.5 XLM" and the per-subentry reserve. The `wrong` comes from must-avoid 1 (no sponsorship terms in the formula), the known `sd-046` area. Both BASE cells are also `wrong`, so it is not a regression. |
@@ -147,7 +165,7 @@ in CANDIDATE.
 | `q-anchor-list-builders-discovery` | Target | partial / T | correct / T | correct / T | correct / T | None (C not worse) |
 | `q-asset-stablecoin-issuers-discovery` | Target | wrong / T | partial / T | partial / T | partial / T | None (C not worse) |
 | `q-protocol-base-reserve-min-balance` | Control | wrong / E | wrong / E | partial / E | wrong / E | None |
-| `q-scf-build-award-cap` | Control | correct / E | correct / E | partial / E | partial / E | **Consistent: C worse, confirmed** |
+| `q-scf-build-award-cap` | Control | correct / E | correct / E | partial / E | partial / E | Consistent by grade; B1/C1 pair reproduced; traced: C1 omission, C2 judge variance (no repeated content regression) |
 | `q-sep-45-contract-auth` | Control | partial / E | partial / T | partial / E | partial / E | None |
 | `q-soroban-storage-types` | Control | partial / E | partial / E | partial / E | partial / E | None |
 
@@ -165,9 +183,10 @@ SCF trace (answer texts read in full):
 - C2 `partial`: "typically in four installments", dated, sourced. The judge says "installments"
   does not name milestone triggers. B1 and B2 have the same wording and got `correct`. This looks
   like judge variance. C2 was not re-judged: the plan re-judges B1 and C1 only.
-- The SCF row saw lumenloop and scout markers in CANDIDATE (3 to 4 per run). Its routing and
-  calls did not change (E, lumenloop and scout in all four runs). No reader found a path from the
-  marker to the omitted fact.
+- The SCF row saw lumenloop and scout markers in CANDIDATE (3 to 4 per run on hit cards; 4 to 5
+  with `widerCandidates`). Its routing class did not change (E in all four runs). B1, C1, and C2
+  called `lumenloop` and `scout`; B2 called `scout` only (post-run review correction). No reader
+  found a path from the marker to the omitted fact.
 
 ## Spend
 

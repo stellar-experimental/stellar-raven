@@ -399,6 +399,7 @@ grades, judge pack `p9`.
 - **Proposed verdict: FAIL** under the fixed rules (a confirmed verified answer regression on a
   control). The result file gives the trace for the non-author reviewer: C1 omits the installments
   (answer content); C2 has the same wording that B1 and B2 got `correct` for (judge variance).
+- **Final verdict on `f7b1b775`: PASS** (post-run review; see "Post-run review reconciliation").
 
 ### Section screen: pins (before A1)
 
@@ -448,6 +449,11 @@ A1 and T1 script classifications and the G1 grades; no later data existed.)
 Reason (orchestrator): idle foreign `wrangler dev` servers on other ports do not share the Raven
 server, the port, or DocSearch. Contention is what matters, so the lane measures it directly. The
 machine has 16 cores; the 1-minute load at 01:58Z was 7.5.
+
+(Post-run review correction: `result-screen.md` records 19.11 at 01:58Z, from the lane's own read.
+The 7.5 is the orchestrator's read. No receipt exists for either value, so the record cannot
+reconcile them. Neither was a gate input. TG1's retained pre-start receipt reads 10.36 at
+01:59:55Z.)
 
 New conditions. They replace conditions 1 and 2 of deviation 1 for the rest of the screen:
 
@@ -504,3 +510,40 @@ of the $136 cap (eight collections; no re-judge, retry, or replacement).
 - Two readers (Claude Opus 5.5 and Claude Sonnet subagents) agree on all 139 classified scripts.
 
 Total round spend: $3.3301962 (clip) + $51.4396056 (screen) = $54.7698018.
+
+## Post-run review reconciliation
+
+Review: [review-post-run-astra.md](2026-10-12-call-pattern-triage/review-post-run-astra.md)
+(Codex `gpt-6-astra`, high, on `26ee296a`; made no paid call). The orchestrator (pane `w3W:p1P`)
+accepts all three verdicts. Lane T2 (Claude Opus 5.5, high) reconciled it on 2026-10-14.
+
+| Change | Review verdict | Final verdict on `f7b1b775` | Merge status |
+| --- | --- | --- | --- |
+| Playground clip marker | CLIP: PASS | **PASS** | Needs one measurement on the new `main` first: #271 changed `src/demo/` evidence labels (orchestrator). |
+| Section-shape text | TEXT: PASS-CONFIRMED-NEEDS-REMEASURE | **PASS (needs re-measure)** | Needs one measurement on the new `main` first. |
+| Section guard | GUARD: INDETERMINATE-CONFIRMED | **INDETERMINATE** | Does not merge. |
+
+- **Clip.** The proposed FAIL is not confirmed. The reviewer read all four SCF answers, their
+  evidence, and both re-judge reasons. C1's omission of the installments is real answer content.
+  C2 has the same "four installments" content as B1 and B2; its judge applied a different
+  standard (an explicit milestone link). That difference is judge variance under the written
+  non-author trace rule (ai-upgrade plan: "A judge verdict alone does not establish a
+  regression"). No content regression repeats in both CANDIDATE runs, so clip rule 4 does not
+  hold. All stored grades stay. No threshold or exception is added. `result-clip.md` now carries
+  the trace and the final verdict.
+- **Text.** The PASS follows the fixed rules on `f7b1b775` (A) and `52415bb0` (T). During the
+  screen, the orchestrator merged #271 (`0a60d98a`), which changes the `execute` description, the
+  server instructions, the success envelopes, and the source footers. A clean cherry-pick proves
+  source compatibility only. So the text needs a measurement on the new `main` before merge.
+- **Guard.** INDETERMINATE (E = 0 in TG1 and TG2). It does not merge. Do not merge it with the
+  text.
+- **Report corrections**, made in the result files:
+  - `result-clip.md`: 25 answer turns, not 26 (7 + 12 + 6 in the step files).
+  - `result-clip.md`: the SCF row in B2 called `scout` only; its routing class stays E.
+  - `result-clip.md`: the marker counts per row are for hit cards only. The `widerCandidates`
+    cards add C1 SCF 1, C1 SEP-45 1, and C2 SCF 1 (C1 SCF 5, SEP-45 11; C2 SCF 4 in all).
+  - This ledger and `result-screen.md`: the 01:58Z load values (7.5 against 19.11) are noted
+    above. No receipt exists for either.
+- The review also confirmed the counter reruns, the screen counts, all identities, and the spend
+  ($54.7698018). The evidence limits it names stay open: the clip generation is operator-asserted,
+  and the removed worktrees prevent a repeat of the clean-tree and `.dev.vars` checks.

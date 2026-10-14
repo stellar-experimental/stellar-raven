@@ -5,7 +5,15 @@ Plans: [`plan-section-guard.md`](plan-section-guard.md) (shared screen and guard
 amendment 1, deviation 1, and orchestrator amendment 2, all in the
 [triage ledger](../2026-10-12-call-pattern-triage.md) ("Measurement results").
 Collector: lane T (Claude Opus 5.5, high). Collection: 2026-10-14 00:47Z to 03:47Z.
-A non-author post-run review is still open. The orchestrator runs it.
+Post-run review: [`review-post-run-astra.md`](review-post-run-astra.md) (Codex `gpt-6-astra`,
+high, on `26ee296a`). The orchestrator accepts its verdicts. Lane T2 reconciled it here.
+
+## Final verdicts on `f7b1b775` (post-run review)
+
+| Change | Final verdict | Merge status |
+| --- | --- | --- |
+| Section-shape text | **PASS on `f7b1b775`, needs re-measure** (review: PASS-CONFIRMED-NEEDS-REMEASURE) | Does not merge on this evidence. `main` moved to `0a60d98a` (#271, answer-style v2) during the screen. #271 changes the `execute` description, the server instructions, the success envelopes, and the source footers. The measured arms do not contain it. The text gets one measurement on the new `main` ([result-text-v2.md](result-text-v2.md)). This result stays as historical evidence. |
+| Section guard | **INDETERMINATE** (review: INDETERMINATE-CONFIRMED) | Does not merge. Do not merge the guard with the text. |
 
 ## Proposed verdicts
 
@@ -49,13 +57,18 @@ A non-author post-run review is still open. The orchestrator runs it.
 | 1 | A1 | A-1 | 00:47 count 5 (deviation 1) | — | 00:47:52–01:10:35 |
 | 2 | T1 | T-1 | 01:11:34 count 5 | — | 01:12:15–01:34:00 |
 | 3 | G1 | G-1 | 01:34:21 count 5 | — | 01:34:28–01:56:15 |
-| — | (stop) | — | 01:57:06 count 36: stop; orchestrator amendment 2 | 19.11 at 01:58 | — |
+| — | (stop) | — | 01:57:06 count 36: stop; orchestrator amendment 2 | 19.11 at 01:58 (lane read; no receipt kept; see note) | — |
 | 4 | TG1 | TG-1 | 01:59:55 raven 0, no listener, total 37 | 10.36 | 02:00:01–02:19:56 |
 | 5 | TG2 | (same) | — | — | 02:19:56–02:40:40 |
 | 6 | G2 | G-2 | 02:40:55 raven 0, total 25 | 7.11 | 02:41:02–03:01:29 |
 | 7 | T2 | T-2 | 03:01:55 raven 0, total 21 | 6.91 | 03:01:59–03:23:46 |
 | 8 | A2 | A-2 | 03:23:58 raven 0, total 21 | 5.96 | 03:24:02–03:47:01 |
 
+- Load note (post-run review correction): the ledger's amendment 2 reason gives 7.5 at 01:58Z.
+  That value is the orchestrator's own read. The 19.11 above is the lane's read. The record keeps
+  no receipt for either value, so the record cannot reconcile them. Neither value was a gate
+  input. The first start under the load gate (TG1) has the retained receipt: 10.36 at 01:59:55Z
+  (`start-TG-1.txt`).
 - Contention check (amendment 2, condition 3): 0 rows in every collection (limit 1). Every
   `execute` error in the screen is a model error (listed under "Q").
 - One refused command, no spend: the first T1 command (01:11:44Z) ran in a shell whose `PATH`
