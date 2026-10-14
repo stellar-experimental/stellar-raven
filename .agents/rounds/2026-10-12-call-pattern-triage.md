@@ -487,3 +487,20 @@ Confirmation sequence (written before any re-judge spend):
 9. No C `wrong` on the guard list. Guard verdict read: see `result-screen.md`.
 
 No initial-judge retry was needed (no `judge-*` row). No replacement ran.
+
+### Section screen: result
+
+Full record: [result-screen.md](2026-10-12-call-pattern-triage/result-screen.md). Spend $51.4396056
+of the $136 cap (eight collections; no re-judge, retry, or replacement).
+
+- **Text (A against T): proposed PASS.** Misreads 4 in 40 section-read scripts (A) against 0 in 31
+  (T). No new script-error class. No consistent grade change on the 16 rows. M in A is exactly the
+  floor of 4.
+- **Guard (T against TG, selected by the text PASS): proposed INDETERMINATE.** E = 0 in TG1 and
+  TG2: TG made no misread for the guard to act on. F = 0 and no consistent grade change.
+- Diagnostic A against G: the guard fired once, the model recovered, and 4 co-results were lost.
+  One unconfirmed consistent drop (`q-defi-build-staking-for-own-token`) on a row where the guard
+  did not fire.
+- Two readers (Claude Opus 5.5 and Claude Sonnet subagents) agree on all 139 classified scripts.
+
+Total round spend: $3.3301962 (clip) + $51.4396056 (screen) = $54.7698018.
