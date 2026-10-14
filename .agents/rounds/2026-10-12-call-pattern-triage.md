@@ -288,3 +288,93 @@ The three reviews are in this folder: `review-rp-astra.md`, `review-rp2-astra.md
 `review-rp3-astra.md`. The pre-spend review gate is closed. LAUNCH-OK does not authorize spend:
 the paid runs still need a spend authorization ($22 Playground, $136 section screen) and a free
 paired-collection window.
+
+## Measurement results
+
+Collector: lane T (Claude Opus 5.5, high), 2026-10-13. Orchestrator: pane `w3W:p1P`.
+
+### Spend authorization
+
+The owner approved the spend on 2026-10-13 in chat: "approved for your next collection of work,
+don't do stuff you don't need to, but do what's truely valuable and needful". The orchestrator
+relayed it. It authorizes, once each, at their own caps:
+
+- the Playground clip-marker A/B (`plan-clip-marker.md`), total cap $22;
+- the four-arm section screen (A, T, G, TG) (`plan-section-guard.md`), total cap $136.
+
+It does not authorize the $74 section-text-alone plan. `plan-section-text.md` supplies only its
+reading rules. No continuation, no re-run, and no raised cap.
+
+### Launch amendment 1: new `main`
+
+`main` moved from `6891dca2` to `f7b1b77506acda9b674fb67610fbfd8b8e029e13` before launch. The
+commits between them: #277 (catalog refresh guard), #278 (one corpus `truth.verified` change and
+the consistency register), #279 (`agents` 0.28.1 and the MCP SDK packages), and #272 (judge pack
+`p9`). The lane read `main` just before it built the arms. Draft PR #271 is not merged and is not
+used.
+
+All arms were rebuilt on `f7b1b775` with the same cherry-picks. Each cherry-pick applied without a
+conflict.
+
+| Arm | Commit | Tree |
+| --- | --- | --- |
+| BASE and A (`main`) | `f7b1b77506acda9b674fb67610fbfd8b8e029e13` | `227ee549a1d91aa09b03eb9946df09b0047be740` |
+| CANDIDATE (clip marker) | `fb84c1996108cd80a9d737d9f866dbaf7222a8ce` | `ee10375356c64084bc328f7eedc2116f63aaadf0` |
+| T (text) | `52415bb074d6347b12815232812b3f06b8e7dba8` | `0c8f0cca8e911b12af5ab20beea93f155924938f` |
+| G (guard) | `7c2b203083376b6cc42dba9e21388f86a8fe400a` | `886b8ef6b3734e5cbe19f557d6e6d95f2dbefa1e` |
+| TG (text and guard) | `e972a6f114009395e563440068e0aa5fa2aaf7a8` | `7117040bd2be9ffc2d8ec0d2d4a0371321145f41` |
+
+Diff check (no new review needed):
+
+- For each arm, `git diff <new main tree> <new arm tree>` is byte-identical to
+  `git diff ab4c63e3 <reviewed arm tree>`, blob index lines included. So each arm diff shows the
+  same changed lines as its commits.
+- File lists: CANDIDATE `src/demo/tools.ts`, `test/smoke/demo-tools.test.ts`. T: the six reviewed
+  files. G: the three reviewed files. TG: the seven files. `git diff T TG` shows the same lines as
+  `git diff A G`.
+- The new `main` changes no file in `src/demo/`, `src/executor/`, `src/mcp/`, or `specs/`. It changes
+  `src/policy/scout-exposure.ts` (#277) on all arms alike.
+- Frozen case bytes: the 22 frozen IDs (6 clip, 16 screen) have the same `eval/qa/cases.json` entry
+  bytes and the same `lifecycle-registry.json` hash at `6891dca2` and at `f7b1b775`. All 22 are
+  `active`. The #278 change touches only `q-tool-smart-wallet-repos-discovery`, which no plan uses.
+- SDK receipt: every arm prints `7.0.137 4.0.91` (`ai`, `@ai-sdk/openai`).
+- Judge pack: `main` now defaults to pack `p9` (#272). All eight screen collections use it, as the
+  screen plan says. The clip judge also uses the `main` default; the pack is recorded from the first
+  judged row. The stored grades are not comparable with these grades.
+- Cost basis: a `p9` judge call costs about the same as a `p6` call (about $0.09). The caps stay
+  $22 and $136.
+
+### Clip marker: pins and checkpoints
+
+| Pin | Value |
+| --- | --- |
+| BASE worktree | `/Users/kalepail/Desktop/raven-w1013-base` at `f7b1b775`, clean |
+| CANDIDATE worktree | `/Users/kalepail/Desktop/raven-w1013-cand` at `fb84c199`, clean |
+| `BASE_GENERATION` | `3f90c8cf41ba3b9b53e620f006277ee1960db5f6c3d3a930e61d6812750cded7` |
+| `CANDIDATE_GENERATION` | `c83bb07086209ef2b78e010d6f184224501d101078958ae35c55e3839e545f3b` |
+| SDK receipt | `7.0.137 4.0.91` in both arms |
+| Smoke | Both arms pass `npm run test:smoke` |
+| Dry runs | Both select the six frozen IDs in corpus order |
+| Judge executable | Claude Code `2.1.296`, `JUDGE_SHA256` `c9b5341637becbd423ddffc5b254afb645682a3868cb708bbc6cc0e7bb419937` |
+| `AGENT_ENVIRONMENT_SHA256` | `2a41a9e687b744638ab6c7dd6f65e835a05d9345ef3fcb1d317af01133726bec` (14 variable names) |
+| Counter | `count-patterns.mjs` from `8c6f4f3c`, SHA-256 `2a99d5146cf48b3438d774f583027764ca225c43cb0c64378c16fcddca88c36f`; self-check 23 of 23 |
+| Gateway | `stellar-raven-demo` spend rule read privately: a sliding 24-hour cost limit. The CLI gives no current-spend read; the dashboard was not read. The answer side of this plan costs about $2 at the Gateway; the judge does not use the Gateway. |
+| Paired window | `/private/tmp/stellar-raven-paired-launch` absent at 2026-10-14T00:15:09Z |
+
+### Deviation 1: server-slot checkpoint (both plans)
+
+At 2026-10-14T00:15:09Z, `pgrep -f 'wrangler|workerd' | wc -l` printed `5`, not `0`. All five
+processes are one `wrangler dev` server of a different project (`buzzchain/worker`, port 8787),
+started by another session about three hours earlier. No Raven server ran. The lane did not touch
+it and asked the orchestrator.
+
+Decision (orchestrator, pane `w3W:p1P`, 2026-10-13): continue. The slot rule means "no other Raven
+server, and no port or CPU contention from a server that starts during the run". Conditions, for
+the clip plan and the screen plan:
+
+1. Before each server start, while the lane's own server is stopped, record the count. It must be
+   `5` (the baseline) or `0` (the foreign server stopped). Any other value stops the method before
+   the next paid call. Never use `pgrep -fl` or `ps` with arguments.
+2. Every server start in both plans uses port `8799`. Before each start,
+   `lsof -nP -iTCP:8799 -sTCP:LISTEN` must show no listener.
+3. All other checkpoints stay as written.
