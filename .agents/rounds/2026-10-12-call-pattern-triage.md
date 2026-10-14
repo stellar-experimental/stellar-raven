@@ -664,3 +664,14 @@ Diff check (no new review needed):
 After B1, C1, C2, and B2 (04:27Z to 04:40Z), no row has both CANDIDATE grades worse than both
 BASE grades. The list is **empty**. No rule 6 re-judge, no rule 7 retry, and no initial-judge
 retry runs (24 of 24 grades are valid).
+
+### Clip v2: result
+
+Full record: [result-clip-v2.md](2026-10-12-call-pattern-triage/result-clip-v2.md). Spend $3.3652473
+of the $22 cap (probe, B1, C1, C2, B2; no re-judge). Four complete runs, 24 of 24 grades, pack
+`p9`, rubric `v2.11`.
+
+- Target M1: BASE 3, CANDIDATE 0. Controls: 0 and 0. M2 equals M1. Two readers agree.
+- Arm integrity, routing, protocol controls, and tool-loop checks pass. Rule 6 list empty.
+- Live checks of the two CANDIDATE `wrong` cells find no factual error (must-avoid grades).
+- **Proposed verdict on `0a60d98a`: PASS.**
