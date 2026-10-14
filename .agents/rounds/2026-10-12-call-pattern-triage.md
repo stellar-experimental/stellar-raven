@@ -378,3 +378,9 @@ the clip plan and the screen plan:
 2. Every server start in both plans uses port `8799`. Before each start,
    `lsof -nP -iTCP:8799 -sTCP:LISTEN` must show no listener.
 3. All other checkpoints stay as written.
+
+### Clip marker: rule 6 confirmation list (written before the re-judge spend)
+
+After B1, C1, C2, and B2, one row has both CANDIDATE grades worse than both BASE grades:
+`q-scf-build-award-cap` (BASE `correct`, `correct`; CANDIDATE `partial`, `partial`). It is a control
+row. The list is that one ID. Re-judge it once in B1 and once in C1, at `--max-budget-usd 1` each.
