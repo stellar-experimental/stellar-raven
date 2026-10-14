@@ -334,3 +334,63 @@ definition. Both rest on golden content (the QPP dormant-account passage; the di
 causation). Both rows count.
 
 Re-judge selection: these two IDs, once in B1 and once in C1, with `--max-budget-usd 4` each.
+
+## Directed re-judge (version 2)
+
+Each command ran `--dry-run` first: both selected the two listed IDs, with tuple `v2.11`/`p6` on
+both sides and `wouldRefuse: false`.
+
+| Run | Re-judge stamp | Cap | Cost USD |
+|---|---|---|---|
+| B1 | `2026-10-14T00-02-00-rejudge` | 4 | 0.1569248 |
+| C1 | `2026-10-14T00-03-00-rejudge` | 4 | 0.1313728 |
+
+| ID | B1 stored → re-judge | C1 stored → re-judge | Outcome |
+|---|---|---|---|
+| `q-pc-quantum-preparedness-dormant` | wrong → partial | correct → correct | Improvement confirmed |
+| `q-hist-scp-rewrite-2015` | partial → partial | correct → correct | Improvement confirmed |
+
+No re-judge ended T4 or T5. Reading rule 7 did not fire. No retry ran.
+
+## Live checks (version 2)
+
+Every candidate `wrong` was checked against public sources on 2026-10-13 (no DocSearch call):
+Strupey (C1, C2; Scout resolve `found: false`, search `matchMode: "corrected"`), XLM price advice
+(C1; no tool call, no service claim), stablecoins (C1, C2; Scout `assetType: "Yield Stablecoin"`
+for USDY and YLDS), DeFindex (C1, C2; DefiLlama TVL about $19.41M, the value is right, the
+lineup framing is the defect), and sequence numbers (C1; CAP-0021 `minSeqNum` allows a gap). No
+check cleared a candidate answer. None of these rows is a consistent change. Details are in
+[`result-v2.md`](result-v2.md).
+
+## Result (version 2): proposed PASS
+
+Full result: [`result-v2.md`](result-v2.md). The post-run independent review is outstanding.
+
+- Rule 1: all four collections are complete and comparable.
+- Rule 2: wrong counts B1 3 (plus 1 T4), C1 5, C2 3, B2 4. Correct counts B1 20, C1 19, C2 22,
+  B2 22.
+- Rule 3: zero consistent regressions in every slice. The rule gives PASS.
+- Two confirmed consistent improvements: quantum (volatile) and SCP history (control).
+- Residual risk: the Strupey abstention row is excluded only by the B1 T4. C1 wrong, C2 wrong,
+  B2 correct. H1 fails (C1 substitutes Stroopy.AI). The plan has no rule for this case, and this
+  result does not add one after the data.
+- H2: one merged ok-empty and `soft-empty` claim per arm (B1 open-world row; C1 contracts row).
+  The version 1 recount is also one per arm (B2; C2).
+- Judge-contract check: the B2 activity `wrong` is a judge artifact. The stale golden note defines
+  `sort=activity` as latest-commit recency; the stored `metricDefinitions` define it as
+  `github.commits90d`.
+
+## Spend (version 2)
+
+Collections $45.9066892 (B1 11.5839644, C1 11.1521432, C2 11.5902212, B2 11.5803604). Re-judges
+$0.2882976. Rule 7 retries: none. Total **$46.1949868** of the $84 cap. Every budgeted call
+reported a cost.
+
+## Records (version 2)
+
+Result JSON, plan regrades, re-judge files, surface reports, run logs, live-check captures, and
+the frozen register stay local under
+`/Users/kalepail/Desktop/raven-w1012-c/eval/qa/results/2026-10-13-answer-style-v2/` (gitignored).
+The runner and server worktrees (`raven-c-runner`, `raven-c-srvB`, `raven-c-srvC`) were removed
+after the copy. Every server started by this lane was stopped, and each pane it split
+(`w3W:p4W`, `w3W:p4Y`, `w3W:p4Z`) was closed.

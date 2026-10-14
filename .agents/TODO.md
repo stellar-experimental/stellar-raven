@@ -299,6 +299,13 @@ Done when: ok results carry measured inconclusive and as-of signals, the instruc
 phrasing rules those signals replace, the full instructions are shorter, and a reviewed QA
 measurement shows no regression in abstention or absence answers.
 
+Status (2026-10-13): the version 2 ABBA measurement ran ($46.19 of $84; lane C). Proposed
+verdict PASS by rule 3: no consistent regression in any slice; two confirmed improvements (quantum
+row, SCP-history row). Residual risk: `q-edge-strupey-ambiguous-stellar-history` is excluded only by
+a baseline T4 judge failure; C1 still substitutes Stroopy.AI (H1 fails). H2 is one merged envelope
+claim per arm. The post-run independent review is outstanding. See
+[`result-v2.md`](rounds/2026-10-10-weekend/answer-style/result-v2.md).
+
 Status (2026-10-12): version 2 on `w1012/c` (rebased onto `main` `63396840`, draft PR #268)
 restores "otherwise say unverified or ask for context". It renames the ok signal to
 `caveat: "no-rows" | "unverified-match"`, so it shares no word with `soft-empty`. Instructions:
@@ -429,6 +436,17 @@ behavior. QA transcript entries now record `assistantTurn` and `assistantTurnBas
 Calls with one message ID share an ordinal across assistant events. Entries without a message ID use
 event counts, so their message boundaries stay unknown. A shared ordinal does not prove overlapping
 host execution.
+
+### Refresh the activity-row golden note against the live `metricDefinitions`
+
+The golden notes of `q-eco-most-active-defi-projects` say that the served `meta.metricDefinitions`
+define `sort=activity` as latest-commit recency. On 2026-10-13 the Scout leaderboard defines it as
+`github.commits90d`, with `github.lastActivityAt` as the tie-break. Judges that follow the note
+grade a correct commit-volume answer `wrong` (answer-style v1 baseline rows; v2 B2, stamp
+`2026-10-13T23-59-41`). Fix the note through the `golden-truth` workflow, with live evidence.
+
+Done when: the golden notes match the live `metricDefinitions`, and `npm run eval:qa:lint -- --stale`
+passes.
 
 ### Repair claim-support selection in the p6 judge pack
 
