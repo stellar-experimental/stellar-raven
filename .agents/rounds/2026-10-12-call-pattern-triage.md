@@ -438,3 +438,32 @@ then used `zsh -f`, which keeps the pinned environment, and T1 ran on the same s
 server-slot count was 36, not 5 or 0. The new processes are `wrangler dev` servers of six other
 `buzzchain` worktrees (another project, other sessions), started from about 01:46Z to 01:57Z,
 during G1. The lane did not start TG1. No paid call ran after G1.
+
+### Orchestrator amendment 2 (2026-10-14, before TG1)
+
+Decision (orchestrator, pane `w3W:p1P`): continue the screen. The amendment was made after A1, T1,
+and G1, before TG1, and before any data from a later collection existed. (The lane had read the
+A1 and T1 script classifications and the G1 grades; no later data existed.)
+
+Reason (orchestrator): idle foreign `wrangler dev` servers on other ports do not share the Raven
+server, the port, or DocSearch. Contention is what matters, so the lane measures it directly. The
+machine has 16 cores; the 1-minute load at 01:58Z was 7.5.
+
+New conditions. They replace conditions 1 and 2 of deviation 1 for the rest of the screen:
+
+1. Before each start, with the lane's own server stopped: `pgrep -f 'raven-w1013' | wc -l` prints
+   `0`, and `lsof -nP -iTCP:8799 -sTCP:LISTEN` shows no listener. Port 8799 stays. The total
+   `wrangler|workerd` count is recorded for information only.
+2. Before each start, record `uptime`. The 1-minute load average must be 12 or lower. If it is
+   higher, wait up to 30 minutes for it to drop. If it stays higher, stop and report.
+3. Contention check on G1 and on each later collection, before the next start: count rows with
+   an `execute` or sandbox timeout, or a host or server error (not an upstream service error),
+   from the artifact. A collection with a count above max(A1, T1) + 1 is non-comparable: stop and
+   report.
+
+All other rules, caps, and stop rules stay as written.
+
+Contention check result (01:58Z): A1 0, T1 0, G1 0 rows. The limit is 1, so **G1
+keeps its slot**. The only `execute` errors in the three collections are model errors: a `.slice`
+on a section object (A1), an undefined `hits` read (A1), a syntax error (G1), and an unknown tool
+name (G1).
