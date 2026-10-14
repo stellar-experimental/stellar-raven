@@ -675,3 +675,19 @@ of the $22 cap (probe, B1, C1, C2, B2; no re-judge). Four complete runs, 24 of 2
 - Arm integrity, routing, protocol controls, and tool-loop checks pass. Rule 6 list empty.
 - Live checks of the two CANDIDATE `wrong` cells find no factual error (must-avoid grades).
 - **Proposed verdict on `0a60d98a`: PASS.**
+
+### Text v2: collections complete, confirmation list (written before any re-judge spend)
+
+A1, T1, T2, and A2 ran in the ABBA order (04:42Z to 06:16Z), three server starts (A-1; T-1 for T1
+and T2; A-2), port 8799. Each: 16 rows, `comparable: true`, aggregates not suppressed, no missing
+cost, pack `p9`, rubric `v2.11`, contention count 0 (limit 1). No `judge-*` or `agent-*` row, so no
+initial-judge retry.
+
+Confirmation sequence, steps 1 to 4 (text plan rule 8):
+
+1. Text consistent-change list (A against T, all 16 rows): **`q-defi-build-staking-for-own-token`**
+   (A1 1, A2 1; T1 2, T2 2), a consistent **improvement**. No consistent regression.
+2. K1: re-judge `q-defi-build-staking-for-own-token` in A1, `--max-budget-usd 3`. K2: the same ID in
+   T1, `--max-budget-usd 3`. Both cells are graded (no `agent-limit`).
+3. K1r and K2r only if K1 or K2 ends T4 or T5.
+4. Live check of every graded T `wrong`: T1 `q-pc-surge-griefing-threat-model` (not on the list).
