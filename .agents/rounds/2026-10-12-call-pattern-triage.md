@@ -399,3 +399,21 @@ grades, judge pack `p9`.
 - **Proposed verdict: FAIL** under the fixed rules (a confirmed verified answer regression on a
   control). The result file gives the trace for the non-author reviewer: C1 omits the installments
   (answer content); C2 has the same wording that B1 and B2 got `correct` for (judge variance).
+
+### Section screen: pins (before A1)
+
+| Pin | Value |
+| --- | --- |
+| Arms | A `f7b1b775` (tree `227ee549`), T `52415bb0` (`0c8f0cca`), G `7c2b2030` (`886b8ef6`), TG `e972a6f1` (`7117040b`); worktrees `raven-w1013-{a,t,g,tg}` |
+| Runner | `raven-w1013-runner` at `f7b1b775`, clean |
+| Freeze | All five worktrees clean, no untracked file. Each server arm passes `npm run typecheck`, `npm test`, and `npm run test:smoke`. A first parallel `npm test` on T, G, and TG timed out (5-second test timeouts under load); a sequential rerun passed (143 files each). |
+| Surface size (`npm run mcp:surface`) | `execute` description: A 9,841, T 10,046, G 9,841, TG 10,046 characters |
+| Counter | SHA-256 `2a99d5146cf48b3438d774f583027764ca225c43cb0c64378c16fcddca88c36f`; self-check 23 of 23 |
+| `AGENT_BINARY_SHA256` | `c9b5341637becbd423ddffc5b254afb645682a3868cb708bbc6cc0e7bb419937` (Claude Code `2.1.296`, linked from `/private/tmp/raven-section-screen/bin`) |
+| `AGENT_ENVIRONMENT_SHA256` | `190d0b47f86ab39d51716fe67dab7e50a97a92381f230ce156d3f3531b892368` |
+| Remote identity probe | SHA-256 `eb06cd89bc6232d6747b7d44973f2deec272b48ba343b9d19a9800b74a18c226`; `--stable-sha256` vector `414667aa38583bc99d775e02c7efe3e5a8a731f33e756668141052e05fe1205e` (00:36:53Z to 00:47:00Z) |
+| Judge-stability register | `/private/tmp/raven-section-screen/judge-stability.json`, SHA-256 `aebd5b94346141599ada2e85ab0f4a40beff5937ed52d2e2728ab67e7aa7c54c` (538 cases, 199 artifacts from the main checkout's `eval/qa/results/`) |
+| `.dev.vars` identity | One salt across A, T, G, TG; the four lines match (10 names); hash `67f487c7066fa995b5b7c4aa4948873296322a45f675e5144d7c084f181504fc` |
+| Paired window | `/private/tmp/stellar-raven-paired-launch` absent |
+| Server slot | Deviation 1 applies (count 5 or 0; port 8799) |
+| Cost basis | Judge pack `p9`. A `p9` judge call costs about $0.09, as `p6` did (P1 judge median $0.0887; clip `p9` judge calls $0.0563 to $0.1153). The caps do not change: $12 per collection, $136 in all. |
