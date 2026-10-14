@@ -649,7 +649,7 @@ describe("WorkOSAuthHandler", () => {
     for (const family of ["Lumenloop", "Scout", "Stellar Docs", "Skills"]) {
       expect(page).toContain(family);
     }
-    expect(page).toContain("{ ok: true, data }");
+    expect(page).toContain("{ ok: true, data, asOf, asOfBasis, caveat? }");
     expect(page).toContain("{ ok: false, error }");
     expect(page).toContain("soft-empty");
     expect(page).toContain("/health/skills");

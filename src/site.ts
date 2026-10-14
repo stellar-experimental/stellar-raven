@@ -1331,7 +1331,7 @@ function docTrace(): string {
   <span class="k">return</span> { note: <span class="s">"no matches"</span> };
 <span class="k">const</span> top = found.<span class="s">data</span>.projects[<span class="k">0</span>];       <span class="c">// payloads live under .data</span>
 <span class="k">return await</span> <span class="p">${secondService}.</span><span class="p">${secondOp}</span>({ q: <span class="s">\`\${top.name} liquidity\`</span> });  <span class="c">// composition</span></pre>
-  <div class="trace-note">Every service call resolves to <b>{ ok: true, data }</b> or
+  <div class="trace-note">Every service call resolves to <b>{ ok: true, data, asOf }</b> or
     <b>{ ok: false, error }</b>. It never throws across the tool boundary.</div>
 </div>`;
 }
@@ -1402,11 +1402,11 @@ until official docs confirm them.</p>
 
 <h2>Troubleshooting</h2>
 <ul>
-  <li><b>Read the envelope first.</b> Every service call resolves to <code>{ ok: true, data }</code>
-    or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
+  <li><b>Read the envelope first.</b> Every service call resolves to
+    <code>{ ok: true, data, asOf, asOfBasis, caveat? }</code> or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
     <code>r.data.projects</code>, never <code>r.projects</code>. <code>codemode.skill.run</code>,
-    <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use that same
-    envelope. The discovery helpers answer at the top level instead: <code>codemode.search</code>
+    <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use the same
+    envelope without the <code>asOf</code> and <code>caveat</code> signals. The discovery helpers answer at the top level instead: <code>codemode.search</code>
     gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
     <code>r.signature</code> and <code>r.inputSchema</code>. <code>codemode.skill.read(id)</code>
     gives <code>r.data.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
@@ -1414,7 +1414,13 @@ until official docs confirm them.</p>
   <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
     <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
     service answered with nothing — that is inconclusive, not proof something does not exist.
-    Widen the search across families before concluding a negative.</li>
+    An ok result can also carry a <code>caveat</code>: <code>"no-rows"</code> when it has no
+    rows, or <code>"unverified-match"</code> when its rows are only similarity, research, or
+    spelling-corrected matches. A <code>"no-rows"</code> result is still ok data, not a
+    <code>"soft-empty"</code> error.
+    Widen the search across families before concluding a negative. Each ok result also carries
+    <code>asOf</code>: the upstream data date when the service states one, else the time Raven
+    observed the response.</li>
   <li><b>Big results get truncated.</b> Output is capped near the model's context budget. When a
     truncated response reports an available artifact, read the full payload back inside execute
     with <code>codemode.artifact.read(id)</code>, then return only the fields you need. Artifacts

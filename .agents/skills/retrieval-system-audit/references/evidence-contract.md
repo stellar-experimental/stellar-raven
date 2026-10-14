@@ -12,7 +12,7 @@ Use these fields in the durable audit ledger. Add fields only when the experimen
 | Input | Required fields, enums, and unsafe values |
 | Output | Top-level and nested model-visible fields |
 | Runtime shape | Observed compact key projection and digest |
-| Responses | Data, soft-empty, error, and upstream-ok traps |
+| Responses | Data, soft-empty, error, upstream-ok traps, and the ok `asOf` and `caveat` signals |
 | Retrieval | Description, keywords, profile, and recovery edges |
 | Safety | Read-only, paid, side-effecting, or excluded |
 | Coverage | Routing, holdout, QA, live, plan, discovery, and agentic cases |

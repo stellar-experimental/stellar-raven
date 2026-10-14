@@ -43,6 +43,66 @@ function calls(count: number): SourceBasisCall[] {
 }
 
 describe("source-basis manifest", () => {
+  it("marks ok calls with a caveat in a compact footer for a clean ok-only run", () => {
+    const input: BuildSourceBasisManifestInput = {
+      shape: validArrayShape,
+      calls: [
+        { op: "lumenloop.search_directory", outcome: "ok", ms: 12, caveat: "no-rows" },
+        { op: "lumenloop.search_content_semantic", outcome: "ok", ms: 30, caveat: "unverified-match" },
+        { op: "stellarDocs.search_docs", outcome: "ok", ms: 8 },
+        { op: "scout.getHackathon", outcome: "soft-empty", ms: 5, caveat: "no-rows" }
+      ],
+      observedAt: "2026-10-10T12:00:00.000Z",
+      canonicalUrls: ["https://developers.stellar.org/docs"],
+      artifact: { state: "absent", reason: "not-truncated" },
+      truncated: false
+    };
+    const text = buildSourceBasisManifest(input);
+    expect(text.split("\n")).toEqual([
+      SOURCE_METADATA_MARKER,
+      "calls: lumenloop.search_directory=ok/12ms [caveat: no-rows]; " +
+        "lumenloop.search_content_semantic=ok/30ms [caveat: unverified-match]; " +
+        "stellarDocs.search_docs=ok/8ms; scout.getHackathon=soft-empty/5ms " +
+        "(totals ok=3 (2 with caveat) error=0 soft-empty=1)",
+      "observedAt: 2026-10-10T12:00:00.000Z",
+      "guidance: host-captured call outcomes survived sandbox projection; preserve observedAt and any caveat markers when answering."
+    ]);
+
+    const tight = buildSourceBasisManifest(input, { maxChars: 240 });
+    expect(tight.length).toBeLessThanOrEqual(240);
+    expect(tight).toContain("4 calls omitted (totals ok=3 (2 with caveat) error=0 soft-empty=1)");
+    expect(tight).toContain("\nobservedAt: 2026-10-10T12:00:00.000Z\n");
+  });
+
+  it("keeps the full footer, with markers and observedAt, when source metadata or a failure is present", () => {
+    const base: BuildSourceBasisManifestInput = {
+      shape: validArrayShape,
+      calls: [
+        { op: "lumenloop.search_directory", outcome: "ok", ms: 12, caveat: "no-rows" },
+        { op: "lumenloop.search_content_semantic", outcome: "ok", ms: 30, caveat: "unverified-match" }
+      ],
+      observedAt: "2026-10-10T12:00:00.000Z",
+      artifact: { state: "absent", reason: "not-truncated" },
+      truncated: false
+    };
+    const withMetadata = buildSourceBasisManifest({
+      ...base,
+      sourceMetadata: [{ op: "lumenloop.search_directory", path: "data.count", value: 0 }]
+    });
+    expect(withMetadata).toContain("\nshape: ");
+    expect(withMetadata).toContain("[caveat: unverified-match] (totals ok=2 (2 with caveat) error=0 soft-empty=0)");
+    expect(withMetadata).toContain("\nobservedAt: 2026-10-10T12:00:00.000Z\n");
+    expect(withMetadata).toContain("\nartifact: absent (not-truncated)");
+    expect(withMetadata).toContain("caveat markers");
+
+    const withFailure = buildSourceBasisManifest({
+      ...base,
+      calls: [...base.calls, { op: "scout.searchResearch", outcome: "error", ms: 4, reason: "http-500" }]
+    });
+    expect(withFailure).toContain("\ncanonicalUrls: ");
+    expect(withFailure).toContain("treat failed reads as inconclusive");
+  });
+
   it("reports the required count for each shape variant and primitive fallback", () => {
     expect(validObjectShape).toEqual({ kind: "object", serializedChars: 20, totalKeys: 2 });
     expect(validArrayShape).toEqual({ kind: "array", serializedChars: 20, totalItems: 2 });
@@ -134,7 +194,7 @@ describe("source-basis manifest", () => {
     expect(text).toContain("sourceMetadata:");
     expect(text).toContain("scout.searchRepos data.meta.generatedAt=");
     expect(text).toContain("199 duplicates");
-    expect(text).toContain("host-captured source metadata survived sandbox projection");
+    expect(text).toContain("host-captured call outcomes and source metadata survived sandbox projection");
   });
 
   it("deduplicates metadata values that differ only after the rendered prefix", () => {

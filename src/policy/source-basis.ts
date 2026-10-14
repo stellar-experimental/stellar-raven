@@ -1,3 +1,4 @@
+import type { ResultCaveat } from "../adapters/types.ts";
 import { CHARS_PER_TOKEN, DEFAULT_MAX_TOKENS, truncateForModel, type Truncated } from "./truncate.ts";
 
 export const SOURCE_BASIS_MANIFEST_MAX_CHARS = 1600;
@@ -81,6 +82,8 @@ export type SourceBasisCall = {
   ms: number;
   /** Host-generated failure label, excluding upstream text and argument values. */
   reason?: string;
+  /** Host-derived caveat on an ok call: no rows, or only unverified matches. */
+  caveat?: ResultCaveat;
 };
 
 export type SourceBasisArtifact =
@@ -98,6 +101,8 @@ export type BuildSourceBasisManifestInput = {
   shape: SourceBasisShape;
   calls: SourceBasisCall[];
   sourceMetadata?: SourceMetadataEntry[];
+  /** Latest host observation time across ok service calls (ISO-8601). */
+  observedAt?: string;
   canonicalUrls?: string[];
   artifact?: SourceBasisArtifact;
   skillSectionAdvice?: boolean;
@@ -258,6 +263,13 @@ function serializeManifest(
     shapeDetailLimit: number;
   }
 ): string {
+  if (isCompactFooter(input, sourceMetadata)) {
+    // A clean ok-only run: shape, URLs, and artifact state carry nothing here.
+    const compact = [SOURCE_METADATA_MARKER, `calls: ${callsLine(input.calls, limits.callLimit)}`];
+    if (input.observedAt) compact.push(`observedAt: ${truncateAtom(input.observedAt, MAX_ATOM_CHARS)}`);
+    compact.push(`guidance: ${guidanceLine(input, true)}`);
+    return compact.join("\n");
+  }
   const lines = [
     input.truncated === false ? SOURCE_METADATA_MARKER : SOURCE_BASIS_MARKER,
     `shape: ${shapeLine(input.shape, limits.shapeDetailLimit)}`,
@@ -268,6 +280,7 @@ function serializeManifest(
       `sourceMetadata: ${sourceMetadataLine(sourceMetadata, limits.sourceMetadataLimit)}`
     );
   }
+  if (input.observedAt) lines.push(`observedAt: ${truncateAtom(input.observedAt, MAX_ATOM_CHARS)}`);
   lines.push(
     `canonicalUrls: ${urlsLine(urls, input.canonicalUrls?.length ?? 0, limits.urlLimit)}`,
     `artifact: ${artifactLine(input.artifact)}`,
@@ -276,12 +289,24 @@ function serializeManifest(
   return lines.join("\n");
 }
 
-function guidanceLine(input: BuildSourceBasisManifestInput): string {
+/** Untruncated, no failed call, and no captured source metadata. */
+function isCompactFooter(input: BuildSourceBasisManifestInput, sourceMetadata: NormalizedSourceMetadata): boolean {
+  return (
+    input.truncated === false &&
+    sourceMetadata.entries.length === 0 &&
+    !input.calls.some((call) => call.outcome === "error")
+  );
+}
+
+function guidanceLine(input: BuildSourceBasisManifestInput, compact = false): string {
   if (input.truncated === false) {
     if (input.calls.some((call) => call.outcome === "error")) {
       return "host-captured call failures survived sandbox projection; treat failed reads as inconclusive and preserve any source metadata.";
     }
-    return "host-captured source metadata survived sandbox projection; preserve its dates, modes, and counts when answering.";
+    if (compact) {
+      return "host-captured call outcomes survived sandbox projection; preserve observedAt and any caveat markers when answering.";
+    }
+    return "host-captured call outcomes and source metadata survived sandbox projection; preserve their dates, modes, counts, and caveat markers when answering.";
   }
   const skillClause = input.skillSectionAdvice
     ? " This run read skill content: return specific sections or aggregates, not whole skill bodies."
@@ -311,7 +336,8 @@ function callsLine(calls: SourceBasisCall[], limit: number): string {
     const op = truncateAtom(call.op, MAX_ATOM_CHARS);
     const ms = Number.isFinite(call.ms) ? `${Math.max(0, Math.round(call.ms))}ms` : "?ms";
     const reason = call.reason ? ` [${truncateAtom(call.reason, SOURCE_BASIS_REASON_MAX_CHARS)}]` : "";
-    return `${op}=${call.outcome}/${ms}${reason}`;
+    const caveat = call.outcome === "ok" && call.caveat ? ` [caveat: ${call.caveat}]` : "";
+    return `${op}=${call.outcome}/${ms}${reason}${caveat}`;
   });
   const totals = callTotals(calls);
   const suffix = calls.length > shown.length ? ` (+${calls.length - shown.length} more; ${totals})` : ` (${totals})`;
@@ -417,7 +443,9 @@ function sourceBasisCallTotals(calls: SourceBasisCall[]): Record<SourceBasisCall
 
 function callTotals(calls: SourceBasisCall[]): string {
   const totals = sourceBasisCallTotals(calls);
-  return `totals ok=${totals.ok} error=${totals.error} soft-empty=${totals["soft-empty"]}`;
+  const caveats = calls.filter((call) => call.outcome === "ok" && call.caveat).length;
+  const okDetail = caveats > 0 ? ` (${caveats} with caveat)` : "";
+  return `totals ok=${totals.ok}${okDetail} error=${totals.error} soft-empty=${totals["soft-empty"]}`;
 }
 
 function truncateAtom(value: string, maxChars: number): string {
