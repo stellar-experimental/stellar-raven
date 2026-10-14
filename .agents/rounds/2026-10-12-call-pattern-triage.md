@@ -547,3 +547,114 @@ accepts all three verdicts. Lane T2 (Claude Opus 5.5, high) reconciled it on 202
 - The review also confirmed the counter reruns, the screen counts, all identities, and the spend
   ($54.7698018). The evidence limits it names stay open: the clip generation is operator-asserted,
   and the removed worktrees prevent a repeat of the clean-tree and `.dev.vars` checks.
+
+## Re-measurement on the new `main` (lane T2)
+
+Collector: lane T2 (Claude Opus 5.5, high), pane `w3W:p4V`, 2026-10-14. Orchestrator: pane
+`w3W:p1P`. Everything in this section up to "Re-measurement results" was written before the
+first paid call.
+
+### Spend authorization 2
+
+The owner approved on 2026-10-13: "approved for your next collection of work, don't do stuff you
+don't need to, but do what's truely valuable and needful". The owner also delegated run decisions:
+"I approve whatever you need to do just don't run stuff you don't actually need to". Under that
+delegation, the orchestrator authorized on 2026-10-14, once each, at their own caps:
+
+1. The clip plan (`plan-clip-marker.md`) again, on the new `main`: cap $22 (expected about $3.40).
+2. The text-only fallback of `plan-section-text.md` (A1, T1, T2, A2, with the guard plan's shared
+   commands, and the K1/K2 re-judges and retries as the text plan says): cap $74 (expected about
+   $27).
+
+No guard arm. No continuation, no re-run, and no raised cap.
+
+Reason: `main` moved after the measurement. The orchestrator merged #271 (answer-style v2,
+`0a60d98a`) during the screen. #271 changes the `execute` description, the server instructions,
+the success envelopes, the source footers, and the `src/demo/` evidence labels. The measured arms
+did not contain it (post-run review, finding 1; the orchestrator applies the same reasoning to the
+clip).
+
+### Launch amendment 3: `main` `0a60d98a`
+
+The lane read `main` at 2026-10-14T04:04:40Z: `0a60d98a48e3bc0c7076961e33991aee2c7375d8` (#271 on
+top of `f7b1b775`). It rebuilt the clip arms and the A and T arms on it with the same
+cherry-picks. Each cherry-pick applied without a conflict (git auto-merged the shared files).
+
+| Arm | Commit | Tree |
+| --- | --- | --- |
+| BASE and A (`main`) | `0a60d98a48e3bc0c7076961e33991aee2c7375d8` | `488e1aeb923435c8da13799c47d72a5a75097140` |
+| CANDIDATE (clip marker: `c3b25d94`, then `6ab15c9f`) | `6e0d11000f6762e773189e66278fd8979fedd880` | `d4cc6e801d68631cd9936c91a4d61d24ce889745` |
+| T (text: `7cf3a833`) | `badbda8a045620b64df626e82e8ff2cce579f479` | `eb1a91e2da8fc06a4ab8aebf7560464d302aaab2` |
+
+Diff check (no new review needed):
+
+- For each arm, the changed lines (`+` and `-` lines, per file, in order) of
+  `git diff 0a60d98a <arm>` equal those of the reviewed arm diff `git diff f7b1b775 <old arm>`
+  (CANDIDATE against `fb84c199`, T against `52415bb0`). The diffs are not byte-identical: #271
+  moved the patch context and the hunk positions in `src/demo/tools.ts`,
+  `test/smoke/demo-tools.test.ts`, `src/mcp/tools.ts`, `src/executor/providers.ts`, `src/site.ts`,
+  and the test files. The brief allows a context difference.
+- File lists: CANDIDATE `src/demo/tools.ts`, `test/smoke/demo-tools.test.ts` (21 and 19 changed
+  lines). T: the six reviewed files (2, 2, 3, 3, 1, 6 changed lines).
+- `eval/`, `catalog/`, `package.json`, `package-lock.json`, and
+  `scripts/run-playground-semantic-eval.mjs` are unchanged from `f7b1b775` to `0a60d98a`. So the 22
+  frozen case entries and `lifecycle-registry.json` have the same bytes as in launch amendment 1.
+  The 22 IDs are `active`.
+- Judge default: `eval/qa/evidence-pack.mjs` `PACK_VERSION` is `p9` (unchanged). The pack is
+  recorded from the first judged row of each run. Rubric `v2.11` is expected.
+- Cost basis: the lane T runs on `f7b1b775` cost $0.76 to $0.80 per clip run and $5.83 to $6.74 per
+  screen collection (pack `p9`). #271 adds caveat markers and source footers to the envelopes, so
+  the input can grow a little. The caps stay: $3 per clip run, $12 per collection. Expected: about
+  $3.40 (clip) and about $27 (text: four collections at about $6.5, plus reserves not used).
+- Freeze: the five worktrees `raven-w1013-{base,cand,a,t,runner}` are clean, with no untracked file.
+  BASE, CANDIDATE, A, and T pass `npm run test:smoke` (124, 125, 124, 124 tests). A and T pass
+  `npm run typecheck` and `npm test` (143 files each; run one at a time). SDK receipt
+  `7.0.137 4.0.91` in each arm.
+
+### Clip pins (v2)
+
+| Pin | Value |
+| --- | --- |
+| `$B` | `/private/tmp/raven-clip-marker-v2` |
+| `BASE_GENERATION` | `9743c67c5a9a0568283274f80a4d20b2ed0b49d8e555fdfc111e7214aa258f87` |
+| `CANDIDATE_GENERATION` | `6d65ccb545409be3831b6bbcbd5b36dd14c6d9d3bfc1416fdefd02da79950f85` |
+| Dry runs | Both select the six frozen IDs in corpus order |
+| Judge executable | Claude Code `2.1.299` (the installed version moved from `2.1.296`), `JUDGE_SHA256` `ba5ab7b8c195fa03ab8d5bf3915c76153b576a2c40e79a5c46e265e7ed9744b3` |
+| `AGENT_ENVIRONMENT_SHA256` | `44fab7741c89828747de93eb2a8f27dd7946493f907033d3c94427d339b91f12` (14 variable names) |
+| Counter | `count-patterns.mjs` from `8c6f4f3c`, SHA-256 `2a99d5146cf48b3438d774f583027764ca225c43cb0c64378c16fcddca88c36f`; self-check 23 of 23 |
+| Gateway | Not read: no CLI read exists, and the dashboard is not open to the lane (as in lane T). The answer side costs about $1.40 at the Gateway. |
+
+### Text pins (v2)
+
+| Pin | Value |
+| --- | --- |
+| `$B` | `/private/tmp/raven-section-text-v2` |
+| Arms | A `0a60d98a` (tree `488e1aeb`), T `badbda8a` (tree `eb1a91e2`); worktrees `raven-w1013-{a,t}` |
+| Runner | `raven-w1013-runner` at `0a60d98a`, clean |
+| Surface size (`npm run mcp:surface`) | `execute` description: A 10,367, T 10,572 characters (difference 205, as on `f7b1b775`) |
+| Counter | SHA-256 `2a99d514…`; self-check 23 of 23 from the runner |
+| `AGENT_BINARY_SHA256` | `ba5ab7b8c195fa03ab8d5bf3915c76153b576a2c40e79a5c46e265e7ed9744b3` (Claude Code `2.1.299`, linked from `$B/bin`) |
+| `AGENT_ENVIRONMENT_SHA256` | `ab375f5217db1e878d6786279d8b5d7134d299db2415e3a1f9ed71c96ca6a12d` (14 names) |
+| Remote identity probe | SHA-256 `eb06cd89bc6232d6747b7d44973f2deec272b48ba343b9d19a9800b74a18c226`; `--stable-sha256` vector `414667aa38583bc99d775e02c7efe3e5a8a731f33e756668141052e05fe1205e` (ended 04:18:30Z) |
+| Judge-stability register | `$B/judge-stability.json`, SHA-256 `5b5c16ae90547df8252adf60f549dc0cf33ec09d62c855cf8a4d1ffb4f1461a9` (538 cases, 199 artifacts from the main checkout's `eval/qa/results/`, read only) |
+| `.dev.vars` identity | One fresh salt across A and T; the two lines match (10 names); hash `326b20074531faf0fb922309cfd6b8f9e22630a45336283594246d7b8a859ba8` |
+| Paired window | `/private/tmp/stellar-raven-paired-launch` absent at 04:18:41Z |
+| Surfaces | Recorded at each server start (`report-live-surface.mjs`); T must differ from A |
+
+### Slot conditions (orchestrator amendment 2, predeclared for both plans)
+
+1. **Raven-process gate.** Before each server start, with the lane's own server stopped:
+   `pgrep -f 'raven-w1013' | wc -l` prints `0`, and `lsof -nP -iTCP:8799 -sTCP:LISTEN` shows no
+   listener. Every start uses the fixed port `8799`. The total `pgrep -f 'wrangler|workerd' | wc -l`
+   is recorded for information only. Never `pgrep -fl` or `ps` with arguments.
+2. **Load gate.** Before each start, record `uptime`. The 1-minute load average must be 12 or
+   lower. If it is higher, wait up to 30 minutes for it to drop. If it stays higher, stop and
+   report.
+3. **Contention check**, before the next start and for every collection: count rows with an
+   `execute` or sandbox timeout, or a host or server error (not an upstream service error), from
+   the artifact. Limit: the maximum count of the baseline collections completed so far (clip: B1,
+   B2; text: A1, A2), plus 1. After the last baseline collection, every collection is checked again
+   against max(both baselines) + 1. A count above the limit makes that collection non-comparable:
+   stop and report.
+4. One Raven server at a time, in a pane split from `w3W:p4V`. No pipes on gate or paid commands.
+   Paid drivers run under `zsh -f`.
