@@ -417,3 +417,24 @@ grades, judge pack `p9`.
 | Paired window | `/private/tmp/stellar-raven-paired-launch` absent |
 | Server slot | Deviation 1 applies (count 5 or 0; port 8799) |
 | Cost basis | Judge pack `p9`. A `p9` judge call costs about $0.09, as `p6` did (P1 judge median $0.0887; clip `p9` judge calls $0.0563 to $0.1153). The caps do not change: $12 per collection, $136 in all. |
+
+### Section screen: progress and stop
+
+| Collection | Server start | Window (UTC, 2026-10-14) | Spend (USD) | Section-read scripts | Guard messages |
+| --- | --- | --- | ---: | ---: | ---: |
+| A1 | A-1, surface `656feeef…` | 00:47:52–01:10:35 | 6.6985946 | 23 | 0 |
+| T1 | T-1, surface `0e429c70…` | 01:12:15–01:34:00 | 6.6318970 | 15 | 0 |
+| G1 | G-1, surface `656feeef…` (equals A) | 01:34:28–01:56:15 | 6.7421682 | 17 | 0 |
+
+Each collection: 16 rows, `comparable: true`, aggregates not suppressed, no missing cost, pack
+`p9`, rubric `v2.11`, cases `5872d752…`, `qaImplementationSha256` `5c2f1adb…`.
+
+Incident (no spend): the first T1 command at 01:11:44Z ran from a `zsh` script whose startup
+files changed `PATH`. `run-qa.mjs` refused before any model call ("Claude environment: expected
+SHA-256 190d0b47…, observed a68db5c5…; refusing paid calls"). It wrote no artifact. The driver
+then used `zsh -f`, which keeps the pinned environment, and T1 ran on the same server start.
+
+**Stop (deviation 1, condition 1).** At 01:57:06Z, with the lane's own server stopped, the
+server-slot count was 36, not 5 or 0. The new processes are `wrangler dev` servers of six other
+`buzzchain` worktrees (another project, other sessions), started from about 01:46Z to 01:57Z,
+during G1. The lane did not start TG1. No paid call ran after G1.
