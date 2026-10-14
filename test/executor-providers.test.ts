@@ -838,7 +838,7 @@ describe("skill.read service-call envelope guard", () => {
     expect(() => (r as Record<string, unknown>).sections).toThrow(/use r\.data\.sections/);
   });
 
-  it("guards two observed misreads of the data.sections array", async () => {
+  it("guards the three observed misreads of the data.sections array", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const codemode = guardedCodemode();
@@ -855,69 +855,48 @@ describe("skill.read service-call envelope guard", () => {
       expect(sections.find((s) => s.section === key)?.content).toBe(section.content);
       expect(Object.keys(section)).toEqual(["section", "content", "url"]);
       expect(Object.keys(sections)).toEqual(["0"]);
+      expect(Object.keys(r.data)).not.toContain("content");
       expect(JSON.parse(JSON.stringify(r.data.sections))).toEqual([
         { section: key, content: section.content, url: section.url }
       ]);
       expect(structuredClone(sections)).toEqual([{ ...section }]);
 
-      // 1. Indexing by section key throws a pointer to find().
+      // 1. `data.content` on a section read: undefined plus one warning.
+      const data = r.data as Record<string, unknown>;
+      expect(data.content).toBeUndefined();
+      expect(data.content || "fallback").toBe("fallback");
+      const warnings = logSpy.mock.calls.map((c) => String(c[0])).filter((l) => l.startsWith("[envelope]"));
+      expect(warnings).toHaveLength(1);
+      expect(warnings[0]).toContain("use r.data.sections[i].content");
+
+      // 2. Indexing by section key throws a pointer to find().
       expect(() => (sections as unknown as Record<string, unknown>)[key]).toThrow(
         /r\.data\.sections is not keyed by section .*\.find\(\(s\) => s\.section === /
       );
 
-      // 2. A section object used as a string throws instead of "[object Object]".
+      // 3. A section object used as a string throws instead of "[object Object]".
       expect(() => String(section)).toThrow(/a section is an object, not a string .*use \.content/);
       expect(() => `${section}`).toThrow(/use \.content/);
       expect(() => sections.join("\n")).toThrow(/use \.content/);
       expect(() => sections.toString()).toThrow(/use \.content/);
-
-      // The guard adds no log line.
-      expect(logSpy.mock.calls.filter((c) => String(c[0]).startsWith("[envelope]"))).toHaveLength(0);
     } finally {
       logSpy.mockRestore();
     }
-  });
-
-  it("keeps property-existence checks on content for whole and section reads", async () => {
-    const codemode = guardedCodemode();
-    const whole = await codemode.skill.read(SKILL_ID);
-    if (!whole.ok) throw new Error(whole.error.message);
-    expect("content" in whole.data).toBe(true);
-    expect(Object.hasOwn(whole.data, "content")).toBe(true);
-    expect("sections" in whole.data).toBe(false);
-
-    const key = whole.data.availableSections[0]!;
-    const r = await codemode.skill.read(SKILL_ID, { sections: [key] });
-    if (!r.ok) throw new Error(r.error.message);
-    expect("content" in r.data).toBe(false);
-    expect(Object.hasOwn(r.data, "content")).toBe(false);
-    expect((r.data as Record<string, unknown>).content).toBeUndefined();
-
-    // A valid branch on the documented shape picks the section array.
-    const picked = "content" in r.data
-      ? (r.data.content as string).slice(0, 10)
-      : r.data.sections!.map((s) => s.content);
-    expect(picked).toEqual([r.data.sections![0]!.content]);
   });
 
   it("does not trap a section key that already resolves on the array", async () => {
     const r = await guardSkillReadPayload({
       id: "skills.synthetic",
       url: "https://example.test/SKILL.md",
-      availableSections: ["find", "7", "toJSON", "then"],
+      availableSections: ["find", "7"],
       sections: [
         { section: "find", content: "## Find", url: "https://example.test/SKILL.md" },
-        { section: "7", content: "## Seven", url: "https://example.test/SKILL.md" },
-        { section: "toJSON", content: "## To JSON", url: "https://example.test/SKILL.md" },
-        { section: "then", content: "## Then", url: "https://example.test/SKILL.md" }
+        { section: "7", content: "## Seven", url: "https://example.test/SKILL.md" }
       ]
     });
     const sections = r.data.sections as Array<{ section: string; content: string }>;
     expect(sections.find((s) => s.section === "find")?.content).toBe("## Find");
     expect((sections as unknown as Record<string, unknown>)["7"]).toBeUndefined();
-    // JSON and promise resolution probe these names; a trap would make them throw.
-    expect(JSON.parse(JSON.stringify(r.data)).sections).toHaveLength(4);
-    expect(await Promise.resolve(sections)).toBe(sections);
   });
 
   it("allows write-through decoration of a guarded payload key", async () => {

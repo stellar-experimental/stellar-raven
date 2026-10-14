@@ -1155,7 +1155,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       const caught = (f) => { try { f(); return ""; } catch (e) { return String(e && e.message); } };
       return {
         section: r,
-        content: "content" in r.data,
+        content: r.data.content === undefined,
         keyed: caught(() => r.data.sections[key]),
         joined: caught(() => r.data.sections.join("\\n")),
         found: r.data.sections.find((s) => s.section === key).content.length > 0
@@ -1165,10 +1165,11 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     if (!outcome.ok) throw new Error(outcome.error);
     const result = JSON.parse(outcome.result);
     expect(Object.keys(result.section.data.sections[0])).toEqual(["section", "content", "url"]);
-    expect(result.content).toBe(false);
+    expect(result.content).toBe(true);
     expect(result.keyed).toContain("r.data.sections is not keyed by section");
     expect(result.joined).toContain("a section is an object, not a string");
     expect(result.found).toBe(true);
+    expect(outcome.logs.join("\n")).toContain("a section read has no r.data.content");
   });
 
   it("appends the sandbox globals hint to an 'is not defined' error", async () => {
