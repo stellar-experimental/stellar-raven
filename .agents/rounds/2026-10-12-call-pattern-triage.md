@@ -691,3 +691,28 @@ Confirmation sequence, steps 1 to 4 (text plan rule 8):
    T1, `--max-budget-usd 3`. Both cells are graded (no `agent-limit`).
 3. K1r and K2r only if K1 or K2 ends T4 or T5.
 4. Live check of every graded T `wrong`: T1 `q-pc-surge-griefing-threat-model` (not on the list).
+
+### Text v2: result
+
+Full record: [result-text-v2.md](2026-10-12-call-pattern-triage/result-text-v2.md). Spend
+$27.0449732 of the $74 cap (A1, T1, T2, A2, K1, K2; no retry, initial-judge retry, or
+replacement).
+
+- K1 (A1): `partial` → `partial`. K2 (T1): `correct` → `partial`. The staking improvement is not
+  reproduced: judge variance, no change. K1r and K2r not needed.
+- Live check of the one graded T `wrong` (T1 `q-pc-surge-griefing-threat-model`): no factual
+  error (a must-avoid grade); not a consistent change.
+- Misreads: A 6 in 38 section-read scripts (A1 2, A2 4), T 0 in 35. No new script-error class. No
+  consistent regression. Two readers agree on 72 of 73 scripts; one class difference reconciled.
+- **Proposed verdict on `0a60d98a`: PASS.**
+
+### Re-measurement totals
+
+Lane T2 spend: $3.3652473 (clip, cap $22) + $27.0449732 (text, cap $74) = **$30.4102205**. No stop
+rule fired. No guard arm ran.
+
+Note (read at the end of the lane): `main` moved to `d6d6ca67` (#281, "demo: name required inputs
+in clipped Playground signatures", 2026-10-14T06:15Z). Its tree is `d4cc6e801d68631cd9936c91a4d61d24ce889745`,
+the measured clip CANDIDATE tree. #281 changes only `src/demo/tools.ts` and
+`test/smoke/demo-tools.test.ts`; no MCP-visible file. So the text arms (A `0a60d98a`, T `badbda8a`)
+still differ from a text candidate on `d6d6ca67` only in Playground files.
