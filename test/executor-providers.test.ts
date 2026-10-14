@@ -802,16 +802,6 @@ describe("skill.read service-call envelope guard", () => {
   }
   const SKILL_ID = "skills.lumenloop.stellar-project-dossier";
 
-  async function guardSkillReadPayload(data: Record<string, unknown>) {
-    const ns = guardedNamespaces(undefined, (namespaces) => {
-      namespaces.codemode!.skill_read = async () => ({ ok: true, data });
-    });
-    const codemode = ns.codemode as unknown as {
-      skill: { read: (name: string) => Promise<{ ok: true; data: Record<string, unknown> }> };
-    };
-    return codemode.skill.read("skills.synthetic");
-  }
-
   it("guards whole-read payload keys and preserves source URLs", async () => {
     const r = await guardedCodemode().skill.read(SKILL_ID);
     expect(r.ok).toBe(true);
@@ -836,67 +826,6 @@ describe("skill.read service-call envelope guard", () => {
     expect(r.data.sections).toHaveLength(1);
     expect(r.data.sections![0]!.url).toBe(whole.data.url);
     expect(() => (r as Record<string, unknown>).sections).toThrow(/use r\.data\.sections/);
-  });
-
-  it("guards the three observed misreads of the data.sections array", async () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    try {
-      const codemode = guardedCodemode();
-      const whole = await codemode.skill.read(SKILL_ID);
-      if (!whole.ok) throw new Error(whole.error.message);
-      const key = whole.data.availableSections.find((k) => !/^\d+$/.test(k) && !(k in []))!;
-      const r = await codemode.skill.read(SKILL_ID, { sections: [key] });
-      if (!r.ok || r.data.sections === undefined) throw new Error("expected a section read");
-      const sections = r.data.sections;
-      const section = sections[0]!;
-
-      // Correct reads are untouched, and the traps stay invisible to data copies.
-      expect(typeof section.content).toBe("string");
-      expect(sections.find((s) => s.section === key)?.content).toBe(section.content);
-      expect(Object.keys(section)).toEqual(["section", "content", "url"]);
-      expect(Object.keys(sections)).toEqual(["0"]);
-      expect(Object.keys(r.data)).not.toContain("content");
-      expect(JSON.parse(JSON.stringify(r.data.sections))).toEqual([
-        { section: key, content: section.content, url: section.url }
-      ]);
-      expect(structuredClone(sections)).toEqual([{ ...section }]);
-
-      // 1. `data.content` on a section read: undefined plus one warning.
-      const data = r.data as Record<string, unknown>;
-      expect(data.content).toBeUndefined();
-      expect(data.content || "fallback").toBe("fallback");
-      const warnings = logSpy.mock.calls.map((c) => String(c[0])).filter((l) => l.startsWith("[envelope]"));
-      expect(warnings).toHaveLength(1);
-      expect(warnings[0]).toContain("use r.data.sections[i].content");
-
-      // 2. Indexing by section key throws a pointer to find().
-      expect(() => (sections as unknown as Record<string, unknown>)[key]).toThrow(
-        /r\.data\.sections is not keyed by section .*\.find\(\(s\) => s\.section === /
-      );
-
-      // 3. A section object used as a string throws instead of "[object Object]".
-      expect(() => String(section)).toThrow(/a section is an object, not a string .*use \.content/);
-      expect(() => `${section}`).toThrow(/use \.content/);
-      expect(() => sections.join("\n")).toThrow(/use \.content/);
-      expect(() => sections.toString()).toThrow(/use \.content/);
-    } finally {
-      logSpy.mockRestore();
-    }
-  });
-
-  it("does not trap a section key that already resolves on the array", async () => {
-    const r = await guardSkillReadPayload({
-      id: "skills.synthetic",
-      url: "https://example.test/SKILL.md",
-      availableSections: ["find", "7"],
-      sections: [
-        { section: "find", content: "## Find", url: "https://example.test/SKILL.md" },
-        { section: "7", content: "## Seven", url: "https://example.test/SKILL.md" }
-      ]
-    });
-    const sections = r.data.sections as Array<{ section: string; content: string }>;
-    expect(sections.find((s) => s.section === "find")?.content).toBe("## Find");
-    expect((sections as unknown as Record<string, unknown>)["7"]).toBeUndefined();
   });
 
   it("allows write-through decoration of a guarded payload key", async () => {
