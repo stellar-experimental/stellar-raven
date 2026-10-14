@@ -297,3 +297,40 @@ server runs `5c86fd0a`.
 The collection script asserts the runner revision, a clean runner tree, the binary, environment,
 probe, and register pins, and exactly one `--max-budget-usd` with the value 18 before it starts
 `run-qa.mjs`.
+
+## Collections (version 2)
+
+| Run | Arm | Result stamp | Rows | `comparable` | Cost USD | Budget calls |
+|---|---|---|---|---|---|---|
+| B1 | Baseline | `2026-10-13T21-55-44` | 34 | true | 11.5840 | 98/98, `missingCosts` 0 |
+| C1 | Candidate | `2026-10-13T22-36-08` | 34 | true | 11.1521 | 98/98, `missingCosts` 0 |
+| C2 | Candidate | `2026-10-13T23-18-20` | 34 | true | 11.5902 | 96/96, `missingCosts` 0 |
+| B2 | Baseline | `2026-10-13T23-59-41` | 34 | true | 11.5804 | 100/100, `missingCosts` 0 |
+
+Each run is complete, with unsuppressed aggregates, rubric `v2.11`, pack `p6`, and
+`claude-sonnet-5` for both roles. Each command passed one `--max-budget-usd 18`. The server and
+surface pins matched before and after each run: baseline `656feeef…` at both starts, candidate
+`8c2e4dfc3c074fc918223922f10529e980f4414d4b07b5799d0c4011188ad4ad` (instructions 7,858 characters)
+at its start and again before C2. One Wrangler process ran at a time, on port 8799, in panes split
+from `w3W:p4V` (`w3W:p4W` for B1, `w3W:p4Y` for C1 and C2, `w3W:p4Z` for B2).
+
+## Consistent-change list (version 2, recorded before the re-judge spend)
+
+Rule: both candidate grades differ from both baseline grades in the same direction, after T4 and
+T5 exclusions.
+
+- `q-pc-quantum-preparedness-dormant` (volatile): improvement. B wrong, wrong; C correct, correct.
+- `q-hist-scp-rewrite-2015` (control): improvement. B partial, partial; C correct, correct.
+
+No consistent regression. Excluded: `q-edge-strupey-ambiguous-stellar-history`. B1 has a judge
+consistency failure (T4, `failureClass: "consistency"`, `partial-without-issue`, diagnostic
+`judgeScore` partial). Its other grades are C1 wrong, C2 wrong, B2 correct. The exclusion follows
+the predeclared rule. The row stays visible under H1 and in the result.
+
+Noise floor on the common eligible denominator of 33: B1/B2 10 rows, C1/C2 7 rows.
+
+Judge-contract check of the two listed rows: neither rationale cites host behavior or a metric
+definition. Both rest on golden content (the QPP dormant-account passage; the disputed fork
+causation). Both rows count.
+
+Re-judge selection: these two IDs, once in B1 and once in C1, with `--max-budget-usd 4` each.
