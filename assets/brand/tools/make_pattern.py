@@ -18,7 +18,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 TILE = 384          # px; multiple of CELL * 4 so the Bayer period wraps cleanly
 CELL = 3            # px; matches GL_TUNE.px on the site
-N = TILE // CELL    # 96 cells per side
+N = TILE // CELL    # 128 cells per side
 
 BG = "#0E150D"      # --bg
 DOT = "#1A2818"     # one step above --green-2 (#182617): low-contrast dither cells

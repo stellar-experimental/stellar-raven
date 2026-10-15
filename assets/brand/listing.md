@@ -1,8 +1,8 @@
 # Connector listing media — design record
 
 The Claude connector directory listing uses the files in [`public/listing/`](../../public/listing/)
-and the two site logos in [`public/`](../../public/). They were built on 2026-10-07. This page
-records why they look the way they do and how to rebuild them.
+and the two site logos in [`public/`](../../public/). The files date from 2026-10-07. This page
+records the design reasons and the rebuild steps.
 [`research/listing-carousel-evidence-2026-10-07.md`](../../research/listing-carousel-evidence-2026-10-07.md)
 records the Raven calls behind each carousel frame.
 
@@ -28,7 +28,7 @@ the logo on a known single theme.
 
 ## Logo decision
 
-The old lockups fell short in a listing header for three reasons.
+The old lockups did not work in a listing header, for three reasons.
 
 1. **Font fallback.** They set the wordmark with `font-family`. An `<img>` SVG cannot load web
    fonts, so the wordmark rendered in a Georgia-like face. The new files use outlined paths from
@@ -48,13 +48,13 @@ high-density screens and scales down by clean factors (960, 480). The smallest t
 most text is 22–30px. At 960px wide, all text reads. At 480px wide, the headline, the prompt, and
 the tool rows read.
 
-Each frame shows a branded recreation of a Claude conversation: the prompt, Raven's `search` call,
-Raven's `execute` call, and a grounded answer. A left rail gives the outcome and the dated sources.
-Every name, number, code line, and date comes from the calls in the evidence file. If the directory
+Each frame recreates a Claude conversation. It shows the prompt, Raven's `search` call, Raven's
+`execute` call, and an answer with sources. A left rail gives the outcome and the dated sources.
+The evidence file records the prompts, the calls, and the values that the answers cite. It does not
+record the search totals or the `scfAsOf` date range that the frames also show. If the directory
 requires real product screenshots, run the same three prompts in claude.ai and capture them.
 
-Frame 2 quotes live directory values as of 2026-10-07 (TVL as of 2026-10-05). Check them again
-before a new submission.
+The frames quote live values. Check them against the evidence file before a new submission.
 
 ## Pattern
 
@@ -79,17 +79,27 @@ A fixed seed (`20261007`) keeps the output reproducible, and the SVG and PNG mat
 ## Rebuilding
 
 Both scripts reproduce the served files byte for byte. Run them from this directory and rename the
-outputs to the served names in the table above.
+outputs to the served names in the table above. The commands pin the verified package versions and
+an immutable `google/fonts` commit.
 
 ```sh
-# Pattern (needs Pillow).
-uv run --no-project --with pillow python -I tools/make_pattern.py /tmp/raven-pattern
+# Pattern.
+uv run --no-project --with pillow==11.3.0 python -I tools/make_pattern.py /tmp/raven-pattern
 
-# Logos (needs fontTools and the IBM Plex TTFs from google/fonts).
-curl -fLO https://github.com/google/fonts/raw/main/ofl/ibmplexserif/IBMPlexSerif-SemiBold.ttf
-curl -fLO https://github.com/google/fonts/raw/main/ofl/ibmplexmono/IBMPlexMono-Medium.ttf
-uv run --no-project --with fonttools python -I tools/outline_logos.py . /tmp/raven-logos
+# Logos. The fonts are IBM Plex (SIL Open Font License) from google/fonts.
+F=https://github.com/google/fonts/raw/94301472b4d809299b4775bc6502592b83dd6934/ofl
+curl -fLO "$F/ibmplexserif/IBMPlexSerif-SemiBold.ttf"
+curl -fLO "$F/ibmplexmono/IBMPlexMono-Medium.ttf"
+shasum -a 256 -c <<'EOF'
+27ce4d105591b48f666b228e1e399838a704594efea22b730000951bea700a60  IBMPlexSerif-SemiBold.ttf
+a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755  IBMPlexMono-Medium.ttf
+EOF
+uv run --no-project --with fonttools==4.59.0 python -I tools/outline_logos.py . /tmp/raven-logos
 ```
 
-`test/auth.test.ts` requires each served SVG to carry the site's mark path. If `RAVEN_PATH` or
+The pinned build was verified with Python 3.9.6 and zlib 1.2.12. Pillow 12.3.0 and fontTools
+4.67.0 also gave identical files on 2026-10-15.
+
+`test/auth.test.ts` requires `raven-icon.svg`, `raven-logo-dark.svg`, and `raven-logo-light.svg` to
+carry the site's mark path. It does not check the listing tile or the pattern. If `RAVEN_PATH` or
 `TOKENS` in `src/site.ts` changes, update the constants at the top of each script.
