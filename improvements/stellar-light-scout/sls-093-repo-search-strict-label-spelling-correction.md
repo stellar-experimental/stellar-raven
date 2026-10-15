@@ -1,7 +1,7 @@
 ---
 id: sls-093
 service: stellar-light-scout
-status: verified
+status: fixed-upstream
 discovered: 2026-10-06
 upstreamTitle: Repo search reports matchMode strict for a spelling-corrected query
 evidence:
@@ -14,6 +14,16 @@ evidence:
   - 2026-10-09 OpenAPI 1.9.72. The RepoSearchResponse.meta.matchMode enum is strict, partial, weak, all, none. It defines strict as "every query term matched". The spec defines corrected only for project search and names strupey → stroopy as the example.
   - 2026-10-09 upstream source read on Stellar-Light/stellarlight main. src/lib/search-vocabulary.ts maps strupey to strupey, stroopy, and stroop in CORE_SYNONYMS. It also lists strupey in SPELLING_CORRECTIONS. src/lib/repo-search.ts merges CORE_SYNONYMS and derives matchMode from the best row's matched-token count. It does not apply the correction check that PR 1056 added to project search.
   - Dedupe 2026-10-09. The resolved receipt sls-076 covers project search only (issue 1055, PR 1056). No active finding and no Stellar-Light/stellarlight issue covers repo search.
+  - "2026-10-15 author recheck confirmed the repo-search spelling label is fixed. A distinct reviewer remains required before retirement."
+  - "2026-10-15T17:42:57Z live OpenAPI reports 1.9.78. RepoSearchResponse includes corrected and documents the best-row and total-count bases. https://stellarlight.xyz/api/openapi.json"
+  - "2026-10-15 resolving work: https://github.com/Stellar-Light/stellarlight/pull/1815, https://github.com/Stellar-Light/stellarlight/pull/1821, and https://github.com/Stellar-Light/stellarlight/issues/1818."
+  - "2026-10-15 upstream merge commits are f9e66babb30f20607c7df749cef89985a9f6c3cd and 24b8c12aaf63f1840b7bd55c56ca4b6ebf2529f9."
+  - "2026-10-15 inbound handoff came from theboycoder: https://github.com/stellar-experimental/stellar-raven/issues/287"
+  - "2026-10-15T17:43:07Z q=strupey returned corrected with the identity warning. The limit=100 request returned all 23 rows without strupey."
+  - "2026-10-15T17:43:08Z q=strupey%20wallet returned corrected. The stroopy and stroop%20wallet controls returned strict with a best-row label."
+  - "2026-10-15T17:44:38Z original limit=5 probe returned corrected. The matching stroopy control returned strict."
+  - "2026-10-15 pinned tests cover strupey, stroopy, mixed queries, literal-token controls, and schema parity. https://github.com/Stellar-Light/stellarlight/blob/f9e66babb30f20607c7df749cef89985a9f6c3cd/src/lib/__tests__/corrected-match-mode.test.ts"
+  - "2026-10-15 raw responses and exact URLs are in tmp/lane-a/repos-*.raw.json. This local evidence is uncommitted."
 probe:
   type: http-text
   url: https://stellarlight.xyz/api/repos/search?q=strupey&limit=5
@@ -23,6 +33,7 @@ probe:
       - '"matchMode":"strict"'
     excludes:
       - '"matchMode":"corrected"'
+
 ---
 
 ## Finding
@@ -96,3 +107,22 @@ Add a regression test for `q=strupey` against repo search, with `q=stroopy` as t
 State in the `matchMode` description that `strict` describes the best row on the page.
 Or derive the label from every returned row.
 Make `counts.total` consistent with the stated mode.
+
+## Live recheck — 2026-10-15
+
+The author repeated the original requests against OpenAPI `1.9.78`.
+The `q=strupey` requests returned `matchMode: "corrected"`.
+The label warned that the query token did not occur in the rows.
+The `limit=100` request returned all 23 rows without `strupey`.
+The original `limit=5` probe also returned `corrected`.
+
+The `q=strupey%20wallet` request returned `corrected`.
+The `q=stroopy` and `q=stroop%20wallet` controls returned `strict`.
+Their labels stated that every query term matched in the best row.
+The live schema included `corrected` and explained the best-row basis.
+It also explained that the total counts a wider match set.
+
+The author read the pinned correction and schema-parity tests.
+The author did not run the upstream test suite.
+No material residual reproduced in these live checks.
+A distinct reviewer must repeat the original requests before retirement.
