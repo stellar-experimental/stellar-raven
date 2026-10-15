@@ -78,6 +78,7 @@ export function communityEntries(text) {
     allowedReferences.add(spread.argument);
   }
   // Reject aliases and mutations rather than interpreting the rest of the module.
+  // The walk runs on esbuild output, which already renames nested bindings that shadow these names.
   const pending = [program];
   while (pending.length) {
     const node = pending.pop();

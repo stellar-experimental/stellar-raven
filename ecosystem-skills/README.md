@@ -85,8 +85,9 @@ full `/v1/skills` set observable.
 - **Community source directory snapshot.** `community.json` records Community names and links from `stellar/stellar-dev-skill main`.
   The drift check reads the exported `ECOSYSTEM_CARDS` array in
   [`site/src/data/skills.ts`](https://github.com/stellar/stellar-dev-skill/blob/main/site/src/data/skills.ts).
-  The parser also accepts a sorted copy of one preceding local `const` literal array.
-  It validates a side-effect-free `localeCompare` callback on literal identity fields without executing it.
+  The parser also accepts a sorted copy of one preceding same-file `const` literal array.
+  It accepts only a `localeCompare` callback on the literal `title` or `copyValue` field.
+  It does not execute the callback.
   The site's [generator](https://github.com/stellar/stellar-dev-skill/blob/main/site/scripts/generate-llms-txt.mjs)
   uses the same array for the `Community Built` listing in `llms.txt`.
   The 2026-10-01 check found 30 entries, including candidates absent from `catalog.json`.

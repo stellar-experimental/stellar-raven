@@ -30,8 +30,23 @@ describe("Community directory projection", () => {
     ['[...ECOSYSTEM_CARD_SOURCES]', 'ECOSYSTEM_CARD_SOURCES'],
     ['const ECOSYSTEM_CARD_SOURCES', 'let ECOSYSTEM_CARD_SOURCES'],
     ['[...ECOSYSTEM_CARD_SOURCES]', '[...importedCards]'],
+    ['b.title', 'b.copyValue'],
+    ['a.title.localeCompare(b.title', 'b.title.localeCompare(a.title'],
+    ['(a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" })', 'byTitle'],
+    ['a.title.localeCompare(b.title, "en", { sensitivity: "base" })', '{ return 0; }'],
+    ['{ sensitivity: "base" }', '{ get sensitivity() { return "base"; } }'],
+    ['].sort(', ']?.sort('],
+    ['{ sensitivity: "base" }),\n);', '{ sensitivity: "base" }),\n).reverse();'],
+    ['title: "Zed"', 'get title() { return "Zed"; }'],
   ])("rejects an unsupported sorted-copy expression: %s", (before, after) => {
     expect(() => communityEntries(sortedListing.replace(before, after))).toThrow(/stellar community/);
+  });
+
+  it("rejects a source array that is not a preceding literal", () => {
+    const declaration = sortedListing.match(/const ECOSYSTEM_CARD_SOURCES[\s\S]*?\] as const;\n/)[0];
+    expect(() => communityEntries(sortedListing.replace(declaration, "") + declaration)).toThrow(/stellar community/);
+    expect(() => communityEntries(sortedListing.replace(declaration, "const ECOSYSTEM_CARD_SOURCES = load();\n")))
+      .toThrow(/stellar community/);
   });
 
   it.each([
