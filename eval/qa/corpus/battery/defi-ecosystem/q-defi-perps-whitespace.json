@@ -7,18 +7,20 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "Perpetuals on Stellar are **emerging, not empty**. As of **2026-07-10**, Noether's current repo and official demo describe a testnet perp DEX with mainnet planned after audit; Zenex's FAQ also says its current deployment is testnet. Stellars Finance may be cited as a dated directory/SCF entrant, not as independently verified mainnet trading.\n\nNo production/mainnet perp DEX was confirmed in the audited operator docs, official meeting, current repos, Raven directories, and conflict sweeps. That is a source-relative snapshot, not proof that none can exist or launch later. Re-check before answering. Do not mix leveraged spot/lending-loop products into the perp roster without explaining the different primitive.",
+    "answer": "Perpetuals on Stellar are **emerging, and the category includes a confirmed live mainnet venue**. As of **2026-10-15**, Zenex (Zenith Protocols, formerly Hermes) runs a live Stellar mainnet perp DEX: its operator deployments page lists an active XLM-USD market, and the market contract shows on-chain fills. Kryon advertises XLM-PERP live on Stellar mainnet and has deployed mainnet contracts, but no on-chain settlement activity newer than 2026-08-25 was found, so its current trading availability is unresolved. Noether has deployed mainnet contracts in a paused, guarded mode and says trading opens after its independent audit; its public testnet stays live. Stellars Finance may be cited as a dated directory/SCF entrant; no mainnet trading evidence was found.\n\nThis roster is a dated, source-relative snapshot from operator pages, on-chain reads, Raven directories, and web sweeps; other venues may exist or launch. Re-check before answering, and require operator and on-chain evidence for any mainnet venue claim. Do not mix leveraged spot/lending-loop products into the perp roster without explaining the different primitive.",
     "keyFacts": [
-      "Names real testnet/pre-release entrants.",
-      "Treats the category as emerging rather than whitespace.",
-      "Bounds the no-mainnet conclusion to the audited sources and 2026-07-10 as-of date."
+      "Names Zenex as a live Stellar mainnet perpetual futures exchange.",
+      "Names at least one perp entrant that is not yet open on mainnet.",
+      "Treats the category as emerging rather than whitespace."
     ],
     "avoid": [
+      "Do NOT describe Zenex as testnet-only or pre-release; it runs a live mainnet market.",
+      "Do NOT call Zenex the only Stellar mainnet perp venue; Kryon also has mainnet perp contracts.",
       "Do NOT call a named entrant mainnet-live without current deployment evidence.",
-      "Do NOT state a permanent/global absence or claim nobody is building perps on Stellar.",
+      "Do NOT claim Stellar has no mainnet perp DEX or that nobody is building perps on Stellar.",
       "Do NOT conflate leveraged spot/lending loops with perpetual futures."
     ],
-    "notes": "EMERGING category, nuanced honesty (corrected vs Phase-1 'whitespace'). As of 2026-06 several SCF-funded teams ARE building perp/derivatives DEXes — Noether (testnet; demoed 2026-04-16 SDF mtg as 'first perpetual DEX on Stellar', mainnet pending audit), Stellars Finance (SCF perps grant, mainnet targeted), Zenex/Hermes (pre-release/testnet) — but there is NO independently-confirmed mainnet perp DEX yet. Turbolong is one-click leveraged SPOT (Blend recursive lending loops, no funding rates), NOT a perp. Best framing: 'emerging, multiple testnet entrants, no confirmed mainnet perp DEX yet.' Trap: claiming perps are fully live/mature on mainnet OR that the space is pure whitespace (both wrong); inventing a protocol; importing dYdX/GMX/Hyperliquid as Stellar-native. Freshness-soft: re-query the live directory. 2026-06-29 reviewed: re-verified all three entrants on Scout — Noether (perpetual futures, 'currently live on testnet', SCF $86.2K), Stellars Finance (Soroban perpetual futures for synthetic assets, SCF ~$119.3K), Zenex/formerly-Hermes (perp leveraged exchange, status 'Pre-Release', mainnet pending, SCF $150K); Turbolong confirmed as one-click leveraged SPOT on Blend pools, explicitly 'no perpetual futures, no funding rates' (Scout). Note Scout lists Noether/Stellars-Finance directory status as 'Live' but their own descriptions say testnet — kept the file's testnet/pre-mainnet framing (no independently-confirmed mainnet perp trading). Confidence kept medium (mainnet status moves).\nAlso good if the answer: Distinguishes true perp DEXes from leveraged-spot products — e.g. Turbolong is one-click leveraged SPOT via Blend lending loops (no funding rates), NOT a perpetual-futures DEX.\nGolden cites: Cite the source data (Scout directory / SDF developer-meeting demo) for the named emerging entrants and their testnet/pre-mainnet status.\nCorrected 2026-07-10. Grade dated source-universe honesty, not a permanent no-mainnet assertion or one fixed entrant roster."
+    "notes": "EMERGING category with a confirmed live mainnet venue (corrected vs Phase-1 'whitespace' and vs the 2026-07-10/2026-08-14 'no confirmed mainnet perp DEX' snapshot). As of 2026-10-15: Zenex/formerly-Hermes (Zenith Protocols, SCF-funded) is live on Stellar mainnet — operator deployments page lists an active XLM-USD market (core contracts deployed 2026-09-29) and a public mainnet RPC read shows fills and liquidations. Kryon: the operator page says 'XLM-PERP Now Live on Stellar Mainnet' and dates its launch post to 2026-05-28; its mainnet engine (created 2026-07-07) links a vault, oracle, gateway, liquidation, and insurance contracts settling in mainnet USDC, and its market API reports active=true; but the engine state and the gateway operator account last changed on 2026-08-25, so current trading availability is unresolved. Noether (SCF-funded; demoed 2026-04-16 SDF meeting) deployed mainnet contracts on 2026-10-03 in guarded mode: the market is paused (get_pause_state mode 1), the vault holds no funds, and trading opens after the independent audit; its docs intro still says 'Mainnet is planned but not live', which agrees that trading is not open. Stellars Finance (SCF perps grant): Scout records testnet contracts and empty mainnet addresses (human-verified 2026-08-28); no mainnet trading evidence found. Turbolong is one-click leveraged SPOT (Blend recursive lending loops, no funding rates), NOT a perp. DefiLlama's Stellar 'Derivatives' row Normal is a synthetic-asset/index protocol with $0 Stellar TVL, not a perp DEX; Sushi Stellar is listed as a DEX, not perps.\nGrader cautions: do not require a venue count or an exclusive roster. Calling Zenex 'the first on-chain perps venue on Stellar' is acceptable only as an attributed claim (Lumenloop's 2026-10-09 roundup; Zenith Protocols' X bio), because Kryon's operator dates an earlier XLM-PERP launch; do not reward an unattributed 'first' claim. Naming Kryon as a mainnet perp venue is acceptable when the answer attributes the live claim to its operator or cites its mainnet contracts; do not require Kryon. Saying Noether has mainnet contracts is correct only if the answer also says trading is not open; calling Noether open for mainnet trading is wrong while its market stays paused. An answer that quotes an older Scout Zenex description saying testnet is repeating a stale source (sls-091, fixed upstream).\nAlso good if the answer: Distinguishes true perp DEXes from leveraged-spot products — e.g. Turbolong is one-click leveraged SPOT via Blend lending loops (no funding rates), NOT a perpetual-futures DEX.\nGolden cites: Operator deployment pages or on-chain reads for mainnet status; Scout directory / SDF developer-meeting demo for the named entrants.\nCorrected 2026-10-15. Grade dated source-universe honesty, not a permanent roster, a venue count, or a single-venue claim."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -32,23 +34,53 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-14",
-    "reverifyBy": "2026-10-29",
+    "asOf": "2026-10-15",
+    "reverifyBy": "2027-01-13",
     "sources": [
       {
+        "class": "A",
+        "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+        "note": "Observed 2026-10-15: live Zenex deployment on Stellar mainnet; XLM-USD market Active; values checked 6 October 2026."
+      },
+      {
         "class": "B",
-        "ref": "https://github.com/NoetherDEX/noether",
-        "note": "Official Noether source repository."
+        "ref": "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
+        "note": "Operator docs source for the deployments page, generated from chain reads."
+      },
+      {
+        "class": "F",
+        "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+        "note": "Observed 2026-10-15: market instance present with the operator-listed code hash; recent fill, close, and liquidation events."
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.noether.exchange/protocol/contracts",
+        "note": "Observed 2026-10-15: mainnet stack deployed 2026-10-03 in guarded mode; market paused; trading opens after the independent audit."
+      },
+      {
+        "class": "F",
+        "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC, latestLedger 64960458, 2026-10-15T18:14Z",
+        "note": "Observed 2026-10-15: get_pause_state returns [1, 1791048662] (mode 1, halt-open)."
+      },
+      {
+        "class": "A",
+        "ref": "https://kryonprotocol.vercel.app/",
+        "note": "Observed 2026-10-15: operator says XLM-PERP is live on Stellar mainnet; the market API reports active=true."
+      },
+      {
+        "class": "F",
+        "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) for Kryon engine CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ, vault, order gateway, and oracle, latestLedger 64960822, 2026-10-15T18:44Z",
+        "note": "Observed 2026-10-15: mainnet engine instance present; last modified at a ledger that closed 2026-08-25T23:12:20Z."
       },
       {
         "class": "A",
         "ref": "https://noether.exchange/",
-        "note": "Observed 2026-08-14: audit in progress and public testnet; Mainnet opens after the audit clears."
+        "note": "Observed 2026-10-15: contracts live on Stellar mainnet, paused with no funds until the independent audit clears; testnet stays open."
       },
       {
-        "class": "A",
-        "ref": "https://docs.zenex.trade/faq",
-        "note": "Observed 2026-08-14: the current deployment runs on Stellar testnet."
+        "class": "B",
+        "ref": "https://github.com/NoetherDEX/noether",
+        "note": "Official Noether source repository."
       },
       {
         "class": "A",
@@ -58,54 +90,197 @@
     ],
     "corroboration": [
       {
-        "claim": "Noether and Zenex still identify their current deployments as testnet, and the audited source set did not confirm a mainnet perpetual DEX as of 2026-08-14.",
+        "claim": "Zenex runs a live Stellar mainnet perpetual futures market (XLM-USD) as of 2026-10-15; its core contracts were deployed on 2026-09-29.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
-            "ref": "https://noether.exchange/",
-            "observedAt": "2026-08-14",
-            "note": "Noether identifies the current deployment as a public testnet and names audit clearance as the Mainnet trigger."
+            "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+            "observedAt": "2026-10-15",
+            "note": "Operator page: 'This page lists every contract of the live Zenex deployment on Stellar mainnet'; XLM-USD market 'Status Active'; values 'checked on 6 October 2026'; core contracts 'deployed on 2026-09-29'."
           },
           {
             "class": "A",
-            "ref": "https://docs.zenex.trade/faq",
-            "observedAt": "2026-08-14",
-            "note": "Zenex says the current deployment runs on Stellar testnet with test tokens."
+            "ref": "https://zenex.trade/",
+            "observedAt": "2026-10-15",
+            "note": "Operator app home: 'Leveraged perpetual futures on Stellar. Launch mainnet, or practice on testnet with test funds first.'"
           },
           {
-            "class": "E",
-            "ref": "stellarDocs.search_meeting_notes: https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
-            "observedAt": "2026-08-14",
-            "note": "The indexed official meeting record describes a live testnet demo."
+            "class": "B",
+            "ref": "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
+            "observedAt": "2026-10-15",
+            "note": "Operator docs source at commit 9a6f5de (2026-10-06), generated from chain reads: 'Every contract of the live Zenex deployment on Stellar mainnet'."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+            "observedAt": "2026-10-15",
+            "note": "Market instance exists on the Public Global Stellar Network with wasm 02aa342f…943c, equal to the operator's listed code hash; the last ~17,000 ledgers hold open_fill 6, close_fill 4, liquidation 2, and create_order 10 events (latest 2026-10-15T08:28:32Z)."
           },
           {
             "class": "C",
-            "ref": "scout.searchProjects(q=perpetual futures), generatedAt 2026-08-14T05:52:24Z",
-            "observedAt": "2026-08-14",
-            "note": "Scout labels Noether Live with source-inherited status, confidence 0.45, and no statusSourceUrl; this does not override the operator's testnet statement."
+            "ref": "https://api.stellar.expert/explorer/public/contract/CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB",
+            "observedAt": "2026-10-15",
+            "note": "StellarExpert: market created 1790702451 (2026-09-29T17:20:51Z) by the operator-named owner GBDCXZ…QNDX; 944 invocations, 1,471 events, 0 errors."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+            "observedAt": "2026-10-15",
+            "note": "Lumenloop roundup (published 2026-10-09): 'Zenex perpetual futures exchange is also live on Stellar mainnet, the first on-chain perps venue on the network.'"
+          }
+        ]
+      },
+      {
+        "claim": "Noether's mainnet contracts are deployed but paused, and its trading is not open, as of 2026-10-15.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.noether.exchange/protocol/contracts",
+            "observedAt": "2026-10-15",
+            "note": "'Deployed contracts (Stellar mainnet, guarded mode) Deployed on 2026-10-03. The stack is live but dark: the market is paused (mode 1 …), the liquidity vault holds no funds … Trading opens after the independent audit.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://noether.exchange/",
+            "observedAt": "2026-10-15",
+            "note": "'The contracts are already live on Stellar mainnet — paused, with no funds inside, until the independent audit clears.'"
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC, latestLedger 64960458, 2026-10-15T18:14Z",
+            "observedAt": "2026-10-15",
+            "note": "Simulated get_pause_state returns [1, 1791048662]; mode 1 is the documented halt-open pause."
+          }
+        ]
+      },
+      {
+        "claim": "Kryon has deployed Stellar mainnet perpetual contracts, and its operator advertises live XLM-PERP trading, as of 2026-10-15.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://kryonprotocol.vercel.app/",
+            "observedAt": "2026-10-15",
+            "note": "Operator page: 'XLM-PERP Now Live on Stellar Mainnet USDC-settled perpetual futures with on-chain margin and settlement'; news list dates 'Protocol Launch XLM-PERP Goes Live' to May 28, 2026."
+          },
+          {
+            "class": "A",
+            "ref": "https://kryonprotocol.vercel.app/ (trade bundle /_next/static/chunks/0_qw2g1pvvdr~.js)",
+            "observedAt": "2026-10-15",
+            "note": "The bundle carries 'Public Global Stellar Network ; September 2015' and the engine address CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) for Kryon engine CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ, vault, order gateway, and oracle, latestLedger 64960822, 2026-10-15T18:44Z",
+            "observedAt": "2026-10-15",
+            "note": "The engine instance exists on mainnet (wasm bc054aff…e577) with Vault, Oracle, OrderGateway, Liquidation, and Insurance links, SettlementAsset CCW67T…MI75 (mainnet USDC SAC), and NextPositionId 9; the gateway Domain is the mainnet passphrase."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ",
+            "observedAt": "2026-10-15",
+            "note": "StellarExpert: engine created 1783442225 (2026-07-07T16:37:05Z); the order gateway shows 145 invocations."
+          }
+        ]
+      },
+      {
+        "claim": "Kryon's current mainnet trading availability on 2026-10-15.",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://kryonprotocol.vercel.app/api/markets/1",
+            "observedAt": "2026-10-15",
+            "note": "The operator market API returns XLM-PERP active=true with nonzero volume and open interest; this is an operator claim, not settlement proof."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) for Kryon engine CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ, vault, order gateway, and oracle, latestLedger 64960822, 2026-10-15T18:44Z",
+            "observedAt": "2026-10-15",
+            "note": "The engine instance was last modified at ledger 64124564, which closed 2026-08-25T23:12:20Z; no newer position state was found."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/accounts/GCGPFN26NHKERBIEVOZN7SIFMB7T2TIWRMUQAQRWIOEKYPZL4D3O3AP3/operations?order=desc",
+            "observedAt": "2026-10-15",
+            "note": "The gateway Operator account's latest contract invocation is 2026-08-25T23:12:20Z; the reviewer's 17,000-ledger engine event query also returned no events. Absence of recent activity does not prove closure."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ",
+            "observedAt": "2026-10-15",
+            "note": "Engine creation (2026-07-07) postdates the operator's 2026-05-28 launch post, so the launch date is unresolved."
+          }
+        ]
+      },
+      {
+        "claim": "Stellars Finance shows no mainnet trading evidence as of 2026-10-15.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=perpetual&limit=25",
+            "observedAt": "2026-10-15",
+            "note": "Scout: Stellars Finance Pre-Release; deployment.network testnet, human-verified 2026-08-28; lifecycle note 'testnet contracts populated; mainnet addresses empty in the operator bundle'."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellars.finance/",
+            "observedAt": "2026-10-15",
+            "note": "The operator app shows XLMUSD/ETHUSD/BTCUSD markets and a Faucet and states no mainnet launch. Direct curl returns HTTP 436, so the bundle network was not re-read."
+          }
+        ]
+      },
+      {
+        "claim": "Zenex is testnet-only or pre-release.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/faq",
+            "observedAt": "2026-10-15",
+            "note": "The operator FAQ no longer carries the 2026-08-14 testnet-deployment statement; it points readers to Deployments for addresses."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+            "observedAt": "2026-10-15",
+            "note": "The operator lists a live mainnet deployment with an active XLM-USD market."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+            "observedAt": "2026-10-15",
+            "note": "Mainnet fill and liquidation events show live trading, not a testnet-only deployment."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-10-15",
+      "by": "golden-truth lane G1, 2026-10-15 round (Claude Opus 5.5)",
       "evidence": [
-        "https://noether.exchange/",
-        "https://docs.zenex.trade/faq",
-        "https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
-        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
-        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "Sibling sweep: q-eco-defi-market-map remains claim-consistent; the register does not require matched scheduling metadata.",
-        "Structural re-form (compound-predicate): split the entrant and category-status requirements into atomic facts; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://noether.exchange/ — the current operator page still identifies a public testnet perpetuals entrant.",
-        "Live re-check 2026-08-27: https://docs.zenex.trade/faq — the current operator FAQ still supports an emerging category with another testnet entrant.",
-        "Sibling sweep 2026-08-27: grep perpetual|perps|mainnet-live|whitespace → q-defi-named-newer-protocols, q-eco-defi-market-map, q-crp-cme-xlm-futures-dates; no contradiction"
+        "https://docs.zenex.trade/deployments/contract-addresses",
+        "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
+        "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+        "https://api.stellar.expert/explorer/public/contract/CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB",
+        "https://docs.noether.exchange/protocol/contracts",
+        "Public mainnet RPC https://mainnet.sorobanrpc.com: simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC, latestLedger 64960458, 2026-10-15T18:14Z",
+        "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+        "Scout read 2026-10-15T18:12:41Z https://stellarlight.xyz/api/projects/search?q=Zenex&limit=1: shortDescription now says 'Live on Stellar mainnet'; deployment.network mainnet, basis human-verified (aggregator; not counted as corroboration).",
+        "Operator announcement channel https://x.com/ZenithProtocols: profile bio reads 'First Perpetuals Exchange on Stellar over at Zenex.Trade'; posts were not readable without login, so no dated launch post was read.",
+        "Independent Codex review of 6c6c4f9e (findings R1-R4) and its approval of a3c8b059: .agents/rounds/2026-10-15-truth-maintenance.md, Golden verdict",
+        "https://kryonprotocol.vercel.app/",
+        "https://kryonprotocol.vercel.app/api/markets/1",
+        "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) for Kryon engine CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ, vault, order gateway, and oracle, latestLedger 64960822, 2026-10-15T18:44Z",
+        "https://horizon.stellar.org/accounts/GCGPFN26NHKERBIEVOZN7SIFMB7T2TIWRMUQAQRWIOEKYPZL4D3O3AP3/operations?order=desc",
+        "Sibling sweep 2026-10-15 (after R1): grep -il 'zenex|noether|kryon|perpetual|perps' across eval/qa/corpus/battery → q-defi-perps-whitespace, q-eco-defi-market-map, q-defi-named-newer-protocols (updated together); q-crp-cme-xlm-futures-dates covers CME futures; no member asserts a venue count or an exclusive roster."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "improvements/resolved.json entry sls-091 — related upstream defect: Scout's Zenex shortDescription kept a testnet-only statement beside its sourced mainnet fields; fixed live (re-checked 2026-10-15)."
       ]
     },
     "origin": "raven-next q-defi-perps-whitespace"

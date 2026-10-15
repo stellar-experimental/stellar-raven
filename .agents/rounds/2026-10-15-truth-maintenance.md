@@ -29,7 +29,7 @@ Local dev server: pane `w3W:p57`, `http://localhost:8787`, worktree `round`.
 | R1b: distinct review of the parser fix | `w1015-r1` (continued), Claude Fable 5.1, high | `w3W:p56` | `drift`, read-only | `tmp/r1b/` | done: APPROVE; low findings applied in `c9773751` |
 | R2: challenger of A, B, and C | `w1015-r2`, Grok 4.7, high (vendor-diverse assumption attack; findings are leads) | `w3W:p58` | `round`, read-only | `tmp/r2/` | done: 9 leads; lead 3 reproduced as `sls-094` |
 | G1: golden-truth author, Zenex goldens | `w1015-g1`, Claude Opus 5.5, high | `w3W:p54` | `golden` / `w1015/golden` | three cases, register, generated QA files | done: commit `6c6c4f9e` |
-| RG: distinct golden reviewer | `w1015-c` (continued), Codex `gpt-6-astra`, high (differs from the Opus author and the orchestrator) | `w3W:p55` | `golden`, read-only | `tmp/rg/` | first pass CHANGES-NEEDED (4 findings); author fixing |
+| RG: distinct golden reviewer | `w1015-c` (continued), Codex `gpt-6-astra`, high (differs from the Opus author and the orchestrator) | `w3W:p55` | `golden`, read-only | `tmp/rg/` | APPROVE after two rounds (see Golden verdict) |
 
 Briefs: `/private/tmp/claude-501/w1015/keep/briefs/`.
 
@@ -74,6 +74,35 @@ Horizon monitor (local dev server `http://localhost:8787/mcp`): `MaxSupportedPro
 No eval instrument runs in this round. No paid method runs.
 
 ## Golden verdict
+
+Trigger: `sls-091` (Zenex) retired, and the consistency register's date trap ("any earlier verified
+Stellar mainnet perpetual DEX launch") had fired. Author G1 (Claude Opus 5.5, high); distinct
+reviewer RG (Codex `gpt-6-astra`, high), who did a blind re-verification first.
+
+Corroboration (reads on 2026-10-15, about 18:12Z to 18:46Z):
+
+| claim | verdict | independent source classes |
+|---|---|---|
+| Zenex runs a live Stellar mainnet perp market (XLM-USD); core contracts deployed 2026-09-29 | confirmed-as-of 2026-10-15 | operator deployments page and app; operator docs source; mainnet RPC (`getLedgerEntries` wasm hash equals the operator hash; recent `open_fill`, `close_fill`, `liquidation` events); StellarExpert (market `CAOZCITW…J42IB` created 2026-09-29T17:20:51Z); Lumenloop roundup 2026-10-09 |
+| Noether mainnet contracts are deployed but paused; trading not open | confirmed-as-of 2026-10-15 | operator site and contracts page; RPC simulation of `get_pause_state` returns `[1, 1791048662]`; StellarExpert |
+| Kryon has deployed mainnet perp contracts and its operator says trading is live | confirmed-as-of 2026-10-15 | operator page and trade bundle (mainnet passphrase, engine `CD6OMHCR…W6LZ`); RPC engine instance with mainnet USDC SAC; StellarExpert; market API `active: true` |
+| Kryon currently accepts and settles new trades | unverifiable | no on-chain settlement activity found after 2026-08-25T23:12:20Z (Horizon ledger 64124564); silence does not prove closure |
+| Zenex is testnet-only or pre-release | contradicted | the rows above |
+
+RG first pass: CHANGES-NEEDED. R1 (high): the author's "one open mainnet venue" claim omitted
+Kryon, which RG's blind search found. Also R2 (cluster-019 re-stamp kept a contradiction), R3 (a
+root-cause pointer to a receipt not yet merged), and R4 (missing freshness metadata). Fixed in
+`a3c8b059`. R3 was resolved by sequencing: #290 merged the `sls-091` receipt first.
+Recheck: APPROVE, with two low notes, fixed in `66f3ff2b`.
+
+Changed cases: `q-defi-perps-whitespace` (answer has no venue count and names Zenex as a confirmed
+live venue, Kryon with unresolved availability, and Noether paused), `q-eco-defi-market-map`, and
+`q-defi-named-newer-protocols` (both now `scheduled` with `truth.asOf` 2026-10-15). The `reverifyBy`
+dates are staggered: 2027-01-13, 2027-01-20, and 2027-01-27. The register changes are the
+cluster-010 note, the date trap (disposition stays open; it now also triggers on Noether opening or
+Kryon activity or closure), and cluster-005, cluster-019, and cluster-028 re-read and corrected.
+cluster-015 was re-read without change. No paid re-judge ran. Saved runs that said "Zenex is testnet"
+now fail the new avoid item.
 
 ## Improvements/issues/PR verdict
 
@@ -133,3 +162,10 @@ model-facing cost (under "Preserve structured routing intent…"); and the `didY
   files or runtime code.
 
 ## Final checklist
+
+- Every spawned agent finished, and its output is reconciled in this ledger.
+- Generated artifacts came from their scripts. The held drift artifacts were not committed.
+- Golden changes went through `golden-truth`, with root-cause capture and staggered dates.
+- `npm run improvements:lint -- --live` passed. Every posted URL was read back.
+- Open follow-ups are in `.agents/TODO.md`: the skills absorb, the hold cost, and the `didYouMean`
+  caveat. `sls-094` waits on Stellar-Light/stellarlight#1829.

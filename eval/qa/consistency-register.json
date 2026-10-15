@@ -91,15 +91,15 @@
           "q-scf-funding-by-category"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-15",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-funding-by-category changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-15",
+          "reason": "Provenance-only change 2026-10-15: member truth.verified.evidence now cites .agents/rounds/2026-10-15-truth-maintenance.md (Golden verdict) instead of a temporary review path; no judge-facing field changed. Prior reconciliation stands: G1 review reconciliation (2026-10-15): re-read both members. q-eco-defi-market-map's notes carried undated category buckets (User-Facing App 204, Tooling 109, Infra 104, Protocol/Contract 78) that disagreed with q-scf-funding-by-category's dated 2026-06-29 and 2026-07-10 counts; market-map now defers to the dated sibling. Both treat Scout category counts as dated corpus analytics, not official SCF accounting.",
           "verdict": "consistent"
         },
-        "note": "grader-caution candidate",
+        "note": "grader-caution candidate. Both members treat Scout category counts as dated corpus analytics, not official SCF accounting; q-eco-defi-market-map defers exact category counts to q-scf-funding-by-category's dated figures (reconciled 2026-10-15).",
         "memberContentSha256": {
-          "q-eco-defi-market-map": "a305122c3367bd9d794807b76265552e49e8ba16f90405ecc8d3e1e388cfd8a2",
+          "q-eco-defi-market-map": "5b5bbaea460f83b388bd361d78017633ff8504366c8555a4d853dd4c8ed81103",
           "q-scf-funding-by-category": "7929f3bc2bff0cd171d1602155ef7c17ae4e706059ee283469a63f0caf6d932c"
         }
       },
@@ -270,17 +270,17 @@
           "q-eco-defi-market-map"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-15",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-named-newer-protocols changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-15",
+          "reason": "Provenance-only change 2026-10-15: member truth.verified.evidence now cites .agents/rounds/2026-10-15-truth-maintenance.md (Golden verdict) instead of a temporary review path; no judge-facing field changed. Prior reconciliation stands: G1 review reconciliation (2026-10-15, finding R1): the members dropped the single-venue count. Each now names Zenex as a confirmed live mainnet venue; the perps case and market-map notes record Kryon's mainnet contracts with unresolved current availability (engine state last changed 2026-08-25). Noether stays paused on mainnet; Stellars Finance shows no mainnet trading evidence. All three members were re-read in full; none states a venue count or an exclusive roster.",
           "verdict": "consistent"
         },
-        "note": "All three agree on both halves: perps are EMERGING (Noether testnet, Stellars Finance mainnet-targeted, Zenex pre-release — so NOT whitespace) AND no perp DEX is confirmed mainnet-live; all three exclude Turbolong as leveraged spot. The whitespace-vs-live split that silently drifted in the ancestor corpora is coherently pinned here, including the Scout-status-vs-self-description discrepancy (directory 'Live' vs own 'testnet') documented inside q-defi-perps-whitespace.",
+        "note": "All three agree as of 2026-10-15: perps are EMERGING, NOT whitespace; Zenex is a confirmed live mainnet perp DEX (operator deployments page plus on-chain fills); Kryon has mainnet perp contracts and claims live trading, but its current availability is unresolved; Noether's mainnet contracts stay paused until its audit clears; Stellars Finance shows no mainnet trading evidence. No member may call Zenex testnet-only, claim Stellar has no mainnet perp DEX, or state an exclusive venue count; all three exclude Turbolong as leveraged spot. The whitespace-vs-live split that silently drifted in the ancestor corpora stays pinned here; the former Scout-description-vs-deployment conflict for Zenex was sls-091 (fixed upstream).",
         "memberContentSha256": {
-          "q-defi-named-newer-protocols": "45d5b291eccf922e1cd11f29886d9b147eec7711968533412cb348f5276699fb",
-          "q-defi-perps-whitespace": "f3d2a74b62370c55174353447c0664e232fee75a7cb5a9b5484849cd0923b643",
-          "q-eco-defi-market-map": "a305122c3367bd9d794807b76265552e49e8ba16f90405ecc8d3e1e388cfd8a2"
+          "q-defi-named-newer-protocols": "4de0ab47de9fbaafb56a2fdcb18bd441732ac02e09da18d1f96e0e10bab7f7fd",
+          "q-defi-perps-whitespace": "6603cb3bf70e9114d4aa03d47cb1a35cc95b8e64f519a087e9c3dcd3680ca0ba",
+          "q-eco-defi-market-map": "5b5bbaea460f83b388bd361d78017633ff8504366c8555a4d853dd4c8ed81103"
         }
       },
       {
@@ -442,10 +442,10 @@
           "q-tool-cctp-stellar-integration"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-08",
+        "lastChecked": "2026-10-15",
         "reSwept": {
-          "date": "2026-09-08",
-          "reason": "The two changed cases preserve every RWA issuer, date, live-versus-planned, and product fact. The CRDT note now limits its partial-grade caution to active Lumenloop finding ll-012. The prior consistency verdict stands.",
+          "date": "2026-10-15",
+          "reason": "Provenance-only change 2026-10-15: member truth.verified.evidence now cites .agents/rounds/2026-10-15-truth-maintenance.md (Golden verdict) instead of a temporary review path; no judge-facing field changed. Prior reconciliation stands: G1 review reconciliation (2026-10-15): re-read all eleven members against the note. CRDT 2025-09-12 (q-defi-wisdomtree-crdt), USDY 2025-09-17 (q-defi-ondo-usdy), PYUSD 2025-09-18 Paxos-issued (q-eco-pyusd-stellar-freshness, q-eco-stablecoins-on-stellar), EURC 2023-09-26 (q-asset-usdc-eurc-issuer), BENJI since 2021, CCTP 2026-05-18 support versus 2026-05-19 announcement (q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration), and Figure YLDS 2026-05-05 with DTCC planned (q-rwa-projects-tokenizing-stellar) agree. q-defi-named-newer-protocols changed only Zenex status and freshness metadata and has no RWA or stablecoin claim.",
           "verdict": "consistent"
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC DTC service planned H1 2027 NOT live. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
@@ -453,7 +453,7 @@
           "q-asset-rwa-tokenized-freshness": "649c9c883815552fcd20408646068a68ded83206853af30bbf190e69273f2f66",
           "q-asset-usdc-eurc-issuer": "ef69b37bfe9c988eb1a3979d16da6d9b8f526708dfcbb489403ad30b1d169dee",
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
-          "q-defi-named-newer-protocols": "45d5b291eccf922e1cd11f29886d9b147eec7711968533412cb348f5276699fb",
+          "q-defi-named-newer-protocols": "4de0ab47de9fbaafb56a2fdcb18bd441732ac02e09da18d1f96e0e10bab7f7fd",
           "q-defi-ondo-usdy": "6b3f7e4fde78404d9df4a9b411845f4bf6ad2041e07c0e4ac8b7b7dc69a623f5",
           "q-defi-wisdomtree-crdt": "12bd370e7313e8fbc61b85d2a0d84c8a81c81ae2b08bfadaf26466783466433b",
           "q-eco-pyusd-stellar-freshness": "0a3a899e077d7072f2dc7ba0a286ba7e9ec11620a0abdbfa7580ecc2f39e640b",
@@ -575,23 +575,23 @@
       },
       {
         "id": "cluster-019",
-        "label": "oracles: Reflector leading but not sole provider",
+        "label": "oracles: Reflector is not the sole provider",
         "members": [
           "q-defi-reflector-oracle",
           "q-eco-defi-market-map",
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-15",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-verified-members changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-15",
+          "reason": "Provenance-only change 2026-10-15: member truth.verified.evidence now cites .agents/rounds/2026-10-15-truth-maintenance.md (Golden verdict) instead of a temporary review path; no judge-facing field changed. G1 review reconciliation (findings R2 and N2): the prior note claimed six members agreed Reflector was dominant; the cluster has three members. q-eco-defi-market-map's notes no longer reward an oracle leadership ranking and name Band, RedStone, DIA, Lightecho, and Orally as alternatives. q-defi-reflector-oracle names no alternative providers; it rejects unsupported dominance and integration rankings and treats alternative-provider status as source-relative. q-scf-verified-members has no oracle claim. Re-read all three members; the note now states only the supported agreement that Reflector is not the sole oracle.",
           "verdict": "consistent"
         },
-        "note": "All six frame Reflector as the dominant/most-integrated Stellar oracle while explicitly forbidding 'only oracle' claims; Band, RedStone (mainnet since Mar 2026), DIA, Lightecho, Orally named consistently.",
+        "note": "The members agree only that Reflector is NOT the sole Stellar oracle. q-eco-defi-market-map names alternative providers (Band, RedStone, DIA, Lightecho, Orally) and does not reward an oracle dominance or most-integrated ranking without a dated, stated metric. q-defi-reflector-oracle rejects unsupported dominance and integration rankings and treats alternative-provider status as source-relative, requiring dated provider evidence (reconciled 2026-10-15). q-scf-verified-members covers SCF governance tiers and carries no oracle claim.",
         "memberContentSha256": {
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
-          "q-eco-defi-market-map": "a305122c3367bd9d794807b76265552e49e8ba16f90405ecc8d3e1e388cfd8a2",
+          "q-eco-defi-market-map": "5b5bbaea460f83b388bd361d78017633ff8504366c8555a4d853dd4c8ed81103",
           "q-scf-verified-members": "e1ba8e94388644ec52fedddc28e6d153e930c4bc5c79ee4e763d5446608680bc"
         }
       },
@@ -810,15 +810,15 @@
           "q-eco-stablecoins-on-stellar"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-15",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-named-newer-protocols, q-eco-pyusd-stellar-freshness, q-eco-stablecoins-on-stellar changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-15",
+          "reason": "Provenance-only change 2026-10-15: member truth.verified.evidence now cites .agents/rounds/2026-10-15-truth-maintenance.md (Golden verdict) instead of a temporary review path; no judge-facing field changed. Prior reconciliation stands: G1 review reconciliation (2026-10-15): re-read all three members. q-eco-pyusd-stellar-freshness answers and q-eco-stablecoins-on-stellar avoid items agree on PayPal-branded, Paxos-issued PYUSD with the dated LLC-versus-N.A. disagreement; the older 'Issuer = PayPal (with Paxos)' shorthand in the PYUSD notes is superseded by its own GT-20 line. q-defi-named-newer-protocols has no PYUSD claim and changed only Zenex status and freshness metadata.",
           "verdict": "consistent"
         },
         "note": "resolved as PayPal-branded/Paxos-issued with explicit dated LLC-versus-N.A. disagreement",
         "memberContentSha256": {
-          "q-defi-named-newer-protocols": "45d5b291eccf922e1cd11f29886d9b147eec7711968533412cb348f5276699fb",
+          "q-defi-named-newer-protocols": "4de0ab47de9fbaafb56a2fdcb18bd441732ac02e09da18d1f96e0e10bab7f7fd",
           "q-eco-pyusd-stellar-freshness": "0a3a899e077d7072f2dc7ba0a286ba7e9ec11620a0abdbfa7580ecc2f39e640b",
           "q-eco-stablecoins-on-stellar": "fac467330cc87f7f3da94d70df3bbdcb8eb6708ce34db93b414ea30c2cac7e42"
         }
@@ -3805,20 +3805,20 @@
         }
       },
       {
-        "triggerDateEvent": "Noether audit clearance, Noether Mainnet opening, or any earlier verified Stellar mainnet perpetual DEX launch",
-        "requiredRecheck": "Re-fetch Noether and Zenex operator pages, the official Noether meeting record, and current Scout status evidence; then re-evaluate the named-entrant mainnet-live avoid rule.",
-        "disposition": "open — Noether and Zenex still identify testnet deployments as of 2026-08-14; q-defi-perps-whitespace reverifyBy 2026-10-29.",
+        "triggerDateEvent": "Noether audit clearance, Noether mainnet trading opening (its market leaving pause), new on-chain Kryon settlement activity or a verified Kryon closure, or any other verified Stellar mainnet perpetual DEX opening",
+        "requiredRecheck": "Re-fetch the Zenex deployments page, the Kryon operator page and market API, the Noether contracts page and site, and the official Noether meeting record; read the Noether market get_pause_state, recent Zenex market events, and the Kryon engine instance and gateway activity through public mainnet RPC and Horizon; check current Scout status evidence; then re-evaluate the entrant roster, the Zenex, Kryon, and named-entrant mainnet avoid rules, and keep the roster free of an exclusive venue count.",
+        "disposition": "open — the earlier-launch clause fired: Zenex runs a live mainnet XLM-USD market (core contracts deployed 2026-09-29), and the case was corrected 2026-10-15. Kryon has mainnet contracts but its current availability is unresolved (engine state last changed 2026-08-25). Noether's mainnet market stays paused (get_pause_state [1, 1791048662]) until its audit clears; q-defi-perps-whitespace reverifyBy 2027-01-13.",
         "caseIds": [
           "q-defi-perps-whitespace"
         ],
         "memberContentSha256": {
-          "q-defi-perps-whitespace": "f3d2a74b62370c55174353447c0664e232fee75a7cb5a9b5484849cd0923b643"
+          "q-defi-perps-whitespace": "6603cb3bf70e9114d4aa03d47cb1a35cc95b8e64f519a087e9c3dcd3680ca0ba"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-10-15",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): this date trap carried a member hash but no verdict at daaa829; member q-defi-perps-whitespace changed by form-only lint fixes with refreshed truth.verified; member re-read, the testnet-only entrant claims and the 2026-10-29 reverifyBy are unchanged; the trap disposition stays open; stamped consistent.",
+          "date": "2026-10-15",
+          "reason": "Provenance-only change 2026-10-15: member truth.verified.evidence now cites .agents/rounds/2026-10-15-truth-maintenance.md (Golden verdict) instead of a temporary review path; no judge-facing field changed. Prior reconciliation stands: G1 review reconciliation (2026-10-15, finding R1): the member no longer states a venue count. It encodes Zenex as confirmed live, Kryon as a mainnet candidate with unresolved availability, and Noether as paused on mainnet. The trap stays open for Noether's opening, a Kryon availability change, or another venue.",
           "verdict": "consistent"
         }
       }
