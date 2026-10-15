@@ -1,6 +1,6 @@
 # Answer-style guidance as result data — design decision
 
-Status: version 1 is implemented on branch `w1010/a`. The paired QA measurement ran on
+Status: version 1 is implemented on closed PR #268 (`git fetch origin pull/268/head`). The paired QA measurement ran on
 2026-10-11. The independent result review ([`review-result-astra.md`](review-result-astra.md))
 rates it INDETERMINATE: the candidate arm shows a repeated Strupey attribution failure, but its
 baseline confirmation re-judge is T4. See [`measurement-ledger.md`](measurement-ledger.md).
