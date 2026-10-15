@@ -1,7 +1,7 @@
 ---
 id: sls-094
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-10-15
 upstreamTitle: Project search labels a typo-distance name recovery strict
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-10-15 upstream source at 46d6e1ad4c02a4639bbe14ed4736316fb215af5c, src/app/api/projects/search/route.ts. Lines 1280-1326 set didYouMean when a fuzzy name lookup recovers one project. Lines 1889 and 1983 then run the name tier and the token count against didYouMean.to, so the ladder reports strict. Lines 2068-2080 (the sls-076 rule) set corrected only when every row is correctionMediated through SPELLING_CORRECTIONS, so a didYouMean recovery keeps strict.
   - 2026-10-15 live OpenAPI 1.9.78 defines corrected as "the rows matched only through a known spelling correction … the query token does not occur in them". It describes didYouMean as "the results are for `to`, not for what was asked".
   - Found by the vendor-diverse challenger lane of the 2026-10-15 truth-maintenance round (.agents/rounds/2026-10-15-truth-maintenance.md) and reproduced by the orchestrator. Dedupe 2026-10-15. sls-076 (resolved) covers SPELLING_CORRECTIONS on project search. sls-093 covers repo search. Neither covers the didYouMean path.
+  - upstream issue filed 2026-10-15: https://github.com/Stellar-Light/stellarlight/issues/1829
 ---
 
 ## Finding

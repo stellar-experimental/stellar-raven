@@ -23,13 +23,13 @@ Local dev server: pane `w3W:p57`, `http://localhost:8787`, worktree `round`.
 | B: author `sls-091`, `sls-092` | `w1015-b`, Codex `gpt-6.1-sol`, high | `w3W:p54` | `sls-data` / `w1015/sls-data` | two finding files, generated `INDEX.md`, `tmp/` | done: both fixed; commit `18a6e159` |
 | C: drift assessment for #223 | `w1015-c`, Codex `gpt-6-astra`, high (Codex frontier: dense routing analysis) | `w3W:p55` | `drift` / `w1015/drift` | generated artifacts via scripts, `tmp/` | done: hold stands |
 | D: independent review of PR #280 | `w1015-d`, Codex `gpt-6.1-sol`, high (author was Claude; a different family re-runs the build) | `w3W:p56` | `pr280` (detached) | `tmp/` | done: CHANGES-NEEDED (6 findings); fixed by the orchestrator in `ea5f0e7f` |
-| D2: re-review of the PR #280 fix | `w1015-d2`, Codex `gpt-6.1-sol`, high | `w3W:p53` | `pr280` / `pr280-fix` | `tmp/d2/` | running |
+| D2: re-review of the PR #280 fix | `w1015-d2`, Codex `gpt-6.1-sol`, high | `w3W:p53` | `pr280` / `pr280-fix` | `tmp/d2/` | see Golden verdict |
 | C2: stellar-community parser repair and skills-only absorb test | `w1015-c` (continued), Codex `gpt-6-astra`, high | `w3W:p55` | `drift` / `w1015/drift` | `scripts/lib/stellar-community.mjs`, its test, generated skills artifacts | running |
 | R1: distinct reviewer of A and B | `w1015-r1`, Claude Fable 5.1, high (matched tier for product and API truth; differs from the Codex authors and the Opus orchestrator) | `w3W:p56` | `round`, read-only | `tmp/r1/` | done: RETIRE all five |
 | R1b: distinct review of the parser fix | `w1015-r1` (continued), Claude Fable 5.1, high | `w3W:p56` | `drift`, read-only | `tmp/r1b/` | done: APPROVE; low findings applied in `c9773751` |
 | R2: challenger of A, B, and C | `w1015-r2`, Grok 4.7, high (vendor-diverse assumption attack; findings are leads) | `w3W:p58` | `round`, read-only | `tmp/r2/` | done: 9 leads; lead 3 reproduced as `sls-094` |
 | G1: golden-truth author, Zenex goldens | `w1015-g1`, Claude Opus 5.5, high | `w3W:p54` | `golden` / `w1015/golden` | three cases, register, generated QA files | done: commit `6c6c4f9e` |
-| RG: distinct golden reviewer | `w1015-c` (continued), Codex `gpt-6-astra`, high (differs from the Opus author and the orchestrator) | `w3W:p55` | `golden`, read-only | `tmp/rg/` | running |
+| RG: distinct golden reviewer | `w1015-c` (continued), Codex `gpt-6-astra`, high (differs from the Opus author and the orchestrator) | `w3W:p55` | `golden`, read-only | `tmp/rg/` | first pass CHANGES-NEEDED (4 findings); author fixing |
 
 Briefs: `/private/tmp/claude-501/w1015/keep/briefs/`.
 
@@ -117,5 +117,19 @@ model-facing cost (under "Preserve structured routing intent…"); and the `didY
 (under "Stop identity substitution on spelling-corrected matches"). The parser repair is PR #288.
 
 ## Decisions
+
+- 2026-10-15: the owner approved three sets of outward posts. These are the resolution comments
+  and inbound closes for `sls-089` to `sls-093`, the `sls-094` filing, and a hold status on #223.
+- Posted and read back (author `kalepail`; snapshot commit `b7cd481d`):
+  Stellar-Light/stellarlight#1751 (comment 6199677257), #1809 (6199677761), #1810 (6199678265),
+  #1817 (6199678664), #1818 (6199679196). The comments skip the PRs, per the no-noise rule.
+- Inbound #283 to #287 acknowledged and closed as completed (comments 6199693343, 6199694214,
+  6199695153, 6199696043, 6199697067).
+- `sls-089` to `sls-093` retired with `npm run improvements:resolve` (receipts in
+  `improvements/resolved.json`).
+- `sls-094` filed as Stellar-Light/stellarlight#1829 (`reported-upstream`).
+- #223 hold status: comment 6199700868.
+- Merged: #280 (`39f530c9`), #288 (`a0b4e171`), #289 (`b7cd481d`). No deploy: none changes served
+  files or runtime code.
 
 ## Final checklist
