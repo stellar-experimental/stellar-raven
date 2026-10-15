@@ -232,7 +232,7 @@ for WT in "<baseline server worktree>" "<candidate server worktree>"; do
 done   # the two lines must be identical; record the salt and the hash
 
 # Candidate commit must resolve in the runner repository (P3).
-git fetch <remote> w1010/a && git cat-file -e "<candidate revision>^{commit}"
+git fetch <remote> pull/268/head && git cat-file -e "<candidate revision>^{commit}"
 git status --porcelain=v1 --untracked-files=all   # must print nothing
 ```
 

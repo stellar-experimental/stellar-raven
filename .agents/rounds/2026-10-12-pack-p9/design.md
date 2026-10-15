@@ -198,7 +198,7 @@ Rows without a saved `caseInput` read the cases of the p8 tree (`e7ca3fb0`). The
 - The measure under-counts when a value has a separator but is not quoted (older packs), or when a
   number is written with thousands separators. It never counts a field of another record.
 - An answer that names a record by another form, such as a slug, does not match its name.
-- The revisions `d15a4ce5`, `7e00ede2`, and `36e77d40` are on the PR #264 branch (`origin/w1010/r`), not on `main`.
+- The revisions `d15a4ce5`, `7e00ede2`, and `36e77d40` are on closed PR #264 (`git fetch origin pull/264/head`), not on `main`.
 
 ## Review RJ reconciliation
 
