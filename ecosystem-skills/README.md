@@ -85,6 +85,8 @@ full `/v1/skills` set observable.
 - **Community source directory snapshot.** `community.json` records Community names and links from `stellar/stellar-dev-skill main`.
   The drift check reads the exported `ECOSYSTEM_CARDS` array in
   [`site/src/data/skills.ts`](https://github.com/stellar/stellar-dev-skill/blob/main/site/src/data/skills.ts).
+  The parser also accepts a sorted copy of one preceding local `const` literal array.
+  It validates a side-effect-free `localeCompare` callback on literal identity fields without executing it.
   The site's [generator](https://github.com/stellar/stellar-dev-skill/blob/main/site/scripts/generate-llms-txt.mjs)
   uses the same array for the `Community Built` listing in `llms.txt`.
   The 2026-10-01 check found 30 entries, including candidates absent from `catalog.json`.
@@ -93,7 +95,7 @@ full `/v1/skills` set observable.
   The check parses literal titles and links without executing upstream code.
   It ignores descriptions, including Markdown bullets and headings, and the snapshot date.
   An empty or missing array, invalid syntax, or unsupported entry identity fails the check.
-  Any `ECOSYSTEM_CARDS` reference outside its declaration also fails the check.
+  Other references to `ECOSYSTEM_CARDS` or its source array fail the check, including aliases and mutations.
   `build-index.mjs` renders the snapshot as discovery links.
   Each candidate needs a separate pin and exposure review before Raven can serve it.
   To refresh only this directory, run `node scripts/lib/stellar-community.mjs ecosystem-skills/community.json`, then `node ecosystem-skills/build-index.mjs`.

@@ -1,10 +1,48 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 import { COMMUNITY_URL, communityEntries, communityIndex, compareCommunity } from "../scripts/lib/stellar-community.mjs";
 
 const card = (title, copyValue, description = "Description.") => ({ title, copyValue, description });
 const listing = (cards) => `export const ECOSYSTEM_CARDS = ${JSON.stringify(cards)} as const;`;
+const sortedListing = readFileSync(new URL("./fixtures/stellar-community-sorted.ts", import.meta.url), "utf8");
 
 describe("Community directory projection", () => {
+  it("reads a sorted copy of a local literal array without executing the module", () => {
+    expect(communityEntries("throw new Error('upstream executed');\n" + sortedListing)).toEqual([
+      { title: "Alpha", url: "https://example.com/a" },
+      { title: "Zed", url: "https://example.com/z" },
+    ]);
+  });
+
+  it("follows the local binding and comparator parameters rather than fixed names", () => {
+    const renamed = sortedListing.replaceAll("ECOSYSTEM_CARD_SOURCES", "cards")
+      .replace('(a, b) => a.title.localeCompare(b.title', '(left, right) => left.title.localeCompare(right.title');
+    expect(communityEntries(renamed)).toEqual(communityEntries(sortedListing));
+  });
+
+  it.each([
+    ['.sort(', '.filter('],
+    ['a.title.localeCompare(b.title, "en", { sensitivity: "base" })', 'rename(a, b)'],
+    ['a.title.localeCompare(b.title, "en", { sensitivity: "base" })', '(a.title = "Renamed", 0)'],
+    ['"en"', 'getLocale()'],
+    ['{ sensitivity: "base" }', '{ ...options }'],
+    ['[...ECOSYSTEM_CARD_SOURCES]', '[...ECOSYSTEM_CARD_SOURCES, ...extra]'],
+    ['[...ECOSYSTEM_CARD_SOURCES]', 'ECOSYSTEM_CARD_SOURCES'],
+    ['const ECOSYSTEM_CARD_SOURCES', 'let ECOSYSTEM_CARD_SOURCES'],
+    ['[...ECOSYSTEM_CARD_SOURCES]', '[...importedCards]'],
+  ])("rejects an unsupported sorted-copy expression: %s", (before, after) => {
+    expect(() => communityEntries(sortedListing.replace(before, after))).toThrow(/stellar community/);
+  });
+
+  it.each([
+    'ECOSYSTEM_CARD_SOURCES[0].title = "Renamed";',
+    'const alias = ECOSYSTEM_CARD_SOURCES;',
+    'function later() { return ECOSYSTEM_CARD_SOURCES; }',
+    'ECOSYSTEM_CARDS.push({ title: "Two", copyValue: "https://example.com/two" });',
+  ])("rejects references outside the sorted-copy declarations: %s", (suffix) => {
+    expect(() => communityEntries(sortedListing + suffix)).toThrow(/reference outside its declaration/);
+  });
+
   it("ignores descriptions, other arrays, line endings, and entry order", () => {
     const text = `export const OTHER = [{ title: "Other", copyValue: "https://example.com/other" }];\n` +
       listing([card("Zed", "https://example.com/z", "Desc.\n- Plain bullet\n## Heading\n* [Fake](https://example.com/fake): Text."), card("Alpha", "https://example.com/a")]);
