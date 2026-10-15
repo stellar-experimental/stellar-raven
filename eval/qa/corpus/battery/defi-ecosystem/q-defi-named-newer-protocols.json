@@ -15,10 +15,11 @@
     ],
     "avoid": [
       "Do NOT call OrbitCDP unqualifiedly live or definitively shut down/pivoted while current sources conflict.",
-      "Do NOT call Zenex mainnet-live, FxDAO production-ready, or JST a current Stellar-specific DeFi protocol without dated evidence.",
+      "Do NOT call FxDAO production-ready or JST a current Stellar-specific DeFi protocol without dated evidence.",
+      "Do NOT describe Zenex as testnet-only or pre-release; it runs a live mainnet market.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Scout found OrbitCDP and Zenex directly. FxDAO was verified primarily through Scout codeReferences plus GitHub repo metadata, not a first-class project row in the returned search. JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nAccurately quoting the canonical Scout source on OrbitCDP's `Inactive` lifecycle label is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "Scout found OrbitCDP and Zenex directly. Zenex (Zenith Protocols, formerly Hermes) is a Soroban perpetual futures exchange; as of 2026-10-15 its operator deployments page lists a live Stellar mainnet XLM-USD market (core contracts deployed 2026-09-29), and a public mainnet RPC read shows fills. The 2026-08-29 testnet reading of the Zenex FAQ is superseded. FxDAO was verified primarily through Scout codeReferences plus GitHub repo metadata, not a first-class project row in the returned search. JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nAccurately quoting the canonical Scout source on OrbitCDP's `Inactive` lifecycle label is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -45,9 +46,9 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
-        "ref": "https://docs.zenex.trade/faq",
-        "note": "class inferred at migration"
+        "class": "A",
+        "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+        "note": "Observed 2026-10-15: live Zenex deployment on Stellar mainnet."
       },
       {
         "class": "D",
@@ -85,38 +86,94 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Zenex runs a live Stellar mainnet perpetual futures market (XLM-USD) as of 2026-10-15; its core contracts were deployed on 2026-09-29.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+            "observedAt": "2026-10-15",
+            "note": "Operator page: 'This page lists every contract of the live Zenex deployment on Stellar mainnet'; XLM-USD market 'Status Active'; values 'checked on 6 October 2026'; core contracts 'deployed on 2026-09-29'."
+          },
+          {
+            "class": "A",
+            "ref": "https://zenex.trade/",
+            "observedAt": "2026-10-15",
+            "note": "Operator app home: 'Leveraged perpetual futures on Stellar. Launch mainnet, or practice on testnet with test funds first.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
+            "observedAt": "2026-10-15",
+            "note": "Operator docs source at commit 9a6f5de (2026-10-06), generated from chain reads: 'Every contract of the live Zenex deployment on Stellar mainnet'."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+            "observedAt": "2026-10-15",
+            "note": "Market instance exists on the Public Global Stellar Network with wasm 02aa342f…943c, equal to the operator's listed code hash; the last ~17,000 ledgers hold open_fill 6, close_fill 4, liquidation 2, and create_order 10 events (latest 2026-10-15T08:28:32Z)."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB",
+            "observedAt": "2026-10-15",
+            "note": "StellarExpert: market created 1790702451 (2026-09-29T17:20:51Z) by the operator-named owner GBDCXZ…QNDX; 944 invocations, 1,471 events, 0 errors."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+            "observedAt": "2026-10-15",
+            "note": "Lumenloop roundup (published 2026-10-09): 'Zenex perpetual futures exchange is also live on Stellar mainnet, the first on-chain perps venue on the network.'"
+          }
+        ]
+      },
+      {
+        "claim": "Zenex is testnet-only or pre-release.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/faq",
+            "observedAt": "2026-10-15",
+            "note": "The operator FAQ no longer carries the 2026-08-14 testnet-deployment statement; it points readers to Deployments for addresses."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+            "observedAt": "2026-10-15",
+            "note": "The operator lists a live mainnet deployment with an active XLM-USD market."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+            "observedAt": "2026-10-15",
+            "note": "Mainnet fill and liquidation events show live trading, not a testnet-only deployment."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-10-15",
+      "by": "golden-truth lane G1, 2026-10-15 round (Claude Opus 5.5)",
       "evidence": [
-        "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
-        "2026-07-11 localhost:8787 search→execute probe observed: a live DeFi directory query returned 39 matches; DeFindex, HedgePay, and HiYield appeared on the first page.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
-        "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: OrbitCDP's Scout lifecycle label proves deployment status.",
-        "Sibling sweep 2026-08-27: grep OrbitCDP|FxDAO|Zenex|zenex|JST → q-defi-blend-alternatives, q-defi-etherfuse-stablebonds, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-defi-rwa-scf-similar, q-eco-defi-market-map; no contradiction",
-        "Structural re-form (long-fact): Shortened the dated-observation fact; truth unchanged.",
-        "Live re-check 2026-08-29: https://fxdao.io/ — the operator page supplies current, source-supported FxDAO identity and status observations.",
-        "Live re-check 2026-08-29: https://docs.zenex.trade/faq — the operator FAQ labels the current Zenex deployment as testnet, confirming status needs an as-of date.",
-        "Live re-check 2026-08-29: https://orbitcdp.finance/ — the operator page identifies OrbitCDP as live on Stellar while the case preserves the source conflict.",
-        "Live re-check 2026-08-29: https://www.defindex.io/ — the operator page confirms a current named newer Stellar DeFi protocol.",
-        "Live re-check 2026-08-29: https://fxdao.io/ — the operator page describes FxDAO as a Stellar stablecoin protocol in development.",
-        "Live re-check 2026-08-29: https://orbitcdp.finance/ — the operator page describes OrbitCDP's collateralized debt protocol.",
-        "Live re-check 2026-08-29: https://docs.zenex.trade/faq — the operator FAQ describes Zenex as a Stellar Soroban perpetual futures exchange on testnet.",
-        "Sibling sweep 2026-08-29: grep FxDAO|OrbitCDP|Zenex|JST|DeFindex → q-defi-defindex-honest, q-defi-perps-whitespace, q-defi-blend-alternatives, q-eco-defi-market-map, q-defi-named-newer-protocols; no contradiction"
+        "Zenex status only: the FxDAO, OrbitCDP, JST, and 2026-07-11 directory observations are unchanged and were not re-measured.",
+        "https://docs.zenex.trade/deployments/contract-addresses",
+        "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
+        "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+        "https://api.stellar.expert/explorer/public/contract/CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB",
+        "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+        "https://docs.zenex.trade/faq observed 2026-10-15: the testnet-deployment statement is gone.",
+        "Full corroboration matrix: q-defi-perps-whitespace truth.corroboration (same lane, same date).",
+        "Sibling sweep 2026-10-15: grep -il 'zenex|noether|perpetual|perps' across eval/qa/corpus/battery → q-defi-perps-whitespace, q-eco-defi-market-map, q-defi-named-newer-protocols (all three updated together); q-crp-cme-xlm-futures-dates covers CME futures, not Stellar perp DEXes; no contradiction."
       ],
       "rootCause": [
-        "improvements/stellar-light-scout/sls-024 — lifecycle labels conflict with operator deployment language",
-        "eval-side entity resolution promoted one directory status and treated a failed exact search as nonexistence",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift",
+        "improvements/resolved.json entry sls-091 — related upstream defect: Scout's Zenex shortDescription kept a testnet-only statement beside its sourced mainnet fields; fixed live (re-checked 2026-10-15)."
       ]
     },
-    "origin": "raven-next q-defi-named-newer-protocols"
+    "origin": "raven-next q-defi-named-newer-protocols",
+    "reverifyBy": "2027-01-20"
   }
 }

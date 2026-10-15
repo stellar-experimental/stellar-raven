@@ -15,7 +15,7 @@
       "Do NOT hard-code a timeless crowded/whitespace map, infer maturity from tags, or assert a category is empty without a strict dated search and operator verification.",
       "Do NOT flatten announced, testnet, pre-release, and mainnet-live projects into one status."
     ],
-    "notes": "ANALYTIC saturation lane (crowded-vs-whitespace → scout_clusters/scout_analyze) — DISTINCT from q-eco-defi-projects-discovery (flat directory roster → scout_projects). Re-verified 2026-06-29. CORRECTED vs dossier whitespace list. Live Scout (2026-06-22) shows perps are NOT whitespace but EMERGING — funded testnet/pre-release entrants Noether, Stellars Finance, Zenex; NO confirmed mainnet perp DEX yet. (Turbolong is leveraged SPOT via Blend loops, NOT a perp — keep it out of the perps list.) NFT marketplaces exist (Litemint Stellar-native, Rarible multichain). Oracles are NOT single-provider (Band + RedStone live on mainnet; DIA/Lightecho/Orally too). Genuinely thin lanes that survive verification: liquid staking, on-chain identity/attestation, insurance. Scout /api/analyze?dimension=categories gives coarse buckets (User-Facing App 204, Tooling 109, Infra 104, Protocol/Contract 78) — use finer directory searches for the DeFi sub-lanes. Gate now forbids the stale 'perps/NFT = whitespace' claim.\nAlso good if the answer: Notes lending and oracles each have a clear leader (Blend; Reflector) but are NOT strictly single-provider (e.g. Orbit CDP/DeFindex in lending; DIA/Band/Lightecho/RedStone in oracles). | Notes RWA has a few flagship issuers (BENJI, CRDT, USDY) but equity/real-estate tokenization is whitespace.\nGolden cites: Scout clusters/analyze for the crowded categories and directory searches for the thin/whitespace conclusions.\nGT-19 CORRECTION 2026-07-10: grade methodology and dated evidence, not the inherited static map. Cluster/tag counts are not competitor, maturity, or capital metrics; whitespace claims are hypotheses, not absolutes."
+    "notes": "ANALYTIC saturation lane (crowded-vs-whitespace → scout_clusters/scout_analyze) — DISTINCT from q-eco-defi-projects-discovery (flat directory roster → scout_projects). Re-verified 2026-06-29. CORRECTED vs dossier whitespace list. Perps are NOT whitespace but EMERGING. As of 2026-10-15, Zenex runs a live Stellar mainnet perp DEX (operator deployments page plus on-chain fills); Noether's mainnet contracts stay paused until its audit clears; Stellars Finance shows no mainnet trading evidence. Do not call perps empty or call Zenex testnet-only. (Turbolong is leveraged SPOT via Blend loops, NOT a perp — keep it out of the perps list.) NFT marketplaces exist (Litemint Stellar-native, Rarible multichain). Oracles are NOT single-provider (Band + RedStone live on mainnet; DIA/Lightecho/Orally too). Genuinely thin lanes that survive verification: liquid staking, on-chain identity/attestation, insurance. Scout /api/analyze?dimension=categories gives coarse buckets (User-Facing App 204, Tooling 109, Infra 104, Protocol/Contract 78) — use finer directory searches for the DeFi sub-lanes. Gate now forbids the stale 'perps/NFT = whitespace' claim.\nAlso good if the answer: Notes lending and oracles each have a clear leader (Blend; Reflector) but are NOT strictly single-provider (e.g. Orbit CDP/DeFindex in lending; DIA/Band/Lightecho/RedStone in oracles). | Notes RWA has a few flagship issuers (BENJI, CRDT, USDY) but equity/real-estate tokenization is whitespace.\nGolden cites: Scout clusters/analyze for the crowded categories and directory searches for the thin/whitespace conclusions.\nGT-19 CORRECTION 2026-07-10: grade methodology and dated evidence, not the inherited static map. Cluster/tag counts are not competitor, maturity, or capital metrics; whitespace claims are hypotheses, not absolutes."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -70,23 +70,68 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Zenex runs a live Stellar mainnet perpetual futures market (XLM-USD) as of 2026-10-15; its core contracts were deployed on 2026-09-29.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+            "observedAt": "2026-10-15",
+            "note": "Operator page: 'This page lists every contract of the live Zenex deployment on Stellar mainnet'; XLM-USD market 'Status Active'; values 'checked on 6 October 2026'; core contracts 'deployed on 2026-09-29'."
+          },
+          {
+            "class": "A",
+            "ref": "https://zenex.trade/",
+            "observedAt": "2026-10-15",
+            "note": "Operator app home: 'Leveraged perpetual futures on Stellar. Launch mainnet, or practice on testnet with test funds first.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
+            "observedAt": "2026-10-15",
+            "note": "Operator docs source at commit 9a6f5de (2026-10-06), generated from chain reads: 'Every contract of the live Zenex deployment on Stellar mainnet'."
+          },
+          {
+            "class": "F",
+            "ref": "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+            "observedAt": "2026-10-15",
+            "note": "Market instance exists on the Public Global Stellar Network with wasm 02aa342f…943c, equal to the operator's listed code hash; the last ~17,000 ledgers hold open_fill 6, close_fill 4, liquidation 2, and create_order 10 events (latest 2026-10-15T08:28:32Z)."
+          },
+          {
+            "class": "C",
+            "ref": "https://api.stellar.expert/explorer/public/contract/CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB",
+            "observedAt": "2026-10-15",
+            "note": "StellarExpert: market created 1790702451 (2026-09-29T17:20:51Z) by the operator-named owner GBDCXZ…QNDX; 944 invocations, 1,471 events, 0 errors."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
+            "observedAt": "2026-10-15",
+            "note": "Lumenloop roundup (published 2026-10-09): 'Zenex perpetual futures exchange is also live on Stellar mainnet, the first on-chain perps venue on the network.'"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-10-15",
+      "by": "golden-truth lane G1, 2026-10-15 round (Claude Opus 5.5)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; sibling sweep of lending, perps, liquid staking, RWA, NFT, and oracle cases.",
-        "Structural re-form (negative-predicate): split the compound market-map fact into two atomic positive facts; the dated methodology and metric taxonomy are unchanged.",
-        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout and https://stellar.org/blog/ecosystem/what-the-defi-is-happening-on-stellar — current directory endpoints and operator examples still require dated status and usage checks.",
-        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current cluster and analysis endpoints remain directory-taxonomy surfaces, not competition or maturity measures.",
-        "Sibling sweep 2026-08-27: grep directory density|market map|crowded|whitespace|competition|maturity → q-defi-category-saturation-live, q-defi-perps-whitespace, and q-eco-defi-projects-discovery; no contradiction"
+        "Notes-only perps correction; the answer, keyFacts, avoid items, and 2026-07-10 cluster methodology are unchanged and were not re-measured.",
+        "https://docs.zenex.trade/deployments/contract-addresses",
+        "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
+        "https://docs.noether.exchange/protocol/contracts",
+        "Public mainnet RPC https://mainnet.sorobanrpc.com: simulate get_pause_state on CBC2XPFPI2DI7CVGRHDLVIHENIPFJJOGSUPAHLWZ43UTHK5TFJVIHJTC, latestLedger 64960458, 2026-10-15T18:14Z",
+        "Full corroboration matrix: q-defi-perps-whitespace truth.corroboration (same lane, same date).",
+        "Sibling sweep 2026-10-15: grep -il 'zenex|noether|perpetual|perps' across eval/qa/corpus/battery → q-defi-perps-whitespace, q-eco-defi-market-map, q-defi-named-newer-protocols (all three updated together); q-crp-cme-xlm-futures-dates covers CME futures, not Stellar perp DEXes; no contradiction."
       ],
       "rootCause": [
-        "Snapshot promotion, taxonomy/behavior conflation, and unsupported negative claims.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift",
+        "improvements/resolved.json entry sls-091 — related upstream defect: Scout's Zenex shortDescription kept a testnet-only statement beside its sourced mainnet fields; fixed live (re-checked 2026-10-15)."
       ]
     },
-    "origin": "raven-next q-eco-defi-market-map"
+    "origin": "raven-next q-eco-defi-market-map",
+    "reverifyBy": "2027-01-27"
   }
 }
