@@ -33,8 +33,8 @@ Total findings: 71
 | sls-088 | Scout marks the Horizon API server repository as a deployable Soroban contract product. The response returns…                               | reported-upstream | 2026-09-29 | 0           |
 | sls-089 | GET /api/projects/search returns HTTP 200 and meta.counts.total: 0 after a backend read timeout. The same response reports the failed read… | fixed-upstream    | 2026-10-01 | 0           |
 | sls-090 | Research search returns adjacent documents for CVE-2026-24889 and GHSA-96xm-fv9w-pf3f. The tested results contain neither identifier. A…    | fixed-upstream    | 2026-10-09 | 0           |
-| sls-091 | The Zenex project's shortDescription still says testnet with mainnet pending. The same response gives a sourced mainnet deployment and a…   | reported-upstream | 2026-10-09 | 0           |
-| sls-092 | GET /api/hackathons/stellar-hacks-blend reports 2 winners and 35 submissions. The organizer's published report names three placed…          | verified          | 2026-10-06 | 0           |
+| sls-091 | The Zenex project's shortDescription still says testnet with mainnet pending. The same response gives a sourced mainnet deployment and a…   | fixed-upstream    | 2026-10-09 | 0           |
+| sls-092 | GET /api/hackathons/stellar-hacks-blend reports 2 winners and 35 submissions. The organizer's published report names three placed…          | fixed-upstream    | 2026-10-06 | 0           |
 | sls-093 | GET /api/repos/search?q=strupey returns matchMode: "strict" and the label "every query term matched". No returned row contains the token…   | fixed-upstream    | 2026-10-06 | 0           |
 
 ## stellar-docs
