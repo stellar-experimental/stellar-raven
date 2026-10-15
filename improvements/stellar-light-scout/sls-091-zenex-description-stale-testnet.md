@@ -1,10 +1,15 @@
 ---
 id: sls-091
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-09
 upstreamTitle: Update the Zenex shortDescription to match its sourced mainnet deployment
 evidence:
+  - 2026-10-15T17:42:32Z live recheck; GET https://stellarlight.xyz/api/projects/search?q=Zenex&limit=5 returned HTTP 200, one strict match, partial false, failedReads [], deployment.network mainnet, and shortDescription containing Live on Stellar mainnet without testnet or mainnet pending.
+  - 2026-10-15T17:42:32Z deployment check; https://stellarlight.xyz/api/openapi.json returned HTTP 200 and info.version 1.9.78. Curate run https://github.com/Stellar-Light/stellarlight/actions/runs/38716245306 completed successfully after the description fix.
+  - Resolving changes merged 2026-10-15; https://github.com/Stellar-Light/stellarlight/pull/1814 (a2b7e7cda53a16aef2857a122bb53e7a2c4a8887) and https://github.com/Stellar-Light/stellarlight/pull/1820 (44e58496e4dbf40ef850b067f23a6544b8c99613).
+  - 2026-10-15 maintainer theboycoder reported the fix in https://github.com/Stellar-Light/stellarlight/issues/1810#issuecomment-6189528117 and the inbound handoff https://github.com/stellar-experimental/stellar-raven/issues/285. Fresh reads confirmed the result independently.
+  - 2026-10-15T17:43:56Z adjacent recheck; rendergate and clevercon project searches returned HTTP 200 and deployment.network testnet. Their descriptions also say testnet.
   - 2026-10-09 Scout API 1.9.72 exact Zenex project read; https://stellarlight.xyz/api/projects/search?q=Zenex&limit=5
   - 2026-10-09 Zenex deployment page checked 2026-10-06; https://docs.zenex.trade/deployments/contract-addresses
   - 2026-10-09 pinned zenith-protocols/zenex-docs deployment source; https://raw.githubusercontent.com/zenith-protocols/zenex-docs/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md
@@ -57,3 +62,15 @@ Remove the testnet-only statement and the pending-mainnet claim.
 Keep lifecycle, deployment network, and descriptive text consistent with their dated sources.
 Use a consistency check to flag explicit network contradictions during record updates.
 Do not infer mainnet from `Live` when no deployment evidence exists.
+
+## Live recheck — 2026-10-15
+
+The original Zenex trigger no longer reproduces on the public API.
+The description, deployment network, and lifecycle note now agree on mainnet.
+The deployment still cites the operator page and its dated human verification.
+PR 1814 adds the report-only description consistency check.
+PR 1820 corrects the adjacent testnet evidence rule.
+A `status=Live` sample still serves `deployment.network: unknown` for projects without deployment evidence.
+
+The author classifies this finding as fixed.
+A distinct reviewer must repeat the live check before retirement.
