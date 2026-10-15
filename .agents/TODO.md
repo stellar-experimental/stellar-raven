@@ -161,6 +161,16 @@ snapshot is also held by this item now. Exposure recommendation for the later ab
 keep `reviewSubmission` excluded. Ledger: `rounds/2026-10-08-maintenance.md`; evidence:
 `rounds/2026-10-08-routing-repair/`.
 
+2026-10-15 re-check (Scout 1.9.78, 682 Docs titles; `rounds/2026-10-15-truth-maintenance.md`): the
+hold stands with the same numbers (legacy top3 298→295, top5 326→325, cardHit5 112→111) and the
+same four regressions; Docs titles alone still drop `stellarDocs.search_wallet_dapp_docs` from
+`q-tool-wallets-kit`. The hold now has a model-facing cost: the held manifest omits the new
+response facts that close `sls-089`, `sls-090`, `sls-092`, and `sls-093` (`counts.totalBasis`
+`partial-read`, research `exactKeys`, hackathon `entries`, `upstreamSubmissions`, `coverageNote`,
+`hiddenWinners`, `winnersNote`, the `corrected` repo and project match mode, and the 503
+declarations). The runtime passes the fields through, but discovery and `codemode.describe` do not
+document them.
+
 2026-10-09 design pass (Codex frontier xhigh; the Claude Fable audit agrees). Three general
 candidates ran on all 544 rows and both sources. They used whole-content anchors, field provenance,
 per-phrase alternatives, and complete candidate competition. None passes:
@@ -270,6 +280,13 @@ abstention slice under its own authorization.
 
 Done when: a reviewed measurement shows that both candidate runs of the Strupey row say the
 identity is unverified or ask for context, with no regression in the abstention or absence slices.
+
+2026-10-15: a second path needs the same treatment. Scout project search recovers a misspelled
+name through `meta.didYouMean` (for example `q=frieghter` → Freighter) and still reports
+`matchMode: "strict"`. `src/executor/providers.ts` sets `caveat: "unverified-match"` only for the
+`semantic` and `corrected` modes, so this result reaches the model with no caveat. The upstream
+mode fix is `sls-094`. Candidate own-repo mechanism: derive the caveat from a present
+`meta.didYouMean` too. It is model-facing, so it ships only with this item's measurement.
 
 ## Executor and policy
 
@@ -567,6 +584,25 @@ Done when: the same wording defect appears in a second unrelated case (a differe
 and primary service; not a paraphrase), a contract mismatch appears, or trace evidence shows the
 prompt requests the wrong behavior. Record every recurrence with its case ID, result stamp, and
 transcript.
+
+### Absorb the 2026-10-15 skill pins without the unexposed Scout operations
+
+The skills refresh works again after the stellar-community parser repair (2026-10-15 round). The
+candidate pins are stellar-dev `1fc65d59affb` and stellar-light `811c5384af52`, plus 15 directory
+additions. All 544 routing rows match main. The absorb is still held: the new
+`stellar-light/stellar-scout/references/api-reference.md` describes `GET /api/hackathons/builds/{id}`
+and `GET /api/hackathons/analyze`, which the held manifest does not expose. The section filter
+drops only the explicit excluded-path set, so both sections reach `codemode.skill.read`. That
+breaks the manifest-exposure rule. The stellar-dev pin alone carries a correctness fix
+(`agentic-payments/mpp.md` drops a production-billing claim) and SEP-55 build-provenance guidance.
+
+Options: (a) a general filter that drops skill sections describing service paths absent from the
+manifest, (b) a stellar-dev-only absorb (untested), or (c) wait for the Scout absorb. Any absorb also
+updates the three section and entry counts (202→203, 282→283, 222→223) and needs pin-review
+attestations. Evidence: `rounds/2026-10-15-truth-maintenance.md`, "Drift verdict".
+
+Done when: the stellar-dev pin is absorbed with no exposure leak, and the stellar-light pin is
+absorbed together with, or after, the Scout operations it describes.
 
 ### Monitor the Stellar Docs title-set size against the remote identity probe ceiling
 

@@ -2647,6 +2647,125 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct drain review on 2026-10-10 (DRAIN-OK); resolution comment https://github.com/Stellar-Light/stellarlight/issues/1738#issuecomment-6098261074",
       "sourceCommit": "d15a4ce52c997577313779872d9f89de7725debc",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d15a4ce52c997577313779872d9f89de7725debc/improvements/stellar-light-scout/sls-087-horizon-protocol-ceiling-note-stale.md"
+    },
+    {
+      "id": "sls-089",
+      "title": "GET /api/projects/search returns HTTP 200 and meta.counts.total: 0 after a backend read timeout. The same response reports the failed read…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-10-01",
+      "resolved": "2026-10-15",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1751",
+        "https://github.com/Stellar-Light/stellarlight/pull/1815",
+        "https://github.com/Stellar-Light/stellarlight/pull/1826",
+        "https://github.com/stellar-experimental/stellar-raven/issues/283"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1751",
+        "https://github.com/Stellar-Light/stellarlight/pull/1815",
+        "https://github.com/Stellar-Light/stellarlight/pull/1826"
+      ],
+      "liveRecheck": "2026-10-15T17:55Z and 17:58Z: two 65-request burst replays against API 1.9.78 returned no HTTP 200 with a zero or false total; failed candidate reads answered 503 with Retry-After 2",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-15 (round ledger .agents/rounds/2026-10-15-truth-maintenance.md, R1); authors Codex gpt-6.1-sol lanes A and B; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1751#issuecomment-6199677257",
+      "sourceCommit": "b7cd481d036ab674e54d939293c11576bd42c257",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b7cd481d036ab674e54d939293c11576bd42c257/improvements/stellar-light-scout/sls-089-project-search-failed-read-zero-count.md"
+    },
+    {
+      "id": "sls-090",
+      "title": "Research search returns adjacent documents for CVE-2026-24889 and GHSA-96xm-fv9w-pf3f. The tested results contain neither identifier. A…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-10-09",
+      "resolved": "2026-10-15",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1809",
+        "https://github.com/Stellar-Light/stellarlight/pull/1815",
+        "https://github.com/Stellar-Light/stellarlight/pull/1821",
+        "https://github.com/Stellar-Light/stellarlight/pull/1826",
+        "https://github.com/stellar-experimental/stellar-raven/issues/284"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1809",
+        "https://github.com/Stellar-Light/stellarlight/pull/1815",
+        "https://github.com/Stellar-Light/stellarlight/pull/1821",
+        "https://github.com/Stellar-Light/stellarlight/pull/1826"
+      ],
+      "liveRecheck": "2026-10-15T17:53:40Z API 1.9.78: CVE-2026-24889, GHSA-96xm-fv9w-pf3f (also source=release), and rs-soroban-sdk v25.0.2 each return the named record first with exactKeys; absent ids return exactMiss",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-15 (round ledger .agents/rounds/2026-10-15-truth-maintenance.md, R1); authors Codex gpt-6.1-sol lanes A and B; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1809#issuecomment-6199677761",
+      "sourceCommit": "b7cd481d036ab674e54d939293c11576bd42c257",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b7cd481d036ab674e54d939293c11576bd42c257/improvements/stellar-light-scout/sls-090-advisory-id-and-release-tag-retrieval.md"
+    },
+    {
+      "id": "sls-091",
+      "title": "The Zenex project's shortDescription still says testnet with mainnet pending. The same response gives a sourced mainnet deployment and a…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-10-09",
+      "resolved": "2026-10-15",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1810",
+        "https://github.com/Stellar-Light/stellarlight/pull/1814",
+        "https://github.com/Stellar-Light/stellarlight/pull/1820",
+        "https://github.com/stellar-experimental/stellar-raven/issues/285"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1810",
+        "https://github.com/Stellar-Light/stellarlight/pull/1814",
+        "https://github.com/Stellar-Light/stellarlight/pull/1820"
+      ],
+      "liveRecheck": "2026-10-15T17:54:17Z GET /api/projects/search?q=Zenex&limit=5: mainnet description beside deployment.network mainnet; 0 network contradictions across 1,005 served rows",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-15 (round ledger .agents/rounds/2026-10-15-truth-maintenance.md, R1); authors Codex gpt-6.1-sol lanes A and B; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1810#issuecomment-6199678265",
+      "sourceCommit": "b7cd481d036ab674e54d939293c11576bd42c257",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b7cd481d036ab674e54d939293c11576bd42c257/improvements/stellar-light-scout/sls-091-zenex-description-stale-testnet.md"
+    },
+    {
+      "id": "sls-092",
+      "title": "GET /api/hackathons/stellar-hacks-blend reports 2 winners and 35 submissions. The organizer's published report names three placed…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-10-06",
+      "resolved": "2026-10-15",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1817",
+        "https://github.com/Stellar-Light/stellarlight/pull/1816",
+        "https://github.com/Stellar-Light/stellarlight/pull/1823",
+        "https://github.com/Stellar-Light/stellarlight/pull/1826",
+        "https://github.com/stellar-experimental/stellar-raven/issues/286"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1817",
+        "https://github.com/Stellar-Light/stellarlight/pull/1816",
+        "https://github.com/Stellar-Light/stellarlight/pull/1823",
+        "https://github.com/Stellar-Light/stellarlight/pull/1826"
+      ],
+      "liveRecheck": "2026-10-15T17:54:50Z API 1.9.78: stellar-hacks-blend serves 39 submissions and 3 winners with build 27438 at rank 1; build 27438 serves both event entries",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-15 (round ledger .agents/rounds/2026-10-15-truth-maintenance.md, R1); authors Codex gpt-6.1-sol lanes A and B; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1817#issuecomment-6199678664",
+      "sourceCommit": "b7cd481d036ab674e54d939293c11576bd42c257",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b7cd481d036ab674e54d939293c11576bd42c257/improvements/stellar-light-scout/sls-092-blend-first-place-stored-under-later-event.md"
+    },
+    {
+      "id": "sls-093",
+      "title": "GET /api/repos/search?q=strupey returns matchMode: \"strict\" and the label \"every query term matched\". No returned row contains the token…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-10-06",
+      "resolved": "2026-10-15",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1818",
+        "https://github.com/Stellar-Light/stellarlight/pull/1815",
+        "https://github.com/Stellar-Light/stellarlight/pull/1821",
+        "https://github.com/stellar-experimental/stellar-raven/issues/287"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1818",
+        "https://github.com/Stellar-Light/stellarlight/pull/1815",
+        "https://github.com/Stellar-Light/stellarlight/pull/1821"
+      ],
+      "liveRecheck": "2026-10-15T17:53:34Z API 1.9.78: repos/search q=strupey returns corrected with 0 of 23 rows holding the token; q=stroopy stays strict",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-15 (round ledger .agents/rounds/2026-10-15-truth-maintenance.md, R1); authors Codex gpt-6.1-sol lanes A and B; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1818#issuecomment-6199679196",
+      "sourceCommit": "b7cd481d036ab674e54d939293c11576bd42c257",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b7cd481d036ab674e54d939293c11576bd42c257/improvements/stellar-light-scout/sls-093-repo-search-strict-label-spelling-correction.md"
     }
   ]
 }
