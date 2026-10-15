@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "ffcc8b3a505cfcb831b80bf528ccfb8b14dd5d03268b2eba387fc27ddedf9d36",
+  "corpusContentSha256": "c584daedd018fe5790203cc2f0c16f6f31971c415b4f8fe6fe7b6053b4a88465",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -11225,7 +11225,7 @@
           "by": "golden-truth lane G1, 2026-10-15 round (Claude Opus 5.5)",
           "evidence": [
             "Zenex status only: the FxDAO, OrbitCDP, JST, and 2026-07-11 directory observations are unchanged and were not re-measured. truth.asOf 2026-10-15 covers the Zenex deployment-status note only; the answer keeps its 2026-07-11 date.",
-            "tmp/rg/review.md (Codex independent review of 6c6c4f9e, finding R1; blind evidence tmp/rg/blind-evidence.md); finding R4 moved this snapshot to scheduled freshness.",
+            "Independent Codex review of 6c6c4f9e (findings R1-R4) and its approval of a3c8b059: .agents/rounds/2026-10-15-truth-maintenance.md, Golden verdict; finding R4 moved this snapshot to scheduled freshness.",
             "https://docs.zenex.trade/deployments/contract-addresses",
             "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
             "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
@@ -11732,7 +11732,7 @@
             "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-2-2026",
             "Scout read 2026-10-15T18:12:41Z https://stellarlight.xyz/api/projects/search?q=Zenex&limit=1: shortDescription now says 'Live on Stellar mainnet'; deployment.network mainnet, basis human-verified (aggregator; not counted as corroboration).",
             "Operator announcement channel https://x.com/ZenithProtocols: profile bio reads 'First Perpetuals Exchange on Stellar over at Zenex.Trade'; posts were not readable without login, so no dated launch post was read.",
-            "tmp/rg/review.md (Codex independent review of 6c6c4f9e, finding R1; blind evidence tmp/rg/blind-evidence.md)",
+            "Independent Codex review of 6c6c4f9e (findings R1-R4) and its approval of a3c8b059: .agents/rounds/2026-10-15-truth-maintenance.md, Golden verdict",
             "https://kryonprotocol.vercel.app/",
             "https://kryonprotocol.vercel.app/api/markets/1",
             "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) for Kryon engine CD6OMHCRDDBDO7I57HCUU52RORFPP7DUIRULWFBOX5WLCO5H2OB3W6LZ, vault, order gateway, and oracle, latestLedger 64960822, 2026-10-15T18:44Z",
@@ -13603,7 +13603,7 @@
           "evidence": [
             "Notes-only corrections; the answer, keyFacts, avoid items, and 2026-07-10 cluster methodology are unchanged and were not re-measured. truth.asOf 2026-10-15 covers the deployment-status note only.",
             "Perps status: Zenex confirmed live on mainnet; Kryon mainnet contracts confirmed and its current availability unresolved; full matrix in q-defi-perps-whitespace truth.corroboration (same lane, same date).",
-            "tmp/rg/review.md (Codex independent review of 6c6c4f9e, finding R1; blind evidence tmp/rg/blind-evidence.md)",
+            "Independent Codex review of 6c6c4f9e (findings R1-R4) and its approval of a3c8b059: .agents/rounds/2026-10-15-truth-maintenance.md, Golden verdict",
             "Cluster-019 re-read 2026-10-15: q-defi-reflector-oracle (GT-17, 2026-07-10) says 'No reproducible evidence establishes a universal most-integrated ranking' and 'Do not reward a dominance ranking'; this case still rewarded 'oracles each have a clear leader (… Reflector)'. The oracle leadership reward is removed; the not-single-provider fact is kept.",
             "Cluster-005 re-read 2026-10-15: this case's undated category buckets (User-Facing App 204, Tooling 109, Infra 104, Protocol/Contract 78) disagreed with q-scf-funding-by-category's dated 2026-06-29 and 2026-07-10 counts; the undated numbers are replaced with a pointer to the dated sibling.",
             "Internal consistency 2026-10-15: the 'equity/real-estate tokenization is whitespace' reward contradicted this case's own answer ('Named counterexamples already make absolute equity/real-estate … whitespace claims unsafe'); reworded to a hypothesis to verify.",

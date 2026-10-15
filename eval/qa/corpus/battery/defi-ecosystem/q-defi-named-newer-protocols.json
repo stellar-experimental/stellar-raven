@@ -159,7 +159,7 @@
       "by": "golden-truth lane G1, 2026-10-15 round (Claude Opus 5.5)",
       "evidence": [
         "Zenex status only: the FxDAO, OrbitCDP, JST, and 2026-07-11 directory observations are unchanged and were not re-measured. truth.asOf 2026-10-15 covers the Zenex deployment-status note only; the answer keeps its 2026-07-11 date.",
-        "tmp/rg/review.md (Codex independent review of 6c6c4f9e, finding R1; blind evidence tmp/rg/blind-evidence.md); finding R4 moved this snapshot to scheduled freshness.",
+        "Independent Codex review of 6c6c4f9e (findings R1-R4) and its approval of a3c8b059: .agents/rounds/2026-10-15-truth-maintenance.md, Golden verdict; finding R4 moved this snapshot to scheduled freshness.",
         "https://docs.zenex.trade/deployments/contract-addresses",
         "https://github.com/zenith-protocols/zenex-docs/blob/9a6f5de766f744c93fb7f80c3b525b514b7a4fed/docs/deployments.md",
         "Public mainnet RPC https://mainnet.sorobanrpc.com: getLedgerEntries(instance) + getEvents for CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB, latestLedger 64960443, 2026-10-15T18:13Z",
