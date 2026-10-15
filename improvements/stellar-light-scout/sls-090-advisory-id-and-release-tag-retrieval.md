@@ -1,7 +1,7 @@
 ---
 id: sls-090
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-09
 upstreamTitle: Research search misses exact SDK advisory IDs and a published release tag
 evidence:
@@ -10,6 +10,17 @@ evidence:
   - 2026-10-09 release-scoped queries with limit 25; https://stellarlight.xyz/api/research?q=GHSA-96xm-fv9w-pf3f&source=release&limit=25; https://stellarlight.xyz/api/research?q=rs-soroban-sdk%20v25.0.2&source=release&limit=25
   - 2026-10-09 current GitHub advisory and v25.0.2 release; https://api.github.com/repos/stellar/rs-soroban-sdk/security-advisories/GHSA-96xm-fv9w-pf3f; https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v25.0.2
   - upstream issue filed 2026-10-09: https://github.com/Stellar-Light/stellarlight/issues/1809
+  - "2026-10-15 author recheck confirmed all four original queries recover the named records. A distinct reviewer remains required before retirement."
+  - "2026-10-15T17:42:57Z live OpenAPI reports 1.9.78. https://stellarlight.xyz/api/openapi.json"
+  - "2026-10-15 resolving work: https://github.com/Stellar-Light/stellarlight/pull/1815, https://github.com/Stellar-Light/stellarlight/pull/1821, and https://github.com/Stellar-Light/stellarlight/pull/1826."
+  - "2026-10-15 upstream merge commits are f9e66babb30f20607c7df749cef89985a9f6c3cd, 24b8c12aaf63f1840b7bd55c56ca4b6ebf2529f9, and 46d6e1ad4c02a4639bbe14ed4736316fb215af5c."
+  - "2026-10-15 inbound exactKeys update came from theboycoder: https://github.com/stellar-experimental/stellar-raven/issues/284#issuecomment-6196580657"
+  - "2026-10-15T17:42:59Z CVE-2026-24889 returned the named advisory first. GHSA-96xm-fv9w-pf3f did the same at 17:43:00Z."
+  - "2026-10-15T17:43:01Z release-scoped GHSA search returned the advisory first. Repository-qualified v25.0.2 search returned its release first at 17:43:02Z."
+  - "2026-10-15 original queries returned HTTP 200, partial false, failedReads [], and matching exactKeys. Semantic alternatives carried exactKeys []."
+  - "2026-10-15 absent CVE, GHSA, and repository-qualified release controls returned exactMiss. Prefix CVE-2026-2488 did not match CVE-2026-24889."
+  - "2026-10-15 fields and multi-source controls retained exactKeys. A page-limit control reported a held identifier without an exactMiss."
+  - "2026-10-15 raw responses and exact URLs are in tmp/lane-a/research-*.raw.json. This local evidence is uncommitted."
 ---
 
 ## Finding
@@ -69,3 +80,27 @@ When exact recovery fails, return that signal and identify semantic alternatives
 Keep the current vector-match warning.
 Do not describe semantic results as proof that an advisory does not exist.
 Add regression checks for a published security release and an absent identifier.
+
+## Live recheck — 2026-10-15
+
+The author repeated all four original requests against OpenAPI `1.9.78`.
+Each returned HTTP `200`, `partial: false`, and `failedReads: []`.
+The CVE and GHSA queries returned the named advisory first.
+The release-scoped GHSA query also returned that advisory first.
+The repository-qualified release query returned `rs-soroban-sdk v25.0.2` first.
+
+Rows carrying the requested key included it in `exactKeys`.
+Semantic alternatives carried `exactKeys: []`.
+The vector-match warning remained present.
+Absent CVE, GHSA, and repository-qualified release controls returned `exactMiss`.
+The miss note distinguished corpus absence from absence at the primary source.
+
+The truncated CVE control did not match the longer CVE.
+The conceptual-query control omitted `exactKeys`.
+The fields and multi-source controls retained the row markers.
+A page-limit control named an omitted identifier as held, without an `exactMiss`.
+
+The author read the pinned matching, ingestion, and regression-test sources.
+The author did not run the upstream test suite.
+No material residual reproduced in these live checks.
+A distinct reviewer must repeat the original requests before retirement.

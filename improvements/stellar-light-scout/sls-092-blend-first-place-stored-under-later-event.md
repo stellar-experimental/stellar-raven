@@ -1,10 +1,17 @@
 ---
 id: sls-092
 service: stellar-light-scout
-status: verified
+status: fixed-upstream
 discovered: 2026-10-06
 upstreamTitle: Stellar Hacks Blend first-place submission is stored under a later event with no placement
 evidence:
+  - 2026-10-15T17:42:32Z live recheck; GET https://stellarlight.xyz/api/hackathons/stellar-hacks-blend returned HTTP 200, stats.totalSubmissions 39, stats.upstreamSubmissions 39, stats.winners 3, and Blend Pool Creator at placementRank 1.
+  - 2026-10-15T17:42:32Z original build recheck; https://stellarlight.xyz/api/hackathons/builds/27438 returned HTTP 200, build.hackathon.slug stellar-hacks-blend, placement 1st Place, isWinner true, and entries for Blend and PaltaLabs. The exposed event, builds, compare, review, and placement-facet paths also confirm the correction.
+  - 2026-10-15T17:42:32Z deployment check; https://stellarlight.xyz/api/openapi.json returned info.version 1.9.78. https://stellarlight.xyz/api/changelog lists spec@1.9.76, spec@1.9.77, and spec@1.9.78 for the per-event data and coverage changes.
+  - Resolving changes merged 2026-10-15; https://github.com/Stellar-Light/stellarlight/pull/1816 (8e84650e18c224e3d07e0244ea5f7e62c46e4603), https://github.com/Stellar-Light/stellarlight/pull/1823 (96c2bc389b082af48b28b973ee957e7a8fd2514c), and https://github.com/Stellar-Light/stellarlight/pull/1826 (46d6e1ad4c02a4639bbe14ed4736316fb215af5c).
+  - 2026-10-15 upstream verification issue https://github.com/Stellar-Light/stellarlight/issues/1817 and inbound handoff https://github.com/stellar-experimental/stellar-raven/issues/286 were authored by theboycoder. The follow-up https://github.com/stellar-experimental/stellar-raven/issues/286#issuecomment-6196581263 reports the hidden-winner fields.
+  - 2026-10-15T17:43:30Z adjacent recheck; https://stellarlight.xyz/api/hackathons/buildonstellarchile returned HTTP 200, 14 served winners, one hiddenWinners entry, and winnersNote explaining the hidden submission. Real-World ZK serves 319 of 345 submissions with coverageNote.
+  - 2026-10-15T17:44Z adjacent scan; all seven events with served ranked winners cover their ranked prize tiers. The regression guard skips events without served ranks. The author report proposes a separate guard finding for this residual.
   - 2026-10-06 golden-coverage round. A distinct reviewer read GET /api/hackathons/builds/27438. The Blend first-place submission sat under stellar-hacks-paltalabs with placement null (.agents/rounds/2026-10-06-scout-hackathon-goldens.md, entries 12 and 14).
   - 2026-10-06T14:40:08Z DoraHacks capture of https://dorahacks.io/hackathon/stellar-hacks-blend/winner. It records buidlsCount 39 and winnerAnnounced true. Its summary names Blend Pool Creator (buidl/27438) as first place (.agents/rounds/2026-10-06-scout-hackathon-goldens/dorahacks-captures.json).
   - 2026-10-09T21:11Z Scout API 1.9.72. GET /api/hackathons/stellar-hacks-blend returns stats.totalSubmissions 35 and stats.winners 2. The winners[] list holds dorahacks-buidl-27417 (2nd Place) and dorahacks-buidl-27456 (3rd Place). The prizeTiers list has First Place at rank 1 with amountUSD 3000. No winner has placementRank 1.
@@ -95,3 +102,24 @@ Serve the organizer count or a coverage note next to `totalSubmissions`.
 Add a regression check for completed events with an announced winner list.
 Such an event with a rank 1 prize tier must have a winner at `placementRank` 1.
 Otherwise the record must say why not.
+
+## Live recheck — 2026-10-15
+
+The original Blend trigger no longer reproduces on the public API.
+The exposed event path serves all three winners and all 39 submissions.
+The compare path reports `winnerCount: 3` and `prizePerWinnerUSD: 2000`.
+The placement facet reports three winners among 39 Blend submissions.
+The review path identifies Blend Pool Creator as a Blend winner.
+
+The public build response also serves both event entries with their own placement, award, and track.
+Raven still holds that build-detail operation outside its exposed manifest.
+This check does not change that exposure decision.
+
+The old text probe still matches the legitimate unplaced PaltaLabs entry inside `entries`.
+That text match no longer proves the original defect.
+The structured top-level fields and the exposed event path prove the correction.
+
+The author classifies the original finding as fixed.
+The regression guard still skips events with no served ranked winners.
+The author report proposes a separate guard finding and records this recommendation as partial.
+A distinct reviewer must repeat the live check and assess that residual before retirement.
