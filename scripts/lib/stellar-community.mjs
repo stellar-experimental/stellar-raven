@@ -7,6 +7,31 @@ import { writeFileAtomic } from "./shared.mjs";
 export const COMMUNITY_SOURCE = "stellar/stellar-dev-skill main";
 export const COMMUNITY_URL = "https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/site/src/data/skills.ts";
 
+const memberName = (node) => node?.type === "MemberExpression" && !node.computed && !node.optional
+  ? node.property.name : null;
+
+// Ordering is irrelevant to the URL-sorted snapshot. Only accept a comparator
+// that reads literal identity fields; arbitrary callbacks could change them.
+function isIdentitySort(callback) {
+  if (callback?.type !== "ArrowFunctionExpression" || callback.async || callback.params.length !== 2 ||
+      callback.params.some((param) => param.type !== "Identifier")) return false;
+  const [left, right] = callback.params;
+  const call = callback.body;
+  if (call.type !== "CallExpression" || call.optional || memberName(call.callee) !== "localeCompare" ||
+      call.arguments.length < 1 || call.arguments.length > 3) return false;
+  const receiver = call.callee.object;
+  const other = call.arguments[0];
+  const field = memberName(receiver);
+  if (!["title", "copyValue"].includes(field) || memberName(other) !== field ||
+      receiver.object.type !== "Identifier" || receiver.object.name !== left.name ||
+      other.object.type !== "Identifier" || other.object.name !== right.name) return false;
+  const [, locale, options] = call.arguments;
+  if (locale && (locale.type !== "Literal" || typeof locale.value !== "string")) return false;
+  return !options || (options.type === "ObjectExpression" && options.properties.every((property) =>
+    property.type === "Property" && !property.computed && !property.method && property.kind === "init" &&
+    property.value.type === "Literal" && ["string", "boolean", "number"].includes(typeof property.value.value)));
+}
+
 /** Strip TypeScript syntax, then read literal identities without executing code or parsing descriptions. */
 export function communityEntries(text) {
   let program;
@@ -16,21 +41,50 @@ export function communityEntries(text) {
   } catch {
     throw new Error("stellar community: invalid source syntax");
   }
-  const declarations = program.body.flatMap((statement) => {
-    const declaration = statement.type === "ExportNamedDeclaration" ? statement.declaration : null;
+  const constants = program.body.flatMap((statement) => {
+    const exported = statement.type === "ExportNamedDeclaration";
+    const declaration = exported ? statement.declaration : statement;
     return declaration?.type === "VariableDeclaration" && declaration.kind === "const"
-      ? declaration.declarations.filter((entry) => entry.id.name === "ECOSYSTEM_CARDS") : [];
+      ? declaration.declarations.map((entry) => ({ entry, exported })) : [];
   });
-  if (declarations.length !== 1 || declarations[0].init?.type !== "ArrayExpression") {
-    throw new Error("stellar community: expected one exported ECOSYSTEM_CARDS literal array");
+  const declarations = constants.filter(({ entry, exported }) => exported && entry.id.name === "ECOSYSTEM_CARDS");
+  if (declarations.length !== 1) {
+    throw new Error("stellar community: expected one exported ECOSYSTEM_CARDS declaration");
+  }
+  const declaration = declarations[0].entry;
+  let array = declaration.init;
+  const allowedReferences = new Set([declaration.id]);
+  const protectedNames = new Set(["ECOSYSTEM_CARDS"]);
+  if (array?.type !== "ArrayExpression") {
+    // The site exports a sorted copy of a local const array. Follow only that
+    // single literal source, not aliases, imports, merges, or arbitrary code.
+    const copy = array?.callee?.object;
+    const spread = copy?.elements?.[0];
+    if (array?.type !== "CallExpression" || array.optional || memberName(array.callee) !== "sort" ||
+        array.arguments.length !== 1 || !isIdentitySort(array.arguments[0]) ||
+        copy?.type !== "ArrayExpression" || copy.elements.length !== 1 ||
+        spread?.type !== "SpreadElement" || spread.argument.type !== "Identifier") {
+      throw new Error("stellar community: expected a literal array or a sorted copy of a local literal array");
+    }
+    const sources = constants.filter(({ entry }) => entry.id.name === spread.argument.name);
+    if (sources.length !== 1 || sources[0].entry.init?.type !== "ArrayExpression" ||
+        sources[0].entry.start >= declaration.start) {
+      throw new Error("stellar community: expected a preceding local const literal array");
+    }
+    const source = sources[0].entry;
+    array = source.init;
+    protectedNames.add(source.id.name);
+    allowedReferences.add(source.id);
+    allowedReferences.add(spread.argument);
   }
   // Reject aliases and mutations rather than interpreting the rest of the module.
+  // The walk runs on esbuild output, which already renames nested bindings that shadow these names.
   const pending = [program];
   while (pending.length) {
     const node = pending.pop();
-    if (node === declarations[0]) continue;
-    if (node.type === "Identifier" && node.name === "ECOSYSTEM_CARDS") {
-      throw new Error("stellar community: ECOSYSTEM_CARDS reference outside its declaration");
+    if (allowedReferences.has(node)) continue;
+    if (node.type === "Identifier" && protectedNames.has(node.name)) {
+      throw new Error(`stellar community: ${node.name} reference outside its declaration`);
     }
     for (const value of Object.values(node)) {
       const children = Array.isArray(value) ? value : [value];
@@ -41,7 +95,7 @@ export function communityEntries(text) {
   }
   const entries = [];
   const urls = new Set();
-  for (const card of declarations[0].init.elements) {
+  for (const card of array.elements) {
     if (card?.type !== "ObjectExpression") throw new Error("stellar community: unsupported listing entry");
     const fields = new Map();
     for (const property of card.properties) {
