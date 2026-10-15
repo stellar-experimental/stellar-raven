@@ -97,7 +97,7 @@ EOF
 uv run --no-project --with fonttools==4.59.0 python -I tools/outline_logos.py . /tmp/raven-logos
 ```
 
-The pinned build was verified with Python 3.9.6 and zlib 1.2.12. Pillow 12.3.0 and fontTools
+Verification used Python 3.9.6 and zlib 1.2.12. Pillow 12.3.0 and fontTools
 4.67.0 also gave identical files on 2026-10-15.
 
 `test/auth.test.ts` requires `raven-icon.svg`, `raven-logo-dark.svg`, and `raven-logo-light.svg` to
