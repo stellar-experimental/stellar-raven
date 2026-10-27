@@ -1182,6 +1182,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/09820d46ad3cbc64a9cced3786831aa24ab1c8a6/improvements/skills/sk-024-x402-facilitator-and-api-key-scope.md"
     },
     {
+      "id": "sk-026",
+      "title": "The Core API skill gives error-documentation URLs that return HTTP 404. The example ESCROW_RECEIVER_TRUSTLINE_MISSING URL omits the…",
+      "service": "skills",
+      "discovered": "2026-09-29",
+      "resolved": "2026-10-27",
+      "repo": "Trustless-Work/trustlesswork-skill",
+      "upstreamRefs": [
+        "https://github.com/Trustless-Work/trustlesswork-skill/issues/16",
+        "https://github.com/stellar-experimental/stellar-raven/issues/295"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Trustless-Work/trustlesswork-skill/issues/16"
+      ],
+      "liveRecheck": "2026-10-27T00:41Z curl -sIL on errors/token-trustline-missing and errors/escrow-receiver-trustline-missing: each ends 200 after one redirect to its grouped page; residual 4 codes filed as sk-029",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-27 (round ledger .agents/rounds/2026-10-27-issue-batch.md, PR #301 review https://github.com/stellar-experimental/stellar-raven/pull/301#issuecomment-6431210571); author Claude Opus 5.5; trigger repeated live; resolution comment https://github.com/Trustless-Work/trustlesswork-skill/issues/16#issuecomment-6431221485",
+      "sourceCommit": "6d796128a6918be6371204ede0d2828bba6ae9d1",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6d796128a6918be6371204ede0d2828bba6ae9d1/improvements/skills/sk-026-core-api-error-documentation-links.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",
@@ -2766,6 +2785,27 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-15 (round ledger .agents/rounds/2026-10-15-truth-maintenance.md, R1); authors Codex gpt-6.1-sol lanes A and B; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1818#issuecomment-6199679196",
       "sourceCommit": "b7cd481d036ab674e54d939293c11576bd42c257",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b7cd481d036ab674e54d939293c11576bd42c257/improvements/stellar-light-scout/sls-093-repo-search-strict-label-spelling-correction.md"
+    },
+    {
+      "id": "sls-094",
+      "title": "GET /api/projects/search?q=frieghter returns matchMode: \"strict\" with the label \"all keywords matched\". The only row is Freighter. No row…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-10-15",
+      "resolved": "2026-10-27",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1829",
+        "https://github.com/Stellar-Light/stellarlight/pull/1831",
+        "https://github.com/stellar-experimental/stellar-raven/issues/293"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1829",
+        "https://github.com/Stellar-Light/stellarlight/pull/1831"
+      ],
+      "liveRecheck": "2026-10-27T00:41Z API 1.9.111: projects/search q=frieghter returns corrected with didYouMean.to Freighter and the recovery label; q=freighter and q=lobstr stay strict",
+      "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-27 (round ledger .agents/rounds/2026-10-27-issue-batch.md, PR #301 review https://github.com/stellar-experimental/stellar-raven/pull/301#issuecomment-6431210571); author Claude Opus 5.5; trigger repeated live; resolution comment https://github.com/Stellar-Light/stellarlight/issues/1829#issuecomment-6431221707",
+      "sourceCommit": "6d796128a6918be6371204ede0d2828bba6ae9d1",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6d796128a6918be6371204ede0d2828bba6ae9d1/improvements/stellar-light-scout/sls-094-project-search-typo-redirect-strict-label.md"
     }
   ]
 }

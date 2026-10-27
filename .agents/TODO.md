@@ -296,7 +296,7 @@ Done when: a reviewed measurement shows that both candidate runs of the Strupey 
 identity is unverified or ask for context, with no regression in the abstention or absence slices.
 
 The `meta.didYouMean` path of Scout project search needs no own-repo mechanism. Since spec
-1.9.79 (`sls-094`, fixed upstream), a typo-distance name recovery such as `q=frieghter` →
+1.9.79 (`sls-094`, resolved), a typo-distance name recovery such as `q=frieghter` →
 Freighter returns `matchMode: "corrected"`. The existing `semantic`/`corrected` rule in
 `src/executor/providers.ts` then attaches `caveat: "unverified-match"` (live recheck 2026-10-27,
 Scout 1.9.111).

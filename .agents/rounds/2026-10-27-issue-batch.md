@@ -37,9 +37,9 @@ Lanes run under Herdr. The orchestrator is Claude Opus 5.5. This round makes no 
 
 | finding | trigger | upstream ref | ref state | PR checks/reviews/blocker | live re-check | repo action | next wake-up |
 |---|---|---|---|---|---|---|---|
-| `sk-026` | two ungrouped error URLs | Trustless-Work/trustlesswork-skill#16 | closed completed 2026-10-19 | n/a (site configuration, no PR) | fixed | `fixed-upstream`; retire after the resolution comment | none after retirement |
-| `sls-094` | `q=frieghter` reports `strict` | Stellar-Light/stellarlight#1829, PR #1831 | closed; merged `fe4f5da3` | merged, checks passed | fixed | `fixed-upstream`; retire after the resolution comment | none after retirement |
-| `sk-029` | 4 ungrouped error URLs return 404 | none yet | — | — | still-repro | `verified`; file with `improvements:file` | the filed issue's handoff |
+| `sk-026` | two ungrouped error URLs | Trustless-Work/trustlesswork-skill#16 | closed completed 2026-10-19 | n/a (site configuration, no PR) | fixed | retired 2026-10-27 | none |
+| `sls-094` | `q=frieghter` reports `strict` | Stellar-Light/stellarlight#1829, PR #1831 | closed; merged `fe4f5da3` | merged, checks passed | fixed | retired 2026-10-27 | none |
+| `sk-029` | 4 ungrouped error URLs return 404 | Trustless-Work/trustlesswork-skill#20 | open, filed 2026-10-27 | — | still-repro | `reported-upstream` | the filed issue's handoff |
 
 ## Reviews
 
@@ -57,3 +57,17 @@ Lanes run under Herdr. The orchestrator is Claude Opus 5.5. This round makes no 
   5. Pre-existing `cs-002` live-lint failure: new TODO entry.
   6. Resolution comments and handoff closure: done after merge, recorded below.
   7. Missing state-table columns: added.
+
+## Outcome
+
+PR #301 merged as `6d796128`. The following URLs were read back from GitHub with `gh api`:
+
+- `sk-029` filed: https://github.com/Trustless-Work/trustlesswork-skill/issues/20
+- `sk-026` resolution comment, pinned to `6d796128`:
+  https://github.com/Trustless-Work/trustlesswork-skill/issues/16#issuecomment-6431221485
+- `sls-094` resolution comment, pinned to `6d796128`:
+  https://github.com/Stellar-Light/stellarlight/issues/1829#issuecomment-6431221707
+- Handoffs #295 and #293 were acknowledged and closed as completed.
+
+`npm run improvements:resolve` then retired `sk-026` and `sls-094`. Their receipts in
+`improvements/resolved.json` carry `sourceCommit` `6d796128`. #296 closed with PR #300.
