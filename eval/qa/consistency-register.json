@@ -551,17 +551,17 @@
           "q-ti-self-host-retention-backfill"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-01",
+        "lastChecked": "2026-10-27",
         "reSwept": {
-          "date": "2026-10-01",
-          "reason": "Owner decision C (2026-10-01): q-ti-historical-pointintime-balances gained a grader note only. A named price source with a stated asset/quote method is not an invented price. q-ti-compute-token-lp-market-data already accepts an explicitly named last/mid/VWAP/oracle/route price method. RPC, Horizon, retention, and indexer boundaries are unchanged. Ledger: .agents/rounds/2026-10-01-backlog-closeout/golden-owner-judgments.md. Re-stamped after the ledger moved into the round folder; no member content changed beyond that provenance path.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-infra-rpc-methods-list changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. The docs OpenRPC directory still lists the same 12 methods and live testnet RPC 30.0.0 recognizes all of them. The cluster claim stands.",
           "verdict": "consistent"
         },
         "note": "Current review 2026-09-09: the rendered Horizon pages and their positive indexed records agree on nearing-end-of-life wording. The source/index conflict is fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "ada85e3d559d5cfe3a85e90540ad398b40fb2a7b9e639f2bcc79812433978360",
           "q-infra-hubble-bigquery": "ed5379bf50ec0faa9426e65fad29bf7dd41f53fb4d711d492f08c8ca06ac6153",
-          "q-infra-rpc-methods-list": "1c1a70e7139ef47bf805a99bad1127848fb111357ee2b31a12c709452e8313db",
+          "q-infra-rpc-methods-list": "6676d76fefe63ae2a45e6375b9c1c9226b60ac1e5bc340bb269557f84a7f5c0b",
           "q-infra-rpc-provider-archive-tier": "9f97c25d3c228d790b8ed146ff4fda969b8d97cf33e8541c312e2d881ad1c78b",
           "q-infra-which-indexer": "dc8035aa02206b2ec496c27e2a2526909f0988cf2cb6f3117141b590a5aa2307",
           "q-soroban-event-indexing-design": "54e3141f5a785f1422c5b5eca05f1f0cff7fe5e830101c0c2bc0c9cac497a075",
@@ -1311,17 +1311,17 @@
           "q-org-sdf-structure-mandate"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-10-27",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-org-sdf-mandate-buckets changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. The live mandate pages still show the 2019 and 2025-era bucket sets. The cluster claim stands.",
           "verdict": "consistent"
         },
         "note": "SDF sells existing XLM through named exchanges/direct sales for operations and mandate work without a price guarantee. The 2019 no-additional-burn statement and current no-new-plan sweep are dated evidence. Current mandate/dashboard/report balances are source-, method-, and timestamp-scoped; ~30B is not a current durable reserve fact and named mixed-timestamp accounts are non-exhaustive.",
         "memberContentSha256": {
           "q-hot-sdf-transparency-wallets-reports": "457587d6997730b35e71c526c2a377f142d537b6c5be7bebe6efae1930ba5ddf",
           "q-hot-sdf-xlm-holdings-sales": "21e0183b7d3869b5005ee6f7c2da63d6ea1c2e8d24f827b6d78f45cac4b4f0e7",
-          "q-org-sdf-mandate-buckets": "b8c9c11bd4ea36e0cb68ec2852ebe4021a03a73fec872215388603b6a185c022",
+          "q-org-sdf-mandate-buckets": "028f4cda20afe17d3b5fdd87e2e82e7c16a03335a3007ea44d65a2be17dea98a",
           "q-org-sdf-structure-mandate": "2aa70a6c7e97b0a54740846770fd2e77342e677ef943b0514df3fc44b962d826"
         }
       },
@@ -2307,10 +2307,10 @@
           "q-ti-scaffold-stellar"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-10-27",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-ti-scaffold-stellar changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. The Scaffold Stellar docs still require the separate stellar-scaffold-cli install; the dated 0.0.26 registry claim stays dated. The cluster claim stands.",
           "verdict": "consistent"
         },
         "note": "Current target is wasm32v1-none. Local Wasm supplies the spec for bindings; generated deploy requires installed wasmHash; SDK helper return types are version-sensitive. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-scaffold-stellar joins because it asserts where this flow's boundary lies — Scaffold Stellar is a separately installed plugin (cargo install stellar-scaffold-cli, stellar scaffold init) that generates contracts, TypeScript clients/bindings, frontend, and environment config, and is NOT bundled with a core Stellar CLI install nor equivalent to 'stellar contract init'. Verified 2026-07-28 against q-soroban-cli-bindings, q-sor-build-target-wasm32v1, and q-soroban-deploy-cli: no case conflates the plugin with the core CLI, and no case claims the plugin replaces 'stellar contract bindings'. Alternative considered and rejected: a standalone scaffold-versus-core-CLI cluster, which would duplicate this one's membership without adding a distinct claim.",
@@ -2318,7 +2318,7 @@
           "q-sor-build-target-wasm32v1": "e30e486db0d6aa3903073e5af9d25cc6d1c3b79276a0f8a522970fa696a4e925",
           "q-sor-deploy-invoke-from-js-sdk": "c89deccb629d0374dcf55356db3b0c26d6da1db399e50a2bddf99fbdac3d84e8",
           "q-soroban-cli-bindings": "f3169b1be7374cbd1ee3450ccae8d61dd7af7146c7a3ff68fe42d4e617746248",
-          "q-ti-scaffold-stellar": "7dcc00e1de070eebfb75286a741b6d54b190fbafd67386313b46d532c5c0582d"
+          "q-ti-scaffold-stellar": "10aba67d79306b9bbb4dd5b549bb377f1bef59118ac23610ba894fa84c99db67"
         }
       },
       {
@@ -2947,15 +2947,15 @@
           "q-tool-cctp-stellar-integration"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-10-27",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-cctp-v2-usdc-stellar changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. Circle's live fee endpoint returned the same dated values; domain 27 and the CctpForwarder rule are unchanged. The cluster claim stands.",
           "verdict": "consistent"
         },
         "note": "The cases consistently distinguish Circle's 2026-05-18 Stellar mainnet-support milestone, the 2026-05-19 SDF/Circle public-live announcement, and mutable fee/finality support. No accessible primary source recovered the prior 2026-02-24 launch attribution, so it remains explicitly unverified rather than being collapsed into either May milestone. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration adopt the two-milestone wording and q-cctp-v2-usdc-stellar fee corroboration now labels the 2026-07-11 readings as a dated probe observation, matching the mutable-fee discipline. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
-          "q-cctp-v2-usdc-stellar": "503aa9e8ee457984242a8d27aaf8410cef7541c2e6fe4e86591dd527fa40335a",
+          "q-cctp-v2-usdc-stellar": "3a658e3c5470843df9e8de2934f0a3f1e964e9ef45c29860103deb0e58c2bb0f",
           "q-hist-cctp-stellar-live-announcement": "d6542c715415c1e52b8fee21c896c85463e03a090c08853d6336308b078932b3",
           "q-token-circle-usdc-on-stellar": "2647f13e3aee14662fd849a26f6bdb8fc67b745e1c50e88cd601c4dbf78c9316",
           "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
@@ -3042,16 +3042,16 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-10-06",
+        "lastChecked": "2026-10-27",
         "reSwept": {
-          "date": "2026-10-06",
-          "reason": "Near-due re-verification 2026-10-06: q-edge-closed-world-builder-directory-miss and q-edge-strupey-ambiguous-stellar-history changed only in judge-blind truth metadata (truth.asOf, staggered truth.reverifyBy, corroboration evidence re-observed live today, refreshed truth.verified). Question, answer, keyFacts, avoid, notes, and tags are unchanged. Scout builders?q=Strupey still returns 0; the open-world probe still finds no exact-token Strupey row. The cluster note stands unchanged.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-builder-justin-rice-history changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. The live SDF team page still lists Justin Rice as VP of Ecosystem; the golden keeps its observation-date gate. The cluster claim stands.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
           "q-builder-content-by-person": "11a80fae05575d6eddf7991e58ab61372a51d51b81e04ef7d84f1c4ee43de51f",
-          "q-builder-justin-rice-history": "666e25ec6c21713634ebec85fa3e3906be546df9a88c080820fa916ec74ad1dd",
+          "q-builder-justin-rice-history": "500008011b3aa3cd337e58e5fb9643b483e2eb57d0b7e8487f5a7241347e7664",
           "q-edge-closed-world-builder-directory-miss": "e48b4d8872a4630027b9f0e1e2f47d3431bb3c53fc9c8fe89b80ea854a604fa4",
           "q-edge-lumenloop-person-entity-empty": "46b0c6f9b14c35a622553e95456108b6f27caf71b1784db61a8130ce669f637f",
           "q-edge-open-world-recovery-after-narrow-miss": "0ba9afe931d8563e8e0a34cc2418da8df32b330d8bd2e2bb498e2f8c77f9c86c",
@@ -3502,18 +3502,18 @@
           "q-tool-cctp-stellar-integration"
         ],
         "memberContentSha256": {
-          "q-cctp-v2-usdc-stellar": "503aa9e8ee457984242a8d27aaf8410cef7541c2e6fe4e86591dd527fa40335a",
+          "q-cctp-v2-usdc-stellar": "3a658e3c5470843df9e8de2934f0a3f1e964e9ef45c29860103deb0e58c2bb0f",
           "q-hist-cctp-stellar-live-announcement": "d6542c715415c1e52b8fee21c896c85463e03a090c08853d6336308b078932b3",
           "q-token-circle-usdc-on-stellar": "2647f13e3aee14662fd849a26f6bdb8fc67b745e1c50e88cd601c4dbf78c9316",
           "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-cctp-v2-usdc-stellar changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. Circle's CCTP 2026 release notes still record 2026.05.18 Stellar mainnet support, so the two-milestone rule stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-31"
+        "lastChecked": "2026-10-27"
       },
       {
         "label": "YieldBlox borrowed XLM USDC totals",
@@ -3694,7 +3694,7 @@
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
         "requiredRecheck": "Re-fetch Circle Stellar support, fee/finality, release-note, and forwarder pages; reconcile technical-support dates separately from the May 19 public announcement.",
-        "disposition": "open — mutable route/fee claims remain as-of; q-tool-cctp-stellar-integration reverifyBy 2026-11-26 (re-verified 2026-08-11) and q-cctp-v2-usdc-stellar reverifyBy 2026-10-29.",
+        "disposition": "open — mutable route/fee claims remain as-of; q-tool-cctp-stellar-integration reverifyBy 2026-11-26 (re-verified 2026-08-11) and q-cctp-v2-usdc-stellar reverifyBy 2027-02-05 (re-verified 2026-10-27: live Circle fee endpoint and references unchanged).",
         "caseIds": [
           "q-cctp-v2-usdc-stellar",
           "q-tool-cctp-stellar-integration",
@@ -3702,17 +3702,17 @@
         ],
         "note": "Updated 2026-07-28: the 2026-02-24 launch attribution was retired as unsupported by primary material.",
         "memberContentSha256": {
-          "q-cctp-v2-usdc-stellar": "503aa9e8ee457984242a8d27aaf8410cef7541c2e6fe4e86591dd527fa40335a",
+          "q-cctp-v2-usdc-stellar": "3a658e3c5470843df9e8de2934f0a3f1e964e9ef45c29860103deb0e58c2bb0f",
           "q-hist-cctp-stellar-live-announcement": "d6542c715415c1e52b8fee21c896c85463e03a090c08853d6336308b078932b3",
           "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-10-27",
+          "reason": "Scheduled re-verification 2026-10-27: q-cctp-v2-usdc-stellar changed only in judge-blind truth metadata (staggered truth.reverifyBy and refreshed truth.verified with live evidence observed today). Question, answer, keyFacts, avoid, notes, tags, and truth.asOf are unchanged. The disposition now names its new reverifyBy (2027-02-05); the trap stays open for mutable route and fee claims. The cluster claim stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-31"
+        "lastChecked": "2026-10-27"
       },
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",

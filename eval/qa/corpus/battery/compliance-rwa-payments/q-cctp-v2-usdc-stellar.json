@@ -36,7 +36,7 @@
     "domain": "real-world",
     "status": "mixed",
     "asOf": "2026-07-28",
-    "reverifyBy": "2026-10-29",
+    "reverifyBy": "2027-02-05",
     "sources": [
       {
         "class": "A",
@@ -275,40 +275,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+      "date": "2026-10-27",
+      "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
       "evidence": [
-        "Production stellarDocs.search_docs recovered the current CCTP-on-Stellar documentation boundary and delegated deployment/support provenance to Circle.",
-        "https://developers.circle.com/release-notes/cctp-2026",
-        "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
-        "https://x.com/circle/status/2056767949445472739",
-        "https://github.com/circlefin/stellar-cctp",
-        "https://developers.circle.com/cctp",
-        "https://developers.circle.com/cctp/fees-and-finality",
-        "https://developers.circle.com/cctp/stellar-cctp-forwarder",
-        "https://github.com/circlefin/stablecoin-evm",
-        "improvements/lumenloop/ll-022-cctp-milestone-provenance.md",
-        "Sibling sweep: q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, and q-token-circle-usdc-on-stellar now use compatible milestone-specific language rather than one collapsed launch date.",
-        "Structural re-form (negative-predicate): reworded five compound or long facts in place and left the unverified 2026-02-24 claim in golden.avoid; truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.circle.com/release-notes/cctp-2026 — Circle still records Stellar mainnet support on 2026-05-18.",
-        "Live re-check 2026-08-27: https://github.com/circlefin/stellar-cctp — the CCTP Forwarder still performs post-mint forwarding to specified recipients.",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc — Circle still documents 7-decimal Stellar USDC transfer amounts and cross-chain conversion.",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still requires callers to retrieve current route fees from /v2/burn/USDC/fees.",
-        "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still describes CCTP protocol fees separately from forwarding costs.",
-        "Sibling sweep 2026-08-27: grep CctpForwarder|2026-05-18|2026-05-19|27→0 → q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the mintRecipient/destinationCaller stranding fields; truth unchanged versus HEAD.",
-        "Live re-check 2026-08-30: https://developers.circle.com/release-notes/cctp-2026 — Circle retains 2026-05-18 support; SDF retains the 2026-05-19 announcement.",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — both forwarder fields remain required for G, M, or C recipients.",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — CCTP uses six decimals and leaves seventh-decimal dust on Stellar.",
-        "Live re-check 2026-08-30: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — live 27→0 remains 0/0; the companion 0→27 route remains 1/0.",
-        "Live re-check 2026-08-30: https://developers.circle.com/cctp/concepts/fees — Circle defines route fees separately from other integration costs.",
-        "Sibling sweep 2026-08-30: grep CctpForwarder|2026-05-18|2026-05-19|seventh decimal → q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction",
-        "Source repair 2026-08-30: https://developers.circle.com/cctp/stellar-cctp-forwarder returned 404; truth.sources now cites https://developers.circle.com/cctp/references/stellar (200), which carries the forwarder fields."
+        "Live re-check 2026-10-27 (F): https://iris-api.circle.com/v2/burn/USDC/fees/27/0 returned minimumFee 0 for finality 1000 and 2000; /fees/0/27 returned 1 (finality 1000) and 0 (finality 2000) — identical to the dated 2026-07-11 values.",
+        "Live re-check 2026-10-27 (A): https://developers.circle.com/cctp/references/stellar — domain 27, CctpForwarder required as both mintRecipient and destinationCaller (wrong values strand funds), 7-decimal Stellar USDC vs 6-decimal message amount with the seventh decimal staying on Stellar.",
+        "Live re-check 2026-10-27 (A): https://developers.circle.com/release-notes/cctp-2026 — 2026.05.18 'Added support for Stellar mainnet', unchanged.",
+        "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
       ],
       "rootCause": [
-        "Eval-authoring flaw: the case promoted an unsupported 2026-02-24 date to 'launch' and collapsed it with later technical-support and public-announcement milestones.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+        "freshness-drift"
       ]
     },
     "origin": "kaan cctp-usdc-stellar-crosschain"
