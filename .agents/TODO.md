@@ -18,6 +18,8 @@ Open owner decisions are at the end of this file. Each one is listed once.
 2. Run owner decision A (the supervised paired subset) on a weekend UTC day, under its own spend
    authorization and on a quiet machine. The 2026-10-13 measurement queue is done: #272, #271,
    #281, and #270 are merged and deployed; the section guard does not ship.
+3. Fix the table-row loss in `stellarDocs.get_doc_page_sections` (HackMeridian 2026 review
+   follow-ups below). It is small, and it blocks address and version answers on every docs page.
 
 Binding spend rules: no paid method runs without its own written authorization, and a diagnostic
 budget never transfers to headline collection. Use [the evaluation map](../eval/EVALS.md) and the
@@ -617,6 +619,104 @@ page size cannot help because the index limit is the same.
 
 Done when: a reviewed enumeration change removes the ceiling, or the owner retires the guard.
 
+## HackMeridian 2026 review follow-ups
+
+Found by the 2026-10-26 weekend review: 58 probe questions in two rounds (22 Opus, 36 Sonnet),
+four questions repeated on Sonnet and Haiku, and independent Fable grades against primary sources.
+Probe ids below are `Q<n>` (round 1) and `R<nn>` (round 2). The report, the probe answers, and the
+grades are in the owner's private evidence snapshot `2026-10-26-hackmeridian` (see
+`usage/README.md`); that copy also holds the production figures, which stay out of this repo.
+
+### Return every table row from `stellarDocs.get_doc_page_sections`
+
+`sortAndDedupeSections` (`src/adapters/stellar-docs.ts`) keeps one Algolia record for each section
+URL. Every row of a docs table shares its heading's URL, so only the first row survives. Q18 (the
+oracle testnet addresses) lost its answer this way. R22 (the software-versions sections came back
+empty) and R32 (a chunk cut the `getEvents` limits table) are related table losses; confirm their
+cause in the same pass. The same pass should normalize `path` (strip the
+`https://developers.stellar.org` origin and any `#anchor` before the `^/(docs|meetings)/` guard)
+and fix or document the soft-empty `/meetings` pages (Q9). A Markdown page reader over the docs'
+`<page>.md` text is the broader fix for tables and admonitions; weigh it against a dedupe fix.
+
+Done when: a test shows that the oracle page's testnet table and the software-versions table come
+back complete, and Q18 and R22 pass when run again.
+
+### Add a release and package-version source
+
+Raven cannot answer "what changed, with dates" or "which version is current". The Scout release
+index has dated rows for stellar-cli, stellar-core, js-stellar-sdk, and rs-soroban-sdk, but none
+for stellar-rpc (Q5, the RAVEN 101 demo prompt). No source gives the current npm, JSR, or crates
+version of common packages (R33 `@stellar/freighter-api`, R35 Stellar Wallets Kit) or the latest
+OZ stellar-contracts release (R23). Search also ranks `scout.getChangelog` (Scout's own API log)
+above `scout.searchResearch` `source: "release"` for release queries.
+
+Decide between an upstream Scout request (file it in `improvements/`) and a new host adapter (an
+ADR-0003 exposure change). Fix the `getChangelog` ranking trap either way.
+
+Done when: Q5, R23, R33, and R35 pass when run again, or the owner chooses to leave release data
+upstream and the finding is filed.
+
+### Measure "read past the snippet" guidance
+
+In 11 of the 29 round 2 answers below Strong, the agent stopped at a cut snippet, the first page,
+or the first 10 rows and did not open the cited page (R02, R09, R14, R16, R18, R20, R28, R29).
+Haiku did worse than Sonnet on all four repeated questions. Candidate fix: when a result is a cut
+snippet or a partial page of rows, say so and name the call that reads the rest (this overlaps the
+open question of a conditional `recoveryHint`). Upstream codemode is the default, so a change needs
+a measured win (the `run-evals` skill) before it ships.
+
+Done when: a measured change ships, or the measurement shows no gain and this item is deleted.
+
+### Triage the runtime and client gaps the weekend telemetry showed
+
+Each needs a check before a fix:
+
+- `scout.matchPartners` returned the upstream "AI not configured" failure on every call. Check it
+  against live Scout; if it still fails, remove it from the exposed surface (ADR-0003).
+- `execute` failures have no error class. Add a bounded `errorName` (SyntaxError, TypeError,
+  ReferenceError, timeout) to the `execute` event and span, with no message text.
+- `recoveryHint` appears on most successful executes, so agents probably ignore it. Show it only
+  for empty, thin, or conflicting results.
+- The playground often stopped at `DEMO_CAPS.maxOutputTokens` (4096). Review the cap.
+- Docs ranking misses canonical pages: the testnet reset section on `/docs/networks` (R20), the
+  Custom Account example (R02), and the fee-sponsorship pages (R09). Add routing cases first.
+- Clients: Grok CLI never completed OAuth (every `/mcp` request got 401), Copilot CLI looped on 404
+  (protocol 2026-07-28), and one browser looped on the consent page with "CSRF token mismatch".
+  Reproduce each one.
+
+Done when: each bullet has a merged fix or a recorded "no change" decision.
+
+### File the HackMeridian upstream findings
+
+Route these through the `improvements-pipeline` skill. Cite primary sources, not production
+figures.
+
+- stellar-dev-skill: `development.md` swaps the `try_` result nesting (`Ok(Err(e))` is called the
+  contract error; soroban-sdk gives `Err(Ok(e))`) (R04); the deprecated
+  `update_current_contract_wasm` (R07); the limits table lacks the 400-entry footprint cap (R08);
+  no SEP-8 approval-server section (R30); no `sendTransaction` or `getTransaction` status values
+  (R34); SDK pins at 27 (Q1).
+- Scout: stablecoin issuer of record (MGUSD is issued by Bridge, AUDD by AUDC Pty Ltd, C1USD by
+  Kinesis) and an asset class that keeps USDY and YLDS out (R31); "Live" without a network (R10,
+  R15); audits outside the Audit Bank and OZ audits after v0.3.0-rc.2 (R17, R23); partner SEP lists
+  (Bitso SEP-24, R36); canonical repo ranking (R16, R18); hackathon rubric, winner descriptions,
+  and placements (R24, R26, R27); SCF #45 coverage (R28); Chainlink oracle and native MetaMask rows
+  (Q2, Q18); DEX sub-type tags (Q6).
+- stellar-docs: the state-archival page says `current_ledger + 4095` for the restored persistent
+  minimum TTL, but mainnet uses 2,073,600; RPC method pages stay unindexed (sd-003: Q21, R03, R32,
+  R34); "Building with AI" and `llms.txt` still name `raven.stellar.buzz`.
+- Lumenloop: the Friday roundup leaves Saturday to Monday without news items (R21, near ll-006).
+
+Done when: each item is filed, merged into an existing finding, or rejected with a reason.
+
+### Add golden cases for the confirmed HackMeridian gaps
+
+Use the `golden-truth` skill. First cases: R04 (`try_` nesting), R20 (testnet reset, December 16,
+2026), R23 (OZ stellar-contracts version and audits), R31 (stablecoin issuers), and Q18 (testnet
+oracle addresses). Writing the cases is free; running the QA battery on them is owner decision C.
+
+Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and are merged.
+
 ## Deferred programs
 
 ### Re-evaluate Scout exposure after a routing-contract change
@@ -713,3 +813,12 @@ top3 floor (26) then fails. See "Preserve structured routing intent…" and its 
 Option 1: lower the holdout top3 floor to 25 for a repair that passes every other check. Option 2:
 require a skill-evidence change before the keyword step. Safe default: keep the floor, and do not start the
 next routing attempt.
+
+### C. Authorize a paid QA battery run on the HackMeridian golden cases
+
+The 2026-10-26 weekend review asked for this step and did not run it, because the QA battery costs
+money. It needs the golden cases from "Add golden cases for the confirmed HackMeridian gaps" first.
+The run measures the gaps before the fixes above ship, and then again after them.
+
+Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
+writing.
