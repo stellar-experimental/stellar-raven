@@ -1,7 +1,7 @@
 ---
 id: sk-029
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-10-27
 upstreamTitle: Four Core API error codes have no page at the ungrouped errors/<code> URL
 evidence:
@@ -9,7 +9,8 @@ evidence:
   - "2026-10-27 page-body check (Claude Fable 5.1 review): each of the 3 stellar-tx-deploy-* pages cites the ungrouped errors/<code> URL as its type value. The generic-http/query-too-complex page cites only its grouped URL as type."
   - "2026-10-19 maintainer statement (armandocodecr, who closed the issue) in Trustless-Work/trustlesswork-skill issue 16, comment 6279830640 (the sk-026 resolving comment): the Core API emits ungrouped …/api-rest/errors/<code-in-kebab-case> problem type URLs, and the fix is permanent redirects from those paths to the grouped pages."
   - The Core API skill at Trustless-Work/trustlesswork-skill main 80e2467f34041b9f70e66d6c2f567fc76ba9b1bb, trustless-work-dev/skills/api/v2/core-concepts.md line 214, documents the errors/<code-in-kebab-case> template for every error type.
-  - Predecessor sk-026 (fixed-upstream 2026-10-27; retirement pending the resolver run) covered the escrow-receiver-trustline-missing and token-trustline-missing links. This finding is the residual from the sweep of every documented error page. Dedupe 2026-10-27 found no other finding and none of the 19 trustlesswork-skill issues covers these 4 codes.
+  - Predecessor sk-026 (retired 2026-10-27; receipt in improvements/resolved.json) covered the escrow-receiver-trustline-missing and token-trustline-missing links. This finding is the residual from the sweep of every documented error page. Dedupe 2026-10-27 found no other finding and none of the 19 trustlesswork-skill issues covers these 4 codes.
+  - upstream issue filed 2026-10-27: https://github.com/Trustless-Work/trustlesswork-skill/issues/20
 ---
 
 ## Finding
