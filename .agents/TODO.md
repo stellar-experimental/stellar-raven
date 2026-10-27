@@ -349,6 +349,20 @@ control-model lane, or a reviewed change omits the field for that transport.
 
 ## Eval instruments
 
+### Re-verify the next near-due goldens before the stale gate fails CI
+
+`npm run eval:qa:lint -- --stale --enforce-floors` fails every PR and `main` once a battery case
+passes its `truth.reverifyBy` date. That happened on 2026-10-23, and #298 fixed it. The next dates:
+5 cases on 2026-11-01, 1 on 11-03, 5 on 11-05, and 31 more through 2026-11-30 (83 by 2026-12-31).
+List them with `grep -rl '"reverifyBy": "2026-11-0' eval/qa/corpus/battery`.
+
+Re-verify each batch before its date with the `golden-truth` skill, as #298 did: live evidence from
+two or more source classes, a refreshed `truth.verified`, staggered `reverifyBy` dates, and a
+register re-sweep (`npm run eval:qa:register`, then `--review`). The `truth-maintenance` skill owns
+the drip policy; fold the batch into a round when one runs.
+
+Done when: no battery case has a `reverifyBy` date before 2027-01-01; then delete this item.
+
 ### Measure the execute annotation change in isolation
 
 PR #225 and #234 set `execute` `readOnlyHint: true` and `openWorldHint: false`. Claude Code `2.1.292`
