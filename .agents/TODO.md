@@ -323,10 +323,12 @@ The registry deprecates `@cloudflare/vitest-pool-workers` and names `@cloudflare
 its replacement; 0.23.0 gets no further updates. It pins `wrangler` 4.124.0, `miniflare`
 5.20260815.0-alpha, and `zod` 4.4.3 exactly, so `package.json` `overrides` keeps three entries:
 
-- The global `"miniflare": "$miniflare"` keeps every package on the root `miniflare` and one
-  `workerd`.
-- The pool's `"wrangler": "$wrangler"` and `"zod": "$zod"` replace its vulnerable exact pins with
-  the root versions.
+- The global `"miniflare": "$miniflare"` keeps every package on the root `miniflare`. Without it,
+  `npm audit` reports 4 high findings and the tree gets a second `workerd`.
+- The pool's `"wrangler": "$wrangler"` keeps one `workerd`. Without it, the audit stays at 0, but
+  `wrangler` 4.124.0 brings back `workerd` 1.20260815.1.
+- The pool's `"zod": "$zod"` replaces the vulnerable `zod` 4.4.3. Without it, the audit reports 2
+  high findings.
 
 On 2026-10-13, `agents` 0.28.1 replaced the `agents` override. It pins `@modelcontextprotocol/sdk`
 1.32.1, `@modelcontextprotocol/client` 2.3.1, and `@modelcontextprotocol/server` 2.3.1, and the tree
