@@ -312,29 +312,30 @@ calls with an omitted reason on the current `main`, and records them here.
 
 ## Dependencies
 
-### Remove the vitest pool override when the pool updates
+### Migrate the deprecated vitest pool and remove its overrides
 
-Found by the `dependency-audit` issue on 2026-10-01. PR #248 (2026-10-09) moved the toolchain to
-`wrangler` 4.149.0, `miniflare` 5.20261006.1-alpha, and `@cloudflare/workers-types` 5.20261009.1.
+Found by the `dependency-audit` issue. PR #248 (2026-10-09) and the issue #296 update (2026-10-27)
+moved the toolchain to `wrangler` 4.153.0, `miniflare` 5.20261023.0-beta, `vitest` 4.1.12, and
+`@cloudflare/vitest-pool-workers` 0.23.0. `npm audit` reports 0 findings, and the tree carries one
+`workerd` (1.20261023.1).
 
-`package.json` `overrides` has two entries:
+The registry deprecates `@cloudflare/vitest-pool-workers` and names `@cloudflare/vitest-plugin` as
+its replacement; 0.23.0 gets no further updates. It pins `wrangler` 4.124.0, `miniflare`
+5.20260815.0-alpha, and `zod` 4.4.3 exactly, so `package.json` `overrides` keeps three entries:
 
-- The pool entry points `@cloudflare/vitest-pool-workers` 0.22.0 at `wrangler` 4.149.0. Pool 0.23.0
-  still pins `wrangler` 4.124.0 and `miniflare` 5.20260815.0-alpha exactly.
-- The global `"miniflare": "$miniflare"` entry keeps every package on `workerd` 1.20261006.1.
-  Without it, the pool restores `sharp` 0.35.2 (GHSA-wq5f-xc86-pv6w) and a second `workerd`, with 4
-  high audit findings. Miniflare 5.20261006.1-alpha pins `sharp` 0.35.5 directly, so the separate
-  `sharp` override is gone.
+- The global `"miniflare": "$miniflare"` keeps every package on the root `miniflare`. Without it,
+  `npm audit` reports 4 high findings and the tree gets a second `workerd`.
+- The pool's `"wrangler": "$wrangler"` keeps one `workerd`. Without it, the audit stays at 0, but
+  `wrangler` 4.124.0 brings back `workerd` 1.20260815.1.
+- The pool's `"zod": "$zod"` replaces the vulnerable `zod` 4.4.3. Without it, the audit reports 2
+  high findings.
 
 On 2026-10-13, `agents` 0.28.1 replaced the `agents` override. It pins `@modelcontextprotocol/sdk`
 1.32.1, `@modelcontextprotocol/client` 2.3.1, and `@modelcontextprotocol/server` 2.3.1, and the tree
 carries one copy of each and of `@modelcontextprotocol/core` 2.3.1.
 
-`npm audit` reports 0 findings. `wrangler` nests `esbuild` 0.28.2; the root keeps 0.28.1.
-
-Done when: a pool release accepts patched `wrangler` and `miniflare` versions, both the pool and the
-global `miniflare` overrides are removed, and `npm audit`, `npm run test:smoke`, and the
-single-`workerd` check still pass.
+Done when: the tests run on `@cloudflare/vitest-plugin`, all three overrides are removed, and
+`npm audit`, `npm test`, `npm run test:smoke`, and the single-`workerd` check still pass.
 
 ### Verify that xAI accepts the explicit tool `strict` field
 
