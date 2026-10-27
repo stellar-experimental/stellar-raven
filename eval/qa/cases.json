@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "c584daedd018fe5790203cc2f0c16f6f31971c415b4f8fe6fe7b6053b4a88465",
+  "corpusContentSha256": "c8fb74953a2da79d688adea472c4cdc4bf2c6d86831d1cd991f2231407c43e91",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -4224,7 +4224,7 @@
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-22",
+        "reverifyBy": "2027-02-01",
         "sources": [
           {
             "class": "A",
@@ -4336,33 +4336,17 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-27",
+          "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
           "evidence": [
-            "First-party Stellar event and blog pages plus https://www.coindesk.com/business/2021/11/03/stellar-validators-vote-in-amm-integration-that-could-boost-liquidity and https://theorg.com/org/stellar-org/org-chart/justin-rice.",
-            "Production and localhost retrieval probes demonstrating narrow miss and broad exact-name recovery.",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-            "Structural re-form (snapshot-date): Split the flagged compound key fact and removed its snapshot-date literal; truth is unchanged.",
-            "Live re-check 2026-08-27: https://stellar.org/foundation/team — the live team page remained undated, supporting an observation-date gate.",
-            "Live re-check 2026-08-27: https://stellar.org/community/events/ama-with-justin-rice and https://stellar.org/community/events/gbbc-university-dialogues-on-blockchain-digital-assets — the pages tied Rice's Head and VP roles to 2021 events.",
-            "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem → q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback; no contradiction",
-            "Structural re-form (symmetric-caution): Added a narrow caution for Justin Rice semantic matches without exact-name provenance; read improvements/lumenloop/ll-017-semantic-person-match-provenance.md on 2026-08-27; no live re-check needed; sibling sweep grep Justin Rice|exact-name → q-builder-content-by-person, q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty; no contradiction; golden truth unchanged.",
-            "Structural re-form (presentation-avoid): rewrote the observation-date avoid item as an equivalent answer-visible sourcing guard; the trap target is unchanged.",
-            "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-            "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem|observation date → q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback; no contradiction",
-            "Structural re-form (compound-predicate): Tightened two long key facts and reduced one compound predicate; every identity, provenance, dating, candidate-status, and validation claim remains unchanged.",
-            "Live re-check 2026-08-27: https://stellar.org/events/community/ama-with-justin-rice — showed exact-name, dated first-party evidence for Justin Rice's SDF ecosystem leadership.",
-            "Live re-check 2026-08-27: https://stellar.org/blog/developers/introducing-automated-market-makers-on-stellar — showed exact author, first-party source, and publication-date metadata for attribution checks.",
-            "Sibling sweep 2026-08-27: grep Justin Rice|semantic matches|exact identity → q-builder-content-by-person, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback, q-edge-strupey-ambiguous-stellar-history; no contradiction"
+            "Live re-check 2026-10-27 (A): https://stellar.org/foundation/team — the Leadership card for Justin Rice carries description \"VP of Ecosystem\"; the page remains undated, so the golden keeps its observation-date gate.",
+            "Live re-check 2026-10-27 (A): https://meridian.stellar.org/schedule — Meridian 2026 speaker card lists Justin Rice, VP of Ecosystem, Stellar (SDF).",
+            "Live re-check 2026-10-27 (D): web sweep (LinkedIn profile headline \"VP of Ecosystem at Stellar Development Foundation\"; https://cointelegraph.com/magazine/6-questions-justin-rice-stellar-development-foundation dated 2020-08-14 calls him Head of Ecosystem) — no contradiction.",
+            "Live re-check 2026-10-27 (A): https://stellar.org/community/events/ama-with-justin-rice (2021-02-16, head of Ecosystem) and https://stellar.org/blog/developers/soroban-is-feature-complete (author Justin Rice) unchanged.",
+            "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
           ],
           "rootCause": [
-            "Broad semantic capability existed but the interaction stopped after narrow evidence-poor calls.",
-            "Historical role evidence needed an explicit source-date gate to avoid a current-role hallucination.",
-            "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "authored 2026-07-13 from production miss and independent truth verification"
@@ -4647,7 +4631,7 @@
         "domain": "real-world",
         "status": "mixed",
         "asOf": "2026-07-28",
-        "reverifyBy": "2026-10-29",
+        "reverifyBy": "2027-02-05",
         "sources": [
           {
             "class": "A",
@@ -4886,40 +4870,16 @@
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
+          "date": "2026-10-27",
+          "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
           "evidence": [
-            "Production stellarDocs.search_docs recovered the current CCTP-on-Stellar documentation boundary and delegated deployment/support provenance to Circle.",
-            "https://developers.circle.com/release-notes/cctp-2026",
-            "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
-            "https://x.com/circle/status/2056767949445472739",
-            "https://github.com/circlefin/stellar-cctp",
-            "https://developers.circle.com/cctp",
-            "https://developers.circle.com/cctp/fees-and-finality",
-            "https://developers.circle.com/cctp/stellar-cctp-forwarder",
-            "https://github.com/circlefin/stablecoin-evm",
-            "improvements/lumenloop/ll-022-cctp-milestone-provenance.md",
-            "Sibling sweep: q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, and q-token-circle-usdc-on-stellar now use compatible milestone-specific language rather than one collapsed launch date.",
-            "Structural re-form (negative-predicate): reworded five compound or long facts in place and left the unverified 2026-02-24 claim in golden.avoid; truth is unchanged.",
-            "Live re-check 2026-08-27: https://developers.circle.com/release-notes/cctp-2026 — Circle still records Stellar mainnet support on 2026-05-18.",
-            "Live re-check 2026-08-27: https://github.com/circlefin/stellar-cctp — the CCTP Forwarder still performs post-mint forwarding to specified recipients.",
-            "Live re-check 2026-08-27: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc — Circle still documents 7-decimal Stellar USDC transfer amounts and cross-chain conversion.",
-            "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still requires callers to retrieve current route fees from /v2/burn/USDC/fees.",
-            "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still describes CCTP protocol fees separately from forwarding costs.",
-            "Sibling sweep 2026-08-27: grep CctpForwarder|2026-05-18|2026-05-19|27→0 → q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar; no contradiction",
-            "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the mintRecipient/destinationCaller stranding fields; truth unchanged versus HEAD.",
-            "Live re-check 2026-08-30: https://developers.circle.com/release-notes/cctp-2026 — Circle retains 2026-05-18 support; SDF retains the 2026-05-19 announcement.",
-            "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — both forwarder fields remain required for G, M, or C recipients.",
-            "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — CCTP uses six decimals and leaves seventh-decimal dust on Stellar.",
-            "Live re-check 2026-08-30: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — live 27→0 remains 0/0; the companion 0→27 route remains 1/0.",
-            "Live re-check 2026-08-30: https://developers.circle.com/cctp/concepts/fees — Circle defines route fees separately from other integration costs.",
-            "Sibling sweep 2026-08-30: grep CctpForwarder|2026-05-18|2026-05-19|seventh decimal → q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction",
-            "Source repair 2026-08-30: https://developers.circle.com/cctp/stellar-cctp-forwarder returned 404; truth.sources now cites https://developers.circle.com/cctp/references/stellar (200), which carries the forwarder fields."
+            "Live re-check 2026-10-27 (F): https://iris-api.circle.com/v2/burn/USDC/fees/27/0 returned minimumFee 0 for finality 1000 and 2000; /fees/0/27 returned 1 (finality 1000) and 0 (finality 2000) — identical to the dated 2026-07-11 values.",
+            "Live re-check 2026-10-27 (A): https://developers.circle.com/cctp/references/stellar — domain 27, CctpForwarder required as both mintRecipient and destinationCaller (wrong values strand funds), 7-decimal Stellar USDC vs 6-decimal message amount with the seventh decimal staying on Stellar.",
+            "Live re-check 2026-10-27 (A): https://developers.circle.com/release-notes/cctp-2026 — 2026.05.18 'Added support for Stellar mainnet', unchanged.",
+            "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
           ],
           "rootCause": [
-            "Eval-authoring flaw: the case promoted an unsupported 2026-02-24 date to 'launch' and collapsed it with later technical-support and public-announcement milestones.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            "freshness-drift"
           ]
         },
         "origin": "kaan cctp-usdc-stellar-crosschain"
@@ -22626,7 +22586,7 @@
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-22",
+        "reverifyBy": "2027-01-22",
         "sources": [
           {
             "class": "A",
@@ -22688,27 +22648,16 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-27",
+          "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
           "evidence": [
-            "Solo scratchpad 575 GT-50 primary/blind matrices independently agreed on the exact inventory and ancillary correction; blind also confirmed disabled `rpc.*` discovery behavior.",
-            "Sibling sweep checked q-infra-simulate-transaction-howto and q-infra-rpc-provider-archive-tier.",
-            "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
-            "Reviewed improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md — disputed claim: the indexed documentation exposes the complete 12-method RPC inventory.",
-            "Sibling sweep 2026-08-27: grep 12 application methods|getHealth|getNetwork|simulateTransaction|getLedgers → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-infra-simulate-transaction-howto, q-infra-testnet-vs-futurenet, q-sep-43-web-wallet-api, q-soroban-publish-events, q-soroban-simulate-resource-fee, q-ti-connect-wallet-button-code, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill; no contradiction",
-            "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory.",
-            "Structural re-form (negative-predicate): Split the inventory and retention facts into five atomic facts; the truth and exact method inventory are unchanged.",
-            "Live re-check 2026-08-27: https://api.github.com/repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main — listed exactly 12 application method files.",
-            "Live re-check 2026-08-27: https://api.github.com/repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main — listed getTransaction.json, getTransactions.json, and getLedgerEntries.json.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — showed getEvents is bounded by the configured ledger retention window.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration — showed data-lake-backed getLedgers extends beyond local retention for complete history.",
-            "Sibling sweep 2026-08-27: grep 12 application methods|getTransaction|getLedgers|simulateTransaction → q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-infra-simulate-transaction-howto, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill; no contradiction"
+            "Live re-check 2026-10-27 (B): https://api.github.com/repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main listed exactly 12 method files: getEvents, getFeeStats, getHealth, getLatestLedger, getLedgerEntries, getLedgers, getNetwork, getTransaction, getTransactions, getVersionInfo, sendTransaction, simulateTransaction.",
+            "Live re-check 2026-10-27 (F): https://soroban-testnet.stellar.org getVersionInfo reported stellar-rpc 30.0.0 (latest GitHub release v30.0.0, 2026-10-21). All 12 methods were recognized (result or parameter error); getLedgerEntry and getMethods returned -32601 method not found.",
+            "Live re-check 2026-10-27 (A): https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration — data-lake integration extends only getLedgers beyond local retention; other endpoints follow HISTORY_RETENTION_WINDOW.",
+            "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
-            "Eval-side method-capability conflation: standard getLedgers availability was confused with archive-backed historical reach.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-infra-rpc-methods-list"
@@ -25155,7 +25104,7 @@
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-13",
-        "reverifyBy": "2026-10-27",
+        "reverifyBy": "2027-02-03",
         "sources": [
           {
             "class": "A",
@@ -25206,32 +25155,15 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-10-27",
+          "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
           "evidence": [
-            "https://stellar.org/foundation/mandate",
-            "https://stellar.org/foundation/mandate/2019",
-            "scout.searchResearch({ q: \"Stellar Development Foundation mandate buckets 2019 current allocation SDF Development Stellar Growth Product and Innovation Assets and Liquidity\", limit: 8 }) — live 2026-07-14 discovery probe returned the official updated-mandate blog and lumen-supply documentation; it is an aggregator re-surfacing class-A sources, not an independent class",
-            "research/evidence-poor-retrieval-2026-07-13.md#intermediary-source-boundary--2026-07-14 — replayable query, returned sources, and mediation boundary",
-            "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol live-page reviews",
-            "Sibling sweep: q-org-sdf-structure-mandate and q-org-sdf-enterprise-fund preserve metric/source scope.",
-            "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-            "Reviewed improvements/resolved.json entry sd-012 — fixed 2026-07-27; older documentation can show 2019 mandate labels as current.",
-            "Sibling sweep 2026-08-27: grep Direct Development|SDF Development|Product and Innovation|Assets and Liquidity|mandate buckets → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets; no contradiction",
-            "Structural re-form (negative-predicate): Shortened the sourcing fact and stated the taxonomy and page-state distinctions positively; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://stellar.org/foundation/mandate — showed current sourced observations with separately updated bucket balances.",
-            "Live re-check 2026-08-27: https://stellar.org/foundation/mandate/2019 — showed the 2019 Direct Development, Ecosystem Support, Use-Case Investment, and User Acquisition taxonomy.",
-            "Live re-check 2026-08-27: https://stellar.org/foundation/mandate — showed visible rows with different update timestamps alongside the real-time-balances 'imminently' statement.",
-            "Sibling sweep 2026-08-27: grep Direct Development|Ecosystem Support|SDF Development|Product and Innovation|Assets and Liquidity → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets, q-scf-sdf-marketing-grant, q-scf-vs-sdf-enterprise-fund; no contradiction"
+            "Live re-check 2026-10-27 (A): https://stellar.org/foundation/mandate — still renders the 2025-era buckets (SDF Development, Stellar Growth, Product and Innovation, Assets and Liquidity) and still contains the 'imminently' real-time-balance wording beside balance rows.",
+            "Live re-check 2026-10-27 (A): https://stellar.org/foundation/mandate/2019 — still lists Direct Development, Ecosystem Support, Use-Case Investment, and User Acquisition, with per-section 'Last updated' stamps that differ (Oct 9–14, 2026), confirming the asynchronous-rows caution.",
+            "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
           ],
           "rootCause": [
-            "Eval-side historical route/version confusion and detached timestamp semantics.",
-            "improvements/stellar-docs/sd-012-mandate-wallet-label-drift.md",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "solo://proj/49/todo/golden-truth-review--972",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-org-sdf-mandate-buckets"
@@ -43051,7 +42983,7 @@
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-22",
+        "reverifyBy": "2027-01-25",
         "sources": [
           {
             "class": "C",
@@ -43110,22 +43042,17 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-10-27",
+          "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
           "evidence": [
-            "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-            "Sibling sweep: SocketFi/passkey/__check_auth battery mentions reviewed; no contradiction found",
-            "Structural re-form (compound-predicate): split the package role and contract-account mechanism into five atomic facts; no claim changed.",
-            "Live re-check 2026-08-27: https://registry.npmjs.org/@socketfi%2Fserver and https://github.com/socket-fi support the indexed token-verifying backend SDK claim.",
-            "Live re-check 2026-08-27: https://registry.npmjs.org/@socketfi%2Fserver supports Soroban transaction preparation for paymaster signing.",
-            "Live re-check 2026-08-27: https://www.socket.fi/ and https://lumenloop.com/projects/socketfi support the live, SCF-funded, non-custodial Soroban smart-wallet and passkey claims.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization names `__check_auth` as the contract-account hook.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization states that `require_auth` invokes the hook for credentials and policy checks.",
-            "Sibling sweep 2026-08-27: q-passkey-smart-account-architecture, q-soroban-check-auth-custom-account, q-soroban-require-auth, and q-tool-passkeykit-smart-wallet introduce no contradiction."
+            "Live re-check 2026-10-27 (A/F): https://registry.npmjs.org/@socketfi%2Fserver — latest 1.1.0 (2026-07-05); description: server-side SDK for verifying SocketFi authentication tokens and preparing Soroban transactions.",
+            "Live re-check 2026-10-27 (C): production Raven scout.searchProjects(q=SocketFi) — status Live, scfAwarded true (SCF #32 Build, official record), non-custodial Soroban smart wallet with passkey sign-in, social-profile binding, and gas abstraction; lumenloop.find_content_about_project(slug=socketfi) still indexes @socketfi/server as a token-verifying SDK that prepares transactions for paymaster signing.",
+            "Live re-check 2026-10-27 (B): Scout repo rows show active Socket-Fi/socketfi-smart-account commits through 2026-10-21 (https://github.com/Socket-Fi/socketfi-smart-account).",
+            "Live re-check 2026-10-27 (A): https://developers.stellar.org/docs/build/guides/auth/contract-authorization — __check_auth is the reserved CustomAccountInterface hook the host invokes when require_auth/require_auth_for_args is called; it verifies credentials and policy.",
+            "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
           ],
           "rootCause": [
-            "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "authored 2026-07 (cross-service)"
@@ -52473,7 +52400,7 @@
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-28",
-        "reverifyBy": "2026-10-22",
+        "reverifyBy": "2027-01-29",
         "sources": [
           {
             "class": "A",
@@ -52552,31 +52479,16 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+          "date": "2026-10-27",
+          "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
           "evidence": [
-            "Production stellar-raven: stellarDocs.search_sdk_cli_tools_docs({query:'Scaffold Stellar stellar scaffold init environments.toml bindings local network',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/tools/scaffold-stellar',includeContent:true}) — current page returns separate CLI installs, `stellar scaffold init`, build/watch, environments.toml, and Docker/local prerequisites.",
-            "Canonical source: https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/src/commands/mod.rs — current subcommands include init, build, generate, upgrade, update-env, watch, and clean; https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/Cargo.toml declares 0.0.26.",
-            "Registry: cargo search stellar-scaffold-cli --limit 3 and https://crates.io/api/v1/crates/stellar-scaffold-cli returned max_version=0.0.26, published 2026-07-23T20:11:45Z; 0.0.25 was published 2026-07-07.",
-            "Sibling sweep: q-soroban-deploy-cli and q-sor-build-target-wasm32v1 retain the narrower `stellar contract init`/build flow; no case conflates it with the full-stack plugin.",
-            "Structural re-form (snapshot-date): Split the registry version and template names from the snapshot-date requirement; truth is unchanged.",
-            "Live re-check 2026-08-27: https://crates.io/api/v1/crates/stellar-scaffold-cli/0.0.26 — the registry record showed version 0.0.26 published on 2026-07-23.",
-            "Live re-check 2026-08-27: https://api.github.com/repos/stellar-scaffold/ui/contents/templates — the official repository listed react and svelte template directories.",
-            "Live re-check 2026-08-27: https://crates.io/crates/stellar-scaffold-cli — the registry now showed 0.0.27, confirming that registry claims require observation dates.",
-            "Sibling sweep 2026-08-27: grep stellar-scaffold-cli|Scaffold Stellar|templates/react|templates/svelte → q-ti-scaffold-stellar only; no contradiction",
-            "Owner correction 2026-08-27: dropped the undated 'version 0.0.26' key fact because the registry already shows 0.0.27; the golden gates dating, not the pinned version.",
-            "Structural re-form (compound-predicate): Split the full-stack boundary and used single-predicate noun lists; truth is unchanged.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/scaffold-stellar — the page still required a separate stellar-scaffold-cli install and stellar scaffold init.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/scaffold-stellar — the toolkit still covered contracts, generated clients, frontends, and environment configuration.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract-init — stellar contract init remained the contract-workspace command, not the full-stack scaffold.",
-            "Live re-check 2026-08-27: https://crates.io/crates/stellar-scaffold-cli and https://github.com/stellar-scaffold/ui/tree/main/templates — registry data and official React/Svelte templates remained observation-date claims.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/scaffold-stellar — generated scripts, Docker prerequisites, and third-party template inputs still required review.",
-            "Sibling sweep 2026-08-27: grep stellar-scaffold-cli|Scaffold Stellar|stellar scaffold init → q-ti-scaffold-stellar, q-ti-video-tutorials; no contradiction"
+            "Live re-check 2026-10-27 (A): https://developers.stellar.org/docs/tools/scaffold-stellar — still a separate `cargo install --locked stellar-scaffold-cli` (cargo binstall alternative), optional stellar-registry-cli, environments.toml, and Docker for the local quickstart network.",
+            "Live re-check 2026-10-27 (F): https://crates.io/api/v1/crates/stellar-scaffold-cli — max_version 0.0.34 (updated 2026-10-25); the golden's 0.0.26 is explicitly dated 2026-07-28, so the registry move confirms the dated-claim gate rather than contradicting it.",
+            "Live re-check 2026-10-27 (B): https://api.github.com/repos/stellar-scaffold/ui/contents/templates — react and svelte, unchanged.",
+            "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
           ],
           "rootCause": [
-            "freshness-drift",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-ti-scaffold-stellar"
