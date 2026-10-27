@@ -70,20 +70,20 @@
     "agents": "0.28.1",
     "ai": "^7.0.137",
     "workers-ai-provider": "^4.0.0",
-    "zod": "^4.4.3"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.22.0",
+    "@cloudflare/vitest-pool-workers": "^0.23.0",
     "@cloudflare/workers-types": "^5.20261009.1",
     "@modelcontextprotocol/client": "2.3.1",
     "@modelcontextprotocol/sdk": "1.32.1",
     "@types/node": "^26.3.0",
     "esbuild": "0.28.1",
-    "happy-dom": "20.14.5",
-    "miniflare": "5.20261006.1-alpha",
+    "happy-dom": "21.0.4",
+    "miniflare": "5.20261023.0-beta",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.11",
-    "wrangler": "4.149.0"
+    "vitest": "^4.1.12",
+    "wrangler": "4.153.0"
   },
   "engines": {
     "node": ">=24 <25"
@@ -91,7 +91,8 @@
   "overrides": {
     "miniflare": "$miniflare",
     "@cloudflare/vitest-pool-workers": {
-      "wrangler": "4.149.0"
+      "wrangler": "$wrangler",
+      "zod": "$zod"
     }
   }
 }
