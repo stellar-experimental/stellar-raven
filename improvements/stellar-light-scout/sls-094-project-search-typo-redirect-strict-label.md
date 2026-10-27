@@ -1,7 +1,7 @@
 ---
 id: sls-094
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-15
 upstreamTitle: Project search labels a typo-distance name recovery strict
 evidence:
@@ -11,6 +11,8 @@ evidence:
   - 2026-10-15 live OpenAPI 1.9.78 defines corrected as "the rows matched only through a known spelling correction … the query token does not occur in them". It describes didYouMean as "the results are for `to`, not for what was asked".
   - Found by the vendor-diverse challenger lane of the 2026-10-15 truth-maintenance round (.agents/rounds/2026-10-15-truth-maintenance.md) and reproduced by the orchestrator. Dedupe 2026-10-15. sls-076 (resolved) covers SPELLING_CORRECTIONS on project search. sls-093 covers repo search. Neither covers the didYouMean path.
   - upstream issue filed 2026-10-15: https://github.com/Stellar-Light/stellarlight/issues/1829
+  - "2026-10-16 upstream fix: PR https://github.com/Stellar-Light/stellarlight/pull/1831 (author theboycoder, COLLABORATOR) merged at 2026-10-16T06:08:12Z as fe4f5da33758236c562f3fee3a93bfb27c459968 and shipped spec 1.9.79. It sets corrected when didYouMean is present, names both spellings in the label, and adds a route test and a daily live check. Issue 1829 closed as completed. Inbound handoff: https://github.com/stellar-experimental/stellar-raven/issues/293"
+  - "2026-10-27T00:41Z live recheck (orchestrator, Claude Opus 5.5), Scout API 1.9.111: GET /api/projects/search?q=frieghter&limit=5 returns matchMode corrected, matchModeLabel \"matched via a typo-distance name recovery: no project is spelled 'frieghter', so these rows are for 'Freighter'; verify the identity before relying on it\", and didYouMean.to Freighter. q=freightr, q=soroswapp, and q=blendd also return corrected. Controls q=freighter and q=lobstr return strict with no didYouMean. Raven's existing CANDIDATE_MATCH_MODES rule in src/executor/providers.ts now attaches caveat unverified-match to these rows."
 ---
 
 ## Finding

@@ -283,12 +283,10 @@ abstention slice under its own authorization.
 Done when: a reviewed measurement shows that both candidate runs of the Strupey row say the
 identity is unverified or ask for context, with no regression in the abstention or absence slices.
 
-2026-10-15: a second path needs the same treatment. Scout project search recovers a misspelled
-name through `meta.didYouMean` (for example `q=frieghter` → Freighter) and still reports
-`matchMode: "strict"`. `src/executor/providers.ts` sets `caveat: "unverified-match"` only for the
-`semantic` and `corrected` modes, so this result reaches the model with no caveat. The upstream
-mode fix is `sls-094`. Candidate own-repo mechanism: derive the caveat from a present
-`meta.didYouMean` too. It is model-facing, so it ships only with this item's measurement.
+The `meta.didYouMean` path of Scout project search needs no own-repo mechanism. Since spec 1.9.79
+(`sls-094`, resolved), a typo-distance name recovery such as `q=frieghter` → Freighter returns
+`matchMode: "corrected"`. The existing `semantic`/`corrected` rule in `src/executor/providers.ts`
+then attaches `caveat: "unverified-match"` (live recheck 2026-10-27, Scout 1.9.111).
 
 ## Executor and policy
 
