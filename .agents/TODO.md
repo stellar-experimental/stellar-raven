@@ -58,6 +58,18 @@ spend authorization. The G1 candidate record is in closed PR #102 at commit `6ba
 
 Done when: a reviewed v3 plan passes ADR-0008 and ships, or the owner retires this recovery program.
 
+### Repair the `cs-002` owner after `soroswap/docs` disappeared
+
+On 2026-10-27, `gh api repos/soroswap/docs` and the recorded issue `soroswap/docs#47` return HTTP
+404, so `npm run improvements:lint -- --live` fails on `cs-002` and its `intake.json` override. The
+round ledger `rounds/2026-10-27-issue-batch.md` records the failure.
+
+Next check: find whether the repository was renamed, made private, or deleted, and whether
+`docs.soroswap.finance` still shows the stale adapter status. Then update the `cs-002` owner and
+evidence, or resolve or retarget the finding.
+
+Done when: `npm run improvements:lint -- --live` passes.
+
 ## Routing
 
 ### `search` does not surface the research lane for protocol-history questions
@@ -283,12 +295,11 @@ abstention slice under its own authorization.
 Done when: a reviewed measurement shows that both candidate runs of the Strupey row say the
 identity is unverified or ask for context, with no regression in the abstention or absence slices.
 
-2026-10-15: a second path needs the same treatment. Scout project search recovers a misspelled
-name through `meta.didYouMean` (for example `q=frieghter` → Freighter) and still reports
-`matchMode: "strict"`. `src/executor/providers.ts` sets `caveat: "unverified-match"` only for the
-`semantic` and `corrected` modes, so this result reaches the model with no caveat. The upstream
-mode fix is `sls-094`. Candidate own-repo mechanism: derive the caveat from a present
-`meta.didYouMean` too. It is model-facing, so it ships only with this item's measurement.
+The `meta.didYouMean` path of Scout project search needs no own-repo mechanism. Since spec
+1.9.79 (`sls-094`, fixed upstream), a typo-distance name recovery such as `q=frieghter` →
+Freighter returns `matchMode: "corrected"`. The existing `semantic`/`corrected` rule in
+`src/executor/providers.ts` then attaches `caveat: "unverified-match"` (live recheck 2026-10-27,
+Scout 1.9.111).
 
 ## Executor and policy
 

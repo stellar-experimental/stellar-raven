@@ -219,6 +219,10 @@
       "repo": "Stellar-Light/stellar-scout",
       "reason": "The Scout skill repository owns the SKILL.md and API reference text that state the Builders directory size."
     },
+    "sk-029": {
+      "repo": "Trustless-Work/trustlesswork-skill",
+      "reason": "Trustless Work owns the Core API skill error-link template and the docs-site redirects that serve its problem type URLs; it resolved sk-026 through that repository."
+    },
     "sd-055": {
       "repo": "stellar/stellar-docs",
       "reason": "The archival and simulation examples are source content owned by stellar/stellar-docs."
