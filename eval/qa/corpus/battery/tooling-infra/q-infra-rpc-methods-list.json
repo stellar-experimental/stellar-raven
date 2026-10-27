@@ -34,7 +34,7 @@
     "domain": "real-world",
     "status": "confirmed",
     "asOf": "2026-07-11",
-    "reverifyBy": "2026-10-22",
+    "reverifyBy": "2027-01-22",
     "sources": [
       {
         "class": "A",
@@ -96,27 +96,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-10-27",
+      "by": "golden-truth scheduled re-verification, 2026-10-27 (Claude Opus 5.5; HackMeridian review CI unblock)",
       "evidence": [
-        "Solo scratchpad 575 GT-50 primary/blind matrices independently agreed on the exact inventory and ancillary correction; blind also confirmed disabled `rpc.*` discovery behavior.",
-        "Sibling sweep checked q-infra-simulate-transaction-howto and q-infra-rpc-provider-archive-tier.",
-        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
-        "Reviewed improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md — disputed claim: the indexed documentation exposes the complete 12-method RPC inventory.",
-        "Sibling sweep 2026-08-27: grep 12 application methods|getHealth|getNetwork|simulateTransaction|getLedgers → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-infra-simulate-transaction-howto, q-infra-testnet-vs-futurenet, q-sep-43-web-wallet-api, q-soroban-publish-events, q-soroban-simulate-resource-fee, q-ti-connect-wallet-button-code, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill; no contradiction",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory.",
-        "Structural re-form (negative-predicate): Split the inventory and retention facts into five atomic facts; the truth and exact method inventory are unchanged.",
-        "Live re-check 2026-08-27: https://api.github.com/repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main — listed exactly 12 application method files.",
-        "Live re-check 2026-08-27: https://api.github.com/repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main — listed getTransaction.json, getTransactions.json, and getLedgerEntries.json.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — showed getEvents is bounded by the configured ledger retention window.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration — showed data-lake-backed getLedgers extends beyond local retention for complete history.",
-        "Sibling sweep 2026-08-27: grep 12 application methods|getTransaction|getLedgers|simulateTransaction → q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-infra-simulate-transaction-howto, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill; no contradiction"
+        "Live re-check 2026-10-27 (B): https://api.github.com/repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main listed exactly 12 method files: getEvents, getFeeStats, getHealth, getLatestLedger, getLedgerEntries, getLedgers, getNetwork, getTransaction, getTransactions, getVersionInfo, sendTransaction, simulateTransaction.",
+        "Live re-check 2026-10-27 (F): https://soroban-testnet.stellar.org getVersionInfo reported stellar-rpc 30.0.0 (latest GitHub release v30.0.0, 2026-10-21). All 12 methods were recognized (result or parameter error); getLedgerEntry and getMethods returned -32601 method not found.",
+        "Live re-check 2026-10-27 (A): https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration — data-lake integration extends only getLedgers beyond local retention; other endpoints follow HISTORY_RETENTION_WINDOW.",
+        "No judge-facing field changed: the golden answer, keyFacts, avoid items, and notes keep their dated observations; truth.asOf is unchanged because the golden text still dates its volatile claims."
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
-        "Eval-side method-capability conflation: standard getLedgers availability was confused with archive-backed historical reach.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-infra-rpc-methods-list"
