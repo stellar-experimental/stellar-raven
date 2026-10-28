@@ -428,13 +428,13 @@ pinned upstream text.
 
 | Source | Pinned commit | Selection | Reviewed |
 | --- | --- | --- | --- |
-| `stellar-dev` | `cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f` | `sel:8c0ea19495c2` | author read; independent review below |
-| `openzeppelin-stellar` | `584262af9eed516bdb1d2d897246502218e3917a` | `sel:5b98f8cf7901` | author read; independent review below |
+| `stellar-dev` | `cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f` | `sel:8c0ea19495c2` | author read; independent Codex gpt-6.1-sol high approved with changes |
+| `openzeppelin-stellar` | `584262af9eed516bdb1d2d897246502218e3917a` | `sel:5b98f8cf7901` | author read; independent Codex gpt-6.1-sol high approved with changes |
 
 Seven `stellar-dev` files changed:
 
 - `agentic-payments/mpp.md` replaces the claim of real production USDC billing. The text now says
-  Charge mode is verified end to end on testnet, and the mainnet endpoint has no settled payment.
+  Charge mode is verified end to end on testnet, and mainnet settlement remains unverified.
 - `agentic-payments/x402.md` adds the AgentSmith facilitator entry.
 - `smart-contracts/SKILL.md` adds a "Verify your build" section for SEP-55 (Draft) build
   metadata and GitHub build attestations. The section tells the reader to resolve and review the
@@ -458,3 +458,8 @@ data; Raven serves no body from them.
 
 All 544 routing rows match `origin/main`: zero graded flips, zero top-five order changes, and zero
 score changes.
+
+The independent review re-derived the body diff and the routing comparison. It found two
+issues. This entry now states the MPP mainnet status as unverified. Three active goldens state the
+Confidential Tokens privacy claim without the non-ZK verifier limit; `.agents/TODO.md` tracks that
+correction for the `golden-truth` lane.
