@@ -423,3 +423,43 @@ added the same community entries. The upstream dApp description appends "Blux is
 its short tokens moved six routing top-five lists, so `scripts/description-notes.mjs` keeps the
 previous dApp search description until the general routing repair lands. The served skill body is the
 pinned upstream text.
+
+## 2026-10-28 — stellar-dev adds SEP-55 verified builds and corrects MPP and UltraHonk claims (#223)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f` | `sel:8c0ea19495c2` | author read; independent Codex gpt-6.1-sol high approved with changes |
+| `openzeppelin-stellar` | `584262af9eed516bdb1d2d897246502218e3917a` | `sel:5b98f8cf7901` | author read; independent Codex gpt-6.1-sol high approved with changes |
+
+Seven `stellar-dev` files changed:
+
+- `agentic-payments/mpp.md` replaces the claim of real production USDC billing. The text now says
+  Charge mode is verified end to end on testnet, and mainnet settlement remains unverified.
+- `agentic-payments/x402.md` adds the AgentSmith facilitator entry.
+- `smart-contracts/SKILL.md` adds a "Verify your build" section for SEP-55 (Draft) build
+  metadata and GitHub build attestations. The section tells the reader to resolve and review the
+  workflow commit, not to copy a pin. `security.md` and `standards/SKILL.md` add links to it.
+- `standards/ecosystem.md` adds XOXNO Lending, Spectra Finance, Stellar Prices API, and Chainlink
+  entries.
+- `zk-proofs/SKILL.md` moves the UltraHonk verifier floor to Protocol 28+, records its audit gap,
+  and warns that the verifier accepts non-ZK proofs only.
+
+The diff has no credential, no behavior instruction outside the skill topics, no claim about this
+gateway, and no reference to a non-exposed operation or retired skill. The contract addresses and
+install links are reference text of the class accepted on 2026-10-01.
+
+The `openzeppelin-stellar` commit moved, but no selected file changed. The new upstream directory
+`migrate-defender-to-cre` covers EVM workflows, so `groups.json` records it as out of scope.
+
+The `stellar-light` pin stays at `3b587aa9f23d`. Its new `references/api-reference.md` describes
+Scout operations that the held 1.9.61 manifest does not expose. The stellarlight and
+skills.stellar.org directory snapshots grow from 67 to 82 entries. These entries are directory
+data; Raven serves no body from them.
+
+All 544 routing rows match `origin/main`: zero graded flips, zero top-five order changes, and zero
+score changes.
+
+The independent review re-derived the body diff and the routing comparison. It found two
+issues. This entry now states the MPP mainnet status as unverified. Three active goldens state the
+Confidential Tokens privacy claim without the non-ZK verifier limit; `.agents/TODO.md` tracks that
+correction for the `golden-truth` lane.

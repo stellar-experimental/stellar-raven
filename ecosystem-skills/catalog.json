@@ -1,15 +1,15 @@
 {
   "source": "https://stellarlight.xyz/api/skills",
-  "fetched_at": "2026-10-08T17:41:07Z",
+  "fetched_at": "2026-10-28T22:47:20Z",
   "counts": {
-    "returned": 67,
-    "total": 67,
+    "returned": 82,
+    "total": 82,
     "bySource": {
       "sdf": 8,
       "stellarlight": 15,
       "lumenloop": 8,
       "external": 12,
-      "community": 24
+      "community": 39
     }
   },
   "validKinds": [
@@ -60,6 +60,136 @@
       "install": "npx skills add https://github.com/Eras256/Contextio",
       "repository": "https://github.com/Eras256/Contextio",
       "homepage": "https://github.com/Eras256/Contextio/tree/main/packages/sdk"
+    },
+    {
+      "name": "cosmospay",
+      "title": "CosmosPay",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Integrate Stellar checkout and wallet flows with @cosmosapp/pay_sdk.",
+      "install": "npx skills add https://github.com/CosmosPay/cosmospay-skill",
+      "repository": "https://github.com/CosmosPay/cosmospay-skill",
+      "homepage": "https://github.com/CosmosPay/cosmospay-skill/tree/main"
+    },
+    {
+      "name": "crypto-ai-acknowledgements",
+      "title": "Cryptography AI Acknowledgements",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Draft or review AI-use disclosures in cryptography papers from the actual record of assistance and human checking.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/writing/crypto-ai-acknowledgements"
+    },
+    {
+      "name": "crypto-benchmarking",
+      "title": "Cryptography Benchmarking",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Design, run, or audit cryptographic experiments with explicit timing, communication, memory, and statistical accounting.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/implementation/crypto-benchmarking"
+    },
+    {
+      "name": "crypto-correlation-accounting",
+      "title": "Cryptographic Correlation Accounting",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Define and compare correlation counts, PCG expansion ratios, and throughput units by algebraic relation, domain, grouping, and denominator.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/research/crypto-correlation-accounting"
+    },
+    {
+      "name": "crypto-implementation-evaluation-writing",
+      "title": "Crypto Implementation Evaluation Writing",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Draft, revise, or review implementation and evaluation sections from code and experimental results.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/writing/crypto-implementation-evaluation-writing"
+    },
+    {
+      "name": "crypto-literature-evidence",
+      "title": "Cryptography Literature Evidence",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Find and verify primary-source cryptography claims with exact source locators.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/research/crypto-literature-evidence"
+    },
+    {
+      "name": "crypto-manuscript-qa",
+      "title": "Cryptography Manuscript QA",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Check cryptography manuscript sources, LaTeX builds, PDF page locations, references, layout, and paper-to-code consistency.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/writing/crypto-manuscript-qa"
+    },
+    {
+      "name": "crypto-prior-work-comparison",
+      "title": "Crypto Prior-Work Comparison",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Draft or review prior-work comparisons and comparison tables in cryptography papers.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/writing/crypto-prior-work-comparison"
+    },
+    {
+      "name": "crypto-proof-auditor",
+      "title": "Crypto Proof Auditor",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Audit or complete cryptographic proofs, reductions, simulators, and security theorems.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/research/crypto-proof-auditor"
+    },
+    {
+      "name": "crypto-protocol-implementation",
+      "title": "Cryptographic Protocol Implementation",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Implement, optimize, reproduce, or review cryptographic protocol code against its specification.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/implementation/crypto-protocol-implementation"
+    },
+    {
+      "name": "crypto-research-artifacts",
+      "title": "Cryptography Research Artifacts",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Prepare, document, anonymize, validate, and package cryptography research artifacts for reviewers.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/implementation/crypto-research-artifacts"
+    },
+    {
+      "name": "crypto-research-framing",
+      "title": "Cryptography Research Framing",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Turn a rough cryptography idea into a precise research question.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/research/crypto-research-framing"
+    },
+    {
+      "name": "cryptography-writing",
+      "title": "Cryptography Writing",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Draft or minimally edit cryptography manuscripts: definitions, theorem statements, security arguments, abstracts, and technical overviews.",
+      "install": "npx skills add https://github.com/ziyang-theory/cryptography-research-skills",
+      "repository": "https://github.com/ziyang-theory/cryptography-research-skills",
+      "homepage": "https://github.com/ziyang-theory/cryptography-research-skills/tree/main/writing/cryptography-writing"
     },
     {
       "name": "defindex-sdk",
@@ -202,6 +332,16 @@
       "homepage": "https://github.com/berkingurcan/stellar-agent-search/tree/main/skills/mcp"
     },
     {
+      "name": "stellar-prices-api",
+      "title": "Stellar Prices API",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Get USD and XLM prices for classic and Soroban assets without computing them from Horizon trades: prices across SDEX, Soroswap, Aquarius, Phoenix and SushiSwap…",
+      "install": "npx skills add https://github.com/rumblefishdev/stellar-prices-api",
+      "repository": "https://github.com/rumblefishdev/stellar-prices-api",
+      "homepage": "https://github.com/rumblefishdev/stellar-prices-api/tree/master/skills/stellar-prices-api"
+    },
+    {
       "name": "stellar-registry",
       "title": "Stellar Registry",
       "source": "community",
@@ -262,11 +402,21 @@
       "homepage": "https://www.sodax.com/skill.md"
     },
     {
+      "name": "xoxno-lending",
+      "title": "XOXNO Lending & Borrowing",
+      "source": "community",
+      "kind": "skill-md",
+      "tagline": "Integrate XOXNO Lending on Stellar from a contract, dApp, backend, or bot.",
+      "install": "npx skills add https://github.com/XOXNO/rs-lending-xlm",
+      "repository": "https://github.com/XOXNO/rs-lending-xlm",
+      "homepage": "https://github.com/XOXNO/rs-lending-xlm/tree/main/skills/xoxno-lending"
+    },
+    {
       "name": "allbridge-sdk",
       "title": "Allbridge SDK",
       "source": "external",
       "kind": "sdk",
-      "tagline": "Cross-chain bridge SDK — move USDC between Stellar and 14+ chains.",
+      "tagline": "Cross-chain bridge SDK: move USDC between Stellar and 14+ chains.",
       "install": "npm install @allbridge/bridge-core-sdk",
       "repository": "https://github.com/allbridge-io/allbridge-core-js-sdk",
       "homepage": "https://allbridge.io/"
@@ -306,7 +456,7 @@
       "title": "OpenZeppelin Stellar Contracts",
       "source": "external",
       "kind": "sdk",
-      "tagline": "Audited Soroban contract primitives — tokens, ownership, governance.",
+      "tagline": "Audited Soroban contract primitives: tokens, ownership, governance.",
       "install": "cargo add openzeppelin-stellar-contracts",
       "repository": "https://github.com/OpenZeppelin/stellar-contracts",
       "homepage": "https://docs.openzeppelin.com/stellar-contracts/"
@@ -366,7 +516,7 @@
       "title": "Stellar TypeScript Wallet SDK",
       "source": "external",
       "kind": "sdk",
-      "tagline": "High-level wallet SDK — accounts, SEP-24 deposits, SEP-31 transfers.",
+      "tagline": "High-level wallet SDK: accounts, SEP-24 deposits, SEP-31 transfers.",
       "install": "npm install @stellar/typescript-wallet-sdk",
       "repository": "https://github.com/stellar/typescript-wallet-sdk",
       "homepage": "https://developers.stellar.org/docs/build/apps/wallet/overview"
@@ -426,7 +576,7 @@
       "title": "LumenLoop MCP",
       "source": "lumenloop",
       "kind": "mcp-server",
-      "tagline": "Read-only Stellar ecosystem MCP — 18 tools over projects, SCF, news, media.",
+      "tagline": "Read-only Stellar ecosystem MCP: 18 tools over projects, SCF, news, media.",
       "install": "claude mcp add --transport http lumenloop https://mcp.lumenloop.com",
       "repository": "https://github.com/lumenloop/lumenloop-skills",
       "homepage": "https://lumenloop.com/"
@@ -546,7 +696,7 @@
       "title": "LumenLoop: Content Auditor",
       "source": "stellarlight",
       "kind": "skill-md",
-      "tagline": "Audit a draft against the ecosystem — fix handles, add citations, flag bad claims.",
+      "tagline": "Audit a draft against the ecosystem: fix handles, add citations, flag bad claims.",
       "install": "/plugin marketplace add lumenloop/lumenloop-skills",
       "repository": "https://github.com/lumenloop/lumenloop-skills/tree/main/skills/stellar-content-auditor",
       "homepage": "https://github.com/lumenloop/lumenloop-skills"
@@ -586,7 +736,7 @@
       "title": "SCF Fetch External Doc",
       "source": "stellarlight",
       "kind": "skill-md",
-      "tagline": "Fetch external docs linked in SCF submissions — Google Docs/Drive, GitHub, Notion, IPFS.",
+      "tagline": "Fetch external docs linked in SCF submissions: Google Docs/Drive, GitHub, Notion, IPFS.",
       "install": "npx skills add Stellar-Light/awesome-stellar-community-fund",
       "repository": "https://github.com/Stellar-Light/awesome-stellar-community-fund/tree/main/skills/fetch-external-doc",
       "homepage": "https://github.com/Stellar-Light/awesome-stellar-community-fund"
@@ -676,7 +826,7 @@
       "title": "Stellar Scout",
       "source": "stellarlight",
       "kind": "skill-md",
-      "tagline": "Vet ideas, match SCF RFPs, scan audits, map competitors, connect with builders — your AI analyst for building on Stellar.",
+      "tagline": "Vet ideas, match SCF RFPs, scan audits, map competitors, connect with builders. Your AI analyst for building on Stellar.",
       "install": "npx skills add Stellar-Light/stellar-scout",
       "repository": "https://github.com/Stellar-Light/stellar-scout",
       "homepage": "https://stellarlight.xyz/scout"
@@ -686,7 +836,7 @@
       "title": "Stellar Scout MCP",
       "source": "stellarlight",
       "kind": "mcp-server",
-      "tagline": "Idea vetting, SCF radar, audit intel, competitor & repo search, builder discovery — Scout's full API as native MCP tools for Claude.ai, ChatGPT, Gemini, Cursor.",
+      "tagline": "Idea vetting, SCF radar, audit intel, competitor & repo search, builder discovery: Scout's full API as native MCP tools for Claude.ai, ChatGPT, Gemini, Cursor.",
       "install": "npx @stellar-light/scout-mcp",
       "repository": "https://github.com/Stellar-Light/scout-mcp",
       "homepage": "https://stellarlight.xyz/scout"

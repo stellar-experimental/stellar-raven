@@ -613,24 +613,35 @@ and primary service; not a paraphrase), a contract mismatch appears, or trace ev
 prompt requests the wrong behavior. Record every recurrence with its case ID, result stamp, and
 transcript.
 
-### Absorb the 2026-10-15 skill pins without the unexposed Scout operations
+### Absorb the stellar-light skill pin with the Scout operations it describes
 
-The skills refresh works again after the stellar-community parser repair (2026-10-15 round). The
-candidate pins are stellar-dev `1fc65d59affb` and stellar-light `811c5384af52`, plus 15 directory
-additions. All 544 routing rows match main. The absorb is still held: the new
-`stellar-light/stellar-scout/references/api-reference.md` describes `GET /api/hackathons/builds/{id}`
-and `GET /api/hackathons/analyze`, which the held manifest does not expose. The section filter
-drops only the explicit excluded-path set, so both sections reach `codemode.skill.read`. That
-breaks the manifest-exposure rule. The stellar-dev pin alone carries a correctness fix
-(`agentic-payments/mpp.md` drops a production-billing claim) and SEP-55 build-provenance guidance.
+The stellar-dev pin `cac64041d0c7` and the directory snapshots shipped on 2026-10-28 (option b of
+the earlier item). The stellar-light pin stays at `3b587aa9f23d`. The live pin `789c9061f0dc`
+changes `references/api-reference.md`, which describes Scout paths that the held 1.9.61 manifest
+does not expose (`GET /api/hackathons/builds/{id}`, `GET /api/hackathons/analyze`). The section
+filter drops only the explicit excluded-path set, so those sections would reach
+`codemode.skill.read` and break the manifest-exposure rule.
 
-Options: (a) a general filter that drops skill sections describing service paths absent from the
-manifest, (b) a stellar-dev-only absorb (untested), or (c) wait for the Scout absorb. Any absorb also
-updates the three section and entry counts (202→203, 282→283, 222→223) and needs pin-review
-attestations. Evidence: `rounds/2026-10-15-truth-maintenance.md`, "Drift verdict".
+Done when: the stellar-light pin is absorbed together with, or after, the Scout operations it
+describes, with no exposure leak.
 
-Done when: the stellar-dev pin is absorbed with no exposure leak, and the stellar-light pin is
-absorbed together with, or after, the Scout operations it describes.
+### Qualify the Confidential Tokens privacy claim in three goldens
+
+Found by the independent review of the 2026-10-28 stellar-dev pin. The new `zk-proofs` skill text
+says the `rs-soroban-ultrahonk` verifier accepts non-ZK proofs only and gives no witness-hiding
+guarantee. The OpenZeppelin confidential package README (commit `ddc327eb`, lines 97 to 109) and the
+Nethermind verifier README (commit `9aae9581`, lines 3 to 10) say the same; the ZK flavor is in open
+PR #38. Three active cases still require an unconditional privacy claim:
+`q-scf-confidential-tokens-preview` (key fact and corroboration), `q-sor-confidential-tokens` (key
+fact), and `q-edge-noinfo-stellar-native-privacy-default` (answer). An answer that reports the
+verifier limit can conflict with those key facts.
+
+Next: use the `golden-truth` lane. State the privacy property as the announced design, record the
+verifier limit in the grading notes and truth metadata, and keep the dated Testnet and Mainnet
+boundary. Do not claim that anyone can recover every amount.
+
+Done when: the three cases carry the qualified claim with primary-source provenance and
+`npm run eval:qa:lint -- --stale --enforce-floors` passes.
 
 ### Monitor the Stellar Docs title-set size against the remote identity probe ceiling
 

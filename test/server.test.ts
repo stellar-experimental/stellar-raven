@@ -471,7 +471,7 @@ describe("docs page truthfulness", () => {
     expect(page).toContain(`<b>${total}</b> catalog entries`);
     expect(page).toContain(`<b>${counts.skills}</b> playbooks`);
     expect(page).not.toContain("<b>54</b> live operations");
-    expect(page).not.toContain("<b>283</b> catalog entries");
+    expect([...page.matchAll(/<b>(\d+)<\/b> catalog entries/g)].map((m) => Number(m[1]))).toEqual([total]);
   });
 
   it("binds the docs-page counts to the verified catalog constants", () => {

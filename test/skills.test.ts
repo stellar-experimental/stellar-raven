@@ -79,7 +79,7 @@ describe("skill transports", () => {
       expect(pinnedShas.has(t.sha as string), `${e.id} sha is not in MANIFEST.json`).toBe(true);
       checked += 1;
     }
-    expect(checked).toBe(222);
+    expect(checked).toBe(223);
   });
 });
 
