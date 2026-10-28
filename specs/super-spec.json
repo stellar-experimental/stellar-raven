@@ -196,7 +196,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-10-08T17:41:07Z"
+    "x-generatedAt": "2026-10-28T22:47:20Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4528,7 +4528,7 @@
     },
     "/skills/list_skills": {
       "get": {
-        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 20 skills across 5 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light, trustless-work), 202 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
+        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 20 skills across 5 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light, trustless-work), 203 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
         "operationId": "skills.list_skills",
         "responses": {
           "200": {
@@ -4781,6 +4781,7 @@
               "Project setup",
               "Contract anatomy",
               "Build, deploy, invoke",
+              "Verify your build",
               "Minimal test",
               "Before mainnet",
               "Documentation",
@@ -4817,7 +4818,7 @@
               "What's available — verify before building",
               "The on-chain verifier (Groth16 over BLS12-381)",
               "Walkthrough: Circom → on-chain verification",
-              "Walkthrough: Noir (UltraHonk, on-chain verifiable since Protocol 26)",
+              "Walkthrough: Noir (UltraHonk, on-chain verifiable on Protocol 28+)",
               "Walkthrough: RISC Zero (Groth16 wrap, on-chain verifiable since Protocol 25)",
               "Architecture patterns",
               "Pitfalls",
@@ -7179,8 +7180,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 282,
-    "generatedAt": "2026-10-08T17:41:07Z"
+    "catalogEntries": 283,
+    "generatedAt": "2026-10-28T22:47:20Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7223,7 +7224,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-10-08T17:41:07Z"
+      "syncedAt": "2026-10-28T22:47:20Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",
