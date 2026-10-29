@@ -1,0 +1,40 @@
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -193,8 +193,8 @@
+   const base = score(entry, query);
+   const fields: { tokens: readonly string[]; blend: number }[] = [];
+   const schemaMatches = entry.keywords ? matchingTokens(entry.keywords, query.tokens) : [];
+-  const hasSchemaEvidence = schemaMatches.length >= 2 ||
+-    (base !== null && schemaMatches.some((token) => canonicalRoutingToken(token).length >= 4));
++  const hasSchemaEvidence = base !== null && (schemaMatches.length >= 2 ||
++    schemaMatches.some((token) => canonicalRoutingToken(token).length >= 4));
+   if (entry.keywords && hasSchemaEvidence) {
+     fields.push({ tokens: [...new Set(entry.keywords)], blend: KEYWORD_BLEND });
+   }
+--- a/src/catalog/search.ts
++++ b/src/catalog/search.ts
+@@ -903,7 +903,7 @@
+ 
+   const preserved = selected.slice();
+   for (const [service, indexes] of selectedIndexes) {
+-    if (indexes.length !== quota) continue;
++    if (indexes.length < quota) continue;
+     const replacement = candidates.find(
+       (candidate) =>
+         candidate.entry.service === service &&
+@@ -915,12 +915,9 @@
+     );
+     if (!replacement) continue;
+ 
+-    const replaceable = indexes.slice(1).sort((left, right) => {
+-      const coverageDelta =
+-        intentCoverage(preserved[left]!.entry, queryTokens) -
+-        intentCoverage(preserved[right]!.entry, queryTokens);
+-      return coverageDelta || preserved[left]!.score - preserved[right]!.score || right - left;
+-    });
++    const replaceable = indexes.slice().sort((left, right) =>
++      preserved[left]!.score - preserved[right]!.score || right - left
++    );
+     const victimIndex = replaceable[0];
+     if (victimIndex === undefined) continue;
+     const replacementTargetedCoverage = targetedIntentCoverage(

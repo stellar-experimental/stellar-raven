@@ -1,0 +1,101 @@
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -179,6 +179,53 @@
+ const gatedEntryScorer: EntryScorer = (entry, query) => scoreEntry(entry, query.query);
+ const ungatedEntryScorer: EntryScorer = (entry, query) => scoreEntryUngatedPrepared(entry, query);
+ 
++/** Keep schema rank evidence inside its own token boundary. */
++function schemaAugmentedScore(
++  entry: WeightedScorableEntry,
++  query: PreparedQueryForm,
++  keywords: readonly string[],
++  score: EntryScorer
++): number | null {
++  const description = `${entry.description} ${joinedKeywords(keywords)}`;
++  const augmented = score({ ...entry, description }, query);
++  if (augmented === null) return null;
++  const normalized = normalizeSearchText(query.query);
++  const before = scoreFieldUngated(normalized, query.tokens, entry.description, 5);
++  const after = scoreFieldUngated(normalized, query.tokens, description, 5);
++  const vocabulary = new Set(keywords.map(canonicalRoutingToken));
++  const allowed = new Set(query.tokens.filter((token) =>
++    vocabulary.has(canonicalRoutingToken(token))
++  ));
++  let unsupported = 0;
++  for (const token of query.tokens) {
++    if (allowed.has(token)) continue;
++    unsupported += Math.max(0,
++      scoreFieldUngated("", [token], description, 5).score -
++      scoreFieldUngated("", [token], entry.description, 5).score
++    );
++  }
++  const baseMatches = new Set<string>();
++  for (const [field, weight] of Object.entries(UNGATED_FIELD_WEIGHTS)) {
++    const original = scoreFieldUngated(normalized, query.tokens,
++      entry[field as keyof ScorableEntry], weight);
++    for (const token of original.matchedTokens) baseMatches.add(token);
++  }
++  const allMatches = new Set([...baseMatches, ...after.matchedTokens]);
++  const cleanMatches = new Set([...baseMatches,
++    ...[...after.matchedTokens].filter((token) => allowed.has(token))]);
++  const bonus = (size: number) => size === query.tokens.length
++    ? 25 : Math.round(size / query.tokens.length * 10);
++  unsupported += bonus(allMatches.size) - bonus(cleanMatches.size);
++  const phraseAllowed = query.tokens.every((token) =>
++    before.matchedTokens.has(token) || allowed.has(token)
++  );
++  if (!phraseAllowed) {
++    const phraseScore = (value: string) => scoreFieldUngated(normalized, [], value, 5).score;
++    unsupported += Math.max(0, phraseScore(description) - phraseScore(entry.description));
++  }
++  return augmented - unsupported;
++}
++
+ /**
+  * Base score with the build-time keyword fields blended in.
+  * A keyword field needs a whole-token witness. Routing-only admission also
+@@ -191,12 +238,12 @@
+   score: EntryScorer
+ ): number | null {
+   const base = score(entry, query);
+-  const fields: { tokens: readonly string[]; blend: number }[] = [];
++  const fields: { tokens: readonly string[]; blend: number; schema?: boolean }[] = [];
+   const schemaMatches = entry.keywords ? matchingTokens(entry.keywords, query.tokens) : [];
+-  const hasSchemaEvidence = schemaMatches.length >= 2 ||
+-    (base !== null && schemaMatches.some((token) => canonicalRoutingToken(token).length >= 4));
++  const hasSchemaEvidence = base !== null && (schemaMatches.length >= 2 ||
++    schemaMatches.some((token) => canonicalRoutingToken(token).length >= 4));
+   if (entry.keywords && hasSchemaEvidence) {
+-    fields.push({ tokens: [...new Set(entry.keywords)], blend: KEYWORD_BLEND });
++    fields.push({ tokens: [...new Set(entry.keywords)], blend: KEYWORD_BLEND, schema: true });
+   }
+   if (
+     entry.routingKeywords &&
+@@ -211,10 +258,12 @@
+   let blended = base ?? 0;
+   let rescued: number | null = null;
+   for (const field of fields) {
+-    const augmented = score(
+-      { ...entry, description: `${entry.description} ${joinedKeywords(field.tokens)}` },
+-      query
+-    );
++    const augmented = field.schema
++      ? schemaAugmentedScore(entry, query, field.tokens, score)
++      : score(
++          { ...entry, description: `${entry.description} ${joinedKeywords(field.tokens)}` },
++          query
++        );
+     if (augmented === null) continue;
+     if (base === null) {
+       rescued = Math.max(rescued ?? 0, Math.round(augmented * field.blend));
+--- a/src/catalog/search.ts
++++ b/src/catalog/search.ts
+@@ -903,7 +903,7 @@
+ 
+   const preserved = selected.slice();
+   for (const [service, indexes] of selectedIndexes) {
+-    if (indexes.length !== quota) continue;
++    if (indexes.length < quota) continue;
+     const replacement = candidates.find(
+       (candidate) =>
+         candidate.entry.service === service &&

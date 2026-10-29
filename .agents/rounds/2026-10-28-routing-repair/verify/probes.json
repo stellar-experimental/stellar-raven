@@ -1,0 +1,195 @@
+{
+  "$comment": "Verification-lane off-corpus probes, written 2026-10-28 before any candidate was measured. Expectations: 'none' = must not contain any of the watched ops; 'some' = should contain at least one of the watched ops.",
+  "shortTokens": {
+    "watch": "gated",
+    "queries": [
+      "through", "each", "network", "is", "an", "also", "approach", "app",
+      "is it also an option", "walk me through each step", "what is an approach",
+      "go through the network", "each and every one", "also an app",
+      "an approach to this", "is this the right approach", "through each one",
+      "what is it", "is there an app for that", "also is an"
+    ]
+  },
+  "hackathonNegatives": {
+    "watch": ["scout.analyzeHackathonSubmissions", "scout.getHackathonSubmission", "scout.reviewSubmission", "scout.getHackathon", "scout.getHackathons", "scout.searchHackathonBuilds", "scout.compareHackathons", "scout.hackathonBrief"],
+    "expect": "none",
+    "queries": [
+      "What is SEP-24 and how does an interactive deposit work?",
+      "How do I authenticate a wallet with SEP-10 before a KYC upload?",
+      "How should an anchor implement SEP-31 cross-border payments?",
+      "Which Horizon endpoint returns payments for an account since 2019?",
+      "How do I backfill all ledger history into my own database?",
+      "What is the difference between Stellar RPC and Horizon for indexing?",
+      "Is USDC live on Stellar and who issues it?",
+      "When did PayPal PYUSD launch on Stellar?",
+      "Compare Soroswap and Aquarius as Stellar DEXes.",
+      "What is Blend and how does its lending pool work?",
+      "How do I submit a transaction with a fee bump?",
+      "What does a stellar.toml file contain?",
+      "How do I set up the Anchor Platform for a new on-ramp?",
+      "How do agent payments with x402 work on Stellar?",
+      "Show Phoenix DEX funding history from the SCF.",
+      "How do I analyze contract events for my token?",
+      "Summarize the review process for a Stellar protocol CAP.",
+      "How do I build and deploy my first Soroban contract?",
+      "Which wallets support passkeys on Stellar?",
+      "Explain the Stellar Consensus Protocol in simple terms.",
+      "How can I submit feedback on a SEP draft?",
+      "How do trends in Stellar DEX volume look this year?"
+    ]
+  },
+  "hackathonPositives": {
+    "watch": ["scout.analyzeHackathonSubmissions", "scout.getHackathonSubmission", "scout.getHackathon", "scout.getHackathons", "scout.searchHackathonBuilds", "scout.compareHackathons", "scout.hackathonBrief"],
+    "expect": "some",
+    "queries": [
+      "Which Stellar hackathon submissions used Soroban most often?",
+      "Show me the winning builds from the last Stellar hackathon.",
+      "What trends appear across all DoraHacks Stellar hackathon submissions?",
+      "Get the full details of hackathon submission dorahacks-buidl-12345.",
+      "Which libraries do placed hackathon builds use compared with the rest?",
+      "List upcoming Stellar hackathons I can enter.",
+      "Find prior hackathon builds about payroll streaming.",
+      "Compare two Stellar hackathons by number of submissions.",
+      "What categories of projects get built at Stellar hackathons?",
+      "Give me a brief to prepare for a Stellar hackathon.",
+      "How many hackathon builds became SCF-funded projects?",
+      "Show the hackathon build behind this DoraHacks link."
+    ]
+  },
+  "locateNegatives": {
+    "watch": ["scout.locateSource"],
+    "expect": "none",
+    "queries": [
+      "What is the Testnet network passphrase?",
+      "What is the mainnet network passphrase string?",
+      "Where is stellar.toml served for a home domain?",
+      "Show open-source smart wallet repositories on Stellar.",
+      "What MCP servers exist for Stellar developers?",
+      "How do I issue a regulated stablecoin on Stellar?",
+      "How do I verify a contract's WASM hash on-chain?",
+      "Which repositories implement SEP-10 servers?",
+      "List Stellar SDKs by language.",
+      "Where can I find Stellar developer docs for RPC?",
+      "What is the base reserve on Stellar today?",
+      "Find example Soroban token contracts.",
+      "Which projects build Stellar wallets?",
+      "How do I install the Stellar CLI?",
+      "What GitHub orgs maintain Stellar core software?",
+      "Show me Soroban example repositories for learning.",
+      "Which Stellar anchors operate in Mexico?",
+      "Where are Stellar meeting notes published?",
+      "How do I find the source code of a deployed contract?",
+      "What is the latest stellar-core release?"
+    ]
+  },
+  "locatePositives": {
+    "watch": ["scout.locateSource"],
+    "expect": "some",
+    "queries": [
+      "Where is the TransactionBuilder class defined in the js-stellar-sdk source?",
+      "Locate the definition of the soroban-sdk Env type in source.",
+      "Which file in stellar-core defines the ledger close logic?",
+      "Find where the Freighter API function signTransaction is implemented.",
+      "Point me to the source file that defines the Asset class in the Python SDK."
+    ]
+  },
+  "rwaDiscovery": {
+    "watch": ["scout.getRwaAssets"],
+    "expect": "some",
+    "queries": [
+      "Which tokenized treasury funds exist on Stellar?",
+      "List real-world asset tokens issued on Stellar.",
+      "What tokenized money market funds are live on Stellar?",
+      "Show tokenized real estate assets on Stellar and their issuers.",
+      "Is WisdomTree issuing tokenized funds on Stellar?",
+      "Which RWA issuers are active on the Stellar network?",
+      "How much tokenized RWA value is on Stellar?",
+      "Show verified tokenized bonds live on Stellar.",
+      "Which tokenized commodities are issued on Stellar?",
+      "Are there tokenized stocks or equities on Stellar?"
+    ]
+  },
+  "rwaImplementation": {
+    "watch": ["scout.getRwaAssets"],
+    "expect": "none",
+    "queries": [
+      "How do I tokenize a bond as a Stellar asset with clawback?",
+      "How do I set authorization flags for a regulated asset?",
+      "Write a Soroban contract that tracks tokenized treasury ownership.",
+      "How do I check a trustline balance for a tokenized fund in JavaScript?",
+      "Simulate a transfer of a tokenized treasury token with Stellar RPC.",
+      "How do I freeze a holder of my issued asset?",
+      "Can an asset issuer cap total supply at the protocol level?",
+      "How do I charge a transfer fee on a Stellar asset?",
+      "How do I build a compliance check for tokenized securities transfers?",
+      "How do I expose a tokenized asset to contracts through the SAC?",
+      "Walk me through issuing a tokenized real estate share.",
+      "How do I query balances of an RWA token with Horizon?",
+      "What SEP covers regulated asset approval servers?",
+      "How do I burn tokens of a tokenized fund when redeemed?",
+      "Estimate fees for a tokenized bond payment transaction.",
+      "How do I read the decimals of a tokenized treasury SAC?",
+      "How do I mint more units of my tokenized commodity?",
+      "Debug a failed payment of a tokenized asset with op_no_trust.",
+      "How do I add clawback to an existing tokenized asset?",
+      "How do I distribute a tokenized fund to many holders in one transaction?"
+    ]
+  },
+  "schemaWords": {
+    "watch": "gated",
+    "queries": [
+      "what has changed in the latest phase",
+      "current status of my transaction",
+      "what value does this field have",
+      "total count of items",
+      "show the data for this id",
+      "what type and name does it use",
+      "created at and updated at timestamps",
+      "the url for the next page",
+      "has the phase completed",
+      "what is the score and rank",
+      "list items with their status",
+      "which source has the value",
+      "a summary with a title and description",
+      "meta information about results",
+      "limit and offset for paging",
+      "error message and code",
+      "the amount and currency",
+      "label and slug for each entry",
+      "what fields does the response have",
+      "is the result partial or complete"
+    ]
+  },
+  "taxonomyPositives": {
+    "watch": ["lumenloop.get_categories", "lumenloop.get_regions", "lumenloop.get_project_tags_vocabulary"],
+    "expect": "some",
+    "queries": [
+      "What categories can I filter Stellar projects by?",
+      "Give me the allowed region values for the project directory.",
+      "List every project tag the ecosystem directory uses.",
+      "Which category labels does the Stellar directory define?",
+      "What are the valid category filter values for project search?",
+      "Show the controlled vocabulary of project tags.",
+      "Which regions does the directory recognize?",
+      "Enumerate the directory's project categories.",
+      "What taxonomy does the ecosystem directory use for projects?",
+      "Category list for the Stellar ecosystem directory, please.",
+      "Show me all region codes I can pass to the directory.",
+      "What tag values exist for Stellar projects?"
+    ]
+  },
+  "taxonomyNegatives": {
+    "watch": ["lumenloop.get_categories", "lumenloop.get_regions", "lumenloop.get_project_tags_vocabulary"],
+    "expect": "none",
+    "queries": [
+      "Show DeFi projects on Stellar.",
+      "List wallet projects in Latin America.",
+      "Which payments projects got SCF funding?",
+      "Find infrastructure projects building indexers.",
+      "Projects in Africa doing remittances.",
+      "Show the top lending protocols on Stellar.",
+      "Which anchors serve Europe?",
+      "Find Stellar projects about gaming."
+    ]
+  }
+}

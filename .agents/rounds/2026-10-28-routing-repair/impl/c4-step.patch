@@ -1,0 +1,418 @@
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -18,11 +18,14 @@
+  * The routing gates check changes to the scoring contract.
+  */
+ import {
++  FIELD_WEIGHTS,
++  coverageBonus,
+   normalizeSearchText,
+   scoreEntry,
+   tokenize,
+   type ScorableEntry
+ } from "./vendor/search-scoring.ts";
++import { stemmer } from "./vendor/porter.ts";
+ import type { RoutingPhrase } from "./types.ts";
+ 
+ export type { ScorableEntry } from "./vendor/search-scoring.ts";
+@@ -179,6 +182,18 @@
+ const gatedEntryScorer: EntryScorer = (entry, query) => scoreEntry(entry, query.query);
+ const ungatedEntryScorer: EntryScorer = (entry, query) => scoreEntryUngatedPrepared(entry, query);
+ 
++const schemaSupportCache = new Map<string, string>();
++
++/** Inflection support is local to the augmented schema comparison. */
++function canonicalSchemaSupportToken(token: string): string {
++  const cached = schemaSupportCache.get(token);
++  if (cached !== undefined) return cached;
++  const canonical = stemmer(token);
++  if (schemaSupportCache.size >= 5000) schemaSupportCache.clear();
++  schemaSupportCache.set(token, canonical);
++  return canonical;
++}
++
+ /** Keep schema rank evidence inside its own token boundary. */
+ function schemaAugmentedScore(
+   entry: WeightedScorableEntry,
+@@ -190,22 +205,22 @@
+   const augmented = score({ ...entry, description }, query);
+   if (augmented === null) return null;
+   const normalized = normalizeSearchText(query.query);
+-  const before = scoreFieldUngated(normalized, query.tokens, entry.description, 5);
+-  const after = scoreFieldUngated(normalized, query.tokens, description, 5);
+-  const vocabulary = new Set(keywords.map(canonicalRoutingToken));
++  const before = scoreFieldUngated(normalized, query.tokens, entry.description, FIELD_WEIGHTS.description);
++  const after = scoreFieldUngated(normalized, query.tokens, description, FIELD_WEIGHTS.description);
++  const vocabulary = new Set(keywords.map(canonicalSchemaSupportToken));
+   const allowed = new Set(query.tokens.filter((token) =>
+-    vocabulary.has(canonicalRoutingToken(token))
++    vocabulary.has(canonicalSchemaSupportToken(token))
+   ));
+   let unsupported = 0;
+   for (const token of query.tokens) {
+     if (allowed.has(token)) continue;
+     unsupported += Math.max(0,
+-      scoreFieldUngated("", [token], description, 5).score -
+-      scoreFieldUngated("", [token], entry.description, 5).score
++      scoreFieldUngated("", [token], description, FIELD_WEIGHTS.description).score -
++      scoreFieldUngated("", [token], entry.description, FIELD_WEIGHTS.description).score
+     );
+   }
+   const baseMatches = new Set<string>();
+-  for (const [field, weight] of Object.entries(UNGATED_FIELD_WEIGHTS)) {
++  for (const [field, weight] of Object.entries(FIELD_WEIGHTS)) {
+     const original = scoreFieldUngated(normalized, query.tokens,
+       entry[field as keyof ScorableEntry], weight);
+     for (const token of original.matchedTokens) baseMatches.add(token);
+@@ -213,14 +228,13 @@
+   const allMatches = new Set([...baseMatches, ...after.matchedTokens]);
+   const cleanMatches = new Set([...baseMatches,
+     ...[...after.matchedTokens].filter((token) => allowed.has(token))]);
+-  const bonus = (size: number) => size === query.tokens.length
+-    ? 25 : Math.round(size / query.tokens.length * 10);
+-  unsupported += bonus(allMatches.size) - bonus(cleanMatches.size);
++  unsupported += coverageBonus(allMatches.size, query.tokens.length) -
++    coverageBonus(cleanMatches.size, query.tokens.length);
+   const phraseAllowed = query.tokens.every((token) =>
+     before.matchedTokens.has(token) || allowed.has(token)
+   );
+   if (!phraseAllowed) {
+-    const phraseScore = (value: string) => scoreFieldUngated(normalized, [], value, 5).score;
++    const phraseScore = (value: string) => scoreFieldUngated(normalized, [], value, FIELD_WEIGHTS.description).score;
+     unsupported += Math.max(0, phraseScore(description) - phraseScore(entry.description));
+   }
+   return augmented - unsupported;
+@@ -510,7 +524,6 @@
+  *  6. Any native docs/snippet/section weighting upstream grows — may
+  *     replace our kind weighting.
+  */
+-const UNGATED_FIELD_WEIGHTS = { id: 12, name: 10, service: 8, description: 5, kind: 2 } as const;
+ 
+ type UngatedFieldScore = { score: number; matchedTokens: Set<string>; exactPhrase: boolean };
+ 
+@@ -563,16 +576,16 @@
+   if (normalizedQuery.length === 0 || queryTokens.length === 0) return null;
+ 
+   const fields: UngatedFieldScore[] = [
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.id, UNGATED_FIELD_WEIGHTS.id),
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.name, UNGATED_FIELD_WEIGHTS.name),
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.service, UNGATED_FIELD_WEIGHTS.service),
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.id, FIELD_WEIGHTS.id),
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.name, FIELD_WEIGHTS.name),
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.service, FIELD_WEIGHTS.service),
+     scoreFieldUngated(
+       normalizedQuery,
+       queryTokens,
+       entry.description,
+-      UNGATED_FIELD_WEIGHTS.description
++      FIELD_WEIGHTS.description
+     ),
+-    scoreFieldUngated(normalizedQuery, queryTokens, entry.kind, UNGATED_FIELD_WEIGHTS.kind)
++    scoreFieldUngated(normalizedQuery, queryTokens, entry.kind, FIELD_WEIGHTS.kind)
+   ];
+ 
+   const matchedTokens = new Set<string>();
+@@ -584,9 +597,7 @@
+   if (matchedTokens.size === 0) return null;
+ 
+   // Vendor coverage GATE deliberately absent here; the coverage BONUS stays.
+-  const coverage = matchedTokens.size / queryTokens.length;
+-  if (coverage === 1) score += 25;
+-  else score += Math.round(coverage * 10);
++  score += coverageBonus(matchedTokens.size, queryTokens.length);
+ 
+   const idTokens = tokenize(entry.id);
+   const nameTokens = tokenize(entry.name);
+--- a/src/catalog/search.ts
++++ b/src/catalog/search.ts
+@@ -778,6 +778,38 @@
+ type SelectedCandidate = { entry: CatalogEntry; score: number };
+ type TieredCandidate = SelectedCandidate & { tier: SearchHit["tier"] };
+ 
++/** Fill a short page without exceeding quota while another service can fill it. */
++function fillPageWithinServiceQuota(
++  selected: SelectedCandidate[],
++  candidates: readonly SelectedCandidate[],
++  limit: number
++): SelectedCandidate[] {
++  const filled = selected.slice();
++  const ids = new Set(filled.map(({ entry }) => entry.id));
++  const quota = serviceQuota(limit);
++  const counts = new Map<string, number>();
++  for (const { entry } of filled) {
++    counts.set(entry.service, (counts.get(entry.service) ?? 0) + 1);
++  }
++  const overflow: SelectedCandidate[] = [];
++  for (const candidate of candidates) {
++    if (filled.length >= limit) break;
++    if (ids.has(candidate.entry.id)) continue;
++    if ((counts.get(candidate.entry.service) ?? 0) >= quota) {
++      overflow.push(candidate);
++      continue;
++    }
++    filled.push(candidate);
++    ids.add(candidate.entry.id);
++    counts.set(candidate.entry.service, (counts.get(candidate.entry.service) ?? 0) + 1);
++  }
++  for (const candidate of overflow) {
++    if (filled.length >= limit) break;
++    filled.push(candidate);
++  }
++  return filled;
++}
++
+ function uniqueContentTokens(value: string | readonly string[]): string[] {
+   const tokens = typeof value === "string" ? tokenize(value) : value;
+   return [...new Set(tokens.filter((token) => token.length >= 2 && !STOPWORDS.has(token)))];
+@@ -1226,12 +1258,11 @@
+     // (diversifyByService only leaves slots empty when candidates ran out —
+     // so the page's ids ARE the full gated id set here), and after dropping
+     // those ids the ungated re-run contributes gate-failed entries only.
+-    const tier1Ids = new Set(selected.map((candidate) => candidate.entry.id));
+     total = gated.length + backfill.length;
+-    const rescue = diversifyByService(ungated, limit + 10, (candidate) =>
+-      candidate.entry.service
+-    ).filter((candidate) => !tier1Ids.has(candidate.entry.id));
+-    selected = [...selected, ...rescue].slice(0, limit);
++    selected = fillPageWithinServiceQuota(selected, ungated, limit);
++  }
++  if (gatedPageIsFull) {
++    selected = fillPageWithinServiceQuota([], [...selected, ...backfill], limit);
+   }
+   selected = preserveStrongBackfill(selected, backfill, query.contentTokens, limit);
+   const allCandidates = mergeCandidates(gated, backfill);
+--- /dev/null
++++ b/src/catalog/vendor/porter-LICENSE
+@@ -0,0 +1,22 @@
++(The MIT License)
++
++Copyright (c) 2014 Titus Wormer <tituswormer@gmail.com>
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of this software and associated documentation files (the
++'Software'), to deal in the Software without restriction, including
++without limitation the rights to use, copy, modify, merge, publish,
++distribute, sublicense, and/or sell copies of the Software, and to
++permit persons to whom the Software is furnished to do so, subject to
++the following conditions:
++
++The above copyright notice and this permission notice shall be
++included in all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--- /dev/null
++++ b/src/catalog/vendor/porter.ts
+@@ -0,0 +1,175 @@
++/** Porter stemmer. Source: https://github.com/words/stemmer. See porter-LICENSE. */
++// Standard suffix manipulations.
++/** @type {Record<string, string>} */
++const step2list: Record<string, string> = {
++  ational: 'ate',
++  tional: 'tion',
++  enci: 'ence',
++  anci: 'ance',
++  izer: 'ize',
++  bli: 'ble',
++  alli: 'al',
++  entli: 'ent',
++  eli: 'e',
++  ousli: 'ous',
++  ization: 'ize',
++  ation: 'ate',
++  ator: 'ate',
++  alism: 'al',
++  iveness: 'ive',
++  fulness: 'ful',
++  ousness: 'ous',
++  aliti: 'al',
++  iviti: 'ive',
++  biliti: 'ble',
++  logi: 'log'
++}
++
++/** @type {Record<string, string>} */
++const step3list: Record<string, string> = {
++  icate: 'ic',
++  ative: '',
++  alize: 'al',
++  iciti: 'ic',
++  ical: 'ic',
++  ful: '',
++  ness: ''
++}
++
++// Consonant-vowel sequences.
++const consonant = '[^aeiou]'
++const vowel = '[aeiouy]'
++const consonants = '(' + consonant + '[^aeiouy]*)'
++const vowels = '(' + vowel + '[aeiou]*)'
++
++const gt0 = new RegExp('^' + consonants + '?' + vowels + consonants)
++const eq1 = new RegExp(
++  '^' + consonants + '?' + vowels + consonants + vowels + '?$'
++)
++const gt1 = new RegExp('^' + consonants + '?(' + vowels + consonants + '){2,}')
++const vowelInStem = new RegExp('^' + consonants + '?' + vowel)
++const consonantLike = new RegExp('^' + consonants + vowel + '[^aeiouwxy]$')
++
++// Exception expressions.
++const sfxLl = /ll$/
++const sfxE = /^(.+?)e$/
++const sfxY = /^(.+?)y$/
++const sfxIon = /^(.+?(s|t))(ion)$/
++const sfxEdOrIng = /^(.+?)(ed|ing)$/
++const sfxAtOrBlOrIz = /(at|bl|iz)$/
++const sfxEED = /^(.+?)eed$/
++const sfxS = /^.+?[^s]s$/
++const sfxSsesOrIes = /^.+?(ss|i)es$/
++const sfxMultiConsonantLike = /([^aeiouylsz])\1$/
++const step2 =
++  /^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$/
++const step3 = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/
++const step4 =
++  /^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$/
++
++/**
++ * Get the stem from a given value.
++ *
++ * @param {string} value
++ *   Value to stem.
++ * @returns {string}
++ *   Stem for `value`
++ */
++// eslint-disable-next-line complexity
++export function stemmer(value: string): string {
++  let result = String(value).toLowerCase()
++
++  // Exit early.
++  if (result.length < 3) {
++    return result
++  }
++
++  /** @type {boolean} */
++  let firstCharacterWasLowerCaseY = false
++
++  // Detect initial `y`, make sure it never matches.
++  if (
++    result.codePointAt(0) === 121 // Lowercase Y
++  ) {
++    firstCharacterWasLowerCaseY = true
++    result = 'Y' + result.slice(1)
++  }
++
++  // Step 1a.
++  if (sfxSsesOrIes.test(result)) {
++    // Remove last two characters.
++    result = result.slice(0, -2)
++  } else if (sfxS.test(result)) {
++    // Remove last character.
++    result = result.slice(0, -1)
++  }
++
++  /** @type {RegExpMatchArray|null} */
++  let match: RegExpMatchArray | null
++
++  // Step 1b.
++  if ((match = sfxEED.exec(result))) {
++    if (gt0.test(match[1]!)) {
++      // Remove last character.
++      result = result.slice(0, -1)
++    }
++  } else if ((match = sfxEdOrIng.exec(result)) && vowelInStem.test(match[1]!)) {
++    result = match[1]!
++
++    if (sfxAtOrBlOrIz.test(result)) {
++      // Append `e`.
++      result += 'e'
++    } else if (sfxMultiConsonantLike.test(result)) {
++      // Remove last character.
++      result = result.slice(0, -1)
++    } else if (consonantLike.test(result)) {
++      // Append `e`.
++      result += 'e'
++    }
++  }
++
++  // Step 1c.
++  if ((match = sfxY.exec(result)) && vowelInStem.test(match[1]!)) {
++    // Remove suffixing `y` and append `i`.
++    result = match[1]! + 'i'
++  }
++
++  // Step 2.
++  if ((match = step2.exec(result)) && gt0.test(match[1]!)) {
++    result = match[1]! + step2list[match[2]!]
++  }
++
++  // Step 3.
++  if ((match = step3.exec(result)) && gt0.test(match[1]!)) {
++    result = match[1]! + step3list[match[2]!]
++  }
++
++  // Step 4.
++  if ((match = step4.exec(result))) {
++    if (gt1.test(match[1]!)) {
++      result = match[1]!
++    }
++  } else if ((match = sfxIon.exec(result)) && gt1.test(match[1]!)) {
++    result = match[1]!
++  }
++
++  // Step 5.
++  if (
++    (match = sfxE.exec(result)) &&
++    (gt1.test(match[1]!) ||
++      (eq1.test(match[1]!) && !consonantLike.test(match[1]!)))
++  ) {
++    result = match[1]!
++  }
++
++  if (sfxLl.test(result) && gt1.test(result)) {
++    result = result.slice(0, -1)
++  }
++
++  // Turn initial `Y` back to `y`.
++  if (firstCharacterWasLowerCaseY) {
++    result = 'y' + result.slice(1)
++  }
++
++  return result
++}
+--- a/src/catalog/vendor/search-scoring.ts
++++ b/src/catalog/vendor/search-scoring.ts
+@@ -30,13 +30,18 @@
+   description: string;
+ };
+ 
+-const FIELD_WEIGHTS = {
++export const FIELD_WEIGHTS = {
+   id: 12,
+   name: 10,
+   service: 8,
+   description: 5,
+   kind: 2
+ } as const;
++
++export function coverageBonus(matched: number, total: number): number {
++  const coverage = matched / total;
++  return coverage === 1 ? 25 : Math.round(coverage * 10);
++}
+ 
+ export function normalizeSearchText(value: string): string {
+   return value
+@@ -128,8 +133,7 @@
+ 
+   const coverage = matchedTokens.size / queryTokens.length;
+   if (coverage < (queryTokens.length <= 2 ? 1 : 0.6) && !exactPhrase) return null;
+-  if (coverage === 1) score += 25;
+-  else score += Math.round(coverage * 10);
++  score += coverageBonus(matchedTokens.size, queryTokens.length);
+ 
+   const idTokens = tokenize(entry.id);
+   const nameTokens = tokenize(entry.name);
