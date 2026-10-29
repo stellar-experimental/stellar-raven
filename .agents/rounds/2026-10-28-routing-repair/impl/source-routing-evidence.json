@@ -1,0 +1,200 @@
+{
+  "conclusion": "No new upstream service defect is established. Valid source routing text contributes to captures through Raven admission rules.",
+  "scoutSnapshotSha256": "f653ef3236baaf1259662a4999cb6731017a4d5f4c90ea4434b21ed6a5bd5ef8",
+  "scoutOperations": [
+    {
+      "operation": "analyzeHackathonSubmissions",
+      "summary": "Trends and counts across Stellar hackathon submissions, with lift",
+      "routing": {
+        "exampleQuestions": [
+          "What share of Stellar hackathon submissions are payments projects, event by event?",
+          "How did AI agent projects change across Stellar hackathons?",
+          "Which SDKs and libraries do Stellar hackathon winners use most?",
+          "What did winning Stellar hackathon projects do differently from the rest?",
+          "How many Stellar hackathon projects kept building after the event?"
+        ],
+        "keywords": [
+          "hackathon trends",
+          "trend",
+          "across hackathons",
+          "event by event",
+          "share of submissions",
+          "percentage",
+          "breakdown",
+          "distribution",
+          "categories",
+          "category share",
+          "which sdks",
+          "tech stack",
+          "libraries used",
+          "winners vs",
+          "what winners did differently",
+          "lift",
+          "kept building",
+          "after the hackathon",
+          "cohort"
+        ],
+        "notFor": [
+          "finding the builds themselves -> searchHackathonBuilds",
+          "one submission in full -> getHackathonSubmission",
+          "event dates, prize pools and registrations -> getHackathons / compareHackathons"
+        ],
+        "purpose": "Spot trends across Stellar hackathons: what share of submissions do X, which SDKs winners use, how a category moved event by event, what the winners did differently, and who kept building.",
+        "useWhen": [
+          "what share of hackathon submissions are <category>, event by event",
+          "how did <topic> change across Stellar hackathons",
+          "which SDKs or packages do hackathon winners use",
+          "what did the winners do differently",
+          "how many hackathon projects kept building after the event",
+          "what happened to <topic> hackathon projects afterwards: kept building, went quiet, became a directory project"
+        ]
+      }
+    },
+    {
+      "operation": "getHackathonSubmission",
+      "summary": "One Stellar hackathon submission in full",
+      "routing": {
+        "exampleQuestions": [
+          "Show me everything TollPay submitted to Stellar Hacks: Agents.",
+          "What does this DoraHacks submission do: dorahacks.io/buidl/42585?"
+        ],
+        "keywords": [
+          "hackathon submission",
+          "submission details",
+          "full write-up",
+          "dorahacks link",
+          "what did this team submit"
+        ],
+        "notFor": [
+          "finding submissions on a topic -> searchHackathonBuilds",
+          "one event's winners and roster -> getHackathon"
+        ],
+        "purpose": "Read one hackathon submission in full: what the team wrote, its links and placement, and what it became.",
+        "useWhen": [
+          "you hold a submission id or a dorahacks.io/buidl link and need the full write-up",
+          "what exactly did <winner> submit, and did it become a project"
+        ]
+      }
+    },
+    {
+      "operation": "locateSource",
+      "summary": "Locate where a flag, command, option default, function or interface is defined in Stellar's source",
+      "routing": {
+        "exampleQuestions": [
+          "Which stellar-core file sets the default for TARGET_PEER_CONNECTIONS?",
+          "Which line declares the --network-passphrase flag in stellar-cli?"
+        ],
+        "keywords": [
+          "where is it defined",
+          "which file defines",
+          "line number",
+          "source location",
+          "symbol definition",
+          "default value in code",
+          "config option default",
+          "cli flag definition",
+          "find in source code",
+          "source pointer"
+        ],
+        "notFor": [
+          "how a repo works, in prose -> explainRepo",
+          "finding ecosystem projects' repos or code examples -> searchRepos",
+          "docs, protocol text, SEPs and CAPs -> searchResearch"
+        ],
+        "purpose": "Point to the exact file, line and commit in the allowlisted repos where a symbol, CLI flag, config option, default value or doc section is defined.",
+        "useWhen": [
+          "an agent needs the file and line where a function, flag, option or constant is defined, to read and cite it",
+          "docs omit a default or flag and the answer lives only in code"
+        ]
+      }
+    }
+  ],
+  "scoutExposedCaptures": [
+    {
+      "id": "q-comp-sep10-auth-role",
+      "operation": "scout.analyzeHackathonSubmissions",
+      "question": "What is SEP-10 and why does an anchor need it before it will accept a KYC submission or process a deposit?",
+      "rank": 2,
+      "poorFit": true
+    },
+    {
+      "id": "q-defi-agentic-payment-standards-compare",
+      "operation": "scout.analyzeHackathonSubmissions",
+      "question": "How do x402, MPP, AP2, and ACP compare for agent payments, and which are Stellar-specific vs general?",
+      "rank": 5,
+      "poorFit": true
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "operation": "scout.analyzeHackathonSubmissions",
+      "question": "What is Soroswap and what makes it different from other Stellar DEXes?",
+      "rank": 5,
+      "poorFit": true
+    },
+    {
+      "id": "q-infra-anchor-platform",
+      "operation": "scout.analyzeHackathonSubmissions",
+      "question": "Is there an official SEP-aligned framework for building a Stellar anchor / on-off ramp?",
+      "rank": 4,
+      "poorFit": true
+    },
+    {
+      "id": "q-holdout-b-14-compliance-backfill",
+      "operation": "scout.analyzeHackathonSubmissions",
+      "question": "We are building internal reporting for a compliance team and must backfill every payment involving selected accounts from 2018 onward, then keep the dataset current; should we use Horizon, RPC, Hubble, or an indexer?",
+      "rank": 4,
+      "poorFit": true
+    },
+    {
+      "id": "q-defi-phoenix-scf",
+      "operation": "scout.getHackathonSubmission",
+      "question": "Show Phoenix's SCF submission history on Stellar.",
+      "rank": 4,
+      "poorFit": true
+    },
+    {
+      "id": "q-eco-pyusd-stellar-freshness",
+      "operation": "scout.getHackathonSubmission",
+      "question": "Is PayPal's PYUSD live on Stellar, and when did it launch?",
+      "rank": 5,
+      "poorFit": true
+    }
+  ],
+  "locatorEvidence": "tmp/impl/runs/baseline-fresh/diagnostics.json",
+  "docsKeywordProbe": {
+    "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+    "hasApproach": true,
+    "withApproach": 178,
+    "withoutApproach": null
+  },
+  "docsWalletPage": {
+    "query": "How do I support multiple Stellar wallets (Freighter, LOBSTR, xBull, hardware wallets) in one dApp with a single integration?",
+    "hits": [
+      {
+        "id": "stellarDocs.search_docs",
+        "score": 465,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.vetIdea",
+        "score": 298,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchProjects",
+        "score": 262,
+        "tier": "gated"
+      },
+      {
+        "id": "scout.searchResearch",
+        "score": 253,
+        "tier": "gated"
+      },
+      {
+        "id": "stellarDocs.search_soroban_contract_docs",
+        "score": 178,
+        "tier": "gated"
+      }
+    ]
+  }
+}

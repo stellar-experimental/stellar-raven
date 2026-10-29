@@ -1,0 +1,27 @@
+{
+  "revision": "344d6af268a074dd47bc8ae12198c7704935e8c4",
+  "trackedBefore": 2164,
+  "trackedAfter": 2164,
+  "changed": [],
+  "added": [],
+  "diagnosticIntegrity": [
+    {
+      "label": "src-scout",
+      "scoutVersion": "1.9.111",
+      "docsTitles": 666,
+      "scorerAndSelectorMatchMain": true,
+      "exclusionsVerified": true,
+      "manifestSha256": "0c60134fea3d98f568f89f89c652ef28545f38046d17871d5d2155ada9306989"
+    },
+    {
+      "label": "src-titles",
+      "scoutVersion": "1.9.61",
+      "docsTitles": 682,
+      "scorerAndSelectorMatchMain": true,
+      "exclusionsVerified": true,
+      "manifestSha256": "e2c6ae26e1daccf36fc937e315d13575191611c58cd3568734e397cb43bdbaab"
+    }
+  ],
+  "status": "?? .agents/rounds/2026-10-28-routing-repair.md\n",
+  "pass": true
+}

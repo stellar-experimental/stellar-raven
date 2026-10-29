@@ -240,3 +240,37 @@ diagnostics on the unchanged scorer (Scout+pin alone; Docs titles alone).
 - **Lanes:** implementation `rimpl` (Codex `gpt-6.1-sol` xhigh, pane `w3W:p5Q`), verification
   `rverify` (Claude Opus high, pane `w3W:p5R`), lead `rlead` (Claude Opus high, pane `w3W:p5P`).
   Final gate review of this documentation change: see the PR.
+
+### Final gate review (2026-10-29)
+
+- Reviewer: Claude Fable 5.1, high (`claude-fable-5-1`), agent `rfinal` in pane `w3W:p5Q` (reused
+  after the implementation lane exited). Tier: Claude Fable matches a documentation, product, and
+  decision-text change; it differs from the author and lead (Claude Opus) and from the parent
+  (Claude Opus). Findings: `tmp/review/final-gate-fable.md`, in the evidence archive.
+- Verdict: approve with should-fix edits; no blocker. All TODO numbers re-derived and confirmed;
+  the stop decision and "no upstream finding" are justified.
+- Reconciliation (all applied in the follow-up commit):
+  - S1: decision D no longer says the absorb "closes" `sls-089`/`-090`/`-092`/`-093` (resolved on
+    2026-10-15). It now cites the response contracts that the held manifest lacks, with the receipt
+    `2026-10-28-routing-repair/scout-response-contracts.json`.
+  - S2: issue #223 closed on 2026-10-28T23:00:56Z when PR #303 merged, although PR #303 said it stays
+    open. The TODO states this. The lead does not reopen it; the parent decides.
+  - S3: the TODO says five designs ran on 544 rows and C6 stopped offline.
+  - S4: the TODO attributes the losses-only check 12 reading to the lead (D1) and states that the
+    written check and the strict verdict fail.
+  - S5: decision D now lists the check 5 and 8 status, the probe cost (3/22→5/22), the 15 generated
+    test updates, and the costs of option 2.
+  - S6: the pin item states the exposure assumption behind the scrub result.
+  - S7: small cited receipts are retained (`impl/c2-keyword-attribution.json`,
+    `impl/source-diagnostic-commands.json`, `impl/source-routing-evidence.json`,
+    `impl/final-closeout-integrity.json`, `verify/runs/srcdiag-diag.json`,
+    `verify/runs/scout-accept.json`). Linked `.json` receipts and patches not in this folder live
+    in the ignored archive `eval/results/2026-10-28-routing-repair-evidence.tar.gz`.
+  - N1: removed the two lane briefs and the C3 and C5 patches (rejected designs that no next step
+    builds on). Kept: the rulings and `phase1-go.md` (decisions D1–D5), C1/C2/C4 patches (C2 is the
+    named next parent), and the helpers and `verify/probes.json` (the consumers are the next repair
+    attempt and the new schema-enum TODO item, whose Done line uses the 22 hackathon negatives).
+  - N2: tier reasons. Implementation: Codex `gpt-6.1-sol` (workhorse tier) at xhigh, because the
+    owner asked for OpenAI Sol agents. Verification: Claude Opus high, the stable Claude tier that
+    differs from the implementation vendor.
+  - N3: the three long TODO sentences are split. N4 is folded into S2.
