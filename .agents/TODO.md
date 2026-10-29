@@ -672,7 +672,7 @@ filter drops only the explicit excluded-path set, so those sections would reach
 2026-10-28 measurement (`rounds/2026-10-28-routing-repair/`): the `789c9061` pin changes no
 searchable field and no row of the 544. Under the decision D exposure (the two hackathon read
 operations exposed, `reviewSubmission` excluded), the runtime scrub keeps no non-exposed Scout path
-or operation name in any of the four pinned files. Under the held 1.9.61 manifest, the two hackathon
+or operation name. That holds for all four pinned files. Under the held 1.9.61 manifest, the two hackathon
 sections still leak. The pin can move with
 the Scout absorb in owner decision D.
 

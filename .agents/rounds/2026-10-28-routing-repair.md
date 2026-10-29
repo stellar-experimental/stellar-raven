@@ -274,3 +274,7 @@ diagnostics on the unchanged scorer (Scout+pin alone; Docs titles alone).
     owner asked for OpenAI Sol agents. Verification: Claude Opus high, the stable Claude tier that
     differs from the implementation vendor.
   - N3: the three long TODO sentences are split. N4 is folded into S2.
+- Reconciliation check (same reviewer): approve; S1–S7 and N1–N4 RESOLVED. Nits R1–R4 applied:
+  `impl/source-input-diff.json` retained, a `method` field added to the contracts receipt, the
+  scrub sentence split, and the archive re-packed after this entry (it holds the full review file).
+  R5 (links to pruned patches) is covered by the archive pointer above.
