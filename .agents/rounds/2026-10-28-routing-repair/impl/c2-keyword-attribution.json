@@ -1,0 +1,58 @@
+[
+  {
+    "id": "q-soroban-oz-upgradeable-macro",
+    "question": "How does OpenZeppelin's Upgradeable module for Stellar make a Soroban contract upgradeable?",
+    "entry": "stellarDocs.search_soroban_contract_docs",
+    "removed": [
+      {
+        "token": "open",
+        "before": 0,
+        "after": 10,
+        "keywordMatches": [
+          "op"
+        ]
+      },
+      {
+        "token": "for",
+        "before": 0,
+        "after": 10,
+        "keywordMatches": [
+          "fork"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "q-ti-friendbot-ratelimit-alternatives",
+    "question": "Friendbot keeps rate-limiting my testnet funding - what are the legitimate ways to get testnet XLM, and is there an official backup faucet wallet?",
+    "entry": "stellarDocs.search_wallet_dapp_docs",
+    "removed": [
+      {
+        "token": "rate",
+        "before": 0,
+        "after": 5,
+        "keywordMatches": [
+          "generate"
+        ]
+      },
+      {
+        "token": "to",
+        "before": 5,
+        "after": 10,
+        "keywordMatches": [
+          "toml",
+          "custom",
+          "token"
+        ]
+      },
+      {
+        "token": "is",
+        "before": 0,
+        "after": 5,
+        "keywordMatches": [
+          "prerequisites"
+        ]
+      }
+    ]
+  }
+]

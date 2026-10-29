@@ -159,7 +159,8 @@ example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` a
 `routing-repair-astra.md`. Four golden proposals for the two read operations wait in
 `eval/qa/corpus/proposed/scf-grants-builders/` (see "Activate the Scout hackathon golden
 proposals"). Keep `inventory/stellar-light.json`
-at 1.9.61 until check 12 passes; the daily drift report keeps #223 open meanwhile.
+at 1.9.61 until check 12 passes or owner decision D allows a separate absorb. The daily drift
+report keeps #223 open meanwhile. (PR #303 closed it in error on 2026-10-28; it was reopened.)
 
 2026-10-08 authorized repair attempt (Codex frontier; Claude Fable review): no general policy passes.
 Ten policies were tested on all 544 rows against current and fresh sources (Scout 1.9.72, 674 Docs
@@ -253,8 +254,37 @@ rank-only evidence, from the accepted baseline. Rejected; step 3 did not run.
   A stronger Docs entry then fills it above the ZK skill. Every rank-only keyword attempt repeats
   this loss.
 
-Next attempt: owner decision B comes first. Then measure the admission-only variant with the
-selector quota fix as one step. Evidence: `rounds/2026-10-09-continuation/routing-step2/`.
+2026-10-28 authorized repair round (owner authorization and decision B option 1, conditional;
+Codex `gpt-6.1-sol` xhigh built, Claude Opus high verified; ledger
+`rounds/2026-10-28-routing-repair.md`). Five designs ran on all 544 rows against current sources and
+a frozen fresh source (Scout 1.9.111, 682 Docs titles, stellar-light pin `789c9061`). C6 stopped at
+offline validation. No design passes. Decision B never applied: no design passed every other check.
+
+- On the unchanged scorer, Scout 1.9.111 no longer has the four named 1.9.71 regressions. The fresh
+  source changes two grades, and both are gains. The lead judged check 12 on graded losses only
+  (ledger, decision D1). The written check and the strict helper verdict still fail on the two
+  gains.
+- C1 (schema keywords cannot admit, quota replacement at or above quota) fails 5, 8, 10, 12.
+- C2 (schema keywords add rank only within whole-token boundaries) passes 1–7, 9, 11 on both
+  sources. It loses OZ upgradeable-macro top3, Friendbot top5, Groth16 top3, and fresh x402 top5.
+  Stopword substrings inside schema words held up the first two.
+- C3 (global Porter stemming and broad quota repair) and C4 (short-page quota fill, full-page
+  membership block) trade many losses for gains. The short-page fill raises hackathon interference
+  from 7 to 13 rows.
+- C5 (near-universal and example-only tokens do not count toward admission) loses checks 7 and 9.
+- C6 (build-time Clef intent/object labels with a committed naive Bayes query classifier; USD 0.57)
+  failed offline validation and was not wired: 50.8% intent and 27.8% object agreement on the
+  corpus. Its gate rejects the correct OpenZeppelin entries and keeps the third RWA control.
+- No candidate passes check 8. The RWA fixture lacks the builder's schema `keywords`; exposed
+  through the builder, RWA costs four graded rows and enters 20 pages.
+- T1: `test/search.test.ts:1039` holds on main only through the spurious schema-only
+  `scout.getRfps` admission.
+
+Next attempt: needs new mechanism evidence, not a seventh lexical variant. The class approach needs
+a requested-subject object axis and a calibrated model (verify lane `design-check8.md` and
+`c6-offline.md`, defects D1–D3). The best clean parent is C2 with the stem fold scoped to the
+schema-support test. Evidence: `rounds/2026-10-28-routing-repair/` (`impl/failure-analysis.md`,
+`verify/final.md`) and the ignored archive `eval/results/2026-10-28-routing-repair-evidence.tar.gz`.
 
 Acceptance checks:
 
@@ -276,6 +306,22 @@ Acceptance checks:
 
 Done when: all twelve acceptance checks pass in a reviewed general scoring change. The
 protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+
+### Stop schema enum values and example tokens from admitting new Scout operations
+
+Found by the 2026-10-28 repair round (`rounds/2026-10-28-routing-repair/verify/final.md`, O3). On
+the fresh Scout source, `analyzeHackathonSubmissions` and `getHackathonSubmission` enter seven
+non-hackathon top-five pages. The matched evidence is own-repo extraction, not Scout text. The
+builder turns input-schema category enum values into entry `keywords` (`anchor`, `dex`, `rpc`,
+`indexer`, `off`, `others`). It also extracts generic tokens from Scout `exampleQuestions` into
+`routingKeywords` (`stellar`, `building`, `use`, `show`, `pay` from "TollPay"). Scout's own
+`x-routing` keywords and `notFor` clauses for these operations are specific and correct, so this is
+not an upstream finding.
+
+Next: treat it with the scoring repair above. A narrow builder rule needs the same twelve checks.
+
+Done when: the two operations no longer enter non-hackathon pages in the 544-row corpus and the
+verify lane's 22 hackathon negative probes, with no graded loss.
 
 ### Stop identity substitution on spelling-corrected matches
 
@@ -622,6 +668,13 @@ does not expose (`GET /api/hackathons/builds/{id}`, `GET /api/hackathons/analyze
 filter drops only the explicit excluded-path set, so those sections would reach
 `codemode.skill.read` and break the manifest-exposure rule.
 
+2026-10-28 measurement (`rounds/2026-10-28-routing-repair/`): the `789c9061` pin changes no
+searchable field and no row of the 544. Under the decision D exposure (the two hackathon read
+operations exposed, `reviewSubmission` excluded), the runtime scrub keeps no non-exposed Scout path
+or operation name. That holds for all four pinned files. Under the held 1.9.61 manifest, the two hackathon
+sections still leak. The pin can move with
+the Scout absorb in owner decision D.
+
 Done when: the stellar-light pin is absorbed together with, or after, the Scout operations it
 describes, with no exposure leak.
 
@@ -859,3 +912,42 @@ The run measures the gaps before the fixes above ship, and then again after them
 
 Safe default: do not run it. Use the free probe evidence until the owner authorizes the spend in
 writing.
+
+### D. Absorb Scout 1.9.111 and the stellar-light pin apart from the routing repair
+
+The 2026-10-28 repair round found no passing scorer change. The round measured a Scout-only source
+on the unchanged scorer: Scout 1.9.111, pin `789c9061`, and the current 666 Docs titles. It has zero
+graded losses on 544 rows and two explained gains. All four named 1.9.71 regressions meet their main
+grades. The only `eval:routing --gate` failure is the manifest fingerprint. Checks 5 and 8 still
+fail, as on main; the real-entry part of check 5 passes. The measured exposure:
+`analyzeHackathonSubmissions` and `getHackathonSubmission` exposed; `reviewSubmission`,
+`locateSource`, RWA, quality, and verify excluded. Evidence:
+`rounds/2026-10-28-routing-repair/impl/src-scout.md` and `verify/final.md`.
+
+Costs of option 1:
+
+- Against production, the two new operations enter seven non-hackathon top-five pages (rank 2 on
+  `q-comp-sep10-auth-role`). No graded row changes. Hackathon negative probes rise from 3/22 to 5/22.
+- `test/drift-141-routing.test.ts:270` (frozen) and `test/search.test.ts:1040` expect a page total
+  of 6 and get 7. New hackathon entries join the gated pool on the controlled-vocabulary query.
+- 15 more unit failures are generated counts and artifacts (60→62 operations, `op-classes.json`,
+  micro-map text, signature stubs, drift fixtures). Regenerate them through their `package.json`
+  scripts.
+- Check 12 passes only under the losses-only reading. The strict zero-change reading fails on the two
+  gains.
+
+Costs of option 2:
+
+- The manifest keeps the 1.9.61 response contracts. Scout 1.9.111 declares contracts that 1.9.61
+  lacks, for example `400` and `503` on `GET /api/projects/search` and research `exactKeys`. These
+  are the fixes that the resolved findings `sls-089`, `sls-090`, `sls-092`, and `sls-093` describe
+  (receipt: `rounds/2026-10-28-routing-repair/scout-response-contracts.json`).
+- The Scout hold has stood since 2026-10-02. "Activate the Scout hackathon golden proposals" stays
+  blocked, and the daily drift report keeps showing the held source.
+
+Option 1: absorb Scout 1.9.111 and the pin with the exposure above. Update the two total assertions
+with this reason, regenerate the artifacts, and record the decision. `locateSource` stays excluded.
+It enters six poor-fit pages (rank 2 on the Testnet passphrase question) at no graded cost. Option 2:
+keep holding until a scoring repair passes. The Docs title snapshot stays held in both options. Its
+new title "Choose a fee sponsorship approach" adds `approach`. The token `app` from `dApp`
+prefix-matches it, and check 6 fails. Safe default: option 2.

@@ -1,0 +1,199 @@
+[
+  {
+    "label": "src-scout build",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "scripts/build-catalog.mjs"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair/tmp/impl/src-src-scout",
+    "exit": 0,
+    "phase": "initial",
+    "log": "source-diagnostics-initial.log"
+  },
+  {
+    "label": "src-scout routing",
+    "cmd": "npm",
+    "args": [
+      "run",
+      "eval:routing",
+      "--",
+      "--gate"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair/tmp/impl/src-src-scout",
+    "exit": 1,
+    "reason": "Expected manifest fingerprint gate failure",
+    "phase": "initial",
+    "log": "source-diagnostics-initial.log"
+  },
+  {
+    "label": "src-scout save",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/save-source-run.mjs",
+      "src-scout",
+      "1"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 0,
+    "phase": "initial",
+    "log": "source-diagnostics-initial.log"
+  },
+  {
+    "label": "src-scout builder RWA",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "scripts/build-catalog.mjs"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair/tmp/impl/src-src-scout-rwa",
+    "exit": 0,
+    "phase": "initial",
+    "log": "source-diagnostics-initial.log"
+  },
+  {
+    "label": "src-scout acceptance",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/accept-source.mjs",
+      "src-scout"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 1,
+    "reason": "Helper adaptation error: pair is not defined",
+    "phase": "initial",
+    "log": "source-diagnostics-initial.log"
+  },
+  {
+    "label": "src-scout diagnostics",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/diagnose-source.mjs",
+      "src-scout"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 1,
+    "reason": "Acceptance artifact absent after helper error",
+    "phase": "initial",
+    "log": "source-diagnostics-initial.log"
+  },
+  {
+    "label": "src-scout acceptance",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/accept-source.mjs",
+      "src-scout"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 1,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-scout diagnostics",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/diagnose-source.mjs",
+      "src-scout"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-scout probes",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/probe-source.mjs",
+      "src-scout"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles build",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "scripts/build-catalog.mjs"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair/tmp/impl/src-src-titles",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles routing",
+    "cmd": "npm",
+    "args": [
+      "run",
+      "eval:routing",
+      "--",
+      "--gate"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair/tmp/impl/src-src-titles",
+    "exit": 1,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles save",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/save-source-run.mjs",
+      "src-titles",
+      "1"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles builder RWA",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "scripts/build-catalog.mjs"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair/tmp/impl/src-src-titles-rwa",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles acceptance",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/accept-source.mjs",
+      "src-titles"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 1,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles diagnostics",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/diagnose-source.mjs",
+      "src-titles"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  },
+  {
+    "label": "src-titles probes",
+    "cmd": "/usr/local/bin/node",
+    "args": [
+      "tmp/impl/probe-source.mjs",
+      "src-titles"
+    ],
+    "cwd": "/private/tmp/claude-501/raven-wt/routing-repair",
+    "exit": 0,
+    "phase": "resumed",
+    "log": "source-diagnostics.log"
+  }
+]

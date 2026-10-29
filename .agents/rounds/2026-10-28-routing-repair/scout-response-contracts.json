@@ -1,0 +1,52 @@
+{
+  "method": "node script comparing inventory/stellar-light.json (main 344d6af2) with tmp/fresh-inventory-2026-10-28/stellar-light.json (frozen 2026-10-28T23:03Z, SHA256SUMS in the evidence archive): response codes of GET /api/projects/search, and occurrence counts of each listed token in JSON.stringify(openapi)",
+  "generated": "2026-10-29",
+  "main": {
+    "scout": "1.9.61",
+    "projectsSearchResponses": [
+      "200"
+    ]
+  },
+  "fresh": {
+    "scout": "1.9.111",
+    "projectsSearchResponses": [
+      "200",
+      "400",
+      "503"
+    ]
+  },
+  "tokenCounts": {
+    "exactKeys": {
+      "main": 0,
+      "fresh": 2
+    },
+    "totalBasis": {
+      "main": 3,
+      "fresh": 6
+    },
+    "partial-read": {
+      "main": 0,
+      "fresh": 3
+    },
+    "upstreamSubmissions": {
+      "main": 0,
+      "fresh": 2
+    },
+    "coverageNote": {
+      "main": 0,
+      "fresh": 1
+    },
+    "hiddenWinners": {
+      "main": 0,
+      "fresh": 2
+    },
+    "winnersNote": {
+      "main": 0,
+      "fresh": 2
+    },
+    "\"corrected\"": {
+      "main": 0,
+      "fresh": 2
+    }
+  }
+}

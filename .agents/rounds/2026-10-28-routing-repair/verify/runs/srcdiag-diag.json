@@ -1,0 +1,1288 @@
+{
+ "candidate": "srcdiag",
+ "sources": {
+  "scout": {
+   "perRow": {
+    "losses": [],
+    "gains": [
+     {
+      "id": "q-defi-stellarx-what-is",
+      "lane": "cases",
+      "won": [
+       "top1"
+      ],
+      "before": [
+       "scout.searchHackathonBuilds",
+       "lumenloop.search_content_semantic",
+       "scout.searchProjects",
+       "scout.searchResearch",
+       "lumenloop.search_directory"
+      ],
+      "after": [
+       "lumenloop.search_content_semantic",
+       "scout.searchProjects",
+       "scout.searchResearch",
+       "scout.searchHackathonBuilds",
+       "lumenloop.search_directory"
+      ]
+     },
+     {
+      "id": "q-edge-scf-v7-centralization-myths",
+      "lane": "extendedCases",
+      "won": [
+       "top3"
+      ],
+      "before": [
+       "skills.lumenloop.scf-submission-radar",
+       "lumenloop.find_content_by_entity",
+       "lumenloop.get_scf_submissions",
+       "lumenloop.find_similar_scf_submissions",
+       "scout.scfPitch"
+      ],
+      "after": [
+       "skills.lumenloop.scf-submission-radar",
+       "scout.scfPitch",
+       "lumenloop.find_content_by_entity",
+       "lumenloop.get_scf_submissions",
+       "lumenloop.find_similar_scf_submissions"
+      ]
+     }
+    ]
+   },
+   "guard": {
+    "hackathon": {
+     "baseCount": 0,
+     "candCount": 7,
+     "newRows": [
+      "q-comp-sep10-auth-role",
+      "q-defi-agentic-payment-standards-compare",
+      "q-defi-phoenix-scf",
+      "q-defi-soroswap-what-is",
+      "q-eco-pyusd-stellar-freshness",
+      "q-infra-anchor-platform",
+      "q-holdout-b-14-compliance-backfill"
+     ],
+     "rankImproved": [],
+     "pass": false,
+     "cand": [
+      {
+       "id": "q-comp-sep10-auth-role",
+       "op": "scout.analyzeHackathonSubmissions",
+       "rank": 2
+      },
+      {
+       "id": "q-defi-agentic-payment-standards-compare",
+       "op": "scout.analyzeHackathonSubmissions",
+       "rank": 5
+      },
+      {
+       "id": "q-defi-phoenix-scf",
+       "op": "scout.getHackathonSubmission",
+       "rank": 4
+      },
+      {
+       "id": "q-defi-soroswap-what-is",
+       "op": "scout.analyzeHackathonSubmissions",
+       "rank": 5
+      },
+      {
+       "id": "q-eco-pyusd-stellar-freshness",
+       "op": "scout.getHackathonSubmission",
+       "rank": 5
+      },
+      {
+       "id": "q-infra-anchor-platform",
+       "op": "scout.analyzeHackathonSubmissions",
+       "rank": 4
+      },
+      {
+       "id": "q-holdout-b-14-compliance-backfill",
+       "op": "scout.analyzeHackathonSubmissions",
+       "rank": 4
+      }
+     ]
+    },
+    "locate": {
+     "baseCount": 0,
+     "candCount": 0,
+     "newRows": [],
+     "rankImproved": [],
+     "pass": true,
+     "cand": []
+    }
+   },
+   "probes": {
+    "shortTokens/plain": {
+     "base": {
+      "gatedRows": 20,
+      "gatedHits": 90,
+      "n": 20
+     },
+     "cand": {
+      "gatedRows": 20,
+      "gatedHits": 90,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "hackathonNegatives/plain": {
+     "base": {
+      "bad": 3,
+      "n": 22
+     },
+     "cand": {
+      "bad": 5,
+      "n": 22
+     },
+     "changed": [
+      {
+       "q": "How do agent payments with x402 work on Stellar?",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         5
+        ]
+       ],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "How do I build and deploy my first Soroban contract?",
+       "before": [],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Which wallets support passkeys on Stellar?",
+       "before": [],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         5
+        ]
+       ]
+      }
+     ],
+     "candBad": [
+      {
+       "q": "Compare Soroswap and Aquarius as Stellar DEXes.",
+       "found": [
+        [
+         "scout.compareHackathons",
+         1
+        ]
+       ]
+      },
+      {
+       "q": "How do agent payments with x402 work on Stellar?",
+       "found": [
+        [
+         "scout.searchHackathonBuilds",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Summarize the review process for a Stellar protocol CAP.",
+       "found": [
+        [
+         "scout.searchHackathonBuilds",
+         5
+        ]
+       ]
+      },
+      {
+       "q": "How do I build and deploy my first Soroban contract?",
+       "found": [
+        [
+         "scout.searchHackathonBuilds",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Which wallets support passkeys on Stellar?",
+       "found": [
+        [
+         "scout.searchHackathonBuilds",
+         5
+        ]
+       ]
+      }
+     ]
+    },
+    "hackathonPositives/plain": {
+     "base": {
+      "bad": 0,
+      "n": 12
+     },
+     "cand": {
+      "bad": 0,
+      "n": 12
+     },
+     "changed": [
+      {
+       "q": "Which Stellar hackathon submissions used Soroban most often?",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.getHackathon",
+         2
+        ]
+       ],
+       "after": [
+        [
+         "scout.analyzeHackathonSubmissions",
+         1
+        ],
+        [
+         "scout.getHackathon",
+         2
+        ]
+       ]
+      },
+      {
+       "q": "Show me the winning builds from the last Stellar hackathon.",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.hackathonBrief",
+         2
+        ],
+        [
+         "scout.compareHackathons",
+         3
+        ]
+       ],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.getHackathonSubmission",
+         2
+        ],
+        [
+         "scout.hackathonBrief",
+         3
+        ],
+        [
+         "scout.analyzeHackathonSubmissions",
+         4
+        ],
+        [
+         "scout.compareHackathons",
+         5
+        ]
+       ]
+      },
+      {
+       "q": "What trends appear across all DoraHacks Stellar hackathon submissions?",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.hackathonBrief",
+         2
+        ]
+       ],
+       "after": [
+        [
+         "scout.analyzeHackathonSubmissions",
+         1
+        ],
+        [
+         "scout.getHackathonSubmission",
+         2
+        ]
+       ]
+      },
+      {
+       "q": "Get the full details of hackathon submission dorahacks-buidl-12345.",
+       "before": [
+        [
+         "scout.getHackathon",
+         1
+        ],
+        [
+         "scout.getHackathons",
+         3
+        ]
+       ],
+       "after": [
+        [
+         "scout.getHackathonSubmission",
+         1
+        ],
+        [
+         "scout.getHackathon",
+         2
+        ],
+        [
+         "scout.getHackathons",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Which libraries do placed hackathon builds use compared with the rest?",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.hackathonBrief",
+         2
+        ],
+        [
+         "scout.getHackathon",
+         3
+        ],
+        [
+         "scout.compareHackathons",
+         5
+        ]
+       ],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.analyzeHackathonSubmissions",
+         2
+        ],
+        [
+         "scout.getHackathon",
+         3
+        ],
+        [
+         "scout.hackathonBrief",
+         4
+        ],
+        [
+         "scout.compareHackathons",
+         5
+        ]
+       ]
+      },
+      {
+       "q": "List upcoming Stellar hackathons I can enter.",
+       "before": [
+        [
+         "scout.getHackathons",
+         1
+        ],
+        [
+         "scout.compareHackathons",
+         3
+        ],
+        [
+         "scout.getHackathon",
+         4
+        ]
+       ],
+       "after": [
+        [
+         "scout.getHackathons",
+         1
+        ],
+        [
+         "scout.compareHackathons",
+         3
+        ],
+        [
+         "scout.getHackathonSubmission",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Compare two Stellar hackathons by number of submissions.",
+       "before": [
+        [
+         "scout.compareHackathons",
+         1
+        ],
+        [
+         "scout.getHackathons",
+         2
+        ],
+        [
+         "scout.getHackathon",
+         3
+        ],
+        [
+         "scout.searchHackathonBuilds",
+         4
+        ]
+       ],
+       "after": [
+        [
+         "scout.compareHackathons",
+         1
+        ],
+        [
+         "scout.analyzeHackathonSubmissions",
+         2
+        ],
+        [
+         "scout.getHackathon",
+         3
+        ],
+        [
+         "scout.getHackathonSubmission",
+         4
+        ],
+        [
+         "scout.getHackathons",
+         5
+        ]
+       ]
+      },
+      {
+       "q": "What categories of projects get built at Stellar hackathons?",
+       "before": [
+        [
+         "scout.compareHackathons",
+         1
+        ],
+        [
+         "scout.searchHackathonBuilds",
+         3
+        ]
+       ],
+       "after": [
+        [
+         "scout.compareHackathons",
+         1
+        ],
+        [
+         "scout.getHackathonSubmission",
+         2
+        ]
+       ]
+      },
+      {
+       "q": "Give me a brief to prepare for a Stellar hackathon.",
+       "before": [
+        [
+         "scout.hackathonBrief",
+         1
+        ],
+        [
+         "scout.getHackathon",
+         2
+        ],
+        [
+         "scout.searchHackathonBuilds",
+         3
+        ]
+       ],
+       "after": [
+        [
+         "scout.hackathonBrief",
+         1
+        ],
+        [
+         "scout.analyzeHackathonSubmissions",
+         2
+        ],
+        [
+         "scout.getHackathonSubmission",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "How many hackathon builds became SCF-funded projects?",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.compareHackathons",
+         3
+        ]
+       ],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.analyzeHackathonSubmissions",
+         2
+        ],
+        [
+         "scout.getHackathonSubmission",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Show the hackathon build behind this DoraHacks link.",
+       "before": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.hackathonBrief",
+         2
+        ],
+        [
+         "scout.getHackathons",
+         3
+        ],
+        [
+         "scout.getHackathon",
+         4
+        ]
+       ],
+       "after": [
+        [
+         "scout.searchHackathonBuilds",
+         1
+        ],
+        [
+         "scout.getHackathonSubmission",
+         2
+        ],
+        [
+         "scout.hackathonBrief",
+         3
+        ],
+        [
+         "scout.getHackathons",
+         4
+        ],
+        [
+         "scout.getHackathon",
+         5
+        ]
+       ]
+      }
+     ],
+     "candBad": []
+    },
+    "locateNegatives/plain": {
+     "base": {
+      "bad": 0,
+      "n": 20
+     },
+     "cand": {
+      "bad": 0,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "locatePositives/plain": {
+     "base": {
+      "bad": 5,
+      "n": 5
+     },
+     "cand": {
+      "bad": 5,
+      "n": 5
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Where is the TransactionBuilder class defined in the js-stellar-sdk source?",
+       "found": []
+      },
+      {
+       "q": "Locate the definition of the soroban-sdk Env type in source.",
+       "found": []
+      },
+      {
+       "q": "Which file in stellar-core defines the ledger close logic?",
+       "found": []
+      },
+      {
+       "q": "Find where the Freighter API function signTransaction is implemented.",
+       "found": []
+      },
+      {
+       "q": "Point me to the source file that defines the Asset class in the Python SDK.",
+       "found": []
+      }
+     ]
+    },
+    "rwaDiscovery/fixture": {
+     "base": {
+      "bad": 2,
+      "n": 10
+     },
+     "cand": {
+      "bad": 2,
+      "n": 10
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Which tokenized commodities are issued on Stellar?",
+       "found": []
+      },
+      {
+       "q": "Are there tokenized stocks or equities on Stellar?",
+       "found": []
+      }
+     ]
+    },
+    "rwaImplementation/fixture": {
+     "base": {
+      "bad": 9,
+      "n": 20
+     },
+     "cand": {
+      "bad": 9,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "How do I tokenize a bond as a Stellar asset with clawback?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "How do I set authorization flags for a regulated asset?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Write a Soroban contract that tracks tokenized treasury ownership.",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         2
+        ]
+       ]
+      },
+      {
+       "q": "Simulate a transfer of a tokenized treasury token with Stellar RPC.",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "Walk me through issuing a tokenized real estate share.",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         1
+        ]
+       ]
+      },
+      {
+       "q": "How do I query balances of an RWA token with Horizon?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "What SEP covers regulated asset approval servers?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "How do I read the decimals of a tokenized treasury SAC?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "How do I distribute a tokenized fund to many holders in one transaction?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         4
+        ]
+       ]
+      }
+     ]
+    },
+    "schemaWords/plain": {
+     "base": {
+      "gatedRows": 20,
+      "gatedHits": 80,
+      "n": 20
+     },
+     "cand": {
+      "gatedRows": 20,
+      "gatedHits": 80,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "taxonomyPositives/plain": {
+     "base": {
+      "bad": 2,
+      "n": 12
+     },
+     "cand": {
+      "bad": 2,
+      "n": 12
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Which category labels does the Stellar directory define?",
+       "found": []
+      },
+      {
+       "q": "What taxonomy does the ecosystem directory use for projects?",
+       "found": []
+      }
+     ]
+    },
+    "taxonomyNegatives/plain": {
+     "base": {
+      "bad": 0,
+      "n": 8
+     },
+     "cand": {
+      "bad": 0,
+      "n": 8
+     },
+     "changed": [],
+     "candBad": []
+    }
+   },
+   "totals": {
+    "base": {
+     "legacy": {
+      "n": 338,
+      "top1": 219,
+      "top3": 298,
+      "top5": 326,
+      "cardN": 182,
+      "cardHit5": 112
+     },
+     "extended": {
+      "n": 122,
+      "top1": 93,
+      "top3": 111,
+      "top5": 117,
+      "cardN": 28,
+      "cardHit5": 16
+     },
+     "skills": {
+      "authoredAt": "2026-07-02",
+      "n": 23,
+      "top1": 17,
+      "top3": 23,
+      "top5": 23,
+      "cardN": 23,
+      "cardHit5": 23
+     },
+     "holdout": {
+      "authoredAt": "2026-08-11",
+      "n": 49,
+      "top1": 12,
+      "top3": 26,
+      "top5": 29,
+      "cardN": 49,
+      "cardHit5": 29,
+      "forbiddenCaptures": 10,
+      "passed": 24
+     }
+    },
+    "cand": {
+     "legacy": {
+      "n": 338,
+      "top1": 220,
+      "top3": 298,
+      "top5": 326,
+      "cardN": 182,
+      "cardHit5": 112
+     },
+     "extended": {
+      "n": 122,
+      "top1": 93,
+      "top3": 112,
+      "top5": 117,
+      "cardN": 28,
+      "cardHit5": 16
+     },
+     "skills": {
+      "authoredAt": "2026-07-02",
+      "n": 23,
+      "top1": 17,
+      "top3": 23,
+      "top5": 23,
+      "cardN": 23,
+      "cardHit5": 23
+     },
+     "holdout": {
+      "authoredAt": "2026-08-11",
+      "n": 49,
+      "top1": 12,
+      "top3": 26,
+      "top5": 29,
+      "cardN": 49,
+      "cardHit5": 29,
+      "forbiddenCaptures": 10,
+      "passed": 24
+     }
+    }
+   },
+   "walletsKit": {
+    "base": [
+     "stellarDocs.search_docs",
+     "stellarDocs.search_wallet_dapp_docs",
+     "scout.vetIdea",
+     "scout.searchProjects",
+     "scout.searchResearch"
+    ],
+    "cand": [
+     "stellarDocs.search_docs",
+     "stellarDocs.search_wallet_dapp_docs",
+     "scout.vetIdea",
+     "scout.searchProjects",
+     "scout.searchResearch"
+    ]
+   },
+   "orderChanges": 58
+  },
+  "titles": {
+   "perRow": {
+    "losses": [],
+    "gains": []
+   },
+   "guard": {
+    "hackathon": {
+     "baseCount": 0,
+     "candCount": 0,
+     "newRows": [],
+     "rankImproved": [],
+     "pass": true,
+     "cand": []
+    },
+    "locate": {
+     "baseCount": 0,
+     "candCount": 0,
+     "newRows": [],
+     "rankImproved": [],
+     "pass": true,
+     "cand": []
+    }
+   },
+   "probes": {
+    "shortTokens/plain": {
+     "base": {
+      "gatedRows": 20,
+      "gatedHits": 90,
+      "n": 20
+     },
+     "cand": {
+      "gatedRows": 20,
+      "gatedHits": 90,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "hackathonNegatives/plain": {
+     "base": {
+      "bad": 3,
+      "n": 22
+     },
+     "cand": {
+      "bad": 3,
+      "n": 22
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Compare Soroswap and Aquarius as Stellar DEXes.",
+       "found": [
+        [
+         "scout.compareHackathons",
+         1
+        ]
+       ]
+      },
+      {
+       "q": "How do agent payments with x402 work on Stellar?",
+       "found": [
+        [
+         "scout.searchHackathonBuilds",
+         5
+        ]
+       ]
+      },
+      {
+       "q": "Summarize the review process for a Stellar protocol CAP.",
+       "found": [
+        [
+         "scout.searchHackathonBuilds",
+         5
+        ]
+       ]
+      }
+     ]
+    },
+    "hackathonPositives/plain": {
+     "base": {
+      "bad": 0,
+      "n": 12
+     },
+     "cand": {
+      "bad": 0,
+      "n": 12
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "locateNegatives/plain": {
+     "base": {
+      "bad": 0,
+      "n": 20
+     },
+     "cand": {
+      "bad": 0,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "locatePositives/plain": {
+     "base": {
+      "bad": 5,
+      "n": 5
+     },
+     "cand": {
+      "bad": 5,
+      "n": 5
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Where is the TransactionBuilder class defined in the js-stellar-sdk source?",
+       "found": []
+      },
+      {
+       "q": "Locate the definition of the soroban-sdk Env type in source.",
+       "found": []
+      },
+      {
+       "q": "Which file in stellar-core defines the ledger close logic?",
+       "found": []
+      },
+      {
+       "q": "Find where the Freighter API function signTransaction is implemented.",
+       "found": []
+      },
+      {
+       "q": "Point me to the source file that defines the Asset class in the Python SDK.",
+       "found": []
+      }
+     ]
+    },
+    "rwaDiscovery/fixture": {
+     "base": {
+      "bad": 2,
+      "n": 10
+     },
+     "cand": {
+      "bad": 2,
+      "n": 10
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Which tokenized commodities are issued on Stellar?",
+       "found": []
+      },
+      {
+       "q": "Are there tokenized stocks or equities on Stellar?",
+       "found": []
+      }
+     ]
+    },
+    "rwaImplementation/fixture": {
+     "base": {
+      "bad": 9,
+      "n": 20
+     },
+     "cand": {
+      "bad": 9,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "How do I tokenize a bond as a Stellar asset with clawback?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "How do I set authorization flags for a regulated asset?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "Write a Soroban contract that tracks tokenized treasury ownership.",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         2
+        ]
+       ]
+      },
+      {
+       "q": "Simulate a transfer of a tokenized treasury token with Stellar RPC.",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "Walk me through issuing a tokenized real estate share.",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         1
+        ]
+       ]
+      },
+      {
+       "q": "How do I query balances of an RWA token with Horizon?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "What SEP covers regulated asset approval servers?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         3
+        ]
+       ]
+      },
+      {
+       "q": "How do I read the decimals of a tokenized treasury SAC?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         4
+        ]
+       ]
+      },
+      {
+       "q": "How do I distribute a tokenized fund to many holders in one transaction?",
+       "found": [
+        [
+         "scout.getRwaAssets",
+         4
+        ]
+       ]
+      }
+     ]
+    },
+    "schemaWords/plain": {
+     "base": {
+      "gatedRows": 20,
+      "gatedHits": 80,
+      "n": 20
+     },
+     "cand": {
+      "gatedRows": 20,
+      "gatedHits": 80,
+      "n": 20
+     },
+     "changed": [],
+     "candBad": []
+    },
+    "taxonomyPositives/plain": {
+     "base": {
+      "bad": 2,
+      "n": 12
+     },
+     "cand": {
+      "bad": 2,
+      "n": 12
+     },
+     "changed": [],
+     "candBad": [
+      {
+       "q": "Which category labels does the Stellar directory define?",
+       "found": []
+      },
+      {
+       "q": "What taxonomy does the ecosystem directory use for projects?",
+       "found": []
+      }
+     ]
+    },
+    "taxonomyNegatives/plain": {
+     "base": {
+      "bad": 0,
+      "n": 8
+     },
+     "cand": {
+      "bad": 0,
+      "n": 8
+     },
+     "changed": [],
+     "candBad": []
+    }
+   },
+   "totals": {
+    "base": {
+     "legacy": {
+      "n": 338,
+      "top1": 219,
+      "top3": 298,
+      "top5": 326,
+      "cardN": 182,
+      "cardHit5": 112
+     },
+     "extended": {
+      "n": 122,
+      "top1": 93,
+      "top3": 111,
+      "top5": 117,
+      "cardN": 28,
+      "cardHit5": 16
+     },
+     "skills": {
+      "authoredAt": "2026-07-02",
+      "n": 23,
+      "top1": 17,
+      "top3": 23,
+      "top5": 23,
+      "cardN": 23,
+      "cardHit5": 23
+     },
+     "holdout": {
+      "authoredAt": "2026-08-11",
+      "n": 49,
+      "top1": 12,
+      "top3": 26,
+      "top5": 29,
+      "cardN": 49,
+      "cardHit5": 29,
+      "forbiddenCaptures": 10,
+      "passed": 24
+     }
+    },
+    "cand": {
+     "legacy": {
+      "n": 338,
+      "top1": 219,
+      "top3": 298,
+      "top5": 326,
+      "cardN": 182,
+      "cardHit5": 112
+     },
+     "extended": {
+      "n": 122,
+      "top1": 93,
+      "top3": 111,
+      "top5": 117,
+      "cardN": 28,
+      "cardHit5": 16
+     },
+     "skills": {
+      "authoredAt": "2026-07-02",
+      "n": 23,
+      "top1": 17,
+      "top3": 23,
+      "top5": 23,
+      "cardN": 23,
+      "cardHit5": 23
+     },
+     "holdout": {
+      "authoredAt": "2026-08-11",
+      "n": 49,
+      "top1": 12,
+      "top3": 26,
+      "top5": 29,
+      "cardN": 49,
+      "cardHit5": 29,
+      "forbiddenCaptures": 10,
+      "passed": 24
+     }
+    }
+   },
+   "walletsKit": {
+    "base": [
+     "stellarDocs.search_docs",
+     "stellarDocs.search_wallet_dapp_docs",
+     "scout.vetIdea",
+     "scout.searchProjects",
+     "scout.searchResearch"
+    ],
+    "cand": [
+     "stellarDocs.search_docs",
+     "scout.vetIdea",
+     "scout.searchProjects",
+     "scout.searchResearch",
+     "stellarDocs.search_soroban_contract_docs"
+    ]
+   },
+   "orderChanges": 2
+  }
+ }
+}
