@@ -279,3 +279,58 @@ diagnostics on the unchanged scorer (Scout+pin alone; Docs titles alone).
   `impl/source-input-diff.json` retained, a `method` field added to the contracts receipt, the
   scrub sentence split, and the archive re-packed after this entry (it holds the full review file).
   R5 (links to pruned patches) is covered by the archive pointer above.
+
+### Owner decision D (2026-10-29): option 2, keep holding
+
+The owner delegated the choice to the parent ("do what you think is best"). The parent chose
+option 2. Scout stays at 1.9.61 and the stellar-light pin stays at `3b587aa9f23d` until a scoring
+change passes the twelve checks. Reasons:
+
+- Option 1 puts the two hackathon read operations on seven non-hackathon top-five pages, rank 2 on
+  `q-comp-sep10-auth-role`. That is a visible routing loss on ungraded pages, and the strict check 12
+  fails.
+- The narrow fix for that cost (TODO "Stop schema enum values and example tokens from admitting new
+  Scout operations") overlaps C5b, which removed example-only tokens and still left nine poor-fit
+  hackathon captures. A seventh lexical variant breaks this round's stop rule, so the parent did not
+  run one.
+- Option 2 costs only the newer Scout response contracts and keeps #223 open. No graded row and no
+  served answer changes.
+
+The measured option record, moved unchanged from `.agents/TODO.md`:
+
+The 2026-10-28 repair round found no passing scorer change. The round measured a Scout-only source
+on the unchanged scorer: Scout 1.9.111, pin `789c9061`, and the current 666 Docs titles. It has zero
+graded losses on 544 rows and two explained gains. All four named 1.9.71 regressions meet their main
+grades. The only `eval:routing --gate` failure is the manifest fingerprint. Checks 5 and 8 still
+fail, as on main; the real-entry part of check 5 passes. The measured exposure:
+`analyzeHackathonSubmissions` and `getHackathonSubmission` exposed; `reviewSubmission`,
+`locateSource`, RWA, quality, and verify excluded. Evidence:
+`rounds/2026-10-28-routing-repair/impl/src-scout.md` and `verify/final.md`.
+
+Costs of option 1:
+
+- Against production, the two new operations enter seven non-hackathon top-five pages (rank 2 on
+  `q-comp-sep10-auth-role`). No graded row changes. Hackathon negative probes rise from 3/22 to 5/22.
+- `test/drift-141-routing.test.ts:270` (frozen) and `test/search.test.ts:1040` expect a page total
+  of 6 and get 7. New hackathon entries join the gated pool on the controlled-vocabulary query.
+- 15 more unit failures are generated counts and artifacts (60→62 operations, `op-classes.json`,
+  micro-map text, signature stubs, drift fixtures). Regenerate them through their `package.json`
+  scripts.
+- Check 12 passes only under the losses-only reading. The strict zero-change reading fails on the two
+  gains.
+
+Costs of option 2:
+
+- The manifest keeps the 1.9.61 response contracts. Scout 1.9.111 declares contracts that 1.9.61
+  lacks, for example `400` and `503` on `GET /api/projects/search` and research `exactKeys`. These
+  are the fixes that the resolved findings `sls-089`, `sls-090`, `sls-092`, and `sls-093` describe
+  (receipt: `rounds/2026-10-28-routing-repair/scout-response-contracts.json`).
+- The Scout hold has stood since 2026-10-02. "Activate the Scout hackathon golden proposals" stays
+  blocked, and the daily drift report keeps showing the held source.
+
+Option 1: absorb Scout 1.9.111 and the pin with the exposure above. Update the two total assertions
+with this reason, regenerate the artifacts, and record the decision. `locateSource` stays excluded.
+It enters six poor-fit pages (rank 2 on the Testnet passphrase question) at no graded cost. Option 2:
+keep holding until a scoring repair passes. The Docs title snapshot stays held in both options. Its
+new title "Choose a fee sponsorship approach" adds `approach`. The token `app` from `dApp`
+prefix-matches it, and check 6 fails. Safe default: option 2.
