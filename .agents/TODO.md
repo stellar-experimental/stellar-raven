@@ -159,9 +159,8 @@ example policy is untested. Evidence: `rounds/2026-10-06-truth-maintenance.md` a
 `routing-repair-astra.md`. Four golden proposals for the two read operations wait in
 `eval/qa/corpus/proposed/scf-grants-builders/` (see "Activate the Scout hackathon golden
 proposals"). Keep `inventory/stellar-light.json`
-at 1.9.61 until check 12 passes or owner decision D allows a separate absorb. Issue #223 closed on
-2026-10-28 when PR #303 merged, although that PR said #223 stays open. The parent decides whether
-to reopen it; the daily drift report still shows the held source.
+at 1.9.61 until check 12 passes or owner decision D allows a separate absorb. The daily drift
+report keeps #223 open meanwhile. (PR #303 closed it in error on 2026-10-28; it was reopened.)
 
 2026-10-08 authorized repair attempt (Codex frontier; Claude Fable review): no general policy passes.
 Ten policies were tested on all 544 rows against current and fresh sources (Scout 1.9.72, 674 Docs

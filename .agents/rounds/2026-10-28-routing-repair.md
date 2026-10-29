@@ -254,7 +254,8 @@ diagnostics on the unchanged scorer (Scout+pin alone; Docs titles alone).
     2026-10-15). It now cites the response contracts that the held manifest lacks, with the receipt
     `2026-10-28-routing-repair/scout-response-contracts.json`.
   - S2: issue #223 closed on 2026-10-28T23:00:56Z when PR #303 merged, although PR #303 said it stays
-    open. The TODO states this. The lead does not reopen it; the parent decides.
+    open. The TODO states this. The lead does not reopen it; the parent decides. The parent reopened
+    it on 2026-10-29 and updated the TODO.
   - S3: the TODO says five designs ran on 544 rows and C6 stopped offline.
   - S4: the TODO attributes the losses-only check 12 reading to the lead (D1) and states that the
     written check and the strict verdict fail.
